@@ -35,6 +35,15 @@ export class TokenInterceptorService implements HttpInterceptor {
           break;
         }
         case 400: {
+        //  console.log(JSON.stringify(error.error.status))
+          if(error.error.status.code == '401'){
+            this.authService.logout();
+            this.alertService.sweetalertError('Your session is expired please login again !!');
+            this.router.navigate(['/login']);
+          }
+          // else{
+          //   this.alertService.sweetalertError(error.error.status.messsage);
+          // }
           //   this.alertService.sweetalertError('Please Check Your Data !!');
           break;
         }

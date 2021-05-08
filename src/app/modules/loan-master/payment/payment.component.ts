@@ -279,12 +279,12 @@ export class PaymentComponent implements OnInit {
       this.loanMasterForm.patchValue(this.paymentLoanForm.value)
       this.loanMasterForm.controls['document'].setValue(this.filesArray)
       this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
-      console.log("Add Data: " + JSON.stringify(this.loanMasterForm.value))
+      //console.log("Add Data: " + JSON.stringify(this.loanMasterForm.value))
 
       this.loanmasterService.saveLoanMasterData(this.loanMasterForm.value).subscribe(
         res => {
           this.toaster.success('', 'Loan data Saved Successfully!!')
-          this.router.navigate['/loan-master/summary']
+          this.router.navigate(['/loan-master/summary'])
         }
       )
     } else {
@@ -293,12 +293,12 @@ export class PaymentComponent implements OnInit {
       this.loanMasterForm.patchValue(this.paymentLoanForm.value)
       this.loanMasterForm.controls['document'].setValue(this.filesArray)
       this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
-      console.log("Update Data: " + JSON.stringify(this.loanMasterForm.value))
+      //console.log("Update Data: " + JSON.stringify(this.loanMasterForm.value))
 
       this.loanmasterService.updateLoanMasterData(this.loanMasterForm.value).subscribe(
         res => {
           this.toaster.success('', 'Loan data Updated Successfully!!')
-          this.router.navigate['/loan-master/summary']
+          this.router.navigate(['/loan-master/summary'])
         }
       )
     }

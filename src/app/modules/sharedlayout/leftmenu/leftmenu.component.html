@@ -370,6 +370,23 @@
                 </ul>
             </li>
 
+
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+
+                <a href="javascript:void(0)" (click)="isCollapsedpayrollinput = !isCollapsedpayrollinput" [attr.aria-expanded]="!isCollapsedpayrollinput" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
+                      class="icon-credit-card"></i><span>Payroll Inputs</span></a>
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedpayrollinput" [isAnimated]="true">
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+                    [routerLink]="['/PayrollInputs/Payroll-List']" href="javascript:void(0)">
+                    <span>Payroll</span></a>
+                  </li>
+                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+                    [routerLink]="['/PayrollInputs/attendance']" href="javascript:void(0)">
+                    <span>Attendance</span></a>
+                  </li>
+                </ul>
+            </li>
+
             <!-- Employee master Tabs -->
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
                 <a href="javascript:void(0)" (click)="isEmployeeMaster = !isEmployeeMaster"
@@ -803,15 +820,16 @@
                 </ul>
             </li>
 
-            <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" [routerLink]="['/loan/application']">
-    <a href="javascript:void(0)" aria-controls="collapseBasic" class="has-arrow arrow-c"
-    aria-expanded="true"><i class="fa fa-money" aria-hidden="true"></i><span>Loan Application</span></a>
-  </li> -->
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                [routerLink]="['/loan/application']">
+                <a href="javascript:void(0)" aria-controls="collapseBasic" class="has-arrow arrow-c"
+                    aria-expanded="true"><i class="fa fa-money" aria-hidden="true"></i><span>Loan Application</span></a>
+            </li>
 
 
             <!-- 19th March 21 Rucha-->
-            <li>
-                <a href="javascript:void(0)" [routerLinkActiveOptions]="{exact:true}" [routerLink]="['/email-sms']"
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a href="javascript:void(0)" [routerLink]="['/email-sms']"
                     class="has-arrow arrow-c">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
                     <span>Email SMS Template</span>
@@ -819,14 +837,14 @@
             </li>
 
             <!-- 22nd March 21 Rucha-->
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" [routerLink]="['/loan-master/summary']">
-                <a href="javascript:void(0)" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true">
-                  <i class="fa fa-money" aria-hidden="true"></i>
-                  <span>Loan Master</span>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                [routerLink]="['/loan-master/summary']">
+                <a href="javascript:void(0)" aria-controls="collapseBasic" class="has-arrow arrow-c"
+                    aria-expanded="true">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <span>Loan Master</span>
                 </a>
             </li>
-
-
         </ul>
     </nav>
 </div>
