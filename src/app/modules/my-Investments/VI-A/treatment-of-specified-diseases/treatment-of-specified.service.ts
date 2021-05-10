@@ -120,12 +120,20 @@ uploadMultipleMasterFiles(files: File[], data:any): Observable<any> {
     });
 }
 
-uploadfSpecifiedDesiaseTransactionwithDocument(files: File[], data:any): Observable<any> {
+uploadfSpecifiedDesiaseTransactionwithDocument(proofForAmountSpent: File[], proofForRecoveryFromInsuranceCompany: File[], data:any): Observable<any> {
   var formData: any = new FormData();
-  console.log('in uploadMultipleFiles Service::', files);
-  for (let file of files) {
-    formData.append('proofForAmountSpent', file);
+  console.log('ProofForRecoveryFromInsuranceCompany::', proofForRecoveryFromInsuranceCompany);
+  console.log('proofForAmountSpentFile', proofForAmountSpent);
+  // for (let file of files) {
+  //   formData.append('proofForAmountSpent', file);
+  // }
+  for (const proofForAmountSpentFile of proofForAmountSpent) {
+    formData.append('proofForAmountSpent', proofForAmountSpentFile);
   }
+  for (const proofForRecoveryFromInsuranceCompanyFile of proofForRecoveryFromInsuranceCompany) {
+    formData.append('proofForRecoveryFromInsuranceCompany', proofForRecoveryFromInsuranceCompanyFile);
+  }
+
   //formData.append('licDocuments', files);
   formData.append('specifiedDiseaseTransaction', JSON.stringify(data));
 

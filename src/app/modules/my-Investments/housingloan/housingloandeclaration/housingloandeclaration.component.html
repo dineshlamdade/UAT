@@ -176,7 +176,7 @@
               <div class="col-12">
                 <div class="table-responsive Custom_Table">
                   <table class="table table-striped table-hover table-bordered m-b-0"
-                    *ngIf="previousEmployeeList?.length">
+                    *ngIf="previousEmployeeList.length">
                     <thead class="thead-dark">
                       <tr>
                         <th rowspan="2" class="wd-4">
@@ -1059,7 +1059,7 @@
                             </span>
                           </td>
                           <td>
-                            <span tooltip="{{ summary.proofSubmissionId }}">
+                            <span *ngIf="summary.transactionStatus == 'Submitted'" tooltip="{{ summary.proofSubmissionId }}">
                               <i class="fa fa-clipboard"></i>
                             </span>
                           </td>

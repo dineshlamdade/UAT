@@ -56,14 +56,18 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public frequencyOfPaymentList: Array<any> = [];
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
+  public interestOnSavingDeposit80TTTransactionWithDocumentList: Array<any> = [];
+
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
   // public bankNameList: Array<any> = [];
   public interestOnSavingDeposit80TTTransactionList: Array<any> = [];
-
+  public proofSubmissionId: '';
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
+  public editReceiptNumber: string;
+  public editDocumentRemark: string;
 
   public bankNameList: Array<any> = [];
   public transactionBankNameList: Array<any> = [];
@@ -115,7 +119,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
-  public viewDocumentDetail = true;
+  public viewTransactionDetail = true;
   public masterUploadFlag = true;
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: Number;
@@ -144,7 +148,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
   public addNewRowId: number;
-  public declarationTotal: number;
+  public declaredTotal: number;
   public declaredAmount: number;
   public actualTotal: number;
   public actualAmount: number;
@@ -163,6 +167,9 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public selectedMasterId: string;
+  public canEdit: boolean;
+  EditDocumentRemark: any;
+  editInterestOnSavingDeposit80TTMasterId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -172,6 +179,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     private http: HttpClient,
     private fileService: FileService,
     private numberFormat: NumberFormatPipe,
+
     public dialog: MatDialog,
     private modalService: BsModalService,
     private alertService: AlertServiceService,
@@ -200,12 +208,15 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       console.log('in transaction::', this.data);
       const input = this.data;
       this.globalBank = input.bankName;
       this.getBankNameList();
       this.getTransactionFilterData(input.bankName);
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -365,7 +376,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -409,7 +420,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           i
         ].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -425,7 +436,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           i
         ].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
         i
@@ -452,7 +463,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     ].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -512,15 +523,15 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
-    this.declarationTotal = 0;
+    this.declaredTotal = 0;
     this.transactionDetail[
       j
     ].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+      this.declaredTotal += Number(
+        element.declaredAmount.toString().replace(/,/g, '')
       );
     });
-    this.transactionDetail[j].declarationTotal = this.declarationTotal;
+    this.transactionDetail[j].declaredTotal = this.declaredTotal;
   }
 
   // ------------ ON change of DueDate in line----------
@@ -578,7 +589,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       j
     ].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -685,7 +696,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     }
     this.transactionDetail[
       j
-    ].declarationTotal += this.declarationService.declaredAmount;
+    ].declaredTotal += this.declarationService.declaredAmount;
     this.transactionDetail[
       j
     ].actualTotal += this.declarationService.actualAmount;
@@ -794,14 +805,14 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
             if (innerElement.declaredAmount !== null) {
               innerElement.declaredAmount = innerElement.declaredAmount
                 .toString()
-                .replace(',', '');
+                .replace(/,/g, '');
             } else {
               innerElement.declaredAmount = 0.0;
             }
             if (innerElement.actualAmount !== null) {
               innerElement.actualAmount = innerElement.actualAmount
                 .toString()
-                .replace(',', '');
+                .replace(/,/g, '');
             } else {
               innerElement.actualAmount = 0.0;
             }
@@ -838,19 +849,23 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     // })
 
     // console.log('ttarequest::', this.ttarequest);
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+
+    const ttaPost = [{
+           interestOnSavingDeposit80TTTransactionList: this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList,
+           interestOnSavingDeposit80TTMasterId: this.transactionDetail[0].interestOnSavingDeposit80TTMasterId
+    }];
 
     const data = {
-      interestOnSavingDeposit80TTMasterId: this.transactionDetail[0]
-        .interestOnSavingDeposit80TTMasterId,
-      interestOnSavingDeposit80TTTransactionId: this.uploadGridData,
-      interestOnSavingDeposit80TTTransactionList: this.transactionDetail[0]
-        .interestOnSavingDeposit80TTTransactionList,
-      // housePropertyTransactionPreviousEmployerList: this.transactionDetail[0].housePropertyTransactionPreviousEmployerList,
-      // receiptAmount: this.receiptAmount,
-      // receiptNumber: '',
-      // receiptDate: '',
+      transactionIds: this.uploadGridData,
+      interestOnSavingDeposit80TTTransactionWithDocumentList: ttaPost,
+      receiptAmount: this.receiptAmount,
+      receiptNumber: '',
+      receiptDate: '',
       proofSubmissionId: '',
+      documentRemark: '',
     };
+
 
     this.interestOnTtaService
       .upload80TTATransactionwithDocument(this.filesArray, data)
@@ -924,9 +939,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   // Update Previous Employee in Edit Modal
   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[
-      i
-    ].previousEmployerId = event.target.value;
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].previousEmployerId = event.target.value;
     console.log(
       'previous emp id::',
       this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[
@@ -935,28 +948,6 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     );
   }
 
-  // ------------ ON change of DueDate in Edit Modal----------
-  onDueDateChangeInEditCase(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      interestReceivedDate: Date;
-      actualAmount: number;
-      dueDate: any;
-    },
-    i: number,
-    j: number
-  ) {
-    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[
-      i
-    ].dueDate = summary.dueDate;
-    console.log(
-      'onDueDateChangeInEditCase::',
-      this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[
-        i
-      ].dueDate
-    );
-  }
 
   // --------------- ON change of declared Amount Edit Modal-------------
   onDeclaredAmountChangeInEditCase(
@@ -965,7 +956,6 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       declaredAmount: number;
       interestReceivedDate: Date;
       actualAmount: any;
-      dueDate: Date;
     },
     i: number,
     j: number
@@ -990,24 +980,24 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       i
     ].declaredAmount = formatedDeclaredAmount;
 
-    this.declarationTotal = 0;
+    this.declaredTotal = 0;
 
     this.editTransactionUpload[
       j
     ].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+      this.declaredTotal += Number(
+        element.declaredAmount.toString().replace(/,/g, '')
       );
-      // console.log(this.declarationTotal);
+      // console.log(this.declaredTotal);
     });
 
-    this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].declaredTotal = this.declaredTotal;
     console.log(
-      'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
+      'DeclarATION total==>>' + this.editTransactionUpload[j].declaredTotal
     );
   }
   // ---- Set Date of Payment On Edit Modal----
@@ -1017,7 +1007,6 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       declaredAmount: number;
       interestReceivedDate: Date;
       actualAmount: number;
-      dueDate: any;
     },
     i: number,
     j: number
@@ -1039,7 +1028,6 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       declaredAmount: number;
       interestReceivedDate: Date;
       actualAmount: number;
-      dueDate: Date;
     },
     i: number,
     j: number
@@ -1097,9 +1085,9 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.editTransactionUpload[
       j
     ].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1164,7 +1152,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   }
 
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
@@ -1179,54 +1167,42 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
-        this.urlArray =
-          res.data.results[0].documentInformation[0].documentDetailList;
-        this.editTransactionUpload =
-          res.data.results[0].interestOnSavingDeposit80TTTransactionList;
-        this.grandDeclarationTotalEditModal =
-          res.data.results[0].grandDeclarationTotal;
+        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
+        this.editTransactionUpload = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
+        this.editInterestOnSavingDeposit80TTMasterId = res.data.results[0].interestOnSavingDeposit80TTTransactionList[0].interestOnSavingDeposit80TTMasterId;
+        this.editProofSubmissionId = res.data.results[0].documentInformation[0].proofSubmissionId;
+        this.editReceiptAmount = res.data.results[0].receiptAmount;
+        this.editReceiptNumber = res.data.results[0].receiptNumber;
+        this.editDocumentRemark = res.data.results[0].documentRemark;
+        this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotalEditModal =
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-        this.editReceiptAmount = res.data.results[0].receiptAmount;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
-        //console.log('converted:: ', this.urlArray);
+
+          this.editTransactionUpload.forEach((element) => {
+            element.interestOnSavingDeposit80TTTransactionList.forEach((innerElement) => {
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount,
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount,
+              );
+            });
+          });
+
       });
   }
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
+    // --Remove Selected LicTransaction Document in Main Page----
+    removeSelectedLicTransactionDocument(index: number) {
+      this.filesArray.splice(index, 1);
+      console.log('this.filesArray::', this.filesArray);
+      console.log('this.filesArray.size::', this.filesArray.length);
+    }
 
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
 
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
 
   // Common Function for filter to call API
   getTransactionFilterData(bankName: String) {
@@ -1282,14 +1258,14 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           if (innerElement.declaredAmount !== null) {
             innerElement.declaredAmount = innerElement.declaredAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.declaredAmount = 0.0;
           }
           if (innerElement.actualAmount !== null) {
             innerElement.actualAmount = innerElement.actualAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.actualAmount = 0.0;
           }
@@ -1298,15 +1274,10 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
             innerElement.interestReceivedDate,
             'yyyy-MM-dd'
           );
-          const dueDate = this.datePipe.transform(
-            innerElement.dueDate,
-            'yyyy-MM-dd'
-          );
+
 
           innerElement.interestReceivedDate = dateOfPaymnet;
-          innerElement.dueDate = dueDate;
-          this.uploadGridData.push(
-            innerElement.interestOnSavingDeposit80TTTransactionId
+          this.uploadGridData.push(innerElement.interestOnSavingDeposit80TTTransactionId
           );
         }
       );
@@ -1323,29 +1294,41 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       );
     });
 
-    const data = {
-      interestOnSavingDeposit80TTTransactionList: this.editTransactionUpload,
-      groupTransactionIDs: this.uploadGridData,
-      //documentRemark: this.documentRemark,
-      proofSubmissionId: this.editProofSubmissionId,
-      receiptAmount: this.editReceiptAmount,
-      interestOnSavingDeposit80TTMasterId: this.transactionDetail[0]
-        .interestOnSavingDeposit80TTMasterId,
-    };
+       const ttaPost = [{
+       interestOnSavingDeposit80TTTransactionList: this.editTransactionUpload[0].interestOnSavingDeposit80TTTransactionList,
+        interestOnSavingDeposit80TTMasterId: this.editTransactionUpload[0].interestOnSavingDeposit80TTMasterId
+        }];
+
+        // const ttaPost = [{
+        //   interestOnSavingDeposit80TTTransactionList: this.editTransactionUpload,
+        //    interestOnSavingDeposit80TTMasterId: this.editTransactionUpload[0].interestOnSavingDeposit80TTMasterId
+        //    }];
+
+        const data = {
+        transactionIds: this.uploadGridData,
+        interestOnSavingDeposit80TTTransactionWithDocumentList: ttaPost,
+        // receiptAmount: this.receiptAmount,
+        // receiptNumber: '',
+        // receiptDate: '',
+        // proofSubmissionId: '',
+        // documentRemark: '',
+
+        proofSubmissionId: this.editProofSubmissionId,
+        receiptAmount: this.editReceiptAmount,
+        receiptNumber: this.editReceiptNumber,
+        documentRemark:this.editDocumentRemark
+        };
+
+
+
     console.log('uploadUpdateTransaction data::', data);
 
     this.interestOnTtaService
-      .upload80TTATransactionwithDocument(this.filesArray, data)
+      .upload80TTATransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
-            ''
-          );
-
-          this.transactionDetail =
-            res.data.results[0].interestOnSavingDeposit80TTTransactionList;
+          this.transactionDetail = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -1376,6 +1359,10 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
               }
             );
           });
+          this.alertService.sweetalertMasterSuccess(
+            'Transaction Saved Successfully.',
+            ''
+          );
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -1389,15 +1376,13 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.interestOnTtaService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
-        console.log('edit Data:: ', res);
-        this.urlArray =
-          res.data.results[0].documentInformation[0].documentDetailList;
-        this.urlArray.forEach((element) => {
-          element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
-            element.blobURI
-          );
-        });
-        console.log(this.urlArray);
+               this.urlArray =  res.data.results[0].documentInformation[0].documentDetailList;
+      this.urlArray.forEach((element) => {element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
+          element.blobURI,
+        );
+      });
+      console.log(this.urlArray);
+
       });
   }
 
@@ -1420,6 +1405,44 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
         .interestReceivedDate
     );
   }
+
+    // Remove Selected LicTransaction Document Edit Maodal
+    removeSelectedLicTransactionDocumentInEditCase(index: number) {
+      this.editfilesArray.splice(index, 1);
+      console.log('this.editfilesArray::', this.editfilesArray);
+      console.log('this.editfilesArray.size::', this.editfilesArray.length);
+    }
+
+
+    // ---------------- Doc Viewr Code ----------------------------
+    nextDocViewer() {
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    previousDocViewer() {
+      this.urlIndex = this.urlIndex - 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+      console.log("documentDetailList::", documentDetailList)
+      this.urlArray = documentDetailList;
+      this.urlIndex = 0;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      console.log(this.urlSafe);
+      this.modalRef = this.modalService.show(
+        template3,
+        Object.assign({}, { class: 'gray modal-xl' }),
+      );
+    }
+
 }
 
 class DeclarationService {
@@ -1439,3 +1462,5 @@ class DeclarationService {
     Object.assign(this, obj);
   }
 }
+
+// interestOnSavingDeposit80TTTransactionId

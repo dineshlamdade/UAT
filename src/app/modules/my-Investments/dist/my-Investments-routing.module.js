@@ -289,9 +289,9 @@ var routes = [
                 data: { title: ':: DelziaHR :: Affirmation' }
             },
             {
-                path: 'Chapter-VI-A-TreatmentOfSpecifiedDiseasesComponent',
+                path: 'Chapter-VI-A-TreatmentOfSpecifiedDiseases',
                 component: treatment_of_specified_diseases_component_1.TreatmentOfSpecifiedDiseasesComponent,
-                data: { title: ':: DelziaHR :: TreatmentOfSpecifiedDiseasesComponent' }
+                data: { title: ':: DelziaHR :: TreatmentOfSpecifiedDiseases' }
             },
         ]
     },
