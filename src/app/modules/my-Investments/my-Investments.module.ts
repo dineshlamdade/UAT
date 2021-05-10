@@ -55,12 +55,15 @@ import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignaturePadComponent } from './previousemployer/signature-pad/signature-pad.component';
 import { EmployeenationalpensionComponent } from './Other/employeenationalpension/employeenationalpension.component';
+import { AffirmationComponent } from './affirmation/affirmation.component';
+import { SignatureaffirmationPadComponent } from './affirmation/signatureaffirmation-pad/signatureaffirmation-pad.component';
 
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
     HousingloanComponent,
     SignaturePadComponent,
+    SignatureaffirmationPadComponent,
     HousingloanmasterComponent,
     HousingloansummaryComponent,
     HousingloandeclarationComponent,
@@ -90,6 +93,7 @@ import { EmployeenationalpensionComponent } from './Other/employeenationalpensio
     OtherincomedeclarationComponent,
     OtherincomeComponent,
     EmployeeNPS80CCDComponent,
+    AffirmationComponent
 
 
 
@@ -124,6 +128,7 @@ import { EmployeenationalpensionComponent } from './Other/employeenationalpensio
     InputNumberModule,
     FormsModule,
     SignaturePadModule,
+    
 
   ],
 

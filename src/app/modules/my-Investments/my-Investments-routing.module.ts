@@ -53,6 +53,7 @@ import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/
 import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
 import { OtherincomeComponent } from './Other/Other Income/otherincome/otherincome.component';
 import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
+import { AffirmationComponent } from './affirmation/affirmation.component';
 
 const routes: Routes = [
 
@@ -290,6 +291,12 @@ const routes: Routes = [
         path:   'previousemployer',
         component: PreviousemployerComponent,
         data: { title: ':: DelziaHR :: previousemployer' },
+      },
+
+      {
+        path:   'Affirmation',
+        component:  AffirmationComponent,
+        data: { title: ':: DelziaHR :: Affirmation' },
       },
 
       {
