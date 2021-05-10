@@ -1466,11 +1466,7 @@ export class HousingloandeclarationComponent implements OnInit {
       this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
       // console.log(this.urlArray);
-      this.urlArray.forEach((element) => {
-        // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-        element.blobURI = 'data:image/image;base64,' + element.blobURI;
-        // new Blob([element.blobURI], { type: 'application/octet-stream' });
-      });
+
 
       this.editTransactionUpload.forEach((element) => {
         element.housePropertyTransactionList.forEach((innerElement) => {

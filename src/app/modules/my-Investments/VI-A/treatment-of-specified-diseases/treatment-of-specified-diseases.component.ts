@@ -15,7 +15,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class TreatmentOfSpecifiedDiseasesComponent implements OnInit {
 
   public tabIndex = 0;
-  public policyNumber: string;
+  public patientNames: string;
   public windowScrolled: boolean;
   public data: any;
 
@@ -32,18 +32,21 @@ export class TreatmentOfSpecifiedDiseasesComponent implements OnInit {
 
   redirectToMaster(event: any) {
     this.tabIndex = event.tabIndex;
-    this.policyNumber = event;
+    this.patientNames = event;
   }
 
 
   changeTabIndex(index: number)
   {
+    console.log(this.patientNames)
     if(index !== 2) {
       this.data = undefined;
     }
+    if(index !== 1) {
+      this.patientNames = undefined;
+    }
     this.tabIndex = index;
   }
-
   public modalRef: BsModalRef;
 
   @HostListener('window:scroll', [])
