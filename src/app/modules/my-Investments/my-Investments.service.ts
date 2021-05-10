@@ -562,7 +562,7 @@ public apiUrl = environment.baseUrl8085;
   public uploadELSSTransactionwithDocument(files: File[], data: any): Observable<any> {
     let formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
-    for (const file of files) {
+    for (let file of files) {
       formData.append('transactionDocuments', file);
     }
     // formData.append('licDocuments', files);
@@ -575,8 +575,7 @@ public apiUrl = environment.baseUrl8085;
     });
     // return null;
     return this._HTTP.post<any>(
-      this.apiUrl + '/elss-transaction/uploadTransactionDocuments',
-      formData,
+      this.apiUrl + 'elss-transaction/uploadTransactionDocuments',formData,
       {
 
       });

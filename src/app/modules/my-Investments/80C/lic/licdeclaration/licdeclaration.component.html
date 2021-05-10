@@ -692,7 +692,8 @@
                       (change)="updatePreviousEmpIdInEditCase($event, i, j)"
                       [disabled]="summary.transactionStatus === 'Submitted'">
                       <option [ngValue]="0">Select</option>
-                      <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
+                      <option *ngFor="let previousEmployee of previousEmployeeList" 
+                      [value]="previousEmployee.value"
                         [selected]="previousEmployee.value == summary.previousEmployerId">
                         {{ previousEmployee.label }}
                       </option>
@@ -706,8 +707,9 @@
                     <div class="custom_icon_badge">
                       <input type="text" class="form-control" [minDate]="financialYearStartDate"
                         [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
-                        [disabled]="!summary.additionalPayment" (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
-                        onDueDateChangeInEditCase(summary, i, j)" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                        [disabled]="!summary.additionalPayment" 
+      (ngModelChange)="summary.dueDate = $event.toLocaleDateString();onDueDateChangeInEditCase(summary, i, j)" 
+                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                         data-provide="datepicker" bsDatepicker />
                     </div>
                   </td>
@@ -726,10 +728,14 @@
                     </div>
                   </td>
                   <td>
-                    <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'" [maxDate]="today"
-                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                      data-date-autoclose="true" (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
-                      setDateOfPaymentInEditCase(summary, i, j)" [disabled]="summary.transactionStatus=='Approved'"
+                    <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'" 
+                    [maxDate]="today"
+                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                      data-provide="datepicker"
+                      data-date-autoclose="true" 
+                      (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
+                      setDateOfPaymentInEditCase(summary, i, j)" 
+                      [disabled]="summary.transactionStatus=='Approved'"
                       class="form-control" bsDatepicker />
                   </td>
                   <!-- [minDate]="financialYearStartDate" -->

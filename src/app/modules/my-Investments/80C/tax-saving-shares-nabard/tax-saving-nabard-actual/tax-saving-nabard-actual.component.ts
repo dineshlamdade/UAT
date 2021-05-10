@@ -470,7 +470,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
     const data = {
       proofSubmissionId: this.editProofSubmissionId,
       investmentGroup3TransactionDetailList: this.editTransactionUpload,
-      receiptAmount: this.receiptAmount,
+      receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
       groupTransactionIDs: this.uploadGridData,
     };

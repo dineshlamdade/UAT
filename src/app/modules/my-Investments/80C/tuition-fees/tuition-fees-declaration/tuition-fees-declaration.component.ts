@@ -47,6 +47,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
   public name = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
   public summarynew: any = {};
+  public getItem: any;
   public summaryGridData: Array<any> = [];
   public summaryComputationGridDate: any;
   public masterGridData: Array<any> = [];
@@ -250,6 +251,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+    console.log('test', this.transactionDetail);
   }
 
   // Initiate Tuition-Fees Form
@@ -493,11 +495,11 @@ export class TuitionFeesDeclarationComponent implements OnInit {
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // this.urlArray.forEach((element) => {
+        //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+        //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        // });
 
         this.editTransactionUpload =
           res.data.results[0].tuitionFeesTransactionDetailList;
@@ -1594,6 +1596,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       'onActualAmountChangeInEditCaseActual Amount change::',
       summary
     );
+    this.getItem = summary;
 
     this.editTransactionUpload[j].group2TransactionList[
       i
@@ -1640,7 +1643,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.editTransactionUpload[j].actualTotal = this.actualTotal;
+    this.editTransactionUpload[j].actualTotal = this.grandActualTotal;
     console.log(this.editTransactionUpload[j].actualTotal);
   }
 
@@ -1749,6 +1752,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
             element.actualAmount
           );
         });
+  
         // } else {
         //   this.addRowInList(this.declarationService, 0);
       }

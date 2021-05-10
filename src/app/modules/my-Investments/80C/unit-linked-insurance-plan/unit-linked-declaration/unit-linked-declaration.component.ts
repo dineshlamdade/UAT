@@ -162,6 +162,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public canEdit : boolean;
+  unitDeclarationData: any;
   dateOfJoining: Date;
   constructor(
     private formBuilder: FormBuilder,
@@ -402,6 +403,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     j: number
   ) {
     const checked = event.target.checked;
+
+    this.unitDeclarationData = data
 
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
@@ -840,6 +843,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
 
   upload() {
 
+    console.log(JSON.stringify(this.unitDeclarationData))
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -878,6 +883,38 @@ export class UnitLinkedDeclarationComponent implements OnInit {
         innerElement.dueDate = dueDate;
       });
     });
+
+    if(this.unitDeclarationData.previousEmployerId == 0){
+
+    }
+    if (this.unitDeclarationData.dateOfPayment == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected date of payment for all selected lines',
+        'Please Select Date Of Payment',
+      );
+      return false;
+    }
+    if (this.unitDeclarationData.dueDate == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected due date for all selected lines',
+        'Please Select Date Of DueDate',
+      );
+      return false;
+    }
+    if (this.unitDeclarationData.declaredAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected declared amount for all selected lines',
+        'Please Select Date Of Declared Amount',
+      );
+      return false;
+    }
+    if (this.unitDeclarationData.actualAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected actual amount for all selected lines',
+        'Please Select Date Of Actual Amount',
+      );
+      return false;
+    }
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -1170,13 +1207,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].receiptAmount;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+          this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
+        
         //console.log('converted:: ', this.urlArray);
       });
   }
@@ -1195,7 +1227,9 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>) {
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI

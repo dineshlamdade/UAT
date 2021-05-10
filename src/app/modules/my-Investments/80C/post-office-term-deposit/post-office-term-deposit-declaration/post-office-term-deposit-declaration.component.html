@@ -232,9 +232,9 @@
                   </span>
                 </td> -->
                 <td>
-                  <span *ngIf="summary.transactionStatus == 'Submitted'" 
-                  tooltip="{{ summary.proofSubmissionId }}">
-                    <i class="fa fa-clipboard"></i>
+                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                    <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                    <!-- {{ summary.proofSubmissionId }} -->
                   </span>
                 </td>
                 <td class="text-orange font700">
@@ -702,7 +702,7 @@
 
                   <td>
                     <div class="custom_Label_badge">
-                      <button class="btn bg-color-lightgray text-000"
+                      <button class="btn btn-bg-green text-white"
                         (click)="docViewer(template3, documentSummary.documentDetailList)">
                         Documents
                       </button>
@@ -918,7 +918,7 @@
                         (change)="setActualAmoutInEditModal($event)"
                         class="form-control align-right"
                       />
-
+                     
                     </div>
                   </td>
                   <td>
@@ -952,7 +952,7 @@
 
                       class="form-control align-right"
                     />
-
+                 
                   </td>
                   <td>
                     <input
@@ -995,7 +995,7 @@
                       {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
                     </span>
                   </td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <td class="bg-lightgray font-18 font700 align-right"></td> 
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
                       {{ grandActualTotalEditModal | number: "1.2-2" }}
@@ -1149,7 +1149,11 @@
     </button>
   </div>
   <div class="card-body Box-Spacing">
-    <div>
+    <div *ngFor="
+    let summary of editTransactionUpload;
+    let i = index;
+    count as c
+  ">
       <div class="row mt-15">
         <div class="col-12">
           <div class="table-responsive Custom_Table">
@@ -1166,16 +1170,16 @@
                         class="custom-control-input"
                         [ngModel]="isCheckAll"
                         [disabled]="isDisabled"
-                        name="select"
+                        name="select"                     
                         (change)="checkUncheckAll()"
                       />
                       <span class="custom-control-label"></span>
                     </label>
                   </th> -->
 
-                  <!-- <th rowspan="2" class="wd-10 font700">
+                  <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
-                  </th> -->
+                  </th>
                   <th rowspan="2" class="wd-10 font700">
                     <span tooltip="Electronic Clearing Service">Institution</span>
                   </th>
@@ -1236,7 +1240,7 @@
                         enableCheckboxFlag = i
                       "
                       class="custom-control-input"
-
+                    
                     />
                     <span class="custom-control-label"></span>
                   </label>
@@ -1253,12 +1257,12 @@
                         enableCheckboxFlag = i
                       "
                       class="custom-control-input"
-
+                    
                     />
                     <span class="custom-control-label"></span>
                   </label>
                 </td> -->
-                  <!-- <td *ngIf="previousEmployeeList?.length">
+                  <td *ngIf="previousEmployeeList?.length">
                     <select
                       name="Previous Employer Name"
                       class="form-control custom-select"
@@ -1278,7 +1282,7 @@
                         {{ previousEmployee.label }}
                       </option>
                     </select>
-                  </td> -->
+                  </td>
                   <td>
                     <input
                       type="text"
@@ -1350,7 +1354,7 @@
                       [(ngModel)]="summary.actualAmount"
 
                       class="form-control align-right"
-
+                    
                     />
                     <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                   </td>
@@ -1403,18 +1407,19 @@
                 <!-- <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-"></td>
                   <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip=" {{ grandDeclarationTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
                       {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
                     </span>
                   </td>
-
+                  
                   <td class="bg-lightgray font-18 font700 align-right"></td>
-
-
+                 
+                  
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
-                      {{ grandActualTotalEditModal | number: "1.2-2" }}
+                    <span tooltip="{{ summary.actualAmount }}" class="padding-right-12">
+                      {{ summary.actualAmount }}
                     </span>
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">
@@ -1427,9 +1432,7 @@
                       {{ grandApprovedTotalEditModal | number: "1.2-2" }}
                     </span>
                   </td>
-
-                  <!-- <td class="bg-lightgray font-18 font700"></td>
-                  <td class="bg-lightgray font-18 font700"></td> -->
+                  
                   <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700"></td>
@@ -1541,7 +1544,7 @@
     <button
       *ngIf="viewDocumentDetail"
       type="button"
-      tooltip="View Document"
+      tooltip="View Document" 
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
