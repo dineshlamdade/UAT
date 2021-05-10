@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AffirmationComponent } from './affirmation.component';
+import { SignatureaffirmationPadComponent } from './signatureaffirmation-pad.component';
 
-describe('AffirmationComponent', () => {
-  let component: AffirmationComponent;
-  let fixture: ComponentFixture<AffirmationComponent>;
+describe('SignatureaffirmationPadComponent', () => {
+  let component: SignatureaffirmationPadComponent;
+  let fixture: ComponentFixture<SignatureaffirmationPadComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AffirmationComponent ]
+      declarations: [ SignatureaffirmationPadComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AffirmationComponent);
+    fixture = TestBed.createComponent(SignatureaffirmationPadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

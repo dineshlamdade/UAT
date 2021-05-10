@@ -1,68 +1,873 @@
 <app-leftmenu></app-leftmenu>
 <!-- Main body part  -->
 <div class="page">
-    <app-header></app-header>
-    <div class="section-body mt-3">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row mt-10">
-                                <div class="col-md-12 pl-0 pr-0">
-                                    <div class="border-dark-card radius-10 p-2 mt-3">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label class="form-label mt-1 mb-0">Employee No. & Name</label>
-                                                <label class="font-12 text-ellipsis mt-1 mb-0">
-0001 - Sneha Suryawanshi</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="form-label mt-1 mb-0">Date of Joining</label>
-                                                <label class="font-12 text-ellipsis mt-1 mb-0">
-21-jan-2016
-</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="form-label mt-1 mb-0">Date of Leaving</label>
-                                                <label class="font-12 text-ellipsis mt-1 mb-0">
-                                  21-jan-2020
-</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="form-label mt-1 mb-0">Employee Type</label>
-                                                <label class="font-12 text-ellipsis mt-1 mb-0">
-Worker
-</label>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <label class="form-label mt-1 mb-0">Grade</label>
-                                                <label class="font-12 text-ellipsis mt-1 mb-0">
-G1
-</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="form-label mt-1 mb-0">Designation</label>
-                                                <label class="font-12 text-ellipsis mt-1 mb-0">
-UI/UX Developer
-</label>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <label class="form-label mt-1 mb-0">Status</label>
-                                                <label class="font-12 text-ellipsis mt-1 mb-0">
-Probation
-</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+   <app-header></app-header>
+   <div class="section-body mt-3">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-12">
+               <div class="card">
+                  <div class="card-body">
+                     <div class="tabview-contents">
+                        <div class="row pt-10 mt-8 bg-color-light_gray d-flex">
+                           <div class="col pr-0">
+                              <label class="form-label mt-1 ml-2">Emp.Code & Name</label>
+                              <label class="form-label mt-1 ml-4">
+                                 001-John
+                              </label>
+                           </div>
+                           <div class="col pr-0">
+                              <label class="form-label mt-1">Date of Joining</label>
+                              <label class="form-label mt-1 ml-2">
+                                 12-jan-2016
+                              </label>
+                           </div>
+                           <div class="col pr-0">
+                              <label class="form-label mt-1">Date of Leaving</label>
+                              <label class="form-label mt-1 ml-2">
+                                 12-jan-2020
+                              </label>
+                           </div>
+                           <div class="col pr-0">
+                              <label class="form-label mt-1">PAN</label>
+                              <label class="form-label mt-1 ml-2">
+                                 ATPP3929F
+                              </label>
+                           </div>
+                           <div class="col pr-0">
+                              <label class="form-label mt-1 ">Establishment</label>
+                              <label class="form-label mt-1 ml-2 ">
+                                 Pune-18
+                              </label>
+                           </div>
                         </div>
-                    </div>
-                </div>
+                        <hr>
+                        <div class="row  bg-color-light_gray d-flex">
+                           <div class="col pr-0">
+                              <label class="form-label mt-1 ml-2">Grade</label>
+                              <label class="form-label mt-1 ml-4 ">
+                                 G1
+                              </label>
+                           </div>
+                           <div class="col pr-0">
+                              <label class="form-label mt-1">Designation</label>
+                              <label class="form-label mt-1 ml-2">
+                                 UI/UX Devloper
+                              </label>
+                           </div>
+                           <div class="col pr-0">
+                              <label class="form-label mt-1">Department</label>
+                              <label class="form-label mt-1 ml-2">
+                                 Devlopment
+                              </label>
+                           </div>
+                           <div class="col pr-0">
+                              <label class="form-label mt-1">Contact No.</label>
+                              <label class="form-label mt-1 ml-2">
+                                 9999993366
+                              </label>
+                           </div>
+                           <div class="col pr-0">
+                              <label class="form-label mt-1">Submission Date</label>
+                              <label class="form-label mt-1 ml-2">
+                                 04-may-2021
+                              </label>
+                           </div>
+                        </div>
+                        <div class="col-md-12 mt-4">
+                           <label class="mt-2 mr-4 highlightlabel font-13 font600">
+                              Declaration for Payments Falling Due After Investment Proof Cut Off Date
+                           </label>
+                        </div>
+                        <!--     <div class="tabview-contents"> -->
+                        <div class="card">
+                           <div class="col-11 pt-10 mt-8 bg-color-light_gray d-flex border1">
+                              <div class="card-body box-solid-border">
+                                 <div class="msg font-13 font400">
+                                    <ol>
+                                       <li>I hereby confirm that the following payments are due ofter the cut-off date
+                                          for investment proof submission</li>
+                                       <li>I understand that the tax benefit of these due amounts have been given to me.
+                                       </li>
+                                       <li>I hereby declare that Ishall be making these payments on or before due dates.
+                                       </li>
+                                       <li>I shall pay the installments of housing I Education Loan and Electric vehicle
+                                          Loan on or <br>on or before the due dates</li>
+                                    </ol>
+                                 </div>
+                                 <div class="float-right">
+                                    <label class="custom-control custom-checkbox custom-control-inline TermsButton">
+                                       <input type="checkbox" class="custom-control-input"
+                                          name="example-inline-checkbox1" value="option1" />
+                                       <span class="custom-control-label">I Agree </span>
+                                    </label>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!--    </div>  -->
+                        <!--     ng Prime Tabal -->
+                        <div class="row">
+                           <div class="col-md-11 col-lg-11 col-sm-11 col-xs-11 mt-4">
+                              <div class="form-group">
+                                 <p-table [value]="templateUserIdList">
+                                    <!--<p-table [paginator]="true" [rows]="10"
+                                       [showCurrentPageReport]="true"
+                                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                       [rowsPerPageOptions]="[10,25,50]"> -->
+                                    <ng-template pTemplate="header">
+                                       <tr>
+                                          <th rowspan="1" class="wd-10">
+                                             <div class="p-d-flex p-jc-between p-ai-center">
+                                                Sr.No.
+                                                <div class="Sort_Filter_Position">
+                                                   <p-sortIcon field="srNo" pSortableColumn="srNo">
+                                                   </p-sortIcon>
+                                                   <p-columnFilter field="srNo" display="menu" class="p-ml-auto">
+                                                   </p-columnFilter>
+                                                </div>
+                                             </div>
+                                          </th>
 
+                                          <th rowspan="1" class="wd-10">
+                                             <div class="p-d-flex p-jc-between p-ai-center">
+                                                Group
+                                                <div class="Sort_Filter_Position">
+                                                   <p-sortIcon field="group" pSortableColumn="group">
+                                                   </p-sortIcon>
+                                                   <p-columnFilter field="group" display="menu" class="p-ml-auto">
+                                                   </p-columnFilter>
+                                                </div>
+                                             </div>
+                                          </th>
+                                          <th rowspan="1" class="wd-20">
+                                             <div class="p-d-flex p-jc-between p-ai-center">
+                                                IT.Section
+                                                <div class="Sort_Filter_Position">
+                                                   <p-sortIcon field="itsection" pSortableColumn="itsection">
+                                                   </p-sortIcon>
+                                                   <p-columnFilter field="itsection" display="menu" class="p-ml-auto">
+                                                   </p-columnFilter>
+                                                </div>
+                                             </div>
+                                          </th>
+                                          <th rowspan="1" class="wd-20">
+                                             <div class="p-d-flex p-jc-between p-ai-center">
+                                                Particulars
+                                                <div class="Sort_Filter_Position">
+                                                   <p-sortIcon field="particular" pSortableColumn="particular">
+                                                   </p-sortIcon>
+                                                   <p-columnFilter field="particular" display="menu" class="p-ml-auto">
+                                                   </p-columnFilter>
+                                                </div>
+                                             </div>
+                                          </th>
+                                          <th class="wd-10">
+                                             <div class="p-d-flex p-jc-center p-ai-center">
+                                                Due Date &nbsp;&nbsp;
+                                                <div class="Sort_Filter_Position d-flex ">
+                                                   <p-sortIcon field="dueDate" pSortableColumn="dueDate">
+                                                   </p-sortIcon>
+                                                   <p-columnFilter field="dueDate" display="menu" class="p-ml-auto">
+                                                   </p-columnFilter>
+                                                </div>
+                                             </div>
+                                          </th>
+                                          <th class="wd-10">
+                                             <div class="p-d-flex p-jc-center p-ai-center">
+                                                Amount &nbsp;&nbsp;
+                                                <div class="Sort_Filter_Position d-flex ">
+                                                   <p-sortIcon field="amount" pSortableColumn="amount">
+                                                   </p-sortIcon>
+                                                   <p-columnFilter field="amount" display="menu" class="p-ml-auto">
+                                                   </p-columnFilter>
+                                                </div>
+                                             </div>
+                                          </th>
+                                       </tr>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="body" let-i="rowIndex" let-summarys>
+                                       <tr class="p-selectable-row">
+
+                                          <td class="bg-color-light_gray text-center"><label
+                                                class="form-lable mb-0">{{i+1}}</label></td>
+
+                                          <td class="bg-color-light_gray text-center"><label
+                                                class="form-lable mb-0">{{summarys.group}}</label></td>
+
+                                          <td class="bg-color-light_gray text-center"><label
+                                                class="form-lable mb-0">{{summarys.itsection}}</label></td>
+
+                                          <td class="bg-color-light_gray text-center">
+                                             <!--  <tr *ngFor="let item of summarys.particularDetails">
+                                                <td>
+                                             <label class="form-lable mb-0">{{item.particular}}</label>
+                                             </td>
+                                             </tr> -->
+
+                                             <div class="pd-5" *ngFor="let item of summarys.particularDetails">
+
+                                                <div colspan="1">
+                                                   <label class="form-lable mb-0">{{item.particular}}</label>
+                                                </div>
+                                             </div>
+                                          </td>
+
+                                          <td class="bg-color-light_gray text-center">
+                                             <div class="pd-5" *ngFor="let item of summarys.particularDetails">
+
+                                                <div colspan="1">
+                                                   <div class="pd-5" *ngFor="let item1 of item.dueDateAmountDetails">
+                                                      <div colspan="1">
+                                                         <label class="form-lable mb-0">{{item1.dueDate}}</label>
+                                                      </div>
+                                                   </div>
+
+                                                </div>
+                                             </div>
+                                          </td>
+
+
+                                          <td class="bg-color-light_gray text-center">
+                                             <div class="pd-5" *ngFor="let item of summarys.particularDetails">
+
+                                                <div colspan="1">
+                                                   <div class="pd-5" *ngFor="let item1 of item.dueDateAmountDetails">
+                                                      <div colspan="1">
+                                                         <label class="form-lable mb-0">{{item1.amount}}</label>
+                                                      </div>
+                                                   </div>
+
+                                                </div>
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                       <tr>
+                                          <td colspan="6" class="font-14 font500 text-center text-red">
+                                             <span>No Data
+                                                Available</span>
+                                          </td>
+                                       </tr>
+                                    </ng-template>
+                                 </p-table>
+                              </div>
+                           </div>
+                        </div>  
+                         <!-- Upload Documents -->
+                         <div class="row mt-30">
+                           <div class="col-12">
+                              <div class="card">
+                                 <div class="mb-10 row">
+                                    <div class="col-md-6">
+                                       <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                       <span class="font-bold text-link float-right"></span>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7">
+                                       <div class="table-responsive Custom_Table">
+                                          <table class="table table-striped table-hover table-bordered m-b-0">
+                                             <thead class="thead-dark">
+                                                <tr>
+                                                   <th scope="col" class="font700 wd-8">Sr No.</th>
+                                                   <th scope="col" class="font700 wd-45">Document Name</th>
+                                                   <th scope="col" class="font700 wd-30">Action</th>
+                                                </tr>
+                                             </thead>
+                                             <tbody>
+                                                <tr>
+                                                   <th scope="row"><span tooltip="1">1</span></th>
+
+                                                   <td><span tooltip="12BB">
+                                                         12BB
+                                                      </span>
+                                                   </td>
+
+                                                   <td>
+                                                      <i class="fa fa-files-o  font-16 text-dark-green cursor-pointer"
+                                                         tooltip="File Generate"
+                                                         (click)="download()" ></i>&nbsp;&nbsp;&nbsp;
+                                                      <i class="fa fa-check-circle-o 
+                                            font-16 text-dark-green cursor-pointer" tooltip="Sign"
+                                                         (click)="openFormSign(template2)"></i>&nbsp;&nbsp;&nbsp;
+                                                      <i class="fa fa-upload font-16 text-blue cursor-pointer"
+                                                         tooltip="Upload"
+                                                         (click)="UploadModal(previousEmployerDetailsIndex)"
+                                                         data-toggle="modal"
+                                                         data-target="#UploadModal"></i>&nbsp;&nbsp;&nbsp;
+                                                      <i class="fa fa-clock-o font-16 text-dark-green cursor-pointer"
+                                                         tooltip="History"></i>&nbsp;&nbsp;
+                                                   </td>
+                                                </tr>
+                                                <tr>
+                                                   <th scope="row"><span tooltip="2">2</span></th>
+
+                                                   <td><span tooltip="InvestmentSummary">
+                                                         Investment Summary
+                                                      </span></td>
+
+                                                   <td>
+                                                      <i class="fa fa-files-o
+                                            font-16 text-dark-green cursor-pointer"
+                                                         tooltip="File Generate"></i>&nbsp;&nbsp;&nbsp;
+                                                      <i class="fa fa-check-circle-o 
+                                            font-16 text-dark-green cursor-pointer"
+                                                         tooltip="Sign"></i>&nbsp;&nbsp;&nbsp;
+                                                      <i class="fa fa-upload font-16 text-blue cursor-pointer"
+                                                         tooltip="Upload" (click)="UploadModal(investmentSummary)"
+                                                         data-toggle="modal"
+                                                         data-target="#UploadModal"></i>&nbsp;&nbsp;&nbsp;
+                                                      <i class="fa fa-clock-o font-16 text-dark-green cursor-pointer"
+                                                         tooltip="History"></i>&nbsp;&nbsp;&nbsp;
+                                                   </td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>                   
+                        <!-- Summary of Documents Submitted Tabale 2 -->
+                        <div class="row mt-30">
+                           <div class="col-12">
+                              <div class="card">
+                                 <div class="mb-10 row">
+                                    <div class="col-md-6">
+                                       <h3 class="font-14 text-purple font-bold">Summary of Documents Submitted</h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                       <span class="font-bold text-link float-right"></span>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 mt-4">
+                                       <div class="form-group">
+                                          <p-table [value]="templateUserIdList">
+                                             <ng-template pTemplate="header">
+                                                <tr>
+                                                   <th rowspan="1" class="wd-10">
+                                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                                         Group
+                                                         <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="group" pSortableColumn="group">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="group" display="menu" class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                         </div>
+                                                      </div>
+                                                   </th>
+                                                   <th rowspan="1" class="wd-20">
+                                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                                         IT.Section
+                                                         <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="itsection" pSortableColumn="itsection">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="itsection" display="menu" class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                         </div>
+                                                      </div>
+                                                   </th>
+                                                   <th class="wd-15">
+                                                      <div class="p-d-flex p-jc-center p-ai-center">
+                                                         No.of Documents &nbsp;&nbsp;
+                                                         <div class="Sort_Filter_Position d-flex ">
+                                                            <p-sortIcon field="documentCount"
+                                                               pSortableColumn="documentCount">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="documentCount" display="menu"
+                                                               class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                         </div>
+                                                      </div>
+                                                   </th>
+                                                   <th class="wd-15">
+                                                      <div class="p-d-flex p-jc-center p-ai-center">
+                                                         Action &nbsp;&nbsp;
+                                                      </div>
+                                                   </th>
+                                                </tr>
+                                             </ng-template>
+                                             <ng-template pTemplate="body" let-i="rowIndex" let-summarys>
+                                                <tr class="p-selectable-row">
+                                                   <td class="bg-color-light_gray text-center"><label
+                                                      class="form-lable mb-0">{{summarys.group}}</label>
+                                                   </td>
+      
+                                                <td class="bg-color-light_gray text-center"><label
+                                                      class="form-lable mb-0">{{summarys.itsection}}</label>
+                                                   </td>
+
+                                                   <td class="bg-color-light_gray text-center"><label
+                                                      class="form-lable mb-0">{{summarys.documentCount}}</label>
+                                                   </td>
+                                                   <td class="wd-10 align-center ">
+                                                      <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                                                         tooltip="view" (click)="UploadModalView(declarationEditUpload)"
+                                                         data-toggle="modal" data-target="#UploadModalView">
+
+                                                      </i>
+                                                      &nbsp;&nbsp;
+                                                   </td>
+                                                </tr>
+                                             </ng-template>
+                                             <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                   <td colspan="4" class="font-14 font500 text-center text-red">
+                                                      <span>No Data
+                                                         Available</span>
+                                                   </td>
+                                                </tr>
+                                             </ng-template>
+                                          </p-table>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+   
+                        <!-- <div class="tabview-contents"> -->
+                        <div class="card">
+                           <div class="row pt-10 mt-8 bg-color-light_gray d-flex border1">
+                              <div class="card-body box-solid-border">
+                                 <div class="msg font-13 font400">
+                                    <div class="col-md-12">
+                                       <label class="mt-2 mr-4 highlightlabel font-13 font600">
+                                          Affirmation
+                                       </label>
+                                    </div>
+                                    <ol>
+                                       I........................ HEREBY DECLARE THAT
+                                       <li>All the information provided under the Investment Declaration/Actual form is
+                                          correct.</li>
+                                       <li>I agree that all proofs/documents submitted are true and shall provide
+                                          orginal proofs/documents in case it is required by the Employer.</li>
+                                       <li>I agree that any misstatements discovered in this form will be grounds for
+                                          rejection of this application and /or termination of employment.</li>
+                                       <li>I also undertake to bear any tax liability if the information provided in
+                                          this application is established to be misstated.</li>
+                                       <li>I have gone through the tax computation and comparison of tax under both
+                                          regime. I understand that this is an estimated tax liability and can change
+                                          according to variation in my income further reported in payroll.
+                                          I am aware that in the new regime I will not be eligible for any benefits of
+                                          exemptions and deductions
+                                          as notified by Income tax authorities and in case of excess deduction the tax
+                                          cannot be refunded through Salary.</li>
+                                       <li>I am also aware that for assessee having business or professional income,
+                                          once the option of new tax regime is selected, it could be withdrawn once
+                                          only.
+                                          There is no option to choose the tax regime every year. While exercising the
+                                          option, I am compliant with above provision of law.</li>
+                                       <li>I also undertake that I shall pay all the amounts due ofter the investment
+                                          proof cut off date on or before their due dates.
+                                          The details are listed in the table at Section 1 of this form.</li>
+                                    </ol>
+                                 </div>
+                                 <div class="float-right">
+                                    <label class="custom-control custom-checkbox custom-control-inline TermsButton">
+                                       <input type="checkbox" class="custom-control-input"
+                                          name="example-inline-checkbox1" value="option1" />
+                                       <span class="custom-control-label">I Agree </span>
+                                    </label>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <ng-template #previousEmployerDetailsIndex>
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="UploadModalLabel">12BB Upload Document</h5>
+                              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                 aria-label="Close"><span aria-hidden="true">×</span></button>
+                           </div>
+                           <div class="modal-body">
+                              <div class="card">
+                                 <div class="card-body">
+                                    <div class="row clearfix">
+                                       <!-- <div class="col-md-12">
+                                         <label class="form-label">Upload File here :</label>
+                                      </div> -->
+                                       <div class="col-md-12">
+                                          <div class="fileuploadbox bg-color-lightgray">
+                                             <label class="filelabel">
+                                                <i class="fa fa-upload">
+                                                </i>
+                                                <span class="title">
+                                                   Choose file
+                                                </span>
+                                                <input class="FileUpload1" class="dropify"
+                                                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file"
+                                                   multiple />
+                                             </label>
+                                          </div>
+                                          <div class="fileuploadbox">
+                                             Selected files
+                                             <label class="filelabeldisplay">
+                                                <div class="text-ellipsis"><i class="fa fa-paperclip">
+                                                   </i>
+                                                   <span class="title">
+
+                                                   </span>
+                                                </div>
+                                                <div>
+                                                   <i class="fa fa-times text-red font-18"></i>
+                                                </div>
+                                             </label>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12 mt-10">
+                                          <label class="form-label">Remark</label>
+                                       </div>
+                                       <div class="col-md-12">
+                                          <textarea class="form-control" rows="2"></textarea>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                           </div>
+                        </ng-template>
+
+                        <ng-template #investmentSummary>
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="UploadModalLabel">Investment Summary Upload Document</h5>
+                              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                 aria-label="Close"><span aria-hidden="true">×</span></button>
+                           </div>
+                           <div class="modal-body">
+                              <div class="card">
+                                 <div class="card-body">
+                                    <div class="row clearfix">
+                                       <!-- <div class="col-md-12">
+                                         <label class="form-label">Upload File here :</label>
+                                      </div> -->
+                                       <div class="col-md-12">
+                                          <div class="fileuploadbox bg-color-lightgray">
+                                             <label class="filelabel">
+                                                <i class="fa fa-upload">
+                                                </i>
+                                                <span class="title">
+                                                   Choose file
+                                                </span>
+                                                <input class="FileUpload1" class="dropify"
+                                                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file"
+                                                   multiple />
+                                             </label>
+                                          </div>
+                                          <div class="fileuploadbox">
+                                             Selected files
+                                             <label class="filelabeldisplay">
+                                                <div class="text-ellipsis"><i class="fa fa-paperclip">
+                                                   </i>
+                                                   <span class="title">
+
+                                                   </span>
+                                                </div>
+                                                <div>
+                                                   <i class="fa fa-times text-red font-18"></i>
+                                                </div>
+                                             </label>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12 mt-10">
+                                          <label class="form-label">Remark</label>
+                                       </div>
+                                       <div class="col-md-12">
+                                          <textarea class="form-control" rows="2"></textarea>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                           </div>
+                        </ng-template>
+
+                        <!-- Sign -->
+                        <ng-template #template2>
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+                              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                 aria-label="Close"><span aria-hidden="true">×</span></button>
+                           </div>
+                           <div class="row ml-4">
+                              <section class=" col col-8">
+                                 <label class="input input-file">
+                                    <span class="button">
+                                       <input id="file1" type="file" name="file1" accept="image/*"
+                                          file-actual="emp.empImagePath" allowed-format="jpg,jpeg,png"
+                                          (change)="onImageChange($event)">
+                                    </span>
+                                 </label>
+                              </section>
+                           </div>
+                           OR
+                           <div class="row ml-4">
+                              <span>
+                                 <h6>Your Signature Please</h6>
+                              </span>
+                           </div>
+                           <div class="row ml-4">
+
+
+                              <!-- <signature-pad #signatureCanvas [options] ="signaturePadOptions" id ="signatureCanvas" (onBeginEvent) ="drawStart()" 
+                             (onEndEvent) ="drawComplete()"> </signature-pad> -->
+
+                              <app-signatureaffirmation-pad [imagefile]=imagefile (imageFile)="getImageFile($event)">
+                              </app-signatureaffirmation-pad>
+
+
+                              <!-- <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad>' -->
+
+                              <!-- <div class="preview" *ngIf="imgFile">
+                                <img [src]="imgFile" style="width:400px; height:250px">
+                              </div> -->
+
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                           </div>
+                        </ng-template>
+
+                        <!--  View -->
+                        <ng-template #declarationEditUpload>
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="jasdjgh">
+                                 Document Details
+                              </h5>
+                              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                 aria-label="Close">
+                                 <span aria-hidden="true">×</span>
+                              </button>
+                           </div>
+                           <div class="card-body Box-Spacing">
+                              <div class="row pt-10 mt-8 bg-color-light_gray d-flex">
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1 ml-2">Group</label>
+                                    <label class="form-label mt-1 ml-2">
+                                       House Rent
+                                    </label>
+                                 </div>
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1">IT.Section</label>
+                                    <label class="form-label mt-1 ">
+                                       LIC
+                                    </label>
+                                 </div>
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1">PS.ID</label>
+                                    <label class="form-label mt-1 ">
+                                       2020347350
+                                    </label>
+                                 </div>
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1 ">Submission</label>
+                                    <label class="form-label mt-1  ">
+                                       10May2021
+                                    </label>
+                                 </div>
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1">Document Status</label>
+                                    <label class="form-label mt-1 ">
+                                       Submit
+                                    </label>
+                                 </div>
+                              </div>
+                              <br><br>
+                              <div class="row pt-10 mt-8" style="border: 1px solid;">
+                                 <div class="card-body box-solid-border">
+                                    <div class="msg font-13 font400">
+                                       <p>
+                                          Lorem lpsum is simply dummy text of the printing and typesetting industry.
+                                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                          when an unknown printer took a galley of type and scrambled it to make a type
+                                          specimen book.
+                                          It has survived not only five centuries, but also the leap into electronic
+                                          typesetting, remaining essentially unchanged.
+                                          It was popularised in the 1%0s with the release of Letroset sheets containing
+                                          Lorem lpsum passages,
+                                          and more recently with desktop publishing software like Aldus Page Maker
+                                          including versions of Lorem Ipsum
+                                       </p>
+                                       <p>
+                                          Lorem lpsum is simply dummy text of the printing and typesetting industry.
+                                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                          when an unknown printer took a galley of type and scrambled it to make a type
+                                          specimen book.
+                                          It has survived not only five centuries, but also the leap into electronic
+                                          typesetting, remaining essentially unchanged.
+                                          It was popularised in the 1%0s with the release of Letroset sheets containing
+                                          Lorem lpsum passages,
+                                          and more recently with desktop publishing software like Aldus Page Maker
+                                          including versions of Lorem Ipsum
+                                       </p>
+                                       <p>
+                                          Lorem lpsum is simply dummy text of the printing and typesetting industry.
+                                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                          when an unknown printer took a galley of type and scrambled it to make a type
+                                          specimen book.
+                                          It has survived not only five centuries, but also the leap into electronic
+                                          typesetting, remaining essentially unchanged.
+                                          It was popularised in the 1%0s with the release of Letroset sheets containing
+                                          Lorem lpsum passages,
+                                          and more recently with desktop publishing software like Aldus Page Maker
+                                          including versions of Lorem Ipsum
+                                       </p>
+                                       <p>
+                                          Lorem lpsum is simply dummy text of the printing and typesetting industry.
+                                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                          when an unknown printer took a galley of type and scrambled it to make a type
+                                          specimen book.
+                                          It has survived not only five centuries, but also the leap into electronic
+                                          typesetting, remaining essentially unchanged.
+                                          It was popularised in the 1%0s with the release of Letroset sheets containing
+                                          Lorem lpsum passages,
+                                          and more recently with desktop publishing software like Aldus Page Maker
+                                          including versions of Lorem Ipsum
+                                       </p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <br><br>
+                              <div class="row pt-10 mt-8 bg-color-light_gray d-flex">
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1 ml-2">Group</label>
+                                    <label class="form-label mt-1 ml-2">
+                                       House Rent
+                                    </label>
+                                 </div>
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1">IT.Section</label>
+                                    <label class="form-label mt-1 ">
+                                       LIC
+                                    </label>
+                                 </div>
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1">PS.ID</label>
+                                    <label class="form-label mt-1 ">
+                                       2020347350
+                                    </label>
+                                 </div>
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1 ">Submission</label>
+                                    <label class="form-label mt-1  ">
+                                       10May2021
+                                    </label>
+                                 </div>
+                                 <div class="col pr-0">
+                                    <label class="form-label mt-1">Document Status</label>
+                                    <label class="form-label mt-1 ">
+                                       Submit
+                                    </label>
+                                 </div>
+                              </div>
+                              <br><br>
+                              <div class="row pt-10 mt-8" style="border: 1px solid;">
+                                 <div class="card-body box-solid-border">
+                                    <div class="msg font-13 font400">
+                                       <p>
+                                          Lorem lpsum is simply dummy text of the printing and typesetting industry.
+                                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                          when an unknown printer took a galley of type and scrambled it to make a type
+                                          specimen book.
+                                          It has survived not only five centuries, but also the leap into electronic
+                                          typesetting, remaining essentially unchanged.
+                                          It was popularised in the 1%0s with the release of Letroset sheets containing
+                                          Lorem lpsum passages,
+                                          and more recently with desktop publishing software like Aldus Page Maker
+                                          including versions of Lorem Ipsum
+                                       </p>
+                                       <p>
+                                          Lorem lpsum is simply dummy text of the printing and typesetting industry.
+                                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                          when an unknown printer took a galley of type and scrambled it to make a type
+                                          specimen book.
+                                          It has survived not only five centuries, but also the leap into electronic
+                                          typesetting, remaining essentially unchanged.
+                                          It was popularised in the 1%0s with the release of Letroset sheets containing
+                                          Lorem lpsum passages,
+                                          and more recently with desktop publishing software like Aldus Page Maker
+                                          including versions of Lorem Ipsum
+                                       </p>
+                                       <p>
+                                          Lorem lpsum is simply dummy text of the printing and typesetting industry.
+                                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                          when an unknown printer took a galley of type and scrambled it to make a type
+                                          specimen book.
+                                          It has survived not only five centuries, but also the leap into electronic
+                                          typesetting, remaining essentially unchanged.
+                                          It was popularised in the 1%0s with the release of Letroset sheets containing
+                                          Lorem lpsum passages,
+                                          and more recently with desktop publishing software like Aldus Page Maker
+                                          including versions of Lorem Ipsum
+                                       </p>
+                                       <p>
+                                          Lorem lpsum is simply dummy text of the printing and typesetting industry.
+                                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                          when an unknown printer took a galley of type and scrambled it to make a type
+                                          specimen book.
+                                          It has survived not only five centuries, but also the leap into electronic
+                                          typesetting, remaining essentially unchanged.
+                                          It was popularised in the 1%0s with the release of Letroset sheets containing
+                                          Lorem lpsum passages,
+                                          and more recently with desktop publishing software like Aldus Page Maker
+                                          including versions of Lorem Ipsum
+                                       </p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-12">
+                              <div class="float-right mb-15">
+                                 <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel "
+                                    (click)="modalRef.hide()"><b>
+                                       <i class="fa fa-close"></i></b> Cancel
+                                 </button>
+                              </div>
+                           </div>
+                           <div class="modal-footer">
+                           </div>
+                        </ng-template>
+
+                      <!--   <ng-template #declarationEditUpload>
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="jasdjgh">
+                                 Document Details
+                              </h5>
+                              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                 aria-label="Close">
+                                 <span aria-hidden="true">×</span>
+                              </button>
+                           </div>                           
+                           <div class="col-12">
+                              <div class="float-right mb-15">
+                                 <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel "
+                                    (click)="modalRef.hide()"><b>
+                                       <i class="fa fa-close"></i></b> Cancel
+                                 </button>
+                              </div>
+                           </div>
+                           <div class="modal-footer">
+                           </div>
+                        </ng-template> -->
+
+                     </div>
+
+                  </div>
+               </div>
             </div>
-        </div>
-        <app-footer></app-footer>
-    </div>
+         </div>
+      </div>
+   </div>
 </div>
+<app-footer></app-footer>
