@@ -163,6 +163,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public canEdit: boolean;
+  nscDeclarationData: any;
+  dateOfJoining: Date;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -223,6 +225,10 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      console.log(res.data.results[0].joiningDate);
+
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+ console.log(this.dateOfJoining)
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -401,6 +407,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   ) {
     const checked = event.target.checked;
 
+    this.nscDeclarationData = data
+
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
@@ -480,6 +488,19 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       this.enableFileUpload = true;
     }
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
   }
 
@@ -545,6 +566,16 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
+    console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
   }
 
@@ -614,6 +645,19 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -793,14 +837,20 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     this.currentFileUpload = null;
   }
 
-  // Remove Selected LicTransaction Document
+  // --Remove Selected NscTransaction Document in Main Page----
   removeSelectedNSCTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
+
+
   upload() {
+
+
+    console.log(JSON.stringify(this.nscDeclarationData))
+
 
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
@@ -840,6 +890,38 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
         innerElement.dueDate = dueDate;
       });
     });
+
+    if(this.nscDeclarationData.previousEmployerId == 0){
+
+    }
+    if (this.nscDeclarationData.dateOfPayment == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected date of payment for all selected lines',
+        'Please Select Date Of Payment',
+      );
+      return false;
+    }
+    if (this.nscDeclarationData.dueDate == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected due date for all selected lines',
+        'Please Select Date Of DueDate',
+      );
+      return false;
+    }
+    if (this.nscDeclarationData.declaredAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected declared amount for all selected lines',
+        'Please Select Date Of Declared Amount',
+      );
+      return false;
+    }
+    if (this.nscDeclarationData.actualAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected actual amount for all selected lines',
+        'Please Select Date Of Actual Amount',
+      );
+      return false;
+    }
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -902,18 +984,48 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     // let formatedReceiptAmount = this.numberFormat.transform(this.receiptAmount)
     // console.log('formatedReceiptAmount::', formatedReceiptAmount);
     // this.receiptAmount = formatedReceiptAmount;
-    this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
-    if (this.receiptAmount < this.globalSelectedAmount) {
-      this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
-      );
-    } else if (this.receiptAmount > this.globalSelectedAmount) {
-      this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
-      );
-    }
-    console.log('receiptAmount::', this.receiptAmount);
+
+    
+  //   this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
+  //   if (this.receiptAmount < this.globalSelectedAmount) {
+  //     this.alertService.sweetalertError(
+  //       'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+  //     );
+  //   } else if (this.receiptAmount > this.globalSelectedAmount) {
+  //     this.alertService.sweetalertWarning(
+  //       'Receipt Amount is greater than Selected line Actual Amount'
+  //     );
+  //   }
+  //   console.log('receiptAmount::', this.receiptAmount);
+  // }
+
+    // tslint:disable-next-line: variable-name
+    let receiptAmount_: number;
+    let globalSelectedAmount_ : number; 
+
+    receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+    globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
+
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    if (receiptAmount_ < globalSelectedAmount_) {
+    this.alertService.sweetalertError(
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+    );
+    this.receiptAmount = '0.00';
+    return false;
+  } else if (receiptAmount_ > globalSelectedAmount_) {
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    this.alertService.sweetalertWarning(
+      'Receipt Amount is greater than Selected line Actual Amount',
+    );
+    // this.receiptAmount = '0.00';
+    // return false;
   }
+    this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
+}
+
 
      // Update Previous Employee in Edit Modal
   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
@@ -1126,16 +1238,25 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].receiptAmount;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
+          this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
+
+
+
+     this.editTransactionUpload.forEach((element) => {
+          element.lictransactionList.forEach((innerElement) => {
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount,
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount,
+            );
+          });
         });
-        //console.log('converted:: ', this.urlArray);
-      });
+        // console.log('converted:: ', this.urlArray);
+      },
+    );
   }
+
 
   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
@@ -1151,7 +1272,9 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>) {
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI

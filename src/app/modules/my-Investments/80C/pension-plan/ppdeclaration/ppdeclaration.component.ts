@@ -160,6 +160,8 @@ export class PpdeclarationComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  ppDeclarationData: any;
+  dateOfJoining: Date;
 
   public canEdit: boolean;
 
@@ -223,6 +225,9 @@ export class PpdeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      console.log(res.data.results[0].joiningDate);
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -255,6 +260,7 @@ export class PpdeclarationComponent implements OnInit {
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
 
+  // Update Previous Employee in Main Page
   updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
     this.transactionDetail[j].groupTransactionList[i].previousEmployerId =
@@ -264,6 +270,15 @@ export class PpdeclarationComponent implements OnInit {
       this.transactionDetail[j].groupTransactionList[i].previousEmployerId
     );
   }
+
+    // Update Previous Employee in Edit Modal
+    updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
+      console.log('select box value::', event.target.value);
+      this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId =
+        event.target.value;
+      console.log('previous emp id::', this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId);
+    }
+  
   // -----------on Page referesh transactionStatustList------------
   refreshTransactionStatustList() {
     this.transactionStatustList = [
@@ -308,7 +323,7 @@ export class PpdeclarationComponent implements OnInit {
 
     this.PensionPlanService.getPensionPlanDeclarationInstitutionListWithPolicyNo()
       .subscribe((res) => {
-        console.log('getInstitutionListWithPolicyNo', res);
+        // console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
 
         res.data.results.forEach((element) => {
@@ -330,6 +345,8 @@ export class PpdeclarationComponent implements OnInit {
   }
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionInstName(institutionName: any) {
+    this.filesArray = [];
+    this.transactionDetail = [];
     this.globalInstitution = institutionName;
     this.getTransactionFilterData(this.globalInstitution, null, null);
     this.globalSelectedAmount = this.numberFormat.transform(0);
@@ -378,7 +395,7 @@ export class PpdeclarationComponent implements OnInit {
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,
-      null
+      null,
     );
   }
 
@@ -387,7 +404,7 @@ export class PpdeclarationComponent implements OnInit {
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,
-      transactionStatus
+      transactionStatus,
     );
   }
 
@@ -399,6 +416,8 @@ export class PpdeclarationComponent implements OnInit {
     j: number
   ) {
     const checked = event.target.checked;
+
+    this.ppDeclarationData = data
 
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
@@ -479,6 +498,19 @@ export class PpdeclarationComponent implements OnInit {
       this.enableFileUpload = true;
     }
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
   }
 
@@ -545,7 +577,19 @@ export class PpdeclarationComponent implements OnInit {
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
-  }
+    console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
+}
+
+
 
   // ------------ ON change of DueDate in line----------
   onDueDateChange(
@@ -613,6 +657,20 @@ export class PpdeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -801,6 +859,10 @@ export class PpdeclarationComponent implements OnInit {
 
   upload() {
 
+
+
+    console.log(JSON.stringify(this.ppDeclarationData))
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -839,6 +901,49 @@ export class PpdeclarationComponent implements OnInit {
         innerElement.dueDate = dueDate;
       });
     });
+
+    // for (let i = 0; i < this.transactionDetail.length; i++) {
+    //   const transactionId = this.uploadGridData;
+    //   this.transactionDetail[0].lictransactionList.forEach(element => {
+        // if (element.licTransactionId == transactionId[i]) {
+          if(this.ppDeclarationData.previousEmployerId == 0){
+            // this.alertService.sweetalertError(
+            //   // 'Please make sure that you have selected previous employer for all selected lines',
+            //   'Please Select Previous Employer',
+            // );
+            // return false;
+          }
+          if (this.ppDeclarationData.dateOfPayment == null) {
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected date of payment for all selected lines',
+              'Please Select Date Of Payment',
+            );
+            return false;
+          }
+          if (this.ppDeclarationData.dueDate == null) {
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected due date for all selected lines',
+              'Please Select Date Of DueDate',
+            );
+            return false;
+          }
+          if (this.ppDeclarationData.declaredAmount == null) {
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected declared amount for all selected lines',
+              'Please Select Date Of Declared Amount',
+            );
+            return false;
+          }
+          if (this.ppDeclarationData.actualAmount == null) {
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected actual amount for all selected lines',
+              'Please Select Date Of Actual Amount',
+            );
+            return false;
+          }
+    //     }
+    //   });
+    // }
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -926,14 +1031,7 @@ export class PpdeclarationComponent implements OnInit {
     this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
 
-     // Update Previous Employee in Edit Modal
-  updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
-    console.log('select box value::', event.target.value);
-    this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId =
-      event.target.value;
-    console.log('previous emp id::', this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId);
-  }
-
+   
   // ------------ ON change of DueDate in Edit Modal----------
   onDueDateChangeInEditCase(
     summary: {
@@ -1059,6 +1157,11 @@ export class PpdeclarationComponent implements OnInit {
     console.log(this.editTransactionUpload[j].actualTotal);
   }
 
+
+
+
+
+
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
@@ -1139,11 +1242,11 @@ export class PpdeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
         //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
+        // this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
+          // element.blobURI = 'data:image/image;base64,' + element.blobURI;
           // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // });
         //console.log('converted:: ', this.urlArray);
       });
   }
@@ -1162,7 +1265,9 @@ export class PpdeclarationComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>) {
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI

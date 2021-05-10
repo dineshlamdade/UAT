@@ -152,7 +152,7 @@ export class PPFMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl('0'),
-      masterPaymentDetailId: new FormControl(0),
+      investmentGroup1MasterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
       // depositType: new FormControl('recurring'),
       proofSubmissionId: new FormControl(''),
@@ -515,6 +515,11 @@ export class PPFMasterComponent implements OnInit {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
+      //   element.policyStartDate = new Date(element.policyStartDate);
+      //   element.policyEndDate = new Date(element.policyEndDate);
+      //   element.fromDate = new Date(element.fromDate);
+      //   element.toDate = new Date(element.toDate);
+      // });
         if (element.policyStartDate !== null) {
           element.policyStartDate = new Date(element.policyStartDate);
         }
@@ -528,7 +533,7 @@ export class PPFMasterComponent implements OnInit {
           element.toDate = new Date(element.toDate);
         }
       });
-
+      console.log(accountNumber);
       const obj = this.findByPolicyNo(accountNumber, this.masterGridData);
 
       console.log('Edit Master', obj);
@@ -548,7 +553,9 @@ export class PPFMasterComponent implements OnInit {
       } else {
         this.paymentDetailGridData = obj.paymentDetails;
         this.form.patchValue(obj);
-        this.Index = obj.accountNumber;
+         this.Index = obj.accountNumber;
+        //  this.setPolicyEndDate();
+        //  this.checkFinancialYearStartDateWithPolicyEnd();
         this.showUpdateButton = true;
         this.isClear = true;
         this.urlArray = obj.documentInformationList;
