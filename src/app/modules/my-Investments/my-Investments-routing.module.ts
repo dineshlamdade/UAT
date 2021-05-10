@@ -85,8 +85,8 @@ const routes: Routes = [
               component:  EmployeeContributionToVPFComponent,
                data: { title: ':: DelziaHR :: EmployeeContributionToProvidentFund_PF' },
               },
-          
-        
+
+
           {
             path:   'Chapter-VI-A-Summary',
             component:  ChapterVIASummaryComponent,
@@ -98,7 +98,7 @@ const routes: Routes = [
               component:  ChaComponent,
                data: { title: ':: DelziaHR :: Child-Hostel-Allowance' },
               },
-        
+
               {
                 path:   'Other-Child',
                 component:  ChaComponent,
@@ -132,7 +132,7 @@ const routes: Routes = [
                         path:   'Other-PrincipalRepaymentOnHousingLoan',
                         component: PrincipalRepaymentOnHousingLoanComponent,
                          data: { title: ':: DelziaHR ::  PrincipalRepaymentOnHousingLoan' },
-                        },  
+                        },
 
                         {
                           path:   'Other-TaxAdjustments',
@@ -148,8 +148,8 @@ const routes: Routes = [
                               path:   'Other-EmployeeNationalPensionScheme80CCD',
                               component: EmployeeNPS80CCDComponent,
                                data: { title: ':: DelziaHR ::  EmployeeNationalPensionScheme80CCD' },
-                              },  
-  
+                              },
+
 
         {
           path:   '80C-TaxsavingMutualFund',
@@ -292,17 +292,17 @@ const routes: Routes = [
         component: PreviousemployerComponent,
         data: { title: ':: DelziaHR :: previousemployer' },
       },
-
       {
-        path:   'Affirmation',
-        component:  AffirmationComponent,
+        path:   'affirmation',
+        component: AffirmationComponent,
         data: { title: ':: DelziaHR :: Affirmation' },
       },
 
+
       {
-        path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseasesComponent',
+        path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseases',
         component:  TreatmentOfSpecifiedDiseasesComponent,
-        data: { title:  ':: DelziaHR :: TreatmentOfSpecifiedDiseasesComponent' },
+        data: { title:  ':: DelziaHR :: TreatmentOfSpecifiedDiseases' },
       },
     ],
    },

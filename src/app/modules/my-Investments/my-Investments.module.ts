@@ -57,6 +57,8 @@ import { SignaturePadComponent } from './previousemployer/signature-pad/signatur
 import { EmployeenationalpensionComponent } from './Other/employeenationalpension/employeenationalpension.component';
 import { AffirmationComponent } from './affirmation/affirmation.component';
 import { SignatureaffirmationPadComponent } from './affirmation/signatureaffirmation-pad/signatureaffirmation-pad.component';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
+
 
 @NgModule({
   declarations: [
@@ -128,7 +130,7 @@ import { SignatureaffirmationPadComponent } from './affirmation/signatureaffirma
     InputNumberModule,
     FormsModule,
     SignaturePadModule,
-    
+    ScrollPanelModule,
 
   ],
 

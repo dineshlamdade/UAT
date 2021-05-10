@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AuthService } from './../../../../auth/auth.service';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FixedDepositsService } from '../../../80C/fixed-deposits/fixed-deposits.service';
@@ -15,6 +16,7 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   @Input() employeeName: string;
   @Input() severity: string;
   @Output() myEvent = new EventEmitter<any>();
+  userName: any;
 
 
   onEditSummary(employeeName: string, severity: string) {
@@ -47,9 +49,9 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   public limit : number;
   public benifitDeclared: number;
   public benifitActual: number;
+public userInfo : any;
 
-
-  constructor(
+  constructor(private authService: AuthService,
     private service: MyInvestmentsService,
     private physicallyHandicappedService:PhysicallyHandicappedService,
     private numberFormat: NumberFormatPipe,
@@ -59,6 +61,10 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   public ngOnInit(): void {
     // Summary get Call on Page Load
     this.summaryPage();
+    this.userInfo =[]
+    this.userInfo = this.authService.getprivileges();
+    console.log(this.userInfo);
+    this.userName = this.userInfo.UserDetails.userName;
   }
 
   // ---------------------Summary ----------------------

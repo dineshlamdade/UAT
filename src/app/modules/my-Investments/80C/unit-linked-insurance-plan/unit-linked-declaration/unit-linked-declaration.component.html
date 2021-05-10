@@ -90,9 +90,9 @@
                 <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
                 </th>
-                <th rowspan="2" class="wd-4 font700">
+                <!-- <th rowspan="2" class="wd-4 font700">
                   <span tooltip="Electronic Clearing Service">ECS</span>
-                </th>
+                </th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
@@ -116,7 +116,7 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
+                <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
@@ -160,8 +160,8 @@
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    ">
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      ">
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
                       [selected]="
@@ -171,9 +171,9 @@
                     </option>
                   </select>
                 </td>
-                <td>
-                  <!-- <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span> -->
-                </td>
+                <!-- <td>
+                  <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
+                </td> -->
                 <td>
                   <div class="custom_icon_badge">
                     <input type="text" class="form-control" [minDate]="financialYearStartDate"
@@ -229,9 +229,9 @@
                   </span>
                 </td>
                 <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}">
+                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                    <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
                     <!-- {{ summary.proofSubmissionId }} -->
-                    <i class="fa fa-clipboard"></i>
                   </span>
                 </td>
                 <td class="text-orange font700">
@@ -259,7 +259,7 @@
               <tr>
                 <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ item.declarationTotal | number: "1.2-2" }}
@@ -528,9 +528,9 @@
                   </td>
                   <td>
                     <div class="custom_Label_badge">
-                      <button class="btn bg-color-lightgray text-000" (click)="
-                          UploadedDocumentModal1(template1, documentIndex)
-                        ">
+                      <button class="btn btn-bg-green text-white" 
+                      (click)="docViewer(template3, documentSummary.documentDetailList)"
+                      >
                         Documents
                       </button>
                       <span class="Label_badge">{{
@@ -539,7 +539,8 @@
                     </div>
                   </td>
                   <td>
-                    <i  class="fa fa-eye font-16 text-blue cursor-pointer"
+                    <i  *ngIf="canEdit"
+                    class="fa fa-eye font-16 text-blue cursor-pointer"
                     (click)="
                       declarationEditUpload(
                         template2,
@@ -547,14 +548,12 @@
                       );
                       viewDocumentDetail = false
                     "
-                    tooltip="View"></i>&nbsp;&nbsp;
+                    tooltip="View">
+                  </i>&nbsp;&nbsp;
                     <!-- <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"></i> -->
-                    <div *ngFor="let doc of urlArray" hidden>
-                      <iframe style="height: 100vh; width: 100%; display: block" [src]="doc.blobURI"
-                        provider="google"></iframe>
-                    </div>
-                    &nbsp;&nbsp;
-                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
+                   
+                    <i *ngIf="canEdit"
+                    class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
                         declarationEditUpload(
                           template2,
                           documentSummary.proofSubmissionId
@@ -655,16 +654,16 @@
                   <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
                   </th>
-                  <th rowspan="2" class="wd-4 font700">
+                  <!-- <th rowspan="2" class="wd-4 font700">
                     <span tooltip="Electronic Clearing Service">ECS</span>
-                  </th>
+                  </th> -->
                   <th rowspan="2" class="wd-11 font700">Due Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-8">PS ID</th>
                   <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -674,14 +673,14 @@
               </thead>
               <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
                 <tr>
-                  <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
+                  <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                   <th rowspan="2" class="wd-11 font700">Due Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
-                  <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-10">PS ID</th>
                   <th rowspan="2" class="wd-15 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -706,9 +705,9 @@
                       </option>
                     </select>
                   </td>
-                  <td>
+                  <!-- <td>
                     <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
-                  </td>
+                  </td> -->
                   <td>
                     <div class="custom_icon_badge">
                       <input type="text" class="form-control" [minDate]="financialYearStartDate"
@@ -740,7 +739,7 @@
                     <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.investmentGroup2TransactionId }}"
-                      [disabled]="!summary.additionalPayment" [(ngModel)]="summary.actualAmount"
+                      [disabled]="!summary.additionalPayment=='Approved'" [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)" class="form-control align-right" />
                   </td>
                   <td>
@@ -757,10 +756,12 @@
                     </span>
                   </td>
                   <td>
-                    <span tooltip="{{ summary.proofSubmissionId }}">
-                      {{ summary.proofSubmissionId }}
-                    </span>
-                  </td>
+                    <span tooltip="{{ summary.proofSubmissionId }}" 
+                    *ngIf="summary.transactionStatus === 'Submitted'">
+  <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+   <!-- {{ summary.proofSubmissionId }} -->
+   </span>
+    </td>
                   <td class="text-orange font700">
                     <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
@@ -772,7 +773,7 @@
                     Total
                   </td>
                   <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
                       {{ item.declarationTotal | number: "1.2-2" }}
@@ -964,12 +965,12 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3)"
+    <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-eye"></i></b> View
     </button>
     &nbsp;&nbsp;
-    <button *ngIf="viewDocumentDetail" type="button" tooltip="View Document"
+    <button *ngIf="viewDocumentDetail" type="button" tooltip="save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
