@@ -1315,6 +1315,9 @@ export class TaxSavingNabardActualComponent implements OnInit {
             element.actualAmount
           );
         });
+        if(!this.transactionDetail.length){
+          this.addRowInList();
+        }
       }
     });
   }

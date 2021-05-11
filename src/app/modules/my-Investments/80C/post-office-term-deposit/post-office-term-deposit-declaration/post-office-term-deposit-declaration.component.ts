@@ -1606,6 +1606,9 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
             element.actualAmount
           );
         });
+        if(!this.transactionDetail.length){
+          this.addRowInList();
+        }
       } 
     });
   }

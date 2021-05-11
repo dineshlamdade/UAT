@@ -648,7 +648,9 @@
                     <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                       [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                      data-date-autoclose="true" (ngModelChange)="
+                      data-date-autoclose="true" 
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewTransactionDetail"
+                      (ngModelChange)="
                         summary.dateOfPayment = $event.toLocaleDateString();
                         onChangeDateOfPaymentEditCase(summary, i)
                       " class="form-control" bsDatepicker />
@@ -657,7 +659,9 @@
                     <input type="text" id="actualAmount{{ summary.investmentGroup3TransactionId }}"
                       onkeypress="return /[0-9 ]/i.test(event.key)" name="actualAmount{{
                         summary.investmentGroup3TransactionId
-                      }}" [(ngModel)]="summary.actualAmount" class="form-control align-right" />
+                      }}" 
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewTransactionDetail"
+                      [(ngModel)]="summary.actualAmount" class="form-control align-right" />
                     <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                   </td>
                   <td>
@@ -796,7 +800,7 @@
       <b><i class="fa fa-eye"></i></b> View
     </button>
     &nbsp;&nbsp;
-    <button *ngIf="viewTransactionDetail" type="button" tooltip="View Document"
+    <button *ngIf="viewTransactionDetail" type="button" tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save

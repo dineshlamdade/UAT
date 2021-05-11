@@ -805,7 +805,8 @@
         <h5 class="modal-title" id="jasdjgh" *ngIf="!viewDocumentDetail">
             View Document Details
         </h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="modalRef.hide()" 
+        class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
     </div>
@@ -1136,7 +1137,8 @@
                   </label>
                                     </td> -->
                                     <td *ngIf="previousEmployeeList?.length">
-                                        <select name="Previous Employer Name" class="form-control custom-select" (change)="updatePreviousEmpId($event, i)" [disabled]="
+                                        <select name="Previous Employer Name" class="form-control custom-select" 
+                                        (change)="updatePreviousEmpId($event, i)" [disabled]="
                         isDisabled || summary.transactionStatus === 'Submitted'
                       ">
                       <option [ngValue]="0">Select</option>
@@ -1182,9 +1184,15 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'" [maxDate]="today" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" (ngModelChange)="
+                                        <input type="text" 
+                                        [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'" 
+                                        [maxDate]="today" 
+                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                                        data-provide="datepicker" data-date-autoclose="true" 
+                                        (ngModelChange)="
                         summary.dateOfPayment = $event.toLocaleDateString();
                         onChangeDateOfPayment(summary, i)" 
+                        [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"
                         
                        
                         class="form-control" bsDatepicker />
@@ -1193,10 +1201,15 @@
                                     isDisabled || summary.transactionStatus === 'Submitted'"  -->
 
                                     <td>
-                                        <input type="text" id="actualAmount{{ summary.investmentGroup3TransactionId }}" 
-                                        onkeypress="return /[0-9 ]/i.test(event.key)" name="actualAmount{{
+                                        <input type="text" 
+                                        id="actualAmount{{ summary.investmentGroup3TransactionId }}" 
+                                        onkeypress="return /[0-9 ]/i.test(event.key)" 
+                                        name="actualAmount{{
                         summary.investmentGroup3TransactionId
-                      }}" [(ngModel)]="summary.actualAmount" class="form-control align-right" />
+                      }}" 
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"
+                      [(ngModel)]="summary.actualAmount" 
+                      class="form-control align-right" />
                                         <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                                     </td>
                                     <td>
@@ -1352,7 +1365,7 @@
         <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-eye"></i></b> View
     </button> &nbsp;&nbsp;
-        <button *ngIf="viewDocumentDetail" type="button" tooltip="View Document" (click)="modalRef.hide(); uploadUpdateTransaction()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
+        <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document" (click)="modalRef.hide(); uploadUpdateTransaction()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
     </button>
     </div>
