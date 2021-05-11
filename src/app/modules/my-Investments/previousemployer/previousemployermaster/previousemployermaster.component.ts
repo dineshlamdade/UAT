@@ -392,25 +392,6 @@ export class PreviousemployermasterComponent implements OnInit {
        this.isCancel = false; */
   }
   /* =================pdf======================== */
-  /* download(){
-    console.log('hi');
-    // Id of the table
-    let data = document.getElementById('contentToConvert');  
-    html2canvas(data).then(canvas => {
-    // Few necessary setting options
-    const imgWidth = 208;
-    const pageHeight = 295;
-    const imgHeight = canvas.height * imgWidth / canvas.width;
-    const heightLeft = imgHeight;
-    const contentDataURL = canvas.toDataURL('image/png')
-    // A4 size page of PDF
-    const pdf = new jspdf('p', 'mm', 'a4'); 
-    const position = 0;
-    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-    // Generated PDF
-    pdf.save('FORM.12B.pdf'); 
-  });
-  } */
   download() {
     console.log('hi');
 

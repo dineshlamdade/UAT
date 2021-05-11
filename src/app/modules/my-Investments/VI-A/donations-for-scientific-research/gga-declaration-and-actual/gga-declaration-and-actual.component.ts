@@ -249,7 +249,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   // Initiate Tuition-Fees Form
   initiate80GGAForm() {
     this.eightyGGAForm = this.formBuilder.group({
-      previousEmployerId: new FormControl(null, Validators.required),
+      previousEmployerId: new FormControl(null),
       donee: new FormControl(null, Validators.required),
       purpose: new FormControl(null, Validators.required),
       dateOfPayment: new FormControl(null, Validators.required),
@@ -294,6 +294,15 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   }
 
   onSelectReactiveCheckbox(event) {
+    if(this.masterForm.declaredAmount.value == null || this.masterForm.declaredAmount.value <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      return false;
+    }
+
+      console.log("masterForm.value",this.masterForm.declaredAmount.value );
+
     const checked = event.target.checked;
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
@@ -353,6 +362,15 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     if (this.eightyGGAForm.invalid) {
       return;
     }
+
+    if (this.receiptAmount < this.globalSelectedAmount) {
+      this.alertService.sweetalertError(
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      );
+      this.receiptAmount = '0.00';
+      return;
+    }
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError('Please attach Receipt / Certificate');
       return;
@@ -1069,6 +1087,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       }
     });
 
+
+
     const data = {
       donations80GGTransactionList: this.editTransactionUpload[0],
       donations80GGTransactionIDs: this.uploadGridData,
@@ -1365,8 +1385,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       }
 
 
-
       changeReceiptAmountFormat() {
+        // tslint:disable-next-line: variable-name
         let receiptAmount_: number;
         let globalSelectedAmount_ : number;
 
@@ -1379,16 +1399,19 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.alertService.sweetalertError(
           'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
         );
+        this.receiptAmount = '0.00';
+        return false;
       } else if (receiptAmount_ > globalSelectedAmount_) {
         console.log(receiptAmount_);
         console.log(globalSelectedAmount_);
         this.alertService.sweetalertWarning(
           'Receipt Amount is greater than Selected line Actual Amount',
         );
+        // this.receiptAmount = '0.00';
+        // return false;
       }
         this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
-      }
-
+    }
       //Payment Detail To Date Validations with Payment Detail From Date
         // setPaymentDetailToDate() {
         //   this.paymentDetailMinDate = this.form.value.fromDate;

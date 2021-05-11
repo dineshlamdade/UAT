@@ -1,3 +1,4 @@
+import { data } from './../../../../companysetting/user-rolesand-permission/role-privilege/role-privilege.component';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import {
@@ -1468,10 +1469,17 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     // policyNo: String,
     // transactionStatus: String
   ) {
-    // this.Service.getTransactionInstName(data).subscribe(res => {
+
+
     this.physicallyHandicappedService.getTransactionFilterData().subscribe((res) => {
       console.log('getTransactionFilterData', res);
-      if (res.data.results.length > 0) {
+
+      if (res.data.results[0].severity === undefined || res.data.results.severity === null) {
+
+        this.alertService.sweetalertError(
+          'you are not applicable',
+        );
+      }else{
         this.physicallyHandicappedDetail = res.data.results[0].physicallyHandicappedDetail;
         console.log('physicallyHandicappedDetail', this.physicallyHandicappedDetail);
         this.previousEmployerHandicappedDetailList = res.data.results[0].previousEmployerHandicappedDetailList;

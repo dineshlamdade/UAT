@@ -300,9 +300,9 @@ const routes: Routes = [
 
 
       {
-        path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseasesComponent',
+        path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseases',
         component:  TreatmentOfSpecifiedDiseasesComponent,
-        data: { title:  ':: DelziaHR :: TreatmentOfSpecifiedDiseasesComponent' },
+        data: { title:  ':: DelziaHR :: TreatmentOfSpecifiedDiseases' },
       },
     ],
    },
