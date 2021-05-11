@@ -154,7 +154,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl(0),
-      masterPaymentDetailId: new FormControl(0),
+      investmentGroup2MasterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
       proofSubmissionId: new FormControl(''),
@@ -375,7 +375,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('Post Office Data::', data);
 
@@ -459,7 +459,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     ) {
       let installment = this.form.value.premiumAmount;
 
-      // installment = installment.toString().replace(',', '');
+      // installment = installment.toString().replace(/,/g, '');
 
       // console.log(installment);
       if (!this.form.value.frequencyOfPayment) {

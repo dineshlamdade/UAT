@@ -71,7 +71,12 @@ export class HousingloanService {
   }
 
 
-
+  public getTransactionByProofSubmissionId(proofSubmissionId: String): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'housePropertyTransaction/psid/' + proofSubmissionId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
 
   public getHousingLoanMaster(): Observable<any> {

@@ -10,22 +10,11 @@ import { TreatmentOfSpecifiedService } from '../treatment-of-specified.service';
   styleUrls: ['./treatment-of-specified-summary.component.scss']
 })
 export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
-  @Input() institution: string;
-  @Input() policyNo: string;
+  // @Input() institution: string;
+  @Input() patientName: string;
   @Output() myEvent = new EventEmitter<any>();
-  @Output() loanAccountNumber = new EventEmitter<any>();
+  @Output() patientNames = new EventEmitter<any>();
 
-  onEditSummary(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    const data = {
-      institution: institution,
-      policyNo: policyNo,
-      tabIndex: this.tabIndex,
-    };
-    this.institution = institution;
-    this.policyNo = policyNo;
-    this.myEvent.emit(data);
-  }
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
@@ -65,6 +54,31 @@ export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
     this.summaryPage();
   }
 
+  redirectToDeclarationActual(
+    patientName: string,
+    mode: string
+  ) {
+    this.tabIndex = 2;
+    const data = {
+      patientName: patientName,
+      tabIndex: this.tabIndex,
+      canEdit: mode == 'edit' ? true : false,
+    };
+    this.patientName = patientName;
+    this.myEvent.emit(data);
+  }
+
+  jumpToMasterPage(patientName: string) {
+    this.tabIndex = 1;
+    const patientNames = {
+      patientName: patientName,
+      tabIndex: this.tabIndex,
+    };
+    this.patientNames.emit(patientNames);
+  }
+
+
+
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
@@ -100,28 +114,6 @@ export class TreatmentOfSpecifiedSummaryComponent implements OnInit {
     // this.addFuturePolicy();
   }
 
-  jumpToMasterPage(policyNo: string) {
-    this.tabIndex = 1;
-    const data = {
-      number : policyNo,
-      tabIndex : this.tabIndex
-    };;
-    this.loanAccountNumber.emit(data);
-  }
 
-  // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.policyNo = policyNo;
-    console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
-  }
-
-//   onChangeLimit() {
-//     this.DeclaredAmountBenefit = Math.min(this.grandTotalDeclaredAmount, this.limit);
-//     this.ActualAmountBenefit = Math.min(this.grandTotalActualAmount, this.limit);
-//     // this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.benefitE;
-//   }
 }
 

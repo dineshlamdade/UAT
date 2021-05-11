@@ -7,6 +7,8 @@ import { environment } from 'src/environments/environment';
 })
 export class PayrollInputsService {
 public apiUrl = environment.baseUrl8084;
+public apiUrlEmployeeDetails = environment.baseUrl8082;
+public employeeList = [];
 constructor(private http: HttpClient) { }
 
 getFinancialMasterSummary() {
@@ -43,5 +45,20 @@ postLeavePage(data) {
     .pipe(map((res: any) => {
       return res;
     }));
+}
+
+public getAllEmployeeDetails() {
+  return this.http.get(this.apiUrlEmployeeDetails + '/employee-master')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+}
+
+getEmployeeListArray() {
+  return this.employeeList;
+}
+
+setEmployeeListArray(emp) {
+  this.employeeList = emp;
 }
 }

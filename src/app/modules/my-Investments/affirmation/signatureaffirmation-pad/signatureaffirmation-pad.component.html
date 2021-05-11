@@ -1,0 +1,6 @@
+<signature-pad #signatureAffirmationCanvas [options] ="signaturePadOptions" id ="signatureAffirmationCanvas" (onBeginEvent) ="drawStart()" 
+(onEndEvent) ="drawComplete()" > </signature-pad>
+
+<div class="preview" *ngIf="imgFile">
+  <img [src]="imgFile" style="width:200px; height:200px;float: right;">
+</div>

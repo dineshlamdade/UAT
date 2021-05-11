@@ -471,7 +471,7 @@
                     </td>
                     <td colspan="2">
                       <div class="d-flex">
-                        <span class="ml-2 mr-2 mt-2" ><i class="fa fa-clone text-blue font-16"></i ></span>
+                        <span class="ml-2 mr-2 mt-2" (click)="copyDateFromUpdteMaster(rowIndex)" ><i class="fa fa-clone text-blue font-16"></i ></span>
                           <!-- <input data-provide="datepicker"  data-date-autoclose="true"
                           class="form-control mr-2" [(ngModel)]="summary.fromdate" bsDatepicker />
                       
@@ -766,6 +766,8 @@
   </div>
 
   <div class="modal-footer">
+    <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
+      <i class="fa fa-floppy-o"></i></b> Save & Next</button>
     <button
       type="button"
       tooltip="Save"

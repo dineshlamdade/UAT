@@ -1,3 +1,4 @@
+import { data } from './../../../../companysetting/user-rolesand-permission/role-privilege/role-privilege.component';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import {
@@ -267,7 +268,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       declaredAmountFormatted !== undefined
     ) {
       //let installment = this.form.value.premiumAmount;
-      //installment = installment.toString().replace(',', '');
+      //installment = installment.toString().replace(/,/g, '');
       const formatedDeclaredAmount = this.numberFormat.transform(
         declaredAmountFormatted
       );
@@ -326,10 +327,10 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
 
     // transactionDetail.declaredAmount = transactionDetail.declaredAmount
     //   .toString()
-    //   .replace(',', '');
+    //   .replace(/,/g, '');
     transactionDetail.actualAmount = transactionDetail.actualAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
 
     // const data = {
     //   physicallyHandicappedDetail: transactionDetail,
@@ -484,12 +485,12 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       if (element.declaredAmount !== null) {
         element.declaredAmount = element.declaredAmount
           .toString()
-          .replace(',', '');
+          .replace(/,/g, '');
       } else {
         element.declaredAmount = 0.0;
       }
       if (element.actualAmount !== null) {
-        element.actualAmount = element.actualAmount.toString().replace(',', '');
+        element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
       } else {
         element.actualAmount = 0.0;
       }
@@ -727,7 +728,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -738,7 +739,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       formatedActualAmount = Number(
         this.previousEmployerHandicappedDetailList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       // formatedSelectedAmount = this.numberFormat.transform(
       //   formatedGlobalSelectedValue + formatedActualAmount
@@ -749,7 +750,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       formatedActualAmount = Number(
         this.previousEmployerHandicappedDetailList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.previousEmployerHandicappedDetailList[i].actualAmount = this.numberFormat.transform(0);
       formatedSelectedAmount = this.numberFormat.transform(
@@ -768,7 +769,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     this.previousEmployerHandicappedDetailList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     // this.previousEmployerHandicappedDetailList.actualTotal = this.actualTotal;
@@ -836,7 +837,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     this.transactionDetail[j].previousEmployerHandicappedDetailList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -901,7 +902,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     this.previousEmployerHandicappedDetailList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1104,14 +1105,14 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
         if (item.actualAmount !== null) {
           item.actualAmount = item.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.actualAmount = 0.0;
         }
         if (item.declaredAmount !== null) {
           item.declaredAmount = item.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.declaredAmount = 0.0;
         }
@@ -1124,14 +1125,14 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
         if (innerElement.actualAmount !== undefined || innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
         // if (innerElement.declaredAmount !== undefined || innerElement.declaredAmount !== null) {
         //   innerElement.declaredAmount = innerElement.declaredAmount
         //     .toString()
-        //     .replace(',', '');
+        //     .replace(/,/g, '');
         // } else {
         //
         // }
@@ -1147,7 +1148,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     //     if (innerElement.actualAmount !== null) {
     //       innerElement.actualAmount = innerElement.actualAmount
     //         .toString()
-    //         .replace(',', '');
+    //         .replace(/,/g, '');
     //     } else {
     //       innerElement.actualAmount = 0.0;
     //     }
@@ -1155,14 +1156,14 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     //     // if (innerElement.actualAmount !== null) {
     //     //   innerElement.actualAmount = innerElement.actualAmount
     //     //     .toString()
-    //     //     .replace(',', '');
+    //     //     .replace(/,/g, '');
     //     // } else {
     //     //   innerElement.actualAmount = 0.0;
     //     // }
 
     //   });
 
-    // this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       physicallyHandicappedDetail: this.physicallyHandicappedDetail,
       previousEmployerHandicappedDetailList: this.previousEmployerHandicappedDetailList,
@@ -1317,10 +1318,10 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     this.editTransactionUpload[j].forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
     });
 
@@ -1389,8 +1390,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.previousEmployerHandicappedDetailList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
-      this.actualTotal += Number( element.actualAmount.toString().replace(',', '')  );
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
+      this.actualTotal += Number( element.actualAmount.toString().replace(/,/g, '')  );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
@@ -1468,10 +1469,17 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     // policyNo: String,
     // transactionStatus: String
   ) {
-    // this.Service.getTransactionInstName(data).subscribe(res => {
+
+
     this.physicallyHandicappedService.getTransactionFilterData().subscribe((res) => {
       console.log('getTransactionFilterData', res);
-      if (res.data.results.length > 0) {
+
+      if (res.data.results[0].severity === undefined || res.data.results.severity === null) {
+
+        this.alertService.sweetalertError(
+          'you are not applicable',
+        );
+      }else{
         this.physicallyHandicappedDetail = res.data.results[0].physicallyHandicappedDetail;
         console.log('physicallyHandicappedDetail', this.physicallyHandicappedDetail);
         this.previousEmployerHandicappedDetailList = res.data.results[0].previousEmployerHandicappedDetailList;

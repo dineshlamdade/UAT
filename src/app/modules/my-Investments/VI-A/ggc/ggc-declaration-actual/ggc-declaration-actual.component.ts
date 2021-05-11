@@ -147,9 +147,9 @@ export class GgcDeclarationActualComponent implements OnInit {
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
   public addNewRowId: number;
-  public declarationTotal: number;
+  // public grandDeclarationTotal: number;
   public declaredAmount: number;
-  public actualTotal: number;
+  // public grandActualTotal: number;
   public actualAmount: number;
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
@@ -248,7 +248,7 @@ export class GgcDeclarationActualComponent implements OnInit {
   // Initiate Tuition-Fees Form
   initiate80GGAForm() {
     this.eightyGGCForm = this.formBuilder.group({
-      previousEmployerId: new FormControl(null, Validators.required),
+      previousEmployerId: new FormControl(null),
       donee: new FormControl(null, Validators.required),
       purpose: new FormControl(null, Validators.required),
       dateOfPayment: new FormControl(null, Validators.required),
@@ -280,7 +280,7 @@ export class GgcDeclarationActualComponent implements OnInit {
       declaredAmountFormatted !== undefined
     ) {
       //let installment = this.form.value.premiumAmount;
-      //installment = installment.toString().replace(',', '');
+      //installment = installment.toString().replace(/,/g, '');
       const formatedDeclaredAmount = this.numberFormat.transform(
         declaredAmountFormatted
       );
@@ -299,11 +299,21 @@ export class GgcDeclarationActualComponent implements OnInit {
     // }
 
     onSelectReactiveCheckbox(event) {
+
+      if(this.masterForm.declaredAmount.value == null || this.masterForm.declaredAmount.value <= 0){
+        this.alertService.sweetalertError(
+          'Please Enter Declared Amount'
+        );
+        return false;
+      }
+
+        console.log("masterForm.value",this.masterForm.declaredAmount.value );
+
       const checked = event.target.checked;
       const formatedGlobalSelectedValue = Number(
         this.globalSelectedAmount == '0'
           ? this.globalSelectedAmount
-          : this.globalSelectedAmount.toString().replace(',', '')
+          : this.globalSelectedAmount.toString().replace(/,/g, '')
       );
       let formatedActualAmount: number = 0;
       let formatedSelectedAmount: string;
@@ -311,7 +321,7 @@ export class GgcDeclarationActualComponent implements OnInit {
       if (checked) {
         this.eightyGGCForm.get('actualAmount').setValue(declaredAmnt);
         formatedActualAmount = Number(
-          declaredAmnt.toString().replace(',', '')
+          declaredAmnt.toString().replace(/,/g, '')
         );
         formatedSelectedAmount = this.numberFormat.transform(
           formatedGlobalSelectedValue + formatedActualAmount
@@ -320,7 +330,7 @@ export class GgcDeclarationActualComponent implements OnInit {
 
       } else {
         formatedActualAmount = Number(
-          declaredAmnt.toString().replace(',', '')
+          declaredAmnt.toString().replace(/,/g, '')
         );
         this.eightyGGCForm.get('actualAmount').setValue(this.numberFormat.transform(0));
 
@@ -334,40 +344,65 @@ export class GgcDeclarationActualComponent implements OnInit {
       }
 
       this.globalSelectedAmount = formatedSelectedAmount;
-      // this.actualTotal = 0;
-      // this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
-      //   this.actualTotal += Number(
-      //     element.actualAmount.toString().replace(',', '')
-      //   );
-      // });
-      // this.transactionDetail[j].actualTotal = this.actualTotal;
 
       if (this.uploadGridData.length) {
         this.enableFileUpload = true;
       }
+
     }
 
+    onDeclaredAmountFormat(event) {
 
+      if(this.masterForm.declaredAmount.value == null || this.masterForm.declaredAmount.value <= 0){
+        this.alertService.sweetalertError(
+          'Please Enter Declared Amount'
+        );
+        return false;
+      }
+    }
+
+    onActualAmountFormat(){
+      // let actualAmount_ : number;
+      // actualAmount_ =  parseFloat(this.actualAmount.replace(/,/g, ''));
+      this.form.value.actualAmount.toString().replace(/,/g, '')
+    }
 
   //------------- Post Add Transaction Page Data API call -------------------
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
+    // let receiptAmount: number;
+    // let globalSelectedAmount : number;
+
     if (this.eightyGGCForm.invalid) {
       return;
     }
+
+    if (this.receiptAmount < this.globalSelectedAmount) {
+      this.alertService.sweetalertError(
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      );
+      this.receiptAmount = '0.00';
+      return;
+    }
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError('Please attach Receipt / Certificate');
       return;
     }
+
+
+
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+
     const ggaFormDetail = this.eightyGGCForm.getRawValue();
     // delete  property reactiveCheckbox
     delete ggaFormDetail.reactiveCheckbox;
     ggaFormDetail.declaredAmount = ggaFormDetail.declaredAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
       ggaFormDetail.actualAmount = ggaFormDetail.actualAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
     this.donations80GGTransactionListNewRow.push(ggaFormDetail);
     console.log('GGA',this.donations80GGTransactionListNewRow);
 
@@ -376,7 +411,7 @@ export class GgcDeclarationActualComponent implements OnInit {
     const data = {
       proofSubmissionId : null,
       donations80GGTransactionIds: this.uploadGridData,
-      receiptAmount: this.receiptAmount.toString().replace(',', ''),
+      receiptAmount: this.receiptAmount.toString().replace(/,/g, ''),
       receiptDate: null,
       receiptNumber: null,
       donations80GGTransactionList: this.donations80GGTransactionListNewRow,
@@ -565,7 +600,7 @@ export class GgcDeclarationActualComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -593,7 +628,7 @@ export class GgcDeclarationActualComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -607,7 +642,7 @@ export class GgcDeclarationActualComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].actualAmount = this.numberFormat.transform(0);
       this.transactionDetail[j].dateOfPayment = null;
@@ -624,14 +659,14 @@ export class GgcDeclarationActualComponent implements OnInit {
 
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
-    this.actualTotal = 0;
+    this.grandActualTotal = 0;
     this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+      this.grandActualTotal += Number(
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
-    this.transactionDetail[j].actualTotal = this.actualTotal;
+    this.transactionDetail[j].grandActualTotal = this.grandActualTotal;
 
     if (this.uploadGridData.length) {
       this.enableFileUpload = true;
@@ -707,20 +742,20 @@ export class GgcDeclarationActualComponent implements OnInit {
       i
     ].declaredAmount = formatedDeclaredAmount;
 
-    this.declarationTotal = 0;
+    this.grandDeclarationTotal = 0;
     // this.declaredAmount=0;
 
     this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+      this.grandDeclarationTotal += Number(
+        element.declaredAmount.toString().replace(/,/g, '')
       );
-      // console.log(this.declarationTotal);
+      // console.log(this.grandDeclarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.transactionDetail[j].grandDeclarationTotal = this.grandDeclarationTotal;
+    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].grandDeclarationTotal);
   }
 
   // ------------Actual Amount change-----------
@@ -757,21 +792,21 @@ export class GgcDeclarationActualComponent implements OnInit {
       this.isDisabled = true;
     }
 
-    this.actualTotal = 0;
+    this.grandActualTotal = 0;
     this.actualAmount = 0;
     this.transactionDetail[j].forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+      this.grandActualTotal += Number(
+        element.actualAmount.toString().replace(/,/g, '')
       );
-      // console.log(this.actualTotal);
+      // console.log(this.grandActualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.transactionDetail[j].actualTotal = this.actualTotal;
+    this.transactionDetail[j].grandActualTotal = this.grandActualTotal;
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
-    // console.log(this.actualTotal);
+    // console.log(this.grandActualTotal);
   }
 
   // --------Add New ROw Function---------
@@ -851,7 +886,7 @@ export class GgcDeclarationActualComponent implements OnInit {
 
   updateDeclrationRow(i: string | number, j: string | number) {
     // tslint:disable-next-line: max-line-length
-    this.transactionDetail[j].actualTotal +=
+    this.transactionDetail[j].grandActualTotal +=
       this.declarationService.actualAmount -
       this.transactionDetail[j].actualAmount;
     this.transactionDetail[j].donations80GGTransactionList[
@@ -866,10 +901,10 @@ export class GgcDeclarationActualComponent implements OnInit {
     }
     this.transactionDetail[
       j
-    ].declarationTotal += this.declarationService.declaredAmount;
+    ].grandDeclarationTotal += this.declarationService.declaredAmount;
     this.transactionDetail[
       j
-    ].actualTotal += this.declarationService.actualAmount;
+    ].grandActualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
     this.transactionDetail[j].donations80GGTransactionList.push(
@@ -921,6 +956,7 @@ export class GgcDeclarationActualComponent implements OnInit {
 
   ///// --------------------------------rahul-------------
 
+
   UploadFilePopUp() {
     this.displayUploadFile = true;
   }
@@ -945,16 +981,12 @@ export class GgcDeclarationActualComponent implements OnInit {
     console.log(this.editfilesArray);
   }
 
+
+
   removeDocument() {
     this.currentFileUpload = null;
   }
 
-  // Remove Selected LicTransaction Document
-  removeSelectedTransactionDocument(index: number) {
-    this.filesArray.splice(index, 1);
-    console.log('this.filesArray::', this.filesArray);
-    console.log('this.filesArray.size::', this.filesArray.length);
-  }
 
   upload() {
     console.log('this.transactionDetail::', this.transactionDetail);
@@ -973,14 +1005,14 @@ export class GgcDeclarationActualComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -1000,7 +1032,7 @@ export class GgcDeclarationActualComponent implements OnInit {
     }
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
 
     const data = {
       donations80GGTransactionList: this.transactionDetail,
@@ -1068,40 +1100,30 @@ export class GgcDeclarationActualComponent implements OnInit {
 
     this.modalRef = this.modalService.show(
       template2,
-      Object.assign({}, { class: 'gray modal-xl' })
+      Object.assign({}, { class: 'gray modal-xl' }),
     );
+
 
     this.ggcService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
-        this.urlArray =
-          res.data.results[0].documentInformation[0].documentDetailList;
+        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].donations80GGTransactionList;
-          this.editTransactionUpload.forEach((element) => {
-            element.declaredAmount = this.numberFormat.transform(
-              element.declaredAmount
-            );
-            element.actualAmount = this.numberFormat.transform(
-              element.actualAmount
-            );
-          });
-        this.grandDeclarationTotalEditModal =
-          res.data.results[0].grandDeclarationTotal;
+        this.editProofSubmissionId = res.data.results[0].donations80GGTransactionList[0].proofSubmissionId;
+        this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotalEditModal =
-          res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotalEditModal =
-          res.data.results[0].grandApprovedTotal;
-        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        this.editTransactionUpload.forEach((element) => {
+          element.declaredAmount = this.numberFormat.transform(
+            element.declaredAmount
+          );
+          element.actualAmount = this.numberFormat.transform(
+            element.actualAmount
+          );
         });
-        //console.log('converted:: ', this.urlArray);
       });
   }
 
@@ -1116,19 +1138,19 @@ export class GgcDeclarationActualComponent implements OnInit {
       if (element.declaredAmount !== null) {
         element.declaredAmount = element.declaredAmount
           .toString()
-          .replace(',', '');
+          .replace(/,/g, '');
       } else {
         element.declaredAmount = 0.0;
       }
       if (element.actualAmount !== null) {
-        element.actualAmount = element.actualAmount.toString().replace(',', '');
+        element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
       } else {
         element.actualAmount = 0.0;
       }
     });
 
     const data = {
-      donations80GGTransactionList: this.editTransactionUpload[0],
+      donations80GGTransactionList: this.editTransactionUpload,
       donations80GGTransactionIDs: this.uploadGridData,
       // documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
@@ -1142,8 +1164,7 @@ export class GgcDeclarationActualComponent implements OnInit {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
 
-          this.transactionDetail =
-              res.data.results[0].donations80GGTransactionList;
+          this.transactionDetail = res.data.results[0].donations80GGTransactionList;
             this.documentDetailList = res.data.results[0].documentInformation;
             this.grandDeclarationTotal =
               res.data.results[0].grandDeclarationTotal;
@@ -1278,22 +1299,22 @@ export class GgcDeclarationActualComponent implements OnInit {
 
     this.editTransactionUpload[j].declaredAmount = formatedDeclaredAmount;
 
-    this.declarationTotal = 0;
+    this.grandDeclarationTotal = 0;
 
     this.editTransactionUpload[j].forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+      this.grandDeclarationTotal += Number(
+        element.declaredAmount.toString().replace(/,/g, '')
       );
-      // console.log(this.declarationTotal);
+      // console.log(this.grandDeclarationTotal);
     });
 
-    this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+    this.editTransactionUpload[j].grandDeclarationTotal = this.grandDeclarationTotal;
     console.log(
-      'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
+      'DeclarATION total==>>' + this.editTransactionUpload[j].grandDeclarationTotal
     );
   }
   // ---- Set Date of Payment On Edit Modal----
@@ -1358,19 +1379,19 @@ export class GgcDeclarationActualComponent implements OnInit {
           );
         }
 
-        this.actualTotal = 0;
+        this.grandActualTotal = 0;
         this.actualAmount = 0;
         this.editTransactionUpload[j].donations80GGTransactionList.forEach((element) => {
-          console.log(element.actualAmount.toString().replace(',', ''));
-          this.actualTotal += Number(
-            element.actualAmount.toString().replace(',', '')
+          console.log(element.actualAmount.toString().replace(/,/g, ''));
+          this.grandActualTotal += Number(
+            element.actualAmount.toString().replace(/,/g, '')
           );
-          console.log(this.actualTotal);
+          console.log(this.grandActualTotal);
           // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
         });
 
-        this.editTransactionUpload[j].actualTotal = this.actualTotal;
-        console.log(this.editTransactionUpload[j].actualTotal);
+        this.editTransactionUpload[j].grandActualTotal = this.grandActualTotal;
+        console.log(this.editTransactionUpload[j].grandActualTotal);
       }
 
 
@@ -1415,17 +1436,23 @@ export class GgcDeclarationActualComponent implements OnInit {
   //   console.log('Date OF PAyment' + this.declarationService.dateOfPayment);
   // }
 
+
+  // --Remove Selected LicTransaction Document in Main Page----
+  removeSelectedTransactionDocument(index: number) {
+    this.filesArray.splice(index, 1);
+    console.log('this.filesArray::', this.filesArray);
+    console.log('this.filesArray.size::', this.filesArray.length);
+  }
+
   // Remove Selected LicTransaction Document Edit Maodal
-      removeSelectedTransactionDocumentInEditCase(index: number) {
-        this.editfilesArray.splice(index, 1);
-        console.log('this.editfilesArray::', this.editfilesArray);
-        console.log('this.editfilesArray.size::', this.editfilesArray.length);
-      }
-
-
-
+  removeSelectedTransactionDocumentInEditCase(index: number) {
+    this.editfilesArray.splice(index, 1);
+    console.log('this.editfilesArray::', this.editfilesArray);
+    console.log('this.editfilesArray.size::', this.editfilesArray.length);
+  }
 
       changeReceiptAmountFormat() {
+        // tslint:disable-next-line: variable-name
         let receiptAmount_: number;
         let globalSelectedAmount_ : number;
 
@@ -1438,15 +1465,19 @@ export class GgcDeclarationActualComponent implements OnInit {
         this.alertService.sweetalertError(
           'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
         );
+        this.receiptAmount = '0.00';
+        return false;
       } else if (receiptAmount_ > globalSelectedAmount_) {
         console.log(receiptAmount_);
         console.log(globalSelectedAmount_);
         this.alertService.sweetalertWarning(
           'Receipt Amount is greater than Selected line Actual Amount',
         );
+        // this.receiptAmount = '0.00';
+        // return false;
       }
         this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
-      }
+    }
 
       //Payment Detail To Date Validations with Payment Detail From Date
       setPaymentDetailToDate() {
@@ -1455,8 +1486,8 @@ export class GgcDeclarationActualComponent implements OnInit {
             this.form.get('fromDate').value,
             'yyyy-MM-dd'
           );
-        
-         
+
+
          }
       // Common Function for filter to call API
       getTransactionFilterData() {
@@ -1529,34 +1560,34 @@ export class GgcDeclarationActualComponent implements OnInit {
           this.transactionDetail[j].dateOfPayment
         );
       }
-      // ---------------- Doc Viewr Code ----------------------------
-      nextDocViewer() {
-        this.urlIndex = this.urlIndex + 1;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI,
-        );
-      }
+     // ---------------- Doc Viewr Code ----------------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
 
-      previousDocViewer() {
-        this.urlIndex = this.urlIndex - 1;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI,
-        );
-      }
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
 
-      docViewer(template3: TemplateRef<any>, documentDetailList: any) {
-        console.log("documentDetailList::", documentDetailList)
-        this.urlArray = documentDetailList;
-        this.urlIndex = 0;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI,
-        );
-        console.log(this.urlSafe);
-        this.modalRef = this.modalService.show(
-          template3,
-          Object.assign({}, { class: 'gray modal-xl' }),
-        );
-      }
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
 
 
       //   // Family relationship shown on Policyholder selection

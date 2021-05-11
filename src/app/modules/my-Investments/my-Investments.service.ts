@@ -148,14 +148,14 @@ public apiUrl = environment.baseUrl8085;
   // }
 
   getFamilyInfo() : Observable<any>  {
-    return this._HTTP.get(this.apiUrl + '/licmaster-detail/familyMemberList')
+    return this._HTTP.get(this.apiUrl + 'licmaster-detail/familyMemberList')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getFamilyInfoPPF() : Observable<any>  {
-    return this._HTTP.get<any>(this.apiUrl + '/licmaster-detail/familyMemberList')
+    return this._HTTP.get<any>(this.apiUrl + 'licmaster-detail/familyMemberList')
     .pipe(map((res) =>{
       return res
 .filter(e => e.data.results.relation.includes('Self'));
@@ -292,7 +292,7 @@ public apiUrl = environment.baseUrl8085;
 
   getpreviousEmployeName() {
 
-    return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/previousemployer')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -562,7 +562,7 @@ public apiUrl = environment.baseUrl8085;
   public uploadELSSTransactionwithDocument(files: File[], data: any): Observable<any> {
     let formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
-    for (const file of files) {
+    for (let file of files) {
       formData.append('transactionDocuments', file);
     }
     // formData.append('licDocuments', files);
@@ -575,8 +575,7 @@ public apiUrl = environment.baseUrl8085;
     });
     // return null;
     return this._HTTP.post<any>(
-      this.apiUrl + '/elss-transaction/uploadTransactionDocuments',
-      formData,
+      this.apiUrl + 'elss-transaction/uploadTransactionDocuments',formData,
       {
 
       });

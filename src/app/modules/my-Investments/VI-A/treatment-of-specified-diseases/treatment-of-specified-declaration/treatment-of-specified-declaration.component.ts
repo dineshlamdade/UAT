@@ -35,8 +35,8 @@ import { TreatmentOfSpecifiedService } from '../treatment-of-specified.service';
   styleUrls: ['./treatment-of-specified-declaration.component.scss'],
 })
 export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
-  @Input() private lender: string;
-  @Input() private data: any;
+  @Input() public patientName: string;
+  @Input() public data: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -69,7 +69,10 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public transactionWithPatientName: Array<any> = [];
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
-  public editfilesArray: File[] = [];
+
+
+  public editProofForAmountSpent: File[] = [];
+  public editProofForRecoveryFromInsuranceCompany: File[] = [];
   public urlIndex: number;
   public glbalECS: number;
   public form: FormGroup;
@@ -117,7 +120,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
-  public viewDocumentDetail = true;
+  public viewTransactionDetail = true;
   public masterUploadFlag = true;
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: number;
@@ -127,7 +130,10 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public loaded = 0;
   public selectedFiles: FileList;
   public currentFileUpload: File;
-  public filesArray: File[] = [];
+  // public filesArray: File[] = [];
+  public proofForAmountSpent: File[] = [];
+  public proofForRecoveryFromInsuranceCompany: File[] = [];
+
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
   public receiptAmount: string;
@@ -153,6 +159,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
   public isClear: boolean;
+
   public isCancel: boolean;
   public financialYear: any;
   public financialYearStartDate: Date;
@@ -164,6 +171,9 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   public globalTransactionStatus = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public canEdit : boolean;
+  public visibilityFlag:boolean = false;
+  public visibilityFlagForRecovery: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -181,7 +191,6 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   ) {
     // ---------------- Transaction status List -----------------
     this.refreshTransactionStatustList();
-
     this.grandTabStatus = false;
     this.isCheckAll = false;
     this.isDisabled = true;
@@ -216,11 +225,14 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       const input = this.data;
       this.globalInstitution = input.patientName;
       this.getpatientNameList();
       this.getTransactionFilterData(input.patientName);
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -270,15 +282,18 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
   updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
-      i
-    ].previousEmployerId = event.target.value;
+    this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[i].previousEmployerId = event.target.value;
     console.log(
       'previous emp id::',
       this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
         i
       ].previousEmployerId
     );
+  }
+
+  OnParticularsChange(event:any, i:number, j:number){
+    this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[j].particulars = event.target.value;
+  console.log(this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[j].particulars = event.target.value)
   }
   // -----------on Page referesh transactionStatustList------------
   refreshTransactionStatustList() {
@@ -400,7 +415,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount = 0;
@@ -437,7 +452,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           j
         ].specifiedDiseaseTransactionPreviousEmployerList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -449,7 +464,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           j
         ].specifiedDiseaseTransactionPreviousEmployerList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
         i
@@ -473,7 +488,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -491,15 +506,23 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   ) {
     const checked = event.target.checked;
 
+
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount = 0;
     let formatedSelectedAmount: string;
     if (checked) {
+
+      if(this.transactionDetail[j].specifiedDiseaseTransactionList[i].particulars == 'Expenditure incurred for Medical Treatment'){
+        this.visibilityFlag = true;
+      }
+      if(this.transactionDetail[j].specifiedDiseaseTransactionList[i].particulars == 'Recovery from Insurance Company'){
+        this.visibilityFlagForRecovery = true;
+      }
       if (
         this.transactionDetail[j]
           .specifiedDiseaseTransactionList[i].isECS === 1
@@ -526,7 +549,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           j
         ].specifiedDiseaseTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -534,12 +557,20 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       this.uploadGridData.push(data.specifiedDiseaseTransactionId);
 
     } else {
+      if(this.transactionDetail[j].specifiedDiseaseTransactionList[i].particulars == 'Expenditure incurred for Medical Treatment'	){
+        this.visibilityFlag = false;
+      }
+
+      if(this.transactionDetail[j].specifiedDiseaseTransactionList[i].particulars == 'Recovery from Insurance Company'	){
+        this.visibilityFlagForRecovery = false;
+      }
+
       formatedActualAmount = Number(
         this.transactionDetail[
           j
         ].specifiedDiseaseTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].specifiedDiseaseTransactionList[
         i
@@ -563,7 +594,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       j
     ].specifiedDiseaseTransactionList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -656,12 +687,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.transactionDetail[
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(',', ''));
+      // console.log(element.declaredAmount.toString().replace(/,/g, ''));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
+      // this.declaredAmount+=Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
@@ -700,12 +731,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
     this.transactionDetail[j].specifiedDiseaseTransactionList.forEach(
       (element) => {
-        // console.log(element.declaredAmount.toString().replace(',', ''));
+        // console.log(element.declaredAmount.toString().replace(/,/g, ''));
         this.declarationTotal += Number(
-          element.declaredAmount.toString().replace(',', '')
+          element.declaredAmount.toString().replace(/,/g, '')
         );
         // console.log(this.declarationTotal);
-        // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
+        // this.declaredAmount+=Number(element.actualAmount.toString().replace(/,/g, ''));
       }
     );
 
@@ -778,12 +809,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.transactionDetail[
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -841,12 +872,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.transactionDetail[
       j
     ].specifiedDiseaseTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -1026,39 +1057,69 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.displayUploadFile = true;
   }
 
+  onUploadProofSpent(event) {
+    console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.proofForAmountSpent.push(file);
+      }
+    }
+    console.log(this.proofForAmountSpent);
+  }
+
   onUpload(event) {
     console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
-        this.filesArray.push(file);
+        this.proofForRecoveryFromInsuranceCompany.push(file);
       }
     }
-    console.log(this.filesArray);
+    console.log(this.proofForRecoveryFromInsuranceCompany);
+  }
+
+  onUploadInEditCaseProofSpent(event) {
+    console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.editProofForAmountSpent.push(file);
+      }
+    }
+    console.log(this.editProofForAmountSpent);
   }
 
   onUploadInEditCase(event) {
     console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
-        this.editfilesArray.push(file);
+        this.editProofForRecoveryFromInsuranceCompany.push(file);
       }
     }
-    console.log(this.editfilesArray);
+    console.log(this.editProofForRecoveryFromInsuranceCompany);
   }
+
 
   removeDocument() {
     this.currentFileUpload = null;
   }
 
   // Remove Selected LicTransaction Document
-  removeSelectedLicTransactionDocument(index: number) {
-    this.filesArray.splice(index, 1);
-    console.log('this.filesArray::', this.filesArray);
-    console.log('this.filesArray.size::', this.filesArray.length);
+  removeSelectedLicTransactionDocumentProofSpent(index: number) {
+    this.proofForAmountSpent.splice(index, 1);
+    console.log('this.proofForAmountSpent::', this.proofForAmountSpent);
+    console.log('this.proofForAmountSpent.size::', this.proofForAmountSpent.length);
   }
 
+  removeSelectedLicTransactionDocument(index: number) {
+    this.proofForRecoveryFromInsuranceCompany.splice(index, 1);
+    console.log('this.proofForRecoveryFromInsuranceCompany::', this.proofForRecoveryFromInsuranceCompany);
+    console.log('this.proofForRecoveryFromInsuranceCompany.size::', this.proofForRecoveryFromInsuranceCompany.length);
+  }
+
+
+
   upload() {
-    if (this.filesArray.length === 0) {
+    if (this.proofForAmountSpent.length === 0 &&
+        this.proofForRecoveryFromInsuranceCompany.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
       );
@@ -1072,14 +1133,14 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
         if (item.actualAmount !== null) {
           item.actualAmount = item.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.actualAmount = 0.0;
         }
         if (item.declaredAmount !== null) {
           item.declaredAmount = item.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.declaredAmount = 0.0;
         }
@@ -1093,14 +1154,14 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
         if (innerElement.actualAmount !== undefined || innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
         // if (innerElement.declaredAmount !== undefined || innerElement.declaredAmount !== null) {
         //   innerElement.declaredAmount = innerElement.declaredAmount
         //     .toString()
-        //     .replace(',', '');
+        //     .replace(/,/g, '');
         // } else {
           innerElement.declaredAmount = 0.0;
         // }
@@ -1108,7 +1169,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     }
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.globalSelectedAmount.toString().replace(/,/g, '');
 
     const data = {
       specifiedDiseaseTransactionList: this.transactionDetail[0].specifiedDiseaseTransactionList,
@@ -1121,7 +1182,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
     console.log('data::', data);
     this.treatmentOfSpecifiedService
-      .uploadfSpecifiedDesiaseTransactionwithDocument(this.filesArray, data)
+      .uploadfSpecifiedDesiaseTransactionwithDocument(this.proofForAmountSpent,this.proofForRecoveryFromInsuranceCompany, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -1168,7 +1229,8 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
         }
       });
     this.receiptAmount = '0.00';
-    this.filesArray = [];
+   this.proofForAmountSpent = [];
+    this.proofForRecoveryFromInsuranceCompany = [];
     this.globalSelectedAmount = '0.00';
   }
 
@@ -1276,10 +1338,10 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
     });
@@ -1289,22 +1351,86 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
     );
   }
-  // ---- Set Date of Payment On Edit Modal----
-  // setDateOfPaymentInEditCase(
-  //   summary: {
-  //     previousEmployerName: any;
-  //     declaredAmount: number;
-  //     dateOfPayment: Date;
-  //     actualAmount: number;
-  //     dueDate: any;
-  //   },
-  //   i: number,
-  //   j: number
-  // ) {
-  //   this.editTransactionUpload[j].specifiedDiseaseTransactionPreviousEmployerList[i].dateOfPayment =
-  //     summary.dateOfPayment;
-  //   console.log(this.editTransactionUpload[j].specifiedDiseaseTransactionPreviousEmployerList[i].dateOfPayment);
-  // }
+
+  // ------------Actual Amount change Edit Modal-----------
+  onActualAmountChangeInEditCaseCurrentEmp(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      // dateOfPayment: Date;
+      actualAmount: number;
+      dueDate: Date;
+    },
+    i: number,
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summary);
+    console.log(
+      'onActualAmountChangeInEditCaseActual Amount change::',
+      summary
+    );
+
+    this.editTransactionUpload[
+      j
+    ].specifiedDiseaseTransactionList[
+      i
+    ].actualAmount = this.declarationService.actualAmount;
+    console.log(
+      'Actual Amount changed::',
+      this.editTransactionUpload[j]
+        .specifiedDiseaseTransactionList[i].actualAmount
+    );
+
+    const formatedActualAmount = this.numberFormat.transform(
+      this.editTransactionUpload[j]
+        .specifiedDiseaseTransactionList[i].actualAmount
+    );
+    console.log(`formatedActualAmount::`, formatedActualAmount);
+
+    this.editTransactionUpload[
+      j
+    ].specifiedDiseaseTransactionList[
+      i
+    ].actualAmount = formatedActualAmount;
+
+    if (
+      this.editTransactionUpload[j]
+        .specifiedDiseaseTransactionList[i].actualAmount !==
+        Number(0) ||
+      this.editTransactionUpload[j]
+        .specifiedDiseaseTransactionList[i].actualAmount !==
+        null
+    ) {
+      console.log(
+        `in if::`,
+        this.editTransactionUpload[j]
+          .specifiedDiseaseTransactionList[i].actualAmount
+      );
+    } else {
+      console.log(
+        `in else::`,
+        this.editTransactionUpload[j]
+          .specifiedDiseaseTransactionList[i].actualAmount
+      );
+    }
+
+    this.actualTotal = 0;
+    this.actualAmount = 0;
+    this.editTransactionUpload[
+      j
+    ].specifiedDiseaseTransactionList.forEach((element) => {
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
+      this.actualTotal += Number(
+        element.actualAmount.toString().replace(/,/g, '')
+      );
+      console.log(this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
+    });
+
+    this.editTransactionUpload[j].actualTotal = this.actualTotal;
+    console.log(this.editTransactionUpload[j].actualTotal);
+  }
+
 
   // ------------Actual Amount change Edit Modal-----------
   onActualAmountChangeInEditCase(
@@ -1373,12 +1499,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.editTransactionUpload[
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
@@ -1427,14 +1553,24 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
   // }
 
   // Remove Selected LicTransaction Document Edit Maodal
-  removeSelectedTransactionDocumentInEditCase(index: number) {
-    this.editfilesArray.splice(index, 1);
-    console.log('this.editfilesArray::', this.editfilesArray);
-    console.log('this.editfilesArray.size::', this.editfilesArray.length);
+  removeSelectedTransactionDocumentInEditCaseProofSpent(index: number) {
+    this.editProofForAmountSpent.splice(index, 1);
+    console.log('this.editProofForAmountSpent::', this.editProofForAmountSpent);
+    console.log('this.editProofForAmountSpent.size::', this.editProofForAmountSpent.length);
   }
 
+    // Remove Selected LicTransaction Document Edit Maodal
+    removeSelectedTransactionDocumentInEditCase(index: number) {
+      this.editProofForRecoveryFromInsuranceCompany.splice(index, 1);
+      console.log('this.editProofForRecoveryFromInsuranceCompany::', this.editProofForRecoveryFromInsuranceCompany);
+      console.log('this.editProofForRecoveryFromInsuranceCompany.size::', this.editProofForRecoveryFromInsuranceCompany.length);
+    }
+
+
+
+
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
@@ -1453,7 +1589,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           res.data.results[0].specifiedDiseaseTransactionDocumentDetailList[0].documentDetailList;
         this.editTransactionUpload =
           res.data.results[0].specifiedDiseaseTransactionDetailList;
-        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.editProofSubmissionId = res.data.results[0].specifiedDiseaseTransactionDocumentDetailList[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1462,41 +1598,28 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
-        //console.log('converted:: ', this.urlArray);
+          this.editTransactionUpload.forEach((element) => {
+            element.specifiedDiseaseTransactionList.forEach((innerElement) => {
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount,
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount,
+              );
+            });
+            element.specifiedDiseaseTransactionPreviousEmployerList.forEach((innerElement1) => {
+              innerElement1.declaredAmount = this.numberFormat.transform(
+                innerElement1.declaredAmount,
+              );
+              innerElement1.actualAmount = this.numberFormat.transform(
+                innerElement1.actualAmount,
+              );
+            });
+          });
       });
   }
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
 
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
 
   // Common Function for filter to call API
   getTransactionFilterData(patientName: String) {
@@ -1556,44 +1679,58 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     //  this.transactionDetail.forEach((element) => {
 
     this.editTransactionUpload.forEach((element) => {
-      element.specifiedDiseaseTransactionPreviousEmployerList.forEach(
+      element.specifiedDiseaseTransactionList.forEach(
         (innerElement) => {
           if (innerElement.declaredAmount !== null) {
             innerElement.declaredAmount = innerElement.declaredAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.declaredAmount = 0.0;
           }
           if (innerElement.actualAmount !== null) {
             innerElement.actualAmount = innerElement.actualAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.actualAmount = 0.0;
           }
         }
       );
+      element.specifiedDiseaseTransactionPreviousEmployerList.forEach(
+        (innerElement1) => {
+          if (innerElement1.declaredAmount !== null) {
+            innerElement1.declaredAmount = innerElement1.declaredAmount
+              .toString()
+              .replace(/,/g, '');
+          } else {
+            innerElement1.declaredAmount = 0.0;
+          }
+          if (innerElement1.actualAmount !== null) {
+            innerElement1.actualAmount = innerElement1.actualAmount
+              .toString()
+              .replace(/,/g, '');
+          } else {
+            innerElement1.actualAmount = 0.0;
+          }
+        }
+      );
+
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
-      specifiedDiseaseTransactionList: this.editTransactionUpload[0]
-        .specifiedDiseaseTransactionList,
-      specifiedDiseaseTransactionPreviousEmployerList: this
-        .editTransactionUpload[0]
-        .specifiedDiseaseTransactionPreviousEmployerList,
+      specifiedDiseaseTransactionList: this.editTransactionUpload[0].specifiedDiseaseTransactionList,
+      specifiedDiseaseTransactionPreviousEmployerList: this.editTransactionUpload[0].specifiedDiseaseTransactionPreviousEmployerList,
       specifiedDiseaseTransactionIds: this.uploadGridData,
       receiptAmount: this.receiptAmount,
-      // documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
-      specifiedDiseaseMasterId: this.editTransactionUpload[0]
-        .specifiedDiseaseMasterId,
+      specifiedDiseaseMasterId: this.editTransactionUpload[0].specifiedDiseaseMasterId,
     };
     console.log('data::', data);
 
     this.treatmentOfSpecifiedService
-      .uploadfSpecifiedDesiaseTransactionwithDocument(this.editfilesArray, data)
+      .uploadfSpecifiedDesiaseTransactionwithDocument(this.editProofForAmountSpent,this.editProofForRecoveryFromInsuranceCompany, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
@@ -1616,29 +1753,41 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
           this.transactionDetail.forEach((element) => {
             this.initialArrayIndex.push(
-              element.specifiedDiseaseTransactionPreviousEmployerList.length
+              element.specifiedDiseaseTransactionList.length
             );
 
-            element.specifiedDiseaseTransactionPreviousEmployerList.forEach(
+            element.specifiedDiseaseTransactionList.forEach(
               (innerElement) => {
-                if (innerElement.dateOfPayment !== null) {
-                  innerElement.dateOfPayment = new Date(
-                    innerElement.dateOfPayment
-                  );
-                }
-
-                if (innerElement.isECS === 0) {
-                  this.glbalECS == 0;
-                } else if (innerElement.isECS === 1) {
-                  this.glbalECS == 1;
-                } else {
-                  this.glbalECS == 0;
-                }
+                // if (innerElement.dateOfPayment !== null) {
+                //   innerElement.dateOfPayment = new Date(
+                //     innerElement.dateOfPayment
+                //   );
+                // }
                 innerElement.declaredAmount = this.numberFormat.transform(
                   innerElement.declaredAmount
                 );
                 innerElement.actualAmount = this.numberFormat.transform(
                   innerElement.actualAmount
+                );
+              }
+            );
+
+            this.initialArrayIndex.push(
+              element.specifiedDiseaseTransactionPreviousEmployerList.length
+            );
+
+            element.specifiedDiseaseTransactionPreviousEmployerList.forEach(
+              (innerElement1) => {
+                // if (innerElement.dateOfPayment !== null) {
+                //   innerElement.dateOfPayment = new Date(
+                //     innerElement.dateOfPayment
+                //   );
+                // }
+                innerElement1.declaredAmount = this.numberFormat.transform(
+                  innerElement1.declaredAmount
+                );
+                innerElement1.actualAmount = this.numberFormat.transform(
+                  innerElement1.actualAmount
                 );
               }
             );
@@ -1649,6 +1798,8 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       });
     this.currentFileUpload = null;
     // this.editfilesArray = [];
+   this.editProofForAmountSpent = [];
+  this.editProofForRecoveryFromInsuranceCompany = [];
   }
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
@@ -1687,6 +1838,37 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       ].dateOfPayment
     );
   }
+
+    // ---------------- Doc Viewr Code ----------------------------
+    nextDocViewer() {
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    previousDocViewer() {
+      this.urlIndex = this.urlIndex - 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+      console.log("documentDetailList::", documentDetailList)
+      this.urlArray = documentDetailList;
+      this.urlIndex = 0;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      console.log(this.urlSafe);
+      this.modalRef = this.modalService.show(
+        template3,
+        Object.assign({}, { class: 'gray modal-xl' }),
+      );
+    }
+
+
 }
 
 class DeclarationService {

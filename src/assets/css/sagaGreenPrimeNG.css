@@ -2287,11 +2287,11 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-datatable .p-datatable-footer {
-    background: #f8f9fa;
-    color: #495057;
+    background: #f2f2f2;
+    color: #999;
     border: 1px solid #e9ecef;
     border-width: 0 0 1px 0;
-    padding: 1rem 1rem;
+    padding: 10px;
     font-weight: 600;
 }
 
@@ -5842,4 +5842,8 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-column-filter-buttonbar .p-button {
     width: auto!important;
+}
+
+.p-inputright .p-inputnumber-input {
+    text-align: right!important;
 }
