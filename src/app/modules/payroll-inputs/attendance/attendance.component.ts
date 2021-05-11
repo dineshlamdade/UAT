@@ -85,12 +85,17 @@ export class AttendanceComponent implements OnInit {
   effectiveFromDate: any;
   attendanceSaveData: any = [];
   days: string[];
+  months: string[];
   payrollareaCode: any;
   selectedPayrollKey: string = 'leaveWithoutPay';
   leaveWithoutPay: number = 1;
   presentDay_0: number = 0;
   currentCycle: any = null;
   payrollAssignedData: any;
+  tabIndex: any = 0;
+  PayrollAreaByPayrollAreaCodeData: any;
+  defaultAttendace: any;
+  is30daysPayroll: any;
 
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
@@ -99,7 +104,20 @@ export class AttendanceComponent implements OnInit {
 
     this.checkedList = [];
       this.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
+      this.months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+        ];
 
     this.attendanceForm = new FormGroup({
       businessYear: new FormControl(""),
@@ -205,7 +223,25 @@ export class AttendanceComponent implements OnInit {
         res => {
           this.attendanceInputAPIRecordsUIData = res.data.results;
           this.empData = res.data.results[0].employeeMaster;
-          console.log("attendanceInputAPIRecordsUIData:", this.attendanceInputAPIRecordsUIData);
+          //console.log("attendanceInputAPIRecordsUIData:", this.attendanceInputAPIRecordsUIData);
+
+          // this.attendanceInputAPIRecordsUIData.forEach(element => {
+          //     this.attendanceSaveData.push({
+          //       "attendanceInputId": element.attendanceInputId,
+          //       "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+          //       "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+          //       "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+          //       "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+          //       "payrollAreaCode": this.payrollareaCode,
+          //       "date": element.date + ' 00:00:00',
+          //       "paidLeaves": element.paidLeaves,
+          //       "weeklyOff": element.weeklyOff,
+          //       "holiday": element.holiday,
+          //       "leaveWithoutPay" : this.leaveWithoutPay,
+          //       "presentDay_0":this.presentDay_0,
+          //       "currentCycle": parseInt(this.currentCycle)
+          //     })
+          // });
         }
       )
     }
@@ -280,236 +316,47 @@ export class AttendanceComponent implements OnInit {
     //alert(this.selectedPayrollKey)
   }
 
+// ****************************Current Cycle Functions Starts******************************************  
 
   /** Set Leave data for Holiday leave - Current Cycle */
-  getCurrentHoliday(holiday, presentcycle) {
-    if (this.attendanceSaveData.length > 0) {
-      this.attendanceSaveData.forEach((element, index) => {
-        // alert( presentcycle.attendanceInputId)
-        if (element.attendanceInputId == presentcycle.attendanceInputId) {
-          let ind = index;
-          this.attendanceSaveData.splice(ind, 1, {
-
-            "attendanceInputId": presentcycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": presentcycle.date + ' 00:00:00',
-            "paidLeaves": element.paidLeaves,
-            "weeklyOff": element.weeklyOff,
-            "holiday": parseFloat(holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-
-          })
-        }
-        else {
-          // alert('here')
-          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-          //   let ind = index;
-          //   this.attendanceSaveData.splice(ind, 1)
-          // }  
-          this.attendanceSaveData.push({
-            "attendanceInputId": presentcycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": presentcycle.date + ' 00:00:00',
-            "paidLeaves": element.paidLeaves,
-            "weeklyOff": element.weeklyOff,
-            "holiday": parseFloat(holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-      });
-    } else {
-      // alert("else1")
-      this.attendanceSaveData.push({
-        "attendanceInputId": presentcycle.attendanceInputId,
-        "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-        "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-        "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-        "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-        "payrollAreaCode": this.payrollareaCode,
-        "date": presentcycle.date + ' 00:00:00',
-        "paidLeaves": 0.0,
-        "weeklyOff": 0.0,
-        "holiday": parseFloat(holiday),
-        "leaveWithoutPay" :this.leaveWithoutPay,
-        "presentDay_0":this.presentDay_0,
-        "currentCycle": parseInt(this.currentCycle)
-      })
-    }
-
-    console.log("this.holiday: " + JSON.stringify(this.attendanceSaveData))
-
-  }
-
-  /** Set Leave data for Weekly leave - Current Cycle */
-  getCurrentWeeklyOff(weeklyOff, presentcycle) {
-    if (this.attendanceSaveData.length > 0) {
-      this.attendanceSaveData.forEach((element, index) => {
-        if (element.attendanceInputId == presentcycle.attendanceInputId) {
-          let ind = index;
-          this.attendanceSaveData.splice(ind, 1, {
-            "attendanceInputId": presentcycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": presentcycle.date + ' 00:00:00',
-            "paidLeaves": parseFloat(element.paidLeaves),
-            "weeklyOff": parseFloat(weeklyOff),
-            "holiday": parseFloat(element.holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-        else {
-          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-          //   let ind = index;
-          //   this.attendanceSaveData.splice(ind, 1)
-          // }  
-          this.attendanceSaveData.push({
-            "attendanceInputId": presentcycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": presentcycle.date + ' 00:00:00',
-            "paidLeaves": parseFloat(element.paidLeaves),
-            "weeklyOff": parseFloat(weeklyOff),
-            "holiday": parseFloat(element.holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-      });
-    } else {
-      this.attendanceSaveData.push({
-        "attendanceInputId": presentcycle.attendanceInputId,
-        "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-        "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-        "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-        "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-        "payrollAreaCode": this.payrollareaCode,
-        "date": presentcycle.date + ' 00:00:00',
-        "paidLeaves": 0.0,
-        "weeklyOff": parseFloat(weeklyOff),
-        "holiday": 0.0,
-        "leaveWithoutPay" : this.leaveWithoutPay,
-        "presentDay_0":this.presentDay_0,
-        "currentCycle": parseInt(this.currentCycle)
-      })
-    }
-
-   console.log("this.weeklyOff: " + JSON.stringify(this.attendanceSaveData))
-  }
-
-  /** Set Leave data for Paid leave - Current Cycle */
-  getCurrentPaidLeaves(paidLeaves, presentcycle){
-    if (this.attendanceSaveData.length > 0) {
-      this.attendanceSaveData.forEach((element, index) => {
-        if (element.attendanceInputId == presentcycle.attendanceInputId) {
-          let ind = index;
-          this.attendanceSaveData.splice(ind, 1, {
-            "attendanceInputId": presentcycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": presentcycle.date + ' 00:00:00',
-            "paidLeaves": parseFloat(paidLeaves),
-            "weeklyOff": parseFloat(element.weeklyOff),
-            "holiday": parseFloat(element.holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-        else {
-          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-          //   let ind = index;
-          //   this.attendanceSaveData.splice(ind, 1)
-          // }  
-          this.attendanceSaveData.push({
-            "attendanceInputId": presentcycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": presentcycle.date + ' 00:00:00',
-            "paidLeaves": parseFloat(paidLeaves),
-            "weeklyOff": parseFloat(element.weeklyOff),
-            "holiday": parseFloat(element.holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-      });
-    } else {
-      this.attendanceSaveData.push({
-        "attendanceInputId": presentcycle.attendanceInputId,
-        "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-        "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-        "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-        "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-        "payrollAreaCode": this.payrollareaCode,
-        "date": presentcycle.date + ' 00:00:00',
-        "paidLeaves": parseFloat(paidLeaves),
-        "weeklyOff": 0.0,
-        "holiday": 0.0,
-        "leaveWithoutPay" : this.leaveWithoutPay,
-        "presentDay_0":this.presentDay_0,
-        "currentCycle": parseInt(this.currentCycle)
-      })
-    }
-
-   console.log("this.paidLeaves: " + JSON.stringify(this.attendanceSaveData))
-  }
-
-
-    /** Set Leave data for Paid leave - Current Cycle */
-    getCurrentLeaveWithoutPay(leaveWithoutPay, presentcycle){
+  getCurrentHoliday(holidayvalue, presentcycle,rowIndex) {
+    let holiday = holidayvalue
       if (this.attendanceSaveData.length > 0) {
         this.attendanceSaveData.forEach((element, index) => {
+          // alert( presentcycle.attendanceInputId)
           if (element.attendanceInputId == presentcycle.attendanceInputId) {
             let ind = index;
-            this.attendanceSaveData.splice(ind, 1, {
-              "attendanceInputId": presentcycle.attendanceInputId,
-              "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-              "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-              "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-              "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-              "payrollAreaCode": this.payrollareaCode,
-              "date": presentcycle.date + ' 00:00:00',
-              "paidLeaves": parseFloat(element.paidLeaves),
-              "weeklyOff": parseFloat(element.weeklyOff),
-              "holiday": parseFloat(element.holiday),
-              "leaveWithoutPay" : leaveWithoutPay,
-              "presentDay_0":this.presentDay_0,
-              "currentCycle": parseInt(this.currentCycle)
-            })
+            let totalLeaves = element.paidLeaves + element.weeklyOff + element.leaveWithoutPay + parseFloat(holiday)
+            if(totalLeaves <= 1){
+              this.attendanceSaveData.splice(ind, 1, {
+                "attendanceInputId": presentcycle.attendanceInputId,
+                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+                "payrollAreaCode": this.payrollareaCode,
+                "date": presentcycle.date + ' 00:00:00',
+                "paidLeaves": element.paidLeaves,
+                "weeklyOff": element.weeklyOff,
+                "holiday": parseFloat(holiday),
+                "leaveWithoutPay" : element.leaveWithoutPay,
+                "presentDay_0":this.presentDay_0,
+                "currentCycle": parseInt(this.currentCycle)
+    
+              })
+              this.attendanceInputAPIRecordsUIData[rowIndex].holiday = holiday
+            }else{
+              this.toster.warning("","You can not exceed the leave count more then one")
+              holiday = 0.0
+              this.attendanceInputAPIRecordsUIData[rowIndex].holiday = 0.0
+            } 
           }
           else {
-            // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-            //   let ind = index;
-            //   this.attendanceSaveData.splice(ind, 1)
-            // }  
+            // alert('here')
+            if (element.attendanceInputId == presentcycle.attendanceInputId) {
+              let ind = index;
+              this.attendanceSaveData.splice(ind, 1)
+            }  
             this.attendanceSaveData.push({
               "attendanceInputId": presentcycle.attendanceInputId,
               "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
@@ -518,16 +365,108 @@ export class AttendanceComponent implements OnInit {
               "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
               "payrollAreaCode": this.payrollareaCode,
               "date": presentcycle.date + ' 00:00:00',
-              "paidLeaves": parseFloat(element.paidLeaves),
-              "weeklyOff": parseFloat(element.weeklyOff),
-              "holiday": parseFloat(element.holiday),
-              "leaveWithoutPay" : leaveWithoutPay,
+              "paidLeaves": element.paidLeaves,
+              "weeklyOff": element.weeklyOff,
+              "holiday": parseFloat(holiday),
+              "leaveWithoutPay" : element.leaveWithoutPay,
               "presentDay_0":this.presentDay_0,
               "currentCycle": parseInt(this.currentCycle)
             })
+            this.attendanceInputAPIRecordsUIData[rowIndex].holiday = holiday
           }
         });
-      } else {
+      } 
+      else {
+        let totalLeaves = this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves + this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff + this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay + parseFloat(holiday)
+        console.log("total: " +totalLeaves)
+        if(totalLeaves <= 1){
+          this.attendanceSaveData.push({
+            "attendanceInputId": presentcycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": presentcycle.date + ' 00:00:00',
+            "paidLeaves": this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves,
+            "weeklyOff": this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff,
+            "holiday": parseFloat(holiday),
+            "leaveWithoutPay" : this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay,
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputAPIRecordsUIData[rowIndex].holiday = holiday
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          holiday = 0.0
+          this.attendanceInputAPIRecordsUIData[rowIndex].holiday = 0.00
+         
+        }
+      }
+    
+
+    console.log("this.holiday: " + JSON.stringify(this.attendanceSaveData))
+
+  }
+
+  /** Set Leave data for Weekly leave - Current Cycle */
+  getCurrentWeeklyOff(weeklyOffvalue, presentcycle,rowIndex) {
+    let weeklyOff = weeklyOffvalue
+    if (this.attendanceSaveData.length > 0) {
+      this.attendanceSaveData.forEach((element, index) => {
+        if (element.attendanceInputId == presentcycle.attendanceInputId) {
+          let ind = index;
+          let totalLeaves = element.paidLeaves + element.holiday + element.leaveWithoutPay + parseFloat(weeklyOff)
+          if(totalLeaves <= 1){
+          this.attendanceSaveData.splice(ind, 1, {
+            "attendanceInputId": presentcycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": presentcycle.date + ' 00:00:00',
+            "paidLeaves": parseFloat(element.paidLeaves),
+            "weeklyOff": parseFloat(weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff = weeklyOff
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          weeklyOff = 0.0
+          this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff = 0.0
+        } 
+        }
+        else {
+          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
+          //   let ind = index;
+          //   this.attendanceSaveData.splice(ind, 1)
+          // }  
+          this.attendanceSaveData.push({
+            "attendanceInputId": presentcycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": presentcycle.date + ' 00:00:00',
+            "paidLeaves": parseFloat(element.paidLeaves),
+            "weeklyOff": parseFloat(weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff = weeklyOff
+        }
+      });
+    } else {
+      let totalLeaves = this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves + this.attendanceInputAPIRecordsUIData[rowIndex].holiday + this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay + parseFloat(weeklyOff)
+      console.log("total wweklyoff: " +totalLeaves)
+      if(totalLeaves <= 1){
         this.attendanceSaveData.push({
           "attendanceInputId": presentcycle.attendanceInputId,
           "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
@@ -536,163 +475,430 @@ export class AttendanceComponent implements OnInit {
           "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
           "payrollAreaCode": this.payrollareaCode,
           "date": presentcycle.date + ' 00:00:00',
-          "paidLeaves": 0.0,
-          "weeklyOff": 0.0,
-          "holiday": 0.0,
-          "leaveWithoutPay" : leaveWithoutPay,
+          "paidLeaves": this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves,
+          "weeklyOff": parseInt(weeklyOff),
+          "holiday": this.attendanceInputAPIRecordsUIData[rowIndex].holiday,
+          "leaveWithoutPay" : this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay,
           "presentDay_0":this.presentDay_0,
           "currentCycle": parseInt(this.currentCycle)
         })
+        this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff = weeklyOff
+      }else{
+        this.toster.warning("","You can not exceed the leave count more then one")
+        weeklyOff = 0.0
+        this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff = 0.00
+       
       }
-  
-     console.log("this.leaveWithoutPay: " + JSON.stringify(this.attendanceSaveData))
-    }
-
-
-
-  
-      /** Set Leave data for Holiday leave - Future Cycle */
-      getFutureHoliday(holiday, futureCycle) {
-    if (this.attendanceSaveData.length > 0) {
-      this.attendanceSaveData.forEach((element, index) => {
-        // alert( presentcycle.attendanceInputId)
-        if (element.attendanceInputId == futureCycle.attendanceInputId) {
-          let ind = index;
-          this.attendanceSaveData.splice(ind, 1, {
-
-            "attendanceInputId": futureCycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": futureCycle.date + ' 00:00:00',
-            "paidLeaves": element.paidLeaves,
-            "weeklyOff": element.weeklyOff,
-            "holiday": parseFloat(holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-
-          })
-        }
-        else {
-          // alert('here')
-          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-          //   let ind = index;
-          //   this.attendanceSaveData.splice(ind, 1)
-          // }  
-          this.attendanceSaveData.push({
-            "attendanceInputId": futureCycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": futureCycle.date + ' 00:00:00',
-            "paidLeaves": element.paidLeaves,
-            "weeklyOff": element.weeklyOff,
-            "holiday": parseFloat(holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-      });
-    } else {
-      // alert("else1")
-      this.attendanceSaveData.push({
-        "attendanceInputId": futureCycle.attendanceInputId,
-        "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-        "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-        "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-        "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-        "payrollAreaCode": this.payrollareaCode,
-        "date": futureCycle.date + ' 00:00:00',
-        "paidLeaves": 0.0,
-        "weeklyOff": 0.0,
-        "holiday": parseFloat(holiday),
-        "leaveWithoutPay" :this.leaveWithoutPay,
-        "presentDay_0":this.presentDay_0,
-        "currentCycle": parseInt(this.currentCycle)
-      })
-    }
-
-    console.log("this.holiday: " + JSON.stringify(this.attendanceSaveData))
-
-  }
-
-  /** Set Leave data for Weekly leave - Future Cycle */
-  getFutureWeeklyOff(weeklyOff, futureCycle) {
-    if (this.attendanceSaveData.length > 0) {
-      this.attendanceSaveData.forEach((element, index) => {
-        if (element.attendanceInputId == futureCycle.attendanceInputId) {
-          let ind = index;
-          this.attendanceSaveData.splice(ind, 1, {
-            "attendanceInputId": futureCycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": futureCycle.date + ' 00:00:00',
-            "paidLeaves": parseFloat(element.paidLeaves),
-            "weeklyOff": parseFloat(weeklyOff),
-            "holiday": parseFloat(element.holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-        else {
-          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-          //   let ind = index;
-          //   this.attendanceSaveData.splice(ind, 1)
-          // }  
-          this.attendanceSaveData.push({
-            "attendanceInputId": futureCycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": futureCycle.date + ' 00:00:00',
-            "paidLeaves": parseFloat(element.paidLeaves),
-            "weeklyOff": parseFloat(weeklyOff),
-            "holiday": parseFloat(element.holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-      });
-    } else {
-      this.attendanceSaveData.push({
-        "attendanceInputId": futureCycle.attendanceInputId,
-        "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-        "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-        "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-        "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-        "payrollAreaCode": this.payrollareaCode,
-        "date": futureCycle.date + ' 00:00:00',
-        "paidLeaves": 0.0,
-        "weeklyOff": parseFloat(weeklyOff),
-        "holiday": 0.0,
-        "leaveWithoutPay" : this.leaveWithoutPay,
-        "presentDay_0":this.presentDay_0,
-        "currentCycle": parseInt(this.currentCycle)
-      })
     }
 
    console.log("this.weeklyOff: " + JSON.stringify(this.attendanceSaveData))
+   this.getPresentCycleWeeklyOffTotal()
   }
 
-  /** Set Leave data for Paid leave - Future Cycle */
-  getFuturePaidLeaves(paidLeaves, futureCycle){
+  /** Set Leave data for Paid leave - Current Cycle */
+  getCurrentPaidLeaves(paidLeavesvalue, presentcycle,rowIndex){
+    let paidLeaves = paidLeavesvalue
+    if (this.attendanceSaveData.length > 0) {
+      this.attendanceSaveData.forEach((element, index) => {
+        if (element.attendanceInputId == presentcycle.attendanceInputId) {
+          let ind = index;
+          let totalLeaves = element.weeklyOff + element.holiday + element.leaveWithoutPay + parseFloat(paidLeaves)
+          if(totalLeaves <= 1){
+          this.attendanceSaveData.splice(ind, 1, {
+            "attendanceInputId": presentcycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": presentcycle.date + ' 00:00:00',
+            "paidLeaves": parseFloat(paidLeaves),
+            "weeklyOff": parseFloat(element.weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves = paidLeaves
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          paidLeaves = 0.0
+          this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves = 0.0
+        } 
+        }
+        else {
+          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
+          //   let ind = index;
+          //   this.attendanceSaveData.splice(ind, 1)
+          // }  
+          this.attendanceSaveData.push({
+            "attendanceInputId": presentcycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": presentcycle.date + ' 00:00:00',
+            "paidLeaves": parseFloat(paidLeaves),
+            "weeklyOff": parseFloat(element.weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves = paidLeaves
+        }
+      });
+    } else {
+      let totalLeaves = this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff + this.attendanceInputAPIRecordsUIData[rowIndex].holiday + this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay + parseFloat(paidLeaves)
+      console.log("total wweklyoff: " +totalLeaves)
+      if(totalLeaves <= 1){
+        this.attendanceSaveData.push({
+          "attendanceInputId": presentcycle.attendanceInputId,
+          "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+          "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+          "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+          "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+          "payrollAreaCode": this.payrollareaCode,
+          "date": presentcycle.date + ' 00:00:00',
+          "paidLeaves": parseFloat(paidLeaves),
+          "weeklyOff": this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff,
+          "holiday": this.attendanceInputAPIRecordsUIData[rowIndex].holiday,
+          "leaveWithoutPay" : this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay,
+          "presentDay_0":this.presentDay_0,
+          "currentCycle": parseInt(this.currentCycle)
+        })
+        this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves = paidLeaves
+      }else{
+        this.toster.warning("","You can not exceed the leave count more then one")
+        paidLeaves = 0.0
+        this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves = 0.00
+       
+      }
+    }
+
+   console.log("this.paidLeaves: " + JSON.stringify(this.attendanceSaveData))
+   this.getPresentCycleLeaveTotal();
+  }
+
+
+  /** Set Leave data for Paid leave - Current Cycle */
+  getCurrentLeaveWithoutPay(leaveWithoutPayvalue, presentcycle,rowIndex){
+      let leaveWithoutPay = leaveWithoutPayvalue
+      if (this.attendanceSaveData.length > 0) {
+        this.attendanceSaveData.forEach((element, index) => {
+          if (element.attendanceInputId == presentcycle.attendanceInputId) {
+            let ind = index;
+            let totalLeaves = element.weeklyOff + element.holiday + element.paidLeaves + parseFloat(leaveWithoutPay)
+            if(totalLeaves <= 1){
+            this.attendanceSaveData.splice(ind, 1, {
+              "attendanceInputId": presentcycle.attendanceInputId,
+              "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+              "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+              "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+              "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+              "payrollAreaCode": this.payrollareaCode,
+              "date": presentcycle.date + ' 00:00:00',
+              "paidLeaves": parseFloat(element.paidLeaves),
+              "weeklyOff": parseFloat(element.weeklyOff),
+              "holiday": parseFloat(element.holiday),
+              "leaveWithoutPay" : parseFloat(leaveWithoutPay),
+              "presentDay_0":this.presentDay_0,
+              "currentCycle": parseInt(this.currentCycle)
+            })
+            this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay = leaveWithoutPay
+          }else{
+            this.toster.warning("","You can not exceed the leave count more then one")
+            leaveWithoutPay = 0.0
+            this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay = 0.0
+          } 
+          }
+          else {
+            // if (element.attendanceInputId == presentcycle.attendanceInputId) {
+            //   let ind = index;
+            //   this.attendanceSaveData.splice(ind, 1)
+            // }  
+            this.attendanceSaveData.push({
+              "attendanceInputId": presentcycle.attendanceInputId,
+              "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+              "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+              "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+              "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+              "payrollAreaCode": this.payrollareaCode,
+              "date": presentcycle.date + ' 00:00:00',
+              "paidLeaves": parseFloat(element.paidLeaves),
+              "weeklyOff": parseFloat(element.weeklyOff),
+              "holiday": parseFloat(element.holiday),
+              "leaveWithoutPay" : parseFloat(leaveWithoutPay),
+              "presentDay_0":this.presentDay_0,
+              "currentCycle": parseInt(this.currentCycle)
+            })
+            this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay = leaveWithoutPay
+          }
+        });
+      } else {
+        let totalLeaves = this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff + this.attendanceInputAPIRecordsUIData[rowIndex].holiday + this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves + parseFloat(leaveWithoutPay)
+        console.log("total wweklyoff: " +totalLeaves)
+        if(totalLeaves <= 1){
+          this.attendanceSaveData.push({
+            "attendanceInputId": presentcycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": presentcycle.date + ' 00:00:00',
+            "paidLeaves": this.attendanceInputAPIRecordsUIData[rowIndex].paidLeaves,
+            "weeklyOff": this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff,
+            "holiday": this.attendanceInputAPIRecordsUIData[rowIndex].holiday,
+            "leaveWithoutPay" : parseFloat(leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay = leaveWithoutPay
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          leaveWithoutPay = 0.0
+          this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay = 0.00
+         
+        }
+      }
+  
+     console.log("this.leaveWithoutPay: " + JSON.stringify(this.attendanceSaveData))
+     this.getPresentCycleLeaveWithoutPayTotal();
+  }
+
+  /** Calculate current cycle weekly off  */
+  getPresentCycleWeeklyOffTotal(){
+    let total = 0.0
+    this.attendanceInputAPIRecordsUIData.forEach(element => {
+      total = total + parseFloat(element.weeklyOff)
+     
+    });
+    return total;
+  }
+
+  /** Calculate current cycle weekly off  */
+  getPresentCycleHolidayTotal(){
+    let total = 0.0
+    this.attendanceInputAPIRecordsUIData.forEach(element => {
+      total = total + parseFloat(element.holiday)
+     
+    });
+    return total;
+  }
+
+  /** Calculate current cycle weekly off  */
+  getPresentCycleLeaveTotal(){
+    let total = 0.0
+    this.attendanceInputAPIRecordsUIData.forEach(element => {
+      total = total + parseFloat(element.paidLeaves)
+     
+    });
+    return total;
+  }
+
+  /** Calculate current cycle weekly off  */
+  getPresentCycleLeaveWithoutPayTotal(){
+    let total = 0.0
+    this.attendanceInputAPIRecordsUIData.forEach(element => {
+      total = total + parseFloat(element.leaveWithoutPay)
+     
+    });
+    return total;
+  }
+
+// ****************************Current Cycle Functions Ends******************************************  
+
+
+// ****************************Future Cycle Functions Starts******************************************
+  
+   /** Set Leave data for Holiday leave - Future Cycle */
+   getFutureHoliday(holidayvalue, futureCycle,rowIndex) {
+    let holiday = holidayvalue
+      if (this.attendanceSaveData.length > 0) {
+        this.attendanceSaveData.forEach((element, index) => {
+          // alert( presentcycle.attendanceInputId)
+          if (element.attendanceInputId == futureCycle.attendanceInputId) {
+            let ind = index;
+            let totalLeaves = element.paidLeaves + element.weeklyOff + element.leaveWithoutPay + parseFloat(holiday)
+            if(totalLeaves <= 1){
+              this.attendanceSaveData.splice(ind, 1, {
+                "attendanceInputId": futureCycle.attendanceInputId,
+                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+                "payrollAreaCode": this.payrollareaCode,
+                "date": futureCycle.date + ' 00:00:00',
+                "paidLeaves": element.paidLeaves,
+                "weeklyOff": element.weeklyOff,
+                "holiday": parseFloat(holiday),
+                "leaveWithoutPay" : element.leaveWithoutPay,
+                "presentDay_0":this.presentDay_0,
+                "currentCycle": parseInt(this.currentCycle)
+    
+              })
+              this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday = holiday
+            }else{
+              this.toster.warning("","You can not exceed the leave count more then one")
+              holiday = 0.0
+              this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday = 0.0
+            } 
+          }
+          else {
+            // alert('here')
+            if (element.attendanceInputId == futureCycle.attendanceInputId) {
+              let ind = index;
+              this.attendanceSaveData.splice(ind, 1)
+            }  
+            this.attendanceSaveData.push({
+              "attendanceInputId": futureCycle.attendanceInputId,
+              "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+              "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+              "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+              "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+              "payrollAreaCode": this.payrollareaCode,
+              "date": futureCycle.date + ' 00:00:00',
+              "paidLeaves": element.paidLeaves,
+              "weeklyOff": element.weeklyOff,
+              "holiday": parseFloat(holiday),
+              "leaveWithoutPay" : element.leaveWithoutPay,
+              "presentDay_0":this.presentDay_0,
+              "currentCycle": parseInt(this.currentCycle)
+            })
+            this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday = holiday
+          }
+        });
+      } else {
+        let totalLeaves = this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves + this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff + this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay + parseFloat(holiday)
+        console.log("total: " +totalLeaves)
+        if(totalLeaves <= 1){
+          this.attendanceSaveData.push({
+            "attendanceInputId": futureCycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": futureCycle.date + ' 00:00:00',
+            "paidLeaves": this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves,
+            "weeklyOff": this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff,
+            "holiday": parseFloat(holiday),
+            "leaveWithoutPay" : this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay,
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday = holiday
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          holiday = 0.0
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday = 0.00
+         
+        }
+      }
+    
+
+    console.log("this.holiday: " + JSON.stringify(this.attendanceSaveData))
+      this.getFutureCycleHolidayTotal();
+  }
+
+  /** Set Leave data for Weekly leave - Future Cycle */
+  getFutureWeeklyOff(weeklyOffvalue, futureCycle,rowIndex) {
+    console.log(rowIndex)
+    let weeklyOff = weeklyOffvalue
     if (this.attendanceSaveData.length > 0) {
       this.attendanceSaveData.forEach((element, index) => {
         if (element.attendanceInputId == futureCycle.attendanceInputId) {
           let ind = index;
+          let totalLeaves = element.paidLeaves + element.holiday + element.leaveWithoutPay + parseFloat(weeklyOff)
+          if(totalLeaves <= 1){
+          this.attendanceSaveData.splice(ind, 1, {
+            "attendanceInputId": futureCycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": futureCycle.date + ' 00:00:00',
+            "paidLeaves": parseFloat(element.paidLeaves),
+            "weeklyOff": parseFloat(weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff = weeklyOff
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          weeklyOff = 0.0
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff = 0.0
+        } 
+        }
+        else {
+          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
+          //   let ind = index;
+          //   this.attendanceSaveData.splice(ind, 1)
+          // }  
+          this.attendanceSaveData.push({
+            "attendanceInputId": futureCycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": futureCycle.date + ' 00:00:00',
+            "paidLeaves": parseFloat(element.paidLeaves),
+            "weeklyOff": parseFloat(weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff = weeklyOff
+        }
+      });
+    } else {
+      let totalLeaves = this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves + this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday + this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay + parseFloat(weeklyOff)
+      console.log("total wweklyoff: " +totalLeaves)
+      if(totalLeaves <= 1){
+        this.attendanceSaveData.push({
+          "attendanceInputId": futureCycle.attendanceInputId,
+          "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+          "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+          "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+          "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+          "payrollAreaCode": this.payrollareaCode,
+          "date": futureCycle.date + ' 00:00:00',
+          "paidLeaves": this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves,
+          "weeklyOff": parseInt(weeklyOff),
+          "holiday": this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday,
+          "leaveWithoutPay" : this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay,
+          "presentDay_0":this.presentDay_0,
+          "currentCycle": parseInt(this.currentCycle)
+        })
+        this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff = weeklyOff
+      }else{
+        this.toster.warning("","You can not exceed the leave count more then one")
+        weeklyOff = 0.0
+        this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff = 0.00
+       
+      }
+    }
+
+   console.log("this.weeklyOff: " + JSON.stringify(this.attendanceSaveData))
+   this.getFutureCycleWeeklyOffTotal();
+  }
+
+  /** Set Leave data for Paid leave - Future Cycle */
+  getFuturePaidLeaves(paidLeavesvalue, futureCycle,rowIndex){
+    let paidLeaves = paidLeavesvalue
+    if (this.attendanceSaveData.length > 0) {
+      this.attendanceSaveData.forEach((element, index) => {
+        if (element.attendanceInputId == futureCycle.attendanceInputId) {
+          let ind = index;
+          let totalLeaves = element.weeklyOff + element.holiday + element.leaveWithoutPay + parseFloat(paidLeaves)
+          if(totalLeaves <= 1){
           this.attendanceSaveData.splice(ind, 1, {
             "attendanceInputId": futureCycle.attendanceInputId,
             "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
@@ -704,10 +910,16 @@ export class AttendanceComponent implements OnInit {
             "paidLeaves": parseFloat(paidLeaves),
             "weeklyOff": parseFloat(element.weeklyOff),
             "holiday": parseFloat(element.holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
             "presentDay_0":this.presentDay_0,
             "currentCycle": parseInt(this.currentCycle)
           })
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves = paidLeaves
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          paidLeaves = 0.0
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves = 0.0
+        } 
         }
         else {
           // if (element.attendanceInputId == presentcycle.attendanceInputId) {
@@ -725,40 +937,55 @@ export class AttendanceComponent implements OnInit {
             "paidLeaves": parseFloat(paidLeaves),
             "weeklyOff": parseFloat(element.weeklyOff),
             "holiday": parseFloat(element.holiday),
-            "leaveWithoutPay" : this.leaveWithoutPay,
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
             "presentDay_0":this.presentDay_0,
             "currentCycle": parseInt(this.currentCycle)
           })
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves = paidLeaves
         }
       });
     } else {
-      this.attendanceSaveData.push({
-        "attendanceInputId": futureCycle.attendanceInputId,
-        "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-        "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-        "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-        "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-        "payrollAreaCode": this.payrollareaCode,
-        "date": futureCycle.date + ' 00:00:00',
-        "paidLeaves": parseFloat(paidLeaves),
-        "weeklyOff": 0.0,
-        "holiday": 0.0,
-        "leaveWithoutPay" : this.leaveWithoutPay,
-        "presentDay_0":this.presentDay_0,
-        "currentCycle": parseInt(this.currentCycle)
-      })
+      let totalLeaves = this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff + this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday + this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay + parseFloat(paidLeaves)
+      console.log("total wweklyoff: " +totalLeaves)
+      if(totalLeaves <= 1){
+        this.attendanceSaveData.push({
+          "attendanceInputId": futureCycle.attendanceInputId,
+          "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+          "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+          "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+          "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+          "payrollAreaCode": this.payrollareaCode,
+          "date": futureCycle.date + ' 00:00:00',
+          "paidLeaves": parseFloat(paidLeaves),
+          "weeklyOff": this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff,
+          "holiday": this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday,
+          "leaveWithoutPay" : this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay,
+          "presentDay_0":this.presentDay_0,
+          "currentCycle": parseInt(this.currentCycle)
+        })
+        this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves = paidLeaves
+      }else{
+        this.toster.warning("","You can not exceed the leave count more then one")
+        paidLeaves = 0.0
+        this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves = 0.00
+       
+      }
     }
 
    console.log("this.paidLeaves: " + JSON.stringify(this.attendanceSaveData))
+   this.getFutureCycleLeaveTotal();
   }
 
 
-    /** Set Leave data for Paid leave - Future Cycle */
-    getFutureLeaveWithoutPay(leaveWithoutPay, futureCycle){
+  /** Set Leave data for Paid leave - Future Cycle */
+  getFutureLeaveWithoutPay(leaveWithoutPayvalue, futureCycle,rowIndex){
+      let leaveWithoutPay = leaveWithoutPayvalue
       if (this.attendanceSaveData.length > 0) {
         this.attendanceSaveData.forEach((element, index) => {
           if (element.attendanceInputId == futureCycle.attendanceInputId) {
             let ind = index;
+            let totalLeaves = element.weeklyOff + element.holiday + element.paidLeaves + parseFloat(leaveWithoutPay)
+            if(totalLeaves <= 1){
             this.attendanceSaveData.splice(ind, 1, {
               "attendanceInputId": futureCycle.attendanceInputId,
               "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
@@ -770,10 +997,16 @@ export class AttendanceComponent implements OnInit {
               "paidLeaves": parseFloat(element.paidLeaves),
               "weeklyOff": parseFloat(element.weeklyOff),
               "holiday": parseFloat(element.holiday),
-              "leaveWithoutPay" : leaveWithoutPay,
+              "leaveWithoutPay" : parseFloat(leaveWithoutPay),
               "presentDay_0":this.presentDay_0,
               "currentCycle": parseInt(this.currentCycle)
             })
+            this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay = leaveWithoutPay
+          }else{
+            this.toster.warning("","You can not exceed the leave count more then one")
+            leaveWithoutPay = 0.0
+            this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay = 0.0
+          } 
           }
           else {
             // if (element.attendanceInputId == presentcycle.attendanceInputId) {
@@ -791,88 +1024,279 @@ export class AttendanceComponent implements OnInit {
               "paidLeaves": parseFloat(element.paidLeaves),
               "weeklyOff": parseFloat(element.weeklyOff),
               "holiday": parseFloat(element.holiday),
-              "leaveWithoutPay" : leaveWithoutPay,
+              "leaveWithoutPay" : parseFloat(leaveWithoutPay),
               "presentDay_0":this.presentDay_0,
               "currentCycle": parseInt(this.currentCycle)
             })
+            this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay = leaveWithoutPay
           }
         });
       } else {
+        let totalLeaves = this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff + this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday + this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves + parseFloat(leaveWithoutPay)
+        console.log("total wweklyoff: " +totalLeaves)
+        if(totalLeaves <= 1){
+          this.attendanceSaveData.push({
+            "attendanceInputId": futureCycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": futureCycle.date + ' 00:00:00',
+            "paidLeaves": this.attendanceInputGetAPIFuturecyclesData[rowIndex].paidLeaves,
+            "weeklyOff": this.attendanceInputGetAPIFuturecyclesData[rowIndex].weeklyOff,
+            "holiday": this.attendanceInputGetAPIFuturecyclesData[rowIndex].holiday,
+            "leaveWithoutPay" : parseFloat(leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay = leaveWithoutPay
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          leaveWithoutPay = 0.0
+          this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay = 0.00
+         
+        }
+      }
+  
+     console.log("this.leaveWithoutPay: " + JSON.stringify(this.attendanceSaveData))
+     this.getFutureCycleLeaveWithoutPayTotal();
+  }
+
+
+ 
+    getFutureCycleWeeklyOffTotal(){
+      let total = 0.0
+      this.attendanceInputGetAPIFuturecyclesData.forEach(element => {
+        total = total + parseFloat(element.weeklyOff)
+       
+      });
+      return total;
+    }
+  
+
+    getFutureCycleHolidayTotal(){
+      let total = 0.0
+      this.attendanceInputGetAPIFuturecyclesData.forEach(element => {
+        total = total + parseFloat(element.holiday)
+       
+      });
+      return total;
+    }
+  
+    
+    getFutureCycleLeaveTotal(){
+      let total = 0.0
+      this.attendanceInputGetAPIFuturecyclesData.forEach(element => {
+        total = total + parseFloat(element.paidLeaves)
+       
+      });
+      return total;
+    }
+  
+   
+    getFutureCycleLeaveWithoutPayTotal(){
+      let total = 0.0
+      this.attendanceInputGetAPIFuturecyclesData.forEach(element => {
+       // console.log(element.leaveWithoutPay)
+        total = total + parseFloat(element.leaveWithoutPay)
+       
+      });
+      return total;
+    }
+
+// **********************************Future Cycle Functions Ends***********************************************
+
+
+// **********************************Previous Cycle Functions Starts***********************************************
+
+   /** Set Leave data for Holiday leave - Previous Cycle */
+  getPreviousHoliday(holidayvalue, previousCycle,rowIndex) {
+    let holiday = holidayvalue
+      if (this.attendanceSaveData.length > 0) {
+        this.attendanceSaveData.forEach((element, index) => {
+          // alert( presentcycle.attendanceInputId)
+          if (element.attendanceInputId == previousCycle.attendanceInputId) {
+            let ind = index;
+            let totalLeaves = element.paidLeaves + element.weeklyOff + element.leaveWithoutPay + parseFloat(holiday)
+            if(totalLeaves <= 1){
+              this.attendanceSaveData.splice(ind, 1, {
+                "attendanceInputId": previousCycle.attendanceInputId,
+                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+                "payrollAreaCode": this.payrollareaCode,
+                "date": previousCycle.date + ' 00:00:00',
+                "paidLeaves": element.paidLeaves,
+                "weeklyOff": element.weeklyOff,
+                "holiday": parseFloat(holiday),
+                "leaveWithoutPay" : element.leaveWithoutPay,
+                "presentDay_0":this.presentDay_0,
+                "currentCycle": parseInt(this.currentCycle)
+    
+              })
+              this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday = holiday
+            }else{
+              this.toster.warning("","You can not exceed the leave count more then one")
+              holiday = 0.0
+              this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday = 0.0
+            } 
+          }
+          else {
+            // alert('here')
+            if (element.attendanceInputId == previousCycle.attendanceInputId) {
+              let ind = index;
+              this.attendanceSaveData.splice(ind, 1)
+            }  
+            this.attendanceSaveData.push({
+              "attendanceInputId": previousCycle.attendanceInputId,
+              "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+              "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+              "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+              "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+              "payrollAreaCode": this.payrollareaCode,
+              "date": previousCycle.date + ' 00:00:00',
+              "paidLeaves": element.paidLeaves,
+              "weeklyOff": element.weeklyOff,
+              "holiday": parseFloat(holiday),
+              "leaveWithoutPay" : element.leaveWithoutPay,
+              "presentDay_0":this.presentDay_0,
+              "currentCycle": parseInt(this.currentCycle)
+            })
+            this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday = holiday
+          }
+        });
+      } else {
+        let totalLeaves = this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves + this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff + this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay + parseFloat(holiday)
+        console.log("total: " +totalLeaves)
+        if(totalLeaves <= 1){
+          this.attendanceSaveData.push({
+            "attendanceInputId": previousCycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": previousCycle.date + ' 00:00:00',
+            "paidLeaves": this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves,
+            "weeklyOff": this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff,
+            "holiday": parseFloat(holiday),
+            "leaveWithoutPay" : this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay,
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday = holiday
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          holiday = 0.0
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday = 0.00
+         
+        }
+      }
+    
+
+    console.log("this.holiday: " + JSON.stringify(this.attendanceSaveData))
+    this.getPreviousCycleHolidayTotal();
+
+  }
+
+  /** Set Leave data for Weekly leave - Previous Cycle */
+  getPreviousWeeklyOff(weeklyOffvalue, previousCycle,rowIndex) {
+    let weeklyOff = weeklyOffvalue
+    if (this.attendanceSaveData.length > 0) {
+      this.attendanceSaveData.forEach((element, index) => {
+        if (element.attendanceInputId == previousCycle.attendanceInputId) {
+          let ind = index;
+          let totalLeaves = element.paidLeaves + element.holiday + element.leaveWithoutPay + parseFloat(weeklyOff)
+          if(totalLeaves <= 1){
+          this.attendanceSaveData.splice(ind, 1, {
+            "attendanceInputId": previousCycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": previousCycle.date + ' 00:00:00',
+            "paidLeaves": parseFloat(element.paidLeaves),
+            "weeklyOff": parseFloat(weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff = weeklyOff
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          weeklyOff = 0.0
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff = 0.0
+        } 
+        }
+        else {
+          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
+          //   let ind = index;
+          //   this.attendanceSaveData.splice(ind, 1)
+          // }  
+          this.attendanceSaveData.push({
+            "attendanceInputId": previousCycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": previousCycle.date + ' 00:00:00',
+            "paidLeaves": parseFloat(element.paidLeaves),
+            "weeklyOff": parseFloat(weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff = weeklyOff
+        }
+      });
+    } else {
+      let totalLeaves = this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves + this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday + this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay + parseFloat(weeklyOff)
+      console.log("total wweklyoff: " +totalLeaves)
+      if(totalLeaves <= 1){
         this.attendanceSaveData.push({
-          "attendanceInputId": futureCycle.attendanceInputId,
+          "attendanceInputId": previousCycle.attendanceInputId,
           "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
           "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
           "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
           "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
           "payrollAreaCode": this.payrollareaCode,
-          "date": futureCycle.date + ' 00:00:00',
-          "paidLeaves": 0.0,
-          "weeklyOff": 0.0,
-          "holiday": 0.0,
-          "leaveWithoutPay" : leaveWithoutPay,
+          "date": previousCycle.date + ' 00:00:00',
+          "paidLeaves": this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves,
+          "weeklyOff": parseInt(weeklyOff),
+          "holiday": this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday,
+          "leaveWithoutPay" : this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay,
           "presentDay_0":this.presentDay_0,
           "currentCycle": parseInt(this.currentCycle)
         })
+        this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff = weeklyOff
+      }else{
+        this.toster.warning("","You can not exceed the leave count more then one")
+        weeklyOff = 0.0
+        this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff = 0.00
+       
       }
-  
-     console.log("this.leaveWithoutPay: " + JSON.stringify(this.attendanceSaveData))
     }
 
+   console.log("this.weeklyOff: " + JSON.stringify(this.attendanceSaveData))
+   this.getPreviousCycleWeeklyOffTotal();
+  }
 
-
-// *********************************************************************************
-
-      /** Set Leave data for Holiday leave - Previous Cycle */
-      getPreviousHoliday(holiday, previousCycle) {
-        if (this.attendanceSaveData.length > 0) {
-          this.attendanceSaveData.forEach((element, index) => {
-            // alert( presentcycle.attendanceInputId)
-            if (element.attendanceInputId == previousCycle.attendanceInputId) {
-              let ind = index;
-              this.attendanceSaveData.splice(ind, 1, {
-    
-                "attendanceInputId": previousCycle.attendanceInputId,
-                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-                "payrollAreaCode": this.payrollareaCode,
-                "date": previousCycle.date + ' 00:00:00',
-                "paidLeaves": element.paidLeaves,
-                "weeklyOff": element.weeklyOff,
-                "holiday": parseFloat(holiday),
-                "leaveWithoutPay" : this.leaveWithoutPay,
-                "presentDay_0":this.presentDay_0,
-                "currentCycle": parseInt(this.currentCycle)
-    
-              })
-            }
-            else {
-              // alert('here')
-              // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-              //   let ind = index;
-              //   this.attendanceSaveData.splice(ind, 1)
-              // }  
-              this.attendanceSaveData.push({
-                "attendanceInputId": previousCycle.attendanceInputId,
-                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-                "payrollAreaCode": this.payrollareaCode,
-                "date": previousCycle.date + ' 00:00:00',
-                "paidLeaves": element.paidLeaves,
-                "weeklyOff": element.weeklyOff,
-                "holiday": parseFloat(holiday),
-                "leaveWithoutPay" : this.leaveWithoutPay,
-                "presentDay_0":this.presentDay_0,
-                "currentCycle": parseInt(this.currentCycle)
-              })
-            }
-          });
-        } else {
-          // alert("else1")
-          this.attendanceSaveData.push({
+  /** Set Leave data for Paid leave - Previous Cycle */
+  getPreviousPaidLeaves(paidLeavesvalue, previousCycle,rowIndex){
+    let paidLeaves = paidLeavesvalue
+    if (this.attendanceSaveData.length > 0) {
+      this.attendanceSaveData.forEach((element, index) => {
+        if (element.attendanceInputId == previousCycle.attendanceInputId) {
+          let ind = index;
+          let totalLeaves = element.weeklyOff + element.holiday + element.leaveWithoutPay + parseFloat(paidLeaves)
+          if(totalLeaves <= 1){
+          this.attendanceSaveData.splice(ind, 1, {
             "attendanceInputId": previousCycle.attendanceInputId,
             "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
             "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
@@ -880,129 +1304,25 @@ export class AttendanceComponent implements OnInit {
             "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
             "payrollAreaCode": this.payrollareaCode,
             "date": previousCycle.date + ' 00:00:00',
-            "paidLeaves": 0.0,
-            "weeklyOff": 0.0,
-            "holiday": parseFloat(holiday),
-            "leaveWithoutPay" :this.leaveWithoutPay,
+            "paidLeaves": parseFloat(paidLeaves),
+            "weeklyOff": parseFloat(element.weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
             "presentDay_0":this.presentDay_0,
             "currentCycle": parseInt(this.currentCycle)
           })
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves = paidLeaves
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          paidLeaves = 0.0
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves = 0.0
+        } 
         }
-    
-        console.log("this.holiday: " + JSON.stringify(this.attendanceSaveData))
-    
-      }
-    
-      /** Set Leave data for Weekly leave - Previous Cycle */
-      getPreviousWeeklyOff(weeklyOff, previousCycle) {
-        if (this.attendanceSaveData.length > 0) {
-          this.attendanceSaveData.forEach((element, index) => {
-            if (element.attendanceInputId == previousCycle.attendanceInputId) {
-              let ind = index;
-              this.attendanceSaveData.splice(ind, 1, {
-                "attendanceInputId": previousCycle.attendanceInputId,
-                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-                "payrollAreaCode": this.payrollareaCode,
-                "date": previousCycle.date + ' 00:00:00',
-                "paidLeaves": parseFloat(element.paidLeaves),
-                "weeklyOff": parseFloat(weeklyOff),
-                "holiday": parseFloat(element.holiday),
-                "leaveWithoutPay" : this.leaveWithoutPay,
-                "presentDay_0":this.presentDay_0,
-                "currentCycle": parseInt(this.currentCycle)
-              })
-            }
-            else {
-              // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-              //   let ind = index;
-              //   this.attendanceSaveData.splice(ind, 1)
-              // }  
-              this.attendanceSaveData.push({
-                "attendanceInputId": previousCycle.attendanceInputId,
-                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-                "payrollAreaCode": this.payrollareaCode,
-                "date": previousCycle.date + ' 00:00:00',
-                "paidLeaves": parseFloat(element.paidLeaves),
-                "weeklyOff": parseFloat(weeklyOff),
-                "holiday": parseFloat(element.holiday),
-                "leaveWithoutPay" : this.leaveWithoutPay,
-                "presentDay_0":this.presentDay_0,
-                "currentCycle": parseInt(this.currentCycle)
-              })
-            }
-          });
-        } else {
-          this.attendanceSaveData.push({
-            "attendanceInputId": previousCycle.attendanceInputId,
-            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-            "payrollAreaCode": this.payrollareaCode,
-            "date": previousCycle.date + ' 00:00:00',
-            "paidLeaves": 0.0,
-            "weeklyOff": parseFloat(weeklyOff),
-            "holiday": 0.0,
-            "leaveWithoutPay" : this.leaveWithoutPay,
-            "presentDay_0":this.presentDay_0,
-            "currentCycle": parseInt(this.currentCycle)
-          })
-        }
-    
-       console.log("this.weeklyOff: " + JSON.stringify(this.attendanceSaveData))
-      }
-    
-      /** Set Leave data for Paid leave - Previous Cycle */
-      getPreviousPaidLeaves(paidLeaves, previousCycle){
-        if (this.attendanceSaveData.length > 0) {
-          this.attendanceSaveData.forEach((element, index) => {
-            if (element.attendanceInputId == previousCycle.attendanceInputId) {
-              let ind = index;
-              this.attendanceSaveData.splice(ind, 1, {
-                "attendanceInputId": previousCycle.attendanceInputId,
-                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-                "payrollAreaCode": this.payrollareaCode,
-                "date": previousCycle.date + ' 00:00:00',
-                "paidLeaves": parseFloat(paidLeaves),
-                "weeklyOff": parseFloat(element.weeklyOff),
-                "holiday": parseFloat(element.holiday),
-                "leaveWithoutPay" : this.leaveWithoutPay,
-                "presentDay_0":this.presentDay_0,
-                "currentCycle": parseInt(this.currentCycle)
-              })
-            }
-            else {
-              // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-              //   let ind = index;
-              //   this.attendanceSaveData.splice(ind, 1)
-              // }  
-              this.attendanceSaveData.push({
-                "attendanceInputId": previousCycle.attendanceInputId,
-                "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-                "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-                "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-                "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-                "payrollAreaCode": this.payrollareaCode,
-                "date": previousCycle.date + ' 00:00:00',
-                "paidLeaves": parseFloat(paidLeaves),
-                "weeklyOff": parseFloat(element.weeklyOff),
-                "holiday": parseFloat(element.holiday),
-                "leaveWithoutPay" : this.leaveWithoutPay,
-                "presentDay_0":this.presentDay_0,
-                "currentCycle": parseInt(this.currentCycle)
-              })
-            }
-          });
-        } else {
+        else {
+          // if (element.attendanceInputId == presentcycle.attendanceInputId) {
+          //   let ind = index;
+          //   this.attendanceSaveData.splice(ind, 1)
+          // }  
           this.attendanceSaveData.push({
             "attendanceInputId": previousCycle.attendanceInputId,
             "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
@@ -1012,63 +1332,84 @@ export class AttendanceComponent implements OnInit {
             "payrollAreaCode": this.payrollareaCode,
             "date": previousCycle.date + ' 00:00:00',
             "paidLeaves": parseFloat(paidLeaves),
-            "weeklyOff": 0.0,
-            "holiday": 0.0,
-            "leaveWithoutPay" : this.leaveWithoutPay,
+            "weeklyOff": parseFloat(element.weeklyOff),
+            "holiday": parseFloat(element.holiday),
+            "leaveWithoutPay" : parseFloat(element.leaveWithoutPay),
             "presentDay_0":this.presentDay_0,
             "currentCycle": parseInt(this.currentCycle)
           })
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves = paidLeaves
         }
-    
-       console.log("this.paidLeaves: " + JSON.stringify(this.attendanceSaveData))
+      });
+    } else {
+      let totalLeaves = this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff + this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday + this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay + parseFloat(paidLeaves)
+      console.log("total wweklyoff: " +totalLeaves)
+      if(totalLeaves <= 1){
+        this.attendanceSaveData.push({
+          "attendanceInputId": previousCycle.attendanceInputId,
+          "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+          "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+          "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+          "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+          "payrollAreaCode": this.payrollareaCode,
+          "date": previousCycle.date + ' 00:00:00',
+          "paidLeaves": parseFloat(paidLeaves),
+          "weeklyOff": this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff,
+          "holiday": this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday,
+          "leaveWithoutPay" : this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay,
+          "presentDay_0":this.presentDay_0,
+          "currentCycle": parseInt(this.currentCycle)
+        })
+        this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves = paidLeaves
+      }else{
+        this.toster.warning("","You can not exceed the leave count more then one")
+        paidLeaves = 0.0
+        this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves = 0.00
+       
       }
-    
-    
-        /** Set Leave data for Paid leave - Previous Cycle */
-        getPreviousLeaveWithoutPay(leaveWithoutPay, previousCycle){
-          if (this.attendanceSaveData.length > 0) {
-            this.attendanceSaveData.forEach((element, index) => {
-              if (element.attendanceInputId == previousCycle.attendanceInputId) {
-                let ind = index;
-                this.attendanceSaveData.splice(ind, 1, {
-                  "attendanceInputId": previousCycle.attendanceInputId,
-                  "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-                  "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-                  "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-                  "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-                  "payrollAreaCode": this.payrollareaCode,
-                  "date": previousCycle.date + ' 00:00:00',
-                  "paidLeaves": parseFloat(element.paidLeaves),
-                  "weeklyOff": parseFloat(element.weeklyOff),
-                  "holiday": parseFloat(element.holiday),
-                  "leaveWithoutPay" : leaveWithoutPay,
-                  "presentDay_0":this.presentDay_0,
-                  "currentCycle": parseInt(this.currentCycle)
-                })
-              }
-              else {
-                // if (element.attendanceInputId == presentcycle.attendanceInputId) {
-                //   let ind = index;
-                //   this.attendanceSaveData.splice(ind, 1)
-                // }  
-                this.attendanceSaveData.push({
-                  "attendanceInputId": previousCycle.attendanceInputId,
-                  "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-                  "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
-                  "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
-                  "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
-                  "payrollAreaCode": this.payrollareaCode,
-                  "date": previousCycle.date + ' 00:00:00',
-                  "paidLeaves": parseFloat(element.paidLeaves),
-                  "weeklyOff": parseFloat(element.weeklyOff),
-                  "holiday": parseFloat(element.holiday),
-                  "leaveWithoutPay" : leaveWithoutPay,
-                  "presentDay_0":this.presentDay_0,
-                  "currentCycle": parseInt(this.currentCycle)
-                })
-              }
-            });
-          } else {
+    }
+
+   console.log("this.paidLeaves: " + JSON.stringify(this.attendanceSaveData))
+   this.getPreviousCycleLeaveTotal();
+  }
+
+
+  /** Set Leave data for Paid leave - Previous Cycle */
+  getPreviousLeaveWithoutPay(leaveWithoutPayvalue, previousCycle,rowIndex){
+      let leaveWithoutPay = leaveWithoutPayvalue
+      if (this.attendanceSaveData.length > 0) {
+        this.attendanceSaveData.forEach((element, index) => {
+          if (element.attendanceInputId == previousCycle.attendanceInputId) {
+            let ind = index;
+            let totalLeaves = element.weeklyOff + element.holiday + element.paidLeaves + parseFloat(leaveWithoutPay)
+            if(totalLeaves <= 1){
+            this.attendanceSaveData.splice(ind, 1, {
+              "attendanceInputId": previousCycle.attendanceInputId,
+              "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+              "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+              "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+              "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+              "payrollAreaCode": this.payrollareaCode,
+              "date": previousCycle.date + ' 00:00:00',
+              "paidLeaves": parseFloat(element.paidLeaves),
+              "weeklyOff": parseFloat(element.weeklyOff),
+              "holiday": parseFloat(element.holiday),
+              "leaveWithoutPay" : parseFloat(leaveWithoutPay),
+              "presentDay_0":this.presentDay_0,
+              "currentCycle": parseInt(this.currentCycle)
+            })
+            this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay = leaveWithoutPay
+          }else{
+            this.toster.warning("","You can not exceed the leave count more then one")
+            leaveWithoutPay = 0.0
+            this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay = 0.0
+          } 
+          }
+          else {
+            // if (element.attendanceInputId == presentcycle.attendanceInputId) {
+            //   let ind = index;
+            //   this.attendanceSaveData.splice(ind, 1)
+            // }  
             this.attendanceSaveData.push({
               "attendanceInputId": previousCycle.attendanceInputId,
               "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
@@ -1077,19 +1418,90 @@ export class AttendanceComponent implements OnInit {
               "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
               "payrollAreaCode": this.payrollareaCode,
               "date": previousCycle.date + ' 00:00:00',
-              "paidLeaves": 0.0,
-              "weeklyOff": 0.0,
-              "holiday": 0.0,
-              "leaveWithoutPay" : leaveWithoutPay,
+              "paidLeaves": parseFloat(element.paidLeaves),
+              "weeklyOff": parseFloat(element.weeklyOff),
+              "holiday": parseFloat(element.holiday),
+              "leaveWithoutPay" : parseFloat(leaveWithoutPay),
               "presentDay_0":this.presentDay_0,
               "currentCycle": parseInt(this.currentCycle)
             })
+            this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay = leaveWithoutPay
           }
-      
-         console.log("this.leaveWithoutPay: " + JSON.stringify(this.attendanceSaveData))
+        });
+      } else {
+        let totalLeaves = this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff + this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday + this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves + parseFloat(leaveWithoutPay)
+        console.log("total wweklyoff: " +totalLeaves)
+        if(totalLeaves <= 1){
+          this.attendanceSaveData.push({
+            "attendanceInputId": previousCycle.attendanceInputId,
+            "employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
+            "processingCycle": parseInt(this.selectedEmpData[this.index].processingCycle),
+            "pertainingCycle": parseInt(this.selectedEmpData[this.index].pertainingCycle),
+            "payrollAreaId": parseInt(this.attendanceForm.controls['payrollArea'].value),
+            "payrollAreaCode": this.payrollareaCode,
+            "date": previousCycle.date + ' 00:00:00',
+            "paidLeaves": this.attendanceInputGetAPIPreviouscycleData[rowIndex].paidLeaves,
+            "weeklyOff": this.attendanceInputGetAPIPreviouscycleData[rowIndex].weeklyOff,
+            "holiday": this.attendanceInputGetAPIPreviouscycleData[rowIndex].holiday,
+            "leaveWithoutPay" : parseFloat(leaveWithoutPay),
+            "presentDay_0":this.presentDay_0,
+            "currentCycle": parseInt(this.currentCycle)
+          })
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay = leaveWithoutPay
+        }else{
+          this.toster.warning("","You can not exceed the leave count more then one")
+          leaveWithoutPay = 0.0
+          this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay = 0.00
+         
         }
+      }
+  
+     console.log("this.leaveWithoutPay: " + JSON.stringify(this.attendanceSaveData))
+     this.getPreviousCycleLeaveWithoutPayTotal();
+  }
 
 
+
+  getPreviousCycleWeeklyOffTotal(){
+    let total = 0.0
+    this.attendanceInputGetAPIPreviouscycleData.forEach(element => {
+      total = total + parseFloat(element.weeklyOff)
+     
+    });
+    return total;
+  }
+
+
+  getPreviousCycleHolidayTotal(){
+    let total = 0.0
+    this.attendanceInputGetAPIPreviouscycleData.forEach(element => {
+      total = total + parseFloat(element.holiday)
+     
+    });
+    return total;
+  }
+
+  /** Calculate current cycle weekly off  */
+  getPreviousCycleLeaveTotal(){
+    let total = 0.0
+    this.attendanceInputGetAPIPreviouscycleData.forEach(element => {
+      total = total + parseFloat(element.paidLeaves)
+     
+    });
+    return total;
+  }
+
+  /** Calculate current cycle weekly off  */
+  getPreviousCycleLeaveWithoutPayTotal(){
+    let total = 0.0
+    this.attendanceInputGetAPIPreviouscycleData.forEach(element => {
+      total = total + parseFloat(element.leaveWithoutPay)
+     
+    });
+    return total;
+  }  
+
+// **********************************Previous Cycle Functions Ends***********************************************
 
   /** Save Button Click */
   AttendanceInput() {
@@ -1097,7 +1509,8 @@ export class AttendanceComponent implements OnInit {
     this.attendanceService.AttendanceInput(this.attendanceSaveData).subscribe(
       res => {
         this.toster.success("", "Attendance data saved successfully")
-        this.attendanceInputAPIRecordsUI()
+        this.attendanceInputAPIRecordsUI();
+        this.attendanceInputGetTotalAPIRecordsUI(this.index);
       }
     )
   }
@@ -1137,20 +1550,31 @@ export class AttendanceComponent implements OnInit {
 
   /** Tabs Navigation */
   attendaceTabClick() {
+    if(this.selectedEmpData.length > 0){
     this.payrollAreaDetails();
     this.index = 0;
     this.currentCycle = parseInt(this.selectedEmpData[this.index].pertainingCycle); 
     this.attendanceInputGetTotalAPIRecordsUI(this.index);
     this.attendanceInputAPIRecordsUI();
-    this.getAllActiveBussinessYear();
-    this.businessCycleDefinition();
+    // this.getAllActiveBussinessYear();
+    // this.businessCycleDefinition();
     this.employeeFinDetails();
     this.payrollAssigned();
+    this.PayrollAreaByPayrollAreaCode()
+    }else{
+      this.toster.warning("","Please select atleast one employee")
+    }
+
+    this.attendanceInputGetAPIFuturecycle(this.index);
+    this.attendanceInputGetAPIPreviouscycle(this.index);
     
   }
 
   summeryTab() {
     this.fromDate = null;
+    this.tabIndex = 0;
+    this.selectedEmpData = []
+    this.getAttendanceSummaryData();
   }
 
   presentCycleTab() {
@@ -1166,23 +1590,23 @@ export class AttendanceComponent implements OnInit {
   }
 
   /** Business year list */
-  getAllActiveBussinessYear() {
-    this.attendanceService.getAllActiveBussinessYear().subscribe(
-      res => {
-        this.getAllActiveBussinessYearData = res.data.results;
-      }
-    )
-  }
+  // getAllActiveBussinessYear() {
+  //   this.attendanceService.getAllActiveBussinessYear().subscribe(
+  //     res => {
+  //       this.getAllActiveBussinessYearData = res.data.results;
+  //     }
+  //   )
+  // }
 
   /** Business Cycle List */
-  businessCycleDefinition() {
-    this.attendanceService.businessCycleDefinition().subscribe(
-      res => {
-        this.businessCycleDefinitionData = res.data.results;
-        //this.getFrequencyByCycle(this.currentCycle)
-      }
-    )
-  }
+  // businessCycleDefinition() {
+  //   this.attendanceService.businessCycleDefinition().subscribe(
+  //     res => {
+  //       this.businessCycleDefinitionData = res.data.results;
+       
+  //     }
+  //   )
+  // }
 
   /** Display Frequency By Selected Cycle */
   getFrequencyByCycle(cycleId) {
@@ -1226,6 +1650,37 @@ export class AttendanceComponent implements OnInit {
     day = this.days[d.getDay()];
     return day;
 
+  }
+
+  getMonths(date){
+    let month = '';
+    var d = new Date(date);
+    month = this.months[d.getMonth()];
+    return month;
+
+  }
+
+
+  changeTabIndex(index){
+    if(this.selectedEmpData.length > 0){
+    this.tabIndex = index;
+    }
+  }
+
+  PayrollAreaByPayrollAreaCode(){
+    const formData = new FormData();
+
+   
+    formData.append('payrollArea', this.selectedEmpData[this.index].payrollAreacode)
+
+
+    this.attendanceService.PayrollAreaByPayrollAreaCode(formData).subscribe(
+      res => {
+        this.PayrollAreaByPayrollAreaCodeData = res.data.results;
+        this.defaultAttendace = this.PayrollAreaByPayrollAreaCodeData[0].defaultAttendace;
+        this.is30daysPayroll = this.PayrollAreaByPayrollAreaCodeData[0].is30daysPayroll;
+      }
+    )
   }
 
 

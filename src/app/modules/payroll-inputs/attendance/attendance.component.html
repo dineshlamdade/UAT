@@ -8,8 +8,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="tabview tabview_fixed_deposit">
-                                <input name="nav" type="radio" class="about-radio" id="summary" checked
-                                    (click)="summeryTab()" />
+                                <input name="nav" type="radio" class="about-radio" id="summary" [checked]="tabIndex == 0"
+                                    (click)="summeryTab()"  />
                                 <div class="tabs about-page">
                                     <div class="card">
                                         <div class="card-body">
@@ -22,8 +22,7 @@
                                                             <span>Holidays |</span></label>
                                                         <label class="font700 text-cyan mr-2 font-12">L - <span>Leaves
                                                                 |</span></label>
-                                                        <label class="font700 text-red mr-2 font-12">LWP - <span>Leave
-                                                                Without Pay Days |</span></label>
+                                                        <label class="font700 text-red mr-2 font-12">LOP - <span>Loss of Pay Days |</span></label>
                                                         <label class="font700 text-green mr-4 font-12">Adj Days -
                                                             <span>Adjustment Days </span></label>
                                                     </div>
@@ -38,37 +37,43 @@
                                                         &nbsp;<span
                                                             class="text-dark-green font-14 font-bold">({{selectedEmpData.length}})</span></label>
                                                     <div class="float-right d-flex justify-content-end">
-                                                        <span class="form-label mt-2">Cycle Start Date Between</span>
-                                                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="fa fa-calendar"></i>
-                                                                    </span>
+                                                        <div style="display: inherit;padding-right: 150px;">
+                                                            <span class="form-label mt-2">Cycle Start Date Between</span>
+                                                            <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            <i class="fa fa-calendar"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                    <input data-provide="datepicker"
+                                                                        data-date-autoclose="true" class="form-control"
+                                                                        placeholder="Date" bsDatepicker
+                                                                        [(ngModel)]="fromDate">
                                                                 </div>
-                                                                <input data-provide="datepicker"
-                                                                    data-date-autoclose="true" class="form-control"
-                                                                    placeholder="Date" bsDatepicker
-                                                                    [(ngModel)]="fromDate">
                                                             </div>
-                                                        </div>
-                                                        <span class="font700 font-12 mt-2 ">To</span>
-                                                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <i class="fa fa-calendar"></i>
-                                                                    </span>
+                                                            <span class="font700 font-12 mt-2 ">To</span>
+                                                            <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            <i class="fa fa-calendar"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                    <input data-provide="datepicker"
+                                                                        data-date-autoclose="true" class="form-control"
+                                                                        placeholder="Date" bsDatepicker
+                                                                        [(ngModel)]="toDate">
                                                                 </div>
-                                                                <input data-provide="datepicker"
-                                                                    data-date-autoclose="true" class="form-control"
-                                                                    placeholder="Date" bsDatepicker
-                                                                    [(ngModel)]="toDate">
                                                             </div>
+                                                            <button class="btn-bg-green btn-labeled mr-10"
+                                                            (click)="AttendanceSummaryDatewiseRecordsUI()">Go</button>
                                                         </div>
-                                                        <button type="button" tooltip="Date wise Attendance"
-                                                            (click)="AttendanceSummaryDatewiseRecordsUI()"
-                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
+                                                       
+                                                       
+                                                        <button type="button" tooltip="Date wise Attendance" 
+                                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" 
+                                                        (click)="attendaceTabClick();changeTabIndex(1)">
                                                             <b><i class="fa fa-file"></i></b>
                                                             Date wise Attendance
                                                         </button>
@@ -76,10 +81,10 @@
                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i
                                                                     class="fa fa-upload"></i></b> Upload Attendance
                                                         </button>
-                                                        <!-- <button type="button" tooltip="Filter"
+                                                        <button type="button" tooltip="Filter"
                                                             class="bg-teal-400 btn btn-sm mr-10"
                                                             (click)="display=true"><b><i class="fa fa-filter"></i></b>
-                                                        </button> -->
+                                                        </button>
                                                         <a tooltip="Download" style="cursor: pointer"
                                                             (click)="exportAsXLSX()"><i
                                                                 class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
@@ -205,7 +210,7 @@
                                                                 </th>
                                                                 <th class="wd-40">
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
-                                                                        LWP
+                                                                        LOP
                                                                         <div class="Sort_Filter_Position">
                                                                             <p-sortIcon field="leavewithoutpay"
                                                                                 pSortableColumn="leavewithoutpay">
@@ -325,8 +330,7 @@
                                     <span> Summary </span>
                                 </label>
                                 
-                                <input name="nav" type="radio" class="about-radio" id="Attendance"
-                                    (click)="attendaceTabClick()" [disabled]="selectedEmpData.length == 0"/>
+                                <input name="nav" (change)="changeTabIndex(1)" [checked]="tabIndex == 1" type="radio" class="about-radio" id="Attendance"/>
                                     <!-- [disabled]="selectedEmpData.length == 0" -->
                                 <div class="tabs about-page">
                                     <form [formGroup]="attendanceForm">
@@ -346,7 +350,7 @@
                                                                 <label class="form-label mt-1 mb-0">Date of
                                                                     Joining</label>
                                                                 <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                    {{employeeFinDetailsData.joiningDate}}
+                                                                    {{employeeFinDetailsData.joiningDate | date: 'dd-MMM-yyyy'}}
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-2">
@@ -386,28 +390,77 @@
                                                 </div>
                                             </div>
                                             <div class="row mt-15">
-                                                <div class="col-md-1">
+                                                <div class="col-md-12">
+                                                    <div class="box-line-border radius-10 p-2 mt-3">
+                                                        <div class="row">
+                                                            <div class="col-md-2" *ngIf="empData">
+                                                                <label class="form-label mt-1 mb-0">Business Year</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0"></label>
+                                                            </div>
+                                                            <div class="col-md-2" *ngIf="selectedEmpData[index]">
+                                                                <label class="form-label mt-1 mb-0">Cycle</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                    {{selectedEmpData[index].cycle}}
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label
+                                                                    class="form-label mt-1 mb-0">Frequency</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                    {{frequencyArray  ? frequencyArray.name : '' }}
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                              
+                                                                <label class="form-label mt-1 mb-0">Start Date</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                    {{effectiveFromDate}}
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                               
+                                                                <label class="form-label mt-1 mb-0">End Date</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                    {{effectiveToDate}}
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-2" *ngIf="selectedEmpData[index]">
+                                                                <label class="form-label mt-1 mb-0">Payroll Area</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                    {{selectedEmpData[index].payrollAreacode}}
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-1" *ngIf="selectedEmpData[index]">
+                                                                <label class="form-label mt-1 mb-0">Current Cycle</label>
+                                                                <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                    {{selectedEmpData[index].cycle}}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-1">
                                                     <label class="form-label">Business Year </label>
                                                     <select name="BusinessYear" class="form-control custom-select" formControlName="businessYear">
                                                         <option value="">Select Business Year</option>
                                                         <option *ngFor="let bussYear of getAllActiveBussinessYearData">{{bussYear.businessYear}}</option>
-                                                        <!-- <option value="2021"> 2021</option> -->
+                                                      
                                                     </select>
-                                                </div>
-                                                <div class="col-md-2">
+                                                </div> -->
+                                                <!-- <div class="col-md-2">
                                                     <label class="form-label">Cycle</label>
                                                     <select name="Cycle" class="form-control custom-select" (change)="getFrequencyByCycle($event.target.value)" formControlName="cycle">
                                                         <option value="" [selected]="currentCycle == '' ">Select Cycle</option>
-                                                        <option value="{{cycle.id}}"  *ngFor="let cycle of businessCycleDefinitionData"> {{cycle.cycleName}} </option>
+                                                        <option value="{{cycle.id}}"  *ngFor="let cycle of businessCycleDefinitionData"> {{cycle.cycleName}} </option> -->
                                                         <!-- [selected]="currentCycle == cycle.id" -->
                                                         <!-- <option value="Cycle2"> Cycle2</option> -->
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-1">
+                                                    <!-- </select>
+                                                </div> -->
+                                                <!-- <div class="col-md-1">
                                                     <label class="form-label">Frequency</label>
                                                     <input  type="text" class="form-control" [value]="frequencyArray  ? frequencyArray.name : '' " disabled formControlName="frequency"> 
-                                                </div>
-                                                <div class="col-md-2">
+                                                </div> -->
+                                                <!-- <div class="col-md-2">
                                                     <label class="form-label">Start Date</label>
                                                     <div class="form-group">
                                                         <div class="input-group">
@@ -436,21 +489,21 @@
                                                                 disabled value="{{effectiveToDate}}" formControlName="effectiveToDate">
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-2" >
+                                                </div> -->
+                                                <!-- <div class="col-md-2" >
                                                     <label class="form-label">Payroll Area</label>
                                                     <select name="PA" class="form-control custom-select" (change)="getSelectedPayrollArea($event.target.value)"
                                                      formControlName="payrollArea">
                                                         <option value=""> Select Payroll Area </option>
-                                                        <option value="{{payrollAssignedData.payrollAreaId}}" *ngIf="payrollAssignedData"> {{payrollAssignedData.payrollAreaCode}} </option>
+                                                        <option value="{{payrollAssignedData.payrollAreaId}}" *ngIf="payrollAssignedData"> {{payrollAssignedData.payrollAreaCode}} </option> -->
                                                         <!-- <option value="1"> PA_01</option> -->
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-2" *ngIf="selectedEmpData[index]">
+                                                    <!-- </select>
+                                                </div> -->
+                                                <!-- <div class="col-md-2" *ngIf="selectedEmpData[index]">
                                                     <label class="form-label">Current Cycle</label>
                                                     <input  value="{{selectedEmpData[index].cycle}}" type="text" class="form-control" disabled>
                                                    
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="d-flex justify-content-spacearound mt-15"
                                                 *ngIf="attendanceInputGetTotalAPIRecordsUIData">
@@ -467,7 +520,7 @@
                                                         <div class="card-body text-light detailedcard">
                                                             <h3>{{attendanceInputGetTotalAPIRecordsUIData.weeklyOff}}
                                                             </h3>
-                                                            <span>Weekly Off</span>
+                                                            <span>Weekly Off Days</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -475,7 +528,7 @@
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
                                                             <h3>{{attendanceInputGetTotalAPIRecordsUIData.holiday}}</h3>
-                                                            <span> Holiday</span>
+                                                            <span> Holidays</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -484,7 +537,7 @@
                                                         <div class="card-body text-light detailedcard">
                                                             <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidLeaves}}
                                                             </h3>
-                                                            <span>Leave</span>
+                                                            <span>Leave Days</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -493,7 +546,7 @@
                                                         <div class="card-body text-light detailedcard">
                                                             <h3>{{attendanceInputGetTotalAPIRecordsUIData.leaveWithoutPay}}
                                                             </h3>
-                                                            <span>Leave Without Pay</span>
+                                                            <span>Loss of Pay Days</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -509,8 +562,25 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidDays}}
+                                                            <h3>0</h3>
+                                                            <span>Future Days</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="wd-150">
+                                                    <div class="card text-center btn-bg-green">
+                                                        <div class="card-body text-light detailedcard">
+                                                            <h3>
                                                             </h3>
+                                                            <span>Adj. Days</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                               
+                                                <div class="wd-150">
+                                                    <div class="card text-center btn-bg-green">
+                                                        <div class="card-body text-light detailedcard">
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidDays + attendanceInputGetTotalAPIRecordsUIData.futureArrears}}</h3>
                                                             <span>Payable Days</span>
                                                         </div>
                                                     </div>
@@ -520,7 +590,7 @@
                                                 <div class="col-md-6">
                                                     <div class="card dottedbordercard"
                                                         *ngIf="attendanceInputGetTotalAPIRecordsUIData">
-                                                        <div class="row m-0">
+                                                        <div class="row m-0" *ngIf="selectedEmpData[index]">
                                                             <div
                                                                 class="col-md-12 text-center font700 font16 p-1 border-bottom-cyan">
                                                                 Paid days of
@@ -531,7 +601,7 @@
                                                                 <label
                                                                     class="mb-0 font500">Processed in {{selectedEmpData[index].cycle}}</label>&nbsp;&nbsp;
                                                                 <h3 class="mb-0">
-                                                                     {{attendanceInputGetTotalAPIRecordsUIData.presentDay}}
+                                                                     {{attendanceInputGetTotalAPIRecordsUIData.paidDays}}
                                                                 </h3>
                                                             </div>
                                                             <div
@@ -546,7 +616,7 @@
                                                                 class="col-md-4 p-1 text-center d-flex align-items-center justify-content-spacearound">
                                                                 <label class="mb-0 font500">Total </label>
                                                                 <h3 class="mb-0">
-                                                                    {{attendanceInputGetTotalAPIRecordsUIData.presentDay + attendanceInputGetTotalAPIRecordsUIData.futureArrears}} 
+                                                                    {{attendanceInputGetTotalAPIRecordsUIData.paidDays + attendanceInputGetTotalAPIRecordsUIData.futureArrears}} 
                                                                 </h3>
                                                             </div>
                                                         </div>
@@ -556,8 +626,8 @@
                                                     <div class="card dottedbordercard">
                                                         <div class="row m-0" *ngIf="attendanceInputGetTotalAPIRecordsUIData">
                                                             <div
-                                                                class="col-md-12 text-center font700 font16 p-1 border-bottom-cyan">
-                                                                Arrears days Paid in {{selectedEmpData[index].cycle}}
+                                                                class="col-md-12 text-center font700 font16 p-1 border-bottom-cyan" *ngIf="selectedEmpData[index]">
+                                                                Arrear days Paid in {{selectedEmpData[index].cycle}}
                                                             </div>
                                                             <div
                                                                 class="col-md-12 p-1 text-center d-flex align-items-center justify-content-center">
@@ -573,14 +643,14 @@
                                                     checked (click)="presentCycleTab()">
                                                 <label class="border-tab-label" for="tab1"
                                                     ><i
-                                                        class="fa fa-calendar"></i><span>
+                                                        class="fa fa-calendar"></i><span *ngIf="selectedEmpData[index]">
                                                             {{selectedEmpData[index].cycle}} days processed in same cycle</span><span class="count-badge">{{attendanceInputAPIRecordsUIData.length}}</span></label>
                                                 <input id="tab2" class="border-tab-input" type="radio" name="tabs" (click)="futureCycleTab()">
                                                 <label class="border-tab-label" for="tab2"><i
-                                                        class="fa fa-arrow-circle-o-left"></i><span>{{selectedEmpData[index].cycle}} days processed in future cycles</span><span class="count-badge">{{attendanceInputGetAPIFuturecyclesData.length}}</span></label>
+                                                        class="fa fa-arrow-circle-o-left"></i><span *ngIf="selectedEmpData[index]">{{selectedEmpData[index].cycle}} days processed in future cycles</span><span class="count-badge">{{attendanceInputGetAPIFuturecyclesData.length}}</span></label>
                                                 <input id="tab3" class="border-tab-input" type="radio" name="tabs" (click)="previousCycleTab()">
                                                 <label class="border-tab-label" for="tab3"><i
-                                                        class="fa fa-arrow-circle-o-right"></i><span>Processed in {{selectedEmpData[index].cycle}} for
+                                                        class="fa fa-arrow-circle-o-right"></i><span *ngIf="selectedEmpData[index]">Processed in {{selectedEmpData[index].cycle}} for
                                                         previous cycles</span><span
                                                         class="count-badge">{{attendanceInputGetAPIPreviouscycleData.length}}</span></label>
                                                 <section id="content1" class="bordered-tab-content">
@@ -680,9 +750,8 @@
                                                                         <th class="wd-5">
                                                                             <div
                                                                                 class="p-d-flex p-jc-center p-ai-center">
-                                                                                <span tooltip="Leave Without Pay"
-                                                                                    placement="bottom"> Leave Without
-                                                                                    Pay</span> &nbsp;&nbsp;
+                                                                                <span tooltip="Loss of Pay Days"
+                                                                                    placement="bottom">Loss of Pay Days</span> &nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="LOP">
                                                                                     </p-sortIcon>
@@ -701,6 +770,21 @@
                                                                                     <p-sortIcon field="Presentdays">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter field="Presentdays"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+
+                                                                        <th class="wd-8" *ngIf="is30daysPayroll == '1'">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-center p-ai-center">
+                                                                                Adj &nbsp;&nbsp;
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="Adj">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="Adj"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
@@ -753,10 +837,10 @@
                                                                         </th>
                                                                     </tr>
                                                                 </ng-template>
-                                                                <ng-template pTemplate="body" let-presentCycle
+                                                                <ng-template pTemplate="body" let-presentCycle let-rowIndex="rowIndex"
                                                                     class="tablebodyscroll">
                                                                     <tr class="p-selectable-row">
-                                                                        <td class="bg-color-light_gray">
+                                                                        <td class="bg-color-light_gray" style="text-align: center !important;">
                                                                             <div class="form-group mb-0">
                                                                                 <div class="input-group">
                                                                                     <label
@@ -764,29 +848,29 @@
                                                                                 </div>
                                                                             </div>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label
+                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
                                                                                 class="form-lable mb-0">{{getDays(presentCycle.date)}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label
+                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
                                                                                 class="form-lable mb-0">{{presentCycle.payrollAreaCode}}</label>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
                                                                                 <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown" 
-                                                                                    (change)="getCurrentWeeklyOff($event.target.value, presentCycle)">
-                                                                                    <option value="0.0" [selected]="presentCycle.weeklyOff == '0.0'"> 0.00</option>
-                                                                                    <option value="0.25" [selected]="presentCycle.weeklyOff == '0.5'"> 0.25</option>
-                                                                                    <option value="0.50" [selected]="presentCycle.weeklyOff == '1.0'"> 0.50</option>
-                                                                                    <option value="0.75" [selected]="presentCycle.weeklyOff == '1.0'"> 0.75</option>
-                                                                                    <option value="1.00" [selected]="presentCycle.weeklyOff == '1.0'"> 1.00</option>
+                                                                                    (change)="getCurrentWeeklyOff($event.target.value, presentCycle,rowIndex)">
+                                                                                    <option value="0.00" [selected]="presentCycle.weeklyOff == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="presentCycle.weeklyOff == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="presentCycle.weeklyOff == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="presentCycle.weeklyOff == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="presentCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
                                                                                 <select name="holiday" class="form-control custom-select attendance_dropdown" 
-                                                                                    (change)="getCurrentHoliday($event.target.value,presentCycle)">
+                                                                                    (change)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)">
                                                                                     <option value="0.00" [selected]="presentCycle.holiday == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="presentCycle.holiday == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="presentCycle.holiday == '0.50'"> 0.50</option>
@@ -799,7 +883,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown" 
-                                                                                    (change)="getCurrentPaidLeaves($event.target.value,presentCycle)">
+                                                                                    (change)="getCurrentPaidLeaves($event.target.value,presentCycle,rowIndex)">
                                                                                     
                                                                                     <option value="0.00" [selected]="presentCycle.paidLeaves == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="presentCycle.paidLeaves == '0.25'"> 0.25</option>
@@ -813,8 +897,8 @@
                                                                             <div class="d-flex">
                                                                                 <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown" 
-                                                                                    (change)="getCurrentLeaveWithoutPay($event.target.value,presentCycle)">
-                                                                                    <option value="0.0" [selected]="presentCycle.leaveWithoutPay == '0.0'"> 0.0</option>
+                                                                                    (change)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)">
+                                                                                    <option value="0.00" [selected]="presentCycle.leaveWithoutPay == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="presentCycle.leaveWithoutPay == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="presentCycle.leaveWithoutPay == '0.50'"> 0.50</option>
                                                                                     <option value="0.75" [selected]="presentCycle.leaveWithoutPay == '0.75'"> 0.75</option>
@@ -822,17 +906,17 @@
                                                                                 </select>
                                                                             </div>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray">
+                                                                        <td class="bg-color-light_gray" >
                                                                             <label class="form-lable mb-0 d-flex">
-                                                                                <input
+                                                                                <!-- <input
                                                                                     [value]="attendanceForm.controls.payrollArea.value == '1' ? 1 : presentCycle.presentDay"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput mr-1"  [disabled]="attendanceForm.controls.payrollArea.value == '1'" >
+                                                                                    class="timeinput mr-1"  [disabled]="attendanceForm.controls.payrollArea.value == '1'" > -->
                                                                                 
                                                                                 <input
-                                                                                [value]="attendanceForm.controls.payrollArea.value == '1' ? 1 : presentCycle.presentDay"
+                                                                                [value]="defaultAttendace == '1' ? 1 : presentCycle.presentDay"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput mr-1" [disabled]="attendanceForm.controls.payrollArea.value == '1'">
+                                                                                    class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
                                                                                 
                                                                                 <!-- <p-inputMask mask="99:99"
                                                                                 value="{{user1.presentDay}}"
@@ -840,18 +924,25 @@
                                                                                     class="timeinput"></p-inputMask> -->
                                                                             </label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label
+                                                                        <td class="bg-color-light_gray" style="text-align: center !important;" *ngIf="is30daysPayroll == '1'"><label
+                                                                            class="form-lable mb-0"></label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
                                                                                 class="form-lable mb-0">{{presentCycle.paidDays}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray">
+                                                                        <td class="bg-color-light_gray" style="text-align: center !important;">
                                                                             <label
                                                                                 class="form-lable mb-0">{{presentCycle.pertainingCycle}}</label>
+                                                                                <!-- {{presentCycle.pertainingCycle}}  -->
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label
+                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
                                                                                 class="form-lable mb-0">{{presentCycle.processingCycle}}</label>
+                                                                                <!-- {{presentCycle.processingCycle}} -->
                                                                         </td>
+                                                                        
                                                                     </tr>
-                                                                </ng-template>
+                                                               </ng-template>
+                                                             
                                                                 <ng-template pTemplate="emptymessage">
                                                                     <tr>
                                                                         <td colspan="15"
@@ -861,7 +952,24 @@
                                                                         </td>
                                                                     </tr>
                                                                 </ng-template>
+
+                                                                <ng-template pTemplate="footer">
+                                                                    <tr>
+                                                                        <td colspan="3">Total :</td>
+                                                                        <td style="text-align: center !important;">{{getPresentCycleWeeklyOffTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getPresentCycleHolidayTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getPresentCycleLeaveTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getPresentCycleLeaveWithoutPayTotal()}}</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </ng-template>
+                                                              
                                                             </p-table>
+                                                          
+                                                           
                                                         </div>
                                                     </div>
                                                     <div class="row mt-20">
@@ -869,7 +977,7 @@
                                                             <div class="float-right">
                                                                 <button type="submit" tooltip="Save & Next"
                                                                     class="custom_button custom_btn btn-bg-green btn-labeled 
-                                                                    btn-labeled-left ripple" (click)="attendanceForNextEmp()"><b>
+                                                                    btn-labeled-left ripple" (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                         <i class="fa fa-floppy-o"></i></b> Save &
                                                                     Next</button>
                                                                 <button type="button" tooltip="Next"
@@ -989,9 +1097,8 @@
                                                                         <th class="wd-5">
                                                                             <div
                                                                                 class="p-d-flex p-jc-center p-ai-center">
-                                                                                <span tooltip="Leave Without Pay"
-                                                                                    placement="bottom"> Leave Without
-                                                                                    Pay</span> &nbsp;&nbsp;
+                                                                                <span tooltip="Loss of Pay Days"
+                                                                                    placement="bottom">Loss of Pay Days</span> &nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="LOP">
                                                                                     </p-sortIcon>
@@ -1062,14 +1169,14 @@
                                                                         </th>
                                                                     </tr>
                                                                 </ng-template>
-                                                                <ng-template pTemplate="body" let-futureCycle
+                                                                <ng-template pTemplate="body" let-futureCycle let-rowIndex= rowIndex
                                                                     class="tablebodyscroll">
                                                                     <tr class="p-selectable-row">
                                                                         <td class="bg-color-light_gray">
                                                                             <div class="form-group mb-0">
                                                                                 <div class="input-group">
                                                                                     <label
-                                                                                        class="form-lable mb-0">{{futureCycle.date}}</label>
+                                                                                        class="form-lable mb-0">{{futureCycle.date | date: 'dd-MMM-yyyy'}}</label>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
@@ -1083,7 +1190,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    (change)="getFutureWeeklyOff($event.target.value, futureCycle)">
+                                                                                    (change)="getFutureWeeklyOff($event.target.value, futureCycle,rowIndex)">
                                                                                     <option value="0.00" [selected]="futureCycle.weeklyOff == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="futureCycle.weeklyOff == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="futureCycle.weeklyOff == '0.50'"> 0.50</option>
@@ -1096,7 +1203,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="holiday"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    (change)="getFutureHoliday($event.target.value, futureCycle)">
+                                                                                    (change)="getFutureHoliday($event.target.value, futureCycle,rowIndex)">
                                                                                   
                                                                                     <option value="0.00" [selected]="futureCycle.holiday == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="futureCycle.holiday == '0.25'"> 0.25</option>
@@ -1110,7 +1217,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    (change)="getFuturePaidLeaves($event.target.value, futureCycle)">
+                                                                                    (change)="getFuturePaidLeaves($event.target.value, futureCycle,rowIndex)">
                                                                                   
                                                                                     <option value="0.00" [selected]="futureCycle.paidLeaves == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="futureCycle.paidLeaves == '0.25'"> 0.25</option>
@@ -1124,7 +1231,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    (change)="getFutureLeaveWithoutPay($event.target.value, futureCycle)">
+                                                                                    (change)="getFutureLeaveWithoutPay($event.target.value, futureCycle,rowIndex)">
                                                                                  
                                                                                     <option value="0.00" [selected]="futureCycle.leaveWithoutPay == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="futureCycle.leaveWithoutPay == '0.25'"> 0.25</option>
@@ -1136,15 +1243,17 @@
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label class="form-lable mb-0 d-flex">
-                                                                                <input
+                                                                                <!-- <input
                                                                                     value="{{futureCycle.presentDay}}"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput mr-1">
-                                                                                
-                                                                                <input
+                                                                                    class="timeinput mr-1"> -->
+                                                                                    <input [value]="defaultAttendace == '1' ? 1 : futureCycle.presentDay"
+                                                                                        placeholder="00:00"
+                                                                                        class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
+                                                                                <!-- <input
                                                                                     value="{{futureCycle.presentDay}}"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput mr-1">
+                                                                                    class="timeinput mr-1"> -->
                                                                                 
                                                                                 <!-- <p-inputMask mask="99:99"
                                                                                 value="{{user1.presentDay}}"
@@ -1157,11 +1266,25 @@
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label
-                                                                                class="form-lable mb-0">{{futureCycle.pertainingCycle}}</label>
+                                                                                class="form-lable mb-0">{{futureCycle.pertainingCycle}} </label>
                                                                         </td>
+                                                                        <!-- {{futureCycle.pertainingCycle}} -->
                                                                         <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0">{{futureCycle.processingCycle}}</label>
                                                                         </td>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="footer">
+                                                                    <tr>
+                                                                        <td colspan="3">Total :</td>
+                                                                        <td style="text-align: center !important;">{{getFutureCycleWeeklyOffTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getFutureCycleHolidayTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getFutureCycleLeaveTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getFutureCycleLeaveWithoutPayTotal()}}</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
                                                                     </tr>
                                                                 </ng-template>
                                                                 <ng-template pTemplate="emptymessage">
@@ -1179,7 +1302,7 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button type="submit" tooltip="Save & Next" (click)="attendanceForNextEmp()"
+                                                                <button type="submit" tooltip="Save & Next" (click)="AttendanceInput();attendanceForNextEmp()"
                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
                                                                         <i class="fa fa-floppy-o"></i></b> Save &
                                                                     Next</button>
@@ -1300,9 +1423,8 @@
                                                                         <th class="wd-5">
                                                                             <div
                                                                                 class="p-d-flex p-jc-center p-ai-center">
-                                                                                <span tooltip="Leave Without Pay"
-                                                                                    placement="bottom"> Leave Without
-                                                                                    Pay</span> &nbsp;&nbsp;
+                                                                                <span tooltip="Loss of Pay Days"
+                                                                                    placement="bottom">Loss of Pay Days</span> &nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="LOP">
                                                                                     </p-sortIcon>
@@ -1373,14 +1495,14 @@
                                                                         </th>
                                                                     </tr>
                                                                 </ng-template>
-                                                                <ng-template pTemplate="body" let-previousCycle
+                                                                <ng-template pTemplate="body" let-previousCycle let-rowIndex = rowIndex
                                                                     class="tablebodyscroll">
                                                                     <tr class="p-selectable-row">
                                                                         <td class="bg-color-light_gray">
                                                                             <div class="form-group mb-0">
                                                                                 <div class="input-group">
                                                                                     <label
-                                                                                        class="form-lable mb-0">{{previousCycle.date}}</label>
+                                                                                        class="form-lable mb-0">{{previousCycle.date | date: 'dd-MMM-yyyy'}}</label>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
@@ -1394,7 +1516,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    (change)="getPreviousWeeklyOff($event.target.value, previousCycle)">
+                                                                                    (change)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)">
                                                                                    
                                                                                     <option value="0.00" [selected]="previousCycle.weeklyOff == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="previousCycle.weeklyOff == '0.25'"> 0.25</option>
@@ -1408,7 +1530,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="holiday"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    (change)="getPreviousHoliday($event.target.value, previousCycle)">
+                                                                                    (change)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)">
                                                                                  
                                                                                     <option value="0.00" [selected]="previousCycle.holiday == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="previousCycle.holiday == '0.25'"> 0.25</option>
@@ -1422,7 +1544,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    (change)="getPreviousPaidLeaves($event.target.value, previousCycle)">
+                                                                                    (change)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)">
                                                                                    
                                                                                     <option value="0.00" [selected]="previousCycle.paidLeaves == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="previousCycle.paidLeaves == '0.25'"> 0.25</option>
@@ -1436,7 +1558,7 @@
                                                                             <div class="d-flex">
                                                                                 <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    (change)="getPreviousLeaveWithoutPay($event.target.value, previousCycle)">
+                                                                                    (change)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)">
                                                                                   
                                                                                     <option value="0.00" [selected]="previousCycle.leaveWithoutPay == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="previousCycle.leaveWithoutPay == '0.25'"> 0.25</option>
@@ -1448,15 +1570,18 @@
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label class="form-lable mb-0 d-flex">
-                                                                                <input
+                                                                                <!-- <input
                                                                                     value="{{previousCycle.presentDay}}"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput mr-1">
+                                                                                    class="timeinput mr-1"> -->
                                                                                 
-                                                                                <input
+                                                                                    <input [value]="defaultAttendace == '1' ? 1 : presentDay.presentDay"
+                                                                                    placeholder="00:00"
+                                                                                    class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
+                                                                                <!-- <input
                                                                                     value="{{previousCycle.presentDay}}"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput mr-1">
+                                                                                    class="timeinput mr-1"> -->
                                                                                 
                                                                                 <!-- <p-inputMask mask="99:99"
                                                                                 value="{{user1.presentDay}}"
@@ -1476,6 +1601,19 @@
                                                                         </td>
                                                                     </tr>
                                                                 </ng-template>
+                                                                <ng-template pTemplate="footer">
+                                                                    <tr>
+                                                                        <td colspan="3">Total :</td>
+                                                                        <td style="text-align: center !important;">{{getPreviousCycleWeeklyOffTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getPreviousCycleHolidayTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getPreviousCycleLeaveTotal()}}</td>
+                                                                        <td style="text-align: center !important;">{{getPreviousCycleLeaveWithoutPayTotal()}}</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </ng-template>
                                                                 <ng-template pTemplate="emptymessage">
                                                                     <tr>
                                                                         <td colspan="15"
@@ -1491,7 +1629,7 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button type="submit" tooltip="Save & Next" (click)="attendanceForNextEmp()"
+                                                                <button type="submit" tooltip="Save & Next" (click)="AttendanceInput();attendanceForNextEmp()"
                                                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
                                                                     <i class="fa fa-floppy-o"></i></b> Save &
                                                                 Next</button>

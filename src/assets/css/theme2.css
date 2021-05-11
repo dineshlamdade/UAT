@@ -2840,7 +2840,8 @@ legend {
 }
 
 .attendance_dropdown {
-    width: 60px;
+    /* width: 60px; */
+    width: 80px;
     margin-left: 5px;
 }
 

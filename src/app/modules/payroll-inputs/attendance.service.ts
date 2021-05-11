@@ -67,6 +67,8 @@ export class AttendanceService {
     return this.HttpClient.get<any>(this.url3 + `payroll-information/payrollAssigned/`+ employeeMasterId); 
   }
 
-
+  PayrollAreaByPayrollAreaCode(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `payrollArea-details/PayrollAreaByPayrollAreaCode`,data); 
+  }
 
 }
