@@ -1555,6 +1555,10 @@ export class FixedDepositsDeclarationComponent implements OnInit {
             element.actualAmount
           );
         });
+        // console.log('this.transactionDetail', this.transactionDetail);
+        if(!this.transactionDetail.length){
+          this.addRowInList();
+        }
       // } else {
       //   this.addRowInList(this.declarationService, 0);
     } 
