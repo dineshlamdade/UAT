@@ -166,6 +166,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
     this.getMasterIFSCCodeList();
     this.getMasterStateList();
     this.getMasterAccountList();
+    
+    //this.existingBank=true;
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     // this.deactivateRemark();
@@ -225,7 +227,21 @@ export class InterestOnTtaMasterComponent implements OnInit {
       });
     }
 
-    
+  /*   accountNumber  */
+
+    toggleFieldTextType() {
+      this.accountNo = !this.accountNo
+    }
+
+    hideAccountNo( accountNo ) {
+      if ( accountNo == true ) {
+        setTimeout( () => {
+          this.accountNo = false;
+        }, 3000 )
+      }
+    }
+  
+  
 
   // Account  Code List API call
   // Account Code List API call
@@ -526,8 +542,40 @@ onSelectBankCode(employeeBankInfoId:any)
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
+
+
+   /*  ====================hide===================== */
+ /*  show = true;
+  show1 = false;
+
+  toggle()
+   {
+    this.show = !this.show
+    
+    if(!this.show)
+    {
+      this.show = this.show
+      this.show1 = this.show
+    } 
+  } */
+
+text:number;
+existingBank:any;
+
+  DemoOncheck(event:any)
+  {
+    console.log(event.target.value);    
+   // this.existingBank = event.target.value == '1'? 1:false;
+   this.existingBank=event.target.value;
+    console.log("this.existingBank::",this.existingBank);   
+    this.form.reset();
+    this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+
+  }
+  
    //------------- On Master Edit functionality --------------------
-   editMaster(accountNumber) {
+   editMaster(accountNumber) {    
     this.scrollToTop();
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -547,6 +595,15 @@ onSelectBankCode(employeeBankInfoId:any)
       this.isClear = true;
       this.urlArray = obj.documentInformationList;
       this.proofSubmissionId = obj.proofSubmissionId;
+      if(obj.savingBankMasterId == 0){
+        this.existingBank = 2;
+
+      }
+      else
+      {
+        this.existingBank = 1;
+      }
+     
 
       }
     });
