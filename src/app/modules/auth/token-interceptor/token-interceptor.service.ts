@@ -64,8 +64,8 @@ export class TokenInterceptorService implements HttpInterceptor {
     //console.log('My token ',token);
     return request.clone({
       setHeaders: {
-       // 'Content-Type': 'application/json',
-       // 'Accept': 'application/json, text/plain, */*',
+        // 'Content-Type': 'application/json',
+        // 'Accept': 'application/json, text/plain, */*',
         'X-Authorization': token,
         'Access-Control-Max-Age': '600',
       },
