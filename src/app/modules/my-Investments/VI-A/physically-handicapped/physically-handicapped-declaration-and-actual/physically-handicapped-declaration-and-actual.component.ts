@@ -171,7 +171,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
   public disability : string;
   public severity : string;
   public limit : any;
-  public proofSubmissionId : any;
+  public proofSubmissionId : '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -357,7 +357,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
               res.data.results[0].previousEmployerHandicappedDetailList;
 
             // this.documentDetailList = res.data.results[0].documentInformation;
-            this.documentDetailList = res.data.results[0].documentInformationList;
+            this.documentDetailList = res.data.results[0].previousEmployerHandicappedDetailList.documentInformationList;
             this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
             this.grandActualTotal = res.data.results[0].grandActualTotal;
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1098,29 +1098,29 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     //   return;
     // }
 
-    this.transactionDetail.forEach((element) => {
+    // this.transactionDetail.forEach((element) => {
       //current emp table number format
-      console.log('physicallyHandicappedDetail::', this.physicallyHandicappedDetail);
-      element.physicallyHandicappedDetail.forEach((item) => {
-        if (item.actualAmount !== null) {
-          item.actualAmount = item.actualAmount
-            .toString()
-            .replace(/,/g, '');
-        } else {
-          item.actualAmount = 0.0;
-        }
-        if (item.declaredAmount !== null) {
-          item.declaredAmount = item.declaredAmount
-            .toString()
-            .replace(/,/g, '');
-        } else {
-          item.declaredAmount = 0.0;
-        }
-      });
+      // console.log('physicallyHandicappedDetail::', this.physicallyHandicappedDetail);
+      // this.physicallyHandicappedDetail.forEach((item) => {
+      //   if (item.actualAmount !== null) {
+      //     item.actualAmount = item.actualAmount
+      //       .toString()
+      //       .replace(/,/g, '');
+      //   } else {
+      //     item.actualAmount = 0.0;
+      //   }
+      //   if (item.declaredAmount !== null) {
+      //     item.declaredAmount = item.declaredAmount
+      //       .toString()
+      //       .replace(/,/g, '');
+      //   } else {
+      //     item.declaredAmount = 0.0;
+      //   }
+      // });
       //previous emp table number format
-      if (element.previousEmployerHandicappedDetailList !== null) {
+      if (this.previousEmployerHandicappedDetailList !== null) {
      console.log('previousEmployerHandicappedDetailList::', this.previousEmployerHandicappedDetailList);
-      element.previousEmployerHandicappedDetailList.forEach((innerElement) => {
+      this.previousEmployerHandicappedDetailList.forEach((innerElement) => {
 
         if (innerElement.actualAmount !== undefined || innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
@@ -1139,7 +1139,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
         innerElement.declaredAmount = 0.0;
       });
     }
-    });
+    // });
 
 
 
@@ -1195,18 +1195,18 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
           // this.grandActualTotal = res.data.results[0].grandActualTotal;
           // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-          // this.physicallyHandicappedDetail.forEach((element) => {
-          //   this.initialArrayIndex.push(element.previousEmployerHandicappedDetailList.length);
-          //   element.previousEmployerHandicappedDetailList.forEach((innerElement) => {
 
-          //     innerElement.declaredAmount = this.numberFormat.transform(
-          //       innerElement.declaredAmount
-          //     );
-          //     innerElement.actualAmount = this.numberFormat.transform(
-          //       innerElement.actualAmount
-          //     );
-          //   });
-          // });
+          if (this.previousEmployerHandicappedDetailList !== null) {
+            console.log('previousEmployerHandicappedDetailList::', this.previousEmployerHandicappedDetailList);
+             this.previousEmployerHandicappedDetailList.forEach((innerElement) => {
+
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+               innerElement.declaredAmount = 0.0;
+             });
+           }
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
@@ -1437,31 +1437,6 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
 
   // Common Function for filter to call API
   getTransactionFilterData(
@@ -1554,6 +1529,37 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       this.transactionDetail[j].previousEmployerHandicappedDetailList[i].dateOfPayment
     );
   }
+
+   // ---------------- Doc Viewr Code ----------------------------
+   nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>, documentInformationResponseList: any) {
+    console.log("documentInformationResponseList::", documentInformationResponseList)
+    this.urlArray = documentInformationResponseList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
+
+
 }
 
 class DeclarationService {

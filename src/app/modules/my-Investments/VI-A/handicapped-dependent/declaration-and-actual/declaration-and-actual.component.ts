@@ -61,7 +61,7 @@ export class DeclarationAndActualComponent implements OnInit {
   public currentEmployerHandicappedDependentResponseList: Array<any> = [];
   public previousEmployerHandicappedDependentResponseList: Array<any> = [];
   public transactionDetail: Array<any> = [];
-  public documentDetailList: Array<any> = [];
+  public documentInformationResponseList: Array<any> = [];
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
   public familyMemberName: Array<any> = [];
@@ -273,6 +273,8 @@ export class DeclarationAndActualComponent implements OnInit {
     return this.currEmpform.currentEmployerHandicappedDetails as FormArray;
   }
 
+
+
   get priviousEmpFormArray() {
     return this.currEmpform.priviousEmployerHandicappedDetails as FormArray;
   }
@@ -391,13 +393,15 @@ export class DeclarationAndActualComponent implements OnInit {
     // console.log("formData::", formData);
 
     if (this.handicappedDependentForm.invalid) {
+      this.alertService.sweetalertError('Please attach Receipt11111 / Certificate');
       return;
     }
 
-    if (this.filesArray.length === 0) {
-      this.alertService.sweetalertError('Please attach Receipt / Certificate');
-      return;
-    }
+
+    // if (this.filesArray.length === 0) {
+    //   this.alertService.sweetalertError('Please attach Receipt / Certificate');
+    //   return;
+    // }
 
     //else {
     const transactionDetail = this.handicappedDependentForm.getRawValue();
@@ -433,8 +437,8 @@ export class DeclarationAndActualComponent implements OnInit {
             res.data.results[0].currentEmployerHandicappedDependentResponseList;
             this.previousEmployerHandicappedDependentResponseList =
               res.data.results[0].previousEmployerHandicappedDependentResponseList;
-            // this.documentDetailList = res.data.results[0].documentInformation;
-            this.documentDetailList = res.data.results[0].documentInformationList;
+            // this.documentInformationResponseList = res.data.results[0].documentInformation;
+            this.documentInformationResponseList = res.data.results[0].documentInformationList;
             this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
             this.grandActualTotal = res.data.results[0].grandActualTotal;
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -604,7 +608,7 @@ export class DeclarationAndActualComponent implements OnInit {
       //   console.log('edit Data:: ', res);
 
       //   this.urlArray =
-      //     res.data.results[0].documentInformationList[0].documentDetailList;
+      //     res.data.results[0].documentInformationList[0].documentInformationResponseList;
       //   this.urlArray.forEach((element) => {
       //     // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
       //     element.blobURI = 'data:image/image;base64,' + element.blobURI;
@@ -635,7 +639,7 @@ export class DeclarationAndActualComponent implements OnInit {
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
-          res.data.results[0].documentInformationList[0].documentDetailList;
+          res.data.results[0].documentInformationList[0].documentInformationResponseList;
         this.editTransactionUpload =
           res.data.results[0].previousEmployerHandicappedDependentResponseList;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
@@ -703,7 +707,7 @@ export class DeclarationAndActualComponent implements OnInit {
           res.data.results[0].currentEmployerHandicappedDependentResponseList;
           this.previousEmployerHandicappedDependentResponseList =
               res.data.results[0].previousEmployerHandicappedDependentResponseList;
-            this.documentDetailList = res.data.results[0].documentInformationList;
+            this.documentInformationResponseList = res.data.results[0].documentInformationList;
             this.grandDeclarationTotal =
               res.data.results[0].grandDeclarationTotal;
             this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -1286,7 +1290,7 @@ export class DeclarationAndActualComponent implements OnInit {
       //   res.data.results[0].currentEmployerHandicappedDependentList;
       this.currentEmployerHandicappedDependentResponseList = res.data.results[0].currentEmployerHandicappedDependentResponseList;
       this.previousEmployerHandicappedDependentResponseList = res.data.results[0].previousEmployerHandicappedDependentResponseList;
-        this.documentDetailList = res.data.results[0].documentInformationList;
+        this.documentInformationResponseList = res.data.results[0].documentInformationList;
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1346,10 +1350,18 @@ export class DeclarationAndActualComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-  upload() {
+  upload(formDirective: FormGroupDirective,) {
     this.submitted = true;
     // stop here if form is invalid
     if (this.handicappedDependentForm.invalid) {
+      return;
+    }
+
+    if(this.priviousEmpFormArray.invalid){
+      return;
+    }
+
+    if(this.currEmpFormArray.invalid){
       return;
     }
 
@@ -1418,7 +1430,7 @@ export class DeclarationAndActualComponent implements OnInit {
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentList,
-      previousEmployerHandicappedDependentResponseList: this.previousEmployerHandicappedDependentList,
+      previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
       // transactionIds: this.uploadGridData,
       // receiptAmount: this.receiptAmount,
       // documentRemark: this.documentRemark,
@@ -1439,7 +1451,7 @@ export class DeclarationAndActualComponent implements OnInit {
           res.data.results[0].currentEmployerHandicappedDependentResponseList;
           this.previousEmployerHandicappedDependentResponseList =
               res.data.results[0].previousEmployerHandicappedDependentResponseList;
-            this.documentDetailList = res.data.results[0].documentInformationList;
+            this.documentInformationResponseList = res.data.results[0].documentInformationList;
           // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
           // this.grandActualTotal = res.data.results[0].grandActualTotal;
           // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1471,7 +1483,9 @@ export class DeclarationAndActualComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
-  }
+    this.priviousEmpFormArray.reset();
+    this.currEmpFormArray.reset();
+    }
 
   unformatAmount(amount) {
     if (amount !== null && amount != undefined) {
@@ -1671,9 +1685,9 @@ export class DeclarationAndActualComponent implements OnInit {
       template1,
       Object.assign({}, { class: 'gray modal-md' })
     );
-    this.proofSubmissionFileList = this.documentDetailList[
+    this.proofSubmissionFileList = this.documentInformationResponseList[
       documentIndex
-    ].documentDetailList;
+    ].documentInformationResponseList;
   }
 
   deactiveCopytoActualDate() {
@@ -1702,8 +1716,8 @@ export class DeclarationAndActualComponent implements OnInit {
       if (res.data.results.length > 0) {
         this.currentEmployerHandicappedDependentResponseList = res.data.results[0].currentEmployerHandicappedDependentResponseList;
         this.previousEmployerHandicappedDependentResponseList = res.data.results[0].previousEmployerHandicappedDependentResponseList;
-        // this.documentDetailList = res.data.results[0].documentInformation;
-        this.documentDetailList = res.data.results[0].documentInformationList;
+        // this.documentInformationResponseList = res.data.results[0].documentInformation;
+        this.documentInformationResponseList = res.data.results[0].documentInformationList;
         // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         // this.grandActualTotal = res.data.results[0].grandActualTotal;
         // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1725,15 +1739,16 @@ export class DeclarationAndActualComponent implements OnInit {
         });
         this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
           // remove saved family member from dropdown
-          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+          const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName)
           if (index > -1) {
             this.familyMemberName.splice(index, 1);
           }
+
         });
 
         this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
           // remove saved family member from dropdown
-          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+          const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMasterfamilyMemberName)
           if (index > -1) {
             this.familyMemberName.splice(index, 1);
           }
@@ -1756,8 +1771,8 @@ export class DeclarationAndActualComponent implements OnInit {
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
-          // res.data.results[0].documentInformation[0].documentDetailList;
-          res.data.results[0].documentInformationList[0].documentDetailList;
+          // res.data.results[0].documentInformation[0].documentInformationResponseList;
+          res.data.results[0].documentInformationList[0].documentInformationResponseList;
         this.urlArray.forEach((element) => {
           element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
             element.blobURI
@@ -1782,9 +1797,9 @@ export class DeclarationAndActualComponent implements OnInit {
       );
     }
 
-    docViewer(template3: TemplateRef<any>, documentDetailList: any) {
-      console.log("documentDetailList::", documentDetailList)
-      this.urlArray = documentDetailList;
+    docViewer(template3: TemplateRef<any>, documentInformationResponseList: any) {
+      console.log("documentInformationResponseList::", documentInformationResponseList)
+      this.urlArray = documentInformationResponseList;
       this.urlIndex = 0;
       this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
         this.urlArray[this.urlIndex].blobURI,
@@ -1795,7 +1810,6 @@ export class DeclarationAndActualComponent implements OnInit {
         Object.assign({}, { class: 'gray modal-xl' }),
       );
     }
-
 
   // setDateOfPayment(
   //   summary: {

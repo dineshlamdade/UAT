@@ -1460,6 +1460,9 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
             element.actualAmount
           );
         });
+        if(!this.transactionDetail.length){
+          this.addRowInList();
+        }
       } 
     });
   }
