@@ -1607,7 +1607,7 @@ this.uploadGridData.push(innerElement.electricVehicleLoanTransactionId);
     });
 
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
-    debugger
+    
     const data = {
       electricVehicleLoanTransactionList: this.editTransactionUpload[0].electricVehicleLoanTransactionList,
       electricVehicleLoanTransactionPreviousEmployerList: this.editTransactionUpload[0].electricVehicleLoanTransactionPreviousEmployerList,
@@ -1689,7 +1689,7 @@ this.uploadGridData.push(innerElement.electricVehicleLoanTransactionId);
     this.electricVehicleService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
-        debugger
+        
         console.log('edit Data:: ', res);
        
         this.urlArray =
