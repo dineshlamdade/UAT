@@ -14,7 +14,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(i)">
+              <td>
                 <span tooltip="{{userName}}">{{userName}}</span>
               </td>
               <td class="padding-right-12"><span tooltip="{{summary.severity}}">{{summary.severity}}</span>
@@ -36,7 +36,7 @@
               </td>
               <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                   (click)="onEditSummary(summary.employeeName, summary.severity)" tooltip="Edit"></i>&nbsp;&nbsp;
-                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
+                <i class="fa fa-eye font-16 text-blue cursor-pointer"  (click)="onEditSummary(summary.employeeName, summary.severity)" tooltip="View"></i></td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
               <td colspan="5">
@@ -87,15 +87,15 @@
             </tr>
 
             <tr class="table-light-color">
-              <td colspan="2" class="align-right font700">Benefit Available [Sec.80-U] &nbsp; <span class="Letterbadge">B</span></td>
+              <td colspan="2" class="align-right font700">Benefit Available [Sec.80-U] &nbsp; <span class="Letterbadge">C</span></td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{benifitDeclared | number:'1.2-2'}}">
-                  {{benifitDeclared | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{benefitDeclared | number:'1.2-2'}}">
+                  {{benefitDeclared | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{benifitActual | number:'1.2-2'}}">
-                  {{benifitActual | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{benefitActual | number:'1.2-2'}}">
+                  {{benefitActual | number:'1.2-2'}}
                 </span>
               </td>
               <td></td>

@@ -406,7 +406,7 @@
                   <th scope="col" class="font700 wd-15">Proof Submission ID</th>
                   <th scope="col" class="font700 wd-20">Patient Name - Disease -Age Bracket</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Receipt Amount</th>
+                  <!-- <th scope="col" class="font700 wd-15">Receipt Amount</th> -->
                   <th scope="col" class="font700 wd-15">Document Name</th>
                   <th scope="col" class="font700 wd-10">Action</th>
 
@@ -436,11 +436,11 @@
                       }}</span>
                   </td>
 
-                  <td>
+                  <!-- <td>
                     <span tooltip="{{ documentSummary.receiptAmount | number: '1.2-2' }}">
                       {{ documentSummary.receiptAmount | number: '1.2-2' }}
                     </span>
-                  </td>
+                  </td> -->
                   <!-- <td>
                     <span
                       tooltip="{{
@@ -634,10 +634,10 @@
                         disabled />
                     </div>
                   </td>
-                  <td *ngIf='!viewTransactionDetail'>
-                    <input type="text" id="actualAmount{{ summary.specifiedDiseaseTransactionId }}"
+                  <td>
+                    <input type="text" id="actualAmount{{ summary.specifiedDiseaseTransactionId }}" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                       name="actualAmount{{ summary.specifiedDiseaseTransactionId }}" [(ngModel)]="summary.actualAmount"
-                      (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)" class="form-control align-right" />
+                      (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)" class="form-control align-right" [disabled]="summary.transactionStatus=='Approved' || !viewTransactionDetail" />
                   </td>
                   <!-- <td *ngIf='!viewTransactionDetail'>
                     <input type="text" id="actualAmount{{ summary.specifiedDiseaseTransactionId }}"
@@ -731,12 +731,12 @@
                   </select>
                   </td>
 
-                  <td *ngIf="!viewTransactionDetail">
+                  <td>
                     <div class="custom_icon_badge">
                       <input type="text" id="actualAmount{{ summary.specifiedDiseaseTransactionId }}"
                         name="actualAmount{{ summary.specifiedDiseaseTransactionId }}"
                         [(ngModel)]="summary.actualAmount" class="form-control align-right"
-                        (change)="onActualAmountChangeInEditCase(summary, i, j)"   />
+                        (change)="onActualAmountChangeInEditCase(summary, i, j)" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"/>
                     </div>
                   </td>
                   <!-- <td *ngIf="!viewTransactionDetail">
