@@ -344,7 +344,7 @@ export class MasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(disabilityType) {
-    //this.scrollToTop();
+    this.scrollToTop();
     this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -372,6 +372,19 @@ export class MasterComponent implements OnInit {
   findBydisabilityType(disabilityType,masterGridData){
     return masterGridData.find(x => x.disabilityType === disabilityType)
   }
+
+   // scrollToTop Fuctionality
+   public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
+
 
   // On Edit Cancel
   resetView() {
