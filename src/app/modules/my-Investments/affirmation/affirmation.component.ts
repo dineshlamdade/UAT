@@ -133,6 +133,14 @@ export class AffirmationComponent implements OnInit {
     );
   }
 
+  openForm12BModal(template1: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template1,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+  
+
   onImageChange(e) {
     const reader = new FileReader();
     

@@ -539,7 +539,37 @@ onSelectBankCode(employeeBankInfoId:any)
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
+/*   Select Existing Bank Account Radio Button*/
 
+text:number;
+existingBank:any;
+
+  DemoOncheck(event:any)
+  {
+    console.log(event.target.value);    
+   // this.existingBank = event.target.value == '1'? 1:false;
+   this.existingBank=event.target.value;
+    console.log("this.existingBank::",this.existingBank);   
+    this.form.reset();
+    this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+
+  }
+
+    /*   accountNumber  */
+
+    toggleFieldTextType() {
+      this.accountNo = !this.accountNo
+    }
+
+    hideAccountNo( accountNo ) {
+      if ( accountNo == true ) {
+        setTimeout( () => {
+          this.accountNo = false;
+        }, 3000 )
+      }
+    }
+  
 
     //------------- On Master Edit functionality --------------------
     editMaster(accountNumber) {
@@ -562,10 +592,16 @@ onSelectBankCode(employeeBankInfoId:any)
         this.isClear = true;
         this.urlArray = obj.documentInformationList;
         this.proofSubmissionId = obj.proofSubmissionId;
-
+        if(obj.savingBankMasterId == 0){
+          this.existingBank = 2;  
+        }
+        else
+        {
+          this.existingBank = 1;
+        }     
         }
       });
-
+  
     }
 
     findByaccountNumber(accountNumber,masterGridData){
