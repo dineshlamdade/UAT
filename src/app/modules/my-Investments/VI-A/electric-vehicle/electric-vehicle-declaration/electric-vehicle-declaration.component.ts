@@ -165,6 +165,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public declarationData: string;
+  public updateReceiptAmount: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1481,12 +1482,16 @@ selectedTransactionLenderName(lenderName: any) {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+        console.log('test', res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].receiptAmount);
+    
+        this.updateReceiptAmount = res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].receiptAmount;
         this.urlArray =
           res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].documentDetailList;
         this.editTransactionUpload =
           res.data.results[0].electricVehicleLoanTransactionDetailList;
-        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-        this.editReceiptAmount = res.data.results[0].receiptAmount;
+        // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
+        this.editProofSubmissionId = proofSubmissionId;
+        this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1494,13 +1499,23 @@ selectedTransactionLenderName(lenderName: any) {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // //console.log(this.urlArray);
+        // this.urlArray.forEach((element) => {
+        //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+        //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        // });
         //console.log('converted:: ', this.urlArray);
+        // this.editTransactionUpload.forEach((element) => {
+        //   element.electricVehicleLoanTransactionPreviousEmployerList.forEach((innerElement) => {
+        //     innerElement.declaredAmount = this.numberFormat.transform(
+        //       innerElement.declaredAmount,
+        //     );
+        //     innerElement.actualAmount = this.numberFormat.transform(
+        //       innerElement.actualAmount,
+        //     );
+        //   });
+        // });
       });
   }
 
@@ -1575,7 +1590,7 @@ selectedTransactionLenderName(lenderName: any) {
           } else {
             innerElement.actualAmount = 0.0;
           }
-
+this.uploadGridData.push(innerElement.electricVehicleLoanTransactionId);
           // const dateOfPaymnet = this.datePipe.transform(
           //   innerElement.dateOfPayment,
           //   'yyyy-MM-dd'
@@ -1591,22 +1606,25 @@ selectedTransactionLenderName(lenderName: any) {
       );
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    debugger
     const data = {
       electricVehicleLoanTransactionList: this.editTransactionUpload[0].electricVehicleLoanTransactionList,
       electricVehicleLoanTransactionPreviousEmployerList: this.editTransactionUpload[0].electricVehicleLoanTransactionPreviousEmployerList,
       electricVehicleLoanTransactionIds: this.uploadGridData,
       // receiptAmount: this.receiptAmount,
-      receiptAmount: this.editReceiptAmount,
+      receiptAmount:  this.updateReceiptAmount,
       // documentRemark: this.documentRemark,
       // proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
-      proofSubmissionId: this.editTransactionUpload[0].editProofSubmissionId,
+      proofSubmissionId: this.editProofSubmissionId,
+      // proofSubmissionId: this.editTransactionUpload[0].editProofSubmissionId,
       electricVehicleLoanMasterId: this.editTransactionUpload[0].electricVehicleLoanMasterId,
       // proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
+    
     };
 
 
-    console.log('data::', data);
+    console.log(' uploadUpdateTransaction data::', data);
 
     this.electricVehicleService
       .uploadElectricVehicleTransactionwithDocument(this.editfilesArray, data)
@@ -1671,7 +1689,9 @@ selectedTransactionLenderName(lenderName: any) {
     this.electricVehicleService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
+        debugger
         console.log('edit Data:: ', res);
+       
         this.urlArray =
           res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].documentDetailList;
         this.urlArray.forEach((element) => {

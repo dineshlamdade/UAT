@@ -196,13 +196,13 @@
                     <span class="custom-control-label"></span>
                   </label>
                                 </th>
-                                <th rowspan="2" class="wd-15 font700">
+                                <th rowspan="2" class="wd-10 font700">
                                     Previous Employer Name
                                 </th>
-                                <th rowspan="2" class="wd-9 font700">Actual</th>
+                                <th rowspan="2" class="wd-10 font700">Actual</th>
                                 <th colspan="2" class="wd-11 font700">Receipt Amount</th>
                                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                                <th rowspan="2" class="wd-5">PS.ID.</th>
+                                <th rowspan="2" class="wd-6">PS.ID.</th>
                                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                             </tr>
                             <tr>
@@ -222,7 +222,7 @@
                                 <th colspan="2" class="wd-11 font700">Receipt Amount</th>
                                 <th rowspan="2" class="wd-7 font700">Remark</th>
                                 <th rowspan="2" class="wd-10">Proof Submission ID</th>
-                                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                                <th rowspan="2" class="wd-14 font700">Transaction Status</th>
                             </tr>
                             <tr>
                                 <th>Rejected</th>
@@ -729,7 +729,11 @@
                         class="form-control align-right" (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)"
                         [disabled]="initialArrayIndex[j] > i" disabled /> -->
 
-                                            <p-inputNumber id="actualAmount{{ summary.electricVehicleLoanTransactionId }}" name="actualAmount{{ summary.electricVehicleLoanTransactionId }}" [disabled]="initialArrayIndex[j] > i" [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)"
+                                            <p-inputNumber id="actualAmount{{ summary.electricVehicleLoanTransactionId }}" 
+                                            name="actualAmount{{ summary.electricVehicleLoanTransactionId }}" 
+                                          
+                                            [disabled]="summary.transactionStatus=='Approved' || !viewTransactionDetail"
+                                            [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)"
                                                 disabled mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
                                         </div>
                                     </td>

@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-sm-6 col-md-3">
                             <label class="form-label">Vehicle Number</label>
-                            <input type="text" formControlName="vehicleNumber" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Vehicle Number" [ngClass]="{ 'is-invalid': submitted && masterForm.vehicleNumber.errors }">
+                            <input type="text" formControlName="vehicleNumber" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Vehicle Number" [ngClass]="{ 'is-invalid': submitted && masterForm.vehicleNumber.errors }">
                             <div *ngIf="submitted && masterForm.vehicleNumber.errors" class="invalid-feedback">
                                 <div *ngIf="masterForm.vehicleNumber.errors.required">Vehicle Number Is Mandatory</div>
                             </div>
@@ -38,7 +38,9 @@
                     <div class="row mt-4 mb-10">
                         <div class="col-sm-6 col-md-3">
                             <label class="form-label">Loan Account No</label>
-                            <input type="text" formControlName="loanAccountNumber" class="form-control" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Loan Account No" [ngClass]="{ 'is-invalid': submitted && masterForm.loanAccountNumber.errors }">
+                            <input type="text" formControlName="loanAccountNumber" 
+                            class="form-control" 
+                            onkeypress="return /[0-9 ']/i.test(event.key)" placeholder="Enter Loan Account No" [ngClass]="{ 'is-invalid': submitted && masterForm.loanAccountNumber.errors }">
                             <div *ngIf="submitted && masterForm.loanAccountNumber.errors" class="invalid-feedback">
                                 <div *ngIf="masterForm.loanAccountNumber.errors.required">Loan Account Number Is Mandatory</div>
                             </div>
