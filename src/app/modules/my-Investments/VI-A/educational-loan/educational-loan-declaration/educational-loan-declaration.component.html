@@ -78,11 +78,11 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-10 font700">Declared</th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-11 font700">Receipt Amount</th>
+                <th rowspan="2" class="wd-14 font700">Declared</th>
+                <th rowspan="2" class="wd-14 font700">Actual</th>
+                <th colspan="2" class="wd-20 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-5">PS.ID.</th>
+                <th rowspan="2" class="wd-15">PS.ID.</th>
                 <th rowspan="2" class="wd-15 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -173,6 +173,7 @@
         </div>
       </div>
     </div>
+    <br>
     <h3 class="font-14 text-purple font-bold">Previous Employer</h3>
     <div class="row mt-15">
       <div class="col-12">
@@ -188,14 +189,12 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-15 font700">
-                  Previous Employer Name
-                </th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-11 font700">Receipt Amount</th>
+                <th rowspan="2" class="wd-14 font700">Previous Employer Name </th>
+                <th rowspan="2" class="wd-14 font700">Actual</th>
+                <th colspan="2" class="wd-20 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-5">PS.ID.</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <th rowspan="2" class="wd-15">PS.ID.</th>
+                <th rowspan="2" class="wd-15 font700">Transaction Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -470,7 +469,6 @@
                       {{ documentSummary.receiptAmount | number: "1.2-2" }}
                     </span>
                   </td> -->
-
                   <td>
                     <div class="custom_Label_badge">
                       <button class="btn btn-bg-green text-white"
@@ -527,7 +525,7 @@
       <div class="card-body pb-0 mt-0 mb-0">
         <div class="row clearfix" *ngFor="let proofSubmissionFile of proofSubmissionFileList">
           <div class="col-md-11">
-            <div class="labelbox" tooltip="Document 1">
+            <div class="labelbox" tooltip="Document">
               <i class="fa fa-paperclip text-orange"></i> &nbsp; {{ proofSubmissionFile.fileName }}
             </div>
           </div>
@@ -544,6 +542,7 @@
     </button>
   </div>
 </ng-template>
+
 <ng-template #template2>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh" *ngIf="viewTransactionDetail">
@@ -606,12 +605,14 @@
                       <span class="custom-control-label"></span>
                     </label>
                   </th> -->
+
                   <th rowspan="2" class="wd-10 font700">Declared</th>
-                  <th rowspan="2" class="wd-9 font700">Actual</th>
+                  <th rowspan="2" class="wd-10 font700">Actual</th>
                   <th colspan="2" class="wd-11 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-5">PS.ID.</th>
-                  <th rowspan="2" class="wd-15 font700">Transaction Status</th>
+                  <th rowspan="2" class="wd-6">PS.ID.</th>
+                  <th rowspan="2" class="wd-14 font700">Transaction Status</th>
+
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -653,7 +654,7 @@
 
                     <p-inputNumber id="actualAmount{{ summary.educationLoanTransactionId }}"
                       name="annualAmount{{ summary.educationLoanTransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                      [(ngModel)]="summary.actualAmount" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail" (change)="onActualAmountChangeInEditCase(summary, i, j)"
+                      [(ngModel)]="summary.actualAmount" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail" (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)"
                       disabled mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
                   </td>
 
@@ -687,6 +688,7 @@
           </div>
         </div>
       </div>
+      <br>
       <h3 class="font-14 text-purple font-bold">Previous Employer</h3>
       <div class="row mt-15">
         <div class="col-12">
@@ -696,18 +698,19 @@
                 <tr>
                   <!-- <th rowspan="2" class="wd-4">
                     <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                      <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
-                        name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAllPreviousEmp(item, j)" />
+                      <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
+                        [disabled]="canEdit && isDisabled" name="select" value="isCheckAll{{ j }}"
+                        (change)="checkUncheckAllPreviousEmp(item, j)" />
                       <span class="custom-control-label"></span>
                     </label>
                   </th> -->
-                  <th rowspan="2" class="wd-15 font700">
+                  <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
                   </th>
-                  <th rowspan="2" class="wd-9 font700">Actual</th>
+                  <th rowspan="2" class="wd-10 font700">Actual</th>
                   <th colspan="2" class="wd-11 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-5">PS.ID.</th>
+                  <th rowspan="2" class="wd-6">PS.ID.</th>
                   <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -726,8 +729,8 @@
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-11 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-5">PS.ID.</th>
-                  <th rowspan="2" class="wd-15 font700">Transaction Status</th>
+                  <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-14 font700">Transaction Status</th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -827,7 +830,7 @@
               <label *ngFor="let item of editfilesArray; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
                   <i class="fa fa-paperclip"> </i>
-                  <span class="title" tooltip="{{ item.name }}">
+                  <span class="title">
                     {{ item.name }}
                   </span>
                 </div>
@@ -847,7 +850,6 @@
         </div>
       </div>
     </div>
-
     <hr class="mt-20" />
     <div class="row mt-20">
       <div class="col-12">
@@ -864,32 +866,55 @@
               <i class="fa fa-paperclip text-orange"></i> &nbsp; {{ doc.fileName }}
             </div>
           </div>
+          <!-- <div class="col-md-1">
+           <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)'></i>
+           </div> -->
         </div>
-
+        <!-- <div class="row mt-10 mb-10">
+            <div class="col-md-12">
+                <div class="float-right">
+                    <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3)" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
+          <b><i class="fa fa-eye"></i></b> View
+        </button> &nbsp;&nbsp;
+                    <button *ngIf="viewTransactionDetail" type="button" tooltip="View Document" (click)="modalRef.hide(); uploadUpdateTransaction()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
+          <b><i class="fa fa-copy"></i></b> Save
+        </button>
+                </div>
+            </div>
+        </div> -->
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
+    <button
+      type="button"
+      tooltip="View Document"
+      (click)="modalRef.hide(); docViewer(template3,urlArray)"
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+    >
       <b><i class="fa fa-eye"></i></b> View
-    </button> &nbsp;&nbsp;
-    <button *ngIf="viewTransactionDetail" type="button" tooltip="View Document"
-      (click)="modalRef.hide(); editViewTransaction()"
+    </button>
+    &nbsp;&nbsp;
+    <button
+      *ngIf="viewTransactionDetail"
+      type="button"
+      tooltip="Save Document"
+      (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
     </button>
   </div>
 </ng-template>
+<!-- dOC VIEWER -->
 <ng-template #template3>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <h5 class="modal-title" id="jasdjgh">View Documents</h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
-     <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
+<button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
   <div class="card-body">
     <div class="row">
       <div class="col-md-1">
@@ -899,7 +924,8 @@
         </button>
       </div>
       <div class="col-md-10">
-        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <iframe style="height: 100vh; width: 100%; display: block"
+        [src]="urlSafe" provider="google"></iframe>
       </div>
       <div class="col-md-1">
         <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
@@ -927,6 +953,9 @@
     <div class="card">
       <div class="card-body">
         <div class="row clearfix">
+          <!-- <div class="col-md-12">
+         <label class="form-label">Upload File here :</label>
+      </div> -->
           <div class="col-md-12">
             <div class="fileuploadbox bg-color-lightgray">
               <label class="filelabel">
@@ -941,7 +970,7 @@
               <label *ngFor="let item of filesArray; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
                   <i class="fa fa-paperclip"> </i>
-                  <span class="title" tooltip="{{ item.name }}">
+                  <span class="title">
                     {{ item.name }}
                   </span>
                 </div>
