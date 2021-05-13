@@ -1752,7 +1752,9 @@ export class TuitionFeesDeclarationComponent implements OnInit {
             element.actualAmount
           );
         });
-  
+   if(!this.transactionDetail.length){
+          this.addRowInList();
+        }
         // } else {
         //   this.addRowInList(this.declarationService, 0);
       }
