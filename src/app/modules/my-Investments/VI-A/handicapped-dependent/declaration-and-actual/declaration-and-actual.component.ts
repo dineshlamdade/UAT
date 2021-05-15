@@ -65,6 +65,7 @@ export class DeclarationAndActualComponent implements OnInit {
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
   public familyMemberName: Array<any> = [];
+  public remainingFamilyMemberName: Array<any> = [];
 
   public handicappedDependentForm: FormGroup;
   public currentEmployerForm: FormGroup;
@@ -225,6 +226,7 @@ export class DeclarationAndActualComponent implements OnInit {
 
   public ngOnInit(): void {
     // console.log('data::', this.data);
+    this.getMasterFamilyInfo ();
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
     } else {
@@ -283,9 +285,9 @@ export class DeclarationAndActualComponent implements OnInit {
     this.currEmpFormArray.push(
       this.formBuilder.group({
         checkboxx: [false],
-        familyMemberName: [null],
+        familyMemberName: [null, Validators.required],
         // familyMemberInfoId: [null, Validators.required],
-        familyMemberInfoId: [null],
+        familyMemberInfoId: [null, Validators.required],
         severity: [null],
         disabilityType: [null],
         // actualAmount: [{value:null, disabled: true}],
@@ -312,12 +314,12 @@ export class DeclarationAndActualComponent implements OnInit {
         checkbox1: [false],
         previousEmployerId:  [null],
         // previousEmployerId:  [null, Validators.required],
-        familyMemberName: [null],
-        familyMemberInfoId: [null],
+        familyMemberName: [null, Validators.required],
+        familyMemberInfoId: [null, Validators.required],
         // familyMemberInfoId: [null, Validators.required],
         severity: [null],
         disabilityType: [null],
-        actualAmount: [null],
+        actualAmount: [null, Validators.required],
         // declaredAmount: [null],
         accepted: [{value:null, disabled: true}],
         rejected: [{value:null, disabled: true}],
@@ -519,15 +521,27 @@ export class DeclarationAndActualComponent implements OnInit {
           value: element.familyMemberInfoId,
         };
         if (element.relation !== 'Self') {
+          this.remainingFamilyMemberName.push(obj);
           this.familyMemberName.push(obj);
         }
-        this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
-          // remove saved family member from dropdown
-          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
-          if (index > -1) {
-            this.familyMemberName.splice(index, 1);
-          }
-        });
+        console.log("remainingFamilyMemberName",this.remainingFamilyMemberName);
+        console.log("familyMemberName",this.familyMemberName);
+        // this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
+        //   // remove saved family member from dropdown
+        //   const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName)
+        //   if (index > -1) {
+        //     this.familyMemberName.splice(index, 1);
+        //   }
+        // });
+
+        // this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
+        //   // remove saved family member from dropdown
+        //   const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName)
+        //   if (index > -1) {
+        //     this.familyMemberName.splice(index, 1);
+        //   }
+        // });
+
       });
     });
   }
@@ -838,7 +852,7 @@ export class DeclarationAndActualComponent implements OnInit {
     this.resetAll();
     this.selectedTransactionInstName('All');
     this.previousEmployerName ();
-    this.getMasterFamilyInfo ();
+
 
   }
 
@@ -1151,7 +1165,7 @@ export class DeclarationAndActualComponent implements OnInit {
     // this.declarationService.handicappedDependentDetailMaster.amountRejected = 0.0;
     // this.declarationService.handicappedDependentDetailMaster.amountApproved = 0.0;
     this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = 0;
-    this.declarationService.handicappedDependentDetailMaster.familyMemberName = null;
+    this.declarationService.handicappedDependentDetailMaster.familyMemberName= null;
     this.declarationService.handicappedDependentDetailMaster.severity = null;
     this.declarationService.handicappedDependentDetailMaster.disabilityType = null;
     this.previousEmployerHandicappedDependentResponseList.push(this.declarationService);
@@ -1353,9 +1367,9 @@ export class DeclarationAndActualComponent implements OnInit {
   upload(formDirective: FormGroupDirective,) {
     this.submitted = true;
     // stop here if form is invalid
-    if (this.handicappedDependentForm.invalid) {
-      return;
-    }
+    // if (this.handicappedDependentForm.invalid) {
+    //   return;
+    // }
 
     if(this.priviousEmpFormArray.invalid){
       return;
@@ -1452,10 +1466,6 @@ export class DeclarationAndActualComponent implements OnInit {
           this.previousEmployerHandicappedDependentResponseList =
               res.data.results[0].previousEmployerHandicappedDependentResponseList;
             this.documentInformationResponseList = res.data.results[0].documentInformationList;
-          // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-          // this.grandActualTotal = res.data.results[0].grandActualTotal;
-          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
           this.transactionDetail.forEach((element) => {
             element.group2TransactionList.forEach((innerElement) => {
               if (innerElement.dateOfPayment !== null) {
@@ -1739,16 +1749,16 @@ export class DeclarationAndActualComponent implements OnInit {
         });
         this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
           // remove saved family member from dropdown
-          const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName)
+          const index = this.remainingFamilyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName)
           if (index > -1) {
-            this.familyMemberName.splice(index, 1);
+            this.remainingFamilyMemberName.splice(index, 1);
           }
 
         });
 
         this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
           // remove saved family member from dropdown
-          const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMasterfamilyMemberName)
+          const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName)
           if (index > -1) {
             this.familyMemberName.splice(index, 1);
           }
