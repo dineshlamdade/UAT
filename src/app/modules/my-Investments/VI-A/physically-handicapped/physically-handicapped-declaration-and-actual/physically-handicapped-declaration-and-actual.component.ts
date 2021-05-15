@@ -1091,12 +1091,12 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
   }
 
   upload() {
-    // if (this.filesArray.length === 0) {
-    //   this.alertService.sweetalertError(
-    //     'Please attach Premium Receipt / Premium Statement'
-    //   );
-    //   return;
-    // }
+    if (this.filesArray.length === 0) {
+      this.alertService.sweetalertError(
+        'Medical Certificate/Form 10-1A / Medical Certificate/Form 10-1A'
+      );
+      return;
+    }
 
     // this.transactionDetail.forEach((element) => {
       //current emp table number format

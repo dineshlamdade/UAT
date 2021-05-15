@@ -147,6 +147,7 @@
                     <th scope="col" class="wd-15">Patient Name</th>
                     <th scope="col" class="wd-15">Relationship</th>
                     <th scope="col" class="wd-15">Disease</th>
+                    <!-- <th scope="col" class="wd-15">Neurological Disease</th> -->
                     <th scope="col" class="wd-10">Action</th>
                   </tr>
                 </thead>
@@ -159,6 +160,9 @@
                     <td class="wd-10"><span
                         tooltip="{{summary.specifiedDiseaseName}}">{{summary.specifiedDiseaseName}}</span>
                     </td>
+                    <!-- <td class="wd-10"><span
+                      tooltip="{{summary.neurologicalDiseaseName}}">{{summary.neurologicalDiseaseName}}</span>
+                  </td> -->
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.patientName)"
                         tooltip="Edit"></i> &nbsp;&nbsp;

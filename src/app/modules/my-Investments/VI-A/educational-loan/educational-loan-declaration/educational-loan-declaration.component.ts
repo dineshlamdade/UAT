@@ -1538,7 +1538,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
           innerElement.actualAmount = 0.0;
         }
 
-        // this.uploadGridData.push(innerElement.educationLoanTransactionId);
+        this.uploadGridData.push(innerElement.educationLoanTransactionId);
       });
 
       element.educationalLoanTransactionPreviousEmployerList.forEach((innerElement1) => {
