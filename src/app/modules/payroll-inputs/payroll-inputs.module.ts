@@ -38,7 +38,7 @@ import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.
 import { AttendanceComponent } from './attendance/attendance.component';
 import { GarnishmentComponent } from './garnishment/garnishment.component';
 import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-recurring-dashboard.component';
-
+import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
 
 
 
@@ -50,7 +50,8 @@ import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-re
      NonRecurringQtyComponent,
      AttendanceComponent,
      GarnishmentComponent,
-     NonRecurringDashboardComponent
+     NonRecurringDashboardComponent,
+     TwoDigitDecimaNumberDirective
     ],
   imports: [
     CommonModule,

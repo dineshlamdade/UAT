@@ -9,45 +9,65 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class NonRecurringAmtService {
 
   public apiUrl = environment.baseUrl8084;
+  public apiUrl1 = environment.baseUrl8082;
   constructor(private HttpClient: HttpClient) { }
 
+  /** All Summary Data */
   NonRecurringTransactionGroupSummery():Observable<any>{
     return this.HttpClient.get<any>(this.apiUrl + `NonRecurringTransactionGroup`);
   }
 
-  attendanceInputAPIRecordsUI(data,id):Observable<any>{
-    return this.HttpClient.put<any>(this.apiUrl + `NonRecurringTransactionGroup/updateById/` + id , data);
+  /**  Popup summary - Schedule details */
+  NonRecurringTransactionScheduleEMP(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionSchedule/NonRecurringTransactionScheduleEMP`, data);
   }
   
-  NonRecurringTransactionGroup(data):Observable<any>{
-    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup`, data);
+  /**  Popup summary - Schedule history */
+  NonRecurringTransactionScheduleRemarkHistorybyScheduleId(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionScheduleRemarkHistory/NonRecurringTransactionScheduleRemarkHistorybyScheduleId`, data);
   }
-  
-  NonRecurringTransactionGroupUI(data):Observable<any>{
-    return this.HttpClient.get<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupUI`, data);
+
+  /** Popup Summary - On Click History Popup */
+  NonRecurringTransactionGroupHeadwiseHistory(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupHeadwiseHistory`, data);
   }
-  
+
+  /** Employee Data get By Id */
+  employeeFinDetails(employeeMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl1 + `employee-fin-details/`+ employeeMasterId); 
+  }
+
+  /** Employee tranasaction data summary by Employee  */
   NonRecurringTransactionGroupAPIEmpwise(data):Observable<any>{
     return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupAPIEmpwise`, data);
   }
-  
-  NonRecurringTransactionGroupAPIbyId(data):Observable<any>{
-    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupAPIbyId`, data);
-  }
-  
-  NonRecurringTransactionScheduleEMP(data):Observable<any>{
-    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionSchedule/NonRecurringTransactionScheduleEMP`, data);
+
+  NonRecurringTransactionGroupUI(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupUI`, data);
   }
   
   NonRecurringTransactionScheduleupdateById(data):Observable<any>{
     return this.HttpClient.put<any>(this.apiUrl + `NonRecurringTransactionSchedule/updateById`, data);
   }
-  
-  NonRecurringTransactionScheduleRemarkHistorybyScheduleId(data):Observable<any>{
-    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionScheduleRemarkHistory/NonRecurringTransactionScheduleRemarkHistorybyScheduleId`, data);
+
+  /** Update Transaction */
+  attendanceInputAPIRecordsUI(data,id):Observable<any>{
+    return this.HttpClient.put<any>(this.apiUrl + `NonRecurringTransactionGroup/updateById/` + id , data);
   }
   
-  NonRecurringTransactionGroupHeadwiseHistory(data):Observable<any>{
-    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupHeadwiseHistory`, data);
+  
+  NonRecurringTransactionGroup(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup`, data);
   }
+  
+  
+  
+  
+  
+  NonRecurringTransactionGroupAPIbyId(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupAPIbyId`, data);
+  }
+  
+  
+  
 }
