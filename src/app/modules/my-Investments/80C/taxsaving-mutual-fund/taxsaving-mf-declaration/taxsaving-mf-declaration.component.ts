@@ -27,7 +27,7 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PostOfficeService } from '../../post-office/post-office.service';
+// import { PostOfficeService } from '../../post-office/post-office.service';
 
 @Component({
   selector: 'app-taxsaving-mf-declaration',
@@ -163,10 +163,12 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public canEdit: boolean;
+  dateOfJoining: Date;
+  taxsavingDeclarationData
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private postOfficeService : PostOfficeService,
+    // private postOfficeService : PostOfficeService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -223,6 +225,10 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      console.log(res.data.results[0].joiningDate);
+
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+ console.log(this.dateOfJoining)
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -399,6 +405,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   ) {
     const checked = event.target.checked;
 
+    this.taxsavingDeclarationData = data
+
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
@@ -478,6 +486,19 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       this.enableFileUpload = true;
     }
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
   }
 
@@ -543,6 +564,16 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
+    console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
   }
 
@@ -612,6 +643,19 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -800,6 +844,9 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
 
   upload() {
 
+
+    console.log(JSON.stringify(this.taxsavingDeclarationData))
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -838,6 +885,39 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         innerElement.dueDate = dueDate;
       });
     });
+
+    if(this.taxsavingDeclarationData.previousEmployerId == 0){
+
+    }
+    if (this.taxsavingDeclarationData.dateOfPayment == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected date of payment for all selected lines',
+        'Please Select Date Of Payment',
+      );
+      return false;
+    }
+    if (this.taxsavingDeclarationData.dueDate == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected due date for all selected lines',
+        'Please Select Date Of DueDate',
+      );
+      return false;
+    }
+    if (this.taxsavingDeclarationData.declaredAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected declared amount for all selected lines',
+        'Please Select Date Of Declared Amount',
+      );
+      return false;
+    }
+    if (this.taxsavingDeclarationData.actualAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected actual amount for all selected lines',
+        'Please Select Date Of Actual Amount',
+      );
+      return false;
+    }
+
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -1117,7 +1197,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].receiptAmount;
+          this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1126,11 +1206,11 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
         //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // this.urlArray.forEach((element) => {
+        //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+        //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        // });
         //console.log('converted:: ', this.urlArray);
       });
   }
@@ -1149,7 +1229,9 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>) {
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI

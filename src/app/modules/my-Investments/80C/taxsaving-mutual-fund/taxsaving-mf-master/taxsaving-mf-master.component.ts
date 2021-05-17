@@ -147,7 +147,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl('0'),
-      masterPaymentDetailId: new FormControl(0),
+      investmentGroup2MasterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
       proofSubmissionId : new FormControl('')

@@ -163,6 +163,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  dateOfJoining: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -424,11 +425,11 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // this.urlArray.forEach((element) => {
+        //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+        //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        // });
 
         this.editTransactionUpload =
           res.data.results[0].investmentGroup3TransactionDetailList;
@@ -557,6 +558,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      // console.log(res.data.results[0].joiningDate);
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -791,6 +795,19 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       this.enableFileUpload = true;
     }*/
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
   }
 
@@ -951,6 +968,19 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     });
 
     this.grandActualTotal = this.actualTotal;
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -1525,6 +1555,10 @@ export class FixedDepositsDeclarationComponent implements OnInit {
             element.actualAmount
           );
         });
+        // console.log('this.transactionDetail', this.transactionDetail);
+        if(!this.transactionDetail.length){
+          this.addRowInList();
+        }
       // } else {
       //   this.addRowInList(this.declarationService, 0);
     } 

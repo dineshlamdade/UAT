@@ -88,8 +88,8 @@
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i)" [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    ">
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      ">
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
                       [selected]="
@@ -150,8 +150,9 @@
                   </span>
                 </td> -->
                 <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}">
-                    <i class="fa fa-clipboard"></i>
+                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                    <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                    <!-- {{ summary.proofSubmissionId }} -->
                   </span>
                 </td>
 
@@ -298,11 +299,12 @@
               </tr>
 
               <tr>
-                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
+                <!-- <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td> -->
+                
+                <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left">Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left">Total</td>
                 <td class="bg-lightgray font-18 font700 align-left"></td>
-                <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left">Total</td>
-                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
+              <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
@@ -375,14 +377,17 @@
                     </td>
                     <td>
                       <span>
-                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmount"
+                        <input type="text" class="form-control align-right" 
+                        [(ngModel)]="globalSelectedAmount"
                           [disabled]="true" />
                       </span>
                     </td>
                     <td>
                       <span>
-                        <input type="text" class="form-control align-right" onkeypress="return /[0-9]/i.test(event.key)"
-                          (change)="changeReceiptAmountFormat()" [(ngModel)]="receiptAmount" />
+                        <input type="text" class="form-control align-right" 
+                        onkeypress="return /[0-9]/i.test(event.key)"
+                          (change)="changeReceiptAmountFormat()" 
+                          [(ngModel)]="receiptAmount" />
                       </span>
                     </td>
                     <td>
@@ -467,7 +472,7 @@
                   </td>
                   <td>
                     <div class="custom_Label_badge">
-                      <button class="btn bg-color-lightgray text-000"
+                      <button class="btn btn-bg-green text-white"
                         (click)="docViewer(template3, documentSummary.documentDetailList)">
                         Documents
                       </button>
@@ -554,7 +559,11 @@
     </button>
   </div>
   <div class="card-body Box-Spacing">
-    <div>
+    <div *ngFor="
+    let summary of editTransactionUpload;
+    let i = index;
+    count as c
+  ">
       <div class="row mt-15">
         <div class="col-12">
           <div class="table-responsive Custom_Table">
@@ -573,7 +582,7 @@
                   <th rowspan="2" class="wd-9 font700">Invested Amount</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-8">PS ID</th>
                   <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -592,7 +601,7 @@
                   <th rowspan="2" class="wd-9 font700">Invested Amount</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
-                  <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-10">PS ID</th>
                   <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -639,7 +648,9 @@
                     <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                       [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                      data-date-autoclose="true" (ngModelChange)="
+                      data-date-autoclose="true" 
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewTransactionDetail"
+                      (ngModelChange)="
                         summary.dateOfPayment = $event.toLocaleDateString();
                         onChangeDateOfPaymentEditCase(summary, i)
                       " class="form-control" bsDatepicker />
@@ -648,7 +659,9 @@
                     <input type="text" id="actualAmount{{ summary.investmentGroup3TransactionId }}"
                       onkeypress="return /[0-9 ]/i.test(event.key)" name="actualAmount{{
                         summary.investmentGroup3TransactionId
-                      }}" [(ngModel)]="summary.actualAmount" class="form-control align-right" />
+                      }}" 
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewTransactionDetail"
+                      [(ngModel)]="summary.actualAmount" class="form-control align-right" />
                     <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                   </td>
                   <td>
@@ -665,10 +678,12 @@
                     </span>
                   </td>
                   <td>
-                    <span tooltip="{{ summary.proofSubmissionId }}">
-                      {{ summary.proofSubmissionId }}
-                    </span>
-                  </td>
+                    <span tooltip="{{ summary.proofSubmissionId }}" 
+                    *ngIf="summary.transactionStatus === 'Submitted'">
+  <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+   <!-- {{ summary.proofSubmissionId }} -->
+   </span>
+    </td>
                   <td class="text-orange font700">
                     <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
@@ -677,14 +692,15 @@
                 </tr>
 
                 <tr>
-                  <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-left">Total</td>
+                  <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
+                  
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
-                      {{ grandActualTotalEditModal | number: "1.2-2" }}
+                    <span tooltip="{{ summary.actualAmount }}" class="padding-right-12">
+                      {{ summary.actualAmount }}
                     </span>
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">
@@ -784,7 +800,7 @@
       <b><i class="fa fa-eye"></i></b> View
     </button>
     &nbsp;&nbsp;
-    <button *ngIf="viewTransactionDetail" type="button" tooltip="View Document"
+    <button *ngIf="viewTransactionDetail" type="button" tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
