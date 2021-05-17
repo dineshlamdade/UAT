@@ -751,7 +751,7 @@
                         [(ngModel)]="summary.declaredAmount"
                         class="form-control align-right"
                         (change)="onDeclaredAmountChange(summary, i, j)"
-                        [disabled]="!summary.additionalPayment"
+                        [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                       />
                     </div>
                   </td>
@@ -766,7 +766,7 @@
                       data-date-autoclose="true"
                       (ngModelChange)="summary.interestReceivedDate  = $event.toLocaleDateString();
                         setDateOfPaymentInEditCase(summary, i, j)"
-                      class="form-control"
+                      class="form-control" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                       bsDatepicker
                     />
                   </td>
@@ -776,7 +776,7 @@
                       id="actualAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}"
                       name="actualAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}"
                       [(ngModel)]="summary.actualAmount"
-                      (change)="onActualAmountChangeInEditCase(summary, i, j)"
+                      (change)="onActualAmountChangeInEditCase(summary, i, j)" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                       class="form-control align-right"
                     />
                   </td>

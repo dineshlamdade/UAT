@@ -47,8 +47,8 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   public selectedInstitution: string;
 
   public limit : number;
-  public benifitDeclared: number;
-  public benifitActual: number;
+  public benefitDeclared: number;
+  public benefitActual: number;
 public userInfo : any;
 
   constructor(private authService: AuthService,
@@ -76,8 +76,8 @@ public userInfo : any;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
         this.limit = res.data.results[0].limit;
-        this.benifitDeclared = res.data.results[0].benifitDeclared;
-        this.benifitActual = res.data.results[0].benifitActual;
+        this.benefitDeclared = res.data.results[0].benefitDeclared;
+        this.benefitActual = res.data.results[0].benefitActual;
       }
     });
   }
@@ -100,8 +100,8 @@ public userInfo : any;
 
  //limit of actual and declared
  onChangelimit() {
-  this.benifitActual = Math.min(this.totalActualAmount, this.limit);
-  this.benifitDeclared = Math.min(this.totalDeclaredAmount, this.limit);
+  this.benefitActual = Math.min(this.totalActualAmount, this.limit);
+  this.benefitDeclared = Math.min(this.totalDeclaredAmount, this.limit);
 }
 }
 
