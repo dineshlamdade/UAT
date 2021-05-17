@@ -162,6 +162,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   getNomination() {
+    this.FamilyMemberList=[];
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
       
       // if (!this.dataSource) {
@@ -181,6 +182,7 @@ export class NominationDetailsComponent implements OnInit {
             'personalAccidentInsurancePercentage': 0,
             'mediclaimInsurancePercentage': 0
           }
+         
           this.FamilyMemberList.push(obj);
         }
 
@@ -318,6 +320,7 @@ export class NominationDetailsComponent implements OnInit {
         this.nominationDataSource = this.FamilyMemberList;
       }
       // if (!this.ESICDataSource) {
+        this.ESICMemberList=[];
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
         
         if (element.status == 1) {

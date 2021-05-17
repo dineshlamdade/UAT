@@ -433,7 +433,7 @@ export class HouserentdeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount = 0;
@@ -471,7 +471,7 @@ export class HouserentdeclarationComponent implements OnInit {
           i
         ].actualAmountPerMonth
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -487,7 +487,7 @@ export class HouserentdeclarationComponent implements OnInit {
           i
         ].actualAmountPerMonth
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].houseRentalTransactionList[
         i
@@ -510,7 +510,7 @@ export class HouserentdeclarationComponent implements OnInit {
     this.transactionDetail[j].houseRentalTransactionList.forEach((element) => {
       // console.log(element.actualAmountPerMonth.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmountPerMonth.toString().replace(',', '')
+        element.actualAmountPerMonth.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -580,7 +580,7 @@ export class HouserentdeclarationComponent implements OnInit {
     this.transactionDetail[j].houseRentalTransactionList.forEach((element) => {
       // console.log(element.declaredAmountPerMonth.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmountPerMonth.toString().replace(',', '')
+        element.declaredAmountPerMonth.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmountPerMonth+=Number(element.actualAmountPerMonth.toString().replace(',', ""));
@@ -627,10 +627,10 @@ export class HouserentdeclarationComponent implements OnInit {
       (element) => {
         console.log(
           'declaredAmountPerMonth::',
-          element.declaredAmountPerMonth.toString().replace(',', '')
+          element.declaredAmountPerMonth.toString().replace(/,/g, '')
         );
         this.declarationTotal += Number(
-          element.declaredAmountPerMonth.toString().replace(',', '')
+          element.declaredAmountPerMonth.toString().replace(/,/g, '')
         );
         // console.log(this.declarationTotal);
       }
@@ -722,7 +722,7 @@ export class HouserentdeclarationComponent implements OnInit {
     this.transactionDetail[j].houseRentalTransactionList.forEach((element) => {
       // console.log(element.actualAmountPerMonth.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmountPerMonth.toString().replace(',', '')
+        element.actualAmountPerMonth.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmountPerMonth += Number(element.actualAmountPerMonth.toString().replace(',', ""));
@@ -796,9 +796,9 @@ export class HouserentdeclarationComponent implements OnInit {
     this.actualAmountPerMonth = 0;
     this.editTransactionUpload[j].houseRentalTransactionList.forEach(
       (element) => {
-        console.log(element.actualAmountPerMonth.toString().replace(',', ''));
+        console.log(element.actualAmountPerMonth.toString().replace(/,/g, ''));
         this.actualTotal += Number(
-          element.actualAmountPerMonth.toString().replace(',', '')
+          element.actualAmountPerMonth.toString().replace(/,/g, '')
         );
         console.log(this.actualTotal);
         // this.actualAmountPerMonth += Number(element.actualAmountPerMonth.toString().replace(',', ""));
@@ -1024,14 +1024,14 @@ export class HouserentdeclarationComponent implements OnInit {
         if (innerElement.declaredAmountPerMonth !== null) {
           innerElement.declaredAmountPerMonth = innerElement.declaredAmountPerMonth
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmountPerMonth = 0.0;
         }
         if (innerElement.actualAmountPerMonth !== null) {
           innerElement.actualAmountPerMonth = innerElement.actualAmountPerMonth
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmountPerMonth = 0.0;
         }
@@ -1068,7 +1068,7 @@ export class HouserentdeclarationComponent implements OnInit {
     console.log('this.receiptNumber::', this.receiptNumber);
     console.log(this.transactionDetail[0]);
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       proofSubmissionId:'',  
       houseRentalTransactionList: this.transactionDetail[0].houseRentalTransactionList,
@@ -1343,14 +1343,14 @@ export class HouserentdeclarationComponent implements OnInit {
         if (innerElement.declaredAmountPerMonth !== null) {
           innerElement.declaredAmountPerMonth = innerElement.declaredAmountPerMonth
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmountPerMonth = 0.0;
         }
         if (innerElement.actualAmountPerMonth !== null) {
           innerElement.actualAmountPerMonth = innerElement.actualAmountPerMonth
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmountPerMonth = 0.0;
         }

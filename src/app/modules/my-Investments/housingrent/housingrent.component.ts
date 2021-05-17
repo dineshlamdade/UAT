@@ -9,6 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 export class HousingrentComponent implements OnInit {
   public tabIndex = 0;
   public windowScrolled: boolean;
+  public houseRentalMasterIds: number;
   public data: any;
 
   constructor() {}
@@ -21,13 +22,28 @@ export class HousingrentComponent implements OnInit {
     console.log('data::', this.data);
   }
 
-  changeTabIndex(index: number) {
+ /*  changeTabIndex(index: number) {
     if (index !== 2) {
       this.data = undefined;
     }
     this.tabIndex = index;
   }
-
+ */
+  changeTabIndex(index: number)
+  {
+    console.log(this.houseRentalMasterIds)
+    if(index !== 2) {
+      this.data = undefined;
+    }
+    if(index !== 1) {
+      this.houseRentalMasterIds = undefined;
+    }
+    this.tabIndex = index;
+  }
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.houseRentalMasterIds = event;
+  }
   public modalRef: BsModalRef;
 
   @HostListener('window:scroll', [])

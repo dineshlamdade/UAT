@@ -51,12 +51,12 @@ export class NpsService {
   }
 
 
-  postNpsDeclarationTransaction(data) {
-    return this._HTTP.post(this.apiUrl + 'lic-transaction', data)
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
+  // postNpsDeclarationTransaction(data) {
+  //   return this._HTTP.post(this.apiUrl + 'lic-transaction', data)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
   getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
     return this._HTTP.get(this.apiUrl + 'nps-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
@@ -74,7 +74,7 @@ export class NpsService {
 
 
   getpreviousEmployeName() {
-    return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
+    return this._HTTP.get(this.apiUrl + 'previousemployer')
     .pipe(map((res: any) => {
       return res;
     }));

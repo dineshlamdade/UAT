@@ -70,6 +70,7 @@ export class PPFMasterComponent implements OnInit {
 
   public documentRemark: any;
   public isECS = true;
+  public startDateModel: any = { date: null };
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -85,7 +86,7 @@ export class PPFMasterComponent implements OnInit {
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
   public minFormDate: any = '';
-  public maxFromDate: any = '';
+  public maxFromDate: Date= new Date( "9999-12-31");
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -138,7 +139,7 @@ export class PPFMasterComponent implements OnInit {
         Validators.required
       ),
       policyStartDate: new FormControl(null, Validators.required),
-      policyEndDate: new FormControl(null),
+      policyEndDate: new FormControl(new Date("9999-12-31"), Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
       remark: new FormControl(null),
@@ -151,7 +152,7 @@ export class PPFMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl('0'),
-      masterPaymentDetailId: new FormControl(0),
+      investmentGroup1MasterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
       // depositType: new FormControl('recurring'),
       proofSubmissionId: new FormControl(''),
@@ -182,6 +183,7 @@ export class PPFMasterComponent implements OnInit {
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
     });
+    
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
@@ -199,8 +201,10 @@ export class PPFMasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        this.familyMemberName.push(obj);
+        this.familyMemberName.push(obj)
+        
       });
+      
     });
 
     // Get All Previous Employer
@@ -210,6 +214,7 @@ export class PPFMasterComponent implements OnInit {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
         // console.log('employeeJoiningDate::',this.employeeJoiningDate);
       }
+      this.startDateModel =  '31-dec-9999';
     });
 
     if (this.today.getMonth() + 1 <= 3) {
@@ -233,6 +238,7 @@ export class PPFMasterComponent implements OnInit {
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
+   
   }
 
   // convenience getter for easy access to form fields
@@ -352,6 +358,7 @@ export class PPFMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+   
     console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
@@ -361,6 +368,30 @@ export class PPFMasterComponent implements OnInit {
     } else {
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
+      if (this.form.value.frequencyOfPayment === 'As & When') {
+        const start = this.datePipe.transform(
+          this.form.get('policyStartDate').value,
+          'yyyy-MM-dd'
+        );
+        const end = this.datePipe.transform(
+          this.form.get('policyEndDate').value,
+          'yyyy-MM-dd'
+        );
+        data.policyStartDate = start;
+        data.policyEndDate = end;
+        const from = this.datePipe.transform(
+          this.form.get('fromDate').value,
+          'yyyy-MM-dd'
+        );
+        const to = this.datePipe.transform(
+          this.form.get('toDate').value,
+          'yyyy-MM-dd'
+        );
+
+        // data.proofSubmissionId = this.proofSubmissionId;
+        data.fromDate = from;
+        data.toDate = to;
+      }
       if (this.form.value.frequencyOfPayment !== 'As & When') {
         const from = this.datePipe.transform(
           this.form.get('fromDate').value,
@@ -374,7 +405,7 @@ export class PPFMasterComponent implements OnInit {
         data.proofSubmissionId = this.proofSubmissionId;
         data.fromDate = from;
         data.toDate = to;
-        data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+        data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
       }
 
       console.log('PPF::', data);
@@ -449,15 +480,25 @@ export class PPFMasterComponent implements OnInit {
     if (this.form.value.frequencyOfPayment === 'As & When') {
       console.log('in as and when');
       //this.form.get(this.form.value.premiumAmoun).setValue(null);
+      const financialYearStartDate = this.datePipe.transform(
+        this.financialYearStartDate,
+        'dd-MMM-YYYY'
+      );
+      const financialYearEndDate = this.datePipe.transform(
+        this.financialYearEndDate,
+        'dd-MMM-YYYY'
+      );
+      this.form.get('policyStartDate').setValue(financialYearStartDate);
+      this.form.get('policyEndDate').setValue(financialYearEndDate);
 
       this.form.get('premiumAmount').setValue(0);
       this.form.get('annualAmount').setValue(0);
-      this.form.get('fromDate').reset();
-      this.form.get('toDate').reset();
+      this.form.get('fromDate').setValue(financialYearStartDate);
+      this.form.get('toDate').setValue(financialYearEndDate);
       this.form.get('ecs').setValue('0');
     } else {
       let installment = this.form.value.premiumAmount;
-      // installment = installment.toString().replace(',', '');
+      // installment = installment.toString().replace(/,/g, '');
       // console.log(installment);
 
       if (!this.form.value.frequencyOfPayment) {
@@ -509,6 +550,11 @@ export class PPFMasterComponent implements OnInit {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
+      //   element.policyStartDate = new Date(element.policyStartDate);
+      //   element.policyEndDate = new Date(element.policyEndDate);
+      //   element.fromDate = new Date(element.fromDate);
+      //   element.toDate = new Date(element.toDate);
+      // });
         if (element.policyStartDate !== null) {
           element.policyStartDate = new Date(element.policyStartDate);
         }
@@ -522,7 +568,7 @@ export class PPFMasterComponent implements OnInit {
           element.toDate = new Date(element.toDate);
         }
       });
-
+      console.log(accountNumber);
       const obj = this.findByPolicyNo(accountNumber, this.masterGridData);
 
       console.log('Edit Master', obj);
@@ -542,7 +588,9 @@ export class PPFMasterComponent implements OnInit {
       } else {
         this.paymentDetailGridData = obj.paymentDetails;
         this.form.patchValue(obj);
-        this.Index = obj.accountNumber;
+         this.Index = obj.accountNumber;
+        //  this.setPolicyEndDate();
+        //  this.checkFinancialYearStartDateWithPolicyEnd();
         this.showUpdateButton = true;
         this.isClear = true;
         this.urlArray = obj.documentInformationList;

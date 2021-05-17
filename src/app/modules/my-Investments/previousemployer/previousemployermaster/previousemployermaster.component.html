@@ -1,343 +1,307 @@
 <div class="row mb-15 mt-4">
-   <div class="col-md-12">
-     <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span>Note :
+    <div class="col-md-12">
+        <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span>Note :
        Details of benefits availed under Chapter VI-A (including section 80-C) to be updated in the respective forms in
        the portal
      </label>
-   </div>
- </div>
- <!-- previous EmployerDetails Master Form -->
- <form class="card" role="form" (ngSubmit)="addMaster(previousEmployerDetailsform,formDirective)" [formGroup]="previousEmployerDetailsform"
-    #formDirective="ngForm" method="post" novalidate>
+    </div>
+</div>
+<!-- previous EmployerDetails Master Form -->
+<form class="card" role="form" (ngSubmit)="addMaster(previousEmployerDetailsform,formDirective)" [formGroup]="previousEmployerDetailsform" #formDirective="ngForm" method="post" novalidate>
     <!-- <div class="tabview-contents"> -->
     <br>
     <fieldset id="contentToConvert">
-     <legend>Previous Employer Details</legend>
-  <!--    <div formGroupName="previousEmployerDetailsMaster"[formGroup]="previousEmployerDetailsform" #formDirective_="ngForm"> -->
-     <div class="row">
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b>Name</b></label>
-           <input type="text" formControlName="name" class="form-control"
-           onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Name"
-           [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.name.errors }">
-             <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.name.errors" class="invalid-feedback">
-               <div *ngIf="previousEmployerDetailsMaster.name.errors.required">Name is mandatory</div>
-           </div>
+        <legend>Previous Employer Details</legend>
+        <!--    <div formGroupName="previousEmployerDetailsMaster"[formGroup]="previousEmployerDetailsform" #formDirective_="ngForm"> -->
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>Name</b></label>
+                <input type="text" formControlName="name" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter Name" [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.name.errors }">
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.name.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.name.errors.required">Name is mandatory</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b> Address </b></label>
+                <input type="text" formControlName="address" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter Address" [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.address.errors }">
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.address.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.address.errors.required"> Address is mandatory</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b> PAN </b></label>
+                <input type="text" maxlength="12" minlength="10" formControlName="pan" placeholder="Enter PAN Number" class="form-control" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN" [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.pan.errors }">
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.pan.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.pan.errors.required">PAN Number is Mandatory</div>
+                    <div *ngIf="previousEmployerDetailsMaster.pan.errors?.pattern">Enter valid PAN Number</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b> TAN </b></label>
+                <input type="text" maxlength="12" minlength="10" formControlName="tan" placeholder="Enter TAN Number" class="form-control" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="TAN" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.tan.errors }">
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.tan.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.tan.errors.required">TAN Number is Mandatory</div>
+                    <div *ngIf="previousEmployerDetailsMaster.tan.errors?.pattern">Enter valid TAN Number</div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b> Address </b></label>
-           <input type="text" formControlName="address" class="form-control" 
-           onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Address"
-              [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.address.errors }">
-           <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.address.errors" class="invalid-feedback">
-              <div *ngIf="previousEmployerDetailsMaster.address.errors.required"> Address is mandatory</div>
-           </div>
+        <div class="row mb-15 mt-4">
+            <div class="col-md-12">
+                <!--  <label class="mt-2  font-13 font600"><span >*</span> -->
+                <!-- <legend><span >*</span> Period Of Employment</legend> -->
+                <h3 class="font-14 text-purple font-bold"><span>*</span> Period Of Employment</h3>
+                <!-- </label> -->
+            </div>
         </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b> PAN </b></label>
-           <input type="text" maxlength="12" minlength="10" formControlName="pan"
-              placeholder="Enter PAN Number" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
-              pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN"
-              [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.pan.errors }">
-             <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.pan.errors" class="invalid-feedback">
-                <div *ngIf="previousEmployerDetailsMaster.pan.errors.required">PAN Number is Mandatory</div>
-                <div *ngIf="previousEmployerDetailsMaster.pan.errors?.pattern">Enter valid PAN Number</div>
-             </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b> TAN </b></label>
-           <input type="text" maxlength="12" minlength="10" formControlName="tan"
-              placeholder="Enter TAN Number" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
-               pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="TAN"
-              [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.tan.errors }">
-             <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.tan.errors" class="invalid-feedback">
-                <div *ngIf="previousEmployerDetailsMaster.tan.errors.required">TAN Number is Mandatory</div>
-                <div *ngIf="previousEmployerDetailsMaster.tan.errors?.pattern">Enter valid TAN Number</div>
-             </div>
-        </div>
-     </div>
-     <div class="row mb-15 mt-4">
-        <div class="col-md-12">
-           <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span>
-           period of Employment
-           </label>
-        </div>
-     </div>
-     <div class="row">
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label">Date of Joining</label>
-           <div class="form-group">
-              <div class="input-group">
-                   <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                   </div>
-                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfJoining"
-                 data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPaymentDetailToDate()"
-                 placeholder="Date Of Joining" bsDatepicker
-                 [maxDate] = "previousDate"
-                 [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.dateOfJoining.errors }">
-                      <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.dateOfJoining.errors"class="invalid-feedback">
-                         <div *ngIf="previousEmployerDetailsMaster.dateOfJoining.errors.required">Date Of Joining mandatory</div>
-                      </div>
-              </div>
-           </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b> Date of Leaving </b></label>
-           <div class="form-group">
-              <div class="input-group">
-                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                 </div>
-                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfLeaving"
-                 data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
-                 placeholder="Date of Leaving" bsDatepicker 
-                 [minDate]="paymentDetailMinDate"  [maxDate] = "previousDate"
-                 [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.dateOfLeaving.errors }">
-                   <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.dateOfLeaving.errors"class="invalid-feedback">
-                      <div *ngIf="previousEmployerDetailsMaster.dateOfLeaving.errors.required">Date of Leaving mandatory</div>
-                   </div>
-              </div>
-           </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b> Type of Regime </b></label>
-           <select name="Address_Copy_From" id="regime" placeholder="Copy Address" formControlName="typeOfRegime"
-              class="form-control custom-select">
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label">Date Of Joining</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfJoining" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPaymentDetailToDate()" placeholder="Date Of Joining" bsDatepicker [maxDate]="previousDate"
+                            [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.dateOfJoining.errors }">
+                        <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.dateOfJoining.errors" class="invalid-feedback">
+                            <div *ngIf="previousEmployerDetailsMaster.dateOfJoining.errors.required">Date Of Joining mandatory</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b> Date Of Leaving </b></label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfLeaving" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()" placeholder="Date of Leaving"
+                            bsDatepicker [minDate]="paymentDetailMinDate" [maxDate]="previousDate" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.dateOfLeaving.errors }">
+                        <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.dateOfLeaving.errors" class="invalid-feedback">
+                            <div *ngIf="previousEmployerDetailsMaster.dateOfLeaving.errors.required">Date of Leaving mandatory</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b> Type Of Regime </b></label>
+                <select name="Address_Copy_From" id="regime" placeholder="Copy Address" formControlName="typeOfRegime" class="form-control custom-select">
               <option>Old</option>
               <option>New</option>
            </select>
+            </div>
         </div>
-     </div>
-     <div class="row mt-4">
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b>Taxable Incomes(Fully Taxable Heads)</b></label>
-           <label class="form-label text-center"><b>(A)</b></label>
-           <p-inputNumber class="form-control align-right" formControlName="fullyTaxableHeadsIncome" mode="decimal" (onBlur)='calculateTotal()'
-           locale="en-IN" [minFractionDigits]="2"
-           [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.fullyTaxableHeadsIncome.errors }">
-           </p-inputNumber>
-           <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.fullyTaxableHeadsIncome.errors" class="invalid-feedback">
-              <div *ngIf="previousEmployerDetailsMaster.fullyTaxableHeadsIncome.errors.required">Taxable Incomes(Fully Taxable Heads) mandatory</div>
-           </div>
+        <div class="row mt-4">
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>Taxable Incomes (Fully Taxable Heads)</b></label>
+                <label class="form-label align-left text-light-green font700" tooltip="Total amount of salary excluding amounts required to be show in columns(B) & (C)"><b>(A)</b></label>
+                <p-inputNumber class="p-inputright " formControlName="fullyTaxableHeadsIncome" mode="decimal" (onBlur)='calculateTotal()' locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.fullyTaxableHeadsIncome.errors }">
+                </p-inputNumber>
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.fullyTaxableHeadsIncome.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.fullyTaxableHeadsIncome.errors.required">Taxable Incomes(Fully Taxable Heads) mandatory</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>Taxable Incomes(Heads Having Exemptions) </b></label>
+                <label class="form-label align-left text-light-green font700" tooltip="Total amount of house rent allowances,conveyance allowance and other allowances to the extent chargeable to tax(See section 10 13(A) read with rule 2A and section 10(14)"><b> (B) </b></label>
+                <p-inputNumber class="p-inputright " formControlName="headsWithExemptionIncome" mode="decimal" (onBlur)='calculateTotal()' locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.headsWithExemptionIncome.errors }">
+                </p-inputNumber>
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.headsWithExemptionIncome.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.headsWithExemptionIncome.errors.required">Taxable Incomes(Heads Having Exemptions) mandatory</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>     Value of  Perquisites </b></label>
+                <label class="form-label align-left text-light-green font700"><b>(C)</b></label>
+                <p-inputNumber class="p-inputright " formControlName="valueOfPerquisites" mode="decimal" (onBlur)='calculateTotal()' locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.valueOfPerquisites.errors }">
+                </p-inputNumber>
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.valueOfPerquisites.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.valueOfPerquisites.errors.required">Value of Perquisites mandatory</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>    Taxable Income </b></label>
+                <label class="form-label align-left text-light-green font700"><b>(D)=(A)+(B)+(C)</b></label>
+                <p-inputNumber class="p-inputright " formControlName="taxableIncome" mode="decimal" (onBlur)='calculateTotal()' locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.taxableIncome.errors }">
+                </p-inputNumber>
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.taxableIncome.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.taxableIncome.errors.required">Taxable Income mandatory </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-6 col-md-4">
-           <label class="form-label"><b>Taxable Incomes(Heads Having Exemptions) </b></label>
-           <label class="form-label text-center"><b> (B) </b></label>
-           <p-inputNumber class="form-control align-right" formControlName="headsWithExemptionIncome" mode="decimal" (onBlur)='calculateTotal()'
-           locale="en-IN" [minFractionDigits]="2"
-           [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.headsWithExemptionIncome.errors }">
-           </p-inputNumber>
-           <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.headsWithExemptionIncome.errors" class="invalid-feedback">
-              <div *ngIf="previousEmployerDetailsMaster.headsWithExemptionIncome.errors.required">Taxable Incomes(Heads Having Exemptions) mandatory</div>
-           </div>
+        <div class="row mt-4">
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>Professional Tax</b></label>
+                <p-inputNumber class="p-inputright " formControlName="professionalTax" mode="decimal" locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.professionalTax.errors }">
+                </p-inputNumber>
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.professionalTax.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.professionalTax.errors.required">Professional Tax mandatory </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>Standard Deduction </b></label>
+                <p-inputNumber class="p-inputright " formControlName="standardDeduction" mode="decimal" locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.standardDeduction.errors }">
+                </p-inputNumber>
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.standardDeduction.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.standardDeduction.errors.required">Standard Deduction mandatory </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>Benefit given under Sec.80 C </b></label>
+                <p-inputNumber class="p-inputright " formControlName="benefitGivenUnder80C" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.benefitGivenUnder80C.errors }">
+                </p-inputNumber>
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.benefitGivenUnder80C.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.benefitGivenUnder80C.errors.required">Enter Benefit Sec.80 C mandatory </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <label class="form-label"><b>Tax Deducted at Source (TDS) </b></label>
+                <p-inputNumber class="p-inputright " formControlName="taxDeductedAtSource" mode="decimal" locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.taxDeductedAtSource.errors }">
+                </p-inputNumber>
+                <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.taxDeductedAtSource.errors" class="invalid-feedback">
+                    <div *ngIf="previousEmployerDetailsMaster.taxDeductedAtSource.errors.required">Enter Tax Deducted (TDS) mandatory </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-6 col-md-2">
-           <label class="form-label"><b>Value of Perquisites </b></label>
-           <label class="form-label text-center"><b>(C)</b></label>
-           <p-inputNumber class="form-control align-right" formControlName="valueOfPerquisites" mode="decimal" (onBlur)='calculateTotal()'
-           locale="en-IN" [minFractionDigits]="2"
-           [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.valueOfPerquisites.errors }">
-           </p-inputNumber>
-           <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.valueOfPerquisites.errors" class="invalid-feedback">
-              <div *ngIf="previousEmployerDetailsMaster.valueOfPerquisites.errors.required">Value of Perquisites mandatory</div>
-           </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b>Taxable Income </b></label>
-           <label class="form-label text-center"><b>(D)=(A)+(B)+(C)</b></label>
-           <p-inputNumber  class="form-control align-right" formControlName="taxableIncome" mode="decimal" (onBlur)='calculateTotal()'
-           locale="en-IN" [minFractionDigits]="2"  
-           [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.taxableIncome.errors }" >
-           </p-inputNumber>
-           <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.taxableIncome.errors" class="invalid-feedback">
-              <div *ngIf="previousEmployerDetailsMaster.taxableIncome.errors.required">Taxable Income mandatory </div>
-           </div>
-        </div>
-     </div>
-     <div class="row mt-4">
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b>Professional Tax</b></label>
-           <p-inputNumber class="form-control align-right" formControlName="professionalTax" mode="decimal"
-           locale="en-IN" [minFractionDigits]="2"
-           [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.professionalTax.errors }">
-           </p-inputNumber>
-             <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.professionalTax.errors" class="invalid-feedback">
-                <div *ngIf="previousEmployerDetailsMaster.professionalTax.errors.required">Professional Tax mandatory </div>
-             </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b>Standard Deduction </b></label>
-           <p-inputNumber class="form-control align-right" formControlName="standardDeduction" mode="decimal"
-           locale="en-IN" [minFractionDigits]="2"
-           [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.standardDeduction.errors }">
-           </p-inputNumber>
-             <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.standardDeduction.errors" class="invalid-feedback">
-                <div *ngIf="previousEmployerDetailsMaster.standardDeduction.errors.required">Standard Deduction mandatory </div>
-             </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b>Benefit given under Sec.80 C </b></label>
-           <p-inputNumber class="form-control align-right" formControlName="benefitGivenUnder80C" mode="decimal"
-           locale="en-IN" [minFractionDigits]="2" min="0"
-           [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.benefitGivenUnder80C.errors }">
-           </p-inputNumber>
-           <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.benefitGivenUnder80C.errors" class="invalid-feedback">
-              <div *ngIf="previousEmployerDetailsMaster.benefitGivenUnder80C.errors.required">Enter Benefit Sec.80 C mandatory </div>
-           </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label"><b>Tax Deducted at Source(TDS) </b></label>
-           <p-inputNumber class="form-control align-right" formControlName="taxDeductedAtSource" mode="decimal"
-           locale="en-IN" [minFractionDigits]="2"
-           [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.taxDeductedAtSource.errors }">
-           </p-inputNumber>
-           <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.taxDeductedAtSource.errors" class="invalid-feedback">
-              <div *ngIf="previousEmployerDetailsMaster.taxDeductedAtSource.errors.required">Enter Tax Deducted (TDS) mandatory </div>
-           </div>
-        </div>
-     </div>
-  </fieldset>
- <div class="row mt-30">
-   <div class="col-12">
-     <div class="card">
-       <div class="mb-10 row">
-         <div class="col-md-6">
-           <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
-         </div>
-         <div class="col-md-6">
-           <span class="font-bold text-link float-right"></span>
-         </div>
-       </div>
-       <div class="row">
-         <div class="col-md-9">
-           <div class="table-responsive Custom_Table">
-             <table class="table table-striped table-hover table-bordered m-b-0">
-               <thead class="thead-dark">
-                 <tr>
-                   <th scope="col" class="font700 wd-8">Sr No.</th>
-                   <th scope="col" class="font700 wd-40">Attachment</th>
-                   <th scope="col" class="font700 wd-12">Action</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <tr>
-                   <th scope="row"><span tooltip="1">1</span></th>
-                   <td><span tooltip=""></span></td>
- 
-                   <td>
-                     <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
-                        (click)="UploadModal(previousEmployerDetailsIndex)" data-toggle="modal"
-                        data-target="#UploadModal">
+    </fieldset>
+    <div class="row mt-30">
+        <div class="col-12">
+            <div class="card">
+                <div class="mb-10 row">
+                    <div class="col-md-6">
+                        <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="font-bold text-link float-right"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="table-responsive Custom_Table">
+                            <table class="table table-striped table-hover table-bordered m-b-0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col" class="font700 wd-8">Sr No.</th>
+                                        <th scope="col" class="font700 wd-40">Attachment</th>
+                                        <th scope="col" class="font700 wd-12">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><span tooltip="1">1</span></th>
+
+                                        <td><span tooltip=""></span></td>
+
+                                        <td>
+                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(previousEmployerDetailsIndex)" data-toggle="modal" data-target="#UploadModal">
                      </i>&nbsp;&nbsp;
-                  </td>
-                 </tr>
-               </tbody>
-             </table>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
- </div>
- <div class="row mt-15">
-   <div class="col-12">
-     <div class="float-right mb-15">
-       <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"  (click)="openForm12BModal(template1)"
-       tooltip="Form 12B"><b><i class="fa fa-download -o"></i></b> Form 12B</button> &nbsp;
-       
-       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-         tooltip="Save"><b><i class="fa fa-floppy-o"></i></b> Save</button> &nbsp;
- 
-       <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"  (click)="cancelEdit()"
-         tooltip="Cancel"><b><i class="fa fa-floppy-o" ></i></b> Cancel </button>
-     </div>
-   </div>
- </div>
- <div class="mb-10 row">
-   <div class="col-md-6">
-     <h3 class="font-14 text-purple font-bold">Summary</h3>
-   </div>
-   <div class="col-md-6">
-     <span class="font-bold text-link float-right"></span>
-   </div>
- </div>
- <div class="row mt-10">
-   <div class="col-12">
-     <div class="table-responsive Custom_Table">
-       <table class="table table-striped table-hover table-bordered m-b-0">
-         <thead class="thead-dark">
-           <tr>
-             <th scope="col" class="wd-10">Sr.No.</th>
-             <th scope="col" class="wd-15">Employer Name</th>
-             <th scope="col" class="wd-20">Date of Joining</th>
-             <th scope="col" class="wd-20">Date of Leaving</th>
-             <th scope="col" class="wd-20">Taxable Income</th>
-             <th scope="col" class="wd-15">Tax Deducted at Source(TDS)</th>
-             <th scope="col" class="wd-15">Regime</th>
-             <th scope="col" class="wd-15">Action</th>
-           </tr>
-         </thead>
-         <tbody>
-           <tr *ngFor="let summary of masterSummaryGridData; let i = index">
-             <td class="wd-2">
-                <span tooltip="{{i+1}}">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-15">
+        <div class="col-12">
+            <div class="float-right mb-15">
+                <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" (click)="openForm12BModal(template1)" tooltip="Form 12B"><b><i class="fa fa-download -o"></i></b> Form 12B</button> &nbsp;
+
+                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b><i class="fa fa-floppy-o"></i></b> Save</button> &nbsp;
+                <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left" (click)="cancelEdit()"><b><i class="fa fa-times"></i></b> Cancel</button>
+                <!-- <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"  (click)="cancelEdit()"
+         tooltip="Cancel"><b><i class="fa fa-floppy-o" ></i></b> Cancel </button> -->
+            </div>
+        </div>
+    </div>
+    <div class="mb-0 row">
+        <div class="col-md-6">
+            <h3 class="font-14 text-purple font-bold">Summary</h3>
+        </div>
+        <div class="col-md-6">
+            <span class="font-bold text-link float-right"></span>
+        </div>
+    </div>
+    <div class="row mt-10">
+        <div class="col-12">
+            <div class="table-responsive Custom_Table">
+                <table class="table table-striped table-hover table-bordered m-b-0">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" class="wd-10">Sr.No.</th>
+                            <th scope="col" class="wd-15">Employer Name</th>
+                            <th scope="col" class="wd-20">Date Of Joining</th>
+                            <th scope="col" class="wd-20">Date Of Leaving</th>
+                            <th scope="col" class="wd-20">Taxable Income</th>
+                            <th scope="col" class="wd-15">Tax Deducted at Source(TDS)</th>
+                            <th scope="col" class="wd-15">Regime</th>
+                            <th scope="col" class="wd-15">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let summary of masterSummaryGridData; let i = index">
+                            <td class="wd-2">
+                                <span tooltip="{{i+1}}">
                    {{i+1}}
                 </span>
-             </td>
-             <td class="wd-10">
-               <span><span tooltip="{{summary.name}}">{{summary.name}}</span></span>
-             </td>
-             <td>
-               <span><span tooltip="{{summary.dateOfJoining | date :'dd-MMM-yyyy' }}">{{summary.dateOfJoining | date :'dd-MMM-yyyy'}}</span></span>
-             </td>
-             <td class="wd-15">
-               <span><span tooltip="{{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}">{{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}</span></span>
-             </td>
-             <td class="wd-15">
-               <span><span tooltip="{{summary.taxableIncome}}">{{summary.taxableIncome}}</span></span>
-             </td>
-             <td class="wd-20">
-               <span><span tooltip="{{summary.taxDeductedAtSource}}">{{summary.taxDeductedAtSource}}</span></span>
-             </td>
-             <td class="wd-15 align-right">
-               <span><span tooltip="{{summary.typeOfRegime}}">{{summary.typeOfRegime}}</span></span>
-             </td>
-             <td class="wd-10">
-                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i> &nbsp;
-                <i class="fa fa-eye font-16 text-blue cursor-pointer"  (click)="viewMaster(i)" tooltip="View"></i> 
-             <!--   <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i> -->
-             </td>
-           </tr>
-           <tr *ngIf="!masterSummaryGridData?.length">
-             <td colspan="10">
-                 <span class="font-14 font500 align-center text-red">No Data Available</span>
-             </td>
-         </tr>
-         </tbody>
-       </table>
-     </div>
-   </div>
- </div>
- </form>
- 
- 
- <ng-template #previousEmployerDetailsIndex>
-   <div class="modal-header">
-      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                            </td>
+                            <td class="wd-10">
+                                <span><span tooltip="{{summary.name}}">{{summary.name}}</span></span>
+                            </td>
+                            <td>
+                                <span><span tooltip="{{summary.dateOfJoining | date :'dd-MMM-yyyy' }}">{{summary.dateOfJoining | date :'dd-MMM-yyyy'}}</span></span>
+                            </td>
+                            <td class="wd-15">
+                                <span><span tooltip="{{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}">{{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}</span></span>
+                            </td>
+                            <td class="wd-15">
+                                <span><span tooltip="{{summary.taxableIncome}}">{{summary.taxableIncome}}</span></span>
+                            </td>
+                            <td class="wd-20">
+                                <span><span tooltip="{{summary.taxDeductedAtSource}}">{{summary.taxDeductedAtSource}}</span></span>
+                            </td>
+                            <td class="wd-15 align-right">
+                                <span><span tooltip="{{summary.typeOfRegime}}">{{summary.typeOfRegime}}</span></span>
+                            </td>
+                            <td class="wd-10">
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i> &nbsp;
+                                <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewMaster(i)" tooltip="View"></i>
+                                <!--   <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="!masterSummaryGridData?.length">
+                            <td colspan="10">
+                                <span class="font-14 font500 align-center text-red">No Data Available</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<ng-template #previousEmployerDetailsIndex>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
          aria-hidden="true">×</span></button>
-   </div>
-   <div class="modal-body">
-      <div class="card">
-         <div class="card-body">
-            <div class="row clearfix">
-               <!-- <div class="col-md-12">
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <!-- <div class="col-md-12">
                   <label class="form-label">Upload File here :</label>
                </div> -->
-               <div class="col-md-12">
-                  <div class="fileuploadbox bg-color-lightgray">
-                     <label class="filelabel">
+                    <div class="col-md-12">
+                        <div class="fileuploadbox bg-color-lightgray">
+                            <label class="filelabel">
                      <i class="fa fa-upload">
                      </i>
                      <span class="title">
@@ -346,177 +310,269 @@
                      <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);" accept=".jpg , .jpeg, .pdf , .png"
                         id="FileInput" type="file" multiple/>
                      </label>
-                  </div>
-                  <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
-                    Selected files
-                     <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
+                        </div>
+                        <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
+                            Selected files
+                            <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
                         <div class="text-ellipsis"><i class="fa fa-paperclip">
                            </i>
                            <span class="title">
-                          
+
                            </span>
                         </div>
                         <div>
                            <i class="fa fa-times text-red font-18" (click)="removeSelectedRentAgreementDocumentDetailDocument(index)"></i>
                         </div>
                      </label>
-                  </div>
-               </div>
-               <div class="col-md-12 mt-10">
-                  <label class="form-label">Remark</label>
-               </div>
-               <div class="col-md-12">
-                  <textarea class="form-control" rows="2"></textarea>
-               </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-10">
+                        <label class="form-label">Remark</label>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
-   <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-   </div>
- </ng-template>
- 
- 
- <ng-template #template1>
-    <div class="modal-header">
-            <div class="row mt-15">
-             <div class="col-12">
-               <div class="float-right mb-15">
-                 <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"  (click)="openFormSign(template2)"
-                 tooltip="Form 12B"><b></b>Sign & Upload Form 12B</button> &nbsp;
-                 
-                   <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" (click)="download()"
-                   tooltip="Download"><b><i class="fa fa-download -o" ></i></b>Download</button> &nbsp;
- 
-                 <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" (click)="modalRef.hide()"
-                   tooltip="Cancel"><b><i class="far fa-remove -o"  ></i></b> Cancel </button>
-               </div>
-             </div>
-           </div>
-          </div>
-   <hr><hr>
-   <div  id="htmlData">
-    <span><b>FORM NO. 12B</b></span>
-    <span style="text-align:center;font-size:10px;"><b>[See rule 26A]</b></span>
-    <p style="font-weight:bold; margin-left:10px;">1. Name and address of the employee...................</p>
-    <p style="font-weight:bold;margin-left:10px;">2. Permanent Account No...............................</p>
-    <p style="font-weight:bold;margin-left:10px;">3. Residential status............................</p>
-    <table class="table table-bordered">
-       <tr>
-          <th>Firstname</th>
-          <th>Lastname</th> 
-          <th>Age</th>
-        </tr>
-        <tr>
-          <td>Jill</td>
-          <td>Smith</td>
-          <td>50</td>
-        </tr>
-        <tr>
-          <td>Eve</td>
-          <td>Jackson</td>
-          <td>94</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-         <td>Jill</td>
-         <td>Smith</td>
-         <td>50</td>
-       </tr>
-       <tr>
-         <td>Eve</td>
-         <td>Jackson</td>
-         <td>94</td>
-       </tr>
-       <tr>
-         <td>John</td>
-         <td>Doe</td>
-         <td>80</td>
-       </tr>
-       <tr>
-         <td>John</td>
-         <td>Doe</td>
-         <td>80</td>
-       </tr>
-       <tr>
-         <td>Jill</td>
-         <td>Smith</td>
-         <td>50</td>
-       </tr>
-       <tr>
-         <td>Eve</td>
-         <td>Jackson</td>
-         <td>94</td>
-       </tr>
-       <tr>
-         <td>John</td>
-         <td>Doe</td>
-         <td>80</td>
-       </tr>
-       <tr>
-         <td>John</td>
-         <td>Doe</td>
-         <td>80</td>
-       </tr>
-    </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
+</ng-template>
 
-    <div class="preview" *ngIf="imgFile">
-      <img [src]="imgFile" style="width:200px; height:200px">
+
+<ng-template #template1>
+    <div class="row mt-20">
+        <div class="col-md-12">
+            <div class="float-right">
+                <button type="button" tooltip="Sign & Upload Form 12B" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="openFormSign(template2)"><b><i class="fa fa-upload"></i></b>Sign & Upload Form 12B</button>
+                <button type="submit" tooltip="download" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="download()"><b><i class="fa fa-download"></i></b> Download </button>
+                <button type="button" tooltip="Close" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="modalRef.hide()"><b><i class="fa fa-times"></i></b>Close </button>
+            </div>
+        </div>
+    </div>
+    <div class="section-body mt-3">
+        <div class="container-fluid" id="htmlData" #htmlData>
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <!--
+                        <table  #htmlData> -->
+                        <div class="card-body">
+                            <div class="row mt-20">
+                                <div class="col-md-12">
+                                    <h5 class="text-center mb-0 mt-20 font-14">Form No. 12 B</h5>
+                                    <label class="text-center form-label mb-0 mt-0">(See rule 26A)</label>
+                                </div>
+                            </div>
+
+
+                            <div class="row mt-10">
+                                <div class="col-md-8">
+                                    <label class="mt-10 mb-0 form-label">Name and Address of the employee:.......................</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <span class="font-14 font700 text-purple">
+                                        {{previousEmployerDetailsform.name}}
+                                     </span>
+                                </div>
+                            </div>
+                            <div class="row mt-10">
+                                <div class="col-md-8">
+                                    <label class="mt-10 mb-0 form-label">Permanent Account Number:........................</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <span class="font-14 font700 text-purple">
+
+                                     </span>
+                                </div>
+                            </div>
+                            <div class="row mt-10">
+                                <div class="col-md-8">
+                                    <label class="mt-10 mb-0 form-label">Residential Status....................</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <span class="font-14 font700 text-purple"></span>
+                                </div>
+                            </div>
+                            <div class="row mt-20">
+                                <div class="col-md-12">
+                                    <div class="table-responsive Custom_Table">
+                                        <table class="table table-bordered m-b-0">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th rowspan="2" class="wd-5 text-bold">Sr. No.</th>
+                                                    <th rowspan="2" class="text-bold">Name and address of employer(s)</th>
+                                                    <th rowspan="2" class="text-bold">TAN of the employer(s) as alloted by the ITO</th>
+                                                    <th rowspan="2" class="text-bold">Permanent Account Number of the employer(s)</th>
+                                                    <th rowspan="2" class="text-bold">Period of employment</th>
+                                                    <th colspan="3" class="text-bold">Particulars of salary as defined in section 17, paid or due to be paid to the employee during the year</th>
+                                                    <th rowspan="2" class="text-bold">Total of columns 6,7 and 8</th>
+                                                    <th rowspan="2" class="text-bold">Amount deducted in respect of life insurance premium, provident fund contribution, etc., to which section 80c applies (Give details)</th>
+                                                    <th rowspan="2" class="text-bold">Total amount of tax deducted during the year (enclose certificate issued under section 203)</th>
+                                                    <th rowspan="2" class="text-bold">Remarks</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-bold">Total amount of salary excluding amounts required to be shown in columns 7 and 8</th>
+                                                    <th class="text-bold">Total amount of house rent allowance, conveyance allowance and other allowances to the extent chargeable to tax [See section 10(13A) read with rule 2A and section 10(14)]</th>
+                                                    <th class="text-bold">Value of perquisites and amount of accretion to employee's provident fund account (give details in the Annexure)</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-bold text-center">(1)</th>
+                                                    <th class="text-bold text-center">(2)</th>
+                                                    <th class="text-bold text-center">(3)</th>
+                                                    <th class="text-bold text-center">(4)</th>
+                                                    <th class="text-bold text-center">(5)</th>
+                                                    <th class="text-bold text-center">(6)</th>
+                                                    <th class="text-bold text-center">(7)</th>
+                                                    <th class="text-bold text-center">(8)</th>
+                                                    <th class="text-bold text-center">(9)</th>
+                                                    <th class="text-bold text-center">(10)</th>
+                                                    <th class="text-bold text-center">(11)</th>
+                                                    <th class="text-bold text-center">(12)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let summary of masterSummaryGridData; let i = index">
+                                                    <td>
+                                                        <span tooltip="{{i+1}}">
+                                                         {{i+1}}
+                                                      </span>
+                                                    </td>
+                                                    <td>
+                                                        {{summary.name}} {{summary.address}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.tan}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.pan}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.dateOfJoining | date :'dd-MMM-yyyy'}} <b>To</b> {{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.fullyTaxableHeadsIncome}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.headsWithExemptionIncome}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.headsWithExemptionIncome}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.taxableIncome}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.benefitGivenUnder80C}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.taxDeductedAtSource}}
+                                                    </td>
+                                                    <td>
+                                                        {{summary.typeOfRegime}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="12" class="text-center text-bold">Verification</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="12" class="align-left">
+                                                        I, <span class="text-bold">  .................</span>,do hereby declare that what is stated above is true to the best of my knowledge and belief.
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="12" class="align-left">
+                                                        <div>Place:</div>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="12" class="align-right">
+                                                        <div>Signature of the employee:</div>
+                                                        <div class="preview" *ngIf="imageFile">
+                                                            <img [src]="imageFile" style="width:200px; height:38px;float:right">
+                                                        </div>
+                                                        <div class="preview" *ngIf="imgFile">
+                                                            <img [src]="imgFile" style="width:200px; height:38px;float: right;">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--     <div class="row mt-20">
+                                 <div class="col-md-12">
+                                     <div class="float-right">
+                                         <button type="button" tooltip="Sign & Upload Form 12B" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-upload"></i></b>  Upload Form 12B </button>
+                                         <button type="button" tooltip="Print" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-print"></i></b> Print </button>
+                                         <button type="button" tooltip="Close" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-times"></i></b>Close </button>
+                                     </div>
+                                 </div>
+                             </div> -->
+
+                        </div>
+                        <!--
+                        </table> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="preview" *ngIf="imageFile">
+            <img [src]="imageFile" style="width:200px; height:200px;float:right">
+          </div> -->
     </div>
 
-    <div class="preview" *ngIf="imageFile">
-      <img [src]="imageFile" style="width:200px; height:200px">
-    </div>
- </div>
- </ng-template>
- 
- 
- <ng-template #template2>
+    <!--  <div class="preview" *ngIf="imgFile">
+      <img [src]="imgFile" style="width:200px; height:200px;float: right;">
+    </div> -->
+
+
+    <!-- </div> -->
+</ng-template>
+
+
+<ng-template #template2>
     <div class="modal-header">
-       <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
           aria-hidden="true">×</span></button>
     </div>
     <div class="row ml-4">
-       <section class=" col col-8">
-           <label class="input input-file">
+        <section class=" col col-8">
+            <label class="input input-file">
                <span class="button">
-                   <input id="file1" type="file" name="file1" accept="image/*" file-actual="emp.empImagePath" 
-                   allowed-format="jpg,jpeg,png" (change)="onImageChange($event)">Browse
+                   <input id="file1" type="file" name="file1" accept="image/*" file-actual="emp.empImagePath"
+                   allowed-format="jpg,jpeg,png" (change)="onImageChange($event)">
                 </span>
              </label>
-       </section>
-   </div>
-   OR
-   <div class="row ml-4">
-  <span><h6>Your Signature Please</h6></span>
-   </div>
+        </section>
+    </div>
+    OR
     <div class="row ml-4">
-     
+        <span><h6>Your Signature Please</h6></span>
+    </div>
+    <div class="row ml-4">
 
-      <!-- <signature-pad #signatureCanvas [options] ="signaturePadOptions" id ="signatureCanvas" (onBeginEvent) ="drawStart()" 
+
+        <!-- <signature-pad #signatureCanvas [options] ="signaturePadOptions" id ="signatureCanvas" (onBeginEvent) ="drawStart()"
       (onEndEvent) ="drawComplete()"> </signature-pad> -->
 
-      <app-signature-pad [imagefile]=imagefile (imageFile)="getImageFile($event)"></app-signature-pad>
+        <app-signature-pad [imagefile]=imagefile (imageFile)="getImageFile($event)"></app-signature-pad>
 
-      <!-- <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad>' -->
-  
-      <!-- <div class="preview" *ngIf="imgFile">
+        <!-- <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad>' -->
+
+        <!-- <div class="preview" *ngIf="imgFile">
          <img [src]="imgFile" style="width:400px; height:250px">
        </div> -->
 
-   </div>
-    <div class="modal-footer">
-       <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
     </div>
-  </ng-template>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
+</ng-template>

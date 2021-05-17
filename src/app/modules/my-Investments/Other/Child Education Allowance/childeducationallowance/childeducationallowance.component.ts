@@ -52,7 +52,10 @@ export class ChildeducationallowanceComponent implements OnInit {
     this.childeducationallowanceService.getSummaryTable().subscribe((res) => {
       console.log(res);
       this.masterGridData = res.data.results[0];
-      this.masterGridData.forEach((element) => {});
+      this.masterGridData.forEach((element) => {
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
     });
   }
 

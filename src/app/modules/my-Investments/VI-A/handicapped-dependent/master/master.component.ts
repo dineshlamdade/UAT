@@ -112,7 +112,7 @@ export class MasterComponent implements OnInit {
 
   public disability : string;
   public severity : string;
-  public isClaiming80U: boolean = true;
+  // public isClaiming80U: boolean = true;
   public isSaveVisible: boolean = true;
 
   constructor(
@@ -174,6 +174,7 @@ export class MasterComponent implements OnInit {
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
+      isClaiming80U : new FormControl ('0'),
       disabilityType: new FormControl(null, Validators.required),
       severity: new FormControl(null, Validators.required),
       familyMemberName: new FormControl(null, Validators.required),
@@ -297,11 +298,13 @@ export class MasterComponent implements OnInit {
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
-      this.showUpdateButton = false;
+      this.form.get('isClaiming80U').setValue(0);
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
       this.urlArray = [];
+
+      this.showUpdateButton = false;
     }
     // this.form.patchValue({
     //   accountType: 'Tier_1',
@@ -342,7 +345,7 @@ export class MasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(disabilityType) {
-    //this.scrollToTop();
+    this.scrollToTop();
     this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -371,14 +374,27 @@ export class MasterComponent implements OnInit {
     return masterGridData.find(x => x.disabilityType === disabilityType)
   }
 
+   // scrollToTop Fuctionality
+   public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
+
+
   // On Edit Cancel
   resetView() {
     this.form.reset();
     this.form.get('isClaiming80U').setValue(0);
-    this.showUpdateButton = false;
     this.urlArray = [];
     this.paymentDetailGridData = [];
     this.isClear = false;
+    this.showUpdateButton = false;
   }
 
   // On Master Edit functionality

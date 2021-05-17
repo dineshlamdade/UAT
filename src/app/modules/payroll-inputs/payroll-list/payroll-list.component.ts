@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-
-import { TemplateRef} from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { PayrollInputsService } from '../payroll-inputs.service';
+
 
 export interface User1 {
   checked;
@@ -24,25 +24,46 @@ export interface User1 {
 
 
 export class PayrollListComponent implements OnInit {
-
-
-  
-  users1: User1[];
+  public users: Array<any> = [];
+  public checkedEmployeeList: Array<any> = [];
   public modalRef: BsModalRef;
- constructor(private modalService: BsModalService) { }
+ constructor(private service: PayrollInputsService) { }
 
-
-
-  ngOnInit(): void {
-
-    this.users1 = [
-      {  checked: false, headtype: '001',headcode:'AAA',headdesc:'AAA Desc',openingval:'0.00',chngamount:'0.00',chngper:'2',closingamt:'0.00',unitofmeasure:'PM',remark:'Remark1' },
-      {  checked: false, headtype: '002',headcode:'AAA',headdesc:'AAA Desc',openingval:'0.00',chngamount:'0.00',chngper:'2',closingamt:'0.00',unitofmeasure:'MM',remark:'Remark1' },
-      {  checked: false, headtype: '003',headcode:'AAA',headdesc:'AAA Desc',openingval:'0.00',chngamount:'0.00',chngper:'2',closingamt:'0.00',unitofmeasure:'PM',remark:'Remark1' },
-      {  checked: false, headtype: '004',headcode:'AAA',headdesc:'AAA Desc',openingval:'0.00',chngamount:'0.00',chngper:'2',closingamt:'0.00',unitofmeasure:'PA',remark:'Remark1' },
-    ];
+  public ngOnInit(): void {
+    this.getAllEmployeeDetails();
   }
 
-  
+  public getAllEmployeeDetails(): void {
+    this.service.getAllEmployeeDetails().subscribe((res) => {
+      console.log(res);
+      this.users =  res.data.results[0];
+      console.log(this.users);
+    });
+  }
 
+  public updateEmployeeSelectedLists(event: any, id: any): void {
+    const checked = event.target.checked;
+    if (checked) {
+      this.checkedEmployeeList.push(id);
+    } else {
+      this.checkedEmployeeList.forEach((value, index) => {
+        if (value === id) { this.checkedEmployeeList.splice(index, 1); }
+    });
+    }
+    console.log(this.checkedEmployeeList);
+    this.service.setEmployeeListArray(this.checkedEmployeeList);
+  }
+
+  public updateAllEmployeeSelectedLists(event: any): void {
+    const checked = event.target.checked;
+    this.checkedEmployeeList = [];
+    if (checked) {
+      this.users.forEach((val) => {
+        this.checkedEmployeeList.push(val.employeeMasterId);
+      });
+    } else {
+      this.checkedEmployeeList = [];
+    }
+    this.service.setEmployeeListArray(this.checkedEmployeeList);
+  }
 }

@@ -95,9 +95,94 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                       <div class="col-sm-6 col-md-3 mt-40 ">
+                                       <div class="row pl-10">
+                                           <div class="col-sm-12 col-md-6">
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    name="example-checkbox1" checked formControlName="isHoldSalary"
+                                                    (change)="holdSalarySetBoolean()"
+                                                    [(ngModel)]="PayrollAreaRequestModel.isHoldSalary">
+                                                
+                                                <span class="custom-control-label">Hold Salary</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    name="example-checkbox1" checked formControlName="isFFS"
+                                                    (change)="ffsSetBoolean(isFFS)"
+                                                    [(ngModel)]="PayrollAreaRequestModel.isFFS">
+                                                   
+                                                <span class="custom-control-label">FFS</span>
+                                            </label>
+                                       </div>
                                     </div>
+                                       </div>
+                                    </div>
+                                        
+                                    
 
                                     <br>
+                                   
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-3">
+                                                <label class="form-label">Attendance Area</label>
+                                                <select class="form-control" placeholder="Select"
+                                                    formControlName="attendanceAreaCode"   [(ngModel)]="PayrollAreaRequestModel.attendanceAreaCode"                                         
+                                                   >
+                                                    <option value="" selected disabled>Select</option>
+                                                    <option *ngFor="let attendance of attendanceAreaArray" [value]="attendance">
+                                                        {{attendance}}
+                                                    </option>
+                                                    
+                                                    
+                                                </select>
+                                                
+                                                <!-- [ngClass]="{'is-invalid' : PayrollAreaInfoForm.get('attendanceAreaCode').status == 'INVALID'}" -->
+                                            </div>                                         
+    
+                                            <div class="col-sm-6 col-md-3">
+                                                <label class="form-label">From Date</label>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i
+                                                                    class="fa fa-calendar"></i></span>
+                                                        </div>
+                                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                            data-provide="datepicker" data-date-autoclose="true" placement="center"
+                                                            class="form-control" placeholder="  /   /" bsDatepicker
+                                                            [minDate]="JoiningDate" formControlName="attendanceAreaFromDate"
+                                                            [(ngModel)]="PayrollAreaRequestModel.attendanceAreaFromDate"
+                                                            [ngClass]="{'is-invalid' : PayrollAreaInfoForm.get('attendanceAreaFromDate').status == 'INVALID'}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-md-3">
+                                                <label class="form-label">To Date</label>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i
+                                                                    class="fa fa-calendar"></i></span>
+                                                        </div>
+                                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                            data-provide="datepicker" data-date-autoclose="true" placement="center"
+                                                            class="form-control" placeholder="  /   /" bsDatepicker
+                                                            formControlName="attendanceAreaToDate"
+                                                            [(ngModel)]="PayrollAreaRequestModel.attendanceAreaToDate">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                       <br>
+
+
+
                                     <fieldset>
                                         <legend>Bank Details</legend>
                                         <div class="row">

@@ -55,11 +55,13 @@ export class NpsMasterComponent implements OnInit {
   public Index: number;
   public showUpdateButton: boolean;
   public tabIndex = 0;
+
   public radioSelected: string;
   public familyRelationSame: boolean;
 
   public documentRemark: any;
   public isECS = true;
+  public startDateModel: any = { date: null };
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -74,7 +76,7 @@ export class NpsMasterComponent implements OnInit {
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
   public minFormDate: Date;
-  public maxFromDate: Date;
+  public maxFromDate: Date= new Date( "9999-12-31");
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -120,6 +122,7 @@ export class NpsMasterComponent implements OnInit {
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
+       { label: 'As & When', value: 'As & When' },
     ];
     this.masterPage();
     this.addNewRowId = 0;
@@ -157,6 +160,7 @@ export class NpsMasterComponent implements OnInit {
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
+    this.startDateModel =  '31-dec-9999';
   }
 
   // initiate Reactive Master Form
@@ -178,7 +182,7 @@ export class NpsMasterComponent implements OnInit {
         Validators.required
       ),
       policyStartDate: new FormControl(null, Validators.required),
-      policyEndDate: new FormControl(null, Validators.required),
+      policyEndDate: new FormControl(new Date("9999-12-31"), Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
       remark: new FormControl(null),
@@ -191,7 +195,7 @@ export class NpsMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl('0'),
-      masterPaymentDetailId: new FormControl(0),
+      investmentGroup1MasterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
       proofSubmissionId: new FormControl(''),
@@ -386,7 +390,7 @@ export class NpsMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('National Pension Scheme ::', data);
 

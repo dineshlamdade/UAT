@@ -35,6 +35,26 @@
                                             <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                                             <div class="row family-first-line">
                                                 <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Relationship</label>
+                                                    <select class="form-control" placeholder="Select"
+                                                        (completeMethod)="filterRelationship($event)"
+                                                        formControlName="relation"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.relation"
+                                                        placeholder="Enter Relationship" #relation
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
+                                                        (change)="populateGender(relation);getParentName()">
+                                                        <option value="" selected>Select</option>
+                                                        <option *ngFor="let relationOption of relationshipList"
+                                                            [value]="relationOption">
+                                                            {{relationOption}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+
+
+
+                                                <div class="col-sm-6 col-md-4">
                                                     <label class="form-label">Name</label>
                                                     <input type="text" class="form-control" placeholder="Enter Name"
                                                         formControlName="familyMemberName"
@@ -61,22 +81,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-6 col-md-4">
-                                                    <label class="form-label">Relationship</label>
-                                                    <select class="form-control" placeholder="Select"
-                                                        (completeMethod)="filterRelationship($event)"
-                                                        formControlName="relation"
-                                                        [(ngModel)]="familyMemberInfoRequestDTO.relation"
-                                                        placeholder="Enter Relationship" #relation
-                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
-                                                        (change)="populateGender(relation)">
-                                                        <option value="" selected>Select</option>
-                                                        <option *ngFor="let relationOption of relationshipList"
-                                                            [value]="relationOption">
-                                                            {{relationOption}}
-                                                        </option>
-                                                    </select>
-                                                </div>
+                                               
                                                 <div class="col-sm-6 col-md-4">
                                                     <label class="form-label">Gender</label>
 

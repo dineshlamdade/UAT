@@ -8,7 +8,7 @@
                             <th rowspan="2" class="wd-25 font700">House Description</th>
                             <th rowspan="2" class="wd-15 font700">From Date</th>
                             <th rowspan="2" class="wd-10 font700">To Date</th>
-                            <th colspan="2" class="wd-30 font700">Rent Amount Per Month </th>
+                            <th colspan="2" class="wd-30 font700">Rent Amount </th>
                             <th rowspan="2" class="wd-10 font700">Action</th>
                         </tr>
                         <tr>
@@ -18,18 +18,18 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let summary of summaryGridData; let i = index">
-                            <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.propertyName)">
+                            <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.houseRentalMasterId )">
                                 <span tooltip="{{summary.propertyName}}">{{summary.propertyName}}</span>
-                             </td>
-                          <!--   <td>
+                            </td>
+                            <!--   <td>
                                 <span tooltip="{{summary.propertyName}}">{{summary.propertyName}}</span>
                             </td> -->
                             <td>
-                                <span tooltip="{{ summary.toDate | date :'dd-MMM-yyyy' }}">{{summary.toDate
+                                <span tooltip="{{ summary.fromDate | date :'dd-MMM-yyyy' }}">{{summary.fromDate
                                     | date :"dd-MMM-yyyy"}}</span>
                             </td>
                             <td>
-                                <span tooltip="{{ summary.fromDate | date :'dd-MMM-yyyy' }}">{{summary.fromDate
+                                <span tooltip="{{ summary.toDate | date :'dd-MMM-yyyy' }}">{{summary.toDate
                                     | date :"dd-MMM-yyyy"}}</span>
                             </td>
                             <td>
@@ -42,12 +42,8 @@
                                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
                             </td> -->
                             <td class="wd-10">
-                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                    (click)="redirectToDeclarationActual(summary.propertyName,  'edit')"
-                                    tooltip="Edit"></i>&nbsp;&nbsp;
-                                <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                                    (click)="redirectToDeclarationActual(summary.propertyName, 'view')"
-                                    tooltip="View"></i>
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="redirectToDeclarationActual(summary.propertyName,  'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                                <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="redirectToDeclarationActual(summary.propertyName, 'view')" tooltip="View"></i>
                             </td>
                         </tr>
                         <tr *ngIf="!summaryGridData?.length">
@@ -63,47 +59,216 @@
         </div>
         <ng-template #template1>
             <div class="modal-header">
-                <h5 class="modal-title" id="UploadedDocumentModalLabel"></h5>
+                <h5 class="modal-title" id="UploadedDocumentModalLabel">
+                    Computation of House Rent Exemption
+                </h5>
                 <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+                <span aria-hidden="true">×</span>
+              </button>
             </div>
-            <div class="col-12 mb-4 mt-4">
+            <div class="modal-body">
                 <div class="table-responsive Custom_Table">
+
                     <table class="table table-striped table-hover table-bordered m-b-0">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                             <tr>
-                                <th rowspan="4" class="wd-21 font700"></th>
-                                <th rowspan="2" class="wd-20 font700">Declared</th>
-                                <th rowspan="2" class="wd-19 font700">Actual</th>
+                                <th rowspan="3" scope="rowgroup">Month</th>
+                                <th colspan="3" scope="colgroup">Basic & Dearness Allowance</th>
+                                <th colspan="3" scope="colgroup">HRA</th>
+                                <th colspan="4" scope="colgroup">Rental</th>
+                                <th colspan="5" scope="colgroup">Calculation</th>
+                            </tr>
+                            <tr>
+                                <th scope="col">Base Amt</th>
+                                <th scope="col">Arrear Amt </th>
+                                <th scope="col">Total</th>
+
+                                <th scope="col">Base Amt</th>
+                                <th scope="col">Arrear Amt </th>
+                                <th scope="col">Total</th>
+
+                                <th scope="col">Declared</th>
+                                <th scope="col">Payroll Recovery </th>
+                                <th scope="col">Payroll Recovery - Arrear</th>
+                                <th scope="col">Total</th>
+
+                                <th scope="col">Rent City</th>
+                                <th scope="col">40% or 50% of Basic</th>
+                                <th scope="col">HRA</th>
+                                <th scope="col">Rent Minus 10% of Basic</th>
+                                <th scope="col">Exempt Amt</th>
+
+                            </tr>
+                            <tr>
+                                <th scope="col"><span class="Letterbadge">A</span></th>
+                                <th scope="col"><span class="Letterbadge">B</span></th>
+                                <th scope="col"><span class="Letterbadge">C</span>=&nbsp;<span class="Letterbadge">A</span>+<span class="Letterbadge">B</span></th>
+                                <th scope="col"><span class="Letterbadge">D</span></th>
+                                <th scope="col"><span class="Letterbadge">E</span></th>
+                                <th scope="col"><span class="Letterbadge">F</span>=&nbsp;<span class="Letterbadge">E</span>+<span class="Letterbadge">D</span></th>
+                                <th scope="col"><span class="Letterbadge">G</span></th>
+                                <th scope="col"><span class="Letterbadge">H</span></th>
+                                <th scope="col"><span class="Letterbadge">I</span></th>
+                                <th scope="col"><span class="Letterbadge">j</span>=&nbsp;<span class="Letterbadge">G</span>+<span class="Letterbadge">H</span>+
+                                    <span class="Letterbadge">I</span></th>
+                                <th scope="col"><span class="Letterbadge">k</span></th>
+                                <th scope="col"><span class="Letterbadge">L</span>=40% or 50% of <span class="Letterbadge">C</span></th>
+                                <th scope="col"><span class="Letterbadge">M</span>=<span class="Letterbadge">F</span></th>
+                                <th scope="col"><span class="Letterbadge">N</span>=<span class="Letterbadge">J</span>- 10% of <span class="Letterbadge">C</span></th>
+                                <th scope="col">Minimum of<span class="Letterbadge">L</span> <span class="Letterbadge">M</span> <span class="Letterbadge">N</span></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="align-right font700">Exempt Amount</td>
-                                <td>
-                                    <div _ngcontent-atq-c560="" class="custom_icon_badge">
-                                        <input _ngcontent-atq-c560="" type="text"
-                                            class="form-control align-right ng-pristine ng-valid ng-touched">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div _ngcontent-atq-c560="" class="custom_icon_badge">
-                                        <input _ngcontent-atq-c560="" type="text"
-                                            class="form-control align-right ng-pristine ng-valid ng-touched">
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <!--
+                  <tr *ngFor="let summary of summaryGridData; let i = index">
+                    <td scope="row">
+
+                    </td>
+                    <td class="align-left-center">
+
+                    </td>
+                    <td class="wd-15 align-right-center">
+
+                    </td>
+                    <td class="wd-15 align-right-center">
+
+                    </td>
+                    <td class="wd-15 align-right-center">
+
+                    </td>
+                    <td class="wd-15 align-right-center">
+
+                    </td>
+                    <td class="wd-15 align-right-center">
+
+                    </td>
+                    <td class="align-right-center">
+
+                    </td>
+                    <td class="align-right-center">
+
+                    </td>
+                    <td class="align-right-center">
+
+                    </td>
+                    <td class="align-right-center">
+
+                    </td>
+                    <td class="align-right-center">
+
+                    </td>
+
+                    <td class="align-right-center">
+
+                    </td>
+                    <td class="align-right-center">
+
+                    </td>
+                    <td class="align-right-center">
+
+                    </td>
+                    <td class="align-right-center">
+
+                    </td>
+                  </tr> -->
+
+                        <tr *ngFor="let summary of summaryGridData; let i = index">
+                            <td scope="row">
+                                <span tooltip="1">{{summary.month}}</span>
+                            </td>
+                            <td class="align-left-center">
+                                <span tooltip="{{summary.base}}">{{summary.base}}</span>
+                            </td>
+                            <td class="wd-15 align-right-center">
+                                <span class="padding-right-12" tooltip="{{summary.arrear | number:'1.2-2'}}">
+                        {{summary.arrear | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td class="wd-15 align-right-center">
+                                <span class="padding-right-12" tooltip="{{summary.total | number:'1.2-2'}}">
+                        {{summary.total | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td class="wd-15 align-right-center">
+                                <span class="padding-right-12" tooltip="{{summary.noOfChildren | number:'1.2-2'}}">
+                        {{summary.noOfChildren | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td class="wd-15 align-right-center">
+                                <span class="padding-right-12" tooltip="{{summary.maxAllowedNoOfChild | number:'1.2-2'}}">
+                        {{summary.maxAllowedNoOfChild | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td class="wd-15 align-right-center">
+                                <span class="padding-right-12" tooltip="{{summary.maxEligibility | number:'1.2-2'}}">
+                        {{summary.maxEligibility | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td class="align-right-center">
+                                <span class="padding-right-12" tooltip="{{summary.applicableAllowance | number:'1.2-2'}}">
+                        {{summary.applicableAllowance | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="table-light-color">
+                            <td colspan="1" class="align-right font700">Total &nbsp;
+                            </td>
+                            <td> <span class="padding-right-12" tooltip="{{baseTotal | number:'1.2-2'}}">
+                        {{baseTotal | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td>
+                                <span class="padding-right-12" tooltip="{{arrearTotal | number:'1.2-2'}}">
+                        {{arrearTotal | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td> <span class="padding-right-12" tooltip="{{total | number:'1.2-2'}}">
+                        {{total | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td> <span class="padding-right-12" tooltip="{{maxEligibilityTotal | number:'1.2-2'}}">
+                        {{maxEligibilityTotal | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td> <span class="padding-right-12" tooltip="{{applicableAllowanceTotal | number:'1.2-2'}}">
+                        {{applicableAllowanceTotal | number:'1.2-2'}}
+                      </span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </table>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+            </div>
         </ng-template>
+
         <div class="col-12 mt-2">
             <div class="float-right mb-15">
-                <button type="button" class="btn btn-primary btn-sm " tooltip="Exemption Working"
+                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Exemption Working" (click)="opencomputationModal(template1)"><b>
+                <i class="fa fa-calculator"></i></b> Exemption Working</button>
+
+                <!-- <button type="button" class="btn btn-primary btn-sm " tooltip="Exemption Working"
                     (click)="opencomputationModal(template1)"><b>
-                        <i class="fa fa-calendar"></i></b>Exemption Working</button>
+                        <i class="fa fa-calendar"></i>  </b>  Exemption Working
+                    </button> -->
             </div>
         </div>
     </div>

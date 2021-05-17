@@ -151,7 +151,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl('0'),
-      masterPaymentDetailId: new FormControl(0),
+      investmentGroup2MasterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       // investmentGroup2MasterPaymentDetailId: new FormControl(0),
       depositType: new FormControl('recurring'),
@@ -372,7 +372,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('Post Office Data::', data);
 
