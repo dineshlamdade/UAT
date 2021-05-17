@@ -265,7 +265,7 @@ export class EmailSmsComponent implements OnInit {
       + ev.target.value.substring(endPos, ev.target.value.length);
 
     let bodyValue = ev.target.value.substring(0, startPos)
-      + '[' + data + ']'
+      + '<<' + data + '>>'
     // + ev.target.value.substring(endPos, ev.target.value.length);
 
     // console.log( ev.target.value.substring(0, startPos))

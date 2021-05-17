@@ -27,7 +27,8 @@ export class PayrollListComponent implements OnInit {
   public users: Array<any> = [];
   public checkedEmployeeList: Array<any> = [];
   public modalRef: BsModalRef;
- constructor(private service: PayrollInputsService) { }
+
+  constructor(private service: PayrollInputsService) { }
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
@@ -35,8 +36,7 @@ export class PayrollListComponent implements OnInit {
 
   public getAllEmployeeDetails(): void {
     this.service.getAllEmployeeDetails().subscribe((res) => {
-      console.log(res);
-      this.users =  res.data.results[0];
+      this.users = res.data.results[0];
       console.log(this.users);
     });
   }
@@ -48,7 +48,7 @@ export class PayrollListComponent implements OnInit {
     } else {
       this.checkedEmployeeList.forEach((value, index) => {
         if (value === id) { this.checkedEmployeeList.splice(index, 1); }
-    });
+      });
     }
     console.log(this.checkedEmployeeList);
     this.service.setEmployeeListArray(this.checkedEmployeeList);

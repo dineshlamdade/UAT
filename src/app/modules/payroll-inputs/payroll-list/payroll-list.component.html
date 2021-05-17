@@ -26,7 +26,7 @@
 
                     <div class="row">
                         <div class="col-md-12 p-20">
-                            <p-table [value]="users1">
+                            <p-table [value]="users" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
 
                                 <ng-template pTemplate="header">
                                     <tr>
@@ -62,11 +62,11 @@
                                             <input type="checkbox">
                                         </td>
                                         <td class="bg-color-light_gray"><label
-                                                class="form-lable mb-0">{{user1.headtype}}</label>
+                                                class="form-lable mb-0">{{user1.employeeCode}}</label>
                                         </td>
                                         <!-- <td class="bg-color-light_gray"> <span class="text-link" (click)="ViewHistory(template)">{{user1.headcode}}</span></td> -->
                                         <td class="bg-color-light_gray"><label
-                                                class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                                class="form-lable mb-0">{{user1.fullName}}</label></td>
                                     </tr>
                                 </ng-template>
 
