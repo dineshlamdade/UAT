@@ -487,11 +487,17 @@
                     let documentIndex = index">
                   <td>
                     <span tooltip="{{ documentSummary.proofSubmissionId }}">
-                      {{ documentSummary.proofSubmissionId }}
+                      {{ documentSummary.proofSubmissionId }} 
                     </span>
                   </td>
-                  <td>
-                    {{ documentSummary.group2MasterList[0].institution }}
+                  <td  *ngIf="documentSummary.group2MasterList.length > 0">
+                    {{ documentSummary.group2MasterList[0].institution }} 
+                  </td>
+                  <td  *ngIf="documentSummary.group2MasterList.length == 0">
+                    <span tooltip= "">
+                      
+                    </span>
+
                   </td>
                   <td>
                     <span tooltip="{{
@@ -516,6 +522,12 @@
                       documentSummary.group2MasterList[0].accountNumber
                     }}">
                       {{ documentSummary.group2MasterList[0].accountNumber }}
+                    </span>
+
+                  </td>
+                  <td class="padding-0" *ngIf="documentSummary.group2MasterList.length == 0">
+                    <span tooltip= "">
+                      
                     </span>
 
                   </td>

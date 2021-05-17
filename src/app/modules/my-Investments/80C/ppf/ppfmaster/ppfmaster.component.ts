@@ -358,6 +358,7 @@ export class PPFMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+   
     console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
@@ -367,6 +368,30 @@ export class PPFMasterComponent implements OnInit {
     } else {
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
+      if (this.form.value.frequencyOfPayment === 'As & When') {
+        const start = this.datePipe.transform(
+          this.form.get('policyStartDate').value,
+          'yyyy-MM-dd'
+        );
+        const end = this.datePipe.transform(
+          this.form.get('policyEndDate').value,
+          'yyyy-MM-dd'
+        );
+        data.policyStartDate = start;
+        data.policyEndDate = end;
+        const from = this.datePipe.transform(
+          this.form.get('fromDate').value,
+          'yyyy-MM-dd'
+        );
+        const to = this.datePipe.transform(
+          this.form.get('toDate').value,
+          'yyyy-MM-dd'
+        );
+
+        // data.proofSubmissionId = this.proofSubmissionId;
+        data.fromDate = from;
+        data.toDate = to;
+      }
       if (this.form.value.frequencyOfPayment !== 'As & When') {
         const from = this.datePipe.transform(
           this.form.get('fromDate').value,
@@ -455,11 +480,21 @@ export class PPFMasterComponent implements OnInit {
     if (this.form.value.frequencyOfPayment === 'As & When') {
       console.log('in as and when');
       //this.form.get(this.form.value.premiumAmoun).setValue(null);
+      const financialYearStartDate = this.datePipe.transform(
+        this.financialYearStartDate,
+        'dd-MMM-YYYY'
+      );
+      const financialYearEndDate = this.datePipe.transform(
+        this.financialYearEndDate,
+        'dd-MMM-YYYY'
+      );
+      this.form.get('policyStartDate').setValue(financialYearStartDate);
+      this.form.get('policyEndDate').setValue(financialYearEndDate);
 
       this.form.get('premiumAmount').setValue(0);
       this.form.get('annualAmount').setValue(0);
-      this.form.get('fromDate').reset();
-      this.form.get('toDate').reset();
+      this.form.get('fromDate').setValue(financialYearStartDate);
+      this.form.get('toDate').setValue(financialYearEndDate);
       this.form.get('ecs').setValue('0');
     } else {
       let installment = this.form.value.premiumAmount;
