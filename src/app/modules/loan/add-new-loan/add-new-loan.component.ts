@@ -85,6 +85,8 @@ export class AddNewLoanComponent implements OnInit {
   viewAppNo:boolean = false;
   applicationNo: any;
   applicationDate: any;
+  display: boolean;
+  // config="{backdrop: static, keyboard: false}";
 
   constructor(public formBuilder: FormBuilder,
     private router: Router,
@@ -436,14 +438,14 @@ export class AddNewLoanComponent implements OnInit {
   }
 
   schedule(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      template,
+    this.modalRef = this.modalService.show(template,
       Object.assign({}, { class: 'gray modal-lg' })
 
     );
+    // this.modalRef = this.modalService._showModal(this.config);
     this.allScheduleData();
-
   }
+
 
   getAllData() {
     this.loanservice.getAll().subscribe(res => {
@@ -1314,7 +1316,7 @@ export class AddNewLoanComponent implements OnInit {
 
   deleteLoanScheduleByID() {
     this.loanservice.deleteLoanScheduleByID(this.tempLoanMasterScheduleId).subscribe(res => {
-      // this.toster.success("Schedule Data Deleted Successfully");
+
     })
   }
   // public getApproverDetails()

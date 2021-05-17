@@ -145,9 +145,12 @@
                     </div>
                   </div>
                   <br />
+                  <!-- <script>
+                    $('#UploadModal').modal({backdrop: 'static', keyboard: false})
+                    </script> -->
                   <div class="float-right">
-                    <button type="button" class="btn btn-danger" (click)="schedule(template)" data-target="#UploadModal"
-                      [disabled]="!AddLoanForm.valid"
+                    <button type="button" class="btn btn-danger"  data-toggle="modal"  (click)="schedule(template)" data-target="#UploadModal"
+                    [disabled]="!AddLoanForm.valid"
                       [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
                       <i class="fa fa-clock-o" aria-hidden="true"> </i>&nbsp;Schedule
                     </button>
@@ -155,12 +158,13 @@
                   <br />
                   <br />
 
-                  <ng-template #template let-c="close">
-                    <div class="modal-header">
+                  <ng-template #template let-c="close" >
+                    <div class="modal-header" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="UploadModal" aria-hidden="true">
                       <h5 class="modal-title" id="UploadModalLabel">Schedule</h5>
                       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                        aria-label="Close" ><span aria-hidden="true">×</span></button>
                     </div>
+
                     <div class="modal-body">
                       <div class="cards">
                         <div class="card-bodys">

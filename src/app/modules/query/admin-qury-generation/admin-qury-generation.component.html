@@ -15,60 +15,33 @@
                         <div class="border-dark-card radius-10 p-2 mt-3">
                           <div class="row">
                             <div class="col-md-2">
-                              <label class="form-label mt-1 mb-0" >Employee No. & Name
-                                </label >
-                              <!-- <label class="font-12 text-ellipsis mt-1 mb-0">
-                                3998- Sujata Patil</label -->
-                      <input type="text" class="form-control" value="{{getAllQueryGenerationData.employeeCode  + '' + getAllQueryGenerationData.empName}}"
-                      disabled />
+                              <label class="form-label mt-1 mb-0" >Employee No. & Name </label >
+                               <input type="text" class="form-control" disabled />
                             </div>
                             <div class="col-md-2">
-                              <label class="form-label mt-1 mb-0"
-                                >Date of Joining</label >
-                              <!-- <label class="font-12 text-ellipsis mt-1 mb-0">
-                                24-March-2021
-                              </label> -->
-                              <input type="text" class="form-control" value="{{getAllQueryGenerationData.escalationDate |date: 'dd-MMM-yyyy' }}"
-                              disabled />
+                              <label class="form-label mt-1 mb-0">Date of Joining</label >
+                              <input type="text" class="form-control" disabled />
                             </div>
                             <div class="col-md-2">
-                              <label class="form-label mt-1 mb-0"
-                                >Establishment</label
-                              >
-                              <label class="font-12 text-ellipsis mt-1 mb-0">
-                                Pune
-                              </label>
+                              <label class="form-label mt-1 mb-0">Establishment</label  >
+                              <input type="text" class="form-control"  disabled />
                             </div>
                             <div class="col-md-2">
-                              <label class="form-label mt-1 mb-0"
-                                >Employee Type</label
-                              >
-                              <label class="font-12 text-ellipsis mt-1 mb-0">
-                                Worker
-                              </label>
+                              <label class="form-label mt-1 mb-0">Employee Type</label>
+                              <input type="text" class="form-control"  disabled />
                             </div>
                             <div class="col-md-1">
                               <label class="form-label mt-1 mb-0">Grade</label>
-                              <label class="font-12 text-ellipsis mt-1 mb-0">
-                                G1
-                              </label>
+                              <input type="text" class="form-control"  disabled />
                             </div>
                             <div class="col-md-2">
-                              <label class="form-label mt-1 mb-0"
-                                >Designation</label
-                              >
-                              <label class="font-12 text-ellipsis mt-1 mb-0">
-                                UI/UX Developer
-                              </label>
+                              <label class="form-label mt-1 mb-0" >Designation</label >
+                              <input type="text" class="form-control"  disabled />
+
                             </div>
                             <div class="col-md-1">
                               <label class="form-label mt-1 mb-0">Status</label>
-                              <!-- <label class="font-12 text-ellipsis mt-1 mb-0">
-                                Probation
-                              </label> -->
-                              <input type="text" class="form-control" value="{{getAllQueryGenerationData.status }}"
-                              disabled />
-
+                              <input type="text" class="form-control"  disabled />
                             </div>
                           </div>
                         </div>
@@ -78,7 +51,7 @@
                     <div class="row mt-25">
                       <div class="col-md-3">
                         <label class="form-label">Query No.</label>
-                        <input type="text" class="form-control" formControlName="queryNumber" value="{{getAllQueryGenerationData.queryNumber}}" disabled />
+                        <input type="text" class="form-control" formControlName="queryNumber" disabled />
                       </div>
                       <div class="col-md-3">
                         <label class="form-label">Submission Date & Time</label>
@@ -106,18 +79,20 @@
                           class="form-control" >
                          <!-- [ngClass]="{'is-invalid' : queryGenerationForm.get('applicationModuleId').status == 'INVALID'}" -->
                           <option [ngValue]="null" selected >Select</option>
-                          <option value="{{module.applicationModuleId}}" *ngFor="let module of moduleListData ">{{module.applicationModuleName}}</option>
+                          <option value="{{module.applicationModuleId}}" *ngFor="let module of moduleListData ">
+                            {{module.applicationModuleName}}</option>
                         </select>
                       </div>
                       <div class="col-md-3">
                         <label class="form-label">Query Type</label>
                         <select
                           name="Gender"
-                          class="form-control custom-select"
-                        >
-                          <option value="LMS">Select</option>
+                          class="form-control custom-select">
+                          <option [ngValue]="null" selected >Select</option>
+                          <option value="{{module.queryTypeMasterId}}" *ngFor="let module of querySubQueryTypeQAData ">{{module.queryTypeDescription}}</option>
+                          <!-- <option value="LMS">Select</option>
                           <option value="Registration">Registration</option>
-                          <option value="loan">Loan</option>
+                          <option value="loan">Loan</option> -->
                         </select>
                       </div>
                     </div>
@@ -126,22 +101,21 @@
                         <label class="form-label">Sub-Query Type</label>
                         <select
                           name="Gender"
-                          class="form-control custom-select"
-                        >
-                          <option value="LMS">Select</option>
-                          <option value="Registration">Registration</option>
-                          <option value="loan">Loan</option>
+                          class="form-control custom-select" >
+                          <option [ngValue]="null" selected >Select</option>
+                          <option  *ngFor="let module of querySubQueryTypeQAData"  value="{{module.subQueTypeMasterId}}">
+                            {{module.subQueryTypeDescription}}</option>
+
                         </select>
                       </div>
                       <div class="col-md-3">
                         <label class="form-label">Priority</label>
                         <select
                           name="Gender"
-                          class="form-control custom-select"
-                        >
-                          <option value="LMS">Select</option>
-                          <option value="Registration">Registration</option>
-                          <option value="loan">Loan</option>
+                          class="form-control custom-select" >
+                          <option [ngValue]="null" selected >Select</option>
+                          <option *ngFor="let module of querySubQueryTypeQAData" value="{{module.queTypePriorityMasterId}}">{{module.priorityType}}</option>
+
                         </select>
                       </div>
                       <div class="col-md-3">
@@ -168,11 +142,12 @@
                         <label class="form-label">Query Template</label>
                         <select
                           name="Gender"
-                          class="form-control custom-select"
-                        >
-                          <option value="LMS">Select</option>
+                          class="form-control custom-select">
+                          <option [ngValue]="null" selected >Select</option>
+                          <option *ngFor="let module of querySubQueryTypeQAData " value="{{module.queAnsMasterId}}">{{module.description}}</option>
+                          <!-- <option value="LMS">Select</option>
                           <option value="Registration">Registration</option>
-                          <option value="loan">Loan</option>
+                          <option value="loan">Loan</option> -->
                         </select>
                       </div>
                     </div>
@@ -205,17 +180,70 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>1</td>
+                              <tr *ngFor="let document of documentList ,let i = index;">
+                                <td class="wd-9">{{i+1}}</td>
+                                <td class="wd-14">{{document.documentName}}</td>
                                 <td>
-                                  <input type="text" class="form-control" />
+                                  <i class="fa fa-paperclip text-orange"></i> &nbsp;
+                                  {{ document.fileName }}
                                 </td>
                                 <td>
-                                  <span><i class="fa fa-upload"></i></span>
+                                  <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                                    (click)="UploadModalDocument(template1, i,document)" data-toggle="modal"
+                                    data-target="#UploadModal1"></i>&nbsp;&nbsp;
                                 </td>
                               </tr>
                             </tbody>
                           </table>
+                          <ng-template #template1>
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+                              <button type="button" (click)=" modalRef.hide(); " class="close" data-dismiss="modal"
+                                aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row clearfix">
+
+                                    <div class="col-md-12">
+                                      <div class="fileuploadbox bg-color-lightgray">
+                                        <label class="filelabel">
+                                          <i class="fa fa-upload">
+                                          </i>
+                                          <span class="title">
+                                            Choose file
+                                          </span>
+                                          <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
+                                            accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+                                        </label>
+                                      </div>
+                                      <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
+                                        Selected files
+                                        <label *ngFor="let item of masterfilesArray;  let index = index;"
+                                          class="filelabeldisplay">
+                                          <div class="text-ellipsis"><i class="fa fa-paperclip">
+                                            </i>
+                                            <span class="title">
+                                              {{ item.name }}
+                                            </span>
+                                          </div>
+                                          <div>
+                                            <i class="fa fa-times text-red font-18"
+                                              (click)="removeSelectedLicMasterDocument(index)"></i>
+                                          </div>
+                                        </label>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                            </div>
+                          </ng-template>
                         </div>
                       </div>
                     </div>
@@ -252,27 +280,30 @@
                       >
                         <b><i class="fa fa-save"></i></b> Save & Next
                       </button>
-                      <button
-                        type="button"
-                        tooltip="Button"
-                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                      >
-                        <b><i class="fa fa-save"></i></b> Save
-                      </button>
+                      <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" *ngIf="isSave"
+                      tooltip="Save"[disabled]="!queryGenerationForm.valid"
+                       [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
+                       <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
                       <button
                         type="button"
                         tooltip="Reset"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"
-                      >
-                        <b><i class="fa fa-refresh"></i></b> Reset
-                      </button>
+                        *ngIf="isReset" (click)="reset()"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                        <b><i class="fa fa-refresh"></i></b> Reset </button>
+
+                        <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
+                        [disabled]="!queryGenerationForm.valid" *ngIf="isUpdate"
+                          [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
+                          <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
+                         >&nbsp;
                       <button
                         type="button"
-                        tooltip="Cancel"
-                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10"
-                      >
+                        tooltip="Cancel" (click)="cancel()"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-times"></i></b> Cancel
                       </button>
+
+
                       <button
                         type="button"
                         tooltip="Reset"
@@ -288,7 +319,7 @@
                     <div class="col-md-12">
                       <h3 class="font-14 text-purple font-bold">Summary</h3>
                       <div class="table-responsive Custom_Table mt-25">
-                        <p-table [value]="users">
+                        <p-table [value]="getAllQueryGenerationData">
                           <ng-template pTemplate="header">
                             <tr>
                               <th class="wd-14">Sr. No.</th>
@@ -497,93 +528,83 @@
                               <th class="wd-25">Action</th>
                             </tr>
                           </ng-template>
-                          <ng-template pTemplate="body" let-user2>
+                          <ng-template pTemplate="body" let-queryGenerationSummary let-rowIndex="rowIndex">
                             <tr class="p-selectable-row">
-                              <td class="text-center">{{ user2.srno }}</td>
+                              <td class="text-center">{{ rowIndex + 1 }}</td>
+                              <td>
+                                <label class="form-lable mb-0">{{ queryGenerationSummary.queryNumber}}</label>
+                              </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Query_Number
+                                  queryGenerationSummary.submissionDate | date :"dd-MMM-yyyy"
                                 }}</label>
                               </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Submissiondate
+                                  queryGenerationSummary.createdBy
                                 }}</label>
                               </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Creators_name
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  user2.Employee_Code
-                                }}</label>
-                              </td>
-
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  user2.Employee_Name
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  user2.Comapny_name
+                                  queryGenerationSummary.employeeCode
                                 }}</label>
                               </td>
 
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Module_name
+                                  queryGenerationSummary.empName
                                 }}</label>
                               </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Query_Type
+                                  queryGenerationSummary.companyName
+                                }}</label>
+                              </td>
+
+                              <td>
+                                <label class="form-lable mb-0">{{
+                                  queryGenerationSummary.applicationModuleName
                                 }}</label>
                               </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.SubQuery_Type
+                                  queryGenerationSummary.queryTypeCode
                                 }}</label>
                               </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Subject
+                                  queryGenerationSummary.subQueryTypeCode
                                 }}</label>
                               </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Priority
+                                  queryGenerationSummary.subject
                                 }}</label>
                               </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Escalation_Date
+                                  queryGenerationSummary.priority
                                 }}</label>
                               </td>
                               <td>
                                 <label class="form-lable mb-0">{{
-                                  user2.Status
+                                  queryGenerationSummary.escalationDate |date:"dd-MMM-yyyy"
+                                }}</label>
+                              </td>
+                              <td>
+                                <label class="form-lable mb-0">{{
+                                  queryGenerationSummary.status
                                 }}</label>
                               </td>
                               <td>
                                 <span class="ml-1 mt-2">
-                                  <i
-                                    class="fa fa-eye font-16 text-blue cursor-pointer"
-                                    aria-hidden="true"
-                                  ></i
-                                  >&nbsp;
-                                  <i
-                                    class="fa fa-times font-16 text-blue cursor-pointer"
-                                    aria-hidden="true"
-                                  ></i
-                                  >&nbsp;
-                                  <i
-                                    class="fa fa-pencil font-16 text-blue cursor-pointer"
-                                    aria-hidden="true"
-                                  ></i
-                                ></span>
+                                  <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
+                                    >&nbsp;
+                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
+                                    >&nbsp;
+                                    <i class="fa fa-trash" tooltip="Edit" aria-hidden="true" (click)="getDeleteById()" ></i
+                                      >&nbsp;</span>
+                                      <!--  -->
                               </td>
                             </tr>
                           </ng-template>

@@ -6,13 +6,12 @@ import { ToastrService } from 'ngx-toastr';
 import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { NodeService } from '../nodeservice.service';
 import { QueryService } from '../query.service';
-
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
   styleUrls: ['./query.component.scss'],
   providers: [TreeDragDropService,MessageService],
-
 
 })
 export class QueryComponent implements OnInit {
@@ -32,16 +31,9 @@ export class QueryComponent implements OnInit {
   fieldMap: any;
 
   mappingData: any = [];
-
-   files1: TreeNode[];
-
-    files2: TreeNode[];
-
-    files3: TreeNode[];
-
-    files4: TreeNode[];
   allKeywords: any;
   isVisiblee:boolean=false;
+  queryCode: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
     private nodeService: NodeService,)
@@ -61,77 +53,20 @@ export class QueryComponent implements OnInit {
       "answerDescription": new FormControl(null),
       "remark": new FormControl(null),
       "active": new FormControl(true,[Validators.required]),
-
     });
-{
-  this.keyword=
-  [
-    {
-      "label": "Employee",
-      "data": "Documents Folder",
 
-      "children": [{
-              "label": "Employee Code",
-              "data": "Work Folder",
-          },
-          {
-              "label": "Employee Name",
-              "data": "Home Folder",
-          },
-          {
-            "label": "Employee Email",
-            "data": "Home Folder",
-        }, {
-          "label": "Employee Phone No",
-          "data": "Home Folder",
-      },
-      {
-        "label": "Employee Gender",
-        "data": "Home Folder",
-
-    }, {
-      "label": "Employee Grade",
-      "data": "Home Folder",
-
-
-  }
-        ]
-  },
-  {
-      "label": "Company",
-      "data": "Pictures Folder",
-
-      "children": [
-          {"label": "barcelona.jpg", "icon": "pi pi-image", "data": "Barcelona Photo"},
-          {"label": "primeui.png", "icon": "pi pi-image", "data": "PrimeUI Logo"}]
-  },
-  {
-      "label": "Date",
-      "data": "Movies Folder",
-
-      "children": [{
-              "label": "Al Pacino",
-              "data": "Pacino Movies",
-              "children": [{"label": "Scarface", "icon": "pi pi-video", "data": "Scarface Movie"}]
-          },
-          {
-              "label": "Robert De Niro",
-              "data": "De Niro Movies",
-              "children": [{"label": "Goodfellas", "icon": "pi pi-video", "data": "Goodfellas Movie"}]
-          }]
-  }
-
-  ]
-}
+    this.keyword.forEach(element => {
+    this.mappingData.push(
+      [element.dbFieldName.toString(), '[' + element.displayName + ']']
+    )
+    })
+    this.fieldMap = new Map<string, string>(this.mappingData);
 
   }
   ngOnInit(): void {
     this.getModuleName();
     this.getAllData();
     this.getStandardKeywords();
-    // this.nodeService.getFiles().then(files => this.files1 = files);
-    // this.nodeService.getFiles().then(files => this.files2 = files);
-
   }
   get f(){
     return this.queryForm.controls;
@@ -143,7 +78,8 @@ export class QueryComponent implements OnInit {
     if(!this.editflag){
       this.queryService.addQuery(this.queryForm.value).subscribe(res =>
         {
-          this.toster.success("",'Query Added Successfully');
+
+          this.toster.success("",'Q&A Template Added Successfully');
           this.queryForm.controls['active'].setValue(true);
           this.getAllData();
         })
@@ -160,13 +96,16 @@ export class QueryComponent implements OnInit {
   {
      this.queryService.getAll().subscribe( res =>{
        this.queryListData = res.data.results;
+      this.queryCode = this.queryListData[4].code + 1;
      })
+     console.log("@@@@@@@@@@@@@",this.queryCode)
+     this.queryForm.controls['code'].setValue(this.queryCode);
   }
   updateQuery()
   {
     this.queryService.updateQuery(this.queryForm.value).subscribe(res =>
       {
-    this.toster.success("",'Query Updated Successfully');
+    this.toster.success("",'Q&A Template Updated Successfully');
     this.getAllData();
       }
       )
@@ -209,22 +148,19 @@ getModuleName()
 }
 getStandardKeywords(){
   this.queryService.getStandardKeywords().subscribe(res =>{
-    this.allKeywords = res.data.results[0];
-    // this.displayName = this.allKeywords.displayName;
-    console.log("************", this.allKeywords );
-    // this.allKeywords.forEach(element => {
-
-    // });
+    this.keyword = res.data.results;
   })
 }
 changeEvent($event) {
 
   if ($event.target.checked) {
       this.hideRemarkDiv = false;
+      // this.queryForm.controls['remark'].clearValidators();
 
   }
   else {
       this.hideRemarkDiv = true;
+      // this.queryForm.controls['remark'].setValidators([Validators.required]);
   }
 
 }
@@ -264,7 +200,6 @@ getModuleNamefortable(moduleid){
       modulename = element.applicationModuleName
     }
   });
-
  return modulename;
 }
 
@@ -292,5 +227,8 @@ editorConfig = {
 
 };
 
-
+// paginate(event) {
+//   console.log(JSON.stringify(event));
+//   let pageIndex = event.first/event.rows + 1
+//   }
 }

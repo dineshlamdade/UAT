@@ -33,10 +33,9 @@ public getStandardKeywords()
   return this.http.get<any>(this.apiUrl + 'StandardKeyword/Global');
 }
 // .................................Query Type master api.....................................................................
-
-public getAllQueryType(id)
+public getAllSummaryData()
 {
-  return this.http.get<any>(this.apiUrl + 'QueryMaster/getNew/' + id);
+  return this.http.get<any>(this.apiUrl + 'QueryMaster');
 }
 public addQueryType(data)
 {
@@ -48,45 +47,53 @@ public updateQueryType(data)
 }
 public getAllWorkflowMasters()
 {
-  return this.http.get<any>(this.apiUrl2 + 'workflowmaster-header/getAllWorkflowMasters')
+  return this.http.get<any>(this.apiUrl2 + 'workflowmaster-header/getAllWorkflowMasters');
 }
-public getSubqueryPresent(id)
+public getAlldataById(id)
 {
-  return this.http.get<any>(this.apiUrl + 'getSubQueryPresent/getTenant/' +id)
+  return this.http.get<any>(this.apiUrl +'QueryMaster/getById/' + id);
 }
-public getAllQueryTypeMasterTenant()
-{
-  return this.http.get<any>(this.apiUrl + 'QueryMaster/getAllQueryTypeMasterTenant')
-}
-public getQueAns(id)
-{
-  return this.http.get<any>(this.apiUrl + 'QueryMaster/getQueAns/' +id)
-}
-public getSubQueAns(id)
-{
-  return this.http.get<any>(this.apiUrl + 'QueryMaster/getSubQueAns/1' +id)
-}
+// ............................ Not use Yet ..................................................................
+// public getSubqueryPresent(id)
+// {
+//   return this.http.get<any>(this.apiUrl + 'getSubQueryPresent/getTenant/' +id)
+// }
+// public getAllQueryTypeMasterTenant()
+// {
+//   return this.http.get<any>(this.apiUrl + 'QueryMaster/getAllQueryTypeMasterTenant')
+// }
+// public getQueAns(id)
+// {
+//   return this.http.get<any>(this.apiUrl + 'QueryMaster/getQueAns/' +id)
+// }
+// public getSubQueAns(id)
+// {
+//   return this.http.get<any>(this.apiUrl + 'QueryMaster/getSubQueAns/' +id)
+// }
 // .........................admin-query-generation api..........................................................
 
-public addnewQueryGeneration(data)
+public getAllQueryList()
 {
-  return this.http.post<any>(this.apiUrl +'QueryGeneration',data)
+  return this.http.get<any>(this.apiUrl + 'QueryGeneration');
 }
-public updatenewQueryGeneration(data)
+public querySubQueryTypeQA()
 {
-  return this.http.put<any>(this.apiUrl +'QueryGeneration',data)
+  return this.http.get<any>(this.apiUrl + 'QueryGeneration/QuerySubQueryTypeQA');
 }
-public GetAllQueryGeneration()
+public getById(id)
 {
-  return this.http.get<any>(this.apiUrl + 'QueryGeneration')
+  return this.http.get<any>(this.apiUrl + 'QueryGeneration/' +id);
 }
-public getByIdQueryGeneration(id)
+public addQueryGeneration(data)
 {
-  return this.http.get<any>(this.apiUrl + 'QueryGeneration' + id)
+  return this.http.get<any>(this.apiUrl + 'QueryGeneration',data);
 }
-public getDeleteQueryGeneration(id)
+public updateQueryGeneration(data)
 {
-  return this.http.delete<any>(this.apiUrl + 'QueryGeneration' + id)
+  return this.http.put<any>(this.apiUrl + 'QueryGeneration',data);
 }
-
+public getDeleteById(id)
+{
+  return this.http.get<any>(this.apiUrl + 'QueryGeneration/' +id);
+}
 }

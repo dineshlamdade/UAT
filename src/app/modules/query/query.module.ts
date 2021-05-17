@@ -10,7 +10,7 @@ import { QueryTypeMasterComponent } from './query-type-master/query-type-master.
 import { CKEditorModule } from 'ckeditor4-angular';
 import {TableModule} from 'primeng/table';
 import { AdminQuryGenerationComponent } from './admin-qury-generation/admin-qury-generation.component';
-import{ BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {CalendarModule} from 'primeng/calendar';
 import { QueryDashboardComponent } from './query-dashboard/query-dashboard.component';
 import {ChartModule} from 'primeng/chart';
