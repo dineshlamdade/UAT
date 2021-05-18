@@ -126,7 +126,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-3">
                             <label class="form-label">Frequency of Payment</label>
-                            <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)="calculateAnnualAmount()" formControlName="frequencyOfPayment" class="form-control custom-select" [ngClass]="{
+                            <!-- <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)="calculateAnnualAmount()" formControlName="frequencyOfPayment" class="form-control custom-select" [ngClass]="{
                   'is-invalid':
                     submitted && masterForm.frequencyOfPayment.errors
                 }">
@@ -134,7 +134,10 @@
                 <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
                   {{ frequencyOfPayment.label }}
                 </option>
-              </select>
+              </select> -->
+              <input type="text" formControlName="frequencyOfPayment" class="form-control" disabled [ngClass]="{
+                'is-invalid': submitted && masterForm.frequencyOfPayment.errors
+              }" />
                             <div *ngIf="submitted && masterForm.frequencyOfPayment.errors" class="invalid-feedback">
                                 <div *ngIf="masterForm.frequencyOfPayment.errors.required">
                                     Frequency of payment is mandatory

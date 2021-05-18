@@ -82,7 +82,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="canEdit && isDisabled"
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -112,7 +112,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" name="select" />
+                    <input type="checkbox"  class="custom-control-input" name="select" />
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
@@ -233,7 +233,7 @@
                       summary.dateOfPayment = $event.toLocaleDateString();
                       setDateOfPayment(summary, i, j)
                     " [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
+                      (isDisabled && !canEdit) || summary.transactionStatus === 'Submitted'
                     " class="form-control" 
                     bsDatepicker 
                     />
@@ -324,6 +324,7 @@
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
               </tr>
             </tbody>
@@ -860,7 +861,7 @@
                       data-date-autoclose="true"
                       (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
                         setDateOfPaymentInEditCase(summary, i, j)"
-                      [disabled]="summary.transactionStatus=='Approved'"
+                      [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
                       class="form-control"
                       bsDatepicker
                     />
@@ -870,7 +871,7 @@
                       type="text"
                       id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                       name="actualAmount{{ summary.investmentGroup1TransactionId }}"
-                      [disabled]="!summary.additionalPayment=='Approved'"
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
@@ -1185,7 +1186,7 @@
     <button
       *ngIf="viewDocumentDetail"
       type="button"
-      tooltip="View Document"
+      tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
