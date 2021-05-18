@@ -58,6 +58,7 @@ export class NpsSummaryComponent implements OnInit {
       accountNumber: accountNumber,
       tabIndex: this.tabIndex,
       canEdit: mode == 'edit' ? true : false,
+      canView: mode == 'view' ? true : false,
     };
     this.institution = institution;
     this.accountNumber = accountNumber;
