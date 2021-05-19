@@ -300,11 +300,11 @@
 
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
-                                                                            <label class="form-lable mb-0"
+                                                                            <!-- <label class="form-lable mb-0"
                                                                                 *ngIf="Summarydata.active == true">Active</label>
                                                                             <label class="form-lable mb-0"
                                                                                 *ngIf="Summarydata.active != true">In
-                                                                                active</label>
+                                                                                active</label> -->
                                                                         </td>
                                                                         <!-- <td><span class="ml-1 mt-2"></span></td> -->
                                                                         <td>
@@ -1049,8 +1049,8 @@
                                                                                             Clawback </th>
                                                                                         <th rowspan="2" class="wd-10">
                                                                                             Remark </th>
-                                                                                        <th rowspan="2" class="wd-8">
-                                                                                            Status </th>
+                                                                                        <!-- <th rowspan="2" class="wd-8">
+                                                                                            Status </th> -->
                                                                                         <!-- <th rowspan="2"></th> -->
                                                                                     </tr>
                                                                                 </ng-template>
@@ -1158,9 +1158,9 @@
                                                                                                 class="form-control wd-100"
                                                                                                 (focusout)="getRemarkChangeForSave($event.target.value,data)">
                                                                                         </td>
-                                                                                        <td>
+                                                                                        <!-- <td>
                                                                                             <label></label>
-                                                                                        </td>
+                                                                                        </td> -->
                                                                                         <!-- <td>
                                                                                             <span
                                                                                                 class="ml-1 mt-2 d-flex">
@@ -1494,7 +1494,7 @@
                                                                             <label class="form-lable mb-0 text-link"
                                                                                 (click)="ViewTransactionHistory(template2)" 
                                                                                 *ngIf="selectedEmpData[index]">
-                                                                                {{selectedEmpData[index].payrollHeadMaster.payrollHeadMaster}}
+                                                                                {{selectedEmpData[index].payrollHeadMaster.displayName}}
                                                                             </label>
 
                                                                         </td>
@@ -1512,6 +1512,7 @@
                                                                         <td class="bg-color-light_gray"><input
                                                                                 data-provide="datepicker"
                                                                                 data-date-autoclose="true"
+                                                                                [value]="ScheduleData.transactionDate | date: 'dd-MMM-yyyy'"
                                                                                 class="form-control wd-100" bsDatepicker
                                                                                 disabled>
                                                                              <!-- date -->
@@ -1519,8 +1520,8 @@
                                                                         <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0"><input
                                                                                     type="text"
-                                                                                    [value]="ScheduleData.transactionAmount"
-                                                                                    class="form-control wd-80" disabled>
+                                                                                    [value]="ScheduleData.transactionAmount | number: '1.00'"
+                                                                                    class="form-control wd-100" disabled>
                                                                             </label>
                                                                             <!-- amount -->
                                                                         </td>
@@ -1544,26 +1545,27 @@
                                                                                 class="custom-control custom-checkbox checkbox-center">
                                                                                 <input type="checkbox"
                                                                                     class="custom-control-input"
-                                                                                    name="select" /> <span
-                                                                                    class="custom-control-label" [checked]="ScheduleData.hold == true"></span>
+                                                                                    (click)="getHoldScheduleValue($event.target,ScheduleData)"
+                                                                                    name="select" [checked]="ScheduleData.hold == true"/> 
+                                                                                    <span class="custom-control-label"></span>
                                                                             </label>
-
-
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0"><label
-                                                                                    class="custom-control custom-checkbox checkbox-center">
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label class="form-lable mb-0">
+                                                                                <label class="custom-control custom-checkbox checkbox-center">
                                                                                     <input type="checkbox"
                                                                                         class="custom-control-input"
-                                                                                        name="select" /> <span
-                                                                                        class="custom-control-label" [checked]="ScheduleData.discard == true"></span>
-                                                                                </label> </label>
-
+                                                                                        (click)="getDiscardScheduleValue($event.target,ScheduleData)"
+                                                                                        name="select" [checked]="ScheduleData.discard == true" /> 
+                                                                                        <span class="custom-control-label"></span>
+                                                                                </label> 
+                                                                            </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><input
                                                                                 data-provide="datepicker"
                                                                                 data-date-autoclose="true"
                                                                                 value="{{ScheduleData.resheduleDate}}"
+                                                                                (bsValueChange)="getRescheduleDate($event,ScheduleData)"
                                                                                 class="form-control" bsDatepicker>
 
                                                                         </td>
@@ -1574,26 +1576,28 @@
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><input
                                                                                 type="text" class="form-control"
+                                                                                (focusout)="getScheduleRemark($event.target.value,ScheduleData)"
                                                                                 [value]="ScheduleData.remark">
 
                                                                         </td>
                                                                         <td><i tooltip="View Schedule"
                                                                                 class="fa fa-eye font-16 text-blue cursor-pointer"
-                                                                                (click)="ViewScheduleHistory(template3)"
+                                                                                (click)="ViewScheduleHistory(template3,ScheduleData)"
                                                                                 aria-hidden="true"></i></td>
 
 
                                                                     </tr>
                                                                 </ng-template>
                                                             </p-table>
+                                                            <!-- Buttons -->
                                                             <div class="row mt-15">
                                                                 <div class="col-12">
                                                                     <div class="float-right mb-15">
-                                                                        <button type="submit" tooltip="Save & Next"
+                                                                        <button type="submit" tooltip="Save & Next" (click)="NonRecurringTransactionScheduleupdateById()"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
                                                                                 <i class="fa fa-floppy-o"></i></b> Save
                                                                             & Next</button>
-                                                                        <button type="button" tooltip="Next"
+                                                                        <button type="button" tooltip="Next" (click)="NonRecurringTransactionScheduleupdateById()"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
                                                                                     class="fa fa-floppy-o"
                                                                                     aria-hidden="true"></i></b>Save</button>
@@ -2031,25 +2035,25 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Emp. Code</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        0001 </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="selectedEmpData[index]">
+                                        {{selectedEmpData[index].employeeMasterResponseDTO.employeeCode}} </label>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Emp. Name</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        Sneha Suryawanshi
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="selectedEmpData[index]">
+                                        {{selectedEmpData[index].employeeMasterResponseDTO.fullName}}
                                     </label>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Payroll Area</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        PA-01
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="selectedEmpData[index]">
+                                        {{selectedEmpData[index].payrollArea.payrollAreaCode}}
                                     </label>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Group Id</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        G1
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
+                                        {{viewScheduleData.nonRecurringTransactionGroupId}}
                                     </label>
                                 </div>
 
@@ -2058,26 +2062,26 @@
                             <div class="row mt-10">
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Head</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        H1
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="selectedEmpData[index]">
+                                        {{selectedEmpData[index].payrollHeadMaster.displayName}}
                                     </label>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Schedule No.</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        10001 </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
+                                         </label>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Original Schedule Date
                                     </label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        10-Apr-2020
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
+                                        {{viewScheduleData.transactionDate | date: 'dd-MMM-yyyy'}}
                                     </label>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Schedule Amount</label>
-                                    <label class="font-12 text-ellipsis mt-1 mb-0">
-                                        2,000.00
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
+                                        {{viewScheduleData.transactionAmount | number: '1.00'}}
                                     </label>
                                 </div>
 
@@ -2101,40 +2105,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><label class="custom-control custom-checkbox checkbox-center">
+                                    <tr *ngFor="let data of NonRecurringHistorybyScheduleIdData; let index = index;">
+                                        <td>
+                                            <label class="custom-control custom-checkbox checkbox-center">
                                                 <input type="checkbox" class="custom-control-input" name="select"
-                                                    disabled /> <span class="custom-control-label"></span>
-                                            </label></td>
-                                        <td><label class="custom-control custom-checkbox checkbox-center">
+                                                    disabled [checked]="data.hold == true"/> 
+                                                    <span class="custom-control-label"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="custom-control custom-checkbox checkbox-center">
                                                 <input type="checkbox" class="custom-control-input" name="select"
-                                                    disabled /> <span class="custom-control-label"></span>
-                                            </label></td>
+                                                    disabled  [checked]="data.discard == true"/> 
+                                                    <span class="custom-control-label"></span>
+                                            </label>
+                                        </td>
                                         <td><input data-provide="datepicker" data-date-autoclose="true"
-                                                class="form-control" bsDatepicker disabled></td>
-                                        <td><input type="text" class="form-control" disabled></td>
-                                        <td><input type="text" class="form-control" disabled></td>
-                                        <td><input type="text" class="form-control" disabled></td>
+                                                class="form-control" bsDatepicker [value]="data.resheduleDate" disabled></td>
+                                        <td><input type="text" class="form-control" [value]="data.remark" disabled></td>
+                                        <td><input type="text" class="form-control" [value]="data.lastModifiedDateTime" disabled></td>
+                                        <td><input type="text" class="form-control" [value]="data.lastModifiedBy" disabled></td>
 
 
                                     </tr>
-                                    <tr>
-                                        <td><label class="custom-control custom-checkbox checkbox-center">
-                                                <input type="checkbox" class="custom-control-input" name="select"
-                                                    disabled /> <span class="custom-control-label"></span>
-                                            </label></td>
-                                        <td><label class="custom-control custom-checkbox checkbox-center">
-                                                <input type="checkbox" class="custom-control-input" name="select"
-                                                    disabled /> <span class="custom-control-label"></span>
-                                            </label></td>
-                                        <td><input data-provide="datepicker" data-date-autoclose="true"
-                                                class="form-control" bsDatepicker disabled></td>
-                                        <td><input type="text" class="form-control" disabled></td>
-                                        <td><input type="text" class="form-control" disabled></td>
-                                        <td><input type="text" class="form-control" disabled></td>
-
-
-                                    </tr>
+                                   
 
                                 </tbody>
                             </table>
