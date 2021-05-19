@@ -11,6 +11,7 @@ export class AttendanceService {
   url = environment.baseUrl8084;
   url1 = environment.baseUrl8086;
   url3 = environment.baseUrl8082;
+  
   constructor(private HttpClient: HttpClient) { }
 
   /** Get All Summary data */

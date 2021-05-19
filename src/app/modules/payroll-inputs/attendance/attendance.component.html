@@ -49,7 +49,7 @@
                                                                     <input data-provide="datepicker"
                                                                         data-date-autoclose="true" class="form-control"
                                                                         placeholder="Date" bsDatepicker
-                                                                        [(ngModel)]="fromDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                                                        [(ngModel)]="fromDate" [bsConfig]="{ dateInputFormat: 'Do-MMMM-YY' }">
                                                                 </div>
                                                             </div>
                                                             <span class="font700 font-12 mt-2 ">To</span>
@@ -63,7 +63,7 @@
                                                                     <input data-provide="datepicker"
                                                                         data-date-autoclose="true" class="form-control"
                                                                         placeholder="Date" bsDatepicker
-                                                                        [(ngModel)]="toDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+                                                                        [(ngModel)]="toDate" [bsConfig]="{ dateInputFormat: 'Do-MMMM-YY' }">
                                                                 </div>
                                                             </div>
                                                             <button class="btn-bg-green btn-labeled mr-10"
@@ -247,6 +247,18 @@
                                                                 </th>
                                                                 <th class="wd-40">
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
+                                                                        Future Days
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="desc"
+                                                                                pSortableColumn="desc"></p-sortIcon>
+                                                                            <p-columnFilter field="desc" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="wd-40">
+                                                                    <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Payable Days
                                                                         <div class="Sort_Filter_Position">
                                                                             <p-sortIcon field="desc"
@@ -285,28 +297,32 @@
                                                                 <td class="bg-color-light_gray"><label
                                                                         class="mb-0">{{summarydata.cycleName}} </label></td>
                                                                 <td class="bg-color-light_gray"><label
-                                                                        class="mb-0">{{summarydata.totalDaysInCycle}}
+                                                                        class="mb-0">{{summarydata.totalDaysInCycle.toFixed(2)}}
                                                                     </label>
                                                                 </td>
                                                                 <td class="bg-color-light_gray"><label
-                                                                        class="mb-0">{{summarydata.weeklyOff}} </label>
+                                                                        class="mb-0">{{summarydata.weeklyOff.toFixed(2)}} </label>
                                                                 </td>
                                                                 <td class="bg-color-light_gray"><label class="mb-0">
-                                                                        {{summarydata.holiday}}</label></td>
+                                                                        {{summarydata.holiday.toFixed(2)}}</label></td>
                                                                 <td class="bg-color-light_gray"><label class="mb-0">
-                                                                        {{summarydata.paidLeave}}</label></td>
+                                                                        {{summarydata.paidLeave.toFixed(2)}}</label></td>
                                                                 <td class="bg-color-light_gray"><label
-                                                                        class="mb-0">{{summarydata.leaveWithoutPay}}
+                                                                        class="mb-0">{{summarydata.leaveWithoutPay.toFixed(2)}}
                                                                     </label></td>
                                                                 <td class="bg-color-light_gray"><label
-                                                                        class="mb-0">{{summarydata.adjustment}} </label>
+                                                                        class="mb-0">{{summarydata.adjustment.toFixed(2)}} </label>
                                                                 </td>
                                                                 <td class="bg-color-light_gray"><label
-                                                                        class="mb-0">{{summarydata.presentDays}}
+                                                                        class="mb-0">{{summarydata.presentDays.toFixed(2)}}
                                                                     </label>
                                                                 </td>
                                                                 <td class="bg-color-light_gray"><label
-                                                                        class="mb-0">{{summarydata.paidDays}} </label>
+                                                                    class="mb-0">0.00
+                                                                </label>
+                                                            </td>
+                                                                <td class="bg-color-light_gray"><label
+                                                                        class="mb-0">{{summarydata.paidDays.toFixed(2)}} </label>
                                                                 </td>
                                                             </tr>
                                                         </ng-template>
@@ -510,7 +526,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green ">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.attendance}}</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.attendance.toFixed(2)}}</h3>
                                                             <span>Total Days</span>
                                                         </div>
                                                     </div>
@@ -518,7 +534,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.weeklyOff}}
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.weeklyOff.toFixed(2)}}
                                                             </h3>
                                                             <span>Weekly Off Days</span>
                                                         </div>
@@ -527,7 +543,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.holiday}}</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.holiday.toFixed(2)}}</h3>
                                                             <span> Holidays</span>
                                                         </div>
                                                     </div>
@@ -535,7 +551,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidLeaves}}
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidLeaves.toFixed(2)}}
                                                             </h3>
                                                             <span>Leave Days</span>
                                                         </div>
@@ -544,7 +560,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.leaveWithoutPay}}
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.leaveWithoutPay.toFixed(2)}}
                                                             </h3>
                                                             <span>Loss of Pay Days</span>
                                                         </div>
@@ -553,7 +569,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.presentDay}}
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.presentDay.toFixed(2)}}
                                                             </h3>
                                                             <span>Present Days</span>
                                                         </div>
@@ -562,7 +578,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>0</h3>
+                                                            <h3>0.00</h3>
                                                             <span>Future Days</span>
                                                         </div>
                                                     </div>
@@ -570,7 +586,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.adjustment}}
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.adjustment.toFixed(2)}}
                                                             </h3>
                                                             <span>Adj. Days</span>
                                                         </div>
@@ -580,7 +596,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidDays}}</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidDays.toFixed(2)}}</h3>
                                                             <span>Payable Days</span>
                                                         </div>
                                                     </div>
@@ -600,7 +616,7 @@
                                                                 class="col-md-4 p-1 text-center border-right-cyan d-flex align-items-center justify-content-spacearound">
                                                                 <label
                                                                     class="mb-0 font500">Processed in {{selectedEmpData[index].cycleName}}</label>&nbsp;&nbsp;
-                                                                <h3 class="mb-0">{{attendanceInputGetTotalAPIRecordsUIData.paidDays - attendanceInputGetTotalAPIRecordsUIData.futureArrears}}
+                                                                <h3 class="mb-0">{{(attendanceInputGetTotalAPIRecordsUIData.paidDays - attendanceInputGetTotalAPIRecordsUIData.futureArrears).toFixed(2)}}
                                                                     <!-- {{attendanceInputGetTotalAPIRecordsUIData.paidDays}} -->
                                                                 </h3>
                                                             </div>
@@ -608,14 +624,14 @@
                                                                 class="col-md-4 p-1 text-center border-right-cyan d-flex align-items-center justify-content-spacearound">
                                                                 <label class="mb-0 font500">Processed in Arrears </label>
                                                                 <h3 class="mb-0">
-                                                                      {{attendanceInputGetTotalAPIRecordsUIData.futureArrears}}
+                                                                      {{attendanceInputGetTotalAPIRecordsUIData.futureArrears.toFixed(2)}}
                                                                 </h3>
                                                             </div>
 
                                                             <div
                                                                 class="col-md-4 p-1 text-center d-flex align-items-center justify-content-spacearound">
                                                                 <label class="mb-0 font500">Total </label>
-                                                                <h3 class="mb-0">{{attendanceInputGetTotalAPIRecordsUIData.paidDays}}
+                                                                <h3 class="mb-0">{{attendanceInputGetTotalAPIRecordsUIData.paidDays.toFixed(2)}}
                                                                     <!-- {{attendanceInputGetTotalAPIRecordsUIData.presentDay + attendanceInputGetTotalAPIRecordsUIData.futureArrears}}  -->
                                                                 </h3>
                                                             </div>
@@ -632,7 +648,7 @@
                                                             <div
                                                                 class="col-md-12 p-1 text-center d-flex align-items-center justify-content-center">
                                                                 <label class="mb-0"></label>
-                                                                <h3 class="mb-0">{{attendanceInputGetTotalAPIRecordsUIData.previousArrears}} </h3>
+                                                                <h3 class="mb-0">{{attendanceInputGetTotalAPIRecordsUIData.previousArrears.toFixed(2)}} </h3>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -659,7 +675,7 @@
                                                             <p-table [value]="attendanceInputAPIRecordsUIData">
                                                                 <ng-template pTemplate="header">
                                                                     <tr>
-                                                                        <th class="wd-10">
+                                                                        <th class="wd-10" >
                                                                             <div
                                                                                 class="p-d-flex p-jc-center p-ai-center">
                                                                                 Date &nbsp;&nbsp;
@@ -929,7 +945,7 @@
                                                                                     class="timeinput mr-1"  [disabled]="attendanceForm.controls.payrollArea.value == '1'" > -->
                                                                                 
                                                                                 <input (focusout)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)" 
-                                                                                [value]="defaultAttendace == '1' ? presentCycle.presentDay : presentCycle.presentDay_0"
+                                                                                [value]="defaultAttendace == '1' ? presentCycle.presentDay.toFixed(2) : presentCycle.presentDay_0"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
                                                                                 
@@ -1229,7 +1245,7 @@
                                                                                 </select> -->
 
                                                                                 <input (change)="getFutureWeeklyOff($event.target.value, futureCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.weeklyOff">
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.weeklyOff.toFixed(2)">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1245,7 +1261,7 @@
                                                                                     <option value="1.00" [selected]="futureCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (change)="getFutureHoliday($event.target.value, futureCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.holiday">
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.holiday.toFixed(2)">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1261,7 +1277,7 @@
                                                                                     <option value="1.00" [selected]="futureCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (change)="getFuturePaidLeaves($event.target.value, futureCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.paidLeaves">
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.paidLeaves.toFixed(2)">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1278,10 +1294,10 @@
                                                                                 </select> -->
 
                                                                                 <input *ngIf="defaultAttendace == '1'" (change)="getFutureLeaveWithoutPay($event.target.value, futureCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay">
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay.toFixed(2)">
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay_0.toFixed(2)" appTwoDigitDecimaNumber>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
@@ -1290,7 +1306,8 @@
                                                                                     value="{{futureCycle.presentDay}}"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"> -->
-                                                                                    <input (focusout)="getFuturePresentDay($event.target.value,futureCycle,rowIndex)" [value]=" defaultAttendace == '1' ? futureCycle.presentDay : futureCycle.presentDay_0"
+                                                                                    <input (focusout)="getFuturePresentDay($event.target.value,futureCycle,rowIndex)" 
+                                                                                    [value]=" defaultAttendace == '1' ? futureCycle.presentDay.toFixed(2) : futureCycle.presentDay_0.toFixed(2)"
                                                                                         placeholder="00:00"
                                                                                         class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
                                                                                 <!-- <input
@@ -1305,10 +1322,10 @@
                                                                             </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;" *ngIf="is30daysPayroll == '1'"><label
-                                                                            class="form-lable mb-0">{{futureCycle.adjustment}}</label>
+                                                                            class="form-lable mb-0">{{futureCycle.adjustment.toFixed(2)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;"><label
-                                                                                class="form-lable mb-0">{{futureCycle.paidDays}}</label>
+                                                                                class="form-lable mb-0">{{futureCycle.paidDays.toFixed(2)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;">
                                                                             <label
@@ -1586,7 +1603,7 @@
                                                                                     <option value="1.00" [selected]="previousCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (change)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.weeklyOff">
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.weeklyOff.toFixed(2)">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1602,7 +1619,7 @@
                                                                                     <option value="1.00" [selected]="previousCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (change)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.holiday">
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.holiday.toFixed(2)">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1618,7 +1635,7 @@
                                                                                     <option value="1.00" [selected]="previousCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (change)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.paidLeaves">
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.paidLeaves.toFixed(2)">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1634,10 +1651,10 @@
                                                                                     <option value="1.00" [selected]="previousCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input *ngIf="defaultAttendace == '1'" (change)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay">
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay.toFixed(2)">
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay_0.toFixed(2)" appTwoDigitDecimaNumber>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;">
@@ -1647,7 +1664,8 @@
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"> -->
                                                                                 
-                                                                                    <input (focusout)="getPreviousPresentDay($event.target.value,previousCycle,rowIndex)" [value]=" defaultAttendace == '1' ? previousCycle.presentDay : previousCycle.presentDay_0"
+                                                                                    <input (focusout)="getPreviousPresentDay($event.target.value,previousCycle,rowIndex)" 
+                                                                                    [value]=" defaultAttendace == '1' ? previousCycle.presentDay.toFixed(2) : previousCycle.presentDay_0.toFixed(2)"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
                                                                                 <!-- <input
@@ -1662,10 +1680,10 @@
                                                                             </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;" *ngIf="is30daysPayroll == '1'"><label
-                                                                            class="form-lable mb-0">{{previousCycle.adjustment}}</label>
+                                                                            class="form-lable mb-0">{{previousCycle.adjustment.toFixed(2)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;"><label
-                                                                                class="form-lable mb-0">{{previousCycle.paidDays}}</label>
+                                                                                class="form-lable mb-0">{{previousCycle.paidDays.toFixed(2)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;">
                                                                             <label
