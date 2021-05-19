@@ -299,11 +299,12 @@ export class MasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('isClaiming80U').setValue(0);
-      this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
       this.urlArray = [];
+
+      this.showUpdateButton = false;
     }
     // this.form.patchValue({
     //   accountType: 'Tier_1',
@@ -390,10 +391,10 @@ export class MasterComponent implements OnInit {
   resetView() {
     this.form.reset();
     this.form.get('isClaiming80U').setValue(0);
-    this.showUpdateButton = false;
     this.urlArray = [];
     this.paymentDetailGridData = [];
     this.isClear = false;
+    this.showUpdateButton = false;
   }
 
   // On Master Edit functionality

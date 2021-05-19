@@ -65,12 +65,21 @@ getEducationalLoanSummary() {
     }));
   }
 
+  // getTransactionByProofSubmissionId(proofSubmissionId: String) {
+  //   return this._HTTP.get(this.apiUrl + 'educationalLoanTransaction/psid/' + proofSubmissionId)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'educationalLoanTransaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
+
+
 
   postEducationalLoanTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'educationalLoanTransaction', data)

@@ -55,7 +55,7 @@
                     <option [ngValue]="0">Select </option>
                     <option *ngFor="let familyMember of familyMemberName" [value]="familyMember.value" [selected]="
                        familyMember.value == element.handicappedDependentDetailMaster.familyMemberInfoId">
-                      {{ familyMember.label }}
+                      {{ familyMember.label}}
                     </option>
 
                   </select>
@@ -131,7 +131,7 @@
                     [ngClass]="{
                      'is-invalid': submitted && currEmpFormArrayElement.get('familyMemberInfoId').hasError('required') }">
                     <option [ngValue]="null">Select</option>
-                    <option *ngFor="let element of familyMemberName" [value]="element.value">
+                    <option *ngFor="let element of remainingFamilyMemberName" [value]="element.value">
                       {{ element.label }}
                     </option>
                   </select>
@@ -386,7 +386,7 @@
                      'is-invalid': submitted && priviousEmpFormArrayElement.get('familyMemberInfoId').hasError('required') }">
                     <option [ngValue]="null">Select</option>
                     <option *ngFor="let element of familyMemberName" [value]="element.value">
-                      {{ element.label }}
+                      {{ element.familyMemberName }}
                     </option>
                   </select>
                 </td>
