@@ -33,9 +33,10 @@ export class NpsSummaryComponent implements OnInit {
   // public previousEmployerB: string;
   // public futureNewPolicyDeclaredAmount: string;
   public limitD: number = 50000;
-  public deductionE: number;
-  public eligibleForDeductionF: number;
-
+  public deductionEDeclared: number;
+  public eligibleForDeductionFDeclared: number;
+  public deductionEActual: number;
+  public eligibleForDeductionFActual: number;
   constructor(
     private service: MyInvestmentsService,
     private npsService: NpsService,
@@ -57,6 +58,7 @@ export class NpsSummaryComponent implements OnInit {
       accountNumber: accountNumber,
       tabIndex: this.tabIndex,
       canEdit: mode == 'edit' ? true : false,
+      canView: mode == 'view' ? true : false,
     };
     this.institution = institution;
     this.accountNumber = accountNumber;
@@ -104,6 +106,7 @@ export class NpsSummaryComponent implements OnInit {
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      this.onChangeLimit();
       this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
     });
   }
@@ -134,8 +137,15 @@ export class NpsSummaryComponent implements OnInit {
   }
 
   onChangeLimit() {
-    this.deductionE = Math.min(this.grandTotalDeclaredAmount, this.limitD);
-    this.eligibleForDeductionF =
-      this.grandTotalDeclaredAmount - this.deductionE;
+    this.deductionEDeclared = Math.min(this.grandTotalDeclaredAmount, this.limitD);
+    this.eligibleForDeductionFDeclared =
+      this.grandTotalDeclaredAmount - this.deductionEDeclared;
+
+      this.deductionEActual = Math.min(this.grandTotalActualAmount, this.limitD);
+      this.eligibleForDeductionFActual =
+        this.grandTotalDeclaredAmount - this.deductionEActual;
+    
   }
+
+  
 }

@@ -95,7 +95,8 @@
                 <!-- <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" ></p-inputNumber> -->
                 <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
                 (onBlur)="keyPressedSpaceNotAllow()"
-                mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
+                mode="decimal" locale="en-IN" maxlength="33"
+                [minFractionDigits]="2" ></p-inputNumber>
               </td>
 
 
@@ -157,13 +158,13 @@
                 & &nbsp;<span class="Letterbadge"> D </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{deductionE | number:'1.2-2'}}">
-                  {{deductionE | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{deductionEDeclared | number:'1.2-2'}}">
+                  {{deductionEDeclared | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{deductionE | number:'1.2-2'}}">
-                  {{deductionE | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{deductionEActual | number:'1.2-2'}}">
+                  {{deductionEActual | number:'1.2-2'}}
                 </span>
               </td>
               <td></td>
@@ -179,13 +180,13 @@
                 - &nbsp;<span class="Letterbadge"> E </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{eligibleForDeductionF | number:'1.2-2'}}">
-                  {{eligibleForDeductionF | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{eligibleForDeductionFDeclared | number:'1.2-2'}}">
+                  {{eligibleForDeductionFDeclared | number:'1.2-2'}}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{eligibleForDeductionF | number:'1.2-2'}}">
-                  {{eligibleForDeductionF | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{eligibleForDeductionFActual | number:'1.2-2'}}">
+                  {{eligibleForDeductionFActual | number:'1.2-2'}}
                 </span>
               </td>
               <td></td>

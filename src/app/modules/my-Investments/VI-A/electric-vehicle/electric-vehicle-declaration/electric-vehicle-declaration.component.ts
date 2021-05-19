@@ -165,6 +165,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public declarationData: string;
+  public updateReceiptAmount: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -394,7 +395,7 @@ selectedTransactionLenderName(lenderName: any) {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount = 0;
@@ -404,13 +405,13 @@ selectedTransactionLenderName(lenderName: any) {
        this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount = data.actualAmount;
         formatedActualAmount = Number(
         this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount
-          .toString().replace(',', ''));
+          .toString().replace(/,/g, ''));
       formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue + formatedActualAmount);
       this.uploadGridData.push(data.electricVehicleLoanTransactionId);
     } else {
       formatedActualAmount = Number(this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount = this.numberFormat.transform(0);
 
@@ -430,9 +431,9 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[
       j
     ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -456,7 +457,7 @@ selectedTransactionLenderName(lenderName: any) {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
     let formatedActualAmount = 0;
     let formatedSelectedAmount: string;
@@ -472,7 +473,7 @@ selectedTransactionLenderName(lenderName: any) {
           i
         ].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -484,7 +485,7 @@ selectedTransactionLenderName(lenderName: any) {
           i
         ].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].electricVehicleLoanTransactionList[
         i
@@ -505,7 +506,7 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[j].electricVehicleLoanTransactionList.forEach(
       (element) => {
         this.actualTotal += Number(
-          element.actualAmount.toString().replace(',', '')
+          element.actualAmount.toString().replace(/,/g, '')
         );
       }
     );
@@ -602,12 +603,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[
       j
     ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(',', ''));
+      // console.log(element.declaredAmount.toString().replace(/,/g, ''));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
+      // this.declaredAmount+=Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
@@ -641,7 +642,7 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[j].electricVehicleLoanTransactionList.forEach(
       (element) => {
         this.declarationTotal += Number(
-          element.actualAmount.toString().replace(',', '')
+          element.actualAmount.toString().replace(/,/g, '')
         );
       }
     );
@@ -717,12 +718,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[
       j
     ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -776,12 +777,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.actualAmount = null;
     this.transactionDetail[j].electricVehicleLoanTransactionList.forEach(
       (element) => {
-        // console.log(element.actualAmount.toString().replace(',', ''));
+        // console.log(element.actualAmount.toString().replace(/,/g, ''));
         this.actualTotal += Number(
-          element.actualAmount.toString().replace(',', '')
+          element.actualAmount.toString().replace(/,/g, '')
         );
         // console.log(this.actualTotal);
-        // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+        // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
       }
     );
 
@@ -1004,14 +1005,14 @@ selectedTransactionLenderName(lenderName: any) {
         if (item.declaredAmount !== null) {
           item.declaredAmount = item.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.declaredAmount = 0.0;
         }
         if (item.actualAmount !== null) {
           item.actualAmount = item.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.actualAmount = 0.0;
         }
@@ -1028,7 +1029,7 @@ selectedTransactionLenderName(lenderName: any) {
             ) {
               innerElement.actualAmount = innerElement.actualAmount
                 .toString()
-                .replace(',', '');
+                .replace(/,/g, '');
             } else {
               innerElement.actualAmount = 0.0;
             }
@@ -1038,7 +1039,7 @@ selectedTransactionLenderName(lenderName: any) {
             // ) {
             //   innerElement.declaredAmount = innerElement.declaredAmount
             //     .toString()
-            //     .replace(',', '');
+            //     .replace(/,/g, '');
             // } else {
             //   innerElement.declaredAmount = 0.0;
             // }
@@ -1050,7 +1051,7 @@ selectedTransactionLenderName(lenderName: any) {
     });
 
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       electricVehicleLoanTransactionList: this.transactionDetail[0].electricVehicleLoanTransactionList,
       electricVehicleLoanTransactionPreviousEmployerList: this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList,
@@ -1230,10 +1231,10 @@ selectedTransactionLenderName(lenderName: any) {
     ].electricVehicleLoanTransactionList.forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
     });
@@ -1327,12 +1328,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.editTransactionUpload[
       j
     ].electricVehicleLoanTransactionList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
@@ -1405,12 +1406,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.editTransactionUpload[
       j
     ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
@@ -1481,12 +1482,16 @@ selectedTransactionLenderName(lenderName: any) {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+        console.log('test', res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].receiptAmount);
+    
+        this.updateReceiptAmount = res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].receiptAmount;
         this.urlArray =
           res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].documentDetailList;
         this.editTransactionUpload =
           res.data.results[0].electricVehicleLoanTransactionDetailList;
-        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-        this.editReceiptAmount = res.data.results[0].receiptAmount;
+        // this.editProofSubmissionId = res.data.results[0].electricVehicleLoanTransactionDetailList[0].proofSubmissionId;
+        this.editProofSubmissionId = proofSubmissionId;
+        this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1494,13 +1499,23 @@ selectedTransactionLenderName(lenderName: any) {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // //console.log(this.urlArray);
+        // this.urlArray.forEach((element) => {
+        //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+        //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        // });
         //console.log('converted:: ', this.urlArray);
+        // this.editTransactionUpload.forEach((element) => {
+        //   element.electricVehicleLoanTransactionPreviousEmployerList.forEach((innerElement) => {
+        //     innerElement.declaredAmount = this.numberFormat.transform(
+        //       innerElement.declaredAmount,
+        //     );
+        //     innerElement.actualAmount = this.numberFormat.transform(
+        //       innerElement.actualAmount,
+        //     );
+        //   });
+        // });
       });
   }
 
@@ -1564,18 +1579,18 @@ selectedTransactionLenderName(lenderName: any) {
           // if (innerElement.declaredAmount !== null) {
           //   innerElement.declaredAmount = innerElement.declaredAmount
           //     .toString()
-          //     .replace(',', '');
+          //     .replace(/,/g, '');
           // } else {
           //   innerElement.declaredAmount = 0.0;
           // }
           if (innerElement.actualAmount !== null) {
             innerElement.actualAmount = innerElement.actualAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.actualAmount = 0.0;
           }
-
+this.uploadGridData.push(innerElement.electricVehicleLoanTransactionId);
           // const dateOfPaymnet = this.datePipe.transform(
           //   innerElement.dateOfPayment,
           //   'yyyy-MM-dd'
@@ -1591,22 +1606,25 @@ selectedTransactionLenderName(lenderName: any) {
       );
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    
     const data = {
       electricVehicleLoanTransactionList: this.editTransactionUpload[0].electricVehicleLoanTransactionList,
       electricVehicleLoanTransactionPreviousEmployerList: this.editTransactionUpload[0].electricVehicleLoanTransactionPreviousEmployerList,
       electricVehicleLoanTransactionIds: this.uploadGridData,
       // receiptAmount: this.receiptAmount,
-      receiptAmount: this.editReceiptAmount,
+      receiptAmount:  this.updateReceiptAmount,
       // documentRemark: this.documentRemark,
       // proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
-      proofSubmissionId: this.editTransactionUpload[0].editProofSubmissionId,
+      proofSubmissionId: this.editProofSubmissionId,
+      // proofSubmissionId: this.editTransactionUpload[0].editProofSubmissionId,
       electricVehicleLoanMasterId: this.editTransactionUpload[0].electricVehicleLoanMasterId,
       // proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
+    
     };
 
 
-    console.log('data::', data);
+    console.log(' uploadUpdateTransaction data::', data);
 
     this.electricVehicleService
       .uploadElectricVehicleTransactionwithDocument(this.editfilesArray, data)
@@ -1671,7 +1689,9 @@ selectedTransactionLenderName(lenderName: any) {
     this.electricVehicleService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
+        
         console.log('edit Data:: ', res);
+       
         this.urlArray =
           res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].documentDetailList;
         this.urlArray.forEach((element) => {

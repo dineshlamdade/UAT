@@ -167,6 +167,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  dateOfJoining: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -256,7 +257,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       declaredAmountFormatted !== undefined
     ) {
       //let installment = this.form.value.premiumAmount;
-      //installment = installment.toString().replace(',', '');
+      //installment = installment.toString().replace(/,/g, '');
       const formatedDeclaredAmount = this.numberFormat.transform(
         declaredAmountFormatted
       );
@@ -315,14 +316,14 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
 
     transactionDetail.declaredAmount = transactionDetail.declaredAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
     transactionDetail.actualAmount = transactionDetail.actualAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
 
     const data = {
       investmentGroup3TransactionDetail: transactionDetail,
-      receiptAmount: this.receiptAmount.toString().replace(',', ''),
+      receiptAmount: this.receiptAmount.toString().replace(/,/g, ''),
       documentRemark: this.documentRemark,
     };
 
@@ -421,11 +422,11 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // this.urlArray.forEach((element) => {
+        //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+        //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        // });
 
         this.editTransactionUpload =
           res.data.results[0].investmentGroup3TransactionDetailList;
@@ -464,58 +465,67 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       if (element.declaredAmount !== null) {
         element.declaredAmount = element.declaredAmount
           .toString()
-          .replace(',', '');
+          .replace(/,/g, '');
       } else {
         element.declaredAmount = 0.0;
       }
       if (element.actualAmount !== null) {
-        element.actualAmount = element.actualAmount.toString().replace(',', '');
+        element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
       } else {
         element.actualAmount = 0.0;
       }
+      const dateOfPaymnet = this.datePipe.transform(
+        element.dateOfPayment,
+        'yyyy-MM-dd'
+      );
+
+      element.dateOfPayment = dateOfPaymnet;
+      this.uploadGridData.push(element.investmentGroup3TransactionId);
     });
+   
 
     const data = {
-      investmentGroup3TransactionDetail: this.editTransactionUpload[0],
-      //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
+      investmentGroup3TransactionDetailList: this.editTransactionUpload,
       receiptAmount: this.editReceiptAmount,
-    };
-    console.log('uploadUpdateTransaction data::', data);
+      documentRemark: this.documentRemark,
+      groupTransactionIDs:this.uploadGridData,
 
+    };  
+    console.log('uploadUpdateTransaction data::', data);
     this.postOfficeTermDepositService
       .uploadPOTDepositTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
-        if (res.data.results.length > 0) {
-
+        if (res.data.results.length > 0) {         
           this.transactionDetail =
-              res.data.results[0].investmentGroup3TransactionDetailList;
-            this.documentDetailList = res.data.results[0].documentInformation;
-            this.grandDeclarationTotal =
-              res.data.results[0].grandDeclarationTotal;
-            this.grandActualTotal = res.data.results[0].grandActualTotal;
-            this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-            this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+            res.data.results[0].investmentGroup3TransactionDetailList;
+          console.log('transactionDetail', this.transactionDetail);
+  
+          this.documentDetailList = res.data.results[0].documentInformation;
+          this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+          this.grandActualTotal = res.data.results[0].grandActualTotal;
+          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+  
+          this.initialArrayIndex = [];
+  
+          this.transactionDetail.forEach((element) => {
+            element.declaredAmount = this.numberFormat.transform(
+              element.declaredAmount
+            );
+            element.actualAmount = this.numberFormat.transform(
+              element.actualAmount
+            );
+          });          
+        this.alertService.sweetalertMasterSuccess(
+          'Transaction Saved Successfully.',
+          ''
+        );
+      } else {
+        this.alertService.sweetalertWarning(res.status.messsage);
+      }
 
-            this.transactionDetail.forEach((element) => {
-              element.declaredAmount = this.numberFormat.transform(
-                element.declaredAmount
-              );
-              element.actualAmount = this.numberFormat.transform(
-                element.actualAmount
-              );
-            });
-
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
-            ''
-          );
-
-
-        } else {
-          this.alertService.sweetalertWarning(res.status.messsage);
-        }
       });
       this.resetEditVariable()
   }
@@ -545,6 +555,9 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      // console.log(res.data.results[0].joiningDate);
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -706,7 +719,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -733,7 +746,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -747,7 +760,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
      // this.investmentGroup3TransactionDetailList[i].actualAmount = this.numberFormat.transform(0);
     //  this.investmentGroup3TransactionDetailList[i].dateOfPayment = null;
@@ -768,7 +781,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.investmentGroup3TransactionDetailList.forEach((element) => { */
       // console.log(element.actualAmount.toString().replace(',', ""));
   /*     this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     }); */
    // this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -778,6 +791,19 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     }*/
     
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length); 
   }
 
@@ -887,19 +913,32 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.actualAmount = 0;
     this.investmentGroup3TransactionDetailList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
     this.transactionDetail.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
     this.grandActualTotal = this.actualTotal;
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -1072,7 +1111,90 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-  upload() {
+/*   upload() {
+    if (this.filesArray.length === 0) {
+      this.alertService.sweetalertError(
+        'Please attach Premium Receipt / Premium Statement'
+      );
+      return;
+    }
+    console.log('this.investmentGroup3TransactionDetailList::', this.investmentGroup3TransactionDetailList);
+
+  
+      this.investmentGroup3TransactionDetailList.forEach((innerElement) => {
+        if (innerElement.declaredAmount !== null) {
+          innerElement.declaredAmount = innerElement.declaredAmount
+            .toString()
+            .replace(/,/g, '');
+        } else {
+          innerElement.declaredAmount = 0.0;
+        }
+        if (innerElement.actualAmount !== null) {
+          innerElement.actualAmount = innerElement.actualAmount
+            .toString()
+            .replace(/,/g, '');
+        } else {
+          innerElement.actualAmount = 0.0;
+        }
+
+        const dateOfPaymnet = this.datePipe.transform(
+          innerElement.dateOfPayment,
+          'yyyy-MM-dd'
+        );
+
+        innerElement.dateOfPayment = dateOfPaymnet;
+      });
+   
+
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
+    const data = {
+      investmentGroup3TransactionDetailList: this.investmentGroup3TransactionDetailList,
+      receiptAmount: this.receiptAmount,
+      documentRemark: this.documentRemark,
+      groupTransactionIDs:this.uploadGridData,
+
+    };
+    console.log('data::', data);
+    this.postOfficeTermDepositService
+      .uploadPOTDepositTransactionwithDocument(this.filesArray, data)
+      .subscribe((res) => {
+        console.log(res);
+        if (res.data.results.length > 0) {         
+            this.transactionDetail =
+              res.data.results[0].investmentGroup3TransactionDetailList;
+            console.log('transactionDetail', this.transactionDetail);
+    
+            this.documentDetailList = res.data.results[0].documentInformation;
+            this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+            this.grandActualTotal = res.data.results[0].grandActualTotal;
+            this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+            this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+    
+            this.initialArrayIndex = [];
+    
+            this.transactionDetail.forEach((element) => {
+              element.declaredAmount = this.numberFormat.transform(
+                element.declaredAmount
+              );
+              element.actualAmount = this.numberFormat.transform(
+                element.actualAmount
+              );
+            });          
+          this.alertService.sweetalertMasterSuccess(
+            'Transaction Saved Successfully.',
+            ''
+          );
+        } else {
+          this.alertService.sweetalertWarning(res.status.messsage);
+        }
+      });
+    this.receiptAmount = '0.00';
+    this.filesArray = [];
+    this.globalSelectedAmount = '0.00';
+    this.investmentGroup3TransactionDetailList = [];
+  } */
+  upload() 
+  {
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -1105,7 +1227,6 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
 
         innerElement.dateOfPayment = dateOfPaymnet;
       });
-   
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
@@ -1188,7 +1309,24 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       this.editTransactionUpload[j].previousEmployerId
     );
   }
-
+ // ---- Set Date of Payment On Edit Modal----
+ onChangeDateOfPaymentEditCase(
+  summary: {
+    previousEmployerName: any;
+    declaredAmount: number;
+    dateOfPayment: Date;
+    actualAmount: number;
+    dueDate: any;
+  },
+  i: number,
+  j: number
+) {
+  this.editTransactionUpload[j].dateOfPayment =
+    summary.dateOfPayment;
+  console.log(
+    this.editTransactionUpload[j].dateOfPayment
+  );
+}
   // ------------ ON change of DueDate in Edit Modal----------
   onDueDateChangeInEditCase(
     summary: {
@@ -1240,10 +1378,10 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
     });
 
@@ -1322,9 +1460,9 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.editTransactionUpload[j].forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1374,19 +1512,19 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
-  nextDocViewer() {
+/*   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
     );
-  }
+  } */
 
-  previousDocViewer() {
+ /*  previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
     );
-  }
+  } */
 
   /* docViewer(template3: TemplateRef<any>) {
     this.urlIndex = 0;
@@ -1400,7 +1538,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     );
   } */
 
-  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+  /* docViewer(template3: TemplateRef<any>, documentDetailList: any) {
     console.log("documentDetailList::", documentDetailList)
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
@@ -1412,7 +1550,35 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       template3,
       Object.assign({}, { class: 'gray modal-xl' }),
     );
+  } */
+  // ---------------- Doc Viewr Code ----------------------------                                               
+    nextDocViewer() {
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI
+      );
+    }
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
   }
+
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log('documentDetailList::', documentDetailList);
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+  
 
   // Common Function for filter to call API
   getTransactionFilterData( ) {
@@ -1440,6 +1606,9 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
             element.actualAmount
           );
         });
+        if(!this.transactionDetail.length){
+          this.addRowInList();
+        }
       } 
     });
   }
