@@ -672,8 +672,8 @@
                                                 <section id="content1" class="bordered-tab-content">
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
-                                                            <p-table [value]="attendanceInputAPIRecordsUIData">
-                                                                <ng-template pTemplate="header">
+                                                            <p-table [value]="attendanceInputAPIRecordsUIData" styleClass="sticky-table">
+                                                                <ng-template pTemplate="header" >
                                                                     <tr>
                                                                         <th class="wd-10" >
                                                                             <div
@@ -987,13 +987,13 @@
                                                                 <ng-template pTemplate="footer">
                                                                     <tr>
                                                                         <td colspan="3" style="font-size: 100%;font-weight: 800">Total </td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPresentCycleWeeklyOffTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPresentCycleHolidayTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPresentCycleLeaveTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPresentCycleLeaveWithoutPayTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPresentCyclePresentDayTotal()}}</td>
-                                                                        <td *ngIf="is30daysPayroll == '1'" style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPresentCycleAdjTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPresentCyclePaybleDaysTotal()}}</td>
+                                                                        <td style="padding-left: 17px;;font-size: 100%;font-weight: 800">{{getPresentCycleWeeklyOffTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPresentCycleHolidayTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPresentCycleLeaveTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPresentCycleLeaveWithoutPayTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPresentCyclePresentDayTotal()}}</td>
+                                                                        <td *ngIf="is30daysPayroll == '1'" style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPresentCycleAdjTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPresentCyclePaybleDaysTotal()}}</td>
                                                                         <td></td>
                                                                         <td></td>
                                                                     </tr>
@@ -1340,13 +1340,13 @@
                                                                 <ng-template pTemplate="footer">
                                                                     <tr>
                                                                         <td colspan="3" style="font-size: 100%;font-weight: 800">Total </td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getFutureCycleWeeklyOffTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getFutureCycleHolidayTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getFutureCycleLeaveTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getFutureCycleLeaveWithoutPayTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getFutureCyclePresentDayTotal()}}</td>
-                                                                        <td *ngIf="is30daysPayroll == '1'" style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getFutureCycleAdjTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getFutureCyclePaybleDaysTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getFutureCycleWeeklyOffTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getFutureCycleHolidayTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getFutureCycleLeaveTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getFutureCycleLeaveWithoutPayTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getFutureCyclePresentDayTotal()}}</td>
+                                                                        <td *ngIf="is30daysPayroll == '1'" style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getFutureCycleAdjTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getFutureCyclePaybleDaysTotal()}}</td>
                                                                         <td></td>
                                                                         <td></td>
                                                                     </tr>
@@ -1394,7 +1394,7 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <p-table [value]="attendanceInputGetAPIPreviouscycleData">
-                                                                <ng-template pTemplate="header">
+                                                                <ng-template pTemplate="header" >
                                                                     <tr>
                                                                         <th class="wd-10">
                                                                             <div
@@ -1697,13 +1697,13 @@
                                                                 <ng-template pTemplate="footer">
                                                                     <tr>
                                                                         <td colspan="3" style="font-size: 100%;font-weight: 800">Total </td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPreviousCycleWeeklyOffTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPreviousCycleHolidayTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPreviousCycleLeaveTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPreviousCycleLeaveWithoutPayTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPreviousCyclePresentDayTotal()}}</td>
-                                                                        <td *ngIf="is30daysPayroll == '1'" style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPreviousCycleAdjTotal()}}</td>
-                                                                        <td style="padding-left: 27px;font-size: 100%;font-weight: 800">{{getPreviousCyclePaybleDaysTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPreviousCycleWeeklyOffTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPreviousCycleHolidayTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPreviousCycleLeaveTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPreviousCycleLeaveWithoutPayTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPreviousCyclePresentDayTotal()}}</td>
+                                                                        <td *ngIf="is30daysPayroll == '1'" style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPreviousCycleAdjTotal()}}</td>
+                                                                        <td style="padding-left: 17px;font-size: 100%;font-weight: 800">{{getPreviousCyclePaybleDaysTotal()}}</td>
                                                                         <td></td>
                                                                         <td></td>
                                                                     </tr>
