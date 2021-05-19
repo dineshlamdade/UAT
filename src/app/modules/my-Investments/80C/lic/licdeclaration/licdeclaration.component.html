@@ -83,7 +83,7 @@
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
-                      [disabled]="canEdit && isDisabled" name="select" value="isCheckAll{{ j }}"
+                      [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
                       (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -195,7 +195,7 @@
                 </td>
                 <td>
                   <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
+                   [maxDate]="today"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true"
                     (ngModelChange)="
                     summary.dateOfPayment = $event.toLocaleDateString();
@@ -204,6 +204,7 @@
                     isDisabled || summary.transactionStatus === 'Submitted'
                   " class="form-control" bsDatepicker />
                 </td>
+                <!-- [minDate]="financialYearStartDate" -->
                 <td>
                   <input type="text" id="actualAmount{{ summary.licTransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)" name="actualAmount{{ summary.licTransactionId }}"
@@ -236,7 +237,8 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled && canEdit">
+              <tr *ngIf="!isDisabled && canEdit && item.frequency!='SinglePremium'">
+              
                 <td *ngIf="previousEmployeeList?.length" colspan="12"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
@@ -247,7 +249,7 @@
                 <td *ngIf="!previousEmployeeList?.length" colspan="11"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
-                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <span tooltip="Add Row">Add {{ summary.frequency}}</span>&nbsp;&nbsp;
                   <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
                     (click)="deleteRow(j)"></i>
                 </td>
@@ -543,7 +545,7 @@
                     </div>
                   </td>
                   <td>
-                    <i *ngIf="canEdit" class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
+                    <i  class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
                   editViewTransaction(
                       template2,
                       documentSummary.proofSubmissionId

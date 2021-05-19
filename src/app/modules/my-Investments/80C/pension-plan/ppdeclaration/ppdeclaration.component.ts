@@ -208,9 +208,13 @@ export class PpdeclarationComponent implements OnInit {
       this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      if (input.canView === true){
+        this.isDisabled = true;
+      } else{
       this.isDisabled = false;
       this.canEdit = input.canEdit;
     }
+  }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     this.enableAddRow = 0;
@@ -958,43 +962,44 @@ export class PpdeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          this.selectedTransactionInstName(this.globalInstitution);
+          // this.transactionDetail =
+          //   res.data.results[0].investmentGroupTransactionDetail;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-          this.initialArrayIndex = [];
+          // this.initialArrayIndex = [];
 
-          this.transactionDetail.forEach((element) => {
-            this.initialArrayIndex.push(element.groupTransactionList.length);
+          // this.transactionDetail.forEach((element) => {
+          //   this.initialArrayIndex.push(element.groupTransactionList.length);
 
-            element.groupTransactionList.forEach((innerElement) => {
+          //   element.groupTransactionList.forEach((innerElement) => {
 
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
+          //     if (innerElement.dateOfPayment !== null) {
+          //       innerElement.dateOfPayment = new Date(
+          //         innerElement.dateOfPayment
+          //       );
+          //     }
 
-              if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              }
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
-              );
-            });
-          });
+          //     if (innerElement.isECS === 0) {
+          //       this.glbalECS == 0;
+          //     } else if (innerElement.isECS === 1) {
+          //       this.glbalECS == 1;
+          //     } else {
+          //       this.glbalECS == 0;
+          //     }
+          //     innerElement.declaredAmount = this.numberFormat.transform(
+          //       innerElement.declaredAmount
+          //     );
+          //     innerElement.actualAmount = this.numberFormat.transform(
+          //       innerElement.actualAmount
+          //     );
+          //   });
+          // });
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
@@ -1400,44 +1405,46 @@ export class PpdeclarationComponent implements OnInit {
             'Transaction Saved Successfully.',
             ''
           );
+          this.selectedTransactionInstName(this.globalInstitution);
 
-          this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-          this.initialArrayIndex = [];
+          // this.transactionDetail =
+          //   res.data.results[0].investmentGroupTransactionDetail;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-          this.transactionDetail.forEach((element) => {
-            this.initialArrayIndex.push(element.groupTransactionList.length);
+          // this.initialArrayIndex = [];
 
-            element.groupTransactionList.forEach((innerElement) => {
+          // this.transactionDetail.forEach((element) => {
+          //   this.initialArrayIndex.push(element.groupTransactionList.length);
 
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
+          //   element.groupTransactionList.forEach((innerElement) => {
 
-              if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              }
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
-              );
-            });
-          });
+          //     if (innerElement.dateOfPayment !== null) {
+          //       innerElement.dateOfPayment = new Date(
+          //         innerElement.dateOfPayment
+          //       );
+          //     }
+
+          //     if (innerElement.isECS === 0) {
+          //       this.glbalECS == 0;
+          //     } else if (innerElement.isECS === 1) {
+          //       this.glbalECS == 1;
+          //     } else {
+          //       this.glbalECS == 0;
+          //     }
+          //     innerElement.declaredAmount = this.numberFormat.transform(
+          //       innerElement.declaredAmount
+          //     );
+          //     innerElement.actualAmount = this.numberFormat.transform(
+          //       innerElement.actualAmount
+          //     );
+          //   });
+          // });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
