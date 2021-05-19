@@ -668,22 +668,34 @@ export class HousingloanmasterComponent implements OnInit {
     let stampDutyRegAprSixteenEndDate = '2017-03-31';
     let stampDutyRegAprTwentyStartDate = '2020-04-01';
     let stampDutyRegMarTwentyEndEndDate = '2022-03-31';
+    // let stampDutyRegMarCurrentFinancialDate = '2021-04-01';
+
     console.log("visibilityFlagProperty", this.visibilityFlagProperty);
 
-    if (userDate >= stampDutyRegAprSixteenStartDate && userDate <= stampDutyRegAprSixteenEndDate) {
+    if ((userDate >= stampDutyRegAprSixteenStartDate && userDate <= stampDutyRegAprSixteenEndDate) || (userDate >= stampDutyRegAprTwentyStartDate && userDate <= stampDutyRegMarTwentyEndEndDate)) {
       this.visibilityFlagProperty = true;
+      // this.visibilityFlagStamp = true;
       }
-     if (userDate < stampDutyRegAprSixteenStartDate && userDate > stampDutyRegAprSixteenEndDate) {
-      this.visibilityFlagProperty = true;
+      else{
+        this.visibilityFlagProperty = false;
       }
-     if (userDate >= stampDutyRegAprTwentyStartDate && userDate <= stampDutyRegMarTwentyEndEndDate){
-      this.visibilityFlagProperty = false;
-      this.visibilityFlagStamp = false;
-     }
-      if (userDate < stampDutyRegAprTwentyStartDate && userDate > stampDutyRegMarTwentyEndEndDate){
-        this.visibilityFlagProperty = true;
-        this.visibilityFlagStamp = false;
-      }
+      if (userDate >= stampDutyRegAprSixteenStartDate && userDate <= stampDutyRegMarTwentyEndEndDate)  {
+        this.visibilityFlagStamp = true;
+        }
+        else{
+          this.visibilityFlagStamp = false;
+        }
+    //  if (userDate < stampDutyRegAprSixteenStartDate && userDate > stampDutyRegAprSixteenEndDate) {
+    //   this.visibilityFlagProperty = true;
+    //   }
+    //  if (userDate >= stampDutyRegAprTwentyStartDate && userDate <= stampDutyRegMarTwentyEndEndDate){
+    //   this.visibilityFlagProperty = false;
+    //   this.visibilityFlagStamp = false;
+    //  }
+    //   if (userDate < stampDutyRegAprTwentyStartDate && userDate > stampDutyRegMarTwentyEndEndDate){
+    //     this.visibilityFlagProperty = true;
+    //     this.visibilityFlagStamp = false;
+    //   }
       console.log("visibilityFlagProperty", this.visibilityFlagProperty);
   }
 
