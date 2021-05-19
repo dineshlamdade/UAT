@@ -71,7 +71,6 @@ export class TokenInterceptorService implements HttpInterceptor {
       },
     });
   }
- 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
       this.isRefreshing = true;

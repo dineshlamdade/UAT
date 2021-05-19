@@ -114,6 +114,8 @@ export class ElectricVehicleMasterComponent implements OnInit {
   public globalSelectedAmount: string;
 
   public proofSubmissionId ;
+  public vehicleNumbers: any;
+  public validVehicleNumbers: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -296,6 +298,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
     this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
+      this.vehicleNumbers = res.data;
       this.masterGridData.forEach((element) => {
         element.policyStartDate = new Date(element.policyStartDate);
         element.policyEndDate = new Date(element.policyEndDate);
@@ -336,6 +339,28 @@ export class ElectricVehicleMasterComponent implements OnInit {
       // data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('electric Vehicle ::', data);
+      if (data.vehicleNumber) {
+        
+        this.vehicleNumbers.results.forEach(results => {
+          if (results.vehicleNumber == data.vehicleNumber) {
+            this.validVehicleNumbers = true;
+          }
+        });
+        if (this.validVehicleNumbers) {
+          this.validVehicleNumbers = false;
+          this.alertService.sweetalertError(
+            'Vehicle number is already present.'
+          );
+          return;
+        }
+      }
+      if (this.validVehicleNumbers) {
+        this.validVehicleNumbers = false;
+        this.alertService.sweetalertError(
+          'Viechel number is already present.'
+        );
+        return;
+      }
 
       this.electricVehicleService
         .uploadMultipleElectricVehicleasterFiles(this.masterfilesArray, data)

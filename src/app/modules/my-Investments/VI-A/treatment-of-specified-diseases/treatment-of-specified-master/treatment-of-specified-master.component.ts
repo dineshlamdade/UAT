@@ -33,8 +33,10 @@ import { TreatmentOfSpecifiedService } from '../treatment-of-specified.service';
   styleUrls: ['./treatment-of-specified-master.component.scss'],
 })
 export class TreatmentOfSpecifiedMasterComponent implements OnInit {
+  @Input() public patientNames: any;
   public modalRef: BsModalRef;
   public submitted = false;
+  public visibilityFlag = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
   public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
@@ -99,7 +101,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public isClear: boolean;
   public isCancel: boolean;
   public today = new Date();
-
+  public proofSubmissionId = '';
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
@@ -125,13 +127,10 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.form = this.formBuilder.group({
       familyMemberInfoId: new FormControl(null, Validators.required),
       patientName: new FormControl(null, Validators.required),
-      relationship: new FormControl(
-        { value: null, disabled: true },
-        Validators.required
-      ),
-      neurologicalDiseaseName: new FormControl(null, Validators.required),
+      relationship: new FormControl({ value: null, disabled: true },Validators.required),
+      neurologicalDiseaseName: new FormControl(null,Validators.required),
       specifiedDiseaseName: new FormControl(null, Validators.required),
-      proofSubmissionId: new FormControl(null),
+      proofSubmissionId: new FormControl(''),
       specifiedDiseaseMasterId: new FormControl(0),
       remark: new FormControl(null),
     });
@@ -222,6 +221,16 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
       }
     });
+
+    if (this.patientNames != undefined || this.patientNames != null) {
+      const input = this.patientNames;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster patientName', input);
+      this.editMaster(input.patientName);
+      console.log('editMaster patientName', input.patientName);
+    }
+
   }
 
   // ------------------------------------Master----------------------------
@@ -249,13 +258,38 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Treatment Of Specified Document needed to Create Master.'
       );
       return;
     } else {
-      const data = this.form.getRawValue();
+      // const data = this.form.getRawValue();
+
+      // neurologicalDiseaseName: new FormControl(null),
+      // specifiedDiseaseName:
+      let data: any = {};
+      if(this.form.value.specifiedDiseaseName !== 'Neurological diseases with disability level >=40% per cent and above'){
+        data = {
+          specifiedDiseaseMasterId : 0,
+          familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
+          patientName: this.masterForm.patientName.value,
+          relationship: this.masterForm.relationship.value,
+          neurologicalDiseaseName : '',
+          specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
+          },
+          data.proofSubmissionId = this.proofSubmissionId;
+      }else {
+        data = {
+          specifiedDiseaseMasterId : 0,
+          familyMemberInfoId: this.masterForm.familyMemberInfoId.value,
+          patientName: this.masterForm.patientName.value,
+          relationship: this.masterForm.relationship.value,
+          neurologicalDiseaseName: this.masterForm.neurologicalDiseaseName.value,
+          specifiedDiseaseName: this.masterForm.specifiedDiseaseName.value,
+        }
+        data.proofSubmissionId = this.proofSubmissionId;
+      }
 
       console.log('Treatment Of Specified Disease::', data);
 
@@ -288,6 +322,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       // this.form.get('ecs').setValue(0);
       this.showUpdateButton = false;
       // this.paymentDetailGridData = [];
+      this.urlArray = [];
       this.masterfilesArray = [];
       this.submitted = false;
     }
@@ -333,21 +368,52 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     }
   }
 
-  //------------- On Master Edit functionality --------------------
-  editMaster(i: number) {
-    this.scrollToTop();
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form
-      .get('proofSubmissionId')
-      .setValue(this.masterGridData[i].proofSubmissionId);
-    this.isClear = true;
+  // //------------- On Master Edit functionality --------------------
+  // editMaster(i: number) {
+  //   this.scrollToTop();
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+  //   this.form.get('proofSubmissionId').setValue(this.masterGridData[i].proofSubmissionId);
+  //   this.isClear = true;
+  //   this.proofSubmissionId =this.masterGridData[i].proofSubmissionId;
+  //    this.urlArray = this.masterGridData[i].documentInformationList;
+  //   // this.masterfilesArray = this.masterGridData[i].documentInformationList;
+  // }
 
-    this.masterfilesArray = this.masterGridData[i].documentInformationList;
+
+    // ------------- On Master Edit functionality --------------------
+    public editMaster(patientName) {
+      this.scrollToTop();
+      this.treatmentOfSpecifiedService.getSpecifiedDiseaseMaster().subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
+        console.log(patientName);
+        const obj = this.findByPolicyNo(patientName, this.masterGridData);
+
+        // Object.assign({}, { class: 'gray modal-md' }),
+        console.log('Edit Master', obj);
+        if (obj != 'undefined') {
+          this.paymentDetailGridData = obj.paymentDetails;
+          this.form.patchValue(obj);
+          this.visibilityFlag = true;
+          this.Index = obj.patientName;
+          this.showUpdateButton = true;
+          this.isClear = true;
+          this.urlArray = obj.doctorCertificate;
+          this.proofSubmissionId = obj.proofSubmissionId;
+        }
+      });
+    }
+
+      // Find patientName
+  public findByPolicyNo(patientName, masterGridData) {
+    return masterGridData.find((x) => x.patientName === patientName);
   }
+
+
 
   // scrollToTop Fuctionality
   public scrollToTop() {
@@ -385,6 +451,19 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.isCancel = true;
   }
 
+
+  // ---------- On View Cancel -------------------
+  public resetView() {
+    this.form.reset();
+    this.masterfilesArray = [];
+    this.isCancel = false;
+    this.urlArray = [];
+    this.isClear = false;
+    this.form.get('active').setValue(true);
+    this.form.get('ecs').setValue(0);
+    this.showUpdateButton = false;
+  }
+
   //---------- On View Cancel -------------------
   cancelView() {
     this.form.reset();
@@ -400,4 +479,53 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
+
+  OnSpecifiedDiseaseChange() {
+    this.masterfilesArray = [];
+    if (this.form.value.specifiedDiseaseName !== 'Neurological diseases with disability level >=40% per cent and above') {
+      this.visibilityFlag = false;
+      // this.form.get('neurologicalDiseaseName').setValidators([Validators.required]);
+      // this.form.get('neurologicalDiseaseName').updateValueAndValidity();
+
+      this.form.get('neurologicalDiseaseName').clearValidators();
+      this.form.get('neurologicalDiseaseName').updateValueAndValidity();
+    } else {
+      this.visibilityFlag = true;
+      this.form.get('neurologicalDiseaseName').setValidators([Validators.required]);
+      this.form.get('neurologicalDiseaseName').updateValueAndValidity();
+    }
+  }
+
+   // ---------- For Doc Viewer -----------------------
+   public nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  public previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  public docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
+
+
 }

@@ -162,6 +162,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public canEdit: boolean;
+  dateOfJoining: Date;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -234,6 +236,10 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      console.log(res.data.results[0].joiningDate);
+
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+ console.log(this.dateOfJoining)
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -242,6 +248,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
         this.previousEmployeeList.push(obj);
       });
     });
+
 
     // Get All Previous Employer
     this.Service.getAllPreviousEmployer().subscribe((res) => {
@@ -490,7 +497,21 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       this.enableFileUpload = true;
     }
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
+    
   }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
@@ -555,9 +576,17 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
-  }
+    console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
 
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
+}
   // ------------ ON change of DueDate in line----------
   onDueDateChange(
     summary: {
@@ -624,6 +653,22 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
+   
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
+
+
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -1116,9 +1161,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
 
   // When Edit of Document Details
   declarationEditUpload(
-    template2: TemplateRef<any>,
-    proofSubmissionId: string
-  ) {
+    template2: TemplateRef<any>, proofSubmissionId: string) {
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1143,12 +1186,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
           res.data.results[0].grandApprovedTotal;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
           this.editReceiptAmount = res.data.results[0].receiptAmount;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        
+      
         //console.log('converted:: ', this.urlArray);
       });
   }
@@ -1167,7 +1206,9 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>) {
+  docViewer(template3: TemplateRef<any>,documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
@@ -1203,6 +1244,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
         this.initialArrayIndex = [];
 
         this.transactionDetail.forEach((element) => {
+          
           this.initialArrayIndex.push(element.groupTransactionList.length);
 
           element.groupTransactionList.forEach((innerElement) => {

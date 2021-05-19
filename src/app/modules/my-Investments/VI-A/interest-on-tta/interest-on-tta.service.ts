@@ -157,10 +157,10 @@ export class InterestOnTtaService {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
-      formData.append('interestOnSavingDeposit80TTAMasterDocuments', file);
+      formData.append('bankStatements', file);
     }
     //formData.append('licDocuments', files);
-    formData.append('interestOnSavingDeposit80TTAMaster', JSON.stringify(data));
+    formData.append('interestOnSavingDeposit80TTTransactionList', JSON.stringify(data));
 
     console.log('formData', formData);
 
@@ -169,7 +169,7 @@ export class InterestOnTtaService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'interestOnDeposit80TTA-transaction',
+      this.apiUrl + 'interestOnDeposit80TTA-transaction/uploadDocument',
       formData,
       {
 

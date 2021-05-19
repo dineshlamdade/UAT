@@ -43,7 +43,8 @@
             </div>
             <div class="col-sm-6 col-md-3 mt-10">
                 <label class="form-label">PRAN</label>
-                <input type="text" formControlName="pran" class="form-control" disabled [ngClass]="{ 'is-invalid': submitted && masterForm.pran.errors }">
+                <input type="text" formControlName="pran" class="form-control" 
+                disabled [ngClass]="{ 'is-invalid': submitted && masterForm.pran.errors }">
                 <div *ngIf="submitted && masterForm.pran.errors" class="invalid-feedback">
                     <div *ngIf="masterForm.pran.errors.required">PRAN is mandatory</div>
                 </div>

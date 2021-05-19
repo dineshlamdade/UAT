@@ -886,6 +886,8 @@ export class HousingloanmasterComponent implements OnInit {
       this.loanSanctionLetter = [];
       this.possessionLetter = [];
       this.submitted = false;
+     this.houseLoanUsageTypeList = [];
+     this.loanDetailGridData = [];
     }
   }
 

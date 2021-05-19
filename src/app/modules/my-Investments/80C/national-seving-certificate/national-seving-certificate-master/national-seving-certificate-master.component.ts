@@ -145,7 +145,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
       remark: new FormControl(null),
-      frequencyOfPayment: new FormControl(null, Validators.required),
+      frequencyOfPayment: new FormControl('OneTime', Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
         { value: null, disabled: true },
@@ -154,13 +154,14 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl(0),
-      masterPaymentDetailId: new FormControl(0),
+      investmentGroup2MasterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
       proofSubmissionId: new FormControl(''),
     });
 
     this.frequencyOfPaymentList = [{ label: 'One Time', value: 'OneTime' }];
+  
 
     this.issueTypeOfList = [
       { label: 'VIII th Issue', value: 'VIII' },
