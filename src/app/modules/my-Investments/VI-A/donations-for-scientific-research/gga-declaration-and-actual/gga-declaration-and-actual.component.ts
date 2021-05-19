@@ -1035,6 +1035,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].donations80GGTransactionList;
+        this.editProofSubmissionId = proofSubmissionId;
           this.editTransactionUpload.forEach((element) => {
             element.declaredAmount = this.numberFormat.transform(
               element.declaredAmount
@@ -1085,6 +1086,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       } else {
         element.actualAmount = 0.0;
       }
+      this.uploadGridData.push(element.donations80GGTransactionId)
     });
 
 
@@ -1320,19 +1322,19 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           );
         }
 
-        this.actualTotal = 0;
+        this.grandActualTotal = 0;
         this.actualAmount = 0;
         this.editTransactionUpload[j].donations80GGTransactionList.forEach((element) => {
           console.log(element.actualAmount.toString().replace(/,/g, ''));
-          this.actualTotal += Number(
+          this.grandActualTotal += Number(
             element.actualAmount.toString().replace(/,/g, '')
           );
-          console.log(this.actualTotal);
+          console.log(this.grandActualTotal);
           // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
         });
 
-        this.editTransactionUpload[j].actualTotal = this.actualTotal;
-        console.log(this.editTransactionUpload[j].actualTotal);
+        this.editTransactionUpload[j].grandActualTotal = this.grandActualTotal;
+        console.log(this.editTransactionUpload[j].grandActualTotal);
       }
 
 

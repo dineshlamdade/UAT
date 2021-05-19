@@ -21,7 +21,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
-            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="possessionDate"
+            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="possessionDate"  (bsValueChange)="OnPossessionDateChange()"
               data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Possession Date"
               bsDatepicker [ngClass]="{ 'is-invalid': submitted && houseLoanF.possessionDate.errors }"
               [maxDate]="today">
@@ -135,57 +135,9 @@
         </div>
       </div>
     </div>
-    <div class="row mt-20">
-      <div class="col-sm-6 col-md-3">
-        <label class="form-label">Stamp Duty & Registration Payment Date</label>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-            </div>
-            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="stampDutyRegistrationDate"
-              data-provide="datepicker" data-date-autoclose="true" class="form-control"
-              (bsValueChange)="checkRegistrationDateValid()"
-              [ngClass]="{ 'is-invalid': (submitted   && houseLoanF.stampDutyRegistrationDate.errors) || stampDutyDateValid }"
-              [maxDate]="today" placeholder="Registration Date" bsDatepicker>
-            <div *ngIf="(submitted && houseLoanF.stampDutyRegistrationDate.errors) ||  stampDutyDateValid"
-              class="invalid-feedback">
-              <div *ngIf="(houseLoanF.stampDutyRegistrationDate.errors.required) || stampDutyDateValid ">Stamp Duty &
-                Registration Date is mandatory</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-3">
-        <label class="form-label">Stamp Duty & Registration Amount</label>
-        <!-- <input type="text" formControlName="stampDutyRegistrationAmount" class="form-control"
-       placeholder="Enter Property Name"
-       [ngClass]="{ 'is-invalid': submitted && houseLoanF.stampDutyRegistrationAmount.errors }"  > -->
-        <p-inputNumber class="p-inputright" formControlName="stampDutyRegistrationAmount" placeholder="Enter Stamp Duty & Registration Amount"
-          [ngClass]="{ 'is-invalid': submitted && houseLoanF.stampDutyRegistrationAmount.errors }"
-          (onBlur)="checkPaymentDate()" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
-        <div *ngIf="submitted && houseLoanF.stampDutyRegistrationAmount.errors" class="invalid-feedback">
-          <div *ngIf="houseLoanF.stampDutyRegistrationAmount.errors.required">Stamp Duty & Registration Amount is
-            mandatory</div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-3">
-        <label class="form-label">Property Registration Amount</label>
-        <!-- <input type="text" formControlName="propertyRegistrationValue" class="form-control"
-     placeholder="Enter Property Name"
-     [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }"  > -->
-
-        <p-inputNumber class="p-inputright" formControlName="propertyRegistrationValue" placeholder="Enter Property Registration Amount"
-          [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }" mode="decimal"
-          locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
-
-        <div *ngIf="submitted && houseLoanF.propertyRegistrationValue.errors" class="invalid-feedback">
-          <div *ngIf="houseLoanF.propertyRegistrationValue.errors.required">Property Registration Amount is mandatory
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <br>
+    <br>
+    <br>
 
     <div class="row">
       <div class="col-md-12">
@@ -196,8 +148,20 @@
 
           <div [formGroup]="HPOwnerDetailForm" #formDirective_="ngForm">
             <div class="row">
+              <div class="col-sm-3 col-md-3">
+                <label class="form-label">Name of Family</label>
+                <ng-multiselect-dropdown [placeholder]="'None Selected'" defaultLabel="Select a Name"  appendTo="body" #multiSelect
+                style="font-size: small;" [settings]="dropdownSettings" (change)='OnSelectionfamilyMemberGroup($event.target.value)'
+                [data]="dropdownList"
+                (onSelect)="onItemSelect($event)" (onDeSelectAll)="onDeselectAll($event)"
+                (onSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)"
+                [(ngModel)]="selectedEstablishmentMasterId"
+                [ngClass]="{ 'is-invalid': houseLoanOwnerDetailSubmitted && HPOwnerDetailF.familyMemberInfoId.errors }"
+                formControlName="familyMemberInfoId">
+              </ng-multiselect-dropdown>
+            </div>
 
-              <div class="col-sm-4 col-md-3">
+              <div class="col-sm-3 col-md-3" **ngIf="visibilityFlagFamily">
                 <label class="form-label">Name of Owner</label>
                 <input type="text" formControlName="ownerName" class="form-control"
                   onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Owner Name"
@@ -249,6 +213,7 @@
                   <thead class="thead-dark">
                     <tr>
                       <th scope="col" class="wd-13">Name of Owner</th>
+                      <th scope="col" class="wd-13">Name of Owner</th>
                       <th scope="col" class="wd-9">1st Time Home Buyer</th>
                       <th scope="col" class="wd-14">Action</th>
                     </tr>
@@ -256,6 +221,9 @@
                   <tbody>
                     <!--   <tr *ngFor="let loanDetail of loanDetailGridData ;  let i = index"> -->
                     <tr *ngFor="let loanDetail of houseLoanOwnerTypeList  ;  let i = index">
+                      <td>
+                        {{loanDetail.name}}
+                      </td>
                       <td>
                         <span>
                           {{loanDetail.ownerName}}
@@ -688,6 +656,59 @@
       </fieldset>
     </div>
   </div>
+
+
+  <div class="row mt-20">
+    <div class="col-sm-6 col-md-3" *ngIf="visibilityFlag">
+      <label class="form-label">Stamp Duty & Registration Payment Date</label>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+          </div>
+          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="stampDutyRegistrationDate"
+            data-provide="datepicker" data-date-autoclose="true" class="form-control"
+            (bsValueChange)="checkRegistrationDateValid()"
+            [ngClass]="{ 'is-invalid': (submitted   && houseLoanF.stampDutyRegistrationDate.errors) || stampDutyDateValid }"
+            [maxDate]="today" placeholder="Registration Date" bsDatepicker>
+          <div *ngIf="(submitted && houseLoanF.stampDutyRegistrationDate.errors) ||  stampDutyDateValid"
+            class="invalid-feedback">
+            <div *ngIf="(houseLoanF.stampDutyRegistrationDate.errors.required) || stampDutyDateValid ">Stamp Duty &
+              Registration Date is mandatory</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3" *ngIf="visibilityFlagStamp">
+      <label class="form-label">Stamp Duty and Registration Charges</label>
+      <!-- <input type="text" formControlName="stampDutyRegistrationAmount" class="form-control"
+     placeholder="Enter Property Name"
+     [ngClass]="{ 'is-invalid': submitted && houseLoanF.stampDutyRegistrationAmount.errors }"  > -->
+      <p-inputNumber class="p-inputright" formControlName="stampDutyRegistrationAmount" placeholder="Enter Stamp Duty & Registration Amount"
+        [ngClass]="{ 'is-invalid': submitted && houseLoanF.stampDutyRegistrationAmount.errors }"
+        (onBlur)="checkPaymentDate()" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+      <div *ngIf="submitted && houseLoanF.stampDutyRegistrationAmount.errors" class="invalid-feedback">
+        <div *ngIf="houseLoanF.stampDutyRegistrationAmount.errors.required">Stamp Duty & Registration Amount is
+          mandatory</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3" *ngIf="visibilityFlagProperty">
+      <label class="form-label">Property Registration Amount</label>
+      <!-- <input type="text" formControlName="propertyRegistrationValue" class="form-control"
+   placeholder="Enter Property Name"
+   [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }"  > -->
+
+      <p-inputNumber class="p-inputright" formControlName="propertyRegistrationValue" placeholder="Enter Property Registration Amount"
+        [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }" mode="decimal"
+        locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+
+      <div *ngIf="submitted && houseLoanF.propertyRegistrationValue.errors" class="invalid-feedback">
+        <div *ngIf="houseLoanF.propertyRegistrationValue.errors.required">Property Registration Amount is mandatory
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -926,6 +947,8 @@
       </div>
     </div>
   </div>
+
+
 
   <!-- </div> -->
 </form>

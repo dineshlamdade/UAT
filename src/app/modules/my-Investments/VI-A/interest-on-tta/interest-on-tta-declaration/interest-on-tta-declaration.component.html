@@ -750,8 +750,8 @@
                         name="declaredAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}"
                         [(ngModel)]="summary.declaredAmount"
                         class="form-control align-right"
+                        [disabled]="summary.transactionStatus === 'Submitted'"
                         (change)="onDeclaredAmountChange(summary, i, j)"
-                        [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                       />
                     </div>
                   </td>

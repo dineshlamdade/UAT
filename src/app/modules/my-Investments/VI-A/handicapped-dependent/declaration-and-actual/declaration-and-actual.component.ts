@@ -783,18 +783,18 @@ export class DeclarationAndActualComponent implements OnInit {
   // Get API call for All previous employee Names
   getpreviousEmployeName() {
     this.Service.getpreviousEmployeName().subscribe((res) => {
-      console.log('previousEmployeeList::', res);
-      if (!res.data.results[0]) {
-        return;
-      }
-      res.data.results.forEach((element) => {
-        const obj = {
-          label: element.name,
-          value: element.previousEmployerId,
-        };
-        this.previousEmployeeList.push(obj);
-      });
-      console.log('previousEmployeeList 2::', this.previousEmployeeList);
+      // console.log('previousEmployeeList::', res);
+      // if (!res.data.results[0]) {
+      //   return;
+      // }
+      // res.data.results.forEach((element) => {
+      //   const obj = {
+      //     label: element.name,
+      //     value: element.previousEmployerId,
+      //   };
+      //   this.previousEmployeeList.push(obj);
+      // });
+      // console.log('previousEmployeeList 2::', this.previousEmployeeList);
     });
   }
 
