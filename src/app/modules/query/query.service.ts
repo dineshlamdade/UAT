@@ -10,6 +10,7 @@ export class QueryService {
 public apiUrl = environment.baseUrl8091;
 public apiUrl1 = environment.baseUrl8083;
 public apiUrl2 = environment.baseUrl8088;
+public apiUrl3 = environment.baseUrl8082;
 constructor(private http : HttpClient ) { }
 
 public getAll()
@@ -86,7 +87,7 @@ public getById(id)
 }
 public addQueryGeneration(data)
 {
-  return this.http.get<any>(this.apiUrl + 'QueryGeneration',data);
+  return this.http.post<any>(this.apiUrl + 'QueryGeneration',data);
 }
 public updateQueryGeneration(data)
 {
@@ -94,6 +95,10 @@ public updateQueryGeneration(data)
 }
 public getDeleteById(id)
 {
-  return this.http.get<any>(this.apiUrl + 'QueryGeneration/' +id);
+  return this.http.delete<any>(this.apiUrl + 'QueryGeneration/' +id);
+}
+public getEmpMasterDetails(id)
+{
+  return this.http.get<any>(this.apiUrl3 + 'employee-fin-details/' +id);
 }
 }

@@ -27,7 +27,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   addQueryGenerationData: any;
   updateQueryGenerationData: any;
   getDeleteByIdData: any;
-  query:any;
+  queryGenerationEmpId:number=0;
 
   documentIndex: any;
   selectedDoc: any;
@@ -37,8 +37,16 @@ export class AdminQuryGenerationComponent implements OnInit {
   public urlIndex: number;
   public urlSafe: SafeResourceUrl;
   documentList: any = [];
-  queryNumber: any;
-
+  // queryNumber: any;
+  perticularEmpDetails: any;
+  employeeMasterIdData: any;
+  subQueryData: any;
+  priorityData: any;
+  listQAData: any;
+  selectedModuleId: any;
+  queryTemplateData: any;
+  selectedModule: any;
+  queryNumberData: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
     private router: Router,public sanitizer: DomSanitizer,
@@ -47,20 +55,19 @@ export class AdminQuryGenerationComponent implements OnInit {
     {
         "queryRequestDTO":[
         {
-        "queryGenerationEmpId":new FormControl(0),
-        "queryNumber":new FormControl(0),
-        "employeeMasterId":new FormControl(0),
+        "queryGenerationEmpId":new FormControl(''),
+        "queryNumber":new FormControl(''),
+        "employeeMasterId":new FormControl(''),
         "onBehalfOfEmployee":new FormControl(true),
-        "applicationModuleId":new FormControl(0),
-        "queryTypeMasterId":new FormControl(0),
-        "subQueTypeMasterId":new FormControl(0),
-        "queAnsMasterId":new FormControl(0),
-        "priority":new FormControl(null),
-        "queryDescription":new FormControl('test desc 10'),
-        "subject":new FormControl('test sub'),
-        "queryRootCause":new FormControl(null),
-        "status":new FormControl('submitted'),
-
+        "applicationModuleId":new FormControl(''),
+        "queryTypeMasterId":new FormControl(''),
+        "subQueTypeMasterId":new FormControl(''),
+        "queAnsMasterId":new FormControl(''),
+        "priority":new FormControl(''),
+        "queryDescription":new FormControl(''),
+        "subject":new FormControl(''),
+        "queryRootCause":new FormControl(''),
+        "status":new FormControl(''),
         }
         ],
 
@@ -71,7 +78,6 @@ export class AdminQuryGenerationComponent implements OnInit {
     this.getModuleName();
     this.getAllQueryListSummary();
     this.querySubQueryTypeQA();
-    this.getById(this.queryGenerationEmpId);
   }
 
   queryGenerationFormSubmit()
@@ -99,81 +105,145 @@ getAllQueryListSummary()
 this.queryService.getAllQueryList().subscribe(res =>
   {
     this.getAllQueryGenerationData = res.data.results;
-    // this.getAllQueryGenerationData.forEach(element => {
-    //   this.queryNumber = element.queryNumber;
-    // });
-    this.queryGenerationForm.controls['queryNumber'].setValue(this.getAllQueryGenerationData.queryNumber);
-
+    this.getAllQueryGenerationData.forEach(element => {
+    this.employeeMasterIdData = element.employeeMasterId;
+    this.queryNumberData = element.queryNumber;
+    // this.queryGenerationEmpIdData = element.queryGenerationEmpId;
+    });
+    this.getEmpMasterDetails(this.employeeMasterIdData);
+    console.log(JSON.stringify(  this.queryNumberData));
   })
 }
 
-queryGenerationEmpId:number;
 getById(queryGenerationEmpId){
   this.queryService.getById(queryGenerationEmpId).subscribe(res =>
     {
       this.getByIdData = res.data.results[0];
-      // console.log("*********",this.getByIdData);
-
     })
 }
-querySubQueryTypeQA() //one value is bind only other is remaining
+querySubQueryTypeQA()
 {
   this.queryService.querySubQueryTypeQA().subscribe(res =>
     {
       this.querySubQueryTypeQAData = res.data.results;
-      this.querySubQueryTypeQAData.forEach(element => { // not working loop
-      this.subQueryType = element.subQueTypeMasterId;
-      });
-    // console.log("*********",this.querySubQueryTypeQAData);
-    // console.log("!!!!!!!!!!!",this.subQueryType);
     })
 }
+queryTypeChange(value)
+{
+  this.subQueryData = [];
+  this.querySubQueryTypeQAData.forEach(element => {
+  if(element.queryTypeMasterId == value){
+    this.subQueryData = element.listSubQueryTypeData;
+    this.priorityData = element.listPriority;
+    this.listQAData = element.listQA;
+  }
+});
+}
+moduleChange(value) // when module is changed then template also changed.
+{
+  this.selectedModuleId = value;
+  this.moduleListData.forEach(element => {
+    if(element.applicationModuleId == parseInt(value))
+    {
+   this.selectedModule = element.applicationModuleName;
+    }
+  });
+  this.getAll();
+}
+getAll() // this api call for the assign template dropdown
+{
+  this.queryTemplateData=[];
+   this.queryService.getAll().subscribe( res =>{
+    res.data.results.forEach(element => {
+      if(element.moduleId == this.selectedModuleId)
+      {
+        this.queryTemplateData.push(element);
+        }
+    });
+   })
+  }
+
 addQueryGeneration(){
   this.queryService.addQueryGeneration(this.queryGenerationForm.value).subscribe(res =>
     {
-      // this.addQueryGenerationData = res.data.results[0];
-      // console.log("*********",this.addQueryGenerationData);
+      this.addQueryGenerationData = res.data.results[0];
+      console.log(JSON.stringify(this.addQueryGenerationData));
+      this.getAllQueryListSummary();
       this.toster.success("",'Query Added Successfully');
-
+      this.queryGenerationForm.reset();
     })
 }
 updateQueryGeneration(){
+
+  // let queryRequestDTO = [
+  //   {
+  //       "queryGenerationEmpId":this.queryGenerationEmpId,
+  //       "queryNumber":this.queryNumber,
+  //       "employeeMasterId":this.employeeMasterId,
+  //       "onBehalfOfEmployee":true,
+  //       "applicationModuleId":this.applicationModuleId,
+  //       "queryTypeMasterId":this.queryTypeMasterId,
+  //       "subQueTypeMasterId":this.subQueTypeMasterId,
+  //       "queAnsMasterId":this.queAnsMasterId,
+  //       "queryDescription":this.queryDescription,
+  //       "subject":this.subject,
+  //       "queryRootCause":this.queryRootCause,
+  //       "status":this.status,
+  //   }
+  // ]
   this.queryService.updateQueryGeneration(this.queryGenerationForm.value).subscribe(res =>
     {
-      this.updateQueryGenerationData = res.data.results[0];
+      // this.updateQueryGenerationData = res.data.results[0];
       // console.log("*********",this.addQueryGenerationData);
+      this.getAllQueryListSummary();
       this.toster.success("",'Query Updated Successfully');
+     this.queryGenerationForm.reset();
+    })
+}
+getEmpMasterDetails(employeeMasterIdData)//undefined
+{
+  this.queryService.getEmpMasterDetails(60).subscribe(res =>
+    {
+      this.perticularEmpDetails = res.data.results[0][0];
+     console.log(JSON.stringify( this.perticularEmpDetails));
 
     })
 }
-editQuery(query)
+editQuery(queryGenerationSummary)
 {
   this.editflag = true;
   this.queryGenerationForm.enable();
-  this.queryGenerationForm.patchValue(query);
+  this.queryGenerationForm.patchValue(queryGenerationSummary);
   this.isUpdate =true;
   this.isSave = false;
   this.isReset =false;
-  this.getById(query.queryGenerationEmpId);
-  this.queryGenerationEmpId = query.queryGenerationEmpId;
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",queryGenerationSummary);
+  // this.getById(this.queryGenerationEmpId);
+  this.getById(queryGenerationSummary.queryGenerationEmpId);
+  this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
+  this.queryGenerationForm.controls['queryNumber'].setValue(queryGenerationSummary.queryNumber);
+
 }
-viewQuery(query)
+viewQuery(queryGenerationSummary)
 {
  this.editflag = false;
- this.queryGenerationForm.patchValue(query);
+ this.queryGenerationForm.patchValue(queryGenerationSummary);
  this.queryGenerationForm.disable();
  this.isUpdate =true;
  this.isSave = false;
- this.getById(query.queryGenerationEmpId);
-  this.queryGenerationEmpId = query.queryGenerationEmpId;
+ this.getById(queryGenerationSummary.queryGenerationEmpId);
+  this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
 }
 getDeleteById()
 {
   this.queryService.getDeleteById(this.queryGenerationEmpId).subscribe(res =>
     {
       this.toster.success("",'Query Deleted Successfully');
+      this.getAllQueryListSummary();
+
     })
 }
+
 reset(){
   this.queryGenerationForm.enable();
   this.queryGenerationForm.reset();
@@ -200,14 +270,14 @@ onMasterUpload(event: { target: { files: string | any[] } }) {
     }
   }
 
-  // this.documentList.splice(this.documentIndex, 1, {
-  //   'active': this.selectedDoc.active,
-  //   'createdBy': null,
-  //   'documentName': "wedding card",
-  //   'documentRemark': "wedding card",
-  //   'loanMasterDocumentId': 1,
-  //   'fileName': this.masterfilesArray[this.documentIndex].name
-  // })
+  this.documentList.splice(this.documentIndex, 1, {
+    'active': this.selectedDoc.active,
+    'createdBy': null,
+    'documentName': "wedding card",
+    'documentRemark': "wedding card",
+    'loanMasterDocumentId': 1,
+    'fileName': this.masterfilesArray[this.documentIndex].name
+  })
 }
 
 public removeSelectedLicMasterDocument(index: number) {

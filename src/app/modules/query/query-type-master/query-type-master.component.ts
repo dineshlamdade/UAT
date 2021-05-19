@@ -48,7 +48,7 @@ export class QueryTypeMasterComponent implements OnInit {
   priorityData: any[] = [];
   priorityData2: any[] = [];
   listQueryAnsMappingReqDTO: any[] = [];
-  queryTypeMasterId:number=0;
+  queryTypeMasterId:number = 0;
   querySubQuerySummary: any[] = [];
   selectedModule: any;
   allSummaryData: any;
@@ -62,6 +62,9 @@ export class QueryTypeMasterComponent implements OnInit {
   viewFlag :boolean = false;
   moduleNameForTemplate: any;
   selectedmodulename: any;
+  queryTypedescriptionforedit: any;
+  subqueryTypedescriptionforedit: any;
+  selectedModuleId: any;
   // listQueryAnsMapping: FormArray;
   // listQueryPriority: FormArray;
   // subQueryRequest: FormArray;
@@ -71,21 +74,21 @@ export class QueryTypeMasterComponent implements OnInit {
     this.querytypeForm = this.formBuilder.group(
         {
 
-        "queryTypeMasterId": new FormControl(''),
+        "queryTypeMasterId": new FormControl(0),
         "applicationModuleId": new FormControl(null,[Validators.required]),
         "queryTypeCode": new FormControl(''),
         "queryTypedescription": new FormControl(''),
         "subQuery": new FormControl(0),
         "priorityRequired": new FormControl("1"),
         "replyWorkflowId": new FormControl(null),
-        "forwardWorkFlowId": new FormControl(null),
+        "forwardWorkFlowId": new FormControl(0),
         "autoCloseTimeforNopriority": new FormControl('13:15'),
         "resolutionTimeforNopriority": new FormControl(''),
         "active": new FormControl(true),
         "Replayworkflow": new FormControl(""),
         "subQueryTypeCode":new FormControl(''),
         "subqueryTypedescription":new FormControl(''),
-        "remark":new FormControl(''),
+        "remark":new FormControl(true),
         "assignQATemplate1":new FormControl(''),
         "assignQATemplate2":new FormControl(''),
         }
@@ -95,19 +98,20 @@ export class QueryTypeMasterComponent implements OnInit {
       {
         "queryTypeMasterId": new FormControl(0),
         "applicationModuleId": new FormControl(''),
-        "queryTypeCode": new FormControl(''),
+        // "queryTypeCode": new FormControl(''),
         "queryTypedescription": new FormControl(''),
         "subQuery": new FormControl(0),
         "priorityRequired": new FormControl("1"),
-        "replyWorkflowId": new FormControl(''),
-        "forwardWorkFlowId": new FormControl(''),
+        "replyWorkflowId": new FormControl(0),
+        "forwardWorkFlowId": new FormControl(0),
         "autoCloseTimeforNopriority": new FormControl('13:15'),
         "resolutionTimeforNopriority": new FormControl(''),
         "active": new FormControl(true),
-        "Replayworkflow": new FormControl(""),
+        // "Replayworkflow": new FormControl(""),
         "listQueryAnsMappingReqDTO": new FormControl([]),
         "listQueryPriorityRequestDTO": new FormControl([]),
         "subQueryRequestDTO": new FormControl([]),
+        "remark":new FormControl(true),
 
       }
     )
@@ -116,7 +120,7 @@ export class QueryTypeMasterComponent implements OnInit {
   ngOnInit(): void {
 
     this.getModuleName();
-    this.getAll();
+    // this.getAll();
     this.getAllWorkflowMasters();
     this.getAllSummaryData();
 
@@ -195,17 +199,24 @@ getPriorityRequired(value){
   this.priorityRequiredFlag =! this.priorityRequiredFlag;
 }
 
-priorityRequiredevent(value, priority)
+priorityRequiredevent(value, priority,event)
 {
-  this.listQueryPriorityRequestDTO.push({
-    "queTypePriorityMasterId":0,
-         "queryTypeMasterId":0,
-         "priorityType":priority.priorityType,
-         "resolutionTime":priority.resolutionTime,
-         "autoClose":priority.autoClose,
-         "defaultPriority":value,
-         "active":true
-  })
+
+  //debugger
+  // if(event.checked){
+    this.listQueryPriorityRequestDTO.push({
+      "queTypePriorityMasterId":0,
+           "queryTypeMasterId":0,
+           "priorityType":priority.priorityType,
+           "resolutionTime":priority.resolutionTime,
+           "autoClose":priority.autoClose,
+           "defaultPriority":value,
+           "active":true
+    })
+    console.log(JSON.stringify( this.listQueryPriorityRequestDTO));
+  // }
+
+
 
 }
 onItemSubQuerySelect(item){
@@ -318,30 +329,46 @@ getAlldataById(queryTypeMasterId)// for edit....
       this.getAlldataByIdforedit = res.data.results[0];
       this.finalForm.patchValue(this.getAlldataByIdforedit);
       this.querytypeForm.patchValue(this.getAlldataByIdforedit);
-      this.priorityData = this.getAlldataByIdforedit.listQueryPriorityResponseDTO;
-      this.priorityData2 = this.getAlldataByIdforedit.listQueryPriorityResponseDTO;
+      this.priorityData.forEach(element =>{
+      this.getAlldataByIdforedit.listQueryPriorityResponseDTO.forEach(ele => {
+          if(element.priorityType == ele.priorityType){
+            element.defaultPriority = true;
+          }
 
+        });
+      })
+      this.priorityData2.forEach(element =>{
+        this.getAlldataByIdforedit.listQueryPriorityResponseDTO.forEach(ele => {
+          element.resolutionTime = ele.resolutionTime,
+          element.autoClose= ele.autoClose
+          });
+        })
+      // this.priorityData2 = this.getAlldataByIdforedit.listQueryPriorityResponseDTO;
       this.getAlldataByIdforedit.subQueryResponseDTO.forEach(element => {
         this.querySubQuerySummary.push({
           'ModuleName':this.moduleName,
           'queryCode':this.getAlldataByIdforedit.queryTypeCode,
           'subQuerCode':element.subQueryTypeCode,
-          'subQueryDescription':element.subqueryTypedescription,
+          'subqueryTypedescription':element.subqueryTypedescription,
+          'queryTypedescription': this.getAlldataByIdforedit.queryTypedescription,
           // 'multiselectDropDown': multiSelectValue,
           // 'assignQATemplate2':this.querytypeForm.controls['assignQATemplate2'].value,
         })
       })
+      console.log(JSON.stringify(this.querySubQuerySummary))
       });
 
 }
 moduleChange(value) // when module is changed then that data store in temp tabel .
 {
+  this.selectedModuleId = value;
   this.moduleListData.forEach(element => {
     if(element.applicationModuleId == parseInt(value))
     {
    this.selectedModule = element.applicationModuleName;
     }
   });
+  this.getAll();
 }
 addQueryType() // main post api to save all form data .
 {
@@ -416,42 +443,40 @@ getAllWorkflowMasters() // for dropdown of workflow call this api .
 }
 getAll() // this api call for the assign Q & A template dropdown
 {
+  this.queryListData=[];
    this.queryService.getAll().subscribe( res =>{
-     this.queryListData = res.data.results;
-
-     this.moduleNameForTemplate.forEach(element => {
-      if(element.modulename == this.selectedmodulename)
+    res.data.results.forEach(element => {
+      if(element.moduleId == this.selectedModuleId)
       {
-        this.moduleNameForTemplate.push(element);
+        this.queryListData.push(element);
       }
     });
 
-
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'queAnsMasterId',
+      textField: 'description',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
    })
-
-   this.dropdownSettings = {
-    singleSelection: false,
-    idField: 'queAnsMasterId',
-    textField: 'description',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 3,
-    allowSearchFilter: true
-  };
   }
+
 editQuery(query,index)
 {
   this.isUpdateTempQuery = true;
   this.isAddTempQuery = false;
   this.querytypeForm.enable();
+ this.querytypeForm.controls['queryTypeCode'].disable();
+ this.querytypeForm.controls['subQueryTypeCode'].disable();
   //this.querytypeForm.patchValue(query);
   this.querytypeForm.controls['subQueryTypeCode'].setValue(query.subQuerCode);
-
-  // this.querytypeForm.controls['queryTypedescription'].setValue(query.queryTypedescription);
-  this.querytypeForm.controls['subqueryTypedescription'].setValue(query.subQueryDescription);
+  // 'subqueryTypedescription':this.querytypeForm.controls['subqueryTypedescription'].value,
+  this.querytypeForm.controls['subqueryTypedescription'].setValue(query.subqueryTypedescription);
   this.querytypeForm.controls['assignQATemplate2'].setValue(query.assignQATemplate2);
   this.editQueryIndex = index;
-
 
 }
 viewQuery(query,index)
@@ -462,7 +487,7 @@ viewQuery(query,index)
 
  this.querytypeForm.controls['subQueryTypeCode'].setValue(query.subQuerCode);
 //  this.querytypeForm.controls['queryTypedescription'].setValue(query.queryTypedescription);
- this.querytypeForm.controls['subqueryTypedescription'].setValue(query.subQueryDescription);
+this.querytypeForm.controls['subqueryTypedescription'].setValue(query.subQueryDescription);
  this.querytypeForm.controls['assignQATemplate2'].setValue(query.assignQATemplate2);
 }
 deleteQuery(rowIndex)
@@ -489,6 +514,14 @@ cancel()
 
 viewQuerySummary(query) // whole page view function
 {
+  if(query.subcount == 0)
+  {
+    this.ishidden = true;
+     this.subquerview = false;
+   }else{
+     this.ishidden = false;
+     this.subquerview = true;
+  }
   this.viewFlag = true;
   this.editflagSummary = false;
   this.querytypeForm.patchValue(query);
@@ -502,23 +535,19 @@ viewQuerySummary(query) // whole page view function
   this.isAddTempQuery = false;
   this.isUpdateTempQuery = false;
 
-  if(query.subcount == 0)
-  {
-    this.ishidden = true;
-     this.subquerview = false;
-   }else{
-     this.ishidden = false;
-     this.subquerview = true;
 
-  }
-  // this.querytypeForm.controls['subQueryTypeCode'].setValue(subQueryTypeCode);
-  // this.querytypeForm.controls['queryTypedescription'].setValue(queryTypedescription);
-  // this.querytypeForm.controls['subqueryTypedescription'].setValue(subqueryTypedescription);
-  // this.querytypeForm.controls['replyWorkflowId'].setValue(replyWorkflowId);
-
+  // console.log(JSON.stringify(this.ishidden))
 }
 editQuerySummary(query) // whole page edit function
 {
+   if(query.subcount == 0)
+  {
+    this.ishidden = true;
+    this.subquerview = false;
+  }else{
+    this.ishidden = false;
+    this.subquerview = true;
+  }
   console.log(JSON.stringify(query));
   this.editflagSummary = true;
   this.querytypeForm.enable();
@@ -527,21 +556,13 @@ editQuerySummary(query) // whole page edit function
   this.isShown = false;
   this.isVisiblee = true;
 
-  if(query.subcount == 0)
-  {
-    this.ishidden = true;
-    this.subquerview = false;
-  }else{
-    this.ishidden = false;
-    this.subquerview = true;
-
-  }
 
   this.querytypeForm.controls['queryTypeCode'].disable();
-  // this.querytypeForm.controls['subQueryTypeCode'].disable();
+  this.querytypeForm.controls['subQueryTypeCode'].disable();
   this.getAlldataById(query.queryTypeMasterId);
   this.queryTypeMasterId = query.queryTypeMasterId;
   this.moduleName = query.applicationModuleName;
+
   this.listQueryPriorityRequestDTO =query.listQueryPriorityRequestDTO;
   this.isAddTempQuery = true;
   this.isUpdateTempQuery = false;
@@ -549,4 +570,16 @@ editQuerySummary(query) // whole page edit function
 
 }
 
+resolutionEvent(value,prio)
+{
+  this.listQueryPriorityRequestDTO.push({
+  "queTypePriorityMasterId":0,
+  "queryTypeMasterId":0,
+  "priorityType":'',
+  "resolutionTime":prio.resolutionTime,
+  "autoClose":value,
+  "defaultPriority":'',
+  "active":true
+})
+}
 }

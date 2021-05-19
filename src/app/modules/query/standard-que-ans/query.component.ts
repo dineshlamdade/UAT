@@ -4,7 +4,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CKEditorModule } from 'ckeditor4-angular';
 import { ToastrService } from 'ngx-toastr';
 import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
-import { NodeService } from '../nodeservice.service';
 import { QueryService } from '../query.service';
 import { Table } from 'primeng/table';
 @Component({
@@ -36,7 +35,7 @@ export class QueryComponent implements OnInit {
   queryCode: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
-    private nodeService: NodeService,)
+   )
   {
     this.queryForm = this.formBuilder.group({
       // "createdBy": new FormControl(''),
@@ -74,7 +73,6 @@ export class QueryComponent implements OnInit {
 
   queryFormSubmit()
   {
-    // console.log(JSON.stringify(this.queryForm.value));
     if(!this.editflag){
       this.queryService.addQuery(this.queryForm.value).subscribe(res =>
         {
@@ -98,7 +96,6 @@ export class QueryComponent implements OnInit {
        this.queryListData = res.data.results;
       this.queryCode = this.queryListData[4].code + 1;
      })
-     console.log("@@@@@@@@@@@@@",this.queryCode)
      this.queryForm.controls['code'].setValue(this.queryCode);
   }
   updateQuery()

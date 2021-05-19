@@ -16,32 +16,35 @@
                           <div class="row">
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0" >Employee No. & Name </label >
-                               <input type="text" class="form-control" disabled />
+                               <input type="text" class="form-control"  value="{{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}"
+                                disabled />
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Date of Joining</label >
-                              <input type="text" class="form-control" disabled />
+                              <input type="text" class="form-control" value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
+                               disabled />
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Establishment</label  >
-                              <input type="text" class="form-control"  disabled />
+
+                              <input type="text" class="form-control" value="{{perticularEmpDetails.establishment}}" disabled />
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Employee Type</label>
-                              <input type="text" class="form-control"  disabled />
+                              <input type="text" class="form-control" value="{{perticularEmpDetails.employeeType}}"  disabled />
                             </div>
                             <div class="col-md-1">
                               <label class="form-label mt-1 mb-0">Grade</label>
-                              <input type="text" class="form-control"  disabled />
+                              <input type="text" class="form-control" value="{{perticularEmpDetails.grade}}"  disabled />
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0" >Designation</label >
-                              <input type="text" class="form-control"  disabled />
+                              <input type="text" class="form-control"  value="{{perticularEmpDetails.designation}}" disabled />
 
                             </div>
                             <div class="col-md-1">
                               <label class="form-label mt-1 mb-0">Status</label>
-                              <input type="text" class="form-control"  disabled />
+                              <input type="text" class="form-control"  value="{{perticularEmpDetails.status}}" disabled />
                             </div>
                           </div>
                         </div>
@@ -76,7 +79,7 @@
                       <div class="col-md-3">
                         <label class="form-label">Module Name</label>
                         <select
-                          class="form-control" >
+                          class="form-control" (change)="moduleChange($event.target.value)" >
                          <!-- [ngClass]="{'is-invalid' : queryGenerationForm.get('applicationModuleId').status == 'INVALID'}" -->
                           <option [ngValue]="null" selected >Select</option>
                           <option value="{{module.applicationModuleId}}" *ngFor="let module of moduleListData ">
@@ -87,7 +90,7 @@
                         <label class="form-label">Query Type</label>
                         <select
                           name="Gender"
-                          class="form-control custom-select">
+                          class="form-control custom-select" (change)="queryTypeChange($event.target.value)">
                           <option [ngValue]="null" selected >Select</option>
                           <option value="{{module.queryTypeMasterId}}" *ngFor="let module of querySubQueryTypeQAData ">{{module.queryTypeDescription}}</option>
                           <!-- <option value="LMS">Select</option>
@@ -103,7 +106,7 @@
                           name="Gender"
                           class="form-control custom-select" >
                           <option [ngValue]="null" selected >Select</option>
-                          <option  *ngFor="let module of querySubQueryTypeQAData"  value="{{module.subQueTypeMasterId}}">
+                          <option  *ngFor="let module of subQueryData"  value="{{module.subQueTypeMasterId}}">
                             {{module.subQueryTypeDescription}}</option>
 
                         </select>
@@ -114,7 +117,7 @@
                           name="Gender"
                           class="form-control custom-select" >
                           <option [ngValue]="null" selected >Select</option>
-                          <option *ngFor="let module of querySubQueryTypeQAData" value="{{module.queTypePriorityMasterId}}">{{module.priorityType}}</option>
+                          <option *ngFor="let module of priorityData" value="{{module.queTypePriorityMasterId}}">{{module.priorityType}}</option>
 
                         </select>
                       </div>
@@ -144,7 +147,7 @@
                           name="Gender"
                           class="form-control custom-select">
                           <option [ngValue]="null" selected >Select</option>
-                          <option *ngFor="let module of querySubQueryTypeQAData " value="{{module.queAnsMasterId}}">{{module.description}}</option>
+                          <option *ngFor="let module of queryTemplateData " value="{{module.moduleId}}">{{module.description}}</option>
                           <!-- <option value="LMS">Select</option>
                           <option value="Registration">Registration</option>
                           <option value="loan">Loan</option> -->
@@ -319,7 +322,8 @@
                     <div class="col-md-12">
                       <h3 class="font-14 text-purple font-bold">Summary</h3>
                       <div class="table-responsive Custom_Table mt-25">
-                        <p-table [value]="getAllQueryGenerationData">
+                        <p-table [value]="getAllQueryGenerationData"  [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                           <ng-template pTemplate="header">
                             <tr>
                               <th class="wd-14">Sr. No.</th>
@@ -327,10 +331,10 @@
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Query No.
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="name"></p-sortIcon>
+                                    <p-sortIcon field="name" pSortableColumn="queryNumber"></p-sortIcon>
                                     <p-columnFilter
                                       type="text"
-                                      field="name"
+                                      field="queryNumber"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -342,10 +346,10 @@
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Submission Date
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="date"></p-sortIcon>
+                                    <p-sortIcon field="date" pSortableColumn="submissionDate"></p-sortIcon>
                                     <p-columnFilter
                                       type="date"
-                                      field="date"
+                                      field="submissionDate"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -357,10 +361,10 @@
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Creator Name
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="date"></p-sortIcon>
+                                    <p-sortIcon field="date" pSortableColumn="createdBy"></p-sortIcon>
                                     <p-columnFilter
                                       type="date"
-                                      field="date"
+                                      field="createdBy"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -372,9 +376,9 @@
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Employee Code
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="status"></p-sortIcon>
+                                    <p-sortIcon field="status" pSortableColumn="employeeCode"></p-sortIcon>
                                     <p-columnFilter
-                                      field="status"
+                                      field="employeeCode"
                                       matchMode="equals"
                                       display="menu"
                                       class="p-ml-auto"
@@ -389,9 +393,9 @@
                                 >
                                   Employee Name
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="empName"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="empName"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -403,9 +407,9 @@
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Company Name
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="companyName"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="companyName"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -419,9 +423,9 @@
                                     >Module Name</span
                                   >
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="applicationModuleName"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="applicationModuleName"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -435,9 +439,9 @@
                                     >Query Type</span
                                   >
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="queryTypeCode"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="queryTypeCode"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -451,9 +455,9 @@
                                 >
                                   Sub-Query Type
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="subQueryTypeCode"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="subQueryTypeCode"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -467,9 +471,9 @@
                                 >
                                   Subject
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="subject"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="subject"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -483,9 +487,9 @@
                                 >
                                   Priority
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="priority"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="priority"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -499,9 +503,9 @@
                                 >
                                   Escalation Date
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="escalationDate"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="escalationDate"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -515,9 +519,9 @@
                                 >
                                   Status
                                   <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity"></p-sortIcon>
+                                    <p-sortIcon field="activity" pSortableColumn="status"></p-sortIcon>
                                     <p-columnFilter
-                                      field="activity"
+                                      field="status"
                                       display="menu"
                                       class="p-ml-auto"
                                     >
@@ -598,9 +602,9 @@
                               </td>
                               <td>
                                 <span class="ml-1 mt-2">
-                                  <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
+                                  <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(queryGenerationSummary)"></i
                                     >&nbsp;
-                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
+                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(queryGenerationSummary)"></i
                                     >&nbsp;
                                     <i class="fa fa-trash" tooltip="Edit" aria-hidden="true" (click)="getDeleteById()" ></i
                                       >&nbsp;</span>

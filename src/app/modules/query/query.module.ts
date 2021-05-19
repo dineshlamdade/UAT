@@ -17,7 +17,6 @@ import {ChartModule} from 'primeng/chart';
 import { NgApexchartsModule } from "ng-apexcharts";
 import {SidebarModule} from 'primeng/sidebar';
 import {ScrollPanelModule} from 'primeng/scrollpanel';
-import { NodeService } from './nodeservice.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import {TreeModule} from 'primeng/tree';
 
@@ -54,7 +53,6 @@ import {TreeModule} from 'primeng/tree';
     // ChartComponent
   ],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [NodeService]
 
 })
 export class QueryModule { }

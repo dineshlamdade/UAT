@@ -36,7 +36,7 @@
                           class="form-control"
                           formControlName="queryTypeCode"
                           placeholder="Query Code"
-
+                          disabled
                         />
                         <!-- value="{{allSummaryData.queryTypeCode}}" -->
                       </div>
@@ -59,7 +59,7 @@
                               value="1"
                               (change)="radioButtonChanged($event)"
                               class="custom-control-input"
-                              checked
+                              [checked]= "!ishidden"
                             />
                             <span class="custom-control-label">Yes</span>
                           </label>
@@ -70,7 +70,7 @@
                               value="0"
                               (change)="radioButtonChanged($event)"
                               class="custom-control-input"
-                              name="query" />
+                              name="query" [checked]="ishidden"/>
                             <span class="custom-control-label">No</span>
                           </label>
                         </div>
@@ -81,7 +81,7 @@
                         <ng-multiselect-dropdown
                           [placeholder]="'Select Template'"
                           [settings]="dropdownSettings"
-                          [data]="moduleNameForTemplate"
+                          [data]="queryListData"
                           formControlName="assignQATemplate1"
                           (onSelect)="onItemSelect($event)"
                           (onSelectAll)="onSelectAll($event)"
@@ -101,7 +101,8 @@
                           type="text"
                           class="form-control"
                           placeholder="Sub Query Code"
-                          formControlName="subQueryTypeCode"/>
+                          formControlName="subQueryTypeCode"
+                          disabled/>
                       </div>
 
                       <div class="col-md-3 form-group">
@@ -388,7 +389,7 @@
                                         <label class="form-lable mb-0" ><label class="custom-control custom-checkbox checkbox-center">
                                           <input type="checkbox"  class="custom-control-input" [checked]="prio.defaultPriority == true" name="select"/>
                                            <span class="custom-control-label"
-                                          (click)="priorityRequiredevent(1,prio)"></span>
+                                          (click)="priorityRequiredevent(1,prio,$event.target)"></span>
                                      </label></label>
                                       </td>
                                     </tr>
@@ -437,7 +438,7 @@
                                     <tr *ngFor="let prio of priorityData2 let i = index;" class="textcenter">
                                       <td class="wd-14">{{i+1}}</td>
                                       <td class="wd-14"><input type="text" value="{{prio.resolutionTime}}"></td>
-                                      <td class="wd-14"><input type="text" value="{{prio.autoClose}}"></td>
+                                      <td class="wd-14"><input type="text"  (focusout)="resolutionEvent($event.target.value,prio)"  value="{{prio.autoClose}}"></td>
                                     </tr>
                                     <tr></tr>
                                   </tbody>
@@ -522,16 +523,14 @@
                         [ngClass]="{
                           'disabled-btn-bg-green': querytypeForm.invalid,
                           'btn-bg-green': !querytypeForm.invalid }" >
-                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b >Save</button
-                      >&nbsp;
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b >Save</button>&nbsp;
 
                       <button
                         type="button"
                         tooltip="Reset"
                         *ngIf="isShown"
                         (click)="reset()"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
-                      >
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                         <b><i class="fa fa-refresh" aria-hidden="true"></i></b >Reset</button
                       >&nbsp;
                       <button
@@ -541,26 +540,20 @@
                         class="custom_button custom_btn btn-labeled btn-labeled-left" [ngClass]="{
                           'disabled-btn-bg-green': querytypeForm.invalid,
                           'btn-bg-green': !querytypeForm.invalid }" >
-                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b >Update</button
-                      >&nbsp;
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b >Update</button  >&nbsp;
 
                       <button
                         type="button"
                         tooltip="Cancel"
                         *ngIf="isVisible" (click)="cancel()"
-                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                      >
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" >
                         <b>
-                          <i
-                            class="fa fa-times-circle"
-                            aria-hidden="true"
-                          ></i></b
-                        >Cancel
+                          <i class="fa fa-times-circle" aria-hidden="true" ></i></b >Cancel
                       </button>
                     </div>
                   </ng-container>
 
-                  <fieldset style="margin-top: 55px">
+                  <fieldset style="margin-top: 60px">
                     <legend>Summary</legend>
                     <div>
                       <div class="row ">
@@ -569,10 +562,10 @@
 
                             <p-table [value]="allSummaryData"
                             [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
-                         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" style="margin-bottom: 20px;">
+                         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                               <ng-template pTemplate="header">
                                 <tr class="textcenter">
-                                  <th class="wd-14">Sr.No.</th>
+                                  <th class="wd-10">Sr.No.</th>
                                   <th class="wd-15">
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                       Module Name
@@ -588,9 +581,9 @@
                                       </div>
                                     </div>
                                   </th>
-                                  <th class="wd-15">
+                                  <th class="wd-10">
                                     <div class="p-d-flex p-jc-between p-ai-center">
-                                      Query
+                                      Query Code
                                       <div class="Sort_Filter_Position">
                                         <p-sortIcon field="date" pSortableColumn="queryTypeCode"></p-sortIcon>
                                         <p-columnFilter
@@ -603,7 +596,22 @@
                                       </div>
                                     </div>
                                   </th>
-                                  <th class="wd-15">
+                                  <th class="wd-25">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Query Description
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="date" pSortableColumn="queryTypeCode"></p-sortIcon>
+                                        <p-columnFilter
+                                        type="text"
+                                          field="queryTypeCode"
+                                          display="menu"
+                                          class="p-ml-auto"
+                                        >
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
+                                  <th class="wd-10">
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                       No. of Sub Queries
                                       <div class="Sort_Filter_Position">
@@ -618,7 +626,7 @@
                                       </div>
                                     </div>
                                   </th>
-                                  <th class="wd-15">
+                                  <th class="wd-20">
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                       Reply Workflow
                                       <div class="Sort_Filter_Position">
@@ -633,7 +641,7 @@
                                       </div>
                                     </div>
                                   </th>
-                                  <th class="wd-15">
+                                  <th class="wd-20">
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                       Forward Workflow
                                       <div class="Sort_Filter_Position">
@@ -662,26 +670,29 @@
                                       </div>
                                     </div>
                                   </th> -->
-                                  <th class="wd-25">Action</th>
+                                  <th class="wd-10">Action</th>
                                 </tr>
                               </ng-template>
                               <ng-template pTemplate="body" let-query let-rowIndex="rowIndex">
                                 <tr class="p-selectable-row textcenter">
-                                  <td class="text-center">{{ rowIndex + 1}}</td>
+                                  <td >{{ rowIndex + 1}}</td>
                                   <td>
-                                    <label class="form-lable mb-0 text-center">{{(query.applicationModuleName)}} </label>
+                                    <label class="form-lable mb-0 ">{{(query.applicationModuleName)}} </label>
                                   </td>
                                   <td>
-                                    <label class="form-lable mb-0 text-center">{{query.queryTypeCode}}</label>
+                                    <label class="form-lable mb-0 ">{{query.queryTypeCode}}</label>
                                   </td>
                                   <td>
-                                    <label class="form-lable mb-0 text-center">{{query.subcount}}</label>
+                                    <label class="form-lable mb-0 ">{{query.queryTypeCode}}</label>
                                   </td>
                                   <td>
-                                    <label class="form-lable mb-0 text-center">{{query.replyWorkflowId}}</label>
+                                    <label class="form-lable mb-0 ">{{query.subcount}}</label>
                                   </td>
                                   <td>
-                                    <label class="form-lable mb-0 text-center">{{query.forwardWorkFlowId}}</label>
+                                    <label class="form-lable mb-0 ">{{query.replyWorkflowId}}</label>
+                                  </td>
+                                  <td>
+                                    <label class="form-lable mb-0 ">{{query.forwardWorkFlowId}}</label>
                                   </td>
                                   <!-- <td>
                                     <label class="form-lable mb-0" *ngIf="query.active">Active</label>
