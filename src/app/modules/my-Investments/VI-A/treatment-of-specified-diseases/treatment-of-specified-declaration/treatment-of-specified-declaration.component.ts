@@ -1695,24 +1695,26 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           } else {
             innerElement.actualAmount = 0.0;
           }
+          this.uploadGridData.push(innerElement.specifiedDiseaseTransactionId)
         }
       );
       element.specifiedDiseaseTransactionPreviousEmployerList.forEach(
-        (innerElement1) => {
-          if (innerElement1.declaredAmount !== null) {
-            innerElement1.declaredAmount = innerElement1.declaredAmount
+        (innerElement) => {
+          if (innerElement.declaredAmount !== null) {
+            innerElement.declaredAmount = innerElement.declaredAmount
               .toString()
               .replace(/,/g, '');
           } else {
-            innerElement1.declaredAmount = 0.0;
+            innerElement.declaredAmount = 0.0;
           }
-          if (innerElement1.actualAmount !== null) {
-            innerElement1.actualAmount = innerElement1.actualAmount
+          if (innerElement.actualAmount !== null) {
+            innerElement.actualAmount = innerElement.actualAmount
               .toString()
               .replace(/,/g, '');
           } else {
-            innerElement1.actualAmount = 0.0;
+            innerElement.actualAmount = 0.0;
           }
+          this.uploadGridData.push(innerElement.specifiedDiseaseTransactionId)
         }
       );
 

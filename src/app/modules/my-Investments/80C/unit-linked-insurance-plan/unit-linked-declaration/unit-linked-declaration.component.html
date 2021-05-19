@@ -487,11 +487,17 @@
                     let documentIndex = index">
                   <td>
                     <span tooltip="{{ documentSummary.proofSubmissionId }}">
-                      {{ documentSummary.proofSubmissionId }}
+                      {{ documentSummary.proofSubmissionId }} 
                     </span>
                   </td>
-                  <td>
-                    {{ documentSummary.group2MasterList[0].institution }}
+                  <td  *ngIf="documentSummary.group2MasterList.length > 0">
+                    {{ documentSummary.group2MasterList[0].institution }} 
+                  </td>
+                  <td  *ngIf="documentSummary.group2MasterList.length == 0">
+                    <span tooltip= "">
+                      
+                    </span>
+
                   </td>
                   <td>
                     <span tooltip="{{
@@ -516,6 +522,12 @@
                       documentSummary.group2MasterList[0].accountNumber
                     }}">
                       {{ documentSummary.group2MasterList[0].accountNumber }}
+                    </span>
+
+                  </td>
+                  <td class="padding-0" *ngIf="documentSummary.group2MasterList.length == 0">
+                    <span tooltip= "">
+                      
                     </span>
 
                   </td>
@@ -732,14 +744,16 @@
                     [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                       data-date-autoclose="true" (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
-                        setDateOfPaymentInEditCase(summary, i, j)" [disabled]="summary.transactionStatus=='Approved'"
+                        setDateOfPaymentInEditCase(summary, i, j)" 
+                        [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
                       class="form-control" bsDatepicker />
                   </td>
                   <td>
                     <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.investmentGroup2TransactionId }}"
-                      [disabled]="!summary.additionalPayment=='Approved'" [(ngModel)]="summary.actualAmount"
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail" 
+                      [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)" class="form-control align-right" />
                   </td>
                   <td>
@@ -970,7 +984,7 @@
       <b><i class="fa fa-eye"></i></b> View
     </button>
     &nbsp;&nbsp;
-    <button *ngIf="viewDocumentDetail" type="button" tooltip="save Document"
+    <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save

@@ -352,12 +352,12 @@ export class LicmasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    console.log('urlArray.length', this.urlArray.length);
+    // console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'LIC Document needed to Create Master.'
       );
-      console.log('urlArray.length', this.urlArray.length);
+      // console.log('urlArray.length', this.urlArray.length);
       return;
     } else {
       const from = this.datePipe.transform(
@@ -372,7 +372,7 @@ export class LicmasterComponent implements OnInit {
       // const data = {
 
       // }
-      console.log('proofSubmissionId::', this.proofSubmissionId);
+      // console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
 
@@ -514,7 +514,7 @@ export class LicmasterComponent implements OnInit {
   }
   // Find PolicyNo
   public findByPolicyNo(policyNo, masterGridData) {
-    return masterGridData.find((x) => x.policyNo === policyNo);
+    return masterGridData.find((x) => x.licMasterId === policyNo);
   }
 
   // scrollToTop Fuctionality

@@ -165,6 +165,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public canEdit : boolean;
+  public updateReceiptAmount: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1299,6 +1300,64 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     console.log(this.editTransactionUpload[j].actualTotal);
   }
 
+    // ------------Actual Amount change Edit Modal-----------
+    onActualAmountChangeInEditCaseCurrentEmp(
+      summary: {
+        previousEmployerName: any;
+        declaredAmount: number;
+        // dateOfPayment: Date;
+        actualAmount: number;
+        dueDate: Date;
+      },
+      i: number,
+      j: number
+    ) {
+      this.declarationService = new DeclarationService(summary);
+      console.log("onActualAmountChangeInEditCaseActual Amount change::" , summary);
+
+      this.editTransactionUpload[j].educationalLoanTransactionList[
+        i
+      ].actualAmount = this.declarationService.actualAmount;
+      console.log("Actual Amount changed::" , this.editTransactionUpload[j].educationalLoanTransactionList[i].actualAmount);
+
+      const formatedActualAmount = this.numberFormat.transform(
+        this.editTransactionUpload[j].educationalLoanTransactionList[i].actualAmount
+      );
+      console.log(`formatedActualAmount::`,formatedActualAmount);
+
+      this.editTransactionUpload[j].educationalLoanTransactionList[
+        i
+      ].actualAmount = formatedActualAmount;
+
+      if (
+        this.editTransactionUpload[j].educationalLoanTransactionList[i].actualAmount !==
+          Number(0) ||
+        this.editTransactionUpload[j].educationalLoanTransactionList[i].actualAmount !== null
+      ) {
+        console.log(`in if::`,this.editTransactionUpload[j].educationalLoanTransactionList[i].actualAmount);
+
+      } else {
+        console.log(`in else::`,this.editTransactionUpload[j].educationalLoanTransactionList[i].actualAmount);
+
+      }
+
+      this.actualTotal = 0;
+      this.actualAmount = 0;
+      this.editTransactionUpload[j].educationalLoanTransactionList.forEach((element) => {
+        console.log(element.actualAmount.toString().replace(',', ""));
+        this.actualTotal += Number(
+          element.actualAmount.toString().replace(/,/g, '')
+        );
+        console.log(this.actualTotal);
+        // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+      });
+
+      this.editTransactionUpload[j].actualTotal = this.actualTotal;
+      console.log(this.editTransactionUpload[j].actualTotal);
+    }
+
+
+
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
@@ -1348,7 +1407,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   }
 
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
@@ -1363,12 +1422,17 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+
+        console.log('test', res.data.results[0].educationalLoanTransactionDocumentDetailList[0].receiptAmount);
+
+        this.updateReceiptAmount = res.data.results[0].educationalLoanTransactionDocumentDetailList[0].receiptAmount;
+
         this.urlArray =
           res.data.results[0].educationalLoanTransactionDocumentDetailList[0].documentDetailList;
-        this.editTransactionUpload =
-          res.data.results[0].educationalLoanTransactionDetailList;
-          this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].receiptAmount;
+        this.editTransactionUpload = res.data.results[0].educationalLoanTransactionDetailList;
+          // this.editProofSubmissionId = res.data.results[0].documentInformation[0].proofSubmissionId;
+          this.editProofSubmissionId = proofSubmissionId;
+          this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1376,41 +1440,32 @@ export class EducationalLoanDeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-        //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
-        //console.log('converted:: ', this.urlArray);
+
+         this.editTransactionUpload.forEach(element => {
+            element.educationalLoanTransactionList.forEach(innerElement => {
+
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount);
+
+            });
+            element.educationalLoanTransactionPreviousEmployerList.forEach(innerElement => {
+
+              // innerElement.declaredAmount = this.numberFormat.transform(
+              //   innerElement.declaredAmount
+              // );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount);
+
+            });
+
+          });
       });
   }
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-  }
 
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
 
   // Common Function for filter to call API
   getTransactionFilterData(
@@ -1458,22 +1513,23 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       });
   }
 
-  public editViewTransaction() {
+  public uploadUpdateTransaction() {
 
-    console.log('editViewTransaction editTransactionUpload::',
+    console.log('uploadUpdateTransaction editTransactionUpload::',
      this.editTransactionUpload);
 
     //  this.transactionDetail.forEach((element) => {
 
     this.editTransactionUpload.forEach((element) => {
-      element.educationalLoanTransactionPreviousEmployerList.forEach((innerElement) => {
-        // if (innerElement.declaredAmount !== null) {
-        //   innerElement.declaredAmount = innerElement.declaredAmount
-        //     .toString()
-        //     .replace(/,/g, '');
-        // } else {
-        //   innerElement.declaredAmount = 0.0;
-        // }
+      element.educationalLoanTransactionList.forEach((innerElement) => {
+        if (innerElement.declaredAmount !== null) {
+          innerElement.declaredAmount = innerElement.declaredAmount
+            .toString()
+            .replace(/,/g, '');
+        } else {
+          innerElement.declaredAmount = 0.0;
+        }
+
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
@@ -1482,17 +1538,18 @@ export class EducationalLoanDeclarationComponent implements OnInit {
           innerElement.actualAmount = 0.0;
         }
 
-        // const dateOfPaymnet = this.datePipe.transform(
-        //   innerElement.dateOfPayment,
-        //   'yyyy-MM-dd'
-        // );
-        // const dueDate = this.datePipe.transform(
-        //   innerElement.dueDate,
-        //   'yyyy-MM-dd'
-        // );
+        this.uploadGridData.push(innerElement.educationLoanTransactionId);
+      });
 
-        // innerElement.dateOfPayment = dateOfPaymnet;
-        // innerElement.dueDate = dueDate;
+      element.educationalLoanTransactionPreviousEmployerList.forEach((innerElement1) => {
+        if (innerElement1.actualAmount !== null) {
+          innerElement1.actualAmount = innerElement1.actualAmount
+            .toString()
+            .replace(/,/g, '');
+        } else {
+          innerElement1.actualAmount = 0.0;
+        }
+        this.uploadGridData.push(innerElement1.educationLoanTransactionId);
       });
     });
 
@@ -1501,9 +1558,10 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       educationalLoanTransactionList: this.editTransactionUpload[0].educationalLoanTransactionList,
       educationalLoanTransactionPreviousEmployerList: this.editTransactionUpload[0].educationalLoanTransactionPreviousEmployerList,
       educationLoanTransactionIds: this.uploadGridData,
-      receiptAmount: this.receiptAmount,
+      receiptAmount: this.updateReceiptAmount,
       // documentRemark: this.documentRemark,
-      proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
+      // proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
+      proofSubmissionId: this.editProofSubmissionId,
       // proofSubmissionId: this.editTransactionUpload[0].editProofSubmissionId,
       educationalLoanMasterId: this.editTransactionUpload[0].educationalLoanMasterId,
     };
@@ -1569,7 +1627,9 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     this.educationalLoanServiceService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
+
         console.log('edit Data:: ', res);
+
         this.urlArray =
           res.data.results[0].educationalLoanTransactionDocumentDetailList[0].documentDetailList;
         this.urlArray.forEach((element) => {
@@ -1596,6 +1656,37 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].educationalLoanTransactionPreviousEmployerList[i].dateOfPayment);
   }
+
+   // ---------------- Doc Viewr Code ----------------------------
+   nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
+
+
 }
 
 class DeclarationService {

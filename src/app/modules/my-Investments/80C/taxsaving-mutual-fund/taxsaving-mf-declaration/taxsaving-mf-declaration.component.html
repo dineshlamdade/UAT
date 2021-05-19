@@ -817,7 +817,7 @@
                       data-date-autoclose="true"
                       (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
                         setDateOfPaymentInEditCase(summary, i, j)"
-                      [disabled]="summary.transactionStatus=='Approved'"
+                      [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
                       class="form-control"
                       bsDatepicker
                     />
@@ -828,7 +828,7 @@
                       id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.investmentGroup1TransactionId }}"
-                      [disabled]="!summary.additionalPayment=='Approved'"
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
@@ -1144,7 +1144,7 @@
     <button
       *ngIf="viewDocumentDetail"
       type="button"
-      tooltip="save Document"
+      tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >

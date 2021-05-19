@@ -735,7 +735,7 @@
                       data-date-autoclose="true" 
                       (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
                       setDateOfPaymentInEditCase(summary, i, j)" 
-                      [disabled]="summary.transactionStatus=='Approved'"
+                      [disabled]="summary.transactionStatus=='Approved' || !viewTransactionDetail"
                       class="form-control" bsDatepicker />
                   </td>
                   <!-- [minDate]="financialYearStartDate" -->
@@ -745,7 +745,7 @@
                       id="actualAmount{{ summary.licTransactionId }}" 
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.licTransactionId }}"
-                      [disabled]="!summary.additionalPayment=='Approved'"
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewTransactionDetail"
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
@@ -765,8 +765,9 @@
                     </span>
                   </td>
                   <td>
-                    <span tooltip="{{ summary.proofSubmissionId }}">
-                      {{ summary.proofSubmissionId }}
+                    <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                      <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                      <!-- {{ summary.proofSubmissionId }} -->
                     </span>
                   </td>
                   <td class="text-orange font700">
@@ -999,7 +1000,7 @@
     <button
       *ngIf="viewTransactionDetail"
       type="button"
-      tooltip="Save"
+      tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
