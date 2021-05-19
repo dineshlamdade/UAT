@@ -171,6 +171,7 @@ export class BankInformationComponent implements OnInit {
       if ( this.maxAccNumber == 0 ) {
         this.maxAccNumber = null;
       }
+      this.stateModel=res.data.results[0].state;
       this.BankInformationModel.bankName = res.data.results[0].bankName;
       this.BankInformationModel.branchName = res.data.results[0].branchName;
       this.BankInformationModel.branchAddress = res.data.results[0].address;

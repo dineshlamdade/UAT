@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { PreviousEmploymentInformationService } from '../previous-employment-information/previous-employment-information.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { familyAddressDetailRequestDTO } from '../family-information/family-information.model';
+import { distinct } from 'rxjs/operators';
+import { resolveSanitizationFn } from '@angular/compiler/src/render3/view/template';
 
 
 
@@ -24,7 +26,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   PayrollAreaInfoForm: FormGroup;
   modalRef: BsModalRef;
 
-  public PayrollAreaRequestModel = new PayrollAreaRequestModel('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','', '');
+  public PayrollAreaRequestModel = new PayrollAreaRequestModel('', '','', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
   NewPayrollAreaRequestModel: any;
   PayrollAreaFormSubscription: Subscription;
   employeeMasterId: any;
@@ -82,8 +84,12 @@ export class PayrollAreaInformationComponent implements OnInit {
   currencyArray: Array<any> = [];
   confirmationMsg: string;
   currentPayroll: any;
-  attendanceAreaArray = 'Odd,Even'.split(',');
-  
+  attendanceAreaArray: Array<any> = [{ id: 1, code: 'Att1' }, { id: 2, code: 'Att2' }];
+  attAreaList ='Att1,Att2'.split(',');
+  BankData : Array<any>=[];
+ PayrollData:Array<any>=[];
+ secondaryList : Array<any>=[];
+ BankFromDateMinDays:any;
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
@@ -98,11 +104,11 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaInfoForm = this.formBuilder.group({
       payrollAreaCode: ['', Validators.required],
       description: [''],
-      type: ['', Validators.required],
+      type: [''], // Validators.required
       fromDate: [this.date.fromDate, Validators.required],
       toDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
-      isHoldSalary:[this.PayrollAreaRequestModel.isHoldSalary],
-      isFFS:[this.PayrollAreaRequestModel.isFFS],
+      isHoldSalary: [this.PayrollAreaRequestModel.isHoldSalary],
+      isFFS: [this.PayrollAreaRequestModel.isFFS],
       attendanceAreaCode: [''],
       attendanceAreaFromDate: [this.date.fromDate],
       attendanceAreaToDate: [{ value: this.date.toDate, disabled: true }],
@@ -170,15 +176,20 @@ export class PayrollAreaInformationComponent implements OnInit {
       })
     })
 
+    
+
+    // this.attendanceAreaArray.forEach(element=>{
+    //   this.attAreaList.push(element.code)
+    // })
 
     this.PreviousEmpInformationService.getCurrencyList().subscribe(res => {
       this.currencyArray = res.data.results;
     })
 
     this.PayrollAreaRequestModel.typeOfPayment = 'Salary';
-    this.PayrollAreaRequestModel.type = 'Primary';
+    //this.PayrollAreaRequestModel.type = 'Primary';
     this.PayrollAreaInfoForm.patchValue({
-      type: 'Primary',
+      //type: 'Primary',
       typeOfPayment: 'Salary'
     })
 
@@ -196,7 +207,11 @@ export class PayrollAreaInformationComponent implements OnInit {
       })
     })
 
+    this.getSecondaryPayrollArea(empId);
+
   }
+
+  
 
   payrollAssignValues(payrollAreaCode) {
 
@@ -205,7 +220,7 @@ export class PayrollAreaInformationComponent implements OnInit {
 
         this.PayrollAreaRequestModel.description = element.headGroupDefinitionResponse.description;
         this.PayrollAreaRequestModel.currency = element.currency;
-        // this.PayrollAreaRequestModel.payrollAreaId = element.payrollAreaId;
+       this.PayrollAreaRequestModel.payrollAreaId = element.payrollAreaId;
         this.PayrollAreaInfoForm.get('currency').setValue(element.currency);
       }
     })
@@ -222,10 +237,10 @@ export class PayrollAreaInformationComponent implements OnInit {
   savePayrollArea(PayrollAreaRequestModel) {
 
     if (this.multipleBankBoolean == false) {
-      PayrollAreaRequestModel.multibankingAllowed = 0;
+      PayrollAreaRequestModel.multiBankingAllowed = 0;
     }
     if (this.multipleBankBoolean == true) {
-      PayrollAreaRequestModel.multibankingAllowed = 1;
+      PayrollAreaRequestModel.multiBankingAllowed = 1;
     }
 
     PayrollAreaRequestModel.employeeMasterId = this.employeeMasterId;
@@ -234,21 +249,25 @@ export class PayrollAreaInformationComponent implements OnInit {
     PayrollAreaRequestModel.payrollAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaToDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.attendanceAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.attendanceAreaFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.attendanceAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.attendanceAreaToDate, 'dd-MMM-yyyy');
-   if(this.PayrollAreaInfoForm.get('isHoldSalary').value=='') this.PayrollAreaRequestModel.isHoldSalary=false;
-   if(this.PayrollAreaInfoForm.get('isFFS').value=='') this.PayrollAreaRequestModel.isFFS=false;
+    if (this.PayrollAreaInfoForm.get('isHoldSalary').value == '') this.PayrollAreaRequestModel.isHoldSalary = false;
+    if (this.PayrollAreaInfoForm.get('isFFS').value == '') this.PayrollAreaRequestModel.isFFS = false;
     // if (PayrollAreaRequestModel.currency == '') {
     delete PayrollAreaRequestModel.currency;
+    delete PayrollAreaRequestModel.accountNO;
     delete PayrollAreaRequestModel.bankAccount;
+    delete PayrollAreaRequestModel.bankName;
+    delete PayrollAreaRequestModel.nameAsPerBank;
     // }
+    console.log(PayrollAreaRequestModel);
     this.PayrollAreaService.postPayrollAreaInfoForm(PayrollAreaRequestModel).subscribe(res => {
 
       this.getPayrollAreaInformation();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       // this.payrollAreaDisable();
-
+      this.getSecondaryPayrollArea(PayrollAreaRequestModel.employeeMasterId);
       this.PayrollAreaRequestModel.bankName = '';
-      this.PayrollAreaRequestModel.bankAccountNumber = '';
-      this.PayrollAreaRequestModel.nameAsPerBank = '';
+      this.PayrollAreaRequestModel.accountNO = '';
+     // this.PayrollAreaRequestModel.nameAsPerBank = '';
       this.PayrollAreaRequestModel.typeOfPayment = '';
       this.PayrollAreaRequestModel.amount = '';
       if (this.multipleBankBoolean == true) {
@@ -271,17 +290,18 @@ export class PayrollAreaInformationComponent implements OnInit {
   updatePayrollArea(PayrollAreaRequestModel) {
 
     if (this.multipleBankBoolean == false) {
-      PayrollAreaRequestModel.multibankingAllowed = 0;
+      PayrollAreaRequestModel.multiBankingAllowed = 0;
     }
     if (this.multipleBankBoolean == true) {
-      PayrollAreaRequestModel.multibankingAllowed = 1;
+      PayrollAreaRequestModel.multiBankingAllowed = 1;
     }
 
     PayrollAreaRequestModel.employeeMasterId = this.employeeMasterId;
     PayrollAreaRequestModel.payFromDate = this.datepipe.transform(PayrollAreaRequestModel.payFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaToDate, 'dd-MMM-yyyy');
-
+    PayrollAreaRequestModel.attendanceAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.attendanceAreaFromDate, 'dd-MMM-yyyy');
+    PayrollAreaRequestModel.attendanceAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.attendanceAreaToDate, 'dd-MMM-yyyy');
     // if (PayrollAreaRequestModel.currency == '') {
     delete PayrollAreaRequestModel.currency;
     delete PayrollAreaRequestModel.bankAccount;
@@ -294,8 +314,8 @@ export class PayrollAreaInformationComponent implements OnInit {
 
       this.PayrollAreaRequestModel.payrollAreaInformationId = null;
       this.PayrollAreaRequestModel.bankName = '';
-      this.PayrollAreaRequestModel.bankAccountNumber = '';
-      this.PayrollAreaRequestModel.nameAsPerBank = '';
+      this.PayrollAreaRequestModel.accountNO = '';
+      //this.PayrollAreaRequestModel.nameAsPerBank = '';
       this.PayrollAreaRequestModel.typeOfPayment = '';
       this.PayrollAreaRequestModel.amount = '';
       this.payrollEditFlag = false;
@@ -314,9 +334,33 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
 
+  bankIdAssignValues(bankName) {
+    this.bankDetailsArray.forEach(element => {
+      if (element.bankName == bankName) {
+        this.PayrollAreaRequestModel.employeeBankInfoId = element.employeeBankInfoId;
+        this.PayrollAreaRequestModel.accountNO = element.accountNo;
+      }
+    })
+  }
+
+  // payrollAreaIdAssignValues(payrollCode) {
+  //   this.bankDetailsArray.forEach(element => {
+  //     if (element.payrollCode == payrollCode) {
+  //       this.PayrollAreaRequestModel.payrollAreaId = element.payrollAreaId;
+  //     }
+  //   })
+  // }
+
+  attendanceAreaIdAssignValues(attendanceAreaCode) {
+    
+    this.attendanceAreaArray.forEach(element => {
+      if (element.code == attendanceAreaCode ) {
+        this.PayrollAreaRequestModel.attendanceAreaId = element.id;
+      }
+    })
+  }
 
   deletePayroll(payroll, confirmation) {
-
     this.currentPayroll = payroll;
     this.confirmationMsg = 'Do you really want to delete?';
     this.modalRef = this.modalService.show(
@@ -342,6 +386,13 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       this.PayrollAreaSummaryGridData = res.data.results[0];
+    
+      this.PayrollAreaSummaryGridData.map(x =>  this.BankData.filter(a => a.employeeBankMapPayAreaId == x.employeeBankMapPayAreaId ).length > 0 ? null :  this.BankData.push(x));
+    console.log(this.BankData);
+    
+    this.PayrollAreaSummaryGridData.map(x =>  this.PayrollData.filter(a => a.attendanceAreaFromDate == x.attendanceAreaFromDate ).length > 0 ? null :  this.PayrollData.push(x));
+console.log(this.PayrollData);
+
     }, (error: any) => {
       if (error["error"]["status"]["code"] == 404) {
         this.PayrollAreaSummaryGridData = [];
@@ -361,6 +412,8 @@ export class PayrollAreaInformationComponent implements OnInit {
     }
     const temp15 = this.PayrollAreaInfoForm.get('toDate');
     temp15.enable();
+    this.PayrollAreaRequestModel.employeeBankMapPayAreaId = payroll.employeeBankMapPayAreaId;
+
     this.PayrollAreaRequestModel.payrollAreaInformationId = payroll.payrollAreaInformationId;
     this.PayrollAreaRequestModel.payrollAreaCode = payroll.payrollAreaCode;
     this.PayrollAreaRequestModel.description = payroll.description;
@@ -368,15 +421,25 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaRequestModel.payrollAreaFromDate = payroll.payrollAreaFromDate;
     this.PayrollAreaRequestModel.payrollAreaToDate = payroll.payrollAreaToDate;
     this.PayrollAreaRequestModel.paymentMode = payroll.paymentMode;
+    this.PayrollAreaRequestModel.isFFS = payroll.isFFS;
+    this.PayrollAreaRequestModel.isHoldSalary = payroll.isHoldSalary;
 
+    this.PayrollAreaRequestModel.employeeBankInfoId = payroll.employeeBankInfoId;
     this.PayrollAreaRequestModel.bankName = payroll.bankName;
-    this.PayrollAreaRequestModel.bankAccountNumber = payroll.bankAccountNumber;
+    this.PayrollAreaRequestModel.accountNO = payroll.accountNo;
     this.PayrollAreaRequestModel.typeOfPayment = payroll.typeOfPayment;
     this.PayrollAreaRequestModel.percentageOfNetPay = payroll.percentageOfNetPay;
     this.PayrollAreaRequestModel.amount = payroll.amount;
     this.PayrollAreaRequestModel.payFromDate = payroll.payFromDate;
     this.PayrollAreaRequestModel.payToDate = payroll.payToDate;
     this.PayrollAreaRequestModel.priority = payroll.priority;
+
+    this.PayrollAreaRequestModel.attAreaInfoId=payroll.attAreaInfoId;
+    this.PayrollAreaRequestModel.attendanceAreaId = payroll.attendanceAreaId;
+    this.PayrollAreaRequestModel.attendanceAreaCode = payroll.attendanceAreaCode;
+    this.PayrollAreaRequestModel.attendanceAreaFromDate = payroll.payrollAreaFromDate;
+    this.PayrollAreaRequestModel.attendanceAreaToDate = payroll.payrollAreaToDate;
+
     this.flterBankDetails();
     this.PayrollAreaInfoForm.patchValue(this.PayrollAreaRequestModel)
     this.PayrollAreaInfoForm.patchValue({
@@ -400,13 +463,19 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaRequestModel.paymentMode = payroll.paymentMode;
 
     this.PayrollAreaRequestModel.bankName = payroll.bankName;
-    this.PayrollAreaRequestModel.bankAccountNumber = payroll.bankAccountNumber;
+    this.PayrollAreaRequestModel.accountNO = payroll.accountNO;
     this.PayrollAreaRequestModel.typeOfPayment = payroll.typeOfPayment;
     this.PayrollAreaRequestModel.percentageOfNetPay = payroll.percentageOfNetPay;
     this.PayrollAreaRequestModel.amount = payroll.amount;
     this.PayrollAreaRequestModel.payFromDate = payroll.payFromDate;
     this.PayrollAreaRequestModel.payToDate = payroll.payToDate;
     this.PayrollAreaRequestModel.priority = payroll.priority;
+
+    // this.PayrollAreaRequestModel.attAreaInfoId=payroll.attAreaInfoId;
+    // this.PayrollAreaRequestModel.attendanceAreaId = payroll.attendanceAreaId;
+    this.PayrollAreaRequestModel.attendanceAreaCode = payroll.attendanceAreaCode;
+    this.PayrollAreaRequestModel.attendanceAreaFromDate = payroll.payrollAreaFromDate;
+    this.PayrollAreaRequestModel.attendanceAreaToDate = payroll.payrollAreaToDate;
   }
 
   cancelSkillView() {
@@ -517,7 +586,7 @@ export class PayrollAreaInformationComponent implements OnInit {
       this.disableToggleButton = true;
       this.bankDetailsDisable();
       this.PayrollAreaRequestModel.bankName = '';
-      this.PayrollAreaRequestModel.bankAccountNumber = '';
+      this.PayrollAreaRequestModel.accountNO = '';
       this.PayrollAreaRequestModel.typeOfPayment = '';
       this.PayrollAreaRequestModel.percentageOfNetPay = '';
       this.PayrollAreaRequestModel.amount = '';
@@ -584,6 +653,21 @@ export class PayrollAreaInformationComponent implements OnInit {
     temp18.disable();
   }
 
+  getSecondaryPayrollArea(empId){
+    this.PayrollAreaService.getSecondaryPayrollArea(empId).subscribe(res => {
+          const secondaryPayrollDetils = res.data.results[0];
+          secondaryPayrollDetils.forEach(element => {
+        this.secondaryList.push(element.payrollAreaCode);        
+      })
+    
+    })
+    }
+
+    setBankFromDateMinDay(){
+      this.BankFromDateMinDays = this.PayrollAreaInfoForm.get('fromDate').value;
+    }
+    
+
   flterBankDetails() {
 
     const bank = this.bankDetailsArray.filter(item => {
@@ -591,7 +675,7 @@ export class PayrollAreaInformationComponent implements OnInit {
         return item;
       }
     });
-    this.PayrollAreaRequestModel.bankAccountNumber = bank[0].accountNo;
+    this.PayrollAreaRequestModel.accountNO = bank[0].accountNo;
     this.bankAccountList = bank;
   }
 
@@ -603,7 +687,7 @@ export class PayrollAreaInformationComponent implements OnInit {
         }
       });
       this.PayrollAreaRequestModel.bankName = getBank[0].bankName;
-      this.PayrollAreaRequestModel.bankAccountNumber = getBank[0].bankAccountNumber;
+      this.PayrollAreaRequestModel.accountNO = getBank[0].accountNO;
       this.PayrollAreaRequestModel.typeOfPayment = getBank[0].typeOfPayment;
       // this.PayrollAreaRequestModel.percentageOfNetPay = getBank[0].percentageOfNetPay;
       // this.PayrollAreaRequestModel.amount = getBank[0].amount;
@@ -624,8 +708,8 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   amountValidCheck() {
-//     let amt=this.PayrollAreaInfoForm.get('amount').value
-// if(amt){
+    //     let amt=this.PayrollAreaInfoForm.get('amount').value
+    // if(amt){
     if (this.PayrollAreaRequestModel.amount) {
       this.amountValid = true;
     } else {
@@ -877,7 +961,7 @@ export class PayrollAreaInformationComponent implements OnInit {
       }
 
       this.PayrollAreaRequestModel.bankName = '';
-      this.PayrollAreaRequestModel.bankAccountNumber = '';
+      this.PayrollAreaRequestModel.accountNO = '';
       this.PayrollAreaRequestModel.typeOfPayment = '';
       this.PayrollAreaRequestModel.amount = '';
       this.PayrollAreaRequestModel.payFromDate = '';
@@ -892,10 +976,17 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   holdSalarySetBoolean() {
-   this.PayrollAreaRequestModel.isHoldSalary= this.PayrollAreaInfoForm.get('isHoldSalary').value;
+    this.PayrollAreaRequestModel.isHoldSalary = this.PayrollAreaInfoForm.get('isHoldSalary').value;
+    this.PayrollAreaRequestModel.isFFS = '';
   }
 
   ffsSetBoolean() {
-    this.PayrollAreaRequestModel.isFFS= this.PayrollAreaInfoForm.get('isFFS').value;
+    this.PayrollAreaRequestModel.isFFS = this.PayrollAreaInfoForm.get('isFFS').value;
+    this.PayrollAreaRequestModel.isHoldSalary = '';
   }
 }
+function employeeBankMapPayAreaId(arg0: any, employeeBankMapPayAreaId: any): any[] {
+  throw new Error('Function not implemented.');
+}
+
+

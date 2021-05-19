@@ -253,6 +253,8 @@ export class EmploymentInformationComponent implements OnInit {
         localStorage.setItem('LastTransaction', this.LastTransaction);
       }
    
+    },(error: any) => {
+     // this.joiningTabValidation();
     });
      
   }

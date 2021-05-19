@@ -241,7 +241,7 @@ export class ReJoiningInformationComponent implements OnInit {
     // this.employementInfoId=4;
     const employementInfoId = localStorage.getItem('RejoiningEmployementInfoId')
     this.employementInfoId = Number(employementInfoId);
-    this.EmploymentInformationService.getReJoiningInformation(this.employementInfoId).subscribe(res => {
+    this.EmploymentInformationService.getReJoiningInformation().subscribe(res => {
 
       if (res.data.results.length > 0) {
         this.ReJoiningInformationModel = res.data.results[0];
