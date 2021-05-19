@@ -64,6 +64,7 @@ export class LicsummaryComponent implements OnInit {
       policyNo: policyNo,
       tabIndex: this.tabIndex,
       canEdit: mode == 'edit' ? true : false,
+      canView: mode == 'view' ? true : false,
     };
     this.institution = institution;
     this.policyNo = policyNo;

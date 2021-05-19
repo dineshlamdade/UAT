@@ -50,7 +50,10 @@ export class SukanyaSamriddhiSummaryComponent implements OnInit {
       institution : institution,
       accountNumber : accountNumber,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
+    
+    };
     this.institution = institution;
     this.accountNumber = accountNumber;
     this.myEvent.emit(data);
