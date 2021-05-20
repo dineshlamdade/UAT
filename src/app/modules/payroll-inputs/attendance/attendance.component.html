@@ -95,7 +95,7 @@
                                                     <p-table [value]="attendanceData" [paginator]="true" [rows]="10"
                                                         [showCurrentPageReport]="true"
                                                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                        [rowsPerPageOptions]="[10,25,50]">
+                                                        [rowsPerPageOptions]="[10,25,50]" > 
                                                         <ng-template pTemplate="header">
                                                             <tr>
                                                                 <th class="wd-10 text-center">
@@ -882,7 +882,7 @@
                                                                                     <option value="0.75" [selected]="presentCycle.weeklyOff == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="presentCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input (focusout)="getCurrentWeeklyOff($event.target.value, presentCycle,rowIndex)"
+                                                                                <input (keyup)="getCurrentWeeklyOff($event.target.value, presentCycle,rowIndex)"
                                                                                     class="timeinput mr-1 form-control" [value]="presentCycle.weeklyOff" appTwoDigitDecimaNumber>
                                                                                     <!-- onkeypress="return event.charCode >=48 && event.charCode <=57" -->
                                                                             </div>
@@ -897,8 +897,9 @@
                                                                                     <option value="0.75" [selected]="presentCycle.holiday == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="presentCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input (focusout)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)"
+                                                                                <input (keyup)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)"
                                                                                 class="timeinput mr-1 form-control" [value]="presentCycle.holiday" appTwoDigitDecimaNumber>
+                                                                                <!-- appTwoDigitDecimaNumber -->
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -913,7 +914,7 @@
                                                                                     <option value="0.75" [selected]="presentCycle.paidLeaves == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="presentCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input (focusout)="getCurrentPaidLeaves($event.target.value,presentCycle,rowIndex)"
+                                                                                <input (keyup)="getCurrentPaidLeaves($event.target.value,presentCycle,rowIndex)"
                                                                                 class="timeinput mr-1 form-control" [value]="presentCycle.paidLeaves" appTwoDigitDecimaNumber>
                                                                             </div>  
                                                                         </td>
@@ -928,11 +929,11 @@
                                                                                     <option value="0.75" [selected]="presentCycle.leaveWithoutPay == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="presentCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input *ngIf="defaultAttendace == '1'"  (focusout)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)"
+                                                                                <input *ngIf="defaultAttendace == '1'"  (keyup)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)"
                                                                                 class="timeinput mr-1 form-control" [value]="presentCycle.leaveWithoutPay" appTwoDigitDecimaNumber>
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.leaveWithoutPay_0">
                                                                             </div>
                                                                         </td>
                                                                        
@@ -944,10 +945,10 @@
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"  [disabled]="attendanceForm.controls.payrollArea.value == '1'" > -->
                                                                                 
-                                                                                <input (focusout)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)" 
+                                                                                <input (keyup)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)" 
                                                                                 [value]="defaultAttendace == '1' ? presentCycle.presentDay.toFixed(2) : presentCycle.presentDay_0"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
+                                                                                    class="timeinput mr-1" [disabled]="defaultAttendace == '1'" appTwoDigitDecimaNumber>
                                                                                 
                                                                                 <!-- <p-inputMask mask="99:99"
                                                                                 value="{{user1.presentDay}}"
@@ -1007,21 +1008,26 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button type="submit" tooltip="Save & Next"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled 
-                                                                    btn-labeled-left ripple" (click)="AttendanceInput();attendanceForNextEmp()"><b>
+                                                                <button [disabled]="selectedEmpData.length <= 1" type="submit" tooltip="Save & Next"
+                                                                    class="custom_button btn-bg-green custom_btn btn-labeled 
+                                                                    btn-labeled-left ripple" 
+                                                                    [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"
+                                                                    (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                         <i class="fa fa-floppy-o"></i></b> Save &
                                                                     Next</button>
-                                                                <button type="button" tooltip="Save"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" (click)="AttendanceInput()"><b><i
+                                                                <button [disabled]="selectedEmpData.length > 1" type="button" tooltip="Save"
+                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" 
+                                                                    (click)="AttendanceInput()" [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length > 1 }"><b><i
                                                                             class="fa fa-floppy-o"
                                                                             aria-hidden="true"></i></b>Save</button>
-                                                                <button type="button" tooltip="Previous"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                <button [disabled]="selectedEmpData.length <= 1" type="button" tooltip="Previous"
+                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" 
+                                                                    [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"><b><i
                                                                             class="fa fa-angle-double-left"
                                                                             aria-hidden="true"></i></b>Previous</button>
-                                                                <button type="button" tooltip="Next" (click)="attendanceForNextEmp()"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                <button [disabled]="selectedEmpData.length <= 1" type="button" tooltip="Next" (click)="attendanceForNextEmp()"
+                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                                                                    [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"><b><i
                                                                             class="fa fa-angle-double-right"
                                                                             aria-hidden="true"></i></b>Next</button>
                                                                 <button type="button" tooltip="Reset"
@@ -1244,8 +1250,8 @@
                                                                                     <option value="1.00" [selected]="futureCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select> -->
 
-                                                                                <input (change)="getFutureWeeklyOff($event.target.value, futureCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.weeklyOff.toFixed(2)">
+                                                                                <input (keyup)="getFutureWeeklyOff($event.target.value, futureCycle,rowIndex)"
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.weeklyOff">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1261,7 +1267,7 @@
                                                                                     <option value="1.00" [selected]="futureCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (change)="getFutureHoliday($event.target.value, futureCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.holiday.toFixed(2)">
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.holiday">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1276,8 +1282,8 @@
                                                                                     <option value="0.75" [selected]="futureCycle.paidLeaves == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="futureCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input (change)="getFuturePaidLeaves($event.target.value, futureCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.paidLeaves.toFixed(2)">
+                                                                                <input (keyup)="getFuturePaidLeaves($event.target.value, futureCycle,rowIndex)"
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.paidLeaves">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1293,11 +1299,11 @@
                                                                                     <option value="1.00" [selected]="futureCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select> -->
 
-                                                                                <input *ngIf="defaultAttendace == '1'" (change)="getFutureLeaveWithoutPay($event.target.value, futureCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay.toFixed(2)">
+                                                                                <input *ngIf="defaultAttendace == '1'" (keyup)="getFutureLeaveWithoutPay($event.target.value, futureCycle,rowIndex)"
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay">
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay_0.toFixed(2)" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
@@ -1306,8 +1312,8 @@
                                                                                     value="{{futureCycle.presentDay}}"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"> -->
-                                                                                    <input (focusout)="getFuturePresentDay($event.target.value,futureCycle,rowIndex)" 
-                                                                                    [value]=" defaultAttendace == '1' ? futureCycle.presentDay.toFixed(2) : futureCycle.presentDay_0.toFixed(2)"
+                                                                                    <input (keyup)="getFuturePresentDay($event.target.value,futureCycle,rowIndex)" 
+                                                                                    [value]=" defaultAttendace == '1' ? futureCycle.presentDay.toFixed(2) : futureCycle.presentDay_0"
                                                                                         placeholder="00:00"
                                                                                         class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
                                                                                 <!-- <input
@@ -1366,26 +1372,32 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button type="submit" tooltip="Save & Next" (click)="AttendanceInput();attendanceForNextEmp()"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
-                                                                        <i class="fa fa-floppy-o"></i></b> Save &
-                                                                    Next</button>
-                                                                <button type="button" tooltip="Save" (click)="AttendanceInput()"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
-                                                                            class="fa fa-floppy-o"
-                                                                            aria-hidden="true" ></i></b>Save</button>
-                                                                <button type="button" tooltip="Previous"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                                            class="fa fa-angle-double-left"
-                                                                            aria-hidden="true"></i></b>Previous</button>
-                                                                <button type="button" tooltip="Next" (click)="attendanceForNextEmp()"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                                            class="fa fa-angle-double-right"
-                                                                            aria-hidden="true"></i></b>Next</button>
-                                                                <button type="button" tooltip="Reset"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                                            class="fa fa-refresh"
-                                                                            aria-hidden="true"></i></b>Reset</button>
+                                                                <button [disabled]="selectedEmpData.length <= 1" type="submit" tooltip="Save & Next"
+                                                                class="custom_button btn-bg-green custom_btn btn-labeled 
+                                                                btn-labeled-left ripple" 
+                                                                [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"
+                                                                (click)="AttendanceInput();attendanceForNextEmp()"><b>
+                                                                    <i class="fa fa-floppy-o"></i></b> Save &
+                                                                Next</button>
+                                                            <button [disabled]="selectedEmpData.length > 1" type="button" tooltip="Save"
+                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" 
+                                                                (click)="AttendanceInput()" [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length > 1 }"><b><i
+                                                                        class="fa fa-floppy-o"
+                                                                        aria-hidden="true"></i></b>Save</button>
+                                                            <button [disabled]="selectedEmpData.length <= 1" type="button" tooltip="Previous"
+                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" 
+                                                                [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"><b><i
+                                                                        class="fa fa-angle-double-left"
+                                                                        aria-hidden="true"></i></b>Previous</button>
+                                                            <button [disabled]="selectedEmpData.length <= 1" type="button" tooltip="Next" (click)="attendanceForNextEmp()"
+                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                                                                [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"><b><i
+                                                                        class="fa fa-angle-double-right"
+                                                                        aria-hidden="true"></i></b>Next</button>
+                                                            <button type="button" tooltip="Reset"
+                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                        class="fa fa-refresh"
+                                                                        aria-hidden="true"></i></b>Reset</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1602,8 +1614,8 @@
                                                                                     <option value="0.75" [selected]="previousCycle.weeklyOff == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="previousCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input (change)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.weeklyOff.toFixed(2)">
+                                                                                <input (keyup)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)"
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.weeklyOff">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1618,8 +1630,8 @@
                                                                                     <option value="0.75" [selected]="previousCycle.holiday == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="previousCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input (change)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.holiday.toFixed(2)">
+                                                                                <input (keyup)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)"
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.holiday">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1634,8 +1646,8 @@
                                                                                     <option value="0.75" [selected]="previousCycle.paidLeaves == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="previousCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input (change)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.paidLeaves.toFixed(2)">
+                                                                                <input (keyup)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)"
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.paidLeaves">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1650,11 +1662,11 @@
                                                                                     <option value="0.75" [selected]="previousCycle.leaveWithoutPay == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="previousCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                <input *ngIf="defaultAttendace == '1'" (change)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay.toFixed(2)">
+                                                                                <input *ngIf="defaultAttendace == '1'" (keyup)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay">
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay_0.toFixed(2)" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;">
@@ -1664,8 +1676,8 @@
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"> -->
                                                                                 
-                                                                                    <input (focusout)="getPreviousPresentDay($event.target.value,previousCycle,rowIndex)" 
-                                                                                    [value]=" defaultAttendace == '1' ? previousCycle.presentDay.toFixed(2) : previousCycle.presentDay_0.toFixed(2)"
+                                                                                    <input (keyup)="getPreviousPresentDay($event.target.value,previousCycle,rowIndex)" 
+                                                                                    [value]=" defaultAttendace == '1' ? previousCycle.presentDay : previousCycle.presentDay_0"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
                                                                                 <!-- <input
@@ -1723,26 +1735,32 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button type="submit" tooltip="Save & Next" (click)="AttendanceInput();attendanceForNextEmp()"
-                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
+                                                                <button [disabled]="selectedEmpData.length <= 1" type="submit" tooltip="Save & Next"
+                                                                class="custom_button btn-bg-green custom_btn btn-labeled 
+                                                                btn-labeled-left ripple" 
+                                                                [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"
+                                                                (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                     <i class="fa fa-floppy-o"></i></b> Save &
                                                                 Next</button>
-                                                            <button type="button" tooltip="Next" (click)="AttendanceInput()"
-                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
+                                                            <button [disabled]="selectedEmpData.length > 1" type="button" tooltip="Save"
+                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" 
+                                                                (click)="AttendanceInput()" [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length > 1 }"><b><i
                                                                         class="fa fa-floppy-o"
-                                                                        aria-hidden="true" ></i></b>Save</button>
-                                                                <button type="button" tooltip="Previous" (click)="attendanceForPreviousEmp()"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                                            class="fa fa-angle-double-left"
-                                                                            aria-hidden="true"></i></b>Previous</button>
-                                                                <button type="button" tooltip="Next" (click)="attendanceForNextEmp()"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                                            class="fa fa-angle-double-right"
-                                                                            aria-hidden="true"></i></b>Next</button>
-                                                                <button type="button" tooltip="Reset"
-                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                                            class="fa fa-refresh"
-                                                                            aria-hidden="true"></i></b>Reset</button>
+                                                                        aria-hidden="true"></i></b>Save</button>
+                                                            <button [disabled]="selectedEmpData.length <= 1" type="button" tooltip="Previous"
+                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" 
+                                                                [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"><b><i
+                                                                        class="fa fa-angle-double-left"
+                                                                        aria-hidden="true"></i></b>Previous</button>
+                                                            <button [disabled]="selectedEmpData.length <= 1" type="button" tooltip="Next" (click)="attendanceForNextEmp()"
+                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                                                                [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"><b><i
+                                                                        class="fa fa-angle-double-right"
+                                                                        aria-hidden="true"></i></b>Next</button>
+                                                            <button type="button" tooltip="Reset"
+                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                        class="fa fa-refresh"
+                                                                        aria-hidden="true"></i></b>Reset</button>
                                                             </div>
                                                         </div>
                                                     </div>
