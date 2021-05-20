@@ -470,7 +470,7 @@
                         <select
                           class="form-control custom-select"
                           formControlName="forwardWorkFlowId" >
-                          <option [ngValue]="null" selected>Select</option>
+                          <option [ngValue]="0" selected>Select</option>
                           <option
                             value="{{ workflow.workflowMasterHeaderId }}"
                             *ngFor="let workflow of allWorkflowMasterdata">

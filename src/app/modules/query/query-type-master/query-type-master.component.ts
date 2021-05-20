@@ -107,7 +107,6 @@ export class QueryTypeMasterComponent implements OnInit {
         "autoCloseTimeforNopriority": new FormControl('13:15'),
         "resolutionTimeforNopriority": new FormControl(''),
         "active": new FormControl(true),
-        // "Replayworkflow": new FormControl(""),
         "listQueryAnsMappingReqDTO": new FormControl([]),
         "listQueryPriorityRequestDTO": new FormControl([]),
         "subQueryRequestDTO": new FormControl([]),
@@ -397,10 +396,11 @@ addQueryType() // main post api to save all form data .
     this.getAllSummaryData();
     this.toster.success("",'Query Type Added Successfully');
 
+  this.listQueryPriorityRequestDTO =[];
+  this.subQueryRequestDTO = [];
   })
   this.querytypeForm.reset();
-  // this.priorityData =[];
-  // this.querySubQuerySummary=[];
+
 
 }
 queryTypeQueAnsMappingId :number;
