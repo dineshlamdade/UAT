@@ -61,6 +61,15 @@ export class NonRecurringAmtComponent implements OnInit {
 	updateScheduleData: any = [];
 	viewScheduleData: any;
 
+	selectedApplicableAt: any = '';
+	clawbackFrequency: any = '';
+	selectedClawbackInputType: any = '';
+	selecteddiscardIndex: any;
+	selectedHoldIndex: any;
+	hold: any;
+	discard: any;
+	updateNoOfTransaction: any;
+
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
 		private payrollservice: PayrollInputsService) { }
@@ -234,7 +243,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				let transactionData = this.NonRecurringTransactionGroupAPIbyIdData[0]
 				this.selectedTransactionType = transactionData.transactionsType
 				this.onceEvery = transactionData.onceEvery
-				this.numberOfTransactions = transactionData.numberOfTransactions
+				this.updateNoOfTransaction = transactionData.numberOfTransactions
 				this.openingAmount = transactionData.amount
 				this.remark = transactionData.remark
 				this.standardName = transactionData.payrollHeadMaster.standardName
@@ -301,6 +310,16 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.remark = value
 	}
 
+	/** get Uppdate No Of Transacton */
+	getUpdateNoOfTransaction(value){
+		this.updateNoOfTransaction = value;
+	}
+
+	/**get update opening amount */
+	getUpdateOpeningAmt(value){
+		this.openingAmount = value
+	}
+
 	/** update single transaction */
 	updateSingleTransaction() {
 		let todate = "";
@@ -324,11 +343,16 @@ export class NonRecurringAmtComponent implements OnInit {
 			"frequency": this.selectedEmpData[this.index].frequency,
 			"fromDate": this.selectedFromDate,
 			"transactionsType": this.selectedTransactionType,
-			"numberOfTransactions": parseInt(this.numberOfTransactions),
+			"numberOfTransactions": parseInt(this.updateNoOfTransaction),
 			"toDate": todate,
 			"amount": parseFloat(this.openingAmount),
 			"remark": this.remark,
-			"createdBy": "rahul"
+			"createdBy": "rahul",
+			"clawbackApplicableAt":"",
+			"clawbackInputType":"",
+			"clawbackPeriod":0,
+			"clawbackUnit":"",
+			"clawbackDate":""
 		}
 
 		console.log("Data is: " + JSON.stringify(data))
@@ -362,6 +386,22 @@ export class NonRecurringAmtComponent implements OnInit {
 				class: 'gray modal-lg'
 			})
 		);
+	}
+
+
+	/** Get Applcable At selected Value */
+	getSelectedApplicable(value){
+		this.selectedApplicableAt = value
+	}
+
+	/** Get Input Type selected Value */
+	getSelectedInputType(value){
+		this.selectedClawbackInputType = value
+	}
+
+	/**Get Clawback Frequency selected value */
+	getClawbackFrequency(value){
+		this.clawbackFrequency = value
 	}
 
 	/******************* Transaction when click on Transaction Tab and select Employee from Dropdown *******************/
@@ -855,12 +895,12 @@ export class NonRecurringAmtComponent implements OnInit {
 	
 
     /** get hold value for update schedule */
-	getHoldScheduleValue(event, scheduleData) {
-		let hold;
+	getHoldScheduleValue(event, scheduleData,index) {
+		this.selectedHoldIndex = index;
 		if (event.checked) {
-			hold = 1
+			this.hold = 1
 		} else {
-			hold = 0
+			this.hold = 0
 		}
 		if (this.updateScheduleData.length > 0) {
 			this.updateScheduleData.forEach((element, index) => {
@@ -868,7 +908,7 @@ export class NonRecurringAmtComponent implements OnInit {
 					let ind = index;
 					this.updateScheduleData.splice(ind, 1, {
 						"nonRecurringTransactionScheduleId": element.nonRecurringTransactionScheduleId,
-						"hold": hold,
+						"hold": this.hold,
 						"discard": element.discard,
 						"resheduleDate": element.resheduleDate,
 						"remark": element.remark
@@ -879,7 +919,7 @@ export class NonRecurringAmtComponent implements OnInit {
 					else{
 						this.updateScheduleData.push({
 							"nonRecurringTransactionScheduleId": scheduleData.nonRecurringTransactionScheduleId,
-							"hold": hold,
+							"hold": this.hold,
 							"discard": scheduleData.discard,
 							"resheduleDate": scheduleData.resheduleDate,
 							"remark": scheduleData.remark
@@ -890,7 +930,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		} else {
 			this.updateScheduleData.push({
 				"nonRecurringTransactionScheduleId": scheduleData.nonRecurringTransactionScheduleId,
-				"hold": hold,
+				"hold": this.hold,
 				"discard": scheduleData.discard,
 				"resheduleDate": scheduleData.resheduleDate,
 				"remark": scheduleData.remark
@@ -900,12 +940,12 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** get discard value for update schedule */
-	getDiscardScheduleValue(event, scheduleData) {
-		let discard;
+	getDiscardScheduleValue(event, scheduleData,index) {
+		this.selecteddiscardIndex = index;
 		if (event.checked) {
-			discard = 1
+			this.discard = 1
 		} else {
-			discard = 0
+			this.discard = 0
 		}
 		if (this.updateScheduleData.length > 0) {
 			this.updateScheduleData.forEach((element, index) => {
@@ -914,7 +954,7 @@ export class NonRecurringAmtComponent implements OnInit {
 					this.updateScheduleData.splice(ind, 1, {
 						"nonRecurringTransactionScheduleId": element.nonRecurringTransactionScheduleId,
 						"hold": element.hold,
-						"discard": discard,
+						"discard": this.discard,
 						"resheduleDate": element.resheduleDate,
 						"remark": element.remark
 					})
@@ -925,7 +965,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						this.updateScheduleData.push({
 							"nonRecurringTransactionScheduleId": scheduleData.nonRecurringTransactionScheduleId,
 							"hold": scheduleData.hold,
-							"discard": scheduleData.discard,
+							"discard": this.discard,
 							"resheduleDate": scheduleData.resheduleDate,
 							"remark": scheduleData.remark
 						})
@@ -936,7 +976,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.updateScheduleData.push({
 				"nonRecurringTransactionScheduleId": scheduleData.nonRecurringTransactionScheduleId,
 				"hold": scheduleData.hold,
-				"discard": discard,
+				"discard": this.discard,
 				"resheduleDate": scheduleData.resheduleDate,
 				"remark": scheduleData.remark
 			})

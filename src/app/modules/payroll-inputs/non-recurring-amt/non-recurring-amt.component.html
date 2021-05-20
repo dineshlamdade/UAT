@@ -383,7 +383,7 @@
                                                                     <!-- Selected Employee basic infrmation-->
                                                                     <div class="row mt-10">
                                                                         <div class="col-md-12 pl-0 pr-0">
-                                                                            <div class="border-dark-card radius-10 p-2 mt-3"
+                                                                            <div class="box-line-border radius-10 p-2 mt-3"
                                                                                 *ngIf="employeeFinDetailsData">
                                                                                 <div class="row">
                                                                                     <div class="col-md-2">
@@ -735,10 +735,7 @@
                                                                                                 class="form-lable mb-0">{{data.payrollHeadMaster.description}}</label>
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
-                                                                                            <label
-                                                                                                class="form-lable mb-0">{{data.amount
-                                                                                                | number:'1.00'}}
-                                                                                            </label>
+                                                                                            <input class="form-lable mb-0" (focusout)="getUpdateOpeningAmt($event.target.value)" value="{{data.amount | number:'1.00'}}" >
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="text"
@@ -796,7 +793,10 @@
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
                                                                                             <label
-                                                                                                class="form-lable mb-0">{{data.numberOfTransactions}}
+                                                                                                class="form-lable mb-0">
+                                                                                                <input class="form-control" value="{{data.numberOfTransactions}}" 
+                                                                                                (focusout)="getUpdateNoOfTransaction($event.target.value)"
+                                                                                                [disabled]="selectedTransactionType != 'NoOfTransaction'">
                                                                                             </label>
                                                                                         </td>
                                                                                         <td>
@@ -1131,8 +1131,8 @@
                                                                                             </select>
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
-                                                                                            <label
-                                                                                                class="form-lable mb-0">{{data.numberOfTransactions}}
+                                                                                            <label class="form-lable mb-0">
+                                                                                                <input class="form-control" value="{{data.numberOfTransactions}}" [disabled]="selectedTransactionType != 'NoOfTransaction'">
                                                                                             </label>
                                                                                         </td>
                                                                                         <td>
@@ -1505,7 +1505,7 @@
 
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">
+                                                                                class="form-lable mb-0"> {{ScheduleData.nonRecurringTransactionScheduleId}}
                                                                             </label>
                                                                            <!-- No -->
                                                                         </td>
@@ -1545,7 +1545,7 @@
                                                                                 class="custom-control custom-checkbox checkbox-center">
                                                                                 <input type="checkbox"
                                                                                     class="custom-control-input"
-                                                                                    (click)="getHoldScheduleValue($event.target,ScheduleData)"
+                                                                                    (click)="getHoldScheduleValue($event.target,ScheduleData,rowIndex)"
                                                                                     name="select" [checked]="ScheduleData.hold == true"/> 
                                                                                     <span class="custom-control-label"></span>
                                                                             </label>
@@ -1555,7 +1555,7 @@
                                                                                 <label class="custom-control custom-checkbox checkbox-center">
                                                                                     <input type="checkbox"
                                                                                         class="custom-control-input"
-                                                                                        (click)="getDiscardScheduleValue($event.target,ScheduleData)"
+                                                                                        (click)="getDiscardScheduleValue($event.target,ScheduleData,rowIndex)"
                                                                                         name="select" [checked]="ScheduleData.discard == true" /> 
                                                                                         <span class="custom-control-label"></span>
                                                                                 </label> 
@@ -1566,6 +1566,8 @@
                                                                                 data-date-autoclose="true"
                                                                                 value="{{ScheduleData.resheduleDate}}"
                                                                                 (bsValueChange)="getRescheduleDate($event,ScheduleData)"
+                                                                                [disabled]="ScheduleData.hold == true || ScheduleData.discard == true
+                                                                                || ((selectedHoldIndex == rowIndex && hold == 1) || (selecteddiscardIndex == rowIndex && discard == 1)  )"
                                                                                 class="form-control" bsDatepicker>
 
                                                                         </td>
@@ -2160,101 +2162,59 @@
                         <div class="border-dark-card radius-10 p-2 mt-3">
                             <div class="row">
                                 <div class="col-md-3">Applicable At</div>
-                                <div class="col-md-3">
-                                    <select name="revision type"
-                                    class="form-control custom-select wd-120">
-                                    <option value="">
-                                        Select</option>
-                                    <option
-                                        value=""
-                                        title="">
-                                        1
-                                    </option>
-                                    <option
-                                        value="Perpetual"
-                                        title=""
-                                        >
-                                        2</option>
-                                    <option
-                                        value=""
-                                        title=""
-                                       >
-                                        3
-                                    </option>
+                                <div class="col-md-6">
+                                    <select class="form-control custom-select wd-200" (change)="getSelectedApplicable($event.target.value)">
+                                    <option value="">Select</option>
+                                    <option> Group </option>
+                                    <option> Schedule </option>
                                 </select>
                                 </div>
+                                <div class="col-md-3"></div>
                                 <br>
                                 <br>
                                 <div class="col-md-3">Input Type</div>
-                                <div class="col-md-3">
-                                    <select name="revision type"
-                                    class="form-control custom-select wd-120">
-                                    <option value="">
-                                        Select</option>
-                                    <option
-                                        value=""
-                                        title="">
-                                        1
-                                    </option>
-                                    <option
-                                        value="Perpetual"
-                                        title=""
-                                        >
-                                        2</option>
-                                    <option
-                                        value=""
-                                        title=""
-                                       >
-                                        3
-                                    </option>
+                                <div class="col-md-6">
+                                    <select class="form-control custom-select wd-200" (change)="getSelectedInputType($event.target.value)">
+                                    <option value="">Select</option>
+                                    <option> SDM </option>
+                                    <option> Specific Period </option>
+                                    <option> Specific Date </option>
                                 </select>
                                 </div>
+                                <div class="col-md-3"></div>
                                 <br>
                                 <br>
-                                <div class="col-md-3">Period</div>
-                                <div class="col-md-3">
-                                    <input type="text"
-                                    value=''
-                                    class="form-control wd-100">
-                                </div>
+                                <div class ="row" *ngIf="selectedClawbackInputType == 'Specific Period'">
+                                    <div class="col-md-3">Period</div>
+                                    <div class="col-md-6">
+                                        <input type="text" [(ngModel)]="crawBackPeriod" class="form-control wd-200">
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3">Frequency</div>
+                                    <div class="col-md-6">
+                                        <select class="form-control custom-select wd-200"  
+                                        (change)="getClawbackFrequency($event.target.value)">
+                                        <option value="">Select</option>
+                                        <option> Monthly </option>
+                                        <option> Yearly </option>
+                                        <option> Weekly </option>
+                                    </select>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                               </div>
                                 <br>
                                 <br>
-                                <div class="col-md-3">Frequency</div>
-                                <div class="col-md-3">
-                                    <select name="revision type"
-                                    class="form-control custom-select wd-120">
-                                    <option value="">
-                                        Select</option>
-                                    <option
+                                <div class="row" *ngIf="selectedClawbackInputType == 'Specific Date'">
+                                    <div class="col-md-3">Date</div>
+                                    <div class="col-md-6">
+                                        <input
+                                        data-provide="datepicker"
+                                        data-date-autoclose="true"
+                                        placeholder="Date"
+                                        bsDatepicker
                                         value=""
-                                        title="">
-                                        1
-                                    </option>
-                                    <option
-                                        value="Perpetual"
-                                        title=""
-                                        >
-                                        2</option>
-                                    <option
-                                        value=""
-                                        title=""
-                                       >
-                                        3
-                                    </option>
-                                </select>
-                                </div>
-
-                                <br>
-                                <br>
-                                <div class="col-md-3">Date</div>
-                                <div class="col-md-3">
-                                    <input
-                                    data-provide="datepicker"
-                                    data-date-autoclose="true"
-                                    placeholder="Date"
-                                    bsDatepicker
-                                    value=""
-                                    class="form-control wd-120">
+                                        class="form-control wd-200">
+                                    </div>  
                                 </div>
                             </div>
                             
