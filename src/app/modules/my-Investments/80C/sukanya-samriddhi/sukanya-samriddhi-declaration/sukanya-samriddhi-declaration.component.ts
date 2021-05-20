@@ -209,8 +209,13 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      if (input.canView === true){
+        this.isDisabled = true;
+      } else{
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      }
+    
 
       const data = {
         label: 'All',

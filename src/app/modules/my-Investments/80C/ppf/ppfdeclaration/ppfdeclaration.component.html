@@ -122,7 +122,7 @@
                       type="checkbox"
                       class="custom-control-input"
                       [ngModel]="isCheckAll"
-                      [disabled]="canEdit && isDisabled"
+                      [disabled]="isDisabled"
                       name="select"
                       value="isCheckAll{{ j }}"
                       (change)="checkUncheckAll(item, j)"
@@ -805,7 +805,7 @@
                     ></i>
                   </td> -->
                   <td>
-                  <i *ngIf="canEdit" class="fa fa-eye font-16 text-blue cursor-pointer" 
+                  <i class="fa fa-eye font-16 text-blue cursor-pointer" 
                   (click)="
                   declarationEditUpload(
                       template2,

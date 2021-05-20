@@ -343,7 +343,7 @@
                                         <td class="wd-10  align-right"><span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">{{summary.premiumAmount
                         | number:'1.2-2'}}</span>
                                         </td>
-                                        <td class="wd-10 text-light-green font700"><span tooltip="Submitted">Submitted</span>
+                                        <td class="wd-10 text-light-green font700"><span tooltip="Submitted">{{summary.masterStatus}}</span>
                                         </td>
                                         <td class="wd-5">
                                             <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.licMasterId)" tooltip="Edit"></i> &nbsp;&nbsp;
