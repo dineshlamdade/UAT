@@ -10,18 +10,20 @@ exports.AttributeGlobalComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var AttributeGlobalComponent = /** @class */ (function () {
-    function AttributeGlobalComponent(formBuilder, attributeSelectionService, alertService) {
+    function AttributeGlobalComponent(modalService, formBuilder, attributeSelectionService, alertService) {
+        this.modalService = modalService;
         this.formBuilder = formBuilder;
         this.attributeSelectionService = attributeSelectionService;
         this.alertService = alertService;
-        this.removedAttributeGroupIdList = [];
+        // removedAttributeGroupIdList = [];
+        this.selectedSummarySourceProducts = [];
         this.userHasSelectedMandatoryFieldOnly = false;
         this.summaryList = [];
         this.originalTargetList = [];
         this.AttributeSelectionList = [];
         this.disabled = true;
         this.viewCancelButton = false;
-        this.hidevalue = false;
+        ///hidevalue = false;
         this.optionList = [];
         this.viewupdateButton = false;
         this.sourceProducts = [];
@@ -29,6 +31,7 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.originalSourceProductList = [];
         this.selectedUser = [];
         this.selectedUser2 = [];
+        this.idToBeDeletetd = null;
     }
     AttributeGlobalComponent.prototype.ngOnInit = function () {
         this.getAllAttributeSelection();
@@ -43,6 +46,7 @@ var AttributeGlobalComponent = /** @class */ (function () {
     AttributeGlobalComponent.prototype.getAllAttributeCreation = function () {
         var _this = this;
         this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe(function (res) {
+            console.log('check source res ', res);
             _this.originalSourceProductList = res.data.results;
             _this.sourceProducts = res.data.results;
         });
@@ -50,16 +54,16 @@ var AttributeGlobalComponent = /** @class */ (function () {
     // get All Attribute Selection
     AttributeGlobalComponent.prototype.getAllAttributeSelection = function () {
         var _this = this;
-        this.attributeSelectionService.getAllGlobalAttributeMaster().subscribe(function (res) {
+        this.summaryList = [];
+        this.attributeSelectionService.getAllGlobalAttributeMasterByGlobal().subscribe(function (res) {
+            console.log('res check11 ', res);
             _this.AttributeSelectionList = res.data.results;
             res.data.results.forEach(function (element) {
                 var obj = {
-                    code: element.code,
                     attributeNature: element.attributeNature,
                     numberOfOption: element.numberOfOption,
                     description: element.description,
-                    globalAttributeMasterId: element.globalAttributeMasterId,
-                    options: (element.optionList).length,
+                    options: (element.attributeMasters).length,
                     id: element.id,
                     name: element.name
                 };
@@ -69,9 +73,9 @@ var AttributeGlobalComponent = /** @class */ (function () {
     };
     AttributeGlobalComponent.prototype.RowSelected = function (u, ind) {
         console.log(u);
-        var ind1 = this.sourceProducts.findIndex(function (o) { return o.globalAttributeMasterId == u.globalAttributeMasterId; });
-        var index = this.selectedUser.findIndex(function (o) { return o.globalAttributeMasterId == u.globalAttributeMasterId; });
-        var isContain = this.selectedUser.some(function (o) { return o.globalAttributeMasterId == u.globalAttributeMasterId; });
+        var ind1 = this.sourceProducts.findIndex(function (o) { return o.attributeMasterId == u.attributeMasterId; });
+        var index = this.selectedUser.findIndex(function (o) { return o.attributeMasterId == u.attributeMasterId; });
+        var isContain = this.selectedUser.some(function (o) { return o.attributeMasterId == u.attributeMasterId; });
         console.log(isContain, index);
         if (isContain == true) {
             this.sourceProducts[ind1].isHighlight = false;
@@ -86,14 +90,15 @@ var AttributeGlobalComponent = /** @class */ (function () {
     };
     AttributeGlobalComponent.prototype.RowSelectedtargetProducts = function (u, i) {
         var _this = this;
+        console.log(u);
         if (u.disabled == true) {
         }
         else {
             this.HighlightRight = i;
             var temp = this.targetProducts;
             this.targetProducts = new Array();
-            var index = this.selectedUser2.findIndex(function (o) { return o.globalAttributeMasterId == u.globalAttributeMasterId; });
-            var isContain_1 = this.selectedUser2.some(function (o) { return o.globalAttributeMasterId == u.globalAttributeMasterId; });
+            var index = this.selectedUser2.findIndex(function (o) { return o.attributeMasterId == u.attributeMasterId; });
+            var isContain_1 = this.selectedUser2.some(function (o) { return o.attributeMasterId == u.attributeMasterId; });
             console.log(isContain_1, index);
             if (isContain_1 == true) {
                 this.selectedUser2.splice(index, 1);
@@ -130,15 +135,22 @@ var AttributeGlobalComponent = /** @class */ (function () {
             }
         });
         this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every(function (o) { return o.disabled == true; });
+        if (this.userHasSelectedMandatoryFieldOnly) {
+            this.AttributeGlobalForm.setErrors({ 'invalid': true });
+        }
+        else {
+            console.log('in else block');
+            this.AttributeGlobalForm.setErrors(null);
+        }
     };
     AttributeGlobalComponent.prototype.righttablePusg = function (u) {
         var _this = this;
         this.selectedUser2.forEach(function (element) {
-            if (element.globalAttributeMasterId == null) {
+            if (element.attributeMasterId == null) {
                 console.log('attributer master id is not found');
             }
             else {
-                console.log('globalAttributeMasterId', element.globalAttributeMasterId);
+                console.log('attributeMasterId', element.attributeMasterId);
             }
         });
         this.selectedUser2.forEach(function (element) {
@@ -154,6 +166,13 @@ var AttributeGlobalComponent = /** @class */ (function () {
             }
         });
         this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every(function (o) { return o.disabled == true; });
+        if (this.userHasSelectedMandatoryFieldOnly) {
+            this.AttributeGlobalForm.setErrors({ 'invalid': true });
+        }
+        else {
+            console.log('in else block 123');
+            this.AttributeGlobalForm.setErrors(null);
+        }
     };
     AttributeGlobalComponent.prototype.resetAttributeSelection = function () {
         this.targetProducts = [];
@@ -162,7 +181,6 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.selectedUser = [];
         this.AttributeGlobalForm.reset();
         this.viewCancelButton = false;
-        this.hidevalue = false;
         this.AttributeGlobalForm.patchValue({
             attributeNature: ''
         });
@@ -175,7 +193,6 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.selectedUser2 = [];
         this.selectedUser = [];
         this.disabled = true;
-        this.hidevalue = false;
         this.AttributeGlobalForm.reset();
         this.viewCancelButton = false;
         this.viewupdateButton = false;
@@ -186,21 +203,66 @@ var AttributeGlobalComponent = /** @class */ (function () {
     };
     AttributeGlobalComponent.prototype.onStatusChange = function (event) {
         var _this = this;
+        console.log('evt', event.target.value);
+        if (event.target.value == '') {
+            this.AttributeGlobalForm.setErrors(null);
+            this.selectedUser2 = [];
+            this.selectedUser = [];
+            this.sourceProducts = [];
+            this.targetProducts = [];
+            this.attributeSelectionService.getGlobalAttribute1().subscribe(function (res) {
+                _this.originalSourceProductList = res.data.results;
+                _this.sourceProducts = res.data.results;
+            });
+        }
+        else {
+            this.selectedUser2 = [];
+            this.selectedUser = [];
+            this.sourceProducts = [];
+            this.targetProducts = [];
+            this.attributeSelectionService.getGlobalAttribute1().subscribe(function (res) {
+                _this.originalSourceProductList = res.data.results;
+                _this.sourceProducts = res.data.results[0];
+            }, function (err) {
+            }, function () {
+                _this.sourceProducts = _this.originalSourceProductList;
+                _this.attributeSelectionService.GetHeadGroupByGetGlobalPHGByName(event.target.value).subscribe(function (res) {
+                    _this.targetProducts = res.data.results[0].attributeMasters;
+                    _this.targetProducts.forEach(function (element) {
+                        //    element.disabled = true;
+                        //  var index = this.targetProducts.indexOf( element )
+                        _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+                    });
+                });
+                _this.AttributeGlobalForm.setErrors({ 'INVALID': true });
+                // this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+                // if ( this.userHasSelectedMandatoryFieldOnly ) {
+                //   this.AttributeGlobalForm.setErrors( { 'INVALID': true } );
+                // } else {
+                //   console.log( 'in else block  ee' );
+                //   this.AttributeGlobalForm.setErrors( null );
+                // }
+            });
+        }
+    };
+    AttributeGlobalComponent.prototype.onStatusChange1 = function (event) {
+        var _this = this;
         this.selectedUser2 = [];
         this.selectedUser = [];
         this.sourceProducts = [];
         this.targetProducts = [];
         this.getAllAttributeCreation();
         this.sourceProducts = this.originalSourceProductList;
-        this.attributeSelectionService.GetAttributeOptionListByGroup(event.target.value).subscribe(function (res) {
-            console.log('GetAttributeOptionListByGroup res is', res);
+        console.log('name', event.target.value);
+        this.attributeSelectionService.GetHeadGroupByGetGlobalPHGByName(event.target.value).subscribe(function (res) {
+            console.log('GetHeadGroupByGetGlobalPHGByName res is', res);
             _this.targetProducts = res.data.results[0].attributeMasters;
             _this.targetProducts.forEach(function (element) {
-                element.disabled = true;
+                //  element.disabled = true;
                 _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
             });
         });
-        this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every(function (o) { return o.disabled == true; });
+        // this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
     };
     // Get Attribute Selection ById
     AttributeGlobalComponent.prototype.GetAttributeSelectionByIdDisable = function (id) {
@@ -208,7 +270,7 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.disabled = false;
         this.viewupdateButton = false;
         this.viewCancelButton = true;
-        this.attributeSelectionService.GetAttributeSelectionById(id)
+        this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal(id)
             .subscribe(function (response) {
             _this.targetProducts = response.data.results[0].attributeMasters;
             _this.targetProducts.forEach(function (element) {
@@ -228,7 +290,7 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.viewupdateButton = true;
         this.viewCancelButton = true;
         this.attributeGroupId = id;
-        this.attributeSelectionService.GetAttributeSelectionById(id)
+        this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal(id)
             .subscribe(function (response) {
             _this.targetProducts = response.data.results[0].attributeMasters;
             _this.originalTargetList = response.data.results[0].attributeMasters;
@@ -241,9 +303,9 @@ var AttributeGlobalComponent = /** @class */ (function () {
         });
     };
     //Delete Attribute Selection by id
-    AttributeGlobalComponent.prototype.DeleteAttributeSelection = function (id) {
+    AttributeGlobalComponent.prototype.DeleteAttributeSelection = function () {
         var _this = this;
-        this.attributeSelectionService.DeleteAttributeSelection(id)
+        this.attributeSelectionService.DeleteAttributeSelectionAtGlobal(this.idToBeDeletetd)
             .subscribe(function (response) {
             _this.alertService.sweetalertMasterSuccess(response.status.message, '');
             _this.getAllAttributeSelection();
@@ -257,18 +319,18 @@ var AttributeGlobalComponent = /** @class */ (function () {
         var addAttributeCreation = Object.assign({});
         addAttributeCreation.attributeMasterIdList = [];
         this.targetProducts.forEach(function (f) {
-            addAttributeCreation.attributeMasterIdList.push(f.globalAttributeMasterId);
+            addAttributeCreation.attributeMasterIdList.push(f.attributeMasterId);
         });
         addAttributeCreation.name = this.AttributeGlobalForm.value.name;
         addAttributeCreation.description = this.AttributeGlobalForm.value.description;
         console.log(JSON.stringify(addAttributeCreation));
-        this.attributeSelectionService.AddAttributeSelection(addAttributeCreation).subscribe(function (res) {
+        this.attributeSelectionService.AddAttributeSelectionGlobal(addAttributeCreation).subscribe(function (res) {
             addAttributeCreation.attributeMasterIdList = [];
             _this.targetProducts = [];
             _this.alertService.sweetalertMasterSuccess(res.status.message, ''); //success
             _this.getAllAttributeSelection();
-            _this.hidevalue = false;
             _this.AttributeGlobalForm.reset();
+            _this.resetAttributeSelection();
         }, function (error) {
         });
     };
@@ -277,41 +339,24 @@ var AttributeGlobalComponent = /** @class */ (function () {
         var addAttributeCreation = Object.assign({});
         addAttributeCreation.attributeMasterIdList = [];
         this.targetProducts.forEach(function (f) {
-            addAttributeCreation.attributeMasterIdList.push(f.globalAttributeMasterId);
+            console.log(f);
+            addAttributeCreation.attributeMasterIdList.push(f.attributeMasterId);
         });
         addAttributeCreation.name = this.AttributeGlobalForm.value.name;
         addAttributeCreation.description = this.AttributeGlobalForm.value.description;
-        console.log(JSON.stringify(this.attributeGroupId));
-        console.log(JSON.stringify(addAttributeCreation));
-        addAttributeCreation.removedAttributeGroupIdList = [];
-        var _loop_1 = function (i) {
-            if (addAttributeCreation.attributeMasterIdList.some(function (o) { return o.globalAttributeMasterId == _this.originalSourceProductList[i].globalAttributeMasterId; })) {
-                addAttributeCreation.removedAttributeGroupIdList.push(this_1.originalSourceProductList[i].globalAttributeMasterId);
-            }
-            else {
-                console.log('line no 479 in else block');
-            }
-        };
-        var this_1 = this;
-        for (var i = 0; i < this.originalSourceProductList.length; i++) {
-            _loop_1(i);
-        }
-        console.log(JSON.stringify(addAttributeCreation.attributeGroupDefinitionId));
-        console.log(JSON.stringify(addAttributeCreation));
-        if (addAttributeCreation.attributeGroupDefinitionId == undefined || addAttributeCreation.attributeGroupDefinitionId == 0) {
-            this.attributeSelectionService.UpdateAttributeGroup(this.attributeGroupId, addAttributeCreation).subscribe(function (res) {
-                addAttributeCreation.attributeMasterIdList = [];
-                _this.targetProducts = [];
-                _this.viewCancelButton = false;
-                _this.viewupdateButton = false;
-                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
-                _this.getAllAttributeSelection();
-                _this.hidevalue = false;
-                _this.AttributeGlobalForm.reset();
-            }, function (error) {
-                // this.alertService.sweetalertError( error[error][status][message] );
-            });
-        }
+        this.attributeSelectionService.UpdateAttributeGlobal(this.attributeGroupId, addAttributeCreation).subscribe(function (res) {
+            addAttributeCreation.attributeMasterIdList = [];
+            _this.targetProducts = [];
+            _this.viewCancelButton = false;
+            _this.viewupdateButton = false;
+            _this.alertService.sweetalertMasterSuccess(res.status.message, '');
+            _this.getAllAttributeSelection();
+            _this.AttributeGlobalForm.reset();
+            _this.resetAttributeSelection();
+        }, function (error) {
+            // this.alertService.sweetalertError( error[error][status][message] );
+        });
+        //}
     };
     AttributeGlobalComponent.prototype.doubleClickOnLeftTable = function (u) {
         this.RowSelected(u, -1);
@@ -328,6 +373,10 @@ var AttributeGlobalComponent = /** @class */ (function () {
             event.preventDefault();
         }
     };
+    AttributeGlobalComponent.prototype.UploadModal1 = function (template, id) {
+        this.idToBeDeletetd = id;
+        this.deleteModalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
+    };
     __decorate([
         core_1.ViewChild('AttributeGlobalForm')
     ], AttributeGlobalComponent.prototype, "form");
@@ -335,7 +384,9 @@ var AttributeGlobalComponent = /** @class */ (function () {
         core_1.Component({
             selector: 'app-attribute-global',
             templateUrl: './attribute-global.component.html',
-            styleUrls: ['./attribute-global.component.scss']
+            styleUrls: ['./attribute-global.component.scss'],
+            styles: ["\n        .outofstock {\n          background-color: #ddd!important;\n          color: #000!important;\n          font-weight: 500;\n        }\n        .disable{\n           background-color:#D3D3D3 !important;\n          color: #000!important;\n          font-weight: 500;\n\n        }"
+            ]
         })
     ], AttributeGlobalComponent);
     return AttributeGlobalComponent;

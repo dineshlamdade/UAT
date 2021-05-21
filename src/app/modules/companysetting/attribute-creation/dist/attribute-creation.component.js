@@ -21,20 +21,20 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.modalService = modalService;
         this.document = document;
         // sort alphabetically
+        this.totalRecords = 0;
         this.NatureList = [
-            { label: 'Formula', value: 'F' },
-            { label: 'Garnishment', value: 'G' },
-            { label: 'Head  ', value: 'H' },
-            { label: 'List', value: 'L' },
-            { label: 'Per Employee Input', value: 'PEI' },
-            { label: 'Range Value Per Instance', value: 'Range Value / Instance' },
-            { label: 'Range Value Per Period', value: 'Range Value / Period' },
-            { label: 'Range Of No Of Instances Per Period', value: 'Range Instances / Period' },
-            { label: 'Stored Procedure', value: 'SP' },
-            { label: 'Source Destination Matrix', value: 'SDM' },
-            { label: 'Work Flow', value: 'WF' },
+            { label: 'Formula', value: 'Formula' },
+            { label: 'Head', value: 'Head' },
+            { label: 'List', value: 'List' },
+            { label: 'Per Employee Input', value: 'Per Employee Input' },
+            { label: 'Range Value Per Instance', value: 'Range Value Per Instance' },
+            { label: 'Range Value Per Period', value: 'Range Value Per Period' },
+            { label: 'Range Value No Of Instances Per Period', value: 'Range Value No Of Instances Per Period' },
+            { label: 'Source Destination Matrix', value: 'Source Destination Matrix' },
+            { label: 'Stored Procedure', value: 'Stored Procedure' },
+            { label: 'Work Flow', value: 'Work Flow' },
         ];
-        this.globalAttributeMasterId = 0;
+        this.attributeMasterId = 0;
         this.isEditMode = false;
         this.optionId = 0;
         this.validOptionList = false;
@@ -45,6 +45,7 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.viewCancelButton = false;
         this.viewUpdateButton = false;
         this.hidevalue = false;
+        this.isView = true;
         this.optionList = [];
     }
     AttributeCreationComponent.prototype.ngOnInit = function () {
@@ -53,7 +54,7 @@ var AttributeCreationComponent = /** @class */ (function () {
             code: new forms_1.FormControl('', forms_1.Validators.required),
             description: new forms_1.FormControl('', forms_1.Validators.required),
             attributeNature: new forms_1.FormControl('', forms_1.Validators.required),
-            optionList: new forms_1.FormControl('')
+            pfFormArray: new forms_1.FormArray([])
         });
         this.getAllAttributeCreation();
     };
@@ -66,28 +67,29 @@ var AttributeCreationComponent = /** @class */ (function () {
             _this.AttributeCreationList = res.data.results;
             res.data.results.forEach(function (element) {
                 var value = '';
-                for (var i = 0; i < element.optionList.length; i++) {
+                for (var i = 0; i < element.options.length; i++) {
                     if (i == 0) {
-                        value = element.optionList[i].optionValue;
+                        value = element.options[i].attributeOptionValue;
                     }
                     else {
-                        value = value + ', ' + element.optionList[i].optionValue;
+                        value = value + ', ' + element.options[i].attributeOptionValue;
                     }
                 }
-                console.log('value ', value);
                 var label = '';
-                var ind = _this.NatureList.findIndex(function (o) { return o.value == element.attributeNature.trim(); });
-                if (ind != -1) {
-                    label = _this.NatureList[ind].label;
-                }
-                else {
-                    label = '';
+                if (element.attributeNature !== null) {
+                    var ind = _this.NatureList.findIndex(function (o) { return o.value == element.attributeNature.trim(); });
+                    if (ind != -1) {
+                        label = _this.NatureList[ind].label;
+                    }
+                    else {
+                        label = '';
+                    }
                 }
                 var obj = {
-                    globalAttributeMasterId: element.globalAttributeMasterId,
+                    attributeMasterId: element.attributeMasterId,
                     code: element.code,
                     attributeNatureLongForm: label,
-                    attributeNature: element.attributeNature.trim(),
+                    attributeNature: element.attributeNature,
                     numberOfOption: element.numberOfOption,
                     description: element.description,
                     optionValue: value
@@ -95,63 +97,70 @@ var AttributeCreationComponent = /** @class */ (function () {
                 _this.attributeCreationSummaryList.push(obj);
             });
         });
+        this.totalRecords = this.attributeCreationSummaryList.length;
     };
-    AttributeCreationComponent.prototype.editAttributeCreation = function (globalAttributeMasterId) {
-        console.log('edit');
+    AttributeCreationComponent.prototype.editAttributeCreation = function (attributeMasterId) {
+        this.AttributeCreationForm.setControl('pfFormArray', new forms_1.FormArray([]));
+        this.isView = true;
+        this.viewCancelButton = true;
         this.disabled = false;
-        this.viewCancelButton = false;
-        this.viewUpdateButton = true;
         this.viewUpdateButton = true;
         this.hidevalue = true;
-        this.globalAttributeMasterId = globalAttributeMasterId;
-        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.globalAttributeMasterId == globalAttributeMasterId; });
+        this.attributeMasterId = attributeMasterId;
+        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.attributeMasterId == attributeMasterId; });
         this.AttributeCreationForm.patchValue({ code: this.attributeCreationSummaryList[index].code });
         this.AttributeCreationForm.patchValue({ description: this.attributeCreationSummaryList[index].description });
-        this.AttributeCreationForm.patchValue({ attributeNature: this.attributeCreationSummaryList[index].attributeNature });
+        this.AttributeCreationForm.patchValue({ attributeNature: this.attributeCreationSummaryList[index].attributeNatureLongForm });
         if (this.attributeCreationSummaryList[index].optionValue.length > 0) {
             var split = this.attributeCreationSummaryList[index].optionValue.split(',');
-            this.summaryHtmlDataList = [];
             console.log(split);
             for (var i = 0; i < split.length; i++) {
-                this.summaryHtmlDataList.push({ id: i, name: split[i] });
+                this.addRowWithData(split[i]);
             }
         }
         this.AttributeCreationForm.get('attributeNature').disable();
+        //this.AttributeCreationForm.get( 'optionList' ).enable();
     };
     // Get Attribute Creation ById
     AttributeCreationComponent.prototype.GetAttributeCreationByIdDisable = function (id) {
+        this.AttributeCreationForm.setControl('pfFormArray', new forms_1.FormArray([]));
         this.disabled = false;
         this.viewCancelButton = true;
         this.hidevalue = false;
-        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.globalAttributeMasterId == id; });
+        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.attributeMasterId == id; });
         this.AttributeCreationForm.patchValue({ code: this.attributeCreationSummaryList[index].code });
         this.AttributeCreationForm.patchValue({ description: this.attributeCreationSummaryList[index].description });
-        this.AttributeCreationForm.patchValue({ attributeNature: this.attributeCreationSummaryList[index].attributeNature });
+        this.AttributeCreationForm.patchValue({ attributeNature: this.attributeCreationSummaryList[index].attributeNatureLongForm });
+        if (this.attributeCreationSummaryList[index].attributeNatureLongForm == 'List') {
+            this.hidevalue = true;
+            this.isView = false;
+        }
         if (this.attributeCreationSummaryList[index].optionValue.length > 0) {
             var split = this.attributeCreationSummaryList[index].optionValue.split(',');
-            this.summaryHtmlDataList = [];
-            this.hidevalue = false;
             console.log(split);
             for (var i = 0; i < split.length; i++) {
-                this.summaryHtmlDataList.push({ id: i, name: split[i] });
+                this.addRowWithData(split[i]);
             }
         }
         this.AttributeCreationForm.disable();
     };
     AttributeCreationComponent.prototype.onStatusChange = function (event) {
-        console.log('chceck', event.target.value);
-        if (event.target.value == 'L') {
+        if (event.target.value == 'List') {
+            this.addRow(0);
             this.hidevalue = true;
-            console.log('length is ', this.summaryHtmlDataList);
-            if (this.summaryHtmlDataList.length === 0) {
-                this.validOptionList = true;
-            }
-            else {
-                this.validOptionList = false;
-            }
+            this.isView = true;
+            // console.log( 'length is ', this.summaryHtmlDataList );
+            // if ( this.summaryHtmlDataList.length === 0 ) {
+            //   this.validOptionList = true;
+            //   this.addOptionList( '' );
+            // } else {
+            //   this.validOptionList = false;
+            // }
         }
         else {
-            this.validOptionList = false;
+            this.AttributeCreationForm.setControl('pfFormArray', new forms_1.FormArray([]));
+            this.isView = false;
+            //  this.validOptionList = false;
             this.summaryHtmlDataList = [];
             this.hidevalue = false;
         }
@@ -165,7 +174,7 @@ var AttributeCreationComponent = /** @class */ (function () {
             });
             console.log('isContain ', isContain);
             if (isContain == true) {
-                this.alertService.sweetalertWarning('Value already presetnt in Summary table.');
+                this.alertService.sweetalertWarning('Value already present in Summary table.');
             }
             else {
                 var index = this.summaryHtmlDataList.findIndex(function (o) { return o.id == _this.optionId; });
@@ -174,51 +183,48 @@ var AttributeCreationComponent = /** @class */ (function () {
         }
         else {
             console.log(evt);
-            if (evt.length > 0) {
-                var isContain = this.summaryHtmlDataList.some(function (_a) {
-                    var name = _a.name;
-                    return name === evt;
-                });
-                console.log('isContain ', isContain);
-                var id = 0;
-                if (this.summaryHtmlDataList.length !== 0) {
-                    id = this.summaryHtmlDataList[this.summaryHtmlDataList.length - 1].id;
-                    this.validOptionList = false;
-                }
-                else {
-                    id = 0;
-                    this.validOptionList = true;
-                }
-                if (isContain == true) {
-                    this.alertService.sweetalertWarning('Value already present in Summary table.');
-                }
-                else {
-                    this.summaryHtmlDataList.push({ name: evt, id: id + 1 });
-                }
-                this.validOptionList = false;
-            }
+            // if ( evt.length > 0 ) {
+            //   let isContain = this.summaryHtmlDataList.some( ( { name } ) => name === evt );
+            //   console.log( 'isContain ', isContain );
+            //   let id = 0;
+            //   if ( this.summaryHtmlDataList.length !== 0 ) {
+            //     id = this.summaryHtmlDataList[this.summaryHtmlDataList.length - 1].id;
+            //     this.validOptionList = false;
+            //   } else {
+            //     id = 0;
+            //     this.validOptionList = true;
+            //   }
+            //   if ( isContain == true ) {
+            //     this.alertService.sweetalertWarning( 'Value already present in Summary table.' );
+            //   } else {
+            //     this.summaryHtmlDataList.push( { name: evt, id: id + 1 } );
+            //   }
+            //   this.validOptionList = false;
+            // }
         }
-        this.AttributeCreationForm.get('optionList').setValue('');
+        // this.AttributeCreationForm.get( 'optionList' ).setValue( '' );
         this.isEditMode = false;
     };
     //add new AttributeCreation
     AttributeCreationComponent.prototype.addAttributeCreation = function () {
         var _this = this;
-        debugger;
         if (this.viewUpdateButton == true) {
+            var array_1 = [];
             console.log('add update logic here');
             var addAttributeCreation = Object.assign({});
             addAttributeCreation.options = [];
-            addAttributeCreation.attributeNature = 'L';
-            addAttributeCreation.globalAttributeMasterId = this.globalAttributeMasterId;
-            addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+            addAttributeCreation.attributeNature = 'List';
+            addAttributeCreation.attributeMasterId = this.attributeMasterId;
             addAttributeCreation.code = this.AttributeCreationForm.value.code;
             addAttributeCreation.description = this.AttributeCreationForm.value.description;
-            var array = [];
-            for (var i = 0; i < this.summaryHtmlDataList.length; i++) {
-                array.push(this.summaryHtmlDataList[i].name);
-            }
-            addAttributeCreation.options = array;
+            // for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
+            //   array.push( this.summaryHtmlDataList[i].name );
+            // }
+            this.f.pfFormArray.value.forEach(function (element) {
+                array_1.push(element.optionList);
+            });
+            addAttributeCreation.options = array_1;
+            addAttributeCreation.numberOfOption = array_1.length.toString();
             console.log(JSON.stringify(addAttributeCreation));
             this.attributeCreationService.UpdateAttributeCreation(addAttributeCreation).subscribe(function (res) {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
@@ -231,18 +237,21 @@ var AttributeCreationComponent = /** @class */ (function () {
             });
         }
         else {
+            var array_2 = [];
+            this.f.pfFormArray.value.forEach(function (element) {
+                array_2.push(element.optionList);
+            });
             var addAttributeCreation = Object.assign({});
-            delete addAttributeCreation.globalAttributeMasterId;
+            delete addAttributeCreation.attributeMasterId;
             addAttributeCreation.options = [];
-            addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+            addAttributeCreation.numberOfOption = array_2.length.toString();
             addAttributeCreation.code = this.AttributeCreationForm.value.code;
             addAttributeCreation.description = this.AttributeCreationForm.value.description;
             addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
-            var array = [];
-            for (var i = 0; i < this.summaryHtmlDataList.length; i++) {
-                array.push(this.summaryHtmlDataList[i].name);
-            }
-            addAttributeCreation.options = array;
+            // for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
+            //   array.push( this.summaryHtmlDataList[i].name );
+            // }
+            addAttributeCreation.options = array_2;
             console.log(JSON.stringify(addAttributeCreation));
             this.attributeCreationService.AddAttributeCreation(addAttributeCreation).subscribe(function (res) {
                 // addAttributeCreation.options = [];
@@ -257,6 +266,8 @@ var AttributeCreationComponent = /** @class */ (function () {
         }
     };
     AttributeCreationComponent.prototype.CancelAttributeCreation = function () {
+        this.AttributeCreationForm.setControl('pfFormArray', new forms_1.FormArray([]));
+        this.isView = false;
         this.viewUpdateButton = false;
         this.AttributeCreationForm.enable();
         this.summaryHtmlDataList = [];
@@ -270,28 +281,32 @@ var AttributeCreationComponent = /** @class */ (function () {
         });
     };
     AttributeCreationComponent.prototype.ResetAttributeCreation = function () {
+        this.AttributeCreationForm.setControl('pfFormArray', new forms_1.FormArray([]));
+        this.isView = false;
         this.viewUpdateButton = false;
         this.AttributeCreationForm.enable();
         this.summaryHtmlDataList = [];
         this.AttributeCreationForm.reset();
         this.viewCancelButton = false;
         this.hidevalue = false;
+        this.AttributeCreationForm.get('code').enable();
+        this.AttributeCreationForm.get('description').enable();
         this.AttributeCreationForm.patchValue({
             attributeNature: ''
         });
     };
-    AttributeCreationComponent.prototype.deleteName = function () {
-        var _this = this;
+    AttributeCreationComponent.prototype.clickedOnYesDeleteRow = function () {
         console.log('in del Name', this.optionId);
-        var index = this.summaryHtmlDataList.findIndex(function (o) { return o.id == _this.optionId; });
-        this.summaryHtmlDataList.splice(index, 1);
-        if (this.summaryHtmlDataList.length == 0) {
-            this.validOptionList = true;
-        }
+        this.deleteRow(this.optionId);
+        // let index = this.summaryHtmlDataList.findIndex( o => o.id == this.optionId );
+        // this.summaryHtmlDataList.splice( index, 1 );
+        // if ( this.summaryHtmlDataList.length == 0 ) {
+        //   this.validOptionList = true;
+        // }
     };
-    AttributeCreationComponent.prototype.deleteNameByName = function (name, id) {
-        console.log('del by name', name, id);
+    AttributeCreationComponent.prototype.deleteRowByIndex = function (id) {
         this.optionId = id;
+        //this.deleteRow( id );
         //  this.summaryHtmlDataList.splice( id, 1 );
     };
     AttributeCreationComponent.prototype.editNameMaster = function (id, name) {
@@ -304,6 +319,60 @@ var AttributeCreationComponent = /** @class */ (function () {
     AttributeCreationComponent.prototype.UploadModal1 = function (template) {
         this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
     };
+    Object.defineProperty(AttributeCreationComponent.prototype, "pfArray", {
+        get: function () { return this.f.pfFormArray; },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(AttributeCreationComponent.prototype, "f", {
+        get: function () { return this.AttributeCreationForm.controls; },
+        enumerable: false,
+        configurable: true
+    });
+    AttributeCreationComponent.prototype.deleteRow = function (j) {
+        console.log(j);
+        //this.lictransactionList.splice(j,1);
+        this.pfArray.removeAt(j);
+    };
+    AttributeCreationComponent.prototype.addRow = function (i) {
+        // this.pfArray.push( this.formBuilder.group( {
+        //   optionList: ['', Validators.required],
+        // } ) );
+        //if ( i !== 0 ) {
+        //  console.log( 'i!==0' )
+        var setsFormArray = this.AttributeCreationForm.get('pfFormArray');
+        this.pfArray.insert(0, this.formBuilder.group({
+            optionList: ['', forms_1.Validators.required]
+        }));
+        // }
+        // else {
+        //   console.log( 'in else' );
+        //   this.pfArray.push( this.formBuilder.group( {
+        //     optionList: ['', Validators.required],
+        //   } ) );
+        // }
+    };
+    AttributeCreationComponent.prototype.addRowWithData = function (optionList) {
+        this.pfArray.push(this.formBuilder.group({
+            optionList: [optionList, forms_1.Validators.required]
+        }));
+    };
+    AttributeCreationComponent.prototype.get = function () {
+        for (var b = 0; b < 10; b++) {
+            //  this.notworkingArr[b] = "test" + b;
+            console.log("in get");
+        }
+    };
+    AttributeCreationComponent.prototype.updateCurrentPage = function (currentPage) {
+        var _this = this;
+        setTimeout(function () { return _this.paginator.changePage(currentPage); });
+    };
+    AttributeCreationComponent.prototype.paginate = function (evt) {
+        console.log(evt);
+    };
+    __decorate([
+        core_1.ViewChild('paginator', { static: true })
+    ], AttributeCreationComponent.prototype, "paginator");
     AttributeCreationComponent = __decorate([
         core_1.Component({
             selector: 'app-attribute-creation',

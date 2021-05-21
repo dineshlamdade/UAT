@@ -1,3 +1,4 @@
+import { AttributeDependencyComponent } from './attribute-dependency/attribute-dependency.component';
 
 
 import { GarnishmentMasterComponent } from './payroll/garnishment-master/garnishment-master.component';
@@ -97,6 +98,12 @@ const routes: Routes = [
     component: AttributeGlobalComponent,
     data: { title: ':: Epic :: Company Setting' }
   },
+  {
+    path: 'attribute-dependency',
+    component: AttributeDependencyComponent,
+    data: { title: ':: Epic :: Company Setting' }
+  },
+
 ];
 
 @NgModule( {

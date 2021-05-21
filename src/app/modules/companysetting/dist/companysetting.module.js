@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.CompanySettingModule = void 0;
+var attribute_dependency_component_1 = require("./attribute-dependency/attribute-dependency.component");
 var common_1 = require("@angular/common");
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
@@ -44,6 +45,7 @@ var sharedlayout_module_1 = require("../sharedlayout/sharedlayout.module");
 var attribute_selection_component_1 = require("./attribute-selection/attribute-selection.component");
 var head_creation_component_1 = require("./head-creation/head-creation.component");
 var payroll_head_group_creation_component_1 = require("./payroll-head-group-creation/payroll-head-group-creation.component");
+var attribute_global_component_1 = require("./attribute-global/attribute-global.component");
 var CompanySettingModule = /** @class */ (function () {
     function CompanySettingModule() {
     }
@@ -57,7 +59,9 @@ var CompanySettingModule = /** @class */ (function () {
                 attribute_creation_component_1.AttributeCreationComponent,
                 business_year_component_1.BusinessYearComponent,
                 cycle_definition_component_1.CycleDefinitionComponent,
-                cycle_creation_component_1.CycleCreationComponent
+                cycle_creation_component_1.CycleCreationComponent,
+                attribute_global_component_1.AttributeGlobalComponent,
+                attribute_dependency_component_1.AttributeDependencyComponent,
             ],
             imports: [
                 common_1.CommonModule,
@@ -68,14 +72,11 @@ var CompanySettingModule = /** @class */ (function () {
                 datepicker_1.BsDatepickerModule.forRoot(),
                 collapse_1.CollapseModule.forRoot(),
                 accordion_1.AccordionModule.forRoot(),
-                tooltip_1.TooltipModule.forRoot(),
                 popover_1.PopoverModule.forRoot(),
                 alert_1.AlertModule.forRoot(),
                 dropdown_1.BsDropdownModule.forRoot(),
                 modal_1.ModalModule.forRoot(),
                 progressbar_1.ProgressbarModule.forRoot(),
-                carousel_1.CarouselModule.forRoot(),
-                datepicker_1.BsDatepickerModule.forRoot(),
                 carousel_1.CarouselModule.forRoot(),
                 ng_multiselect_dropdown_1.NgMultiSelectDropDownModule.forRoot(),
                 ngx_toastr_1.ToastrModule.forRoot({

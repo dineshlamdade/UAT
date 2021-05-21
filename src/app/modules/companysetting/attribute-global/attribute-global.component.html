@@ -45,28 +45,26 @@
 
 
 
-                  <div style="margin-top: 23px" *ngIf="hidevalue">
-                    <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addOptionList()"></i>
-
-                  </div>
-
                 </div>
 
 
-                <div class="row mt-30">
-                  <div class="col-5">
+                <!-- <div class="row mt-30"> -->
+                <!-- <div class="col-5">
                     <div class="card">
-                      <div class=""><span class="form-label">Total List: {{sourceProducts.length}} &nbsp; &nbsp;
-                          Selected List:
-                          {{selectedUser.length}}</span>
-                        <div class="table-responsive Custom_Table">
+                      <div class="">
+                        <span class="form-label">Total Attributes:
+                          <span class="font-14 text-dark-green"> ({{sourceProducts.length}})</span> &nbsp; &nbsp;
+                          Selected Attributes:
+                          <span class="font-14 text-dark-green">
+                            ({{selectedUser.length}}) </span></span>
+                        <div class="table-responsive Custom_Table height-350">
                           <table class="table  table-bordered m-b-0" id="myTable">
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col" class="font700 wd-12">Code</th>
                                 <th scope="col" class="font700 wd-20">Description</th>
                                 <th scope="col" class="font700 wd-12">Nature</th>
-                                <!-- <th scope="col" class="font700 wd-12">remove it</th> -->
+
                               </tr>
                             </thead>
                             <tbody>
@@ -76,14 +74,20 @@
                                 (dblclick)="doubleClickOnLeftTable(product)">
 
 
-                                <td class="wd-10">
-                                  <span>{{product.code}}</span>
+                                <td class="align-left wd-30">
+                                  <span tooltip="{{product.code}}">{{product.code}}</span>
                                 </td>
-                                <td class="wd-10">
-                                  <span>{{product.description}} </span>
+                                <td class="align-left wd-40">
+                                  <span tooltip="{{product.description}}">{{product.description}} </span>
                                 </td>
-                                <td class="wd-10">
-                                  <span>{{product.attributeNature}}</span>
+                                <td class="align-left wd-30">
+                                  <span tooltip="{{product.attributeNature}}">{{product.attributeNature}}</span>
+                                </td>
+
+                              </tr>
+                              <tr *ngIf="!sourceProducts?.length">
+                                <td colspan="3">
+                                  <span class="font-14 font500 align-center text-red">No Data Available</span>
                                 </td>
 
                               </tr>
@@ -92,34 +96,35 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
-                  <div class="col-1">
-                    <div class="row">
-                      <div class="col-md-12 mt-10">
-                        <button type="button" class="btn" (click)="lefttablePusg()"><i
+                <!-- <div class="col-1">
+                    <div class="row mt-150">
+                      <div class="col-md-12 mt-10 text-center">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusg()"><i
                             class="fa fa-chevron-right"></i></button>
                       </div>
-                      <div class="col-md-12 mt-10">
-                        <button type="button" class="btn" (click)="righttablePusg()"><i
+                      <div class="col-md-12 mt-10 text-center">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="righttablePusg()"><i
                             class="fa fa-chevron-left "></i></button>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
-                  <div class="col-5">
+                <!-- <div class="col-5">
                     <div class="card">
-                      <div class=""><span class="form-label">Total List: {{targetProducts.length}} &nbsp;&nbsp;Selected
-                          List: &nbsp;{{selectedUser2.length}}
+                      <div class=""><span class="form-label">Total Attributes: <span
+                            class="font-14 text-dark-green">({{targetProducts.length}})</span> &nbsp;&nbsp;Selected
+                          Attributes: &nbsp;<span class="font-14 text-dark-green">({{selectedUser2.length}})</span>
 
                         </span>
-                        <div class="table-responsive Custom_Table">
+                        <div class="table-responsive Custom_Table height-350">
                           <table class="table   table-bordered m-b-0">
                             <thead class="thead-dark">
                               <tr>
-                                <th scope="col" class="font700 wd-12">Code</th>
-                                <th scope="col" class="font700 wd-20">Description</th>
-                                <th scope="col" class="font700 wd-12">Nature</th>
+                                <th class="font700 wd-30">Code</th>
+                                <th class="font700 wd-40">Description</th>
+                                <th class="font700 wd-30">Nature</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -130,14 +135,20 @@
                                 [class.activeleft]="product.isHighlightright"
                                 [class.bg-color-disable]="product.disabled">
 
-                                <td class="wd-10">
-                                  <span>{{product.code}}</span>
+                                <td class="align-left wd-10">
+                                  <span tooltip="{{product.code}}">{{product.code}}</span>
                                 </td>
-                                <td class="wd-10">
-                                  <span>{{product.description}}</span>
+                                <td class="align-left wd-10">
+                                  <span tooltip="{{product.description}}">{{product.description}}</span>
                                 </td>
-                                <td class="wd-10">
-                                  <span>{{product.attributeNature}}</span>
+                                <td class="align-left wd-10">
+                                  <span tooltip="{{product.attributeNature}}">{{product.attributeNature}}</span>
+                                </td>
+
+                              </tr>
+                              <tr *ngIf="!targetProducts?.length">
+                                <td colspan="3">
+                                  <span class="font-14 font500 align-center text-red">No Data Available</span>
                                 </td>
 
                               </tr>
@@ -146,9 +157,237 @@
                         </div>
                       </div>
                     </div>
+                  </div> -->
+
+                <!-- </div> -->
+
+
+
+                <div class="row">
+                  <div class="col-5">
+
+                    <div class="cycle-table mt-4">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <span class="form-label font-14 text-purple font-bold">Total Attributes:
+                            <span class="font-14 text-dark-green">({{sourceProducts.length}})</span>
+                          </span>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="float-right">
+                            <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected
+                              Attributes: &nbsp;
+                              <span class="font-14 text-dark-green">({{selectedUser.length}})</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <h3 class="font-14 text-purple font-bold"><span class="form-label">Total Attributes:
+                          <span class="font-14 text-dark-green"> ({{sourceProducts.length}})</span> &nbsp; &nbsp;
+                          Selected Attributes:
+                          <span class="font-14 text-dark-green">
+                            ({{selectedUser.length}}) </span></span></h3> -->
+                      <p-table [value]="sourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        selectionMode="multiple" [(selection)]="selectedSummarySourceProducts"
+                        [rowsPerPageOptions]="[10,25,50,100,200]">
+                        <ng-template pTemplate="header">
+                          <tr>
+
+                            <th rowspan="1" class="wd-15">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Code
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                                  <p-columnFilter field="code" display="menu" class="p-ml-auto"></p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+
+                            <th rowspan="1" class="wd-15">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Description
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                  <p-columnFilter field="description" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+
+                                </div>
+                              </div>
+                            </th>
+                            <th rowspan="1" class="wd-8">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Nature
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="attributeNature" pSortableColumn="attributeNature"></p-sortIcon>
+                                  <p-columnFilter field="attributeNature" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+
+                                </div>
+                              </div>
+                            </th>
+                          </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                          <tr (click)="RowSelected(user1, rowIndex);" [class.active]="user1.isHighlight"
+                            (dblclick)="doubleClickOnLeftTable(user1)"
+                            [ngClass]="{'outofstock':user1.isHighlight == true}">
+
+                            <td>{{user1.code}}</td>
+                            <td>{{user1.description}}
+                            </td>
+                            <td>{{user1.attributeNature}}
+                            </td>
+
+                          </tr>
+
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                Available</span></td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
                   </div>
 
+
+                  <div class="col-1">
+                    <div class="row mt-150">
+                      <div class="col-md-12 mt-10 text-center">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusg()"><i
+                            class="fa fa-chevron-right"></i></button>
+                      </div>
+                      <div class="col-md-12 mt-10 text-center">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="righttablePusg()"><i
+                            class="fa fa-chevron-left "></i></button>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-5">
+                    <div class="cycle-table mt-4">
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <span class="form-label font-14 text-purple font-bold">Total Attributes:
+                            <span class="font-14 text-dark-green">({{targetProducts.length}})</span>
+                          </span>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="float-right">
+                            <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected
+                              Attributes: &nbsp;
+                              <span class="font-14 text-dark-green">({{selectedUser2.length}})</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- <h3 class="font-14 text-purple font-bold"><span class="form-label">Total Attributes: <span
+                            class="font-14 text-dark-green">({{targetProducts.length}})</span>
+                          &nbsp;&nbsp;Selected
+                          Attributes: &nbsp;<span class="font-14 text-dark-green">({{selectedUser2.length}})</span>
+
+                        </span></h3> -->
+                      <p-table [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        selectionMode="multiple" [rowsPerPageOptions]="[10,20,50,100,200]">
+                        <ng-template pTemplate="header">
+                          <tr>
+
+                            <th rowspan="1" class="wd-15">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Code
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                                  <p-columnFilter field="code" display="menu" class="p-ml-auto"></p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+
+                            <th rowspan="1" class="wd-15">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Description
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                  <p-columnFilter field="description" display="menu" class="p-ml-auto"></p-columnFilter>
+
+                                </div>
+                              </div>
+                            </th>
+                            <th rowspan="1" class="wd-8">
+                              <div class="p-d-flex p-jc-between p-ai-center">
+                                Nature
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="attributeNature" pSortableColumn="attributeNature"></p-sortIcon>
+                                  <p-columnFilter field="attributeNature" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+
+                                </div>
+                              </div>
+                            </th>
+                          </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                          <tr (click)="RowSelectedtargetProducts(user1, rowIndex);"
+                            (dblclick)="doubleClickOnRightTable(user1)"
+                            [ngClass]="{'outofstock':user1.isHighlightright == true}"
+                            [ngClass]="{'disable':user1.disabled == true}">
+
+                            <td>{{user1.code}}</td>
+                            <td>{{user1.description}}
+                            </td>
+                            <td>{{user1.attributeNature}}
+                            </td>
+
+                          </tr>
+
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                Available</span></td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
                 </div>
+
+
+
+                <ng-template #template12>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="UploadModalLabel">Delete
+                      Attribute Group</h5>
+                    <button type="button" (click)="deleteModalRef.hide()" class="close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <label class="form-label">Are
+                              you sure want to
+                              delete? </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                      (click)="DeleteAttributeSelection();deleteModalRef.hide()">Yes</button>
+                    <button type="button" class="btn btn-secondary bg-btn-red"
+                      (click)="deleteModalRef.hide()">No</button>
+                  </div>
+                </ng-template>
+
 
                 <div class="row mt-15">
                   <div class="col-12">
@@ -157,8 +396,8 @@
 
                       <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeGlobalForm.invalid"
                         class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                        [ngClass]="{'disabled-btn-bg-green' : AttributeGlobalForm.invalid, 'btn-bg-green': !AttributeGlobalForm.invalid && userHasSelectedMandatoryFieldOnly == false}">
-                        <b><i class="fa fa-floppy-o"></i></b> Save</button>
+                        [ngClass]="{'disabled-btn-bg-green' : AttributeGlobalForm.invalid, 'btn-bg-green': !AttributeGlobalForm.invalid }">
+                        <b><i class="fa fa-floppy-o"></i></b> Save </button>
 
 
 
@@ -186,62 +425,95 @@
 
 
 
-              <div class="row mt-30">
-                <div class="col-12">
-                  <div class="card">
-                    <div class="mb-10">
-                      <h3 class="card-title text-cyan font-bold">Summary</h3>
-                    </div>
-                    <div class="">
-                      <div class="table-responsive Custom_Table">
-                        <table class="table table-striped table-hover table-bordered m-b-0">
-                          <thead class="thead-dark">
-                            <tr>
-                              <th scope="col" class="font700 wd-8">Sr. No.</th>
-                              <th scope="col" class="font700 wd-12">Attribute Group Name</th>
-                              <th scope="col" class="font700 wd-20">Description</th>
-                              <th scope="col" class="font700 wd-12">Count</th>
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="cycle-table mt-4">
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                    <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th rowspan="1" class="wd-8 text-center">
+                            Sr. No.
+                          </th>
+                          <th rowspan="1" class="wd-15">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Attribute Group Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="name" pSortableColumn="name"></p-sortIcon>
+                                <p-columnFilter field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
 
-                              <th scope="col" class="font700 wd-12">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
+                          <th rowspan="1" class="wd-15">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Description
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                <p-columnFilter field="description" display="menu" class="p-ml-auto"></p-columnFilter>
+
+                              </div>
+                            </div>
+                          </th>
+                          <th rowspan="1" class="wd-8">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Count
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="options" pSortableColumn="options"></p-sortIcon>
+                                <p-columnFilter field="options" display="menu" class="p-ml-auto"></p-columnFilter>
+
+                              </div>
+                            </div>
+                          </th>
 
 
-                            <tr *ngFor="let summary of summaryList; let i = index">
-                              <td class="align-center wd-10">
-                                <span>{{i+1}}</span>
-                              </td>
-                              <td class="wd-10">
-                                <span>{{summary.code}}</span>
-                              </td>
-                              <td class="wd-10">
-                                <span>{{summary.description}}</span>
-                              </td>
-                              <td class="wd-10">
-                                <span>{{summary.options}}</span>
-                              </td>
 
-                              <td>
+                          <th rowspan="1" class="wd-12 text-center">
+                            <div class="p-d-flex p-jc-center p-ai-center">
+                              Action
+                            </div>
+                          </th>
+                        </tr>
+                      </ng-template>
+
+                      <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                        <tr class="p-selectable-row">
+                          <td class="bg-color-light_gray text-center"><label
+                              class="form-lable mb-0">{{rowIndex+1}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.name}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label>
+                          </td>
+                          <td class="bg-color-light_gray text-center"><label
+                              class="form-lable mb-0">{{user1.options}}</label></td>
 
 
-                                <button type="button" class="btn btn-icon" title="Edit"
-                                  (click)="GetAttributeSelectionById(summary.id)">
-                                  <i class="fa fa-edit"></i></button>
 
-                                <button type="button" class="btn btn-icon" title="View"
-                                  (click)="GetAttributeSelectionByIdDisable(summary.id)">
-                                  <i class="fa fa-eye"></i></button>
+                          <td class="wd-10 align-left">
 
-                                <button type="button" *ngIf="!summary.used"
-                                  (click)="DeleteAttributeSelection(summary.id)" class="btn btn-icon js-sweetalert"
-                                  title="Delete" data-type="confirm"><i class="fa fa-trash-o"></i></button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+                            <button type="button" class="btn btn-icon text-blue" tooltip="Edit"
+                              (click)="GetAttributeSelectionById(user1.id)">
+                              <i class="fa fa-edit"></i></button>
+
+                            <button type="button" class="btn btn-icon text-blue" tooltip="View"
+                              (click)="GetAttributeSelectionByIdDisable(user1.id)">
+                              <i class="fa fa-eye"></i></button>
+
+                            <button type="button" *ngIf="!user1.used" (click)="UploadModal1(template12,user1.id);"
+                              class="btn btn-icon js-sweetalert text-blue" tooltip="Delete" data-type="confirm"><i
+                                class="fa fa-trash-o"></i></button>
+                          </td>
+                        </tr>
+
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                              Available</span></td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
                   </div>
                 </div>
               </div>

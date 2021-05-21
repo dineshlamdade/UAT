@@ -1,12 +1,12 @@
 
 import { CompanySettingsService } from './../company-settings.service';
-import { Component, OnInit, Inject, ViewEncapsulation, TemplateRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Component, OnInit, Inject, ViewEncapsulation, TemplateRef, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { SaveAttributeCreation } from '../model/business-cycle-model';
-import areIntervalsOverlapping from 'date-fns/areIntervalsOverlapping';
-import { ArrayDataSource } from '@angular/cdk/collections';
+import { Paginator } from 'primeng/paginator';
+
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -18,33 +18,35 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 } )
 export class AttributeCreationComponent implements OnInit {
   // sort alphabetically
+  totalRecords: number = 0;
+  @ViewChild( 'paginator', { static: true } ) paginator: Paginator
   NatureList = [
-    { label: 'Formula', value: 'F' },
-    { label: 'Garnishment', value: 'G' },
-    { label: 'Head  ', value: 'H' },
-    { label: 'List', value: 'L' },
-    { label: 'Per Employee Input', value: 'PEI' },
-    { label: 'Range Value Per Instance', value: 'Range Value / Instance' },
-    { label: 'Range Value Per Period', value: 'Range Value / Period' },
-    { label: 'Range Of No Of Instances Per Period', value: 'Range Instances / Period' },
-    { label: 'Stored Procedure', value: 'SP' },
-    { label: 'Source Destination Matrix', value: 'SDM' },
-    { label: 'Work Flow', value: 'WF' },
+    { label: 'Formula', value: 'Formula' },
+    { label: 'Head', value: 'Head' },
+    { label: 'List', value: 'List' },
+    { label: 'Per Employee Input', value: 'Per Employee Input' },
+    { label: 'Range Value Per Instance', value: 'Range Value Per Instance' },
+    { label: 'Range Value Per Period', value: 'Range Value Per Period' },
+    { label: 'Range Value No Of Instances Per Period', value: 'Range Value No Of Instances Per Period' },
+    { label: 'Source Destination Matrix', value: 'Source Destination Matrix' },
+    { label: 'Stored Procedure', value: 'Stored Procedure' },
+    { label: 'Work Flow', value: 'Work Flow' },
 
   ];
-  globalAttributeMasterId: number = 0;
+  attributeMasterId: number = 0;
   modalRef: BsModalRef;
   isEditMode: boolean = false;
   optionId: number = 0;
   validOptionList: boolean = false;
   AttributeCreationList: Array<any> = [];
-  attributeCreationSummaryList = [];
+  attributeCreationSummaryList: Array<any> = [];
   summaryHtmlDataList = [];
   AttributeCreationForm: FormGroup;
   disabled: boolean = true
   viewCancelButton: boolean = false;
   viewUpdateButton: boolean = false;
   hidevalue: boolean = false;
+  isView: boolean = true;
   optionList = [];
 
   constructor(
@@ -63,7 +65,7 @@ export class AttributeCreationComponent implements OnInit {
       code: new FormControl( '', Validators.required ),
       description: new FormControl( '', Validators.required ),
       attributeNature: new FormControl( '', Validators.required ),
-      optionList: new FormControl( '' ),
+      pfFormArray: new FormArray( [] ),
     } );
     this.getAllAttributeCreation();
   }
@@ -77,29 +79,33 @@ export class AttributeCreationComponent implements OnInit {
       this.AttributeCreationList = res.data.results;
       res.data.results.forEach( element => {
         let value: string = '';
-        for ( let i = 0; i < element.optionList.length; i++ ) {
+        for ( let i = 0; i < element.options.length; i++ ) {
           if ( i == 0 ) {
-            value = element.optionList[i].optionValue;
+            value = element.options[i].attributeOptionValue;
           } else {
-            value = value + ', ' + element.optionList[i].optionValue;
-
+            value = value + ', ' + element.options[i].attributeOptionValue;
           }
         }
-        console.log( 'value ', value );
+
         let label = '';
-        let ind = this.NatureList.findIndex( o => o.value == element.attributeNature.trim() );
-        if ( ind != -1 ) {
-          label = this.NatureList[ind].label;
-        } else {
-          label = '';
+        if ( element.attributeNature !== null ) {
+          let ind = this.NatureList.findIndex( o => o.value == element.attributeNature.trim() );
+          if ( ind != -1 ) {
+            label = this.NatureList[ind].label;
+          } else {
+            label = '';
+          }
+
         }
+
+
 
 
         let obj = {
-          globalAttributeMasterId: element.globalAttributeMasterId,
+          attributeMasterId: element.attributeMasterId,
           code: element.code,
           attributeNatureLongForm: label,
-          attributeNature: element.attributeNature.trim(),
+          attributeNature: element.attributeNature,
           numberOfOption: element.numberOfOption,
           description: element.description,
           optionValue: value,
@@ -107,72 +113,79 @@ export class AttributeCreationComponent implements OnInit {
         this.attributeCreationSummaryList.push( obj );
       } );
     } );
+    this.totalRecords = this.attributeCreationSummaryList.length;
   }
 
 
-  editAttributeCreation( globalAttributeMasterId ) {
-    console.log( 'edit' );
-
-
+  editAttributeCreation( attributeMasterId ) {
+    this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
+    this.isView = true;
+    this.viewCancelButton = true;
     this.disabled = false;
-    this.viewCancelButton = false;
-    this.viewUpdateButton = true;
     this.viewUpdateButton = true;
     this.hidevalue = true;
-    this.globalAttributeMasterId = globalAttributeMasterId;
-    let index = this.attributeCreationSummaryList.findIndex( o => o.globalAttributeMasterId == globalAttributeMasterId );
+    this.attributeMasterId = attributeMasterId;
+    let index = this.attributeCreationSummaryList.findIndex( o => o.attributeMasterId == attributeMasterId );
 
     this.AttributeCreationForm.patchValue( { code: this.attributeCreationSummaryList[index].code } );
     this.AttributeCreationForm.patchValue( { description: this.attributeCreationSummaryList[index].description } );
-    this.AttributeCreationForm.patchValue( { attributeNature: this.attributeCreationSummaryList[index].attributeNature } );
+    this.AttributeCreationForm.patchValue( { attributeNature: this.attributeCreationSummaryList[index].attributeNatureLongForm } );
     if ( this.attributeCreationSummaryList[index].optionValue.length > 0 ) {
       let split = this.attributeCreationSummaryList[index].optionValue.split( ',' );
-      this.summaryHtmlDataList = [];
       console.log( split );
       for ( let i = 0; i < split.length; i++ ) {
-        this.summaryHtmlDataList.push( { id: i, name: split[i] } );
+        this.addRowWithData( split[i] );
       }
     }
     this.AttributeCreationForm.get( 'attributeNature' ).disable();
+    //this.AttributeCreationForm.get( 'optionList' ).enable();
 
 
   }
 
   // Get Attribute Creation ById
   GetAttributeCreationByIdDisable( id ): void {
-
+    this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
     this.disabled = false;
     this.viewCancelButton = true;
     this.hidevalue = false;
-    let index = this.attributeCreationSummaryList.findIndex( o => o.globalAttributeMasterId == id );
+    let index = this.attributeCreationSummaryList.findIndex( o => o.attributeMasterId == id );
 
     this.AttributeCreationForm.patchValue( { code: this.attributeCreationSummaryList[index].code } );
     this.AttributeCreationForm.patchValue( { description: this.attributeCreationSummaryList[index].description } );
-    this.AttributeCreationForm.patchValue( { attributeNature: this.attributeCreationSummaryList[index].attributeNature } );
+    this.AttributeCreationForm.patchValue( { attributeNature: this.attributeCreationSummaryList[index].attributeNatureLongForm } );
+    if ( this.attributeCreationSummaryList[index].attributeNatureLongForm == 'List' ) {
+      this.hidevalue = true;
+      this.isView = false;
+    }
     if ( this.attributeCreationSummaryList[index].optionValue.length > 0 ) {
+
       let split = this.attributeCreationSummaryList[index].optionValue.split( ',' );
-      this.summaryHtmlDataList = [];
-      this.hidevalue = false;
+
       console.log( split );
       for ( let i = 0; i < split.length; i++ ) {
-        this.summaryHtmlDataList.push( { id: i, name: split[i] } );
+        this.addRowWithData( split[i] );
       }
     }
     this.AttributeCreationForm.disable();
   }
   onStatusChange( event ): void {
-    console.log( 'chceck', event.target.value );
-    if ( event.target.value == 'L' ) {
+    if ( event.target.value == 'List' ) {
+      this.addRow( 0 );
       this.hidevalue = true;
-      console.log( 'length is ', this.summaryHtmlDataList );
-      if ( this.summaryHtmlDataList.length === 0 ) {
-        this.validOptionList = true;
-      } else {
-        this.validOptionList = false;
-      }
+      this.isView = true;
+      // console.log( 'length is ', this.summaryHtmlDataList );
+      // if ( this.summaryHtmlDataList.length === 0 ) {
+      //   this.validOptionList = true;
+      //   this.addOptionList( '' );
+      // } else {
+      //   this.validOptionList = false;
+      // }
     }
     else {
-      this.validOptionList = false;
+      this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
+      this.isView = false;
+      //  this.validOptionList = false;
       this.summaryHtmlDataList = [];
       this.hidevalue = false;
     }
@@ -182,7 +195,7 @@ export class AttributeCreationComponent implements OnInit {
       let isContain = this.summaryHtmlDataList.some( ( { name } ) => name === evt );
       console.log( 'isContain ', isContain );
       if ( isContain == true ) {
-        this.alertService.sweetalertWarning( 'Value already presetnt in Summary table.' );
+        this.alertService.sweetalertWarning( 'Value already present in Summary table.' );
 
       } else {
 
@@ -193,52 +206,52 @@ export class AttributeCreationComponent implements OnInit {
 
     } else {
       console.log( evt );
-      if ( evt.length > 0 ) {
-        let isContain = this.summaryHtmlDataList.some( ( { name } ) => name === evt );
-        console.log( 'isContain ', isContain );
-        let id = 0;
-        if ( this.summaryHtmlDataList.length !== 0 ) {
-          id = this.summaryHtmlDataList[this.summaryHtmlDataList.length - 1].id;
-          this.validOptionList = false;
-        } else {
-          id = 0;
-          this.validOptionList = true;
-        }
-        if ( isContain == true ) {
-          this.alertService.sweetalertWarning( 'Value already present in Summary table.' );
-        } else {
-          this.summaryHtmlDataList.push( { name: evt, id: id + 1 } );
-        }
+      // if ( evt.length > 0 ) {
+      //   let isContain = this.summaryHtmlDataList.some( ( { name } ) => name === evt );
+      //   console.log( 'isContain ', isContain );
+      //   let id = 0;
+      //   if ( this.summaryHtmlDataList.length !== 0 ) {
+      //     id = this.summaryHtmlDataList[this.summaryHtmlDataList.length - 1].id;
+      //     this.validOptionList = false;
+      //   } else {
+      //     id = 0;
+      //     this.validOptionList = true;
+      //   }
+      //   if ( isContain == true ) {
+      //     this.alertService.sweetalertWarning( 'Value already present in Summary table.' );
+      //   } else {
+      //     this.summaryHtmlDataList.push( { name: evt, id: id + 1 } );
+      //   }
 
-        this.validOptionList = false;
-      }
+      //   this.validOptionList = false;
+      // }
     }
-    this.AttributeCreationForm.get( 'optionList' ).setValue( '' );
+    // this.AttributeCreationForm.get( 'optionList' ).setValue( '' );
     this.isEditMode = false;
 
   }
 
   //add new AttributeCreation
   addAttributeCreation(): void {
-    debugger;
     if ( this.viewUpdateButton == true ) {
+      let array = [];
       console.log( 'add update logic here' );
       const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
-
       addAttributeCreation.options = [];
-      addAttributeCreation.attributeNature = 'L';
-      addAttributeCreation.globalAttributeMasterId = this.globalAttributeMasterId;
-      addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+      addAttributeCreation.attributeNature = 'List';
+      addAttributeCreation.attributeMasterId = this.attributeMasterId;
       addAttributeCreation.code = this.AttributeCreationForm.value.code;
       addAttributeCreation.description = this.AttributeCreationForm.value.description;
+      // for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
+      //   array.push( this.summaryHtmlDataList[i].name );
+      // }
+      this.f.pfFormArray.value.forEach( element => {
 
-
-      let array = [];
-      for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
-        array.push( this.summaryHtmlDataList[i].name );
-      }
+        array.push( element.optionList )
+      } );
 
       addAttributeCreation.options = array;
+      addAttributeCreation.numberOfOption = array.length.toString();
       console.log( JSON.stringify( addAttributeCreation ) );
 
 
@@ -256,20 +269,24 @@ export class AttributeCreationComponent implements OnInit {
         } );
 
     } else {
-
+      let array = [];
+      this.f.pfFormArray.value.forEach( element => {
+        array.push( element.optionList )
+      } );
 
       const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
-      delete addAttributeCreation.globalAttributeMasterId;
+      delete addAttributeCreation.attributeMasterId;
       addAttributeCreation.options = [];
-      addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+      addAttributeCreation.numberOfOption = array.length.toString();
       addAttributeCreation.code = this.AttributeCreationForm.value.code;
       addAttributeCreation.description = this.AttributeCreationForm.value.description;
       addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
 
-      let array = [];
-      for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
-        array.push( this.summaryHtmlDataList[i].name );
-      }
+
+      // for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
+      //   array.push( this.summaryHtmlDataList[i].name );
+      // }
+
 
       addAttributeCreation.options = array;
       console.log( JSON.stringify( addAttributeCreation ) );
@@ -292,6 +309,8 @@ export class AttributeCreationComponent implements OnInit {
 
   }
   CancelAttributeCreation(): void {
+    this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
+    this.isView = false;
     this.viewUpdateButton = false;
     this.AttributeCreationForm.enable();
     this.summaryHtmlDataList = [];
@@ -306,27 +325,34 @@ export class AttributeCreationComponent implements OnInit {
   }
 
   ResetAttributeCreation(): void {
+
+    this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
+    this.isView = false;
     this.viewUpdateButton = false;
     this.AttributeCreationForm.enable();
     this.summaryHtmlDataList = [];
     this.AttributeCreationForm.reset();
     this.viewCancelButton = false;
     this.hidevalue = false;
+    this.AttributeCreationForm.get( 'code' ).enable();
+    this.AttributeCreationForm.get( 'description' ).enable();
     this.AttributeCreationForm.patchValue( {
       attributeNature: ''
     } );
   }
-  deleteName() {
+  clickedOnYesDeleteRow() {
     console.log( 'in del Name', this.optionId );
-    let index = this.summaryHtmlDataList.findIndex( o => o.id == this.optionId );
-    this.summaryHtmlDataList.splice( index, 1 );
-    if ( this.summaryHtmlDataList.length == 0 ) {
-      this.validOptionList = true;
-    }
+    this.deleteRow( this.optionId );
+    // let index = this.summaryHtmlDataList.findIndex( o => o.id == this.optionId );
+    // this.summaryHtmlDataList.splice( index, 1 );
+    // if ( this.summaryHtmlDataList.length == 0 ) {
+    //   this.validOptionList = true;
+    // }
   }
-  deleteNameByName( name: string, id: number ) {
-    console.log( 'del by name', name, id );
+  deleteRowByIndex( id: number ) {
+
     this.optionId = id;
+    //this.deleteRow( id );
     //  this.summaryHtmlDataList.splice( id, 1 );
   }
   editNameMaster( id: number, name: string ) {
@@ -342,5 +368,60 @@ export class AttributeCreationComponent implements OnInit {
       Object.assign( {}, { class: 'gray modal-md' } )
     );
   }
+  get pfArray() { return this.f.pfFormArray as FormArray; }
 
+  get f() { return this.AttributeCreationForm.controls; }
+
+  deleteRow( j: number ) {
+    console.log( j );
+    //this.lictransactionList.splice(j,1);
+    this.pfArray.removeAt( j );
+  }
+  addRow( i?: number ) {
+    // this.pfArray.push( this.formBuilder.group( {
+
+    //   optionList: ['', Validators.required],
+
+    // } ) );
+    //if ( i !== 0 ) {
+    //  console.log( 'i!==0' )
+    var setsFormArray = this.AttributeCreationForm.get( 'pfFormArray' ) as FormArray;
+    this.pfArray.insert( 0, this.formBuilder.group( {
+      optionList: ['', Validators.required],
+    } ) );
+    // }
+    // else {
+    //   console.log( 'in else' );
+    //   this.pfArray.push( this.formBuilder.group( {
+
+    //     optionList: ['', Validators.required],
+
+    //   } ) );
+
+    // }
+
+  }
+  addRowWithData( optionList: string ) {
+    this.pfArray.push( this.formBuilder.group( {
+
+      optionList: [optionList, Validators.required],
+
+    } ) );
+
+  }
+
+
+  get() {
+    for ( let b = 0; b < 10; b++ ) {
+      //  this.notworkingArr[b] = "test" + b;
+      console.log( "in get" );
+    }
+  }
+  private updateCurrentPage( currentPage: number ): void {
+    setTimeout( () => this.paginator.changePage( currentPage ) );
+  }
+
+  paginate( evt: any ) {
+    console.log( evt );
+  }
 }

@@ -14,7 +14,17 @@ import { SaveHeadCreation } from '../model/business-cycle-model';
 } )
 export class HeadCreationComponent implements OnInit {
   NatureList = [{ label: 'Earning', value: 'Earning' }, { label: 'Deduction', value: 'Deduction' }, { label: 'Perquisite', value: 'Perquisite' }];
-  categoryList = [{ value: 'Reimbursement', label: 'Reimbursement' }, { value: 'Statutory', label: 'Statutory' }];
+  categoryList = [
+    { value: 'Asset', label: 'Asset' },
+    { value: 'ESOP-RSU-ESPP', label: 'ESOP-RSU-ESPP' },
+    { value: 'Garnishment', label: 'Garnishment' },
+    { value: 'Loan & Advance', label: 'Loan & Advance' },
+    { value: 'Non-Recurring Quantity', label: 'Non-Recurring Quantity' },
+    { value: 'Reimbursement', label: 'Reimbursement' },
+    { value: 'Statutory', label: 'Statutory' },
+
+
+  ];
   headCreationList = [];
   TypeList: Array<any> = [];
   HeadCreationList: Array<any> = [];
@@ -33,12 +43,12 @@ export class HeadCreationComponent implements OnInit {
     this.HeadCreationForm = this.formBuilder.group( {
       id: new FormControl( null ),
       shortName: new FormControl( '', Validators.required ),
-      displayName: new FormControl( '' ),
-      headNature: new FormControl( '' ),
+      displayName: new FormControl( '', Validators.required ),
+      headNature: new FormControl( '', Validators.required ),
       standardName: new FormControl( '', Validators.required ),
-      description: new FormControl( '' ),
-      category: new FormControl( '' ),
-      type: new FormControl( '' ),
+      description: new FormControl( '', Validators.required ),
+      category: new FormControl( '', ),
+      type: new FormControl( '', ),
     } );
     this.getAllHeadCreation();
   }

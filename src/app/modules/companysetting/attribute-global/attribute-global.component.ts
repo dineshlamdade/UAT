@@ -1,18 +1,33 @@
 import { CompanySettingsService } from './../company-settings.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { SaveAttributeSelection } from '../model/business-cycle-model';
 import { AnyCnameRecord } from 'node:dns';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 
 @Component( {
   selector: 'app-attribute-global',
   templateUrl: './attribute-global.component.html',
-  styleUrls: ['./attribute-global.component.scss']
+  styleUrls: ['./attribute-global.component.scss'],
+  styles: [`
+        .outofstock {
+          background-color: #ddd!important;
+          color: #000!important;
+          font-weight: 500;
+        }
+        .disable{
+           background-color:#D3D3D3 !important;
+          color: #000!important;
+          font-weight: 500;
+
+        }`
+  ]
 } )
 export class AttributeGlobalComponent implements OnInit {
-  removedAttributeGroupIdList = [];
+  // removedAttributeGroupIdList = [];
+  selectedSummarySourceProducts = [];
   userHasSelectedMandatoryFieldOnly = false;
   summaryList = [];
   originalTargetList = [];
@@ -21,7 +36,7 @@ export class AttributeGlobalComponent implements OnInit {
   AttributeGlobalForm: FormGroup;
   disabled = true;
   viewCancelButton = false;
-  hidevalue = false;
+  ///hidevalue = false;
   optionList = [];
   selectedNature: string;
   viewupdateButton = false;
@@ -34,9 +49,11 @@ export class AttributeGlobalComponent implements OnInit {
   selectedMaterialCode: any;
   HighlightRow: any;
   HighlightRight: any;
+  deleteModalRef: BsModalRef;
+  idToBeDeletetd: number = null;
 
   constructor(
-
+    private modalService: BsModalService,
     private formBuilder: FormBuilder,
     private attributeSelectionService: CompanySettingsService,
     private alertService: AlertServiceService ) { }
@@ -56,23 +73,27 @@ export class AttributeGlobalComponent implements OnInit {
   getAllAttributeCreation() {
 
     this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe( res => {
+      console.log( 'check source res ', res );
       this.originalSourceProductList = res.data.results;
       this.sourceProducts = res.data.results;
     } );
   }
   // get All Attribute Selection
   getAllAttributeSelection(): void {
-    this.attributeSelectionService.getAllGlobalAttributeMaster().subscribe( res => {
+    this.summaryList = [];
+    this.attributeSelectionService.getAllGlobalAttributeMasterByGlobal().subscribe( res => {
+      console.log( 'res check11 ', res );
+
       this.AttributeSelectionList = res.data.results;
 
       res.data.results.forEach( element => {
         let obj = {
-          code: element.code,
+
           attributeNature: element.attributeNature,
           numberOfOption: element.numberOfOption,
           description: element.description,
-          globalAttributeMasterId: element.globalAttributeMasterId,
-          options: ( element.optionList ).length,
+
+          options: ( element.attributeMasters ).length,
           id: element.id,
           name: element.name,
         }
@@ -83,12 +104,12 @@ export class AttributeGlobalComponent implements OnInit {
 
   RowSelected( u: any, ind ) {
     console.log( u );
-    let ind1 = this.sourceProducts.findIndex( o => o.globalAttributeMasterId == u.globalAttributeMasterId );
+    let ind1 = this.sourceProducts.findIndex( o => o.attributeMasterId == u.attributeMasterId );
 
-    let index = this.selectedUser.findIndex( o => o.globalAttributeMasterId == u.globalAttributeMasterId );
+    let index = this.selectedUser.findIndex( o => o.attributeMasterId == u.attributeMasterId );
 
 
-    let isContain = this.selectedUser.some( o => o.globalAttributeMasterId == u.globalAttributeMasterId );
+    let isContain = this.selectedUser.some( o => o.attributeMasterId == u.attributeMasterId );
     console.log( isContain, index );
     if ( isContain == true ) {
       this.sourceProducts[ind1].isHighlight = false;
@@ -103,6 +124,7 @@ export class AttributeGlobalComponent implements OnInit {
   }
 
   RowSelectedtargetProducts( u: any, i ): void {
+    console.log( u );
     if ( u.disabled == true ) {
 
     } else {
@@ -111,8 +133,8 @@ export class AttributeGlobalComponent implements OnInit {
       this.HighlightRight = i;
       let temp = this.targetProducts;
       this.targetProducts = new Array();
-      let index = this.selectedUser2.findIndex( o => o.globalAttributeMasterId == u.globalAttributeMasterId );
-      let isContain = this.selectedUser2.some( o => o.globalAttributeMasterId == u.globalAttributeMasterId );
+      let index = this.selectedUser2.findIndex( o => o.attributeMasterId == u.attributeMasterId );
+      let isContain = this.selectedUser2.some( o => o.attributeMasterId == u.attributeMasterId );
       console.log( isContain, index );
       if ( isContain == true ) {
         this.selectedUser2.splice( index, 1 );
@@ -154,16 +176,24 @@ export class AttributeGlobalComponent implements OnInit {
     } );
 
     this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+    if ( this.userHasSelectedMandatoryFieldOnly ) {
+      this.AttributeGlobalForm.setErrors( { 'invalid': true } );
+
+    } else {
+      console.log( 'in else block' );
+      this.AttributeGlobalForm.setErrors( null );
+
+    }
   }
   righttablePusg( u: any ): void {
 
 
     this.selectedUser2.forEach( element => {
 
-      if ( element.globalAttributeMasterId == null ) {
+      if ( element.attributeMasterId == null ) {
         console.log( 'attributer master id is not found' );
       } else {
-        console.log( 'globalAttributeMasterId', element.globalAttributeMasterId );
+        console.log( 'attributeMasterId', element.attributeMasterId );
       }
     } );
 
@@ -182,6 +212,14 @@ export class AttributeGlobalComponent implements OnInit {
       }
     } );
     this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+    if ( this.userHasSelectedMandatoryFieldOnly ) {
+      this.AttributeGlobalForm.setErrors( { 'invalid': true } );
+
+    } else {
+      console.log( 'in else block 123' );
+      this.AttributeGlobalForm.setErrors( null );
+
+    }
   }
   resetAttributeSelection(): void {
     this.targetProducts = [];
@@ -191,7 +229,6 @@ export class AttributeGlobalComponent implements OnInit {
 
     this.AttributeGlobalForm.reset();
     this.viewCancelButton = false;
-    this.hidevalue = false;
     this.AttributeGlobalForm.patchValue( {
       attributeNature: ''
     } );
@@ -205,7 +242,6 @@ export class AttributeGlobalComponent implements OnInit {
     this.selectedUser = [];
 
     this.disabled = true;
-    this.hidevalue = false;
     this.AttributeGlobalForm.reset();
     this.viewCancelButton = false;
     this.viewupdateButton = false;
@@ -217,8 +253,66 @@ export class AttributeGlobalComponent implements OnInit {
   }
 
 
-
   onStatusChange( event ) {
+
+    console.log( 'evt', event.target.value );
+    if ( event.target.value == '' ) {
+      this.AttributeGlobalForm.setErrors( null );
+      this.selectedUser2 = [];
+      this.selectedUser = [];
+
+
+      this.sourceProducts = [];
+      this.targetProducts = [];
+      this.attributeSelectionService.getGlobalAttribute1().subscribe( res => {
+        this.originalSourceProductList = res.data.results;
+        this.sourceProducts = res.data.results;
+      } );
+
+
+    } else {
+      this.selectedUser2 = [];
+      this.selectedUser = [];
+
+
+      this.sourceProducts = [];
+      this.targetProducts = [];
+      this.attributeSelectionService.getGlobalAttribute1().subscribe( res => {
+        this.originalSourceProductList = res.data.results;
+        this.sourceProducts = res.data.results[0];
+      }, ( err ) => {
+      }, () => {
+        this.sourceProducts = this.originalSourceProductList;
+        this.attributeSelectionService.GetHeadGroupByGetGlobalPHGByName( event.target.value ).subscribe( res => {
+
+          this.targetProducts = res.data.results[0].attributeMasters;
+          this.targetProducts.forEach( element => {
+            //    element.disabled = true;
+            //  var index = this.targetProducts.indexOf( element )
+            this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+          } );
+
+        } );
+
+        this.AttributeGlobalForm.setErrors( { 'INVALID': true } );
+        // this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+        // if ( this.userHasSelectedMandatoryFieldOnly ) {
+        //   this.AttributeGlobalForm.setErrors( { 'INVALID': true } );
+
+        // } else {
+        //   console.log( 'in else block  ee' );
+        //   this.AttributeGlobalForm.setErrors( null );
+
+        // }
+
+      } );
+
+
+    }
+
+
+  }
+  onStatusChange1( event ) {
     this.selectedUser2 = [];
     this.selectedUser = [];
     this.sourceProducts = [];
@@ -226,16 +320,17 @@ export class AttributeGlobalComponent implements OnInit {
     this.getAllAttributeCreation();
 
     this.sourceProducts = this.originalSourceProductList;
-    this.attributeSelectionService.GetAttributeOptionListByGroup( event.target.value ).subscribe( res => {
-      console.log( 'GetAttributeOptionListByGroup res is', res );
+    console.log( 'name', event.target.value );
+    this.attributeSelectionService.GetHeadGroupByGetGlobalPHGByName( event.target.value ).subscribe( res => {
+      console.log( 'GetHeadGroupByGetGlobalPHGByName res is', res );
 
       this.targetProducts = res.data.results[0].attributeMasters;
       this.targetProducts.forEach( element => {
-        element.disabled = true;
+        //  element.disabled = true;
         this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
       } );
     } );
-    this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+    // this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
   }
 
   // Get Attribute Selection ById
@@ -245,7 +340,7 @@ export class AttributeGlobalComponent implements OnInit {
     this.viewupdateButton = false;
     this.viewCancelButton = true;
 
-    this.attributeSelectionService.GetAttributeSelectionById( id )
+    this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
       .subscribe( response => {
 
         this.targetProducts = response.data.results[0].attributeMasters;
@@ -269,7 +364,7 @@ export class AttributeGlobalComponent implements OnInit {
     this.viewupdateButton = true;
     this.viewCancelButton = true;
     this.attributeGroupId = id;
-    this.attributeSelectionService.GetAttributeSelectionById( id )
+    this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
       .subscribe( response => {
         this.targetProducts = response.data.results[0].attributeMasters;
         this.originalTargetList = response.data.results[0].attributeMasters;
@@ -285,8 +380,8 @@ export class AttributeGlobalComponent implements OnInit {
 
 
   //Delete Attribute Selection by id
-  DeleteAttributeSelection( id ): void {
-    this.attributeSelectionService.DeleteAttributeSelection( id )
+  DeleteAttributeSelection(): void {
+    this.attributeSelectionService.DeleteAttributeSelectionAtGlobal( this.idToBeDeletetd )
       .subscribe( response => {
 
         this.alertService.sweetalertMasterSuccess( response.status.message, '' )
@@ -303,20 +398,20 @@ export class AttributeGlobalComponent implements OnInit {
     const addAttributeCreation: SaveAttributeSelection = Object.assign( {} );
     addAttributeCreation.attributeMasterIdList = [];
     this.targetProducts.forEach( function ( f ) {
-      addAttributeCreation.attributeMasterIdList.push( f.globalAttributeMasterId );
+      addAttributeCreation.attributeMasterIdList.push( f.attributeMasterId );
     } );
     addAttributeCreation.name = this.AttributeGlobalForm.value.name;
     addAttributeCreation.description = this.AttributeGlobalForm.value.description;
     console.log( JSON.stringify( addAttributeCreation ) );
 
-    this.attributeSelectionService.AddAttributeSelection( addAttributeCreation ).subscribe( ( res: any ) => {
+    this.attributeSelectionService.AddAttributeSelectionGlobal( addAttributeCreation ).subscribe( ( res: any ) => {
 
       addAttributeCreation.attributeMasterIdList = [];
       this.targetProducts = [];
       this.alertService.sweetalertMasterSuccess( res.status.message, '' ); //success
       this.getAllAttributeSelection();
-      this.hidevalue = false;
       this.AttributeGlobalForm.reset();
+      this.resetAttributeSelection();
     },
       ( error: any ) => {
 
@@ -329,44 +424,27 @@ export class AttributeGlobalComponent implements OnInit {
     const addAttributeCreation: SaveAttributeSelection = Object.assign( {} );
     addAttributeCreation.attributeMasterIdList = [];
     this.targetProducts.forEach( function ( f ) {
-      addAttributeCreation.attributeMasterIdList.push( f.globalAttributeMasterId );
+      console.log( f );
+      addAttributeCreation.attributeMasterIdList.push( f.attributeMasterId );
     } );
     addAttributeCreation.name = this.AttributeGlobalForm.value.name;
     addAttributeCreation.description = this.AttributeGlobalForm.value.description;
-    console.log( JSON.stringify( this.attributeGroupId ) );
-    console.log( JSON.stringify( addAttributeCreation ) );
 
-    addAttributeCreation.removedAttributeGroupIdList = [];
-    for ( let i = 0; i < this.originalSourceProductList.length; i++ ) {
+    this.attributeSelectionService.UpdateAttributeGlobal( this.attributeGroupId, addAttributeCreation ).subscribe( ( res: any ) => {
 
-      if ( addAttributeCreation.attributeMasterIdList.some( o => o.globalAttributeMasterId == this.originalSourceProductList[i].globalAttributeMasterId ) ) {
-        addAttributeCreation.removedAttributeGroupIdList.push( this.originalSourceProductList[i].globalAttributeMasterId );
-      } else {
-        console.log( 'line no 479 in else block' );
-      }
-    }
-
-    console.log( JSON.stringify( addAttributeCreation.attributeGroupDefinitionId ) );
-    console.log( JSON.stringify( addAttributeCreation ) );
-
-
-    if ( addAttributeCreation.attributeGroupDefinitionId == undefined || addAttributeCreation.attributeGroupDefinitionId == 0 ) {
-
-      this.attributeSelectionService.UpdateAttributeGroup( this.attributeGroupId, addAttributeCreation ).subscribe( ( res: any ) => {
-
-        addAttributeCreation.attributeMasterIdList = [];
-        this.targetProducts = [];
-        this.viewCancelButton = false;
-        this.viewupdateButton = false;
-        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
-        this.getAllAttributeSelection();
-        this.hidevalue = false;
-        this.AttributeGlobalForm.reset();
-      },
-        ( error: any ) => {
-          // this.alertService.sweetalertError( error[error][status][message] );
-        } );
-    }
+      addAttributeCreation.attributeMasterIdList = [];
+      this.targetProducts = [];
+      this.viewCancelButton = false;
+      this.viewupdateButton = false;
+      this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+      this.getAllAttributeSelection();
+      this.AttributeGlobalForm.reset();
+      this.resetAttributeSelection();
+    },
+      ( error: any ) => {
+        // this.alertService.sweetalertError( error[error][status][message] );
+      } );
+    //}
   }
 
   doubleClickOnLeftTable( u: any ) {
@@ -384,5 +462,12 @@ export class AttributeGlobalComponent implements OnInit {
     if ( pattern.test( inputChar ) ) {
       event.preventDefault();
     }
+  }
+  UploadModal1( template: TemplateRef<any>, id: number ) {
+    this.idToBeDeletetd = id;
+    this.deleteModalRef = this.modalService.show(
+      template,
+      Object.assign( {}, { class: 'gray modal-md' } )
+    );
   }
 }

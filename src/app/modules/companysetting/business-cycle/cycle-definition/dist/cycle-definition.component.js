@@ -136,9 +136,9 @@ var CycleDefinitionComponent = /** @class */ (function () {
         if (addCycleDefinition.id == undefined || addCycleDefinition.id == 0 || addCycleDefinition.id == null) {
             // const employerContributionMethod = this.cycleDefinitionForm;
             // console.log( 'employerContributionMethod', employerContributionMethod );
-            addCycleDefinition.serviceName = [];
+            //  addCycleDefinition.serviceName = [];
             this.ServicesList.forEach(function (f) {
-                addCycleDefinition.serviceName.push(f);
+                //   addCycleDefinition.serviceName.push( f );
             });
             console.log(JSON.stringify(addCycleDefinition));
             this.companySettings.AddCycleDefinition(addCycleDefinition).subscribe(function (res) {
@@ -158,12 +158,12 @@ var CycleDefinitionComponent = /** @class */ (function () {
             addCycleDefinition.businessCycleDefinitionId = addCycleDefinition.id;
             this.serviceName = [];
             //  this.serviceName.push(addCycleDefinition.services)
-            addCycleDefinition.serviceName = this.serviceName;
-            delete addCycleDefinition.serviceName;
-            addCycleDefinition.serviceName = this.cycleDefinitionForm.get('services').value;
+            //  addCycleDefinition.serviceName = this.serviceName;
+            //  delete addCycleDefinition.serviceName;
+            // addCycleDefinition.serviceName = this.cycleDefinitionForm.get( 'services' ).value;
             this.serviceName.push(this.cycleDefinitionForm.get('services').value);
             // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
-            addCycleDefinition.serviceName = this.serviceName;
+            // addCycleDefinition.serviceName = this.serviceName;
             console.log('json', JSON.stringify(addCycleDefinition));
             this.companySettings.UpdateCycleDefinition(addCycleDefinition).subscribe(function (res) {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
@@ -299,7 +299,6 @@ var CycleDefinitionComponent = /** @class */ (function () {
             .subscribe(function (response) {
             _this.alertService.sweetalertMasterSuccess(response.status.message, '');
             _this.getAllCycleDefinition();
-            //  this.BusinessYearform.reset();
         });
     };
     CycleDefinitionComponent.prototype.keyPressedSpaceNotAllow = function (event) {

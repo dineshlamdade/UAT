@@ -598,12 +598,13 @@
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-TaxAdjustments']"><span>TaxAdjustments</span></a></li>
-                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                    class="submenu text-ellipsis"
-                    [routerLink]="['/investment/Other-OtherIncome']"><span>OtherIncome</span></a></li>
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                      class="submenu text-ellipsis"
-                      [routerLink]="['/investment/Other-EmployeeNationalPensionScheme80CCD']"><span>EmployeeNationalPensionScheme80CCD</span></a></li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+                  class="submenu text-ellipsis"
+                  [routerLink]="['/investment/Other-OtherIncome']"><span>OtherIncome</span></a></li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+                  class="submenu text-ellipsis"
+                  [routerLink]="['/investment/Other-EmployeeNationalPensionScheme80CCD']"><span>EmployeeNationalPensionScheme80CCD</span></a>
+              </li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-Child-Hostel-Allowance']"><span>Child-Hostel-Allowance</span></a>
@@ -695,16 +696,20 @@
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/companysetting/attribute-creation']" href="javascript:void(0)">Attribute Creation</a>
           </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+          <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/companysetting/attribute-group']" href="javascript:void(0)">Attribute Group</a>
-          </li>
+          </li> -->
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/companysetting/attribute-global']" href="javascript:void(0)">Attribute Global</a>
+              [routerLink]="['/companysetting/attribute-global']" href="javascript:void(0)">Attribute Group</a>
           </li>
+         
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/companysetting/payroll-head-group-creation']" href="javascript:void(0)">Payroll Head
               Group
               Creation</a>
+          </li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+              [routerLink]="['/companysetting/attribute-dependency']" href="javascript:void(0)">Attribute Dependency</a>
           </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
             <a href="javascript:void(0)" (click)="isCollapsedRolesPermission = !isCollapsedRolesPermission"

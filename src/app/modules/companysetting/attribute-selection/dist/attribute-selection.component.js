@@ -30,6 +30,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
         this.selectedUser = [];
         this.selectedUser2 = [];
     }
+    ;
     AttributeSelectionComponent.prototype.ngOnInit = function () {
         this.getAllAttributeSelection();
         this.getAllAttributeCreation();
@@ -49,6 +50,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
         //  getAllGlobalAttributeCreation
         /// COMMENTED FUNCTION getAllAttributeCreation
         this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
+            console.log('c', res.data.results);
             _this.originalSourceProductList = res.data.results;
             _this.sourceProducts = res.data.results;
         });
@@ -56,6 +58,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
     // get All Attribute Selection
     AttributeSelectionComponent.prototype.getAllAttributeSelection = function () {
         var _this = this;
+        this.summaryList = [];
         this.attributeSelectionService.getAttributeGroup().subscribe(function (res) {
             _this.AttributeSelectionList = res.data.results;
             res.data.results.forEach(function (element) {
@@ -242,76 +245,139 @@ var AttributeSelectionComponent = /** @class */ (function () {
         this.AttributeSelectionForm.patchValue({
             attributeNature: ''
         });
+        this.resetAttributeSelection();
     };
     AttributeSelectionComponent.prototype.onStatusChange = function (event) {
         var _this = this;
+        console.log('evt', event.target.value);
+        if (event.target.value == '') {
+            this.selectedUser2 = [];
+            this.selectedUser = [];
+            this.sourceProducts = [];
+            this.targetProducts = [];
+            this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
+                console.log('c', res.data.results);
+                _this.originalSourceProductList = res.data.results;
+                _this.sourceProducts = res.data.results;
+            });
+        }
+        else {
+            this.selectedUser2 = [];
+            this.selectedUser = [];
+            this.sourceProducts = [];
+            this.targetProducts = [];
+            this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
+                console.log('c', res.data.results);
+                _this.originalSourceProductList = res.data.results;
+                _this.sourceProducts = res.data.results;
+            }, function (err) {
+            }, function () {
+                _this.sourceProducts = _this.originalSourceProductList;
+                _this.attributeSelectionService.GetAttributeOptionListByGroup(event.target.value).subscribe(function (res) {
+                    console.log('GetAttributeOptionListByGroup res is', res);
+                    _this.targetProducts = res.data.results[0].attributeMasters;
+                    _this.targetProducts.forEach(function (element) {
+                        element.disabled = true;
+                        //  var index = this.targetProducts.indexOf( element )
+                        _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+                    });
+                });
+                //  this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
+                //
+                //     this.sourceProducts = res.data.results;
+                //     });
+                // this.targetProducts.forEach(element => {
+                //   var index=this.targetProducts.indexOf(element)
+                //   this.sourceProducts = this.sourceProducts.filter(e => e.code == element.code);
+                // });
+                _this.userHasSelectedMandatoryFieldOnly = _this.targetProducts.every(function (o) { return o.disabled == true; });
+            });
+        }
+    };
+    // Get Attribute Selection ById
+    // GetAttributeSelectionByIdDisable( id ): void {
+    //   this.disabled = false;
+    //   this.viewupdateButton = false;
+    //   this.viewCancelButton = true;
+    //   this.attributeSelectionService.GetAttributeSelectionById( id )
+    //     .subscribe( response => {
+    //       this.targetProducts = response.data.results[0].attributeMasters;
+    //       this.targetProducts.forEach( element => {
+    //         var index = this.targetProducts.indexOf( element )
+    //         this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+    //       } );
+    //       //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
+    //       this.AttributeSelectionForm.patchValue( { name: response.data.results[0].name } );
+    //       this.AttributeSelectionForm.patchValue( { description: response.data.results[0].description } );
+    //       this.AttributeSelectionForm.patchValue( { attributeNature: response.data.results[0].name } );
+    //     } );
+    //   this.AttributeSelectionForm.disable();
+    // }
+    AttributeSelectionComponent.prototype.GetAttributeSelectionByIdDisable = function (id) {
+        var _this = this;
+        this.disabled = false;
+        this.viewupdateButton = false;
+        this.viewCancelButton = true;
         this.selectedUser2 = [];
         this.selectedUser = [];
         this.sourceProducts = [];
         this.targetProducts = [];
-        this.getAllAttributeCreation();
-        this.sourceProducts = this.originalSourceProductList;
-        this.attributeSelectionService.GetAttributeOptionListByGroup(event.target.value).subscribe(function (res) {
-            console.log('GetAttributeOptionListByGroup res is', res);
-            _this.targetProducts = res.data.results[0].attributeMasters;
-            _this.targetProducts.forEach(function (element) {
-                element.disabled = true;
-                //  var index = this.targetProducts.indexOf( element )
-                _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+        this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
+            console.log('c', res.data.results);
+            _this.originalSourceProductList = res.data.results;
+            _this.sourceProducts = res.data.results;
+        }, function (err) {
+        }, function () {
+            _this.sourceProducts = _this.originalSourceProductList;
+            _this.attributeSelectionService.GetAttributeSelectionById(id)
+                .subscribe(function (response) {
+                _this.targetProducts = response.data.results[0].attributeMasters;
+                _this.originalTargetList = response.data.results[0].attributeMasters;
+                console.log('this.targetProducts', _this.targetProducts);
+                _this.targetProducts.forEach(function (element) {
+                    _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+                });
+                _this.AttributeSelectionForm.patchValue({ name: response.data.results[0].name });
+                _this.AttributeSelectionForm.patchValue({ description: response.data.results[0].description });
+                _this.AttributeSelectionForm.patchValue({ attributeNature: response.data.results[0].name });
             });
-            //  this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
-            //
-            //     this.sourceProducts = res.data.results;
-            //     });
-            // this.targetProducts.forEach(element => {
-            //   var index=this.targetProducts.indexOf(element)
-            //   this.sourceProducts = this.sourceProducts.filter(e => e.code == element.code);
-            // });
-        });
-        this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every(function (o) { return o.disabled == true; });
-    };
-    // Get Attribute Selection ById
-    AttributeSelectionComponent.prototype.GetAttributeSelectionByIdDisable = function (id) {
-        var _this = this;
-        // this.CycleupdateFlag=true;
-        // this.CycleupdateFlag1=false;
-        this.disabled = false;
-        this.viewupdateButton = false;
-        this.viewCancelButton = true;
-        this.attributeSelectionService.GetAttributeSelectionById(id)
-            .subscribe(function (response) {
-            _this.targetProducts = response.data.results[0].attributeMasters;
-            _this.targetProducts.forEach(function (element) {
-                var index = _this.targetProducts.indexOf(element);
-                _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
-            });
-            //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
-            _this.AttributeSelectionForm.patchValue({ name: response.data.results[0].name });
-            _this.AttributeSelectionForm.patchValue({ description: response.data.results[0].description });
-            _this.AttributeSelectionForm.patchValue({ attributeNature: response.data.results[0].name });
+            _this.disabled = true;
+            _this.viewupdateButton = true;
+            _this.viewCancelButton = true;
+            _this.attributeGroupId = id;
         });
         this.AttributeSelectionForm.disable();
     };
     // Get Attribute Selection ById
     AttributeSelectionComponent.prototype.GetAttributeSelectionById = function (id) {
         var _this = this;
-        this.originalTargetList = [];
-        this.disabled = true;
-        this.viewupdateButton = true;
-        this.viewCancelButton = true;
-        this.attributeGroupId = id;
-        this.attributeSelectionService.GetAttributeSelectionById(id)
-            .subscribe(function (response) {
-            _this.targetProducts = response.data.results[0].attributeMasters;
-            _this.originalTargetList = response.data.results[0].attributeMasters;
-            console.log('xxxxx', _this.targetProducts);
-            _this.targetProducts.forEach(function (element) {
-                var index = _this.targetProducts.indexOf(element);
-                _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+        this.selectedUser2 = [];
+        this.selectedUser = [];
+        this.sourceProducts = [];
+        this.targetProducts = [];
+        this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
+            console.log('c', res.data.results);
+            _this.originalSourceProductList = res.data.results;
+            _this.sourceProducts = res.data.results;
+        }, function (err) {
+        }, function () {
+            _this.sourceProducts = _this.originalSourceProductList;
+            _this.attributeSelectionService.GetAttributeSelectionById(id)
+                .subscribe(function (response) {
+                _this.targetProducts = response.data.results[0].attributeMasters;
+                _this.originalTargetList = response.data.results[0].attributeMasters;
+                console.log('this.targetProducts', _this.targetProducts);
+                _this.targetProducts.forEach(function (element) {
+                    _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+                });
+                _this.AttributeSelectionForm.patchValue({ name: response.data.results[0].name });
+                _this.AttributeSelectionForm.patchValue({ description: response.data.results[0].description });
+                _this.AttributeSelectionForm.patchValue({ attributeNature: response.data.results[0].name });
             });
-            _this.AttributeSelectionForm.patchValue({ name: response.data.results[0].name });
-            _this.AttributeSelectionForm.patchValue({ description: response.data.results[0].description });
-            _this.AttributeSelectionForm.patchValue({ attributeNature: response.data.results[0].name });
+            _this.disabled = true;
+            _this.viewupdateButton = true;
+            _this.viewCancelButton = true;
+            _this.attributeGroupId = id;
         });
     };
     //Delete Attribute Selection by id
@@ -378,18 +444,13 @@ var AttributeSelectionComponent = /** @class */ (function () {
         console.log(JSON.stringify(this.attributeGroupId));
         console.log(JSON.stringify(addAttributeCreation));
         addAttributeCreation.removedAttributeGroupIdList = [];
-        var _loop_1 = function (i) {
-            if (addAttributeCreation.attributeMasterIdList.some(function (o) { return o.attributeMasterId == _this.originalSourceProductList[i].attributeMasterId; })) {
-                addAttributeCreation.removedAttributeGroupIdList.push(this_1.originalSourceProductList[i].attributeMasterId);
-            }
-            else {
-                console.log('line no 479 in else block');
-            }
-        };
-        var this_1 = this;
-        for (var i = 0; i < this.originalSourceProductList.length; i++) {
-            _loop_1(i);
-        }
+        // for ( let i = 0; i < this.originalSourceProductList.length; i++ ) {
+        //   if ( addAttributeCreation.attributeMasterIdList.some( o => o.attributeMasterId == this.originalSourceProductList[i].attributeMasterId ) ) {
+        //     // addAttributeCreation.removedAttributeGroupIdList.push( this.originalSourceProductList[i].attributeMasterId );
+        //   } else {
+        //     console.log( 'line no 479 in else block' );
+        //   }
+        // }
         // for ( let i = 0; i < this.originalTargetList.length; i++ ) {
         //   addAttributeCreation.removedAttributeGroupIdList.push( this.originalTargetList[i].attributeMasterId );
         // }

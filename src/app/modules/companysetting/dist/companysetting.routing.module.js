@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.CompanySettingRoutingModule = void 0;
+var attribute_dependency_component_1 = require("./attribute-dependency/attribute-dependency.component");
 var garnishment_master_component_1 = require("./payroll/garnishment-master/garnishment-master.component");
 var attribute_creation_component_1 = require("./attribute-creation/attribute-creation.component");
 var business_cycle_component_1 = require("./business-cycle/business-cycle.component");
@@ -92,6 +93,11 @@ var routes = [
     {
         path: 'attribute-global',
         component: attribute_global_component_1.AttributeGlobalComponent,
+        data: { title: ':: Epic :: Company Setting' }
+    },
+    {
+        path: 'attribute-dependency',
+        component: attribute_dependency_component_1.AttributeDependencyComponent,
         data: { title: ':: Epic :: Company Setting' }
     },
 ];

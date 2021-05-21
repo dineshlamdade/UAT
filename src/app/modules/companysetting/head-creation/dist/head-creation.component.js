@@ -20,7 +20,15 @@ var HeadCreationComponent = /** @class */ (function () {
         this.headCreationService = headCreationService;
         this.document = document;
         this.NatureList = [{ label: 'Earning', value: 'Earning' }, { label: 'Deduction', value: 'Deduction' }, { label: 'Perquisite', value: 'Perquisite' }];
-        this.categoryList = [{ value: 'Reimbursement', label: 'Reimbursement' }, { value: 'Statutory', label: 'Statutory' }];
+        this.categoryList = [
+            { value: 'Asset', label: 'Asset' },
+            { value: 'ESOP-RSU-ESPP', label: 'ESOP-RSU-ESPP' },
+            { value: 'Garnishment', label: 'Garnishment' },
+            { value: 'Loan & Advance', label: 'Loan & Advance' },
+            { value: 'Non-Recurring Quantity', label: 'Non-Recurring Quantity' },
+            { value: 'Reimbursement', label: 'Reimbursement' },
+            { value: 'Statutory', label: 'Statutory' },
+        ];
         this.headCreationList = [];
         this.TypeList = [];
         this.HeadCreationList = [];
@@ -31,10 +39,10 @@ var HeadCreationComponent = /** @class */ (function () {
         this.HeadCreationForm = this.formBuilder.group({
             id: new forms_1.FormControl(null),
             shortName: new forms_1.FormControl('', forms_1.Validators.required),
-            displayName: new forms_1.FormControl(''),
-            headNature: new forms_1.FormControl(''),
+            displayName: new forms_1.FormControl('', forms_1.Validators.required),
+            headNature: new forms_1.FormControl('', forms_1.Validators.required),
             standardName: new forms_1.FormControl('', forms_1.Validators.required),
-            description: new forms_1.FormControl(''),
+            description: new forms_1.FormControl('', forms_1.Validators.required),
             category: new forms_1.FormControl(''),
             type: new forms_1.FormControl('')
         });

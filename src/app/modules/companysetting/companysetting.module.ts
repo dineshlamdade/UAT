@@ -1,3 +1,4 @@
+import { AttributeDependencyComponent } from './attribute-dependency/attribute-dependency.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -49,7 +50,8 @@ import { AttributeGlobalComponent } from './attribute-global/attribute-global.co
     BusinessYearComponent,
     CycleDefinitionComponent,
     CycleCreationComponent,
-    AttributeGlobalComponent
+    AttributeGlobalComponent,
+    AttributeDependencyComponent,
   ],
   imports: [
     CommonModule,
@@ -60,14 +62,11 @@ import { AttributeGlobalComponent } from './attribute-global/attribute-global.co
     BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),
     AccordionModule.forRoot(),
-    TooltipModule.forRoot(),
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     ProgressbarModule.forRoot(),
-    CarouselModule.forRoot(),
-    BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot( {

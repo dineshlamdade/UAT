@@ -29,12 +29,7 @@
                         [ngClass]="{'is-invalid' : AttributeSelectionForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
-                  <!-- <div class="col-sm-6 col-md-3">
-                                    <label class="form-label">Short Name</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Short Name">
-                                    </div>
-                                </div> -->
+
 
                   <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Copy From</label>
@@ -46,18 +41,13 @@
                       </option>
                     </select>
                   </div>
-                  <!-- [ngClass]="{'is-invalid' : AttributeSelectionForm.get('attributeNature').status == 'INVALID'}" -->
+
                   <br><br><br>
-                  <!-- <div class="col-sm-6 col-md-3" *ngIf="hidevalue">
-                                    <label class="form-label">Value</label>
-                                    <div class="input-group">
-                                        <input type="text" [ngClass]="{'is-invalid' : AttributeSelectionForm.get('optionList').status == 'INVALID'}" [readonly]="!disabled" (change)="onChangeEvent($event.target.value)" formControlName="optionList" class="form-control" placeholder="Description">
-                                    </div>
-                                </div> -->
+
 
 
                   <div style="margin-top: 23px" *ngIf="hidevalue">
-                    <!-- <button mat-mini-fab class="btnadd" (click)="addBenefit()" matTooltip="Add Benefit"> -->
+
                     <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addOptionList()"></i>
                     <!-- <span tooltip="Add Row">Add</span>&nbsp;&nbsp; -->
                     <!-- </button> -->
@@ -84,16 +74,17 @@
                 <div class="row mt-30">
                   <div class="col-5">
                     <div class="card">
-                      <div class=""><span class="form-label">Total List: {{sourceProducts.length}} &nbsp; &nbsp;
-                          Selected List:
-                          {{selectedUser.length}}</span>
-                        <div class="table-responsive Custom_Table">
+                      <div class=""><span class="form-label">Total Attributes:
+                          <span class="font-14 text-dark-green">( {{sourceProducts.length}} ) &nbsp; &nbsp;</span>
+                          Selected Attributes:
+                          <span class="font-14 text-dark-green">( {{selectedUser.length}} )</span></span>
+                        <div class="table-responsive Custom_Table height-350">
                           <table class="table  table-bordered m-b-0" id="myTable">
                             <thead class="thead-dark">
                               <tr>
-                                <th scope="col" class="font700 wd-12">Code</th>
-                                <th scope="col" class="font700 wd-20">Description</th>
-                                <th scope="col" class="font700 wd-12">Nature</th>
+                                <th class="font700 wd-30">Code</th>
+                                <th class="font700 wd-40">Description</th>
+                                <th class="font700 wd-30">Nature</th>
                                 <!-- <th scope="col" class="font700 wd-12">remove it</th> -->
                               </tr>
                             </thead>
@@ -106,19 +97,23 @@
                                 <span>{{i+1}}</span>
                                 </td> -->
 
-                                <td class="wd-10">
-                                  <span>{{product.code}}</span>
+                                <td class="wd-30 align-left">
+                                  <span tooltip="{{product.code}}">{{product.code}}</span>
                                 </td>
-                                <td class="wd-10">
-                                  <span>{{product.description}} </span>
+                                <td class="wd-40 align-left">
+                                  <span tooltip="{{product.description}}">{{product.description}} </span>
                                 </td>
-                                <td class="wd-10">
-                                  <span>{{product.attributeNature}}</span>
+                                <td class="wd-30 align-left">
+                                  <span tooltip="{{product.attributeNature}}">{{product.attributeNature}}</span>
                                 </td>
                                 <!-- <td class="wd-10">
                                   <span>{{product.dummy}}</span>
                                 </td> -->
 
+                              </tr>
+                              <tr *ngIf="!sourceProducts.length">
+                                <td colspan="3"><span class="font-14 font500 align-center text-red"> No Data
+                                    Available</span></td>
                               </tr>
                             </tbody>
                           </table>
@@ -128,13 +123,13 @@
                   </div>
 
                   <div class="col-1">
-                    <div class="row">
-                      <div class="col-md-12 mt-10">
-                        <button type="button" class="btn" (click)="lefttablePusg()"><i
+                    <div class="row mt-150">
+                      <div class="col-md-12 mt-10 text-center">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusg()"><i
                             class="fa fa-chevron-right"></i></button>
                       </div>
-                      <div class="col-md-12 mt-10">
-                        <button type="button" class="btn" (click)="righttablePusg()"><i
+                      <div class="col-md-12 mt-10 text-center">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="righttablePusg()"><i
                             class="fa fa-chevron-left "></i></button>
                       </div>
                     </div>
@@ -152,17 +147,20 @@
 
                   <div class="col-5">
                     <div class="card">
-                      <div class=""><span class="form-label">Total List: {{targetProducts.length}} &nbsp;&nbsp;Selected
-                          List: &nbsp;{{selectedUser2.length}}
+                      <div class=""><span class="form-label">Total Attributes:
+                          <span class="font-14 text-dark-green">( {{targetProducts.length}} )</span>
+                          &nbsp;&nbsp;Selected
+                          Attributes: &nbsp;<span class="font-14 text-dark-green">( {{selectedUser2.length}}
+                            )</span></span>
 
-                        </span>
-                        <div class="table-responsive Custom_Table">
+
+                        <div class="table-responsive Custom_Table height-350">
                           <table class="table   table-bordered m-b-0">
                             <thead class="thead-dark">
                               <tr>
-                                <th scope="col" class="font700 wd-12">Code</th>
-                                <th scope="col" class="font700 wd-20">Description</th>
-                                <th scope="col" class="font700 wd-12">Nature</th>
+                                <th class="font700 wd-30">Code</th>
+                                <th class="font700 wd-40">Description</th>
+                                <th class="font700 wd-30">Nature</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -175,16 +173,20 @@
                                 <!-- <td class="align-center wd-10">
                                                                 <span>{{i+1}}</span>
                                                             </td>  -->
-                                <td class="wd-10">
-                                  <span>{{product.code}}</span>
+                                <td class="align-left">
+                                  <span tooltip="{{product.code}}">{{product.code}}</span>
                                 </td>
-                                <td class="wd-10">
+                                <td class=" align-left" tooltip="{{product.description}}">
                                   <span>{{product.description}}</span>
                                 </td>
-                                <td class="wd-10">
+                                <td class=" align-left" tooltip="{{product.attributeNature}}">
                                   <span>{{product.attributeNature}}</span>
                                 </td>
 
+                              </tr>
+                              <tr *ngIf="!targetProducts.length">
+                                <td colspan="3"><span class="font-14 font500 align-center text-red">No Data
+                                    Available</span></td>
                               </tr>
                             </tbody>
                           </table>
@@ -235,7 +237,7 @@
 
 
 
-              <div class="row mt-30">
+              <!-- <div class="row mt-30">
                 <div class="col-12">
                   <div class="card">
                     <div class="mb-10">
@@ -250,19 +252,11 @@
                               <th scope="col" class="font700 wd-12">Attribute Group Name</th>
                               <th scope="col" class="font700 wd-20">Description</th>
                               <th scope="col" class="font700 wd-12">Count</th>
-                              <!-- <th scope="col" class="font700 wd-12">Short Name</th> -->
-                              <!-- <th scope="col" class="font700 wd-12">Nature</th>
-                                                        <th scope="col" class="font700 wd-20">Value</th>                                                                        -->
                               <th scope="col" class="font700 wd-12">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <!-- <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                      </tr>  -->
+
 
                             <tr *ngFor="let summary of summaryList; let i = index">
                               <td class="align-center wd-10">
@@ -276,29 +270,8 @@
                               </td>
                               <td class="wd-10">
                                 <span>{{summary.options}}</span>
-                              </td>
+                              </td>                          <td>
 
-
-                              <!-- <td class="wd-10">
-                                                            <span>{{summary.attributeNature}}</span>
-                                                        </td>
-                                                        <td class="wd-10">
-                                                            <span>{{summary.businessCycleDefinition.businessYearDefinition.fromDate}}</span>
-                                                        </td>
-                                                        <td class="wd-10">
-                                                            <span *ngFor="let value of summary.optionList">
-                                                                {{value.optionValue}},
-                                                            </span>
-                                                            <span *ngIf="summary.optionList.length-1>summary.optionList.length">,</span>
-                                                        </td> -->
-
-                              <td>
-                                <!-- <button type="button"
-                                                                class="btn btn-icon" title="Extend">
-                                                                <i class="fa fa-arrows-alt"
-                                                                    (click)="UploadModal1(template1);getBussinessyear(summary.businessYear,summary.businessCycleDefinition.id)"
-                                                                    data-toggle="modal"
-                                                                    data-target="#UploadModal"></i></button> -->
 
                                 <button type="button" class="btn btn-icon" title="Edit"
                                   (click)="GetAttributeSelectionById(summary.id)">
@@ -319,12 +292,130 @@
                     </div>
                   </div>
                 </div>
+              </div> -->
+
+
+
+              <div class="row">
+                <div class="col-md-10">
+
+
+
+
+                  <div class="cycle-table mt-4">
+
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+
+
+
+                    <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [rowsPerPageOptions]="[10,25,50]">
+
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th rowspan="1" class="wd-8 text-center">
+                            Sr. No.
+                          </th>
+                          <th rowspan="1" class="wd-20">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Attribute Group Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="name" pSortableColumn="name"></p-sortIcon>
+                                <p-columnFilter field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+
+                          <th rowspan="1" class="wd-20">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Description
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                <p-columnFilter field="description" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th rowspan="1" class="wd-8">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Count
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="options" pSortableColumn="options"></p-sortIcon>
+                                <p-columnFilter field="options" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+
+
+
+                          <th rowspan="1" class="wd-10 text-center">
+                            <div class="p-d-flex p-jc-center p-ai-center">
+                              Action
+                            </div>
+                          </th>
+                        </tr>
+
+                      </ng-template>
+
+
+
+                      <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                        <tr class="p-selectable-row">
+
+
+
+                          <td class="bg-color-light_gray text-center"><label
+                              class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.name}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label>
+                          </td>
+                          <td class="bg-color-light_gray text-center"><label
+                              class="form-lable mb-0 text-center">{{user1.options}}</label></td>
+
+
+
+                          <td class="wd-10 align-left">
+
+                            <button type="button" class="btn btn-icon text-blue" tooltip="Edit"
+                              (click)="GetAttributeSelectionById(user1.id)">
+                              <i class="fa fa-edit"></i></button>
+
+                            <button type="button" class="btn btn-icon text-blue" tooltip="View"
+                              (click)="GetAttributeSelectionByIdDisable(user1.id)">
+                              <i class="fa fa-eye"></i></button>
+
+                            <button type="button" *ngIf="!user1.used" (click)="DeleteAttributeSelection(user1.id)"
+                              class="btn btn-icon js-sweetalert text-blue" tooltip="Delete" data-type="confirm"><i
+                                class="fa fa-trash-o"></i></button>
+                          </td>
+
+
+
+
+
+
+
+
+
+                        </tr>
+
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                              Available</span></td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+
+
+                  </div>
+
+
+
+
+                </div>
               </div>
-
-
-
-
-
 
 
 
