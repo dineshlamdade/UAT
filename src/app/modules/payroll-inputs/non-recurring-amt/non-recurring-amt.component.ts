@@ -69,6 +69,9 @@ export class NonRecurringAmtComponent implements OnInit {
 	hold: any;
 	discard: any;
 	updateNoOfTransaction: any;
+	selectedTransactionClawback: any;
+	clawbackperiod: number = 0;
+	clawbackDate: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -93,6 +96,9 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.indexId = 1;
 		this.selectedEmpData = []
 		this.NonRecurringTransactionGroupSummery()
+		this.selectedEmployeeMasterId = "";
+		this.selectedPayrollArea = "";
+		this.NonRecurringTransactionGroupAPIEmpwiseData = "";
 	}
 
 	/** When clicked on checkedbox summary page*/
@@ -248,6 +254,12 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.remark = transactionData.remark
 				this.standardName = transactionData.payrollHeadMaster.standardName
 				this.headMasterId = transactionData.payrollHeadMaster.headMasterId
+				this.selectedFromDate = this.datepipe.transform(new Date(transactionData.fromDate),'yyyy-MM-dd')+' 00:00:00'
+				this.selectedApplicableAt = transactionData.clawbackApplicableAt
+			    this.selectedClawbackInputType = transactionData.clawbackInputType
+			    this.clawbackperiod = transactionData.clawbackPeriod
+			    this.clawbackFrequency = transactionData.clawbackUnit
+				this.clawbackDate = transactionData.clawbackDate
 				console.log(this.NonRecurringTransactionGroupAPIbyIdData[0])
 			}
 		)
@@ -311,12 +323,12 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** get Uppdate No Of Transacton */
-	getUpdateNoOfTransaction(value){
+	getUpdateNoOfTransaction(value) {
 		this.updateNoOfTransaction = value;
 	}
 
 	/**get update opening amount */
-	getUpdateOpeningAmt(value){
+	getUpdateOpeningAmt(value) {
 		this.openingAmount = value
 	}
 
@@ -337,7 +349,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			"employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
 			"headMasterId": parseInt(this.headMasterId),
 			"standardName": this.standardName,
-			"payrollAreaId": this.selectedEmpData[this.index].payrollArea.payrollAreaId,
+			"payrollAreaId": this.selectedEmpData[this.index].payrollArea.payrollAreaId.toString(),
 			"payrollAreaCode": this.selectedEmpData[this.index].payrollArea.payrollAreaCode,
 			"onceEvery": parseInt(this.onceEvery),
 			"frequency": this.selectedEmpData[this.index].frequency,
@@ -348,11 +360,11 @@ export class NonRecurringAmtComponent implements OnInit {
 			"amount": parseFloat(this.openingAmount),
 			"remark": this.remark,
 			"createdBy": "rahul",
-			"clawbackApplicableAt":"",
-			"clawbackInputType":"",
-			"clawbackPeriod":0,
-			"clawbackUnit":"",
-			"clawbackDate":""
+			"clawbackApplicableAt": this.selectedApplicableAt,
+			"clawbackInputType": this.selectedClawbackInputType,
+			"clawbackPeriod": this.clawbackperiod,
+			"clawbackUnit": this.clawbackFrequency,
+			"clawbackDate": ""
 		}
 
 		console.log("Data is: " + JSON.stringify(data))
@@ -378,32 +390,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 
-	/** Clawback Popup Show */
-	ViewClawbackpopup(template4: TemplateRef<any>) {
-		this.modalRef = this.modalService.show(
-			template4,
-			Object.assign({}, {
-				class: 'gray modal-lg'
-			})
-		);
-	}
-
-
-	/** Get Applcable At selected Value */
-	getSelectedApplicable(value){
-		this.selectedApplicableAt = value
-	}
-
-	/** Get Input Type selected Value */
-	getSelectedInputType(value){
-		this.selectedClawbackInputType = value
-	}
-
-	/**Get Clawback Frequency selected value */
-	getClawbackFrequency(value){
-		this.clawbackFrequency = value
-	}
-
+	
 	/******************* Transaction when click on Transaction Tab and select Employee from Dropdown *******************/
 
 	/** Navigate To Transaction Tab on click radio button */
@@ -426,7 +413,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		if (this.selectedEmployeeMasterId != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
 			this.NonRecurringTransactionGroupUI()
-			this.nonRecService.employeeFinDetails(44).subscribe(
+			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
 				}
@@ -436,11 +423,11 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Get Selected Employee master Id */
 	getSelectedEmployeeCode(value) {
-		this.selectedEmployeeMasterId = value
+		this.selectedEmployeeMasterId = parseInt(value)
 		if (this.selectedPayrollArea != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
 			this.NonRecurringTransactionGroupUI()
-			this.nonRecService.employeeFinDetails(44).subscribe(
+			this.nonRecService.employeeFinDetails(this.selectedEmpData[this.index]).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
 				}
@@ -474,6 +461,13 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.NonRecurringTransactionGroupUI(formData).subscribe(
 			res => {
 				this.NonRecurringTransactionGroupUIData = res.data.results;
+				this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
+					this.NonRecurringTransactionGroupUIData.forEach(ele => {
+						if(element.headId == ele.headId){
+							element.frequency = ele.frequency
+						}
+					});
+				});
 
 			}
 		)
@@ -520,18 +514,24 @@ export class NonRecurringAmtComponent implements OnInit {
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": parseInt(value),
-						"frequency": "Monthly",
+						"frequency": element.frequency,
 						"fromDate": element.fromDate,
 						"transactionsType": element.transactionsType,
 						"numberOfTransactions": element.numberOfTransactions,
 						"toDate": element.toDate,
-						"amount": 4500.00,
-						"remark": element.remark
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": element.clawbackDate
 					})
 				} else {
-					let length = this.saveTransactionData.length -1;
-					if(this.saveTransactionData[length].headMasterId == data.headId){ return;}
-					else{
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
@@ -539,13 +539,19 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": parseInt(value),
-							"frequency": "Monthly",
+							"frequency": data.frequency,
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
 							"toDate": todate,
-							"amount": 4500.00,
-							"remark": data.remark
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
 						})
 					}
 				}
@@ -558,13 +564,19 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": parseInt(value),
-				"frequency": "Monthly",
+				"frequency": data.frequency,
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
 				"toDate": todate,
-				"amount": 4500.00,
-				"remark": data.remark
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
 			})
 		}
 	}
@@ -594,18 +606,24 @@ export class NonRecurringAmtComponent implements OnInit {
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
-						"frequency": "Monthly",
+						"frequency": element.frequency,
 						"fromDate": this.selectedFromDateForSave,
 						"transactionsType": element.transactionsType,
 						"numberOfTransactions": element.numberOfTransactions,
 						"toDate": element.toDate,
-						"amount": 4500.00,
-						"remark": element.remark
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": ""
 					})
 				} else {
-					let length = this.saveTransactionData.length -1;
-					if(this.saveTransactionData[length].headMasterId == data.headId){ return;}
-					else{
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
@@ -613,15 +631,21 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": "Monthly",
+							"frequency": data.frequency,
 							"fromDate": this.selectedFromDateForSave,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
 							"toDate": todate,
-							"amount": 4500.00,
-							"remark": data.remark
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
 						})
-					}	
+					}
 				}
 			});
 		} else {
@@ -632,13 +656,19 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": "Monthly",
+				"frequency": data.frequency,
 				"fromDate": this.selectedFromDateForSave,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
 				"toDate": todate,
-				"amount": 4500.00,
-				"remark": data.remark
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
 			})
 		}
 	}
@@ -669,18 +699,24 @@ export class NonRecurringAmtComponent implements OnInit {
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
-						"frequency": "Monthly",
+						"frequency": element.frequency,
 						"fromDate": element.fromDate,
-						"transactionsType": element.transactionsType,
+						"transactionsType": this.selectedTransactionType,
 						"numberOfTransactions": element.numberOfTransactions,
 						"toDate": todate,
-						"amount": 4500.00,
-						"remark": element.remark
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": ""
 					})
 				} else {
-					let length = this.saveTransactionData.length -1;
-					if(this.saveTransactionData[length].headMasterId == data.headId){ return;}
-					else{
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
@@ -688,15 +724,21 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": "Monthly",
+							"frequency": data.frequency,
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
 							"toDate": todate,
-							"amount": 4500.00,
-							"remark": data.remark
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
 						})
-					}	
+					}
 				}
 			});
 		} else {
@@ -707,13 +749,19 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": "Monthly",
+				"frequency": data.frequency,
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
 				"toDate": todate,
-				"amount": 4500.00,
-				"remark": data.remark
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
 			})
 		}
 	}
@@ -743,18 +791,24 @@ export class NonRecurringAmtComponent implements OnInit {
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
-						"frequency": "Monthly",
+						"frequency": element.frequency,
 						"fromDate": element.fromDate,
 						"transactionsType": element.transactionsType,
 						"numberOfTransactions": element.numberOfTransactions,
 						"toDate": todate,
-						"amount": 4500.00,
-						"remark": element.remark
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": ""
 					})
 				} else {
-					let length = this.saveTransactionData.length -1;
-					if(this.saveTransactionData[length].headMasterId == data.headId){ return;}
-					else{
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
@@ -762,15 +816,21 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": "Monthly",
+							"frequency": data.frequency,
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
 							"toDate": todate,
-							"amount": 4500.00,
-							"remark": data.remark
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
 						})
-					}	
+					}
 				}
 			});
 		} else {
@@ -781,13 +841,19 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": "Monthly",
+				"frequency": data.frequency,
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
 				"toDate": todate,
-				"amount": 4500.00,
-				"remark": data.remark
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
 			})
 		}
 	}
@@ -816,18 +882,24 @@ export class NonRecurringAmtComponent implements OnInit {
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
 						"onceEvery": element.onceEvery,
-						"frequency": "Monthly",
+						"frequency": element.frequency,
 						"fromDate": element.fromDate,
 						"transactionsType": element.transactionsType,
 						"numberOfTransactions": element.numberOfTransactions,
 						"toDate": todate,
-						"amount": 4500.00,
-						"remark": value
+						"amount": element.amount,
+						"remark": value,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": ""
 					})
 				} else {
-					let length = this.saveTransactionData.length -1;
-					if(this.saveTransactionData[length].headMasterId == data.headId){ return;}
-					else{
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
@@ -835,15 +907,21 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": "Monthly",
+							"frequency": data.frequency,
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
 							"toDate": todate,
-							"amount": 4500.00,
-							"remark": value
+							"amount": data.openingAmount,
+							"remark": value,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
 						})
-					}	
+					}
 				}
 			});
 		} else {
@@ -854,13 +932,672 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": "Monthly",
+				"frequency": data.frequency,
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
 				"toDate": todate,
-				"amount": 4500.00,
-				"remark": value
+				"amount": data.openingAmount,
+				"remark": value,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
+			})
+		}
+	}
+
+	/**on change opening balance */
+	transactionOpeningAmount(value, data) {
+		let todate = "";
+		if (this.selectedTransactionType == 'NoOfTransaction') {
+			todate = ""
+		} else if (this.selectedTransactionType == 'Perpetual') {
+			todate = '9999-12-31 00:00:00'
+		} else {
+			todate = this.selectedToDateForSave;
+		}
+		if (this.selectedFromDate == '') {
+			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
+		}
+		if (this.saveTransactionData.length > 0) {
+			this.saveTransactionData.forEach((element, index) => {
+				if (element.headMasterId == data.headId) {
+					let ind = index;
+					this.saveTransactionData.splice(ind, 1, {
+						"employeeMasterId": this.selectedEmployeeMasterId,
+						"headMasterId": element.headMasterId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": element.frequency,
+						"fromDate": element.fromDate,
+						"transactionsType": element.transactionsType,
+						"numberOfTransactions": element.numberOfTransactions,
+						"toDate": todate,
+						"amount": parseInt(value),
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": element.clawbackDate
+					})
+				} else {
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
+						this.saveTransactionData.push({
+							"employeeMasterId": this.selectedEmployeeMasterId,
+							"headMasterId": data.headId,
+							"standardName": data.headDescription,
+							"payrollAreaId": "1",
+							"payrollAreaCode": this.selectedPayrollArea,
+							"onceEvery": data.onceEvery,
+							"frequency": data.frequency,
+							"fromDate": data.fromdate,
+							"transactionsType": this.selectedTransactionType,
+							"numberOfTransactions": data.numberOfTransactions,
+							"toDate": todate,
+							"amount": parseInt(value),
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
+						})
+					}
+				}
+			});
+		} else {
+			this.saveTransactionData.push({
+				"employeeMasterId": this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"standardName": data.headDescription,
+				"payrollAreaId": "1",
+				"payrollAreaCode": this.selectedPayrollArea,
+				"onceEvery": data.onceEvery,
+				"frequency": data.frequency,
+				"fromDate": data.fromdate,
+				"transactionsType": this.selectedTransactionType,
+				"numberOfTransactions": data.numberOfTransactions,
+				"toDate": todate,
+				"amount": parseInt(value),
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
+			})
+		}
+	}
+
+	/**on change no of transaction */
+	saveNoOfTransaction(value,data){
+		let todate = "";
+		if (this.selectedTransactionType == 'NoOfTransaction') {
+			todate = ""
+		} else if (this.selectedTransactionType == 'Perpetual') {
+			todate = '9999-12-31 00:00:00'
+		} else {
+			todate = this.selectedToDateForSave;
+		}
+		if (this.selectedFromDate == '') {
+			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
+		}
+		if (this.saveTransactionData.length > 0) {
+			this.saveTransactionData.forEach((element, index) => {
+				if (element.headMasterId == data.headId) {
+					let ind = index;
+					this.saveTransactionData.splice(ind, 1, {
+						"employeeMasterId": this.selectedEmployeeMasterId,
+						"headMasterId": element.headMasterId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": element.frequency,
+						"fromDate": element.fromDate,
+						"transactionsType": element.transactionsType,
+						"numberOfTransactions": parseInt(value),
+						"toDate": todate,
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": element.clawbackDate
+					})
+				} else {
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
+						this.saveTransactionData.push({
+							"employeeMasterId": this.selectedEmployeeMasterId,
+							"headMasterId": data.headId,
+							"standardName": data.headDescription,
+							"payrollAreaId": "1",
+							"payrollAreaCode": this.selectedPayrollArea,
+							"onceEvery": data.onceEvery,
+							"frequency": data.frequency,
+							"fromDate": data.fromdate,
+							"transactionsType": data.transactionsType,
+							"numberOfTransactions": parseInt(value),
+							"toDate": todate,
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
+						})
+					}
+				}
+			});
+		} else {
+			this.saveTransactionData.push({
+				"employeeMasterId": this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"standardName": data.headDescription,
+				"payrollAreaId": "1",
+				"payrollAreaCode": this.selectedPayrollArea,
+				"onceEvery": data.onceEvery,
+				"frequency": data.frequency,
+				"fromDate": data.fromdate,
+				"transactionsType": data.transactionsType,
+				"numberOfTransactions": data.numberOfTransactions,
+				"toDate": todate,
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
+			})
+		}
+	}
+
+	/** Clawback Popup Show */
+	ViewClawbackpopup(template4: TemplateRef<any>,data) {
+		this.modalRef = this.modalService.show(
+			template4,
+			Object.assign({}, {
+				class: 'gray modal-lg'
+			})
+		);
+
+		this.selectedTransactionClawback = data
+	}
+
+
+	/** Get Applcable At selected Value */
+	getSelectedApplicable(value,data) {
+		this.selectedApplicableAt = value
+		let todate = "";
+		if (this.selectedTransactionType == 'NoOfTransaction') {
+			todate = ""
+		} else if (this.selectedTransactionType == 'Perpetual') {
+			todate = '9999-12-31 00:00:00'
+		} else {
+			todate = this.selectedToDateForSave;
+		}
+		if (this.selectedFromDate == '') {
+			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
+		}
+		if (this.saveTransactionData.length > 0) {
+			this.saveTransactionData.forEach((element, index) => {
+				if (element.headMasterId == data.headId) {
+					let ind = index;
+					this.saveTransactionData.splice(ind, 1, {
+						"employeeMasterId": this.selectedEmployeeMasterId,
+						"headMasterId": element.headMasterId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": element.frequency,
+						"fromDate": element.fromDate,
+						"transactionsType": element.transactionsType,
+						"numberOfTransactions": element.numberOfTransactions,
+						"toDate": todate,
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": value,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": element.clawbackDate
+					})
+				} else {
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
+						this.saveTransactionData.push({
+							"employeeMasterId": this.selectedEmployeeMasterId,
+							"headMasterId": data.headId,
+							"standardName": data.headDescription,
+							"payrollAreaId": "1",
+							"payrollAreaCode": this.selectedPayrollArea,
+							"onceEvery": data.onceEvery,
+							"frequency": data.frequency,
+							"fromDate": data.fromdate,
+							"transactionsType": this.selectedTransactionType,
+							"numberOfTransactions": data.numberOfTransactions,
+							"toDate": todate,
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": value,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
+						})
+					}
+				}
+			});
+		} else {
+			this.saveTransactionData.push({
+				"employeeMasterId": this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"standardName": data.headDescription,
+				"payrollAreaId": "1",
+				"payrollAreaCode": this.selectedPayrollArea,
+				"onceEvery": data.onceEvery,
+				"frequency": data.frequency,
+				"fromDate": data.fromdate,
+				"transactionsType": this.selectedTransactionType,
+				"numberOfTransactions": data.numberOfTransactions,
+				"toDate": todate,
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": value,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
+			})
+		}
+	}
+
+	/** Get Input Type selected Value */
+	getSelectedInputType(value,data) {
+		this.selectedClawbackInputType = value
+		let todate = "";
+		if (this.selectedTransactionType == 'NoOfTransaction') {
+			todate = ""
+		} else if (this.selectedTransactionType == 'Perpetual') {
+			todate = '9999-12-31 00:00:00'
+		} else {
+			todate = this.selectedToDateForSave;
+		}
+		if (this.selectedFromDate == '') {
+			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
+		}
+		if (this.saveTransactionData.length > 0) {
+			this.saveTransactionData.forEach((element, index) => {
+				if (element.headMasterId == data.headId) {
+					let ind = index;
+					this.saveTransactionData.splice(ind, 1, {
+						"employeeMasterId": this.selectedEmployeeMasterId,
+						"headMasterId": element.headMasterId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": element.frequency,
+						"fromDate": element.fromDate,
+						"transactionsType": element.transactionsType,
+						"numberOfTransactions": element.numberOfTransactions,
+						"toDate": todate,
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": value,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": element.clawbackDate
+					})
+				} else {
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
+						this.saveTransactionData.push({
+							"employeeMasterId": this.selectedEmployeeMasterId,
+							"headMasterId": data.headId,
+							"standardName": data.headDescription,
+							"payrollAreaId": "1",
+							"payrollAreaCode": this.selectedPayrollArea,
+							"onceEvery": data.onceEvery,
+							"frequency": data.frequency,
+							"fromDate": data.fromdate,
+							"transactionsType": this.selectedTransactionType,
+							"numberOfTransactions": data.numberOfTransactions,
+							"toDate": todate,
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": value,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
+						})
+					}
+				}
+			});
+		} else {
+			this.saveTransactionData.push({
+				"employeeMasterId": this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"standardName": data.headDescription,
+				"payrollAreaId": "1",
+				"payrollAreaCode": this.selectedPayrollArea,
+				"onceEvery": data.onceEvery,
+				"frequency": data.frequency,
+				"fromDate": data.fromdate,
+				"transactionsType": this.selectedTransactionType,
+				"numberOfTransactions": data.numberOfTransactions,
+				"toDate": todate,
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": value,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
+			})
+		}
+	}
+    
+	/**get clawback period */
+	crawBackPeriod(value,data){
+		this.clawbackperiod = parseInt(value)
+		let todate = "";
+		if (this.selectedTransactionType == 'NoOfTransaction') {
+			todate = ""
+		} else if (this.selectedTransactionType == 'Perpetual') {
+			todate = '9999-12-31 00:00:00'
+		} else {
+			todate = this.selectedToDateForSave;
+		}
+		if (this.selectedFromDate == '') {
+			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
+		}
+		if (this.saveTransactionData.length > 0) {
+			this.saveTransactionData.forEach((element, index) => {
+				if (element.headMasterId == data.headId) {
+					let ind = index;
+					this.saveTransactionData.splice(ind, 1, {
+						"employeeMasterId": this.selectedEmployeeMasterId,
+						"headMasterId": element.headMasterId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": element.frequency,
+						"fromDate": element.fromDate,
+						"transactionsType": element.transactionsType,
+						"numberOfTransactions": element.numberOfTransactions,
+						"toDate": todate,
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": parseInt(value),
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": element.clawbackDate
+					})
+				} else {
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
+						this.saveTransactionData.push({
+							"employeeMasterId": this.selectedEmployeeMasterId,
+							"headMasterId": data.headId,
+							"standardName": data.headDescription,
+							"payrollAreaId": "1",
+							"payrollAreaCode": this.selectedPayrollArea,
+							"onceEvery": data.onceEvery,
+							"frequency": data.frequency,
+							"fromDate": data.fromdate,
+							"transactionsType": this.selectedTransactionType,
+							"numberOfTransactions": data.numberOfTransactions,
+							"toDate": todate,
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": parseInt(value),
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
+						})
+					}
+				}
+			});
+		} else {
+			this.saveTransactionData.push({
+				"employeeMasterId": this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"standardName": data.headDescription,
+				"payrollAreaId": "1",
+				"payrollAreaCode": this.selectedPayrollArea,
+				"onceEvery": data.onceEvery,
+				"frequency": data.frequency,
+				"fromDate": data.fromdate,
+				"transactionsType": this.selectedTransactionType,
+				"numberOfTransactions": data.numberOfTransactions,
+				"toDate": todate,
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": parseInt(value),
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": data.clawbackDate
+			})
+		}
+	}
+
+	/**Get Clawback Frequency selected value */
+	getClawbackFrequency(value,data) {
+		this.clawbackFrequency = value
+		let todate = "";
+		if (this.selectedTransactionType == 'NoOfTransaction') {
+			todate = ""
+		} else if (this.selectedTransactionType == 'Perpetual') {
+			todate = '9999-12-31 00:00:00'
+		} else {
+			todate = this.selectedToDateForSave;
+		}
+		if (this.selectedFromDate == '') {
+			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
+		}
+		if (this.saveTransactionData.length > 0) {
+			this.saveTransactionData.forEach((element, index) => {
+				if (element.headMasterId == data.headId) {
+					let ind = index;
+					this.saveTransactionData.splice(ind, 1, {
+						"employeeMasterId": this.selectedEmployeeMasterId,
+						"headMasterId": element.headMasterId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": element.frequency,
+						"fromDate": element.fromDate,
+						"transactionsType": element.transactionsType,
+						"numberOfTransactions": element.numberOfTransactions,
+						"toDate": todate,
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": value,
+						"clawbackDate": element.clawbackDate
+					})
+				} else {
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
+						this.saveTransactionData.push({
+							"employeeMasterId": this.selectedEmployeeMasterId,
+							"headMasterId": data.headId,
+							"standardName": data.headDescription,
+							"payrollAreaId": "1",
+							"payrollAreaCode": this.selectedPayrollArea,
+							"onceEvery": data.onceEvery,
+							"frequency": data.frequency,
+							"fromDate": data.fromdate,
+							"transactionsType": this.selectedTransactionType,
+							"numberOfTransactions": data.numberOfTransactions,
+							"toDate": todate,
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": value,
+							"clawbackDate": ""
+						})
+					}
+				}
+			});
+		} else {
+			this.saveTransactionData.push({
+				"employeeMasterId": this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"standardName": data.headDescription,
+				"payrollAreaId": "1",
+				"payrollAreaCode": this.selectedPayrollArea,
+				"onceEvery": data.onceEvery,
+				"frequency": data.frequency,
+				"fromDate": data.fromdate,
+				"transactionsType": this.selectedTransactionType,
+				"numberOfTransactions": data.numberOfTransactions,
+				"toDate": todate,
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": value,
+				"clawbackDate": ""
+			})
+		}
+	}
+
+	/**Get clawback date */
+	getClawbackDate(value,data){
+		let todate = "";
+		if (this.selectedTransactionType == 'NoOfTransaction') {
+			todate = ""
+		} else if (this.selectedTransactionType == 'Perpetual') {
+			todate = '9999-12-31 00:00:00'
+		} else {
+			todate = this.selectedToDateForSave;
+		}
+		if (this.selectedFromDate == '') {
+			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
+		}
+		if (this.saveTransactionData.length > 0) {
+			this.saveTransactionData.forEach((element, index) => {
+				if (element.headMasterId == data.headId) {
+					let ind = index;
+					this.saveTransactionData.splice(ind, 1, {
+						"employeeMasterId": this.selectedEmployeeMasterId,
+						"headMasterId": element.headMasterId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": element.frequency,
+						"fromDate": element.fromDate,
+						"transactionsType": element.transactionsType,
+						"numberOfTransactions": element.numberOfTransactions,
+						"toDate": todate,
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": this.datepipe.transform(new Date(value),'yyyy-MM-dd') + ' 00:00:00'
+					})
+				} else {
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
+						this.saveTransactionData.push({
+							"employeeMasterId": this.selectedEmployeeMasterId,
+							"headMasterId": data.headId,
+							"standardName": data.headDescription,
+							"payrollAreaId": "1",
+							"payrollAreaCode": this.selectedPayrollArea,
+							"onceEvery": data.onceEvery,
+							"frequency": data.frequency,
+							"fromDate": data.fromdate,
+							"transactionsType": this.selectedTransactionType,
+							"numberOfTransactions": data.numberOfTransactions,
+							"toDate": todate,
+							"amount": data.openingAmount,
+							"remark": data.remark,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": this.datepipe.transform(new Date(value),'yyyy-MM-dd') + ' 00:00:00'
+						})
+					}
+				}
+			});
+		} else {
+			this.saveTransactionData.push({
+				"employeeMasterId": this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"standardName": data.headDescription,
+				"payrollAreaId": "1",
+				"payrollAreaCode": this.selectedPayrollArea,
+				"onceEvery": data.onceEvery,
+				"frequency": data.frequency,
+				"fromDate": data.fromdate,
+				"transactionsType": this.selectedTransactionType,
+				"numberOfTransactions": data.numberOfTransactions,
+				"toDate": todate,
+				"amount": data.openingAmount,
+				"remark": data.remark,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": this.datepipe.transform(new Date(value),'yyyy-MM-dd') + ' 00:00:00'
 			})
 		}
 	}
@@ -871,12 +1608,14 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
 			res => {
 				this.toaster.success("", "Transaction Saved Successfully")
+				this.saveTransactionData = [];
+				// this.
 			}
 		)
 	}
 
 
-	/*** Schedule Tab click - edit schedule */
+	/********************** Schedule Tab click - edit schedule ***********************/
 
 	/** Click on Edit Schedule Button */
 	editScheduleData() {
@@ -892,10 +1631,10 @@ export class NonRecurringAmtComponent implements OnInit {
 		}
 	}
 
-	
 
-    /** get hold value for update schedule */
-	getHoldScheduleValue(event, scheduleData,index) {
+
+	/** get hold value for update schedule */
+	getHoldScheduleValue(event, scheduleData, index) {
 		this.selectedHoldIndex = index;
 		if (event.checked) {
 			this.hold = 1
@@ -914,9 +1653,9 @@ export class NonRecurringAmtComponent implements OnInit {
 						"remark": element.remark
 					})
 				} else {
-					let length = this.updateScheduleData.length -1;
-					if(this.updateScheduleData[length].nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId){ return;}
-					else{
+					let length = this.updateScheduleData.length - 1;
+					if (this.updateScheduleData[length].nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId) { return; }
+					else {
 						this.updateScheduleData.push({
 							"nonRecurringTransactionScheduleId": scheduleData.nonRecurringTransactionScheduleId,
 							"hold": this.hold,
@@ -924,7 +1663,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"resheduleDate": scheduleData.resheduleDate,
 							"remark": scheduleData.remark
 						})
-				    }
+					}
 				}
 			});
 		} else {
@@ -940,7 +1679,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** get discard value for update schedule */
-	getDiscardScheduleValue(event, scheduleData,index) {
+	getDiscardScheduleValue(event, scheduleData, index) {
 		this.selecteddiscardIndex = index;
 		if (event.checked) {
 			this.discard = 1
@@ -959,9 +1698,9 @@ export class NonRecurringAmtComponent implements OnInit {
 						"remark": element.remark
 					})
 				} else {
-					let length = this.updateScheduleData.length -1;
-					if(this.updateScheduleData[length].nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId){ return;}
-					else{
+					let length = this.updateScheduleData.length - 1;
+					if (this.updateScheduleData[length].nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId) { return; }
+					else {
 						this.updateScheduleData.push({
 							"nonRecurringTransactionScheduleId": scheduleData.nonRecurringTransactionScheduleId,
 							"hold": scheduleData.hold,
@@ -997,9 +1736,9 @@ export class NonRecurringAmtComponent implements OnInit {
 						"remark": element.remark
 					})
 				} else {
-					let length = this.updateScheduleData.length -1;
-					if(this.updateScheduleData[length].nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId){ return;}
-					else{
+					let length = this.updateScheduleData.length - 1;
+					if (this.updateScheduleData[length].nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId) { return; }
+					else {
 						this.updateScheduleData.push({
 							"nonRecurringTransactionScheduleId": scheduleData.nonRecurringTransactionScheduleId,
 							"hold": scheduleData.hold,
@@ -1036,9 +1775,9 @@ export class NonRecurringAmtComponent implements OnInit {
 						"remark": remark
 					})
 				} else {
-					let length = this.updateScheduleData.length -1;
-					if(this.updateScheduleData[length].nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId){ return;}
-					else{
+					let length = this.updateScheduleData.length - 1;
+					if (this.updateScheduleData[length].nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId) { return; }
+					else {
 						this.updateScheduleData.push({
 							"nonRecurringTransactionScheduleId": scheduleData.nonRecurringTransactionScheduleId,
 							"hold": scheduleData.hold,
@@ -1046,7 +1785,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"resheduleDate": scheduleData.resheduleDate,
 							"remark": remark
 						})
-					}	
+					}
 				}
 			});
 		} else {
@@ -1074,13 +1813,13 @@ export class NonRecurringAmtComponent implements OnInit {
 		console.log(JSON.stringify(this.updateScheduleData))
 		this.nonRecService.NonRecurringTransactionScheduleupdateById(this.updateScheduleData).subscribe(
 			res => {
-				this.toaster.success("","Transaction Schedule updated successfully")
+				this.toaster.success("", "Transaction Schedule updated successfully")
 				this.NonRecurringTransactionScheduleEMP()
 			}
 		)
 	}
 
-    /** View schedule history data */
+	/** View schedule history data */
 	ViewScheduleHistory(template3: TemplateRef<any>, scheduleData) {
 		this.modalRef = this.modalService.show(
 			template3,
@@ -1089,7 +1828,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			})
 		);
 
-        this.viewScheduleData = scheduleData
+		this.viewScheduleData = scheduleData
 		this.nonRecurringTransactionScheduleId = scheduleData.nonRecurringTransactionScheduleId
 		this.nonRecurringTransactionGroupId = scheduleData.nonRecurringTransactionGroupId
 		this.NonRecurringTransactionScheduleRemarkHistorybyScheduleId()
