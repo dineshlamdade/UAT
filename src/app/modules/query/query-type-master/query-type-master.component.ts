@@ -328,6 +328,25 @@ getAlldataById(queryTypeMasterId)// for edit....
       this.getAlldataByIdforedit = res.data.results[0];
       this.finalForm.patchValue(this.getAlldataByIdforedit);
       this.querytypeForm.patchValue(this.getAlldataByIdforedit);
+
+      this.getAlldataByIdforedit.subQueryResponseDTO.forEach(element => {
+        this.subQueryRequestDTO.push(
+          {
+            "subQueTypeMasterId":element.subQueTypeMasterId,
+            "queryTypeMasterId":element.queryTypeMasterId,
+            "subqueryTypedescription":element.subqueryTypedescription,
+            "active":true,
+
+            "listSubQueryQueAnsMapping":[{
+              "subQueryTypeQueAnsMappingId":0,
+              "subQueryTypeMasterId":0,
+              "queAnsMasterId":0,
+              "active":true
+            }],
+         } );
+      });
+
+       console.log("subquery edit: " +JSON.stringify(this.subQueryRequestDTO))
       this.priorityData.forEach(element =>{
       this.getAlldataByIdforedit.listQueryPriorityResponseDTO.forEach(ele => {
           if(element.priorityType == ele.priorityType){
@@ -354,6 +373,13 @@ getAlldataById(queryTypeMasterId)// for edit....
           // 'assignQATemplate2':this.querytypeForm.controls['assignQATemplate2'].value,
         })
       })
+      this.moduleListData.forEach(element => {
+        if(element.applicationModuleId == parseInt(this.getAlldataByIdforedit.applicationModuleId))
+        {
+       this.selectedModule = element.applicationModuleName;
+        }
+      });
+      this.getAll();
       console.log(JSON.stringify(this.querySubQuerySummary))
       });
 
@@ -430,8 +456,8 @@ updateQueryType()   //update all form
     this.updateQueryTypeData = res.data.results[0];
    this.getAllSummaryData();
     this.toster.success("",'Query Type Updated Successfully');
-    // this.priorityData =[];
-    // this.querySubQuerySummary=[];
+    this.listQueryPriorityRequestDTO =[];
+    this.subQueryRequestDTO = [];
   })
 }
 getAllWorkflowMasters() // for dropdown of workflow call this api .
@@ -566,7 +592,7 @@ editQuerySummary(query) // whole page edit function
   this.listQueryPriorityRequestDTO =query.listQueryPriorityRequestDTO;
   this.isAddTempQuery = true;
   this.isUpdateTempQuery = false;
-  this.querySubQuerySummary=[];
+  // this.querySubQuerySummary=[];
 
 }
 

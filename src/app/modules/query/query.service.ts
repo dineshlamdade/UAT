@@ -77,9 +77,9 @@ public getAllQueryList()
 {
   return this.http.get<any>(this.apiUrl + 'QueryGeneration');
 }
-public querySubQueryTypeQA()
+public querySubQueryTypeQA(id)
 {
-  return this.http.get<any>(this.apiUrl + 'QueryGeneration/QuerySubQueryTypeQA');
+  return this.http.get<any>(this.apiUrl + 'QueryGeneration/QuerySubQueryTypeQA/' +id);
 }
 public getById(id)
 {

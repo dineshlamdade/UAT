@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TemplateRef} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { ToastrService } from 'ngx-toastr';
 import { QueryService } from '../query.service';
@@ -47,6 +47,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   selectedModule: any;
   queryNumberData: any;
   listDoc: Array<any> = [];
+  editQuerySummaery: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
     private router: Router,public sanitizer: DomSanitizer,
@@ -57,11 +58,11 @@ export class AdminQuryGenerationComponent implements OnInit {
         "queryNumber":new FormControl(0),
         "employeeMasterId":new FormControl(0),
         "onBehalfOfEmployee":new FormControl(true),
-        "applicationModuleId":new FormControl(0),
+        "applicationModuleId":new FormControl(null,[Validators.required]),
         "queryTypeMasterId":new FormControl(0),
         "subQueTypeMasterId":new FormControl(0),
         "queAnsMasterId":new FormControl(0),
-        "priority":new FormControl(''),
+        "priority":new FormControl(null),
         "queryDescription":new FormControl(''),
         "subject":new FormControl(''),
         "queryRootCause":new FormControl(null),
@@ -72,7 +73,6 @@ export class AdminQuryGenerationComponent implements OnInit {
   ngOnInit(): void {
     this.getModuleName();
     this.getAllQueryListSummary();
-    this.querySubQueryTypeQA();
   }
 
   queryGenerationFormSubmit()
@@ -105,7 +105,7 @@ this.queryService.getAllQueryList().subscribe(res =>
     this.queryNumberData = element.queryNumber;
     });
     this.getEmpMasterDetails(this.employeeMasterIdData);
-    console.log(JSON.stringify(  this.queryNumberData));
+
   })
 }
 
@@ -113,42 +113,39 @@ getById(queryGenerationEmpId){ //used for the edit
   this.queryService.getById(queryGenerationEmpId).subscribe(res =>
     {
       this.getByIdData = res.data.results;
-      console.log("@@@@@@@@@@@@@@@@@@@@@",this.getByIdData);
-
-      // this.getByIdData = [];
       this.getByIdData.forEach(element => {
         this.listDoc = element.listDoc;
-        console.log("!!!!!!!!!!!!!!!!!!",this.listDoc);
       });
     })
 }
-querySubQueryTypeQA()
+querySubQueryTypeQA(queryGenerationEmpId)
 {
-  this.queryService.querySubQueryTypeQA().subscribe(res =>
+  this.queryService.querySubQueryTypeQA(queryGenerationEmpId).subscribe(res =>
     {
       this.querySubQueryTypeQAData = res.data.results;
+      this.querySubQueryTypeQAData.forEach(element => {
+      this.subQueryData = element.listSubQueryTypeData;
+      this.priorityData = element.listPriority;
+      this.listQAData = element.listQA;
+      });
+
     })
 }
-queryTypeChange(value)
-{
-  this.subQueryData = [];
-  this.querySubQueryTypeQAData.forEach(element => {
-  if(element.queryTypeMasterId == value){
-    this.subQueryData = element.listSubQueryTypeData;
-    this.priorityData = element.listPriority;
-    this.listQAData = element.listQA;
-  }
-});
-}
+// queryTypeChange(value)
+// {
+//   this.subQueryData = [];
+//   this.querySubQueryTypeQAData.forEach(element => {
+//   if(element.queryTypeMasterId == value){
+//     this.subQueryData = element.listSubQueryTypeData;
+//     this.priorityData = element.listPriority;
+//     this.listQAData = element.listQA;
+//   }
+// });
+// }
 moduleChange(value) // when module is changed then template also changed.
 {
   this.selectedModuleId = value;
-  this.moduleListData.forEach(element => {
-    if(element.applicationModuleId == parseInt(value))
-    {
-   this.selectedModule = element.applicationModuleName;
-    }
-  });
+  this.querySubQueryTypeQA( this.selectedModuleId);
   this.getAll();
 }
 getAll() // this api call for the assign template dropdown
@@ -194,8 +191,7 @@ updateQueryGeneration(){ //put api for update data
   // ]
   this.queryService.updateQueryGeneration(this.queryGenerationForm.value).subscribe(res =>
     {
-      // this.updateQueryGenerationData = res.data.results[0];
-      // console.log("*********",this.addQueryGenerationData);
+
       this.getAllQueryListSummary();
       this.toster.success("",'Query Updated Successfully');
      this.queryGenerationForm.reset();
@@ -216,9 +212,18 @@ editQuery(queryGenerationSummary)
   this.isUpdate =true;
   this.isSave = false;
   this.isReset =false;
-  // this.getById(this.queryGenerationEmpId);
   this.getById(queryGenerationSummary.queryGenerationEmpId);
   this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
+  this.editQuerySummaery = queryGenerationSummary;
+  console.log("***********",queryGenerationSummary);
+
+// this.querySubQueryTypeQAData=[];
+//   this.querySubQueryTypeQAData.forEach(element => {
+//     this.subQueryData = element.listSubQueryTypeData;
+//     this.priorityData = element.listPriority;
+//     this.listQAData = element.listQA;
+//     });
+//   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.querySubQueryTypeQAData.queryTypeMasterId);
 
 }
 viewQuery(queryGenerationSummary)
@@ -229,7 +234,7 @@ viewQuery(queryGenerationSummary)
  this.isUpdate =true;
  this.isSave = false;
  this.getById(queryGenerationSummary.queryGenerationEmpId);
-  this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
+ this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
 }
 
 getDeleteById(queryGenerationEmpId)// delete the record from summary
