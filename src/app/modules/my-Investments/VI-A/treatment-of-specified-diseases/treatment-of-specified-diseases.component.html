@@ -1,3 +1,5 @@
+
+
 <app-leftmenu></app-leftmenu>
 <!-- Main body part  -->
 <div class="page">
@@ -20,7 +22,7 @@
                 <div class="tabs about-page">
                   <app-treatment-of-specified-summary *ngIf="tabIndex == 0"
                     (myEvent)="changeTabIndexForRedirect($event)"
-                    (policyNumber)="redirectToMaster($event)">
+                    (patientNames)="redirectToMaster($event)">
                   </app-treatment-of-specified-summary>
                 </div>
                 <label class="nav" for="summary">
@@ -36,8 +38,9 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-treatment-of-specified-master *ngIf="tabIndex == 1"> </app-treatment-of-specified-master>
-                  <!-- <app-mediclaim-master *ngIf="tabIndex == 1" [policyNumber]="policyNumber"> </app-mediclaim-master> -->
+                  <app-treatment-of-specified-master *ngIf="tabIndex == 1"
+                    [patientNames]="patientNames" >
+                  </app-treatment-of-specified-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>
@@ -49,11 +52,11 @@
                   class="about-radio"
                   id="Declaration"
                   (change)="changeTabIndex(2)"
-                  [checked]="tabIndex == 2"/>
-
+                  [checked]="tabIndex == 2"
+                />
                 <div class="tabs about-page">
-                  <app-treatment-of-specified-declaration #treatmentofspecified
-                  [data] ="data" *ngIf="tabIndex == 2"></app-treatment-of-specified-declaration>
+                  <app-treatment-of-specified-declaration [data] =  "data"  *ngIf="tabIndex == 2"
+                  ></app-treatment-of-specified-declaration>
                 </div>
 
                 <label class="nav" for="Declaration">
@@ -83,3 +86,4 @@
     <app-footer></app-footer>
   </div>
 </div>
+

@@ -39,12 +39,20 @@ export class GgcService {
     }));
   }
 
+  // getTransactionByProofSubmissionId(proofSubmissionId: String) {
+  //   return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/psid/{proofSubmissionId}?proofSubmissionId=' + proofSubmissionId)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
+
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/psid/{proofSubmissionId}?proofSubmissionId=' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
+
 
   post80GGCTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'donations80GGC-transaction', data)

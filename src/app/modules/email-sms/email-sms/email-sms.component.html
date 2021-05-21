@@ -82,14 +82,14 @@
                                                             (drop)="drop($event)" (dragover)="allowDrop($event)">
                                                         </ckeditor> -->
 
-                                                        <ckeditor [editor]="Editor" (drop)="drop($event)"
+                                                        <ckeditor  (drop)="drop($event)"
                                                             (dragover)="allowDrop($event)"></ckeditor>
                                                     </div>
                                                     <br><br>
                                                     <div class="col-md-12">
                                                         <label class="form-label" style="color:darkmagenta;">SMS</label>
                                                         <label class="form-label">Body</label>
-                                                        <ckeditor [editor]="Editor" data="hello">
+                                                        <ckeditor data="hello">
                                                         </ckeditor>
                                                     </div>
                                                 </div>

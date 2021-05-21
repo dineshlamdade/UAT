@@ -19,8 +19,8 @@ import { MyInvestmentsService } from '../../my-Investments.service';
   styleUrls: ['./housingloandeclaration.component.scss'],
 })
 export class HousingloandeclarationComponent implements OnInit {
-  @Input() public institution: string;
-  @Input() public policyNo: string;
+  // @Input() public houseDescription: number;
+  @Input() public houseDescription: string;
   @Input() public data: any;
 
   public modalRef: BsModalRef;
@@ -97,12 +97,19 @@ export class HousingloandeclarationComponent implements OnInit {
   public isDisabled: boolean;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
+  public editfilesArray: File[] = [];
+  public editRentalIncomeReceipt: File[] = [];
+  public editMunicipalTaxReceipt: File[] = [];
+  public editBankCertificate: File[] = [];
+
   public documentRemark: any;
   public isECS = true;
   public hideCopytoActualDate = false;
   public shownewRow = false;
   public initialArray = true;
   public initialArrayIndex: number[] = [];
+
+  public selfOccupied = true;
 
   public PreviousEmployeeService: PreviousEmployeeService;
   public displayUploadFile = false;
@@ -118,9 +125,12 @@ export class HousingloandeclarationComponent implements OnInit {
   public loaded = 0;
   public selectedFiles: FileList;
   public currentFileUpload: File;
-  public filesArray: File[] = [];
+  public bankCertificate: File[] = [];
+  public rentalIncomeReceipt: File[] = [];
+  public municipalTaxReceipt: File[] = [];
   public masterfilesArray: File[] = [];
-  public editfilesArray: File[] = [];
+
+
   public receiptNumber: number;
   public receiptAmount: string;
   public receiptDate: Date;
@@ -150,16 +160,20 @@ export class HousingloandeclarationComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-  public proofSubmissionId : '';
+  public proofSubmissionId: '';
   public transactionStatustList: any;
   public allPropertyNames: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
 
-  public globalAddRowIndex: number;
-  public globalSelectedAmount: string;
-  public globalSelectedAmountRental: string;
-  public globalSelectedAmountMunicipal: string;
+  public globalAddRowIndex: any;
+  public globalSelectedAmount: number = 0;
+  public globalSelectedAmountRental: number = 0;
+  public globalSelectedAmountMunicipal: number = 0;
+  public canEdit: boolean;
+  transactionDetailEdit: any;
+  edithousePropertyMasterId: any;
+  housePropertyTransactionDetailList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -190,14 +204,17 @@ export class HousingloandeclarationComponent implements OnInit {
     this.isCancel = false;
     this.receiptAmount = this.numberFormat.transform(0);
     this.globalAddRowIndex = 0;
-    this.globalSelectedAmount = this.numberFormat.transform(0);
-    this.globalSelectedAmountRental = this.numberFormat.transform(0);
-    this.globalSelectedAmountMunicipal = this.numberFormat.transform(0);
-
+    this.globalSelectedAmount = 0;
+    this.globalSelectedAmountRental = 0;
+    this.globalSelectedAmountMunicipal = 0;
 
     this.previousEmpParticularList = [
       { label: 'House Loan Benefit', value: 'houseLoanBenefit' },
       { label: 'Principal Repayment', value: 'principalRepayment' },
+
+      // { label: 'House Loan Benefit', value: 'houseLoanBenefit' },
+      // { label: 'Principal Repayment', value: 'principalRepayment' },
+
     ];
     console.log('previousEmpParticularList', this.previousEmpParticularList);
   }
@@ -206,12 +223,17 @@ export class HousingloandeclarationComponent implements OnInit {
     console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       const input = this.data;
-      this.allPropertyNames = input.institution;
+      this.allPropertyNames = input.houseDescription;
       this.globalPolicy = input.policyNo;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution);
+      console.log('houseDescription', this.houseDescription);
+      console.log('houseDescription', this.houseDescription);
+      this.getTransactionFilterData(input.houseDescription);
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -262,12 +284,20 @@ export class HousingloandeclarationComponent implements OnInit {
 
   public updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].previousEmployerId =
-      event.target.value;
+    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+      i
+    ].previousEmployerId = event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].previousEmployerId
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i]
+        .previousEmployerId
     );
+  }
+
+  public OnParticularsChange(event: any, i:number, j:number){
+    console.log("OnParticularsChange event");
+    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].particulars = event.target.value;
+    console.log("OnParticularsChange", this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].particulars)
   }
   // ----------------------------------------------- Declaration --------------------------------------
 
@@ -323,9 +353,9 @@ export class HousingloandeclarationComponent implements OnInit {
   public selectedTransactionPropertyName(propertyName: any) {
     this.allPropertyNames = propertyName;
     this.getTransactionFilterData(this.allPropertyNames);
-    this.globalSelectedAmount = this.numberFormat.transform(0);
-    this.globalSelectedAmountRental = this.numberFormat.transform(0);
-    this.globalSelectedAmountMunicipal = this.numberFormat.transform(0);
+    this.globalSelectedAmount;
+    this.globalSelectedAmountRental;
+    this.globalSelectedAmountMunicipal;
 
     const data = {
       label: 'All',
@@ -366,6 +396,7 @@ export class HousingloandeclarationComponent implements OnInit {
     this.resetAll();
   }
 
+  // *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType === 'selfOccupied'"
   // -------- On Policy selection show all transactions list accordingly all policies---------
   public selectedPolicy(policy: any) {
     this.globalPolicy = policy;
@@ -384,68 +415,108 @@ export class HousingloandeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    console.log('data On Select', data);
     const checked = event.target.checked;
-    console.log("onSelectCheckBox", i, j);
+    console.log('onSelectCheckBox', i, j);
 
-    const formatedGlobalSelectedValue = Number(
-      this.globalSelectedAmount === '0'
-        ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
-    );
     let formatedactualAmount = 0;
-    let formatedSelectedAmount: string;
-    if (checked) {
-      // console.log('item' ,item);
+    let formatedSelectedAmount = 0;
 
-          console.log('actualAmount' );
-       this.transactionDetail[j].housePropertyTransactionList[i].actualAmount =
-            data.declaredAmount;
+    if (data.particulars == 'InterestAmount') {
+      this.globalSelectedAmount = formatedSelectedAmount;
+    } else if (data.particulars == 'Rent') {
+      this.globalSelectedAmountRental = formatedSelectedAmount;
+    } else if (data.particulars == 'MunicipalTax') {
+      this.globalSelectedAmountMunicipal = formatedSelectedAmount;
+    }
+
+    console.log('formatedGlobalSelectedValue', this.globalSelectedAmount);
+    console.log('globalSelectedAmountRental', this.globalSelectedAmountRental);
+    console.log(
+      'globalSelectedAmountMunicipal',
+      this.globalSelectedAmountMunicipal
+    );
+
+    const formatedGlobalSelectedValue = this.globalSelectedAmount;
+    // this.globalSelectedAmount === 0
+    //   ? this.globalSelectedAmount
+    //   : this.globalSelectedAmount;
+
+    const formatedGlobalSelectedRentalValue = this.globalSelectedAmountRental;
+    // this.globalSelectedAmountRental === 0
+    //   ? this.globalSelectedAmountRental
+    //   : this.globalSelectedAmountRental;
+
+    const formatedGlobalSelectedMunicipleValue = this
+      .globalSelectedAmountMunicipal;
+    // this.globalSelectedAmountMunicipal === 0
+    //   ? this.globalSelectedAmountMunicipal
+    //   : this.globalSelectedAmountMunicipal;
+
+    if (checked) {
+      this.transactionDetail[j].housePropertyTransactionList[i].actualAmount =
+        data.declaredAmount;
 
       formatedactualAmount = Number(
         this.transactionDetail[j].housePropertyTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
-      formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue + formatedactualAmount
-      );
-      console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-      this.uploadGridData.push(data.housePropertyTransactionId);
+      console.log('formatedactualAmount', formatedactualAmount);
 
-      // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
-      // this.actualAmountGlobal = Number(data.declaredAmount);
+      formatedSelectedAmount =
+        (data.particulars == 'InterestAmount'
+          ? formatedGlobalSelectedValue
+          : data.particulars == 'Rent'
+          ? formatedGlobalSelectedRentalValue
+          : data.particulars == 'MunicipalTax'
+          ? formatedGlobalSelectedMunicipleValue
+          : 0) + formatedactualAmount;
+
+      //  if (data.particulars == 'InterestAmount') {
+      //   formatedSelectedAmount = formatedGlobalSelectedValue + formatedactualAmount;
+      // }
+      //   else if (data.particulars == 'Rent') {
+      //     formatedSelectedAmount = formatedGlobalSelectedRentalValue + formatedactualAmount;
+      // }
+      //  else if (data.particulars == 'MunicipalTax') {
+      //   formatedSelectedAmount = formatedGlobalSelectedMunicipleValue + formatedactualAmount;
+      // }
+
+      this.uploadGridData.push(data.housePropertyTransactionId);
     } else {
       formatedactualAmount = Number(
         this.transactionDetail[j].housePropertyTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].housePropertyTransactionList[
         i
       ].actualAmount = this.numberFormat.transform(0);
-      // this.transactionDetail[j].housePropertyTransactionList[i].dateOfPayment = null;
-
-      formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue - formatedactualAmount
-      );
-      console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(
         data.housePropertyTransactionId
       );
       this.uploadGridData.splice(index, 1);
     }
+    // this.globalSelectedAmount ;
+    if (data.particulars == 'InterestAmount') {
+      this.globalSelectedAmount = formatedSelectedAmount;
+    } else if (data.particulars == 'Rent') {
+      this.globalSelectedAmountRental = formatedSelectedAmount;
+    } else if (data.particulars == 'MunicipalTax') {
+      this.globalSelectedAmountMunicipal = formatedSelectedAmount;
+    }
 
-    this.globalSelectedAmount = formatedSelectedAmount;
-    this.globalSelectedAmountRental = formatedSelectedAmount;
-    this.globalSelectedAmountMunicipal = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
-    this.transactionDetail[j].housePropertyTransactionList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
-      this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
-      );
-    });
+    this.transactionDetail[j].housePropertyTransactionList.forEach(
+      (element) => {
+        console.log(element.actualAmount.toString().replace(/,/g, ''));
+        this.actualTotal += Number(
+          element.actualAmount.toString().replace(/,/g, '')
+        );
+      }
+    );
     this.transactionDetail[j].actualTotal = this.actualTotal;
 
     if (this.uploadGridData.length) {
@@ -454,7 +525,6 @@ export class HousingloandeclarationComponent implements OnInit {
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);
   }
-
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
   public checkUncheckAll(item: any) {
@@ -484,140 +554,172 @@ export class HousingloandeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-    j: number,
+    j: number
   ) {
     const checked = event.target.checked;
-    console.log("onSelectCheckBox", i, j);
+    console.log('onSelectCheckBox', i, j);
 
-    const formatedGlobalSelectedValue = Number(
-      this.globalSelectedAmount === '0'
-        ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
-    );
+    // const formatedGlobalSelectedValue = Number(
+    //   this.globalSelectedAmount === '0'
+    //     ? this.globalSelectedAmount
+    //     : this.globalSelectedAmount.toString().replace(/,/g, '')
+    // );
+
+    // this.globalSelectedAmount === '0'
+
     let formatedactualAmount = 0;
-    let formatedSelectedAmount: string;
+    let formatedSelectedAmount: number;
 
-        this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount =
-          data.declaredAmount;
+    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+      i
+    ].actualAmount = data.actualAmount;
 
+    if (checked) {
+      // console.log('item' ,item);
 
-          if (checked) {
-            // console.log('item' ,item);
+      console.log('actualAmount');
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+        i
+      ].actualAmount = data.actualAmount;
 
-                console.log('actualAmount' );
-             this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount =
-                  data.actualAmount;
+      formatedactualAmount = Number(
+        this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+          i
+        ].actualAmount
+          .toString()
+          .replace(/,/g, '')
+      );
+      // formatedSelectedAmount = this.numberFormat.transform(
+      //   formatedGlobalSelectedValue + formatedactualAmount
+      // );
+      console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
+      this.uploadGridData.push(data.housePropertyTransactionId);
 
-            formatedactualAmount = Number(
-              this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount
-                .toString()
-                .replace(',', '')
-            );
-            formatedSelectedAmount = this.numberFormat.transform(
-              formatedGlobalSelectedValue + formatedactualAmount
-            );
-            console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-            this.uploadGridData.push(data.housePropertyTransactionId);
+      // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
+      // this.actualAmountGlobal = Number(data.declaredAmount);
+    } else {
+      formatedactualAmount = Number(
+        this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+          i
+        ].actualAmount
+          .toString()
+          .replace(/,/g, '')
+      );
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+        i
+      ].actualAmount = this.numberFormat.transform(0);
+      // this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].dateOfPayment = null;
 
-            // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
-            // this.actualAmountGlobal = Number(data.declaredAmount);
-          } else {
-            formatedactualAmount = Number(
-              this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount
-                .toString()
-                .replace(',', '')
-            );
-            this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
-              i
-            ].actualAmount = this.numberFormat.transform(0);
-            // this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].dateOfPayment = null;
+      // formatedSelectedAmount = this.numberFormat.transform(
+      //   formatedGlobalSelectedValue - formatedactualAmount
+      // );
 
-            formatedSelectedAmount = this.numberFormat.transform(
-              formatedGlobalSelectedValue - formatedactualAmount
-            );
-            console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-            const index = this.uploadGridData.indexOf(
-              data.housePropertyTransactionId
-            );
-            this.uploadGridData.splice(index, 1);
-          }
+      // formatedSelectedAmount = this.formatedGlobalSelectedValue - formatedactualAmount
+      console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
+      const index = this.uploadGridData.indexOf(
+        data.housePropertyTransactionId
+      );
+      this.uploadGridData.splice(index, 1);
+    }
 
-          this.globalSelectedAmount = formatedSelectedAmount;
-          console.log('this.globalSelectedAmountPrev::', this.globalSelectedAmount);
-          this.actualTotal = 0;
-          this.transactionDetail[j].housePropertyTransactionPreviousEmployerList.forEach((element) => {
-            console.log(element.actualAmount.toString().replace(',', ''));
-            this.actualTotal += Number(
-              element.actualAmount.toString().replace(',', '')
-            );
-          });
-          this.transactionDetail[j].actualTotal = this.actualTotal;
+    this.globalSelectedAmount;
+    // this.globalSelectedAmount = formatedSelectedAmount;
+    // console.log('this.globalSelectedAmountPrev::', this.globalSelectedAmount);
+    this.actualTotal = 0;
+    this.transactionDetail[
+      j
+    ].housePropertyTransactionPreviousEmployerList.forEach((element) => {
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
+      this.actualTotal += Number(
+        element.actualAmount.toString().replace(/,/g, '')
+      );
+    });
+    this.transactionDetail[j].actualTotal = this.actualTotal;
 
-          if (this.uploadGridData.length) {
-            this.enableFileUpload = true;
-          }
-
+    if (this.uploadGridData.length) {
+      this.enableFileUpload = true;
+    }
   }
 
-  // --------------- ON change of declared Amount in line-------------
-  public ondeclaredAmountChange(
+  ondeclaredAmountChange(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      // dateOfPayment: Date;
       actualAmount: any;
-      // dueDate: Date;
     },
     i: number,
     j: number
   ) {
     this.PreviousEmployeeService = new PreviousEmployeeService(summary);
-    // console.log("Ondeclaration Amount change" + summary.declaredAmount);
-
     this.transactionDetail[j].housePropertyTransactionList[
       i
     ].declaredAmount = this.PreviousEmployeeService.declaredAmount;
-    const formateddeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].housePropertyTransactionList[i].declaredAmount
+    const formatedDeclaredAmount = this.numberFormat.transform(
+      this.transactionDetail[j].housePropertyTransactionList[i]
+        .declaredAmount
     );
-    // console.log(`formateddeclaredAmount::`,formateddeclaredAmount);
     this.transactionDetail[j].housePropertyTransactionList[
       i
-    ].declaredAmount = formateddeclaredAmount;
-
+    ].declaredAmount = formatedDeclaredAmount;
     this.declarationTotal = 0;
-    // this.declaredAmount=0;
-
-    this.transactionDetail[j].housePropertyTransactionList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
-      );
-      // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
-    });
-
+    this.transactionDetail[j].housePropertyTransactionList.forEach(
+      (element) => {
+        this.declarationTotal += Number(
+          element.declaredAmount.toString().replace(/,/g, '')
+        );
+      }
+    );
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
   }
 
-  // ------------ ON change of DueDate in line----------
-  public onDueDateChange(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: any;
-    },
-    i: number,
-    j: number
-  ) {
-    this.transactionDetail[j].housePropertyTransactionList[i].dueDate = summary.dueDate;
-  }
+  // // --------------- ON change of declared Amount in line-------------
+  // ondeclaredAmountChange(
+  //   summary: {
+  //     previousEmployerName: any;
+  //     declaredAmount: number;
+  //     dateOfPayment: Date;
+  //     actualAmount: any;
+  //     dueDate: Date;
+  //   },
+  //   i: number,
+  //   j: number
+  // ) {
+  //   this.PreviousEmployeeService = new PreviousEmployeeService(summary);
+  //   // console.log('Ondeclaration Amount change' + summary.declaredAmount);
 
-  // ------------Actual Amount change-----------
-  public onactualAmountChange(
+  //   this.transactionDetail[j].housePropertyTransactionList[
+  //     i
+  //   ].declaredAmount = this.PreviousEmployeeService.declaredAmount;
+  //   const formatedDeclaredAmount = this.numberFormat.transform(
+  //     this.transactionDetail[j].housePropertyTransactionList[i].declaredAmount
+  //   );
+  //   // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
+  //   this.transactionDetail[j].housePropertyTransactionList[
+  //     i
+  //   ].declaredAmount = formatedDeclaredAmount;
+
+  //   this.declarationTotal = 0;
+  //   // this.declaredAmount=0;
+
+  //   this.transactionDetail[j].housePropertyTransactionList.forEach(
+  //     (element) => {
+  //       // console.log(element.declaredAmount.toString().replace(',', ''));
+  //       this.declarationTotal += Number(
+  //         element.declaredAmount.toString().replace(',', '')
+  //       );
+  //       // console.log(this.declarationTotal);
+  //       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
+  //     }
+  //   );
+
+  //   this.transactionDetail[j].declarationTotal = this.declarationTotal;
+  //   // console.log( 'DeclarATION total==>>' + this.transactionDetail[j].declarationTotal);
+  // }
+
+
+
+   // ------------Actual Amount change-----------
+   onactualAmountChange(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
@@ -629,56 +731,44 @@ export class HousingloandeclarationComponent implements OnInit {
     j: number
   ) {
     this.PreviousEmployeeService = new PreviousEmployeeService(summary);
-    // console.log("Actual Amount change::" , summary);
-
-    this.transactionDetail[j].housePropertyTransactionList[
-      i
-    ].actualAmount = this.PreviousEmployeeService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].housePropertyTransactionList[i].actualAmount);
-    const formatedactualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].housePropertyTransactionList[i].actualAmount
+    this.transactionDetail[j].housePropertyTransactionList[i].actualAmount = this.PreviousEmployeeService.actualAmount;
+    const formatedActualAmount = this.numberFormat.transform(
+      this.transactionDetail[j].housePropertyTransactionList[i]
+        .actualAmount
     );
-    // console.log(`formatedactualAmount::`,formatedactualAmount);
-    this.transactionDetail[j].housePropertyTransactionList[
-      i
-    ].actualAmount = formatedactualAmount;
+    this.transactionDetail[j].housePropertyTransactionList[i].actualAmount = formatedActualAmount;
 
     if (
-      this.transactionDetail[j].housePropertyTransactionList[i].actualAmount !==
-        Number(0) ||
-      this.transactionDetail[j].housePropertyTransactionList[i].actualAmount !== null
+      this.transactionDetail[j].housePropertyTransactionList[i]
+        .actualAmount !== Number(0) ||
+      this.transactionDetail[j].housePropertyTransactionList[i]
+        .actualAmount !== null
     ) {
-      // console.log(`in if::`,this.transactionDetail[j].housePropertyTransactionList[i].actualAmount);
       this.isDisabled = false;
     } else {
-      // console.log(`in else::`,this.transactionDetail[j].housePropertyTransactionList[i].actualAmount);
       this.isDisabled = true;
     }
 
-    this.actualTotal = 0;
-    this.actualAmount = 0;
-    this.transactionDetail[j].housePropertyTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
-      );
-      // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.actualTotal = null;
+    this.actualAmount = null;
+    this.transactionDetail[j].housePropertyTransactionList.forEach(
+      (element) => {
+        this.actualTotal += Number(
+          element.actualAmount.toString().replace(/,/g, '')
+        );
+        // console.log(this.actualTotal);
+        // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+      }
+    );
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
-    // this.transactionDetail[j].actualAmount = this.actualAmount;
-    // console.log(this.transactionDetail[j]);
-    // console.log(this.actualTotal);
   }
-
-
 
   // ------------Actual Amount change-----------
   public onActualAmountChangePre(
     summary: {
       previousEmployerName: any;
-      declaredAmount: number;
+      particulars: string;
       // dateOfPayment: Date;
       actualAmount: number;
       // dueDate: Date;
@@ -694,7 +784,8 @@ export class HousingloandeclarationComponent implements OnInit {
     ].actualAmount = this.PreviousEmployeeService.actualAmount;
     // console.log("Actual Amount changed::" , this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount);
     const formatedactualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i]
+        .actualAmount
     );
     // console.log(`formatedactualAmount::`,formatedactualAmount);
     this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
@@ -702,9 +793,10 @@ export class HousingloandeclarationComponent implements OnInit {
     ].actualAmount = formatedactualAmount;
 
     if (
-      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount !==
-        Number(0) ||
-      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount !== null
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i]
+        .actualAmount !== Number(0) ||
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i]
+        .actualAmount !== null
     ) {
       // console.log(`in if::`,this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount);
       this.isDisabled = false;
@@ -715,10 +807,12 @@ export class HousingloandeclarationComponent implements OnInit {
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList.forEach((element) => {
+    this.transactionDetail[
+      j
+    ].housePropertyTransactionPreviousEmployerList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -735,9 +829,9 @@ export class HousingloandeclarationComponent implements OnInit {
       housePropertyTransactionId: number;
       // licMasterPaymentDetailsId: number;
       previousEmployerId: number;
-      particulars : string;
+      particulars: string;
       // declaredAmount: any;
-      dateOfPayment: Date;
+      // dateOfPayment: Date;
       actualAmount: any;
       // isECS: number;
     },
@@ -769,7 +863,10 @@ export class HousingloandeclarationComponent implements OnInit {
     this.transactionDetail[j].housePropertyTransactionPreviousEmployerList.push(
       this.PreviousEmployeeService
     );
-    console.log('addRow::', this.transactionDetail[j].housePropertyTransactionPreviousEmployerList);
+    console.log(
+      'addRow::',
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList
+    );
   }
 
   public sweetalertWarning(msg: string) {
@@ -782,13 +879,17 @@ export class HousingloandeclarationComponent implements OnInit {
 
   // -------- Delete Row--------------
   public deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].housePropertyTransactionList.length - 1;
+    const rowCount =
+      this.transactionDetail[j].housePropertyTransactionList.length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].housePropertyTransactionList.length === 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].housePropertyTransactionList.splice(rowCount, 1);
+      this.transactionDetail[j].housePropertyTransactionList.splice(
+        rowCount,
+        1
+      );
       return true;
     }
   }
@@ -797,7 +898,7 @@ export class HousingloandeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: any;
-      dateOfPayment: any;
+      // dateOfPayment: any;
       dueDate: any;
       actualAmount: any;
     },
@@ -852,7 +953,7 @@ export class HousingloandeclarationComponent implements OnInit {
     this.Service.submitPPFDeclarationTransaction(data).subscribe((res) => {
       console.log(res);
       this.transactionDetail =
-        res.data.results[0].investmentGroupTransactionDetail;
+        res.data.results[0].housePropertyTransactionDetailList;
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -881,24 +982,113 @@ export class HousingloandeclarationComponent implements OnInit {
     this.displayUploadFile = true;
   }
 
+  // onUpload(event) {
+  //   console.log('event::', event);
+  //   if (event.target.files.length > 0) {
+  //     for (const file of event.target.files) {
+  //       this.filesArray.push(file);
+  //     }
+  //   }
+  //   console.log(this.filesArray);
+  // }
+
   public onUpload(event) {
     console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
-        this.filesArray.push(file);
+        this.bankCertificate.push(file);
       }
     }
-    console.log(this.filesArray);
+    console.log(this.bankCertificate);
   }
 
-  public onUploadInEditCase(event) {
+  public onUploadRental(event) {
+    console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.rentalIncomeReceipt.push(file);
+      }
+    }
+    console.log(this.rentalIncomeReceipt);
+  }
+
+  public UploadModalRental(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+  public onUploadMuniciple(event) {
+    console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.municipalTaxReceipt.push(file);
+      }
+    }
+    console.log(this.municipalTaxReceipt);
+  }
+
+  public UploadModalMuniciple(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+  public onMasterUpload(
+    event: { target: { files: string | any[] } },
+    docType: string
+  ) {
+    console.log('event::', event);
+    console.log('docType::', docType);
+
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        switch (docType) {
+          case 'bankCertificate':
+            this.bankCertificate.push(file);
+            break;
+          case 'rentalIncomeReceipt':
+            this.rentalIncomeReceipt.push(file);
+            break;
+          case 'municipalTaxReceipt':
+            this.municipalTaxReceipt.push(file);
+            break;
+        }
+      }
+      // console.log('this.propertyIndex::', this.propertyIndex);
+    }
+  }
+
+  public onUploadInEditCaseBank(event) {
     console.log('onUploadInEditCaseevent::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
-        this.editfilesArray.push(file);
+        this.editBankCertificate.push(file);
       }
     }
-    console.log('onUploadInEditCase::', this.editfilesArray);
+    console.log('onUploadInEditCase::', this.editBankCertificate);
+  }
+
+  public onUploadInEditCaseMunciple(event) {
+    console.log('onUploadInEditCaseevent::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.editMunicipalTaxReceipt.push(file);
+      }
+    }
+    console.log('onUploadInEditCase::', this.editMunicipalTaxReceipt);
+  }
+
+  public onUploadInEditCaseRental(event) {
+    console.log('onUploadInEditCaseevent::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.editRentalIncomeReceipt.push(file);
+      }
+    }
+    console.log('onUploadInEditCase::', this.editRentalIncomeReceipt);
   }
 
   public removeDocument() {
@@ -907,25 +1097,80 @@ export class HousingloandeclarationComponent implements OnInit {
 
   // Remove Selected LicTransaction Document
   public removeSelectedLicTransactionDocument(index: number) {
-    this.filesArray.splice(index, 1);
-    console.log('this.filesArray::', this.filesArray);
-    console.log('this.filesArray.size::', this.filesArray.length);
+    this.bankCertificate.splice(index, 1);
+    console.log('this.bankCertificate::', this.bankCertificate);
+    console.log('this.bankCertificate.size::', this.bankCertificate.length);
   }
 
-  public removeSelectedLicTransactionDocumentInEditCase(index: number) {
-    this.editfilesArray.splice(index, 1);
-    console.log('this.editfilesArray::', this.editfilesArray);
-    console.log('this.editfilesArray.size::', this.editfilesArray.length);
+  // Remove Selected LicTransaction Document
+  public removeSelectedTransactionDocumentRental(index: number) {
+    this.rentalIncomeReceipt.splice(index, 1);
+    console.log('this.rentalIncomeReceipt::', this.rentalIncomeReceipt);
+    console.log(
+      'this.rentalIncomeReceipt.size::',
+      this.rentalIncomeReceipt.length
+    );
+  }
+
+  // Remove Selected LicTransaction Document
+  public removeSelectedTransactionDocumentMunciple(index: number) {
+    this.municipalTaxReceipt.splice(index, 1);
+    console.log('this.municipalTaxReceipt::', this.municipalTaxReceipt);
+    console.log(
+      'this.municipalTaxReceipt.size::',
+      this.municipalTaxReceipt.length
+    );
+  }
+
+  public removeSelectedTransactionDocumentInEditCaseBank(index: number) {
+    this.editBankCertificate.splice(index, 1);
+    console.log('this.editBankCertificate::', this.editBankCertificate);
+    console.log(
+      'this.editBankCertificate.size::',
+      this.editBankCertificate.length
+    );
+  }
+
+  public removeSelectedLicTransactionDocumentInEditCaseMuniciple(
+    index: number
+  ) {
+    this.editMunicipalTaxReceipt.splice(index, 1);
+    console.log('this.editMunicipalTaxReceipt::', this.editMunicipalTaxReceipt);
+    console.log(
+      'this.editMunicipalTaxReceipt.size::',
+      this.editMunicipalTaxReceipt.length
+    );
+  }
+
+  public removeSelectedLicTransactionDocumentInEditCaseRental(index: number) {
+    this.editRentalIncomeReceipt.splice(index, 1);
+    console.log('this.editRentalIncomeReceipt::', this.editRentalIncomeReceipt);
+    console.log(
+      'this.editRentalIncomeReceipt.size::',
+      this.editRentalIncomeReceipt.length
+    );
   }
 
   public upload() {
-    //comment by komal
+    if (
+      this.bankCertificate.length === 0 &&
+      this.rentalIncomeReceipt.length === 0 &&
+      this.municipalTaxReceipt.length === 0
+    ) {
+      this.alertService.sweetalertWarning(
+        'Please attach Premium Receipt / Premium Statement'
+      );
+      console.log('urlArray.length', this.urlArray.length);
+      return;
+    }
+
     // if (this.filesArray.length === 0) {
     //   this.alertService.sweetalertError(
     //     'Please attach Premium Receipt / Premium Statement'
     //   );
     //   return;
     // }
+
     console.log('this.transactionDetail::', this.transactionDetail);
 
     this.transactionDetail.forEach((element) => {
@@ -933,46 +1178,95 @@ export class HousingloandeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
-            console.log("innerElement.declaredAmount", innerElement.declaredAmount);
+            .replace(/,/g, '');
+          console.log(
+            'innerElement.declaredAmount',
+            innerElement.declaredAmount
+          );
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
-            console.log("innerElement.actualAmount", innerElement.actualAmount)
+            .replace(/,/g, '');
+          console.log('innerElement.actualAmount', innerElement.actualAmount);
         } else {
           innerElement.actualAmount = 0.0;
         }
       });
+
+      element.housePropertyTransactionPreviousEmployerList.forEach(
+        (element) => {
+          element.declaredAmount = 0.0;
+
+          if (element.actualAmount !== null) {
+            element.actualAmount = element.actualAmount
+              .toString()
+              .replace(/,/g, '');
+            console.log('element.actualAmount', element.actualAmount);
+          } else {
+            element.actualAmount = 0.0;
+          }
+        }
+      );
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       housePropertyMasterId: this.transactionDetail[0].housePropertyMasterId,
-      // proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
       housePropertyTransactionIds: this.uploadGridData,
       housePropertyTransactionList: this.transactionDetail[0].housePropertyTransactionList,
       housePropertyTransactionPreviousEmployerList: this.transactionDetail[0].housePropertyTransactionPreviousEmployerList,
       receiptAmount: this.receiptAmount,
       receiptNumber: '',
       receiptDate: '',
-      // documentRemark: this.documentRemark,
-      proofSubmissionId : '',
+      proofSubmissionId: '',
     };
+
+
     console.log('data::', data);
     this.HousingLoanService.uploadTransactionWithMultipleFiles(
-      this.filesArray,
+      this.bankCertificate,
+      this.rentalIncomeReceipt,
+      this.municipalTaxReceipt,
       data
     ).subscribe((res) => {
       console.log(res);
       if (res.data.results.length > 0) {
-        this.transactionDetail = res.data.results[0].housePropertyTransactionDetailList;
-        this.documentDetailList = res.data.results[0].housePropertyTransactionDocumentDetailList;
-         console.log('transactionDetail', this.transactionDetail);
-         this.initialArrayIndex = [];
+        this.transactionDetail =
+          res.data.results[0].housePropertyTransactionDetailList;
+        this.documentDetailList =
+          res.data.results[0].housePropertyTransactionDocumentDetailList;
+        console.log('transactionDetail', this.transactionDetail);
+
+        this.initialArrayIndex = [];
+
+        this.transactionDetail.forEach((element) => {
+          this.initialArrayIndex.push(element.housePropertyTransactionList.length);
+
+          element.housePropertyTransactionList.forEach((innerElement) => {
+
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount
+            );
+          });
+
+          this.initialArrayIndex.push(
+            element.housePropertyTransactionPreviousEmployerList.length
+          );
+
+          element.housePropertyTransactionPreviousEmployerList.forEach(
+            (element) => {
+              element.actualAmount = this.numberFormat.transform(
+                element.actualAmount
+              );
+            }
+          );
+        });
 
         this.alertService.sweetalertMasterSuccess(
           'Transaction Saved Successfully.',
@@ -983,23 +1277,54 @@ export class HousingloandeclarationComponent implements OnInit {
       }
     });
     this.receiptAmount = '0.00';
-    this.filesArray = [];
-    this.globalSelectedAmount = '0.00';
-    this.globalSelectedAmountRental = '0.00';
-    this.globalSelectedAmountMunicipal = '0.00';
+    this.bankCertificate = [];
+    this.rentalIncomeReceipt = [];
+    this.municipalTaxReceipt = [];
+
+    this.globalSelectedAmount;
+    // this.globalSelectedAmount
+    // this.globalSelectedAmount = '0.00';
+    this.globalSelectedAmountRental = 0;
+    this.globalSelectedAmountMunicipal = 0;
   }
 
+  // public changeReceiptAmountFormatABC() {
+  //   let receiptAmount_: number;
+  //   let globalSelectedAmount_: number;
 
+  //   receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+  //   // globalSelectedAmount_ = parseFloat(
+  //   //   this.globalSelectedAmount.replace(/,/g, '')
+  //   // );
 
+  //   globalSelectedAmount_ =this.globalSelectedAmount;
+
+  //   console.log(receiptAmount_);
+  //   console.log(globalSelectedAmount_);
+  //   if (receiptAmount_ < globalSelectedAmount_) {
+  //     this.alertService.sweetalertError(
+  //       'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+  //     );
+  //   } else if (receiptAmount_ > globalSelectedAmount_) {
+  //     console.log(receiptAmount_);
+  //     console.log(globalSelectedAmount_);
+  //     this.alertService.sweetalertWarning(
+  //       'Receipt Amount is greater than Selected line Actual Amount'
+  //     );
+  //   }
+  //   this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
+  // }
 
   public changeReceiptAmountFormat() {
     let receiptAmount_: number;
     let globalSelectedAmount_: number;
 
     receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
-    globalSelectedAmount_ = parseFloat(
-      this.globalSelectedAmount.replace(/,/g, '')
-    );
+    // globalSelectedAmount_ = parseFloat(
+    //   this.globalSelectedAmount.replace(/,/g, '')
+    // );
+
+    globalSelectedAmount_ = this.globalSelectedAmount;
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
@@ -1022,9 +1347,9 @@ export class HousingloandeclarationComponent implements OnInit {
     let globalSelectedAmountRental: number;
 
     receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
-    globalSelectedAmountRental = parseFloat(
-      this.globalSelectedAmountRental.replace(/,/g, '')
-    );
+    // globalSelectedAmountRental = parseFloat(
+    //   this.globalSelectedAmountRental.replace(/,/g, '')
+    // );
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmountRental);
@@ -1047,9 +1372,9 @@ export class HousingloandeclarationComponent implements OnInit {
     let globalSelectedAmountMunicipal: number;
 
     receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
-    globalSelectedAmountMunicipal = parseFloat(
-      this.globalSelectedAmountMunicipal.replace(/,/g, '')
-    );
+    // globalSelectedAmountMunicipal = parseFloat(
+    //   this.globalSelectedAmountMunicipal.replace(/,/g, '')
+    // );
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmountMunicipal);
@@ -1067,24 +1392,21 @@ export class HousingloandeclarationComponent implements OnInit {
     this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
   }
 
-  public UploadModal(template: TemplateRef<any>) {
+  UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
 
-  public UploadedDocumentModal(template1: TemplateRef<any>) {
+  UploadedDocumentModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template1,
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
 
-  public UploadedDocumentModal1(
-    template1: TemplateRef<any>,
-    documentIndex: number
-  ) {
+  UploadedDocumentModal1(template1: TemplateRef<any>, documentIndex: number) {
     this.modalRef = this.modalService.show(
       template1,
       Object.assign({}, { class: 'gray modal-md' })
@@ -1093,7 +1415,6 @@ export class HousingloandeclarationComponent implements OnInit {
       documentIndex
     ].documentDetailList;
   }
-
   public deactiveCopytoActualDate() {
     if (this.isECS === false) {
       this.hideCopytoActualDate = true;
@@ -1101,17 +1422,22 @@ export class HousingloandeclarationComponent implements OnInit {
       this.hideCopytoActualDate = false;
     }
   }
-  // public copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
-  //   dueDate = new Date(dueDate);
-  //   // item.housePropertyTransactionList.dateOfPayment = dueDate;
-  //   this.transactionDetail[0].housePropertyTransactionList[i].dateOfPayment = dueDate;
-  //   this.PreviousEmployeeService.dateOfPayment = this.transactionDetail[0].housePropertyTransactionList[
-  //     i
-  //   ].dateOfPayment;
-  //   // this.dateOfPayment = dueDate;
-  //   alert('hiiii');
-  //   console.log('Date OF PAyment' + this.PreviousEmployeeService.dateOfPayment);
-  // }
+
+   // Update Previous Employee in Edit Modal
+   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
+    console.log('select box value::', event.target.value);
+    this.editTransactionUpload[j].housePropertyTransactionList[i].previousEmployerId =
+      event.target.value;
+      this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].previousEmployerId =
+      event.target.value;
+    console.log(
+      'previous emp id::',
+      this.editTransactionUpload[j].housePropertyTransactionList[i].previousEmployerId,
+
+      this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].previousEmployerId,
+    );
+  }
+
 
   // When Edit of Document Details
   public editViewTransaction(
@@ -1125,18 +1451,17 @@ export class HousingloandeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.Service.getPPFTransactionByProofSubmissionId(
+    this.HousingLoanService.getTransactionByProofSubmissionId(
       proofSubmissionId
     ).subscribe((res) => {
       console.log('edit Data:: ', res);
       this.urlArray =
-        res.data.results[0].documentInformation[0].documentDetailList;
-      this.editTransactionUpload =
-        res.data.results[0].investmentGroupTransactionDetail;
-      this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList;
+      this.editTransactionUpload = res.data.results[0].housePropertyTransactionDetailList;
+        this.edithousePropertyMasterId = res.data.results[0].housePropertyTransactionDetailList[0].housePropertyMasterId;
+      this.editProofSubmissionId = res.data.results[0].housePropertyTransactionDocumentDetailList[0].proofSubmissionId;
       this.editReceiptAmount = res.data.results[0].receiptAmount;
-      this.grandDeclarationTotalEditModal =
-        res.data.results[0].grandDeclarationTotal;
+      this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
@@ -1146,35 +1471,32 @@ export class HousingloandeclarationComponent implements OnInit {
         element.blobURI = 'data:image/image;base64,' + element.blobURI;
         // new Blob([element.blobURI], { type: 'application/octet-stream' });
       });
-      // console.log('converted:: ', this.urlArray);
+
+      this.editTransactionUpload.forEach((element) => {
+        element.housePropertyTransactionList.forEach((innerElement) => {
+          innerElement.declaredAmount = this.numberFormat.transform(
+            innerElement.declaredAmount,
+          );
+          innerElement.actualAmount = this.numberFormat.transform(
+            innerElement.actualAmount,
+          );
+        });
+
+        element.housePropertyTransactionPreviousEmployerList.forEach((innerElement1) => {
+          innerElement1.declaredAmount = this.numberFormat.transform(
+            innerElement1.declaredAmount,
+          );
+          innerElement1.actualAmount = this.numberFormat.transform(
+            innerElement1.actualAmount,
+          );
+        });
+
+
+      });
+
     });
   }
 
-  public nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  public previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  public docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
 
   public ComputationforIncome(
     template5: TemplateRef<any>,
@@ -1194,104 +1516,15 @@ export class HousingloandeclarationComponent implements OnInit {
     this.HousingLoanService.getHousePropertyFilterData(property).subscribe(
       (res) => {
         console.log('getHousePropertyFilterData', res);
-        this.transactionDetail =
-          res.data.results[0].housePropertyTransactionDetailList;
+        this.transactionDetail = res.data.results[0].housePropertyTransactionDetailList;
         this.documentDetailList = res.data.results[0].housePropertyTransactionDocumentDetailList;
-               console.log('transactionDetail', this.transactionDetail);
+        console.log('transactionDetail', this.transactionDetail);
         this.initialArrayIndex = [];
-         }
-    );
-  }
-
-  // tslint:disable-next-line: typedef
-  public uploadUpdateTransaction() {
-    // this.editTransactionUpload.forEach((element) => {
-    //   this.uploadGridData.push(element.housePropertyTransactionId);
-    // });
-    this.editTransactionUpload.forEach((element) => {
-      element.housePropertyTransactionList.forEach((innerElement) => {
-        if (innerElement.declaredAmount !== null) {
-          innerElement.declaredAmount = innerElement.declaredAmount
-            .toString()
-            .replace(',', '');
-        } else {
-          innerElement.declaredAmount = 0.0;
-        }
-        if (innerElement.actualAmount !== null) {
-          innerElement.actualAmount = innerElement.actualAmount
-            .toString()
-            .replace(',', '');
-        } else {
-          innerElement.actualAmount = 0.0;
-        }
-
-        const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
-          'yyyy-MM-dd'
-        );
-        const dueDate = this.datePipe.transform(
-          innerElement.dueDate,
-          'yyyy-MM-dd'
-        );
-
-        innerElement.dateOfPayment = dateOfPaymnet;
-        innerElement.dueDate = dueDate;
-        this.uploadGridData.push(innerElement.housePropertyTransactionId);
-      });
-    });
-    console.log('Group transaction', this.uploadGridData);
-    this.editTransactionUpload.forEach((element) => {
-      element.housePropertyTransactionList.forEach((innerElement) => {
-        const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
-          'yyyy-MM-dd'
-        );
-        innerElement.dateOfPayment = dateOfPaymnet;
-      });
-    });
-    const data = {
-      investmentGroupTransactionDetail: this.editTransactionUpload,
-      groupTransactionIDs: this.uploadGridData,
-      documentRemark: this.documentRemark,
-      proofSubmissionId: this.editProofSubmissionId,
-      receiptAmount: this.editReceiptAmount,
-    };
-    console.log('data::', data);
-    this.Service.uploadPPFTransactionwithDocument(
-      this.editfilesArray,
-      data
-    ).subscribe((res) => {
-      console.log(res);
-      if (res.data.results.length > 0) {
-        this.alertService.sweetalertMasterSuccess(
-          'Transaction Saved Successfully.',
-          ''
-        );
-        this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
-        this.documentDetailList = res.data.results[0].documentInformation;
-        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-
-        this.initialArrayIndex = [];
-
         this.transactionDetail.forEach((element) => {
           this.initialArrayIndex.push(element.housePropertyTransactionList.length);
 
           element.housePropertyTransactionList.forEach((innerElement) => {
-            if (innerElement.dateOfPayment !== null) {
-              innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-            }
 
-            if (innerElement.isECS === 0) {
-              this.glbalECS === 0;
-            } else if (innerElement.isECS === 1) {
-              this.glbalECS === 1;
-            } else {
-              this.glbalECS === 0;
-            }
             innerElement.declaredAmount = this.numberFormat.transform(
               innerElement.declaredAmount
             );
@@ -1299,23 +1532,215 @@ export class HousingloandeclarationComponent implements OnInit {
               innerElement.actualAmount
             );
           });
+
+          this.initialArrayIndex.push(
+            element.housePropertyTransactionPreviousEmployerList.length
+          );
+
+          element.housePropertyTransactionPreviousEmployerList.forEach(
+            (element1) => {
+              element1.actualAmount = this.numberFormat.transform(
+                element1.actualAmount
+              );
+            }
+          );
         });
+      }
+    );
+  }
+
+
+  onActualAmountChangeInEditCase(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      // dateOfPayment: Date;
+      actualAmount: any;
+      // dueDate;
+    },
+    i: number,
+    j:number,
+  ) {
+    this.PreviousEmployeeService = new PreviousEmployeeService(summary);
+    this.editTransactionUpload[j].housePropertyTransactionList[i].actualAmount = this.PreviousEmployeeService.actualAmount;
+    const formatedactualAmount = this.numberFormat.transform(
+      this.editTransactionUpload[j].housePropertyTransactionList[i].actualAmount
+    );
+    console.log(`formatedactualAmount::`, formatedactualAmount);
+    this.editTransactionUpload[j].housePropertyTransactionList[i].actualAmount = formatedactualAmount;
+
+    // this.declarationTotal = 0;
+    // this.editTransactionUpload[j].housePropertyTransactionList.forEach(
+    //   (element) => {
+    //     console.log(element.declaredAmount.toString().replace(',', ''));
+    //     this.declarationTotal += Number(
+    //       element.declaredAmount.toString().replace(/,/g, '')
+    //     );
+    //     console.log(this.declarationTotal);
+    //   }
+    // );
+    // this.editTransactionUpload.declarationTotal = this.declarationTotal;
+  }
+
+
+
+  onActualAmountChangeInEditCasePreviousEMP(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      // dateOfPayment: Date;
+      actualAmount: any;
+      // dueDate;
+    },
+    i: number,
+    j:number,
+  ) {
+    this.PreviousEmployeeService = new PreviousEmployeeService(summary);
+    this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].actualAmount = this.PreviousEmployeeService.actualAmount;
+    const formatedactualAmount = this.numberFormat.transform(
+      this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].actualAmount
+    );
+    console.log(`formatedactualAmount::`, formatedactualAmount);
+    this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].actualAmount = formatedactualAmount;
+
+    // this.declarationTotal = 0;
+    // this.editTransactionUpload[j].housePropertyTransactionList.forEach(
+    //   (element) => {
+    //     console.log(element.declaredAmount.toString().replace(',', ''));
+    //     this.declarationTotal += Number(
+    //       element.declaredAmount.toString().replace(/,/g, '')
+    //     );
+    //     console.log(this.declarationTotal);
+    //   }
+    // );
+    // this.editTransactionUpload.declarationTotal = this.declarationTotal;
+  }
+
+  // tslint:disable-next-line: typedef
+  public uploadUpdateTransaction() {
+    // this.editTransactionUpload.forEach((element) => {
+    //   this.uploadGridData.push(element.housePropertyTransactionId);
+    // });
+
+    this.editTransactionUpload.forEach((element) => {
+      element.housePropertyTransactionList.forEach((innerElement1) => {
+        if (innerElement1.declaredAmount !== null) {
+          innerElement1.declaredAmount = innerElement1.declaredAmount
+            .toString()
+            .replace(/,/g, '');
+        } else {
+          innerElement1.declaredAmount = 0.0;
+        }
+        if (innerElement1.actualAmount !== null) {
+          innerElement1.actualAmount = innerElement1.actualAmount
+            .toString()
+            .replace(/,/g, '');
+        } else {
+          innerElement1.actualAmount = 0.0;
+        }
+
+        this.uploadGridData.push(innerElement1.housePropertyTransactionId);
+        delete innerElement1.proofSubmissionId;
+      });
+
+      element.housePropertyTransactionPreviousEmployerList.forEach((innerElement) => {
+        if (innerElement.declaredAmount !== null) {
+          innerElement.declaredAmount = innerElement.declaredAmount
+            .toString()
+            .replace(/,/g, '');
+        } else {
+          innerElement.declaredAmount = 0.0;
+        }
+        if (innerElement.actualAmount !== null) {
+          innerElement.actualAmount = innerElement.actualAmount
+            .toString()
+            .replace(/,/g, '');
+        } else {
+          innerElement.actualAmount = 0.0;
+        }
+
+        this.uploadGridData.push(innerElement.housePropertyTransactionId);
+        delete innerElement.proofSubmissionId;
+      });
+
+    });
+
+
+    const data = {
+      housePropertyTransactionIds: this.uploadGridData,
+      proofSubmissionId: this.editProofSubmissionId,
+      receiptAmount: this.editReceiptAmount,
+      housePropertyMasterId: this.editTransactionUpload[0].housePropertyMasterId,
+      housePropertyTransactionList: this.editTransactionUpload[0].housePropertyTransactionList,
+      housePropertyTransactionPreviousEmployerList: this.editTransactionUpload[0].housePropertyTransactionPreviousEmployerList,
+    };
+
+
+    console.log("this.editTransactionUpload",this.editTransactionUpload);
+
+
+    console.log('data::', data);
+    this.HousingLoanService.uploadTransactionWithMultipleFiles(
+      this.editBankCertificate,
+      this.editRentalIncomeReceipt,
+      this.editMunicipalTaxReceipt,
+      data
+    ).subscribe((res) => {
+      console.log(res);
+      if (res.data.results.length > 0) {
+        this.transactionDetail = res.data.results[0].housePropertyTransactionDetailList;
+        this.documentDetailList = res.data.results[0].housePropertyTransactionDocumentDetailList;
+        console.log('transactionDetail', this.transactionDetail);
+
+        this.initialArrayIndex = [];
+
+        this.transactionDetail.forEach((element) => {
+          this.initialArrayIndex.push(
+            element.housePropertyTransactionList.length
+          );
+
+          element.housePropertyTransactionList.forEach((item) => {
+            item.declaredAmount = this.numberFormat.transform(
+              item.declaredAmount
+            );
+            item.actualAmount = this.numberFormat.transform(item.actualAmount);
+          });
+          this.initialArrayIndex.push(
+            element.housePropertyTransactionPreviousEmployerList.length
+          );
+
+          element.housePropertyTransactionPreviousEmployerList.forEach(
+            (innerElement) => {
+              // innerElement.declaredAmount = this.numberFormat.transform(
+              //   innerElement.declaredAmount
+              // );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+            }
+          );
+        });
+
+        this.alertService.sweetalertMasterSuccess(
+          'Transaction Saved Successfully.',
+          ''
+        );
       } else {
         this.alertService.sweetalertWarning(res.status.messsage);
       }
     });
     this.currentFileUpload = null;
-    this.editfilesArray = [];
+    this.editRentalIncomeReceipt = [];
+    this.editMunicipalTaxReceipt = [];
+    this.editBankCertificate = [];
   }
 
   public downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.Service.getPPFTransactionByProofSubmissionId(
-      proofSubmissionId
-    ).subscribe((res) => {
+    this.HousingLoanService.getTransactionByProofSubmissionId(proofSubmissionId)
+    .subscribe((res) => {
       console.log('edit Data:: ', res);
-      this.urlArray =
-        res.data.results[0].documentInformation[0].documentDetailList;
+      this.urlArray = res.data.results[0].housePropertyTransactionDocumentDetailList[0].documentDetailList;
       this.urlArray.forEach((element) => {
         element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
           element.blobURI
@@ -1323,25 +1748,66 @@ export class HousingloandeclarationComponent implements OnInit {
       });
       console.log(this.urlArray);
     });
+
   }
 
-  public setDateOfPayment(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: any;
-    },
-    i: number,
-    j: number
-  ) {
-    this.transactionDetail[j].housePropertyTransactionList[i].dateOfPayment =
-      summary.dateOfPayment;
-    console.log(
-      this.transactionDetail[j].housePropertyTransactionList[i].dateOfPayment
+  // public setDateOfPayment(
+  //   summary: {
+  //     previousEmployerName: any;
+  //     declaredAmount: number;
+  //     dateOfPayment: Date;
+  //     actualAmount: number;
+  //     dueDate: any;
+  //   },
+  //   i: number,
+  //   j: number
+  // ) {
+  //   this.transactionDetail[j].housePropertyTransactionList[i].dateOfPayment =
+  //     summary.dateOfPayment;
+  //   console.log(
+  //     this.transactionDetail[j].housePropertyTransactionList[i].dateOfPayment
+  //   );
+  // }
+
+  // ---------------- Doc Viewr Code ----------------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
     );
   }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log('documentDetailList::', documentDetailList);
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
+
+  // public usageTypeShowAndHide() {
+  //   if (this.isECS === false) {
+  //     this.hideCopytoActualDate = true;
+  //   } else {
+  //     this.hideCopytoActualDate = false;
+  //   }
+  // }
+
+  // *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'"/
 }
 
 class PreviousEmployeeService {

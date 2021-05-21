@@ -5843,3 +5843,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 .p-column-filter-buttonbar .p-button {
     width: auto!important;
 }
+
+.p-inputright .p-inputnumber-input {
+    text-align: right!important;
+}

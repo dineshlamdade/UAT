@@ -596,7 +596,10 @@ input[type="radio"]:checked+.tabs .tabview-contents>* {
 .tabview-contents {
     max-width: 100%;
     padding: 20px;
-    margin: 15px;
+    margin-left: 0px;
+    margin-top: 15px;
+    margin-right: 0px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-family: Montserrat, sans-serif !important;
@@ -605,7 +608,7 @@ input[type="radio"]:checked+.tabs .tabview-contents>* {
 
 /* tabview css End here */
 
-<<<<<<< HEAD <<<<<<< HEAD==============>>>>>>>4669bf0b2351ace8535e39cf0785df68381c04c5
+ 
 /* tabview css start here */
 
 .apprtabview {
@@ -690,7 +693,7 @@ input[type="radio"]:checked+.apprtabs .tabview-contents>* {
 
 /* tabview css End here */
 
-<<<<<<< HEAD>>>>>>>90a6665f027b915bc1891ab460c4187c9ba5e308=======>>>>>>>4669bf0b2351ace8535e39cf0785df68381c04c5
+ 
 /* Feildset CSS Start*/
 
 legend {
@@ -1001,6 +1004,11 @@ strong {
     border: 1px solid #999 !important;
 }
 
+.bg-letterbadge-gray {
+    background-color: #ddd!important;
+    color: #000!important;
+}
+
 .bg-color-light_gray {
     background-color: #f2f2f2 !important;
     color: #000 !important;
@@ -1267,8 +1275,7 @@ strong {
 }
 
 .Custom_Table .table {
-    /* table-layout: auto !important; */
-    table-layout: fixed;
+    table-layout: auto !important;
     margin-bottom: 0px !important;
 }
 
@@ -1669,7 +1676,7 @@ button:focus {
     background: #fff !important;
     padding: 0.375rem 0.75rem !important;
     line-height: 1.5 !important;
-    border: 1px solid #999 !important;
+    border: 1px solid #ddd !important;
     border-radius: 0.25rem !important;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s !important;
     appearance: none !important;
@@ -3019,8 +3026,50 @@ legend {
 }
 
 
+
+.table tr.activeleft td {
+    background-color: #5aa5bd !important;
+    color: white;
+}
+
+
 /* end here */
 
 .border-bottom-gray {
     border-bottom: 2px solid gray!important;
+}
+
+.text-number-card {
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+    align-items: stretch!important;
+    flex-direction: row!important;
+    border: 0!important;
+    position: relative;
+    display: flex;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border-radius: .25rem;
+}
+
+.text-number-card-icon {
+    background-color: #309c3e;
+    color: #fff!important;
+    align-items: center!important;
+    justify-content: center!important;
+    display: flex!important;
+    border-top-left-radius: .25rem!important;
+    border-bottom-left-radius: .25rem!important;
+}
+
+.text-number-card-text {
+    background-color: #38b449!important;
+    padding-bottom: 1rem!important;
+    padding-top: 1rem!important;
+    border-bottom-right-radius: .25rem!important;
+    border-top-right-radius: .25rem!important;
+    text-align: center;
+    color: #fff!important;
 }

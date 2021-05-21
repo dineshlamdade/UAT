@@ -53,6 +53,7 @@ import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/
 import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
 import { OtherincomeComponent } from './Other/Other Income/otherincome/otherincome.component';
 import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
+import { AffirmationComponent } from './affirmation/affirmation.component';
 
 const routes: Routes = [
 
@@ -84,8 +85,8 @@ const routes: Routes = [
               component:  EmployeeContributionToVPFComponent,
                data: { title: ':: DelziaHR :: EmployeeContributionToProvidentFund_PF' },
               },
-          
-        
+
+
           {
             path:   'Chapter-VI-A-Summary',
             component:  ChapterVIASummaryComponent,
@@ -97,7 +98,7 @@ const routes: Routes = [
               component:  ChaComponent,
                data: { title: ':: DelziaHR :: Child-Hostel-Allowance' },
               },
-        
+
               {
                 path:   'Other-Child',
                 component:  ChaComponent,
@@ -117,16 +118,21 @@ const routes: Routes = [
                     },
 
                     {
-                      path:   'Other-HouseProperty',
-                      component:  HousePropertyComponent,
-                       data: { title: ':: DelziaHR ::  HouseProperty' },
-                      },
+                        path:   'Other-HouseProperty',
+                        component:  HousePropertyComponent,
+                         data: { title: ':: DelziaHR ::  HouseProperty' },
+                        },
+                        /* {
+                          path:   'Other-Employeenationalpension',
+                          component:  EmployeenationalpensionComponent,
+                           data: { title: ':: DelziaHR ::  Employeenationalpension' },
+                          }, */
 
                       {
                         path:   'Other-PrincipalRepaymentOnHousingLoan',
                         component: PrincipalRepaymentOnHousingLoanComponent,
                          data: { title: ':: DelziaHR ::  PrincipalRepaymentOnHousingLoan' },
-                        },  
+                        },
 
                         {
                           path:   'Other-TaxAdjustments',
@@ -142,8 +148,8 @@ const routes: Routes = [
                               path:   'Other-EmployeeNationalPensionScheme80CCD',
                               component: EmployeeNPS80CCDComponent,
                                data: { title: ':: DelziaHR ::  EmployeeNationalPensionScheme80CCD' },
-                              },  
-  
+                              },
+
 
         {
           path:   '80C-TaxsavingMutualFund',
@@ -286,11 +292,17 @@ const routes: Routes = [
         component: PreviousemployerComponent,
         data: { title: ':: DelziaHR :: previousemployer' },
       },
+      {
+        path:   'affirmation',
+        component: AffirmationComponent,
+        data: { title: ':: DelziaHR :: Affirmation' },
+      },
+
 
       {
-        path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseasesComponent',
+        path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseases',
         component:  TreatmentOfSpecifiedDiseasesComponent,
-        data: { title:  ':: DelziaHR :: TreatmentOfSpecifiedDiseasesComponent' },
+        data: { title:  ':: DelziaHR :: TreatmentOfSpecifiedDiseases' },
       },
     ],
    },
