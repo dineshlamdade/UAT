@@ -883,7 +883,7 @@
                                                                                     <option value="1.00" [selected]="presentCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (keyup)="getCurrentWeeklyOff($event.target.value, presentCycle,rowIndex)"
-                                                                                    class="timeinput mr-1 form-control" [value]="presentCycle.weeklyOff" appTwoDigitDecimaNumber>
+                                                                                    class="timeinput mr-1 form-control" [value]="presentCycle.weeklyOff" >
                                                                                     <!-- onkeypress="return event.charCode >=48 && event.charCode <=57" -->
                                                                             </div>
                                                                         </td>
@@ -898,7 +898,7 @@
                                                                                     <option value="1.00" [selected]="presentCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (keyup)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.holiday" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.holiday" >
                                                                                 <!-- appTwoDigitDecimaNumber -->
                                                                             </div>
                                                                         </td>
@@ -915,7 +915,7 @@
                                                                                     <option value="1.00" [selected]="presentCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (keyup)="getCurrentPaidLeaves($event.target.value,presentCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.paidLeaves" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.paidLeaves" >
                                                                             </div>  
                                                                         </td>
                                                                         <td >
@@ -930,10 +930,10 @@
                                                                                     <option value="1.00" [selected]="presentCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input *ngIf="defaultAttendace == '1'"  (keyup)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.leaveWithoutPay" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.leaveWithoutPay">
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.leaveWithoutPay_0">
+                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(presentCycle)">
                                                                             </div>
                                                                         </td>
                                                                        
@@ -945,11 +945,15 @@
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"  [disabled]="attendanceForm.controls.payrollArea.value == '1'" > -->
                                                                                 
-                                                                                <input (keyup)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)" 
-                                                                                [value]="defaultAttendace == '1' ? presentCycle.presentDay.toFixed(2) : presentCycle.presentDay_0"
-                                                                                    placeholder="00:00"
-                                                                                    class="timeinput mr-1" [disabled]="defaultAttendace == '1'" appTwoDigitDecimaNumber>
-                                                                                
+                                                                                <input *ngIf="defaultAttendace == '0'" (keyup)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)" 
+                                                                                [value]="presentCycle.presentDay_0" 
+                                                                                class="timeinput mr-1 form-control" >
+
+                                                                                    
+                                                                                    <input *ngIf="defaultAttendace == '1'" 
+                                                                                    value="{{calculatePresentDay(presentCycle)}}"
+                                                                                        class="timeinput mr-1 form-control" disabled>
+
                                                                                 <!-- <p-inputMask mask="99:99"
                                                                                 value="{{user1.presentDay}}"
                                                                                     placeholder="00:00"
@@ -960,7 +964,7 @@
                                                                             class="form-lable mb-0">{{presentCycle.adjustment}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" ><label
-                                                                                class="form-lable mb-0">{{presentCycle.paidDays}}</label>
+                                                                                class="form-lable mb-0">{{calculatePayableDays(presentCycle)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" >
                                                                             <label
@@ -1303,7 +1307,8 @@
                                                                                 class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay">
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(futureCycle)">
+                                                                                <!-- appTwoDigitDecimaNumber -->
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
@@ -1312,10 +1317,16 @@
                                                                                     value="{{futureCycle.presentDay}}"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"> -->
-                                                                                    <input (keyup)="getFuturePresentDay($event.target.value,futureCycle,rowIndex)" 
-                                                                                    [value]=" defaultAttendace == '1' ? futureCycle.presentDay.toFixed(2) : futureCycle.presentDay_0"
-                                                                                        placeholder="00:00"
-                                                                                        class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
+                                                                                  
+
+                                                                                    <input *ngIf="defaultAttendace == '0'" (keyup)="getFuturePresentDay($event.target.value,futureCycle,rowIndex)" 
+                                                                                    [value]=" defaultAttendace == '1' ? futureCycle.presentDay : futureCycle.presentDay_0"
+                                                                                       
+                                                                                        class="timeinput mr-1 form-control" [disabled]="defaultAttendace == '1'">
+
+                                                                                        <input *ngIf="defaultAttendace == '1'" 
+                                                                                        value="{{calculatePresentDay(futureCycle)}}"
+                                                                                            class="timeinput mr-1 form-control" disabled>
                                                                                 <!-- <input
                                                                                     value="{{futureCycle.presentDay}}"
                                                                                     placeholder="00:00"
@@ -1331,7 +1342,7 @@
                                                                             class="form-lable mb-0">{{futureCycle.adjustment.toFixed(2)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;"><label
-                                                                                class="form-lable mb-0">{{futureCycle.paidDays.toFixed(2)}}</label>
+                                                                                class="form-lable mb-0">{{calculatePayableDays(futureCycle)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;">
                                                                             <label
@@ -1664,9 +1675,11 @@
                                                                                 </select> -->
                                                                                 <input *ngIf="defaultAttendace == '1'" (keyup)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
                                                                                 class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay">
-
+<!-- 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber>
+                                                                                class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber> -->
+                                                                                <input *ngIf="defaultAttendace == '0'" disabled
+                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(previousCycle)">
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" style="text-align: center !important;">
@@ -1676,10 +1689,15 @@
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"> -->
                                                                                 
-                                                                                    <input (keyup)="getPreviousPresentDay($event.target.value,previousCycle,rowIndex)" 
+                                                                                    <input *ngIf="defaultAttendace == '0'"  (keyup)="getPreviousPresentDay($event.target.value,previousCycle,rowIndex)" 
                                                                                     [value]=" defaultAttendace == '1' ? previousCycle.presentDay : previousCycle.presentDay_0"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
+
+                                                                                    <input *ngIf="defaultAttendace == '1'" 
+                                                                                    value="{{calculatePresentDay(previousCycle)}}"
+                                                                                        class="timeinput mr-1 form-control" disabled>
+                                            
                                                                                 <!-- <input
                                                                                     value="{{previousCycle.presentDay}}"
                                                                                     placeholder="00:00"
