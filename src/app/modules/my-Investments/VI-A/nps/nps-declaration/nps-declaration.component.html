@@ -621,7 +621,7 @@
                   </td>
                   <td>
 
-                    <i *ngIf="canEdit"
+                    <i 
                       class="fa fa-eye font-16 text-blue cursor-pointer"
                       (click)="
                       editViewTransaction(
@@ -633,7 +633,7 @@
                       tooltip="view"
                     ></i>
                     &nbsp;&nbsp;
-                    <i
+                    <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
                       editViewTransaction(
