@@ -608,7 +608,7 @@ input[type="radio"]:checked+.tabs .tabview-contents>* {
 
 /* tabview css End here */
 
-<<<<<<< HEAD <<<<<<< HEAD==============>>>>>>>4669bf0b2351ace8535e39cf0785df68381c04c5
+ 
 /* tabview css start here */
 
 .apprtabview {
@@ -693,7 +693,7 @@ input[type="radio"]:checked+.apprtabs .tabview-contents>* {
 
 /* tabview css End here */
 
-<<<<<<< HEAD>>>>>>>90a6665f027b915bc1891ab460c4187c9ba5e308=======>>>>>>>4669bf0b2351ace8535e39cf0785df68381c04c5
+ 
 /* Feildset CSS Start*/
 
 legend {
@@ -1178,6 +1178,16 @@ strong {
 .height-200 {
     height: 200px !important;
 }
+.height-300{
+  height: 300px !important;
+}
+.height-315{
+    height: 315px !important;
+
+}
+.height-350 {
+  height: 350px !important;
+}
 
 .height-756 {
     height: 756px !important;
@@ -1195,6 +1205,14 @@ strong {
 .wd-27 {
     width: 27% !important;
 }
+.wd-30 {
+  width: 30% !important;
+}
+
+.wd-40 {
+  width: 40% !important;
+}
+
 
 
 /* Custom Width css End */
@@ -2985,14 +3003,29 @@ legend {
     opacity: 0.7 !important;
 }
 
-.selectedMaterialCode1 {
-    background-color: #63ff6199;
+.table tr.active td {
+    background-color: #ddd!important;
+    color: #000;
+    font-weight: 500;
 }
 
-.boldRow {
-    font-weight: bold;
-    background-color: rgb(255, 255, 155);
+.table tr.activeleft td {
+    background-color: #ddd!important;
+    color: #000;
+    font-weight: 500;
 }
+
+.table tr.disableTableRow {
+    background-color: rgb(168, 139, 139) !important;
+    color: white;
+}
+
+.bg-color-disable {
+    background-color: #f2f2f2;
+    color: grey !important;
+}
+
+
 
 .table tr.activeleft td {
     background-color: #5aa5bd !important;
