@@ -235,6 +235,16 @@ export class AttributeGlobalComponent implements OnInit {
     this.getAllAttributeCreation();
   }
   CancelAttributeCreation(): void {
+    this.targetProducts = [];
+    this.sourceProducts = [];
+    this.selectedUser2 = [];
+    this.selectedUser = [];
+
+    this.AttributeGlobalForm.reset();
+    this.viewCancelButton = false;
+
+
+
     this.AttributeGlobalForm.enable();
     this.targetProducts = [];
     this.sourceProducts = [];
@@ -249,6 +259,8 @@ export class AttributeGlobalComponent implements OnInit {
     this.AttributeGlobalForm.patchValue( {
       attributeNature: ''
     } );
+
+    this.getAllAttributeCreation();
 
   }
 
@@ -280,7 +292,8 @@ export class AttributeGlobalComponent implements OnInit {
       this.attributeSelectionService.getGlobalAttribute1().subscribe( res => {
         this.originalSourceProductList = res.data.results;
         this.sourceProducts = res.data.results[0];
-      }, ( err ) => {
+      }, ( error ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       }, () => {
         this.sourceProducts = this.originalSourceProductList;
         this.attributeSelectionService.GetHeadGroupByGetGlobalPHGByName( event.target.value ).subscribe( res => {
@@ -329,6 +342,8 @@ export class AttributeGlobalComponent implements OnInit {
         //  element.disabled = true;
         this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
       } );
+    }, ( error ) => {
+      this.alertService.sweetalertError( error["error"]["status"]["message"] );
     } );
     // this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
   }
@@ -336,45 +351,71 @@ export class AttributeGlobalComponent implements OnInit {
   // Get Attribute Selection ById
   GetAttributeSelectionByIdDisable( id ): void {
 
-    this.disabled = false;
-    this.viewupdateButton = false;
-    this.viewCancelButton = true;
+    this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe( res => {
+      console.log( 'check source res ', res );
+      this.originalSourceProductList = res.data.results;
+      this.sourceProducts = res.data.results;
+    }, ( error ) => {
+      this.alertService.sweetalertError( error["error"]["status"]["message"] );
 
-    this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
-      .subscribe( response => {
+    }, () => {
+      this.disabled = false;
+      this.viewupdateButton = false;
+      this.viewCancelButton = true;
 
-        this.targetProducts = response.data.results[0].attributeMasters;
+      this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
+        .subscribe( response => {
 
-        this.targetProducts.forEach( element => {
-          this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+          this.targetProducts = response.data.results[0].attributeMasters;
+
+          this.targetProducts.forEach( element => {
+            this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+          } );
+
+          this.AttributeGlobalForm.patchValue( { name: response.data.results[0].name } );
+          this.AttributeGlobalForm.patchValue( { description: response.data.results[0].description } );
+          //   this.AttributeGlobalForm.patchValue( { attributeNature: response.data.results[0].name } );
+
+        }, ( error ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
+      this.AttributeGlobalForm.disable();
 
-        this.AttributeGlobalForm.patchValue( { name: response.data.results[0].name } );
-        this.AttributeGlobalForm.patchValue( { description: response.data.results[0].description } );
-        this.AttributeGlobalForm.patchValue( { attributeNature: response.data.results[0].name } );
+    } );
 
-      } );
-    this.AttributeGlobalForm.disable();
+
   }
 
   // Get Attribute Selection ById
   GetAttributeSelectionById( id ): void {
-    this.originalTargetList = [];
-    this.disabled = true;
-    this.viewupdateButton = true;
-    this.viewCancelButton = true;
-    this.attributeGroupId = id;
-    this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
-      .subscribe( response => {
-        this.targetProducts = response.data.results[0].attributeMasters;
-        this.originalTargetList = response.data.results[0].attributeMasters;
-        this.targetProducts.forEach( element => {
-          this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+    this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe( res => {
+      console.log( 'check source res ', res );
+      this.originalSourceProductList = res.data.results;
+      this.sourceProducts = res.data.results;
+    }, ( error ) => {
+      this.alertService.sweetalertError( error["error"]["status"]["message"] );
+
+    }, () => {
+      this.originalTargetList = [];
+      this.disabled = true;
+      this.viewupdateButton = true;
+      this.viewCancelButton = true;
+      this.attributeGroupId = id;
+      this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
+        .subscribe( response => {
+          this.targetProducts = response.data.results[0].attributeMasters;
+          this.originalTargetList = response.data.results[0].attributeMasters;
+          this.targetProducts.forEach( element => {
+            this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+          } );
+          this.AttributeGlobalForm.patchValue( { name: response.data.results[0].name } );
+          this.AttributeGlobalForm.patchValue( { description: response.data.results[0].description } );
+          //       this.AttributeGlobalForm.patchValue( { attributeNature: response.data.results[0].name } );
+        }, ( error ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
-        this.AttributeGlobalForm.patchValue( { name: response.data.results[0].name } );
-        this.AttributeGlobalForm.patchValue( { description: response.data.results[0].description } );
-        this.AttributeGlobalForm.patchValue( { attributeNature: response.data.results[0].name } );
-      } );
+    } );
+
 
   }
 
@@ -388,6 +429,8 @@ export class AttributeGlobalComponent implements OnInit {
         this.getAllAttributeSelection();
         this.AttributeGlobalForm.reset();
         this.targetProducts = [];
+      }, ( error ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       } );
   }
 
@@ -414,7 +457,7 @@ export class AttributeGlobalComponent implements OnInit {
       this.resetAttributeSelection();
     },
       ( error: any ) => {
-
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       } );
 
   }
@@ -442,7 +485,7 @@ export class AttributeGlobalComponent implements OnInit {
       this.resetAttributeSelection();
     },
       ( error: any ) => {
-        // this.alertService.sweetalertError( error[error][status][message] );
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       } );
     //}
   }

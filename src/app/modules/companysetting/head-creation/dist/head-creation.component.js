@@ -97,6 +97,7 @@ var HeadCreationComponent = /** @class */ (function () {
             type: '',
             category: ''
         });
+        this.TypeList = [];
     };
     HeadCreationComponent.prototype.ResetHeadCreation = function () {
         this.HeadCreationForm.reset();
@@ -106,6 +107,7 @@ var HeadCreationComponent = /** @class */ (function () {
             type: '',
             category: ''
         });
+        this.TypeList = [];
     };
     HeadCreationComponent.prototype.onChangeEvent = function (event) {
         this.HeadCreationForm.patchValue({ shortName: event.target.value });

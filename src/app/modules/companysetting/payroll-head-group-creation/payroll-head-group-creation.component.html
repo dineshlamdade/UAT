@@ -408,7 +408,7 @@
                                     <thead class="thead-dark">
                                       <tr>
                                         <th scope="col" class="font700 wd-15">Attribute</th>
-                                        <th scope="col" class="font700 wd-15"> Nature</th>
+                                        <!-- <th scope="col" class="font700 wd-9"> Nature</th> -->
 
                                         <th scope="col" class="font700 wd-10">Applicable</th>
                                         <th scope="col" class="font700 wd-12">Value</th>
@@ -429,19 +429,19 @@
                                       <tr *ngFor="let summary of pfArray.controls;let i = index; " [formGroupName]="i">
 
                                         <td class="wd-10 bg-color-light_gray align-left">
-                                          <span tooltip="{{pfArray['controls'][i].get('code').value}}">
+                                          <span tooltip="{{pfArray['controls'][i].get('description').value}}">
 
 
                                             <label class="form-lable mb-0 text-link align-left"
                                               (click)="openNewPopUpWindow(template1244511, selectedHeadGroupIds, pfArray['controls'][i].get('attributeGroupIds').value )">{{pfArray['controls'][i].get('code').value}}
                                             </label></span>
                                         </td>
-                                        <td class="wd-10 bg-color-light_gray align-left">
+
+
+                                        <!-- <td class="wd-9 bg-color-light_gray align-left">
                                           {{pfArray['controls'][i].get('attributeNature').value}}
+                                        </td> -->
 
-
-
-                                        </td>
                                         <td class="wd-10">
                                           <!-- ,pfArray['
                                           controls'][i].get('attributeNature').value, pfArray['controls'][i].get('attributeMasterId1').value -->
@@ -553,8 +553,9 @@
                                           <select class="form-control" formControlName="value4"
                                             (change)="onChangeActiveFrequency($event.target.value,pfArray['controls'][i].get('attributeMasterId1').value)"
                                             [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value4').status == 'INVALID'}">
-                                            <option selected value=''>Select </option>
-                                            <option *ngFor="let activeFrequency of sortedFrequencyList"
+
+                                            <option
+                                              *ngFor="let activeFrequency of pfArray['controls'][i].get('sortedFrequencyList').value"
                                               [value]="activeFrequency.name">
                                               {{activeFrequency.name}}
                                             </option>
@@ -564,9 +565,9 @@
                                           <span *ngIf="pfArray['controls'][i].get('isPlusSignVisible').value">
                                             <i style="font-size: 12;" class="fa fa-plus-circle font-12 cursor-pointer"
                                               tooltip="Add Row"
-                                              (click)="addRow(i+1,pfArray['controls'][i].get('attributeMasterId1').value, pfArray['controls'][i].get('value4').value)"></i><span
+                                              (click)="addRow(i+1,pfArray['controls'][i].get('attributeMasterId1').value, pfArray['controls'][i+1].get('value4').value)"></i><span
                                               tooltip="Add Row"
-                                              (click)="addRow(i+1,pfArray['controls'][i].get('attributeMasterId1').value, pfArray['controls'][i].get('value4').value)">&nbsp;Add</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                              (click)="addRow(i+1,pfArray['controls'][i].get('attributeMasterId1').value, pfArray['controls'][i+1].get('value4').value)">&nbsp;Add</span>&nbsp;&nbsp;&nbsp;&nbsp;
                                           </span>
 
 
@@ -618,8 +619,7 @@
                         class="fa fa-floppy-o"></i></b>
                     Update</button> -->
 
-                  <button type="button" *ngIf="!viewSaveButton" (click)="TestJsonObject1();"
-                    onClick="this.disabled=true;"
+                  <button type="button" *ngIf="!viewSaveButton" (click)="Test();" onClick="this.disabled=true;"
                     [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                     [disabled]="form.invalid">
@@ -640,7 +640,7 @@
                         class="fa fa-floppy-o"></i></b>Save
                   </button> -->
 
-                  <button type="button" *ngIf="viewSaveButton" [disabled]="form.invalid" (click)="TestJsonObject1();"
+                  <button type="button" *ngIf="viewSaveButton" [disabled]="form.invalid" (click)="Test();"
                     onClick="this.disabled=true;" class="custom_button custom_btn btn-labeled btn-labeled-left"
                     tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
                     <b><i class="fa fa-floppy-o"></i></b> Save</button>

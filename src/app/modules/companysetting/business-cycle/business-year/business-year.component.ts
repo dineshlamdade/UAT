@@ -117,27 +117,16 @@ export class BusinessYearComponent implements OnInit {
     }
   }
 
-
-
-  // "businessYearDefinitionId": 28,
-  //   "fromDate": "01-Mar",
-  //     "toDate": "12-Mar",
-  //       "description": "e",
-  //         "createdBy": "PaysquareDefault",
-  //           "lastModifiedBy": "PaysquareDefault",
-  //             "yearDefinition": "01-Mar - 12-Mar",
-  //               "createDateTime": "17-Mar-2021",
-  //                 "active": true,
-  //                   "used": false
-
-
   //get all Businessyear
   getAllBusinessyear(): void {
     this.BusinessyearList = [];
     this.companySetttingService.getAllBusinessYear().subscribe( res => {
       this.BusinessyearList = res.data.results;
       console.log( 'Business year list', this.BusinessyearList );
-    } );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
   }
 
   DeleteBussinessyearById( id ): void {
@@ -148,7 +137,10 @@ export class BusinessYearComponent implements OnInit {
         this.alertService.sweetalertMasterSuccess( response.status.message, '' );
         this.getAllBusinessyear();
         this.BusinessYearform.reset();
-      } );
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
   }
 
   ResetBusiness(): void {
@@ -176,7 +168,10 @@ export class BusinessYearComponent implements OnInit {
         this.BusinessYearform.patchValue( { toDate: response.data.results[0].toDate } );
         this.BusinessYearform.patchValue( { businessYear: response.data.results[0].businessYear } );
 
-      } );
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
     this.BusinessYearform.get( 'description' ).disable();
   }
   UploadModal1( template: TemplateRef<any> ) {

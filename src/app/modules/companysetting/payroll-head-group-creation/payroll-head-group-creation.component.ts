@@ -5,6 +5,8 @@ import { DatePipe } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { AlertServiceService } from '../../../../app/core/services/alert-service.service';
 
+import { ShortenStringPipe } from './../../../core/utility/pipes/shorten-string.pipe';
+
 
 
 import { HeadDetailPHG, SaveAttributeAssignmentNewAssignment, SavePHGGlobal } from '../model/business-cycle-model';
@@ -116,8 +118,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private companySettingsService: CompanySettingsService,
     private alertService: AlertServiceService,
+    private shortenString: ShortenStringPipe,
   ) { }
 
+  // this.shortenString.transform( element.shortName )
 
   modalRef: BsModalRef;
   modalRef1: BsModalRef;
@@ -199,26 +203,38 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   getAllAttributeSelection(): void {
     this.companySettingsService.getAllAttributeSelectionByGlobal().subscribe( res => {
       this.attributeGroupList = res.data.results;
-    } );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
   }
   // get All Head List
   getAllPayrollHeadGroup(): void {
     this.companySettingsService.getAllPayrollHeadGroupAtGlobal().subscribe( res => {
       this.PayrollHeadGroupList = res.data.results;
-    } );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
   }
 
 
   getAllFormulaList(): void {
     this.companySettingsService.getFromulaForFormulaMaster().subscribe( res => {
       this.FormulaArray = res.data.results;
-    } );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
   }
 
   getAllSDMList(): void {
     this.companySettingsService.getSDMFormula().subscribe( res => {
       this.SDMArray = res.data.results;
-    } );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
   }
 
   getAllHeadCreation(): void {
@@ -227,7 +243,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       this.sourceProducts = res.data.results;
       this.originalSourceProductList = res.data.results;
       this.allGlobalHeadList = res.data.results;
-    } );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
   }
 
   GetPHGByIdDisable( headGroupDefinitionId ): void {
@@ -290,7 +309,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         console.log( 'abc', this.dropdownList );
         //  this.dropdownList = this.HeadNameList;
         console.log( 'hed', this.HeadNameList );
-      } );
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
     // this.getAllHeadCreation();
   }
 
@@ -301,7 +323,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         this.alertService.sweetalertMasterSuccess( response.status.message, '' )
         this.getAllPayrollHeadGroup();
         this.payrollHeadGroupCreationForm.reset();
-      } );
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
   }
 
   onChangeHeadGroupDefinitionName( event: any ): void {
@@ -373,22 +398,25 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
         if ( res.data.results[0][i].payrollHeadGroupAttributeValueMapping.length == 0 ) {
 
-          this.addPfArrayWithExistingValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, '', '', '', '', false, res.data.results[0][i].globalPayrollHeadGroupId, 0 );
+          this.addPfArrayWithExistingValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, '', '', '', '', false, res.data.results[0][i].globalPayrollHeadGroupId, 0, res.data.results[0][i].attributeMaster[0].description, i );
 
         } else {
           for ( let j = 0; j < res.data.results[0][i].payrollHeadGroupAttributeValueMapping.length; j++ ) {
             if ( j == 0 ) {
-              this.addPfArrayWithExistingValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, true, res.data.results[0][i].globalPayrollHeadGroupId, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              this.addPfArrayWithExistingValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, true, res.data.results[0][i].globalPayrollHeadGroupId, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '', i );
 
             } else {
               console.log( 'cccc', res.data.results[0][i].attributeMaster[0].options );
-              this.addPfArrayWithExistingValues( true, 'Range Value No Of Instances Per Period', '', res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, null, 'Range', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].fromDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, false, res.data.results[0][i].globalPayrollHeadGroupId, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              this.addPfArrayWithExistingValues( true, 'Range Value No Of Instances Per Period', '', res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, null, 'Range', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].fromDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, false, res.data.results[0][i].globalPayrollHeadGroupId, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '', i );
               //  applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: any, value: string, fromDate: Date, toDate: Date, value1?: string, value2?: string, value3?: string, value4?: string, isPlusSignVisible?: boolean
             }
           }
         }
       }
-    }, ( error ) => { } );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
 
   }
   onSelectAttributeAssignmentWithMultipleParameter( headGroupIds: number ) {
@@ -400,7 +428,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
         if ( res.data.results[0][i].payrollHeadGroupAttributeValueMapping.length == 0 ) {
 
-          this.addPfArrayWithExistingValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].optionList, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, '', '', '', '', false, res.data.results[0][i].globalPayrollHeadGroupId, 0 );
+          this.addPfArrayWithExistingValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, '', '', '', '', false, res.data.results[0][i].globalPayrollHeadGroupId, 0, res.data.results[0][i].attributeMaster[0].description, i );
 
         } else {
           for ( let j = 0; j < res.data.results[0][i].payrollHeadGroupAttributeValueMapping.length; j++ ) {
@@ -415,12 +443,12 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
             //   //  applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: any, value: string, fromDate: Date, toDate: Date, value1?: string, value2?: string, value3?: string, value4?: string, isPlusSignVisible?: boolean
             // }
             if ( j == 0 ) {
-              console.log( 'ee', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
-              this.addPfArrayWithExistingValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, true, res.data.results[0][i].globalPayrollHeadGroupId, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              console.log( 'epayrollHeadGroupAttributeValueMappingIde', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              this.addPfArrayWithExistingValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, true, res.data.results[0][i].globalPayrollHeadGroupId, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '', i );
 
             } else {
-              console.log( 'ee', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
-              this.addPfArrayWithExistingValues( true, 'Range Value No Of Instances Per Period', '', res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, null, 'Range', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].fromDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, false, res.data.results[0][i].globalPayrollHeadGroupId, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              console.log( 'epayrollHeadGroupAttributeValueMappingIde', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              this.addPfArrayWithExistingValues( true, 'Range Value No Of Instances Per Period', '', res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, null, 'Range', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].fromDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, false, res.data.results[0][i].globalPayrollHeadGroupId, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '', i );
               //  applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: any, value: string, fromDate: Date, toDate: Date, value1?: string, value2?: string, value3?: string, value4?: string, isPlusSignVisible?: boolean
             }
 
@@ -438,8 +466,11 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
     }, ( error ) => {
       if ( error.status == 404 ) {
+
         this.getAllAttributeListByAttGroup( headGroupIds );
         this.viewSaveButton = true;
+      } else {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       }
 
     }, () => {
@@ -455,7 +486,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     } );
   }
 
-  onSelectAttributeAssignment( u: any, i: number ) {
+  onSelectAttributeAssignment( u: any ) {
     console.log( u );
     this.headNameIndex = this.targetProducts.findIndex( o => o.headGroupIds == u.headGroupIds );
     this.selectedCopyToList = [];
@@ -467,21 +498,23 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       let data = res.data.results[0];
       for ( let i = 0; i < res.data.results[0].length; i++ ) {
         console.log( 'globalPayrollHeadGroupId', res.data.results[0][i].globalPayrollHeadGroupId );
-        console.log( 'cccc', data[i].attributeMaster[0].options );
+        console.log( 'value', data[i].value );
+
 
         if ( data[i].payrollHeadGroupAttributeValueMapping.length == 0 ) {
-          this.addPfArrayWithExistingValues( data[i].applicable, data[i].attributeMaster[0].attributeNature, data[i].attributeMaster[0].code, data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, data[i].attributeMaster[0].options, data[i].value, data[i].fromDate, data[i].toDate, '', '', '', '', false, res.data.results[0][i].globalPayrollHeadGroupId, 0 );
+          this.addPfArrayWithExistingValues( data[i].applicable, data[i].attributeMaster[0].attributeNature, data[i].attributeMaster[0].code, data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, data[i].attributeMaster[0].options, data[i].value, data[i].fromDate, data[i].toDate, '', '', '', '', false, res.data.results[0][i].globalPayrollHeadGroupId, 0, data[i].attributeMaster[0].description, i );
 
         }
         if ( data[i].payrollHeadGroupAttributeValueMapping.length !== 0 ) {
-          console.log( 'cc1', data[i].payrollHeadGroupAttributeValueMapping[0].payrollHeadGroupAttributeValueMappingId );
+
           for ( let j = 0; j < data[i].payrollHeadGroupAttributeValueMapping.length; j++ ) {
+            console.log( 'cc1', data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
             console.log( 'cc2', data[i].payrollHeadGroupAttributeValueMapping[0].payrollHeadGroupAttributeValueMappingId );
             if ( j == 0 ) {
-              this.addPfArrayWithExistingValues( data[i].applicable, data[i].attributeMaster[0].attributeNature, data[i].attributeMaster[0].code, data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, data[i].attributeMaster[0].options, data[i].value, data[i].fromDate, data[i].toDate, data[i].payrollHeadGroupAttributeValueMapping[j].value1, data[i].payrollHeadGroupAttributeValueMapping[j].value2, data[i].payrollHeadGroupAttributeValueMapping[j].value3, data[i].payrollHeadGroupAttributeValueMapping[j].value4, true, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupId, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              this.addPfArrayWithExistingValues( data[i].applicable, data[i].attributeMaster[0].attributeNature, data[i].attributeMaster[0].code, data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, data[i].attributeMaster[0].options, data[i].value, data[i].fromDate, data[i].toDate, data[i].payrollHeadGroupAttributeValueMapping[j].value1, data[i].payrollHeadGroupAttributeValueMapping[j].value2, data[i].payrollHeadGroupAttributeValueMapping[j].value3, data[i].payrollHeadGroupAttributeValueMapping[j].value4, true, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupId, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '', i );
               //    applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: [], value: string, fromDate: Date, toDate: Date, value1: string, value2: string, value3: string, value4: string, isPlusSignVisible: boolean, globalPayrollHeadGroupId: number, payrollHeadGroupAttributeValueMappingId: number
             } else {
-              this.addPfArrayWithExistingValues( true, 'Range Value No Of Instances Per Period', '', data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, null, 'Range', data[i].payrollHeadGroupAttributeValueMapping[j].fromDate, data[i].payrollHeadGroupAttributeValueMapping[j].toDate, data[i].payrollHeadGroupAttributeValueMapping[j].value1, data[i].payrollHeadGroupAttributeValueMapping[j].value2, data[i].payrollHeadGroupAttributeValueMapping[j].value3, data[i].payrollHeadGroupAttributeValueMapping[j].value4, false, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupId, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              this.addPfArrayWithExistingValues( true, 'Range Value No Of Instances Per Period', '', data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, null, 'Range', data[i].payrollHeadGroupAttributeValueMapping[j].fromDate, data[i].payrollHeadGroupAttributeValueMapping[j].toDate, data[i].payrollHeadGroupAttributeValueMapping[j].value1, data[i].payrollHeadGroupAttributeValueMapping[j].value2, data[i].payrollHeadGroupAttributeValueMapping[j].value3, data[i].payrollHeadGroupAttributeValueMapping[j].value4, false, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupId, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '', i );
               //  applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: any, value: string, fromDate: Date, toDate: Date, value1?: string, value2?: string, value3?: string, value4?: string, isPlusSignVisible?: boolean
             }
           }
@@ -492,6 +525,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       if ( error.status == 404 ) {
         this.getAllAttributeListByAttGroup( u.headGroupIds );
         this.viewSaveButton = true;
+      } else {
+
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+
       }
 
     } );
@@ -530,27 +567,26 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         console.log( 'cccc', data[i].attributeMaster[0].options );
 
         if ( data[i].payrollHeadGroupAttributeValueMapping.length == 0 ) {
-          this.addPfArrayWithExistingValues( data[i].applicable, data[i].attributeMaster[0].attributeNature, data[i].attributeMaster[0].code, data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, data[i].attributeMaster[0].options, data[i].value, data[i].fromDate, data[i].toDate, '', '', '', '', false, data[i].globalPayrollHeadGroupId, 0 );
+          this.addPfArrayWithExistingValues( data[i].applicable, data[i].attributeMaster[0].attributeNature, data[i].attributeMaster[0].code, data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, data[i].attributeMaster[0].options, data[i].value, data[i].fromDate, data[i].toDate, '', '', '', '', false, data[i].globalPayrollHeadGroupId, 0, data[i].attributeMaster[0].description, i );
 
         }
         if ( data[i].payrollHeadGroupAttributeValueMapping.length !== 0 ) {
           for ( let j = 0; j < data[i].payrollHeadGroupAttributeValueMapping.length; j++ ) {
             if ( j == 0 ) {
-              this.addPfArrayWithExistingValues( data[i].applicable, data[i].attributeMaster[0].attributeNature, data[i].attributeMaster[0].code, data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, data[i].attributeMaster[0].options, data[i].value, data[i].fromDate, data[i].toDate, data[i].payrollHeadGroupAttributeValueMapping[j].value1, data[i].payrollHeadGroupAttributeValueMapping[j].value2, data[i].payrollHeadGroupAttributeValueMapping[j].value3, data[i].payrollHeadGroupAttributeValueMapping[j].value4, true, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupId, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, );
+              this.addPfArrayWithExistingValues( data[i].applicable, data[i].attributeMaster[0].attributeNature, data[i].attributeMaster[0].code, data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, data[i].attributeMaster[0].options, data[i].value, data[i].fromDate, data[i].toDate, data[i].payrollHeadGroupAttributeValueMapping[j].value1, data[i].payrollHeadGroupAttributeValueMapping[j].value2, data[i].payrollHeadGroupAttributeValueMapping[j].value3, data[i].payrollHeadGroupAttributeValueMapping[j].value4, true, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupId, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '', i );
 
             } else {
-              this.addPfArrayWithExistingValues( true, 'Range Value No Of Instances Per Period', '', data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, null, 'Range', data[i].payrollHeadGroupAttributeValueMapping[j].fromDate, data[i].payrollHeadGroupAttributeValueMapping[j].toDate, data[i].payrollHeadGroupAttributeValueMapping[j].value1, data[i].payrollHeadGroupAttributeValueMapping[j].value2, data[i].payrollHeadGroupAttributeValueMapping[j].value3, data[i].payrollHeadGroupAttributeValueMapping[j].value4, false, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupId, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, );
-
+              this.addPfArrayWithExistingValues( true, 'Range Value No Of Instances Per Period', '', data[i].attributeMaster[0].attributeMasterId, data[i].globalAttributeGroupId, null, 'Range', data[i].payrollHeadGroupAttributeValueMapping[j].fromDate, data[i].payrollHeadGroupAttributeValueMapping[j].toDate, data[i].payrollHeadGroupAttributeValueMapping[j].value1, data[i].payrollHeadGroupAttributeValueMapping[j].value2, data[i].payrollHeadGroupAttributeValueMapping[j].value3, data[i].payrollHeadGroupAttributeValueMapping[j].value4, false, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupId, data[i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '', i );
             }
-
           }
         }
       }
-
     }, ( error ) => {
       if ( error.status == 404 ) {
         this.getAllAttributeListByAttGroup( headGroupIds );
         this.viewSaveButton = true;
+      } else {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       }
 
     } );
@@ -647,7 +683,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     }
 
 
-    this.onSelectAttributeAssignment( this.selectedHeadGroupIds, 0 );
+    //this.onSelectAttributeAssignment( this.selectedHeadGroupIds, 0 );
+    this.onSelectAttributeAssignmentWithMultipleParameter( this.selectedHeadGroupIds );
 
   }
 
@@ -709,7 +746,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
       },
         ( error: any ) => {
-          console.log( error );
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     }
   }
@@ -745,10 +782,13 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       //    this.AttGroupList = res.data.results[0].attributeMasters;
       res.data.results[0].attributeMasters.forEach( ( element, index ) => {
         element.attributeGroupIds = res.data.results[0].attributeGroupIds[index];
-        this.addPfArray( element );
+        this.addPfArray( element, index );
       } );
 
-    } );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
   }
 
 
@@ -848,7 +888,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         this.GetPHGByIdDisable( res.data.results[0].headGroupDefinitionId );
       },
         ( error: any ) => {
-          console.log( error );
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     }
     else {
@@ -865,7 +905,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         this.payrollHeadGroupCreationForm.reset();
       },
         ( error: any ) => {
-          console.log( error );
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     }
   }
@@ -893,7 +933,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
           this.OrigianHeadNameList.push( element );
         } );
         this.headNameSize = this.HeadNameList.length;
-      } );
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
 
       this.targetProducts.forEach( element => {
         this.sourceProducts = this.sourceProducts.filter( e => e.headMasterId !== element.headMasterId );
@@ -903,8 +946,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
 
 
-  addPfArrayWithHistoryValues( applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: [], value: string, fromDate: Date, toDate: Date, value1: string, value2: string, value3: string, value4: string, isPlusSignVisible: boolean, globalPayrollHeadGroupId: number, payrollHeadGroupAttributeValueMappingId: number ) {
-    console.log( 'ddd', payrollHeadGroupAttributeValueMappingId );
+  addPfArrayWithHistoryValues( applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: [], value: string, fromDate: Date, toDate: Date, value1: string, value2: string, value3: string, value4: string, isPlusSignVisible: boolean, globalPayrollHeadGroupId: number, payrollHeadGroupAttributeValueMappingId: number, description: string ) {
+    console.log( 'value4', value4 );
 
     if ( attributeNature == 'Range Value No Of Instances Per Period' || attributeNature == 'Range Value Per Period' ) {
 
@@ -923,11 +966,13 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         toDate: [toDate == null ? '' : new Date( toDate )],
         options: [options],
         isPlusSignVisible: [true],
-        attributeMasterId: [{ value: attributeMasterId }],
+        attributeMasterId: [attributeMasterId],
         attributeMasterId1: [attributeMasterId],
         attributeGroupIds: [attributeGroupIds],
         minDate1: [fromDate == null ? '' : new Date( fromDate )],
         globalPayrollHeadGroupId: [globalPayrollHeadGroupId],
+        description: [description],
+        sortedFrequencyList: [this.sortedFrequencyList],
 
         payrollHeadGroupAttributeValueMappingId: [payrollHeadGroupAttributeValueMappingId],
       } ) );
@@ -955,12 +1000,14 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         toDate: [toDate == null ? '' : new Date( toDate )],
         options: [options],
         isPlusSignVisible: [false],
-        attributeMasterId: [{ value: attributeMasterId }],
+        attributeMasterId: [attributeMasterId],
         attributeMasterId1: [attributeMasterId],
         attributeGroupIds: [attributeGroupIds],
         minDate1: [fromDate == null ? '' : new Date( fromDate )],
         globalPayrollHeadGroupId: [globalPayrollHeadGroupId],
         payrollHeadGroupAttributeValueMappingId: [payrollHeadGroupAttributeValueMappingId],
+        description: [description],
+        sortedFrequencyList: [this.sortedFrequencyList],
       } ) );
 
     } else {
@@ -979,25 +1026,27 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         toDate: [toDate == null ? '' : new Date( toDate )],
         options: [options],
         isPlusSignVisible: [isPlusSignVisible],
-        attributeMasterId: [{ value: attributeMasterId }],
+        attributeMasterId: [attributeMasterId],
         attributeMasterId1: [attributeMasterId],
         attributeGroupIds: [attributeGroupIds],
         minDate1: [fromDate == null ? '' : new Date( fromDate )],
         globalPayrollHeadGroupId: [globalPayrollHeadGroupId],
         payrollHeadGroupAttributeValueMappingId: [payrollHeadGroupAttributeValueMappingId],
+        description: [description],
+        sortedFrequencyList: [this.sortedFrequencyList],
       } ) );
     }
 
   }
 
-  addPfArrayWithExistingValues( applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: [], value: string, fromDate: Date, toDate: Date, value1: string, value2: string, value3: string, value4: string, isPlusSignVisible: boolean, globalPayrollHeadGroupId: number, payrollHeadGroupAttributeValueMappingId: number ) {
-    console.log( 'globalPayrollHeadGroupId', globalPayrollHeadGroupId );
+  addPfArrayWithExistingValues( applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: [], value: string, fromDate: Date, toDate: Date, value1: string, value2: string, value3: string, value4: string, isPlusSignVisible: boolean, globalPayrollHeadGroupId: number, payrollHeadGroupAttributeValueMappingId: number, description: string, i: number ) {
+    console.log( 'value', value );
 
     if ( attributeNature == 'Range Value No Of Instances Per Period' || attributeNature == 'Range Value Per Period' ) {
 
       this.pfArray.push( this.formBuilder.group( {
 
-        Applicability: ['true'],
+        Applicability: [applicable],
         value: ['Range'],
         value1: [value1, Validators.required],
         value2: [value2, Validators.required],
@@ -1010,13 +1059,14 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         toDate: [toDate == null ? '' : new Date( toDate )],
         options: [options],
         isPlusSignVisible: [true],
-        attributeMasterId: [{ value: attributeMasterId }],
+        attributeMasterId: [attributeMasterId],
         attributeMasterId1: [attributeMasterId],
         attributeGroupIds: [attributeGroupIds],
         minDate1: [fromDate == null ? '' : new Date( fromDate )],
         globalPayrollHeadGroupId: [globalPayrollHeadGroupId],
-
         payrollHeadGroupAttributeValueMappingId: [payrollHeadGroupAttributeValueMappingId],
+        description: [description],
+        sortedFrequencyList: [this.sortedFrequencyList],
       } ) );
       if ( !isPlusSignVisible ) {
         //    this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['Applicability'].disable();
@@ -1029,12 +1079,12 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     else if ( attributeNature == 'Range Value Per Instance' ) {
       this.pfArray.push( this.formBuilder.group( {
 
-        Applicability: ['true'],
+        Applicability: [applicable],
         value: ['Range'], // not a range
         value1: [value1, Validators.required],
         value2: [value2, Validators.required],
-        value3: [null],
-        value4: [''],
+        value3: [value3],
+        value4: [value4],
         code: [code],
         attributeNature: [attributeNature],
         applicableList: [''],  // this is dropdown
@@ -1042,12 +1092,14 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         toDate: [toDate == null ? '' : new Date( toDate )],
         options: [options],
         isPlusSignVisible: [false],
-        attributeMasterId: [{ value: attributeMasterId }],
+        attributeMasterId: [attributeMasterId],
         attributeMasterId1: [attributeMasterId],
         attributeGroupIds: [attributeGroupIds],
         minDate1: [fromDate == null ? '' : new Date( fromDate )],
         globalPayrollHeadGroupId: [globalPayrollHeadGroupId],
         payrollHeadGroupAttributeValueMappingId: [payrollHeadGroupAttributeValueMappingId],
+        description: [description],
+        sortedFrequencyList: [this.sortedFrequencyList],
       } ) );
       this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value3'].disable();
       this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value4'].disable();
@@ -1057,7 +1109,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       this.pfArray.push( this.formBuilder.group( {
 
         Applicability: [applicable],
-        value: [value],
+        value: [''],
         value1: [value1],
         value2: [value2],
         value3: [value3],
@@ -1068,30 +1120,36 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         fromDate: [fromDate == null ? '' : new Date( fromDate )],
         toDate: [toDate == null ? '' : new Date( toDate )],
         options: [options],
-        isPlusSignVisible: [isPlusSignVisible],
-        attributeMasterId: [{ value: attributeMasterId }],
+        isPlusSignVisible: [false],
+        attributeMasterId: [attributeMasterId],
         attributeMasterId1: [attributeMasterId],
         attributeGroupIds: [attributeGroupIds],
         minDate1: [fromDate == null ? '' : new Date( fromDate )],
         globalPayrollHeadGroupId: [globalPayrollHeadGroupId],
         payrollHeadGroupAttributeValueMappingId: [payrollHeadGroupAttributeValueMappingId],
+        description: [description],
+        sortedFrequencyList: [this.sortedFrequencyList],
       } ) );
       this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value1'].disable();
       this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value2'].disable();
       this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value3'].disable();
       this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value4'].disable();
     }
+    console.log( 'xxx', applicable, i );
+    if ( applicable == false ) {
+      // this.onChangeApplicability( false, i )
+    }
 
   }
 
-  addPfArray( ele: any ) {
-    console.log( 'called addPfArray', ele.options );
+  addPfArray( ele: any, index: number ) {
+    console.log( 'called addPfArray description', ele.description );
     console.log( 'attribute nature', ele.attributeNature );
     if ( ele.attributeNature == 'Range Value No Of Instances Per Period' || ele.attributeNature == 'Range Value Per Period' ) {
 
       this.pfArray.push( this.formBuilder.group( {
 
-        Applicability: [true],
+        Applicability: [false],
         value: ['Range'],
         value1: ['', Validators.required],
         value2: ['', Validators.required],
@@ -1104,24 +1162,26 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         toDate: [new Date( '31-Dec-9999' )],
         options: [ele.options],
         isPlusSignVisible: [true],
-        attributeMasterId: [{ value: ele.attributeMasterId }],
+        attributeMasterId: [ele.attributeMasterId],
         attributeMasterId1: [ele.attributeMasterId],
         attributeGroupIds: [ele.attributeGroupIds],
         minDate1: [''],
         globalPayrollHeadGroupId: [0],
         payrollHeadGroupAttributeValueMappingId: [0],
+        description: [ele.description],
+        sortedFrequencyList: [this.sortedFrequencyList],
 
       } ) );
     }
     else if ( ele.attributeNature == 'Range Value Per Instance' ) {
       this.pfArray.push( this.formBuilder.group( {
 
-        Applicability: ['true'],
+        Applicability: [false],
         value: ['Range'], // Not a range
         value1: ['', Validators.required],
         value2: ['', Validators.required],
-        value3: [{ value: '', disabled: true }],
-        value4: [{ value: '', disabled: true }],
+        value3: [''],
+        value4: [''],
         code: [ele.code],
         attributeNature: [ele.attributeNature],
         applicableList: [''],  // this is dropdown
@@ -1129,23 +1189,28 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         toDate: [new Date( '31-Dec-9999' )],
         options: [ele.options],
         isPlusSignVisible: [false],
-        attributeMasterId: [{ value: ele.attributeMasterId }],
+        attributeMasterId: [ele.attributeMasterId],
         attributeMasterId1: [ele.attributeMasterId],
         attributeGroupIds: [ele.attributeGroupIds],
         minDate1: [''],
         globalPayrollHeadGroupId: [0],
         payrollHeadGroupAttributeValueMappingId: [0],
+        description: [ele.description],
+        sortedFrequencyList: [this.sortedFrequencyList],
       } ) );
+
+      this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value3'].disable();
+      this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value4'].disable();
 
     } else {
       this.pfArray.push( this.formBuilder.group( {
 
-        Applicability: ['true'],
+        Applicability: [false],
         value: [null],
-        value1: [{ value: '', disabled: true }],
-        value2: [{ value: '', disabled: true }],
-        value3: [{ value: '', disabled: true }],
-        value4: [{ value: '', disabled: true }],
+        value1: [''],
+        value2: [''],
+        value3: [''],
+        value4: [''],
         code: [ele.code],
         attributeNature: [ele.attributeNature],
         applicableList: [''],  // this is dropdown
@@ -1153,15 +1218,22 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         toDate: [new Date( '31-Dec-9999' )],
         options: [ele.options],
         isPlusSignVisible: [false],
-        attributeMasterId: [{ value: ele.attributeMasterId }],
+        attributeMasterId: [ele.attributeMasterId],
         attributeMasterId1: [ele.attributeMasterId],
         attributeGroupIds: [ele.attributeGroupIds],
         minDate1: [''],
         globalPayrollHeadGroupId: [0],
         payrollHeadGroupAttributeValueMappingId: [0],
+        description: [ele.description],
+        sortedFrequencyList: [this.sortedFrequencyList],
 
       } ) );
+      this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value1'].disable();
+      this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value2'].disable();
+      this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value3'].disable();
+      this.form.get( 'pfFormArray' )['controls'][this.pfArray.length - 1].controls['value4'].disable();
     }
+    this.onChangeApplicability( false, index );
   }
   removeContactPerson( i: number ) {
     this.pfArray.removeAt( i );
@@ -1181,14 +1253,30 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
     } ) );
   }
+  tempValue4 = [];
   addRow( i: number, attributeMasterId: number, value4: string ) {
+    // console.log( value4 );
 
+    this.tempValue4 = [];
     let count = 0;
+    let originalSortedFreqList = this.sortedFrequencyList;
+    let temp = [];
 
     for ( let k = 0; k < this.pfArray.length; k++ ) {
+
+      //   console.log( this.form.get( 'pfFormArray' )['controls'][k].controls['value4'].value );
+      if ( this.form.get( 'pfFormArray' )['controls'][k].controls['value4'].value != null ) {
+
+        console.log( this.form.get( 'pfFormArray' )['controls'][k].controls['value4'].value );
+        temp = originalSortedFreqList.filter( o => o.name !== this.form.get( 'pfFormArray' )['controls'][k].controls['value4'].value );
+        originalSortedFreqList = temp;
+        console.log( temp );
+        //    console.log( 'tempValue4', this.tempValue4 );
+      }
+
       //  console.log( attributeMasterId )
       // console.log( this.form.get( 'pfFormArray' )['controls'][k].controls['attributeMasterId'].value );
-      console.log( this.form.get( 'pfFormArray' )['controls'][k].controls['attributeMasterId']["value"].value );
+      //  console.log( this.form.get( 'pfFormArray' )['controls'][k].controls['attributeMasterId']["value"].value );
       if ( this.form.get( 'pfFormArray' )['controls'][k].controls['attributeMasterId1'].value == attributeMasterId ) {
         console.log( 'in for loop', k );
         count++;
@@ -1202,35 +1290,183 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     var setsFormArray = this.form.get( 'pfFormArray' ) as FormArray;
     setsFormArray.insert( newIndex, this.formBuilder.group( {
 
-      Applicability: [{ value: 'true', disabled: true }],
+      Applicability: ['true'],
       value: [],
       value1: ['', Validators.required],
       value2: ['', Validators.required],
       value3: ['', Validators.required],
-      value4: [value4],
+      value4: [''],
       code: [''],
       attributeNature: ['Range Value Per Period'],
       applicableList: [{ value: '', disabled: true }],  // this is dropdown
-      fromDate: [{ value: null, disabled: true }],
-      toDate: [{ value: null, disabled: true }],
+      fromDate: [null],
+      toDate: [null],
       options: [''],
       isPlusSignVisible: [false],
-      attributeMasterId: [{ value: attributeMasterId }],
+      attributeMasterId: [attributeMasterId],
       attributeMasterId1: [attributeMasterId],
       attributeGroupIds: [0],
       minDate1: [null],
       globalPayrollHeadGroupId: [0],
       payrollHeadGroupAttributeValueMappingId: [0],
+      description: [''],
+      sortedFrequencyList: [temp],
 
 
     } ) );
-    this.form.get( 'pfFormArray' )['controls'][i].controls['value4'].disable();
+    // this.form.get( 'pfFormArray' )['controls'][i].controls['value4'].disable();
 
   }
   deleteRow() {
     ( <FormArray>this.form.get( 'pfFormArray' ) ).removeAt( this.rowNumberToDelete );
   }
 
+  Test() {
+    if ( this.viewSaveButton ) {
+      this.disabled1 = true;
+      let saveObj = [];
+      console.log( JSON.stringify( this.f.pfFormArray.value ) );
+      const addData: SaveAttributeAssignmentNewAssignment = Object.assign( {} );
+      console.log( JSON.stringify( addData ) );
+      let data: SaveAttributeAssignmentNewAssignment;
+      let attributeMasterId = 0;
+      let fromDate1;
+      let toDate1;
+
+      this.f.pfFormArray.value.forEach( element => {
+        console.log( element.Applicability );
+        if ( element.attributeMasterId1 == attributeMasterId ) {
+          data.payrollHeadGroupAttributeValueMapping.push( {
+            fromDate: fromDate1,
+            toDate: toDate1,
+            value1: element.value1,
+            value2: element.value2,
+            value3: element.value3,
+            value4: element.value4,
+          } );
+        } else {
+          data = Object.assign( {} );
+          data.payrollHeadGroupAttributeValueMapping = [];
+          attributeMasterId = element.attributeMasterId1;
+          data.applicable = element.Applicability;
+          data.fromDate = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
+          data.toDate = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
+          data.globalAttributeGroupId = element.attributeGroupIds;
+          data.globalHeadGroupId = this.selectedHeadGroupIds;
+          data.value = element.value;
+
+          if ( element.attributeNature == 'Range Value Per Period' || element.attributeNature == 'Range Value No Of Instances Per Period' || element.attributeNature == 'Range Value Per Instance' ) {
+            data.value = 'Range';
+            data.payrollHeadGroupAttributeValueMapping.push( {
+
+              fromDate: this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' ),
+              toDate: this.datePipe.transform( element.toDate, 'yyyy-MM-dd' ),
+              value1: element.value1,
+              value2: element.value2,
+              value3: element.value3,
+              value4: element.value4,
+            } );
+            fromDate1 = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
+            toDate1 = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
+          }
+          saveObj.push( data );
+        }
+      } );
+      console.log( 'hhhh', this.selectedHeadGroupIds );
+      console.log( JSON.stringify( saveObj ) );
+
+      this.companySettingsService.postPayrollHeadAttributeMappingAddGlobal( saveObj ).subscribe( ( res: any ) => {
+
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        this.GetPHGByIdDisable( this.headGroupDefinitionId );
+        this.globalHeadGroupId = 0;
+
+      }, ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
+
+    }
+    else {
+      console.log( 'in if  333' );
+      let saveObj = [];
+      console.log( JSON.stringify( this.f.pfFormArray.value ) );
+      const addData: SaveAttributeAssignmentNewAssignment = Object.assign( {} );
+      console.log( JSON.stringify( addData ) );
+      let data: SaveAttributeAssignmentNewAssignment;
+      let attributeMasterId = 0;
+      let fromDate1;
+      let toDate1;
+
+      this.f.pfFormArray.value.forEach( element => {
+        console.log( element.Applicability );
+        if ( element.attributeMasterId1 == attributeMasterId ) {
+          data.payrollHeadGroupAttributeValueMapping.push( {
+            payrollHeadGroupAttributeValueMappingId: element.payrollHeadGroupAttributeValueMappingId,
+            fromDate: fromDate1,
+            toDate: toDate1,
+            value1: element.value1,
+            value2: element.value2,
+            value3: element.value3,
+            value4: element.value4,
+          } );
+
+        } else {
+          data = Object.assign( {} );
+          data.payrollHeadGroupAttributeValueMapping = [];
+          data.globalPayrollHeadGroupId = element.globalPayrollHeadGroupId;
+          attributeMasterId = element.attributeMasterId1;
+          data.applicable = element.Applicability;
+          data.fromDate = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
+          data.toDate = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
+
+          data.globalAttributeGroupId = element.attributeGroupIds;
+          data.globalHeadGroupId = this.selectedHeadGroupIds;
+          data.value = element.value;
+
+
+
+          if ( element.attributeNature == 'Range Value Per Period' || element.attributeNature == 'Range Value No Of Instances Per Period' || element.attributeNature == 'Range Value Per Instance' ) {
+            data.value = 'Range';
+
+
+            data.payrollHeadGroupAttributeValueMapping.push( {
+
+              fromDate: this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' ),
+              toDate: this.datePipe.transform( element.toDate, 'yyyy-MM-dd' ),
+              value1: element.value1,
+              value2: element.value2,
+              value3: element.value3,
+              value4: element.value4,
+              payrollHeadGroupAttributeValueMappingId: element.payrollHeadGroupAttributeValueMappingId,
+
+            } );
+            fromDate1 = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
+            toDate1 = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
+          }
+        }
+        saveObj.push( data );
+
+      } );
+
+      console.log( 'hhhh', this.selectedHeadGroupIds );
+      console.log( JSON.stringify( saveObj ) );
+
+      //if ( data.globalPayrollHeadGroupId > 0 ) {
+      console.log( 'inn update' );
+      this.companySettingsService.putPayrollHeadAttributeMappingAddGlobal( saveObj ).subscribe( ( res: any ) => {
+
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        this.GetPHGByIdDisable( this.headGroupDefinitionId );
+
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
+
+      //   }
+    }
+
+  }
   TestJsonObject1() {
     this.disabled1 = true;
     console.log( this.multiSelectDropDownData.length );
@@ -1280,9 +1516,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
           if ( element.value == undefined || element.value == 'null' ) {
             data.value = null;
           }
-          if ( element.value == 'Range' ) {
-            data.applicable = true;
-
+          if ( element.attributeNature == 'Range Value Per Period' || element.attributeNature == 'Range Value No Of Instances Per Period' ) {
+            data.value = 'Range';
             data.payrollHeadGroupAttributeValueMapping.push( {
 
               fromDate: this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' ),
@@ -1312,10 +1547,9 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
           this.GetPHGByIdDisable( this.headGroupDefinitionId );
           this.globalHeadGroupId = 0;
 
-        },
-          ( error: any ) => {
-            console.log( 'err', error );
-          } );
+        }, ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
 
       }
       // else {
@@ -1414,7 +1648,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
         },
           ( error: any ) => {
-            console.log( 'err', error );
+            this.alertService.sweetalertError( error["error"]["status"]["message"] );
           } );
 
 
@@ -1515,7 +1749,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
         },
           ( error: any ) => {
-            console.log( 'errr', error );
+            this.alertService.sweetalertError( error["error"]["status"]["message"] );
           } );
 
       } else {
@@ -1527,7 +1761,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
         },
           ( error: any ) => {
-            console.log( error );
+            this.alertService.sweetalertError( error["error"]["status"]["message"] );
           } );
       }
     }
@@ -1794,8 +2028,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.activeFrequencyList = [];
     this.companySettingsService.getActiveFrequency().subscribe( res => {
       this.activeFrequencyList = res.data.results;
-    }, ( error ) => {
-
+    }, ( error: any ) => {
+      //  this.alertService.sweetalertError( error["error"]["status"]["message"] );
     }, () => {
       // for ( let i = 0; i < this.activeFrequencyList.length; i++ ){
       if ( this.activeFrequencyList.findIndex( o => o.name.toLowerCase() == 'daily' ) !== -1 ) {
@@ -1873,7 +2107,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
         if ( res.data.results[0][i].payrollHeadGroupAttributeValueMapping.length == 0 ) {
 
-          this.addPfArrayWithHistoryValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].optionList, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, '', '', '', '', false, res.data.results[0][i].globalPayrollHeadGroupId, 0 );
+          this.addPfArrayWithHistoryValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, '', '', '', '', false, res.data.results[0][i].globalPayrollHeadGroupId, 0, res.data.results[0][i].attributeMaster[0].description );
 
         } else {
           for ( let j = 0; j < res.data.results[0][i].payrollHeadGroupAttributeValueMapping.length; j++ ) {
@@ -1881,28 +2115,19 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
             if ( j == 0 ) {
               console.log( 'ee', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
-              this.addPfArrayWithHistoryValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, true, 0, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              this.addPfArrayWithHistoryValues( res.data.results[0][i].applicable, res.data.results[0][i].attributeMaster[0].attributeNature, res.data.results[0][i].attributeMaster[0].code, res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, res.data.results[0][i].attributeMaster[0].options, res.data.results[0][i].value, res.data.results[0][i].fromDate, res.data.results[0][i].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, true, 0, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '' );
 
             } else {
               console.log( 'ee', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
-              this.addPfArrayWithHistoryValues( true, 'Range Value No Of Instances Per Period', '', res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, null, 'Range', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].fromDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, false, 0, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId );
+              this.addPfArrayWithHistoryValues( true, 'Range Value No Of Instances Per Period', '', res.data.results[0][i].attributeMaster[0].attributeMasterId, res.data.results[0][i].globalAttributeGroupId, null, 'Range', res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].fromDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].toDate, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value1, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value2, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value3, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].value4, false, 0, res.data.results[0][i].payrollHeadGroupAttributeValueMapping[j].payrollHeadGroupAttributeValueMappingId, '' );
               //  applicable: boolean, attributeNature: string, code: string, attributeMasterId: number, attributeGroupIds: number, options: any, value: string, fromDate: Date, toDate: Date, value1?: string, value2?: string, value3?: string, value4?: string, isPlusSignVisible?: boolean
             }
-
           }
         }
-
       }
-
-
-    }, ( error ) => {
-      if ( error.status == 404 ) {
-
-      }
-
-    }, () => {
-
-    } );
+    }, ( error: any ) => {
+      this.alertService.sweetalertError( error["error"]["status"]["message"] );
+    }, () => { } );
 
 
     this.modalRef2 = this.modalService.show(
@@ -1927,11 +2152,11 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   }
   onChangeActiveFrequency( evt: any, attributeMasterId: number ) {
 
-    for ( let i = this.pfArray.length - 1; i >= 0; i-- ) {
-      console.log( 'in i', this.form.get( 'pfFormArray' )['controls'][i].controls['attributeMasterId']["value"].value )
-      if ( attributeMasterId == this.form.get( 'pfFormArray' )['controls'][i].controls['attributeMasterId']["value"].value && this.form.get( 'pfFormArray' )['controls'][i].controls['code'].value.length == 0 ) {
-        this.form.get( 'pfFormArray' )['controls'][i].controls['value4'].setValue( evt );
-      }
-    }
+    // for ( let i = this.pfArray.length - 1; i >= 0; i-- ) {
+    //   console.log( 'in i', this.form.get( 'pfFormArray' )['controls'][i].controls['attributeMasterId']["value"].value )
+    //   if ( attributeMasterId == this.form.get( 'pfFormArray' )['controls'][i].controls['attributeMasterId']["value"].value && this.form.get( 'pfFormArray' )['controls'][i].controls['code'].value.length == 0 ) {
+    //     this.form.get( 'pfFormArray' )['controls'][i].controls['value4'].setValue( evt );
+    //   }
+    // }
   }
 }
