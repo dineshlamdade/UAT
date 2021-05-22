@@ -63,7 +63,7 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-6 col-md-3" *ngIf="CycleupdateFlag"
+        <!-- <div class="col-sm-6 col-md-3" *ngIf="CycleupdateFlag"
           [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
           <label class="form-label">Services</label>
           <select name="services" id="services" class="form-control  " formControlName="services"
@@ -73,7 +73,7 @@
               {{Services.serviceName}}
             </option>
           </select>
-        </div>
+        </div> -->
 
         <div class="col-sm-6 col-md-3" *ngIf="!CycleupdateFlag">
           <label class="form-label">Services</label>
@@ -119,7 +119,7 @@
   </div>
 
 
-  <div class="tabview-contents">
+  <!-- <div class="tabview-contents">
     <div class="row mt-20">
       <div class="col-12">
         <div class="card">
@@ -225,5 +225,197 @@
         </div>
       </div>
     </div>
+  </div> -->
+
+
+
+  <div class="row">
+    <div class="col-md-10">
+
+
+
+
+      <div class="cycle-table mt-4">
+        <h3 class="font-14 text-purple font-bold">Summary</h3>
+
+        <p-table [value]="CycleDefinitionList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [rowsPerPageOptions]="[10,25,50]">
+          <ng-template pTemplate="header">
+            <tr>
+              <th rowspan="1" class="wd-8 text-center">
+                Sr. No.
+              </th>
+              <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Cycle Definition
+                  <div class="Sort_Filter_Position">
+                    <p-sortIcon field="name"></p-sortIcon>
+                    <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                  </div>
+                </div>
+              </th>
+
+              <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Description
+                  <div class="Sort_Filter_Position">
+                    <p-sortIcon field="representative.name"></p-sortIcon>
+                    <p-columnFilter field="representative" matchMode="in" display="menu" [showMatchModes]="false"
+                      [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
+                      <ng-template pTemplate="header">
+                        <div class="p-px-3 p-pt-3 p-pb-0">
+                          <span class="p-text-bold">Agent Picker</span>
+                        </div>
+                      </ng-template>
+                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-multiSelect [ngModel]="value" [options]="representatives" placeholder="Any"
+                          (onChange)="filter($event.value)" optionLabel="name">
+                          <ng-template let-option pTemplate="item">
+                            <div class="p-multiselect-representative-option">
+                              <img [alt]="option.label"
+                                src="../../../../../assets/showcase/images/demo/avatar/{{option.image}}" width="32"
+                                style="vertical-align: middle" />
+                              <span class="p-ml-1">{{option.name}}</span>
+                            </div>
+                          </ng-template>
+                        </p-multiSelect>
+                      </ng-template>
+                    </p-columnFilter>
+                  </div>
+                </div>
+              </th>
+              <th class="wd-8">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Service Name
+                  <div class="Sort_Filter_Position">
+                    <p-sortIcon field="date"></p-sortIcon>
+                    <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
+                  </div>
+                </div>
+              </th>
+              <th colspan="2" class="wd-16">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Business Year
+                  <div class="Sort_Filter_Position">
+                    <p-sortIcon field="date"></p-sortIcon>
+                    <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
+                  </div>
+                </div>
+              </th>
+              <th rowspan="1" class="wd-10 text-center">
+                Action
+              </th>
+
+              <!-- <th rowspan="2">
+                                          <div class="p-d-flex p-jc-between p-ai-center">
+                                              Updation Field
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="balance"></p-sortIcon>
+                                                  <p-columnFilter type="numeric" field="balance" display="menu" currency="USD" class="p-ml-auto"></p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th> -->
+
+
+
+              <!-- <th style="width: 8rem"></th> -->
+            </tr>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th scope="col">From Date</th>
+              <th scope="col">To Date</th>
+              <th></th>
+
+            </tr>
+
+          </ng-template>
+
+
+
+          <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+            <tr class="p-selectable-row">
+              <!-- <td><label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                  <input type="checkbox" class="custom-control-input" name="select" /> <span
+                    class="custom-control-label"></span>
+                </label></td> -->
+              <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{rowIndex+1}}</label></td>
+              <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycleName}}</label></td>
+              <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label></td>
+              <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td>
+              <td class="bg-color-light_gray"><label
+                  class="form-lable mb-0">{{user1.businessYearDefinition.fullFromDate}}</label></td>
+              <td class="bg-color-light_gray"><label
+                  class="form-lable mb-0">{{user1.businessYearDefinition.fullToDate}}</label></td>
+              <td>
+                <button *ngIf="!user1.isUsed" type="button" class="btn btn-icon text-blue" tooltip="Edit"><i
+                    (click)="GetCycleDefinitionbyId(user1.id)" class="fa fa-edit"></i></button>
+
+                <button (click)="GetCycleDefinitionbyIdDisable(user1.id)" *ngIf="user1.isUsed" type="button"
+                  class="btn btn-icon text-blue" tooltip="View">
+                  <i class="fa fa-eye"></i></button>
+
+                <button *ngIf="!user1.isUsed" type="button"
+                  (click)="UploadModal1(templatecycle);getCycleName(user1.cycleName)" data-toggle="modal"
+                  data-target="#UploadModal" class="btn btn-icon js-sweetalert text-blue" tooltip="Delete"
+                  data-type="confirm"><i class="fa fa-trash-o"></i></button>
+              </td>
+
+
+              <ng-template #templatecycle>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="UploadModalLabel">Delete
+                    Cycle Definition</h5>
+                  <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row clearfix">
+                        <div class="col-md-12">
+                          <label class="form-label">Are
+                            you sure want to
+                            delete Cycle
+                            Definition
+                            {{CycleName}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary"
+                    (click)="DeleteCycleDefinitionById(user1.id);modalRef.hide()">Yes</button>
+                  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+                </div>
+              </ng-template>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="let-user1.length ==0">
+            <tr>
+              <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                  Available</span></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </form>

@@ -1,9 +1,6 @@
-import { NationalSevingCertificateSummaryComponent } from './../../my-Investments/80C/national-seving-certificate/national-seving-certificate-summary/national-seving-certificate-summary.component';
 import { CompanySettingsService } from './../company-settings.service';
-
-import { PrimeNGConfig } from 'primeng/api';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { SaveAttributeSelection } from '../model/business-cycle-model';
@@ -19,17 +16,18 @@ import { AnyCnameRecord } from 'node:dns';
 } )
 export class AttributeSelectionComponent implements OnInit {
   removedAttributeGroupIdList = [];
-  summaryList = [];
+  userHasSelectedMandatoryFieldOnly = false
+  summaryList: Array<any> = [];;
   originalTargetList = [];
   @ViewChild( 'AttributeSelectionForm' ) form: NgForm;
   AttributeSelectionList: Array<any> = [];
   AttributeSelectionForm: FormGroup;
-  disabled: boolean = true
-  viewCancelButton: boolean = false;
-  hidevalue: boolean = false;
+  disabled = true;
+  viewCancelButton = false;
+  hidevalue = false;
   optionList = [];
   selectedNature: string;
-  viewupdateButton: boolean = false;
+  viewupdateButton = false;
   attributeGroupId: number;
   sourceProducts: Array<any> = [];
   targetProducts: Array<any> = [];
@@ -37,6 +35,8 @@ export class AttributeSelectionComponent implements OnInit {
   selectedUser: Array<any> = [];
   selectedUser2: Array<any> = [];
   selectedMaterialCode: any;
+  HighlightRow: any;
+  HighlightRight: any;
 
   constructor(
 
@@ -61,15 +61,18 @@ export class AttributeSelectionComponent implements OnInit {
   getAllAttributeCreation() {
     //this.originalSourceProductList = [];
     // this.sourceProducts = [];
+
+    //  getAllGlobalAttributeCreation
+    /// COMMENTED FUNCTION getAllAttributeCreation
     this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
+      console.log( 'c', res.data.results );
       this.originalSourceProductList = res.data.results;
       this.sourceProducts = res.data.results;
-      this.sourceProducts['dummy'] = 'dd';
-      this.originalSourceProductList['dummy'] = 'dd';
     } );
   }
   // get All Attribute Selection
   getAllAttributeSelection(): void {
+    this.summaryList = [];
     this.attributeSelectionService.getAttributeGroup().subscribe( res => {
       this.AttributeSelectionList = res.data.results;
 
@@ -87,60 +90,98 @@ export class AttributeSelectionComponent implements OnInit {
         this.summaryList.push( obj );
       } );
     } );
-
   }
 
-  RowSelected( u: any ) {
-    let temp = this.sourceProducts;
-    this.sourceProducts = new Array();
-    this.sourceProducts = [];
+  RowSelected( u: any, ind ) {
+    let ind1 = this.sourceProducts.findIndex( o => o.code == u.code );
+
+    // this.HighlightRow = ind;
+    // let temp = this.sourceProducts;
+    // this.sourceProducts = new Array();
+    //  this.sourceProducts = [];
     // let index1 = temp.findIndex( o => o.code == u.code );
-    this.selectedMaterialCode = u.code;
+    // this.selectedMaterialCode = u.code;
     let index = this.selectedUser.findIndex( o => o.code == u.code );
 
 
     let isContain = this.selectedUser.some( o => o.code == u.code );
     console.log( isContain, index );
     if ( isContain == true ) {
+      this.sourceProducts[ind1].isHighlight = false;
       this.selectedUser.splice( index, 1 );
-      //   temp[index1].dummy = 'List';
     } else {
-      //  temp[index1].dummy = 'List123';
+
+      this.sourceProducts[ind1].isHighlight = true;
       this.selectedUser.push( u );
     }
-    this.sourceProducts = temp;
+    // this.sourceProducts = temp;
     console.log( 'selected row is', u );
     console.log( 'selected user', this.selectedUser );
-    this.sourceProducts = [];
-    this.sourceProducts = temp;
+    // this.sourceProducts = [];
+    // this.sourceProducts = temp;
+
+    // this.sourceProducts.forEach( ( element, i ) => {
+    //   console.log( 'i', i );
+    //   console.log( 'this.highlightrow', this.HighlightRow );
+    //   if ( i == this.HighlightRow ) {
+    //     if ( isContain == true ) {
+    //       element.isHighlight = false
+    //     } else {
+    //       if ( i == this.HighlightRow ) {
+    //         element.isHighlight = true
+    //       }
+    //     }
+    //   }
+    // } );
   }
 
-  RowSelectedtargetProducts( u: any ): void {
-    let temp = this.targetProducts;
-    this.targetProducts = new Array();
-    /// let index1 = temp.findIndex( o => o.code == u.code );
-    let index = this.selectedUser2.findIndex( o => o.code == u.code );
-    let isContain = this.selectedUser2.some( o => o.code == u.code );
-    console.log( isContain, index );
-    if ( isContain == true ) {
-      this.selectedUser2.splice( index, 1 );
-      //  temp[index1].attributeNature = 'List';
+  RowSelectedtargetProducts( u: any, i ): void {
+    if ( u.disabled == true ) {
+
     } else {
-      //temp[index1].attributeNature = 'List123';
-      this.selectedUser2.push( u );
+
+
+      this.HighlightRight = i;
+      let temp = this.targetProducts;
+      this.targetProducts = new Array();
+      /// let index1 = temp.findIndex( o => o.code == u.code );
+      let index = this.selectedUser2.findIndex( o => o.code == u.code );
+      let isContain = this.selectedUser2.some( o => o.code == u.code );
+      console.log( isContain, index );
+      if ( isContain == true ) {
+        this.selectedUser2.splice( index, 1 );
+        //  temp[index1].attributeNature = 'List';
+      } else {
+        //temp[index1].attributeNature = 'List123';
+        this.selectedUser2.push( u );
+      }
+
+
+      //this.targetProducts.push(u);
+      // declare variable in component.
+
+
+      this.targetProducts = temp;
+
+      this.targetProducts.forEach( ( element, i ) => {
+        if ( i == this.HighlightRight ) {
+          if ( isContain == true ) {
+            element.isHighlightright = false
+            element.isHighlight = false
+          }
+          else {
+            //if(i == this.HighlightRow){
+            element.isHighlightright = true
+            element.isHighlight = false
+            //}
+          }
+        }
+      } )
+
     }
-
-
-    //this.targetProducts.push(u);
-    // declare variable in component.
-
-
-    this.targetProducts = temp;
-
-
-
   }
   lefttablePusg(): void {
+
 
     // const sss=this.newarray;
     // this.selectedUser.forEach(function(f){
@@ -148,8 +189,7 @@ export class AttributeSelectionComponent implements OnInit {
     // });
 
     this.selectedUser.forEach( ( element, index ) => {
-      this.selectedUser[index].attributeNature = 'List';
-
+      element.isHighlightright = false;
       this.targetProducts.push( element );
     } );
 
@@ -182,9 +222,13 @@ export class AttributeSelectionComponent implements OnInit {
 
     // }
     // this.sourceProducts.splice(this.selectedUser.indexOf(0))
+    this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
   }
   righttablePusg( u: any ): void {
+
+
     this.selectedUser2.forEach( element => {
+
       if ( element.attributeMasterId == null ) {
         console.log( 'attributer master id is not found' );
       } else {
@@ -193,13 +237,15 @@ export class AttributeSelectionComponent implements OnInit {
     } );
 
     this.selectedUser2.forEach( element => {
+      element.isHighlight = false;
       this.sourceProducts.push( element );
     } );
     var v = this.selectedUser;
 
     this.selectedUser2.forEach( element => {
       var index = this.targetProducts.indexOf( element, index )
-      this.targetProducts[index].attributeNature = 'List';
+      // this.targetProducts[index].attributeNature = 'List';
+
       this.selectedUser2 = [];
       if ( index > -1 ) {
         this.targetProducts.splice( index, 1 )
@@ -212,6 +258,7 @@ export class AttributeSelectionComponent implements OnInit {
     //    this.targetProducts.splice(index,1)
 
     // }
+    this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
   }
   resetAttributeSelection(): void {
     this.targetProducts = [];
@@ -219,18 +266,13 @@ export class AttributeSelectionComponent implements OnInit {
     this.selectedUser2 = [];
     this.selectedUser = [];
 
-    console.log( 'in reset' );
-    console.log( ' this.originalSourceProductList;', this.originalSourceProductList );
     this.AttributeSelectionForm.reset();
     this.viewCancelButton = false;
     this.hidevalue = false;
-    //this.sourceProducts = this.originalSourceProductList;
-    this.getAllAttributeCreation();
     this.AttributeSelectionForm.patchValue( {
       attributeNature: ''
     } );
-
-
+    this.getAllAttributeCreation();
   }
   CancelAttributeCreation(): void {
     this.AttributeSelectionForm.enable();
@@ -248,93 +290,189 @@ export class AttributeSelectionComponent implements OnInit {
     this.AttributeSelectionForm.patchValue( {
       attributeNature: ''
     } );
-
+    this.resetAttributeSelection();
   }
 
 
 
-  onStatusChange( event ) {
-    this.selectedUser2 = [];
-    this.selectedUser = [];
+  onStatusChange( event: any ) {
+    console.log( 'evt', event.target.value );
+    if ( event.target.value == '' ) {
+      this.selectedUser2 = [];
+      this.selectedUser = [];
 
-    this.sourceProducts = [];
-    this.sourceProducts = this.originalSourceProductList;
 
-    //this.selectedCopFormAttGrp = event.target.value;
-
-    // GetAttributeOptionList(): void {
-    this.attributeSelectionService.GetAttributeOptionListByGroup( event.target.value ).subscribe( res => {
-      console.log( 'res is', res );
-
-      this.targetProducts = res.data.results[0].attributeMasters;
-      console.log( 'target prod', this.targetProducts );
-
-      this.targetProducts.forEach( element => {
-        var index = this.targetProducts.indexOf( element )
-        this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+      this.sourceProducts = [];
+      this.targetProducts = [];
+      this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
+        console.log( 'c', res.data.results );
+        this.originalSourceProductList = res.data.results;
+        this.sourceProducts = res.data.results;
       } );
 
-      //  this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
-      //
-      //     this.sourceProducts = res.data.results;
-      //     });
+    } else {
+      this.selectedUser2 = [];
+      this.selectedUser = [];
 
-      // this.targetProducts.forEach(element => {
-      //   var index=this.targetProducts.indexOf(element)
-      //   this.sourceProducts = this.sourceProducts.filter(e => e.code == element.code);
-      // });
 
-    } );
+      this.sourceProducts = [];
+      this.targetProducts = [];
+      this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
+        console.log( 'c', res.data.results );
+        this.originalSourceProductList = res.data.results;
+        this.sourceProducts = res.data.results;
+      }, ( err ) => {
+      }, () => {
+        this.sourceProducts = this.originalSourceProductList;
+        this.attributeSelectionService.GetAttributeOptionListByGroup( event.target.value ).subscribe( res => {
+          console.log( 'GetAttributeOptionListByGroup res is', res );
+
+          this.targetProducts = res.data.results[0].attributeMasters;
+          this.targetProducts.forEach( element => {
+            element.disabled = true;
+            //  var index = this.targetProducts.indexOf( element )
+            this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+          } );
+
+        } );
+        //  this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
+        //
+        //     this.sourceProducts = res.data.results;
+        //     });
+
+        // this.targetProducts.forEach(element => {
+        //   var index=this.targetProducts.indexOf(element)
+        //   this.sourceProducts = this.sourceProducts.filter(e => e.code == element.code);
+        // });
+
+
+        this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+
+
+
+
+      } );
+
+
+    }
+
+
+
   }
 
   // Get Attribute Selection ById
-  GetAttributeSelectionByIdDisable( id ): void {
+  // GetAttributeSelectionByIdDisable( id ): void {
+  //   this.disabled = false;
+  //   this.viewupdateButton = false;
+  //   this.viewCancelButton = true;
 
-    // this.CycleupdateFlag=true;
-    // this.CycleupdateFlag1=false;
+  //   this.attributeSelectionService.GetAttributeSelectionById( id )
+  //     .subscribe( response => {
+
+  //       this.targetProducts = response.data.results[0].attributeMasters;
+
+  //       this.targetProducts.forEach( element => {
+  //         var index = this.targetProducts.indexOf( element )
+  //         this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+  //       } );
+  //       //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
+  //       this.AttributeSelectionForm.patchValue( { name: response.data.results[0].name } );
+  //       this.AttributeSelectionForm.patchValue( { description: response.data.results[0].description } );
+  //       this.AttributeSelectionForm.patchValue( { attributeNature: response.data.results[0].name } );
+
+  //     } );
+  //   this.AttributeSelectionForm.disable();
+  // }
+
+
+
+
+  GetAttributeSelectionByIdDisable( id ): void {
     this.disabled = false;
     this.viewupdateButton = false;
     this.viewCancelButton = true;
 
-    this.attributeSelectionService.GetAttributeSelectionById( id )
-      .subscribe( response => {
+    this.selectedUser2 = [];
+    this.selectedUser = [];
 
-        this.targetProducts = response.data.results[0].attributeMasters;
 
-        this.targetProducts.forEach( element => {
-          var index = this.targetProducts.indexOf( element )
-          this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+    this.sourceProducts = [];
+    this.targetProducts = [];
+    this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
+      console.log( 'c', res.data.results );
+      this.originalSourceProductList = res.data.results;
+      this.sourceProducts = res.data.results;
+    }, ( err ) => {
+    }, () => {
+      this.sourceProducts = this.originalSourceProductList;
+
+
+      this.attributeSelectionService.GetAttributeSelectionById( id )
+        .subscribe( response => {
+          this.targetProducts = response.data.results[0].attributeMasters;
+          this.originalTargetList = response.data.results[0].attributeMasters;
+          console.log( 'this.targetProducts', this.targetProducts );
+          this.targetProducts.forEach( element => {
+            this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+          } );
+          this.AttributeSelectionForm.patchValue( { name: response.data.results[0].name } );
+          this.AttributeSelectionForm.patchValue( { description: response.data.results[0].description } );
+          this.AttributeSelectionForm.patchValue( { attributeNature: response.data.results[0].name } );
         } );
-        //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
-        this.AttributeSelectionForm.patchValue( { name: response.data.results[0].name } );
-        this.AttributeSelectionForm.patchValue( { description: response.data.results[0].description } );
-        this.AttributeSelectionForm.patchValue( { attributeNature: response.data.results[0].name } );
+      this.disabled = true;
+      this.viewupdateButton = true;
+      this.viewCancelButton = true;
+      this.attributeGroupId = id;
 
-      } );
+
+    } );
     this.AttributeSelectionForm.disable();
   }
 
+
+
+
+
+
+
+
   // Get Attribute Selection ById
   GetAttributeSelectionById( id ): void {
-    this.originalTargetList = [];
-    this.disabled = true;
-    this.viewupdateButton = true;
-    this.viewCancelButton = true;
-    this.attributeGroupId = id;
-    this.attributeSelectionService.GetAttributeSelectionById( id )
-      .subscribe( response => {
-        this.targetProducts = response.data.results[0].attributeMasters;
-        this.originalTargetList = response.data.results[0].attributeMasters
-        console.log( 'xxxxx', this.targetProducts );
-        this.targetProducts.forEach( element => {
-          var index = this.targetProducts.indexOf( element )
-          this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
-        } );
-        this.AttributeSelectionForm.patchValue( { name: response.data.results[0].name } );
-        this.AttributeSelectionForm.patchValue( { description: response.data.results[0].description } );
-        this.AttributeSelectionForm.patchValue( { attributeNature: response.data.results[0].name } );
-      } );
 
+    this.selectedUser2 = [];
+    this.selectedUser = [];
+
+
+    this.sourceProducts = [];
+    this.targetProducts = [];
+    this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
+      console.log( 'c', res.data.results );
+      this.originalSourceProductList = res.data.results;
+      this.sourceProducts = res.data.results;
+    }, ( err ) => {
+    }, () => {
+      this.sourceProducts = this.originalSourceProductList;
+
+
+      this.attributeSelectionService.GetAttributeSelectionById( id )
+        .subscribe( response => {
+          this.targetProducts = response.data.results[0].attributeMasters;
+          this.originalTargetList = response.data.results[0].attributeMasters;
+          console.log( 'this.targetProducts', this.targetProducts );
+          this.targetProducts.forEach( element => {
+            this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+          } );
+          this.AttributeSelectionForm.patchValue( { name: response.data.results[0].name } );
+          this.AttributeSelectionForm.patchValue( { description: response.data.results[0].description } );
+          this.AttributeSelectionForm.patchValue( { attributeNature: response.data.results[0].name } );
+        } );
+      this.disabled = true;
+      this.viewupdateButton = true;
+      this.viewCancelButton = true;
+      this.attributeGroupId = id;
+
+
+    } );
   }
 
 
@@ -352,6 +490,7 @@ export class AttributeSelectionComponent implements OnInit {
 
   //add new AttributeCreation
   addAttributeSelection(): void {
+
 
     const addAttributeCreation: SaveAttributeSelection = Object.assign( {} );
     addAttributeCreation.attributeMasterIdList = [];
@@ -373,10 +512,10 @@ export class AttributeSelectionComponent implements OnInit {
       this.AttributeSelectionForm.reset();
     },
       ( error: any ) => {
-        //this.alertService.sweetalertError( error[error][status][message] );
+
       } );
-    // }
-    // else {
+
+    //     else {
     //   addAttributeCreation.removedAttributeGroupIdList = [];
     //   for ( let i = 0; i < this.originalSourceProductList.length; i++ ) {
 
@@ -400,7 +539,7 @@ export class AttributeSelectionComponent implements OnInit {
     //     this.AttributeSelectionForm.reset();
     //   },
     //     ( error: any ) => {
-    //       this.alertService.sweetalertError( error[ error ][ status ][ message ] );
+    //       this.alertService.sweetalertError( error[error][status][message] );
     //     } );
     // }
   }
@@ -418,20 +557,18 @@ export class AttributeSelectionComponent implements OnInit {
     console.log( JSON.stringify( addAttributeCreation ) );
 
     addAttributeCreation.removedAttributeGroupIdList = [];
-    for ( let i = 0; i < this.originalSourceProductList.length; i++ ) {
+    // for ( let i = 0; i < this.originalSourceProductList.length; i++ ) {
+
+    //   if ( addAttributeCreation.attributeMasterIdList.some( o => o.attributeMasterId == this.originalSourceProductList[i].attributeMasterId ) ) {
+    //     // addAttributeCreation.removedAttributeGroupIdList.push( this.originalSourceProductList[i].attributeMasterId );
 
 
+    //   } else {
+    //     console.log( 'line no 479 in else block' );
 
-      if ( addAttributeCreation.attributeMasterIdList.some( o => o.attributeMasterId == this.originalSourceProductList[i].attributeMasterId ) ) {
-        addAttributeCreation.removedAttributeGroupIdList.push( this.originalSourceProductList[i].attributeMasterId );
+    //   }
 
-
-      } else {
-
-
-      }
-
-    }
+    // }
     // for ( let i = 0; i < this.originalTargetList.length; i++ ) {
     //   addAttributeCreation.removedAttributeGroupIdList.push( this.originalTargetList[i].attributeMasterId );
     // }
@@ -460,11 +597,11 @@ export class AttributeSelectionComponent implements OnInit {
   }
 
   doubleClickOnLeftTable( u: any ) {
-    this.RowSelected( u );
+    this.RowSelected( u, -1 );
     this.lefttablePusg();
   }
   doubleClickOnRightTable( u: AnyCnameRecord ) {
-    this.RowSelectedtargetProducts( u );
+    this.RowSelectedtargetProducts( u, -1 );
     this.righttablePusg( u );
 
   }

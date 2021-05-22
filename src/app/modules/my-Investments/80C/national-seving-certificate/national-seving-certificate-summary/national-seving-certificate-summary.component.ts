@@ -112,7 +112,7 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-    if (this.futureNewPolicyDeclaredAmount > 0) {
+    if (this.futureNewPolicyDeclaredAmount >= 0) {
     this.addFuturePolicy();
   }else if(this.futureNewPolicyDeclaredAmount <0) {
     this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
