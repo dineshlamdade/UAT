@@ -47,8 +47,8 @@
                     (change)="validateBusiDatesSave();businessAreaObject(businessAreaCode);"
                     formControlName="businessAreaMasterIdControl" [(ngModel)]="businessAreaCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let businessArea of filteredBusinessAreaList" [value]="businessArea.masterCode">
-                        {{businessArea.masterCode}}
+                    <option *ngFor="let businessArea of filteredBusinessAreaList" [value]="businessArea.jobMasterType">
+                        {{businessArea.jobMasterType}}
                     </option>
                 </select>
 
@@ -101,8 +101,8 @@
                     (change)="validateSubAreaDatesSave();subAreaObject(subArea);" formControlName="subAreaIdControl"
                     [(ngModel)]="subAreaCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let subArea of subAreaList" [value]="subArea.masterCode">
-                        {{subArea.masterCode}}
+                    <option *ngFor="let subArea of subAreaList" [value]="subArea.jobMasterType">
+                        {{subArea.jobMasterType}}
                     </option>
                 </select>
 
@@ -157,8 +157,8 @@
                     (change)="validateSBUDatesSave();strategicObject(strategic);"
                     formControlName="strategicBusinessUnitIdControl" [(ngModel)]="strategicCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let strategic of filteredStrategicBusinessAreaList" [value]="strategic.masterCode">
-                        {{strategic.masterCode}}
+                    <option *ngFor="let strategic of filteredStrategicBusinessAreaList" [value]="strategic.jobMasterType">
+                        {{strategic.jobMasterType}}
                     </option>
                 </select>
 
@@ -212,8 +212,8 @@
                     (change)="validateDivisionDatesSave();divisionObject(division);"
                     formControlName="divisionMasterIdControl" [(ngModel)]="divisionCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let division of filteredDivisionList" [value]="division.masterCode">
-                        {{division.masterCode}}
+                    <option *ngFor="let division of filteredDivisionList" [value]="division.jobMasterType">
+                        {{division.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -266,8 +266,8 @@
                     (change)="validateProfitDatesSave();profitObject(profitCentreCode);"
                     formControlName="profitCentreMasterIdControl" [(ngModel)]="profitCentreCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let profit of filteredProfitCenterList" [value]="profit.masterCode">
-                        {{profit.masterCode}}
+                    <option *ngFor="let profit of filteredProfitCenterList" [value]="profit.jobMasterType">
+                        {{profit.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -382,8 +382,8 @@
                     (change)="validatSubLocSave();subLocationObject(sublocation);"
                     formControlName="subLocationMasterIdControl" [(ngModel)]="subLocationCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let sublocation of filteredSubLocationList" [value]="sublocation.masterCode">
-                        {{sublocation.masterCode}}
+                    <option *ngFor="let sublocation of filteredSubLocationList" [value]="sublocation.jobMasterType">
+                        {{sublocation.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -437,8 +437,8 @@
                     (change)="validateWorkLocSave();workLocationObject(work);"
                     formControlName="workLocationMasterIdControl" [(ngModel)]="workLocationCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let work of filteredWorkLocationList" [value]="work.masterCode">
-                        {{work.masterCode}}
+                    <option *ngFor="let work of filteredWorkLocationList" [value]="work.jobMasterType">
+                        {{work.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -490,8 +490,8 @@
                     (change)="validateCostDatesSave();costObject(cost);" formControlName="costCentreIdControl"
                     [(ngModel)]="costCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let cost of filteredCostCenterList" [value]="cost.masterCode">
-                        {{cost.masterCode}}
+                    <option *ngFor="let cost of filteredCostCenterList" [value]="cost.jobMasterType">
+                        {{cost.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -543,8 +543,8 @@
                     (change)="validateSubCostDatesSave();subCostObject(subCost);"
                     formControlName="subCostCentreIdControl" [(ngModel)]="subCostCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let subCost of filteredSubCostCenterList" [value]="subCost.masterCode">
-                        {{subCost.masterCode}}
+                    <option *ngFor="let subCost of filteredSubCostCenterList" [value]="subCost.jobMasterType">
+                        {{subCost.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -598,8 +598,8 @@
                     (change)="validateDepartmentDatesSave();departmentObject(department);"
                     formControlName="departmentMasterIdControl" [(ngModel)]="departmentCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let department of filteredDepartmentList" [value]="department.masterCode">
-                        {{department.masterCode}}
+                    <option *ngFor="let department of filteredDepartmentList" [value]="department.jobMasterType">
+                        {{department.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -653,8 +653,8 @@
                     (change)="validateSubDepDatesSave();sunDepartmentObject(department);"
                     formControlName="subDepartmentMasterIdControl" [(ngModel)]="subDepCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let department of filteredSubDepartmentList" [value]="department.masterCode">
-                        {{department.masterCode}}
+                    <option *ngFor="let department of filteredSubDepartmentList" [value]="department.jobMasterType">
+                        {{department.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>

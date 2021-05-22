@@ -200,59 +200,62 @@ export class OrganizationDetailComponent implements OnInit {
       this.costCenterList = [];
       this.subCostCenterList = [];
       this.profitCenterList = [];
-      
+      console.log(res.data.results);
       const location = res.data.results.filter((item) => {
 
-        if (item.masterType == 'SubLocationMaster') {
+        if (item.jobMasterType == 'SubLocation') {
           this.subLocationList.push(item);
           this.filteredSubLocationList.push(item);
         }
-        if (item.masterType == 'WorkLocationMaster') {
+        if (item.jobMasterType == 'WorkLocation') {
           this.workLocationList.push(item);
           this.filteredWorkLocationList.push(item);
         }
         
-        if (item.masterType == 'BusinessAreaMaster') {
+        if (item.jobMasterType == 'BusinessArea') {
 
           this.businessAreaList.push(item);
           this.filteredBusinessAreaList.push(item);
         }
-        if (item.masterType == 'SubArea') {
+        if (item.jobMasterType == 'SubArea') {
           this.subAreaList.push(item);
           this.filteredSubAreaList.push(item);
         }
-        if (item.masterType == 'StrategicBusinessUnit') {
+        if (item.jobMasterType == 'StrategicBusinessUnit') {
           this.strategicBusinessAreaList.push(item);
           this.filteredStrategicBusinessAreaList.push(item);
         }
-        if (item.masterType == 'DivisionMaster') {
+        if (item.jobMasterType == 'Division') {
           this.divisionList.push(item);
           this.filteredDivisionList.push(item);
         }
-        if (item.masterType == 'DepartmentMaster') {
+        if (item.jobMasterType == 'Department') {
           this.departmentList.push(item);
           this.filteredDepartmentList.push(item);
         }
-        if (item.masterType == 'SubDepartment') {
+        if (item.jobMasterType == 'SubDepartment') {
           this.subDepartmentList.push(item);
           this.filteredSubDepartmentList.push(item);
         }
-        if (item.masterType == 'CostCentre') {
+        if (item.jobMasterType == 'CostCentre') {
           this.costCenterList.push(item);
           this.filteredCostCenterList.push(item);
         }
-        if (item.masterType == 'SubCostCenter') {
+        
+        if (item.jobMasterType == 'SubCostCenter') {
           this.subCostCenterList.push(item);
           this.filteredSubCostCenterList.push(item);
         }
-        if (item.masterType == 'ProfitCentreMaster') {
+        if (item.jobMasterType == 'ProfitCentre') {
           this.profitCenterList.push(item);
           this.filteredProfitCenterList.push(item);
         }
       });
 
     })
+ 
     this.getOrganizationForm()
+
   }
 
   //get organization details service calling
@@ -1005,33 +1008,33 @@ export class OrganizationDetailComponent implements OnInit {
   subLocationObject(sublocation) {
 
     const toSelect = this.filteredSubLocationList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('subLocationMasterIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('subLocationMasterIdControl').value
     );
-    this.subLocationDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.subLocationMasterId = toSelect.masterId;
-    this.OrganizationForm.get('subLocationMasterIdControl').setValue(toSelect.masterCode);
+    this.subLocationDescription = toSelect.description;
+    this.organizationDetailsModel.subLocationMasterId = toSelect.jobMasterId;
+    this.OrganizationForm.get('subLocationMasterIdControl').setValue(toSelect.jobMasterType);
     this.enableSubLocDate()
   }
   workLocationObject(worklocation) {
 
 
     const toSelect = this.filteredWorkLocationList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('workLocationMasterIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('workLocationMasterIdControl').value
     );
-    this.workLocationDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.workLocationMasterId = toSelect.masterId;
-    this.OrganizationForm.get('workLocationMasterIdControl').setValue(toSelect.masterCode);
+    this.workLocationDescription = toSelect.description;
+    this.organizationDetailsModel.workLocationMasterId = toSelect.jobMasterId;
+    this.OrganizationForm.get('workLocationMasterIdControl').setValue(toSelect.jobMasterType);
 
     this.enableWorkLocDate()
   }
   businessAreaObject(businessarea) {
 
     const toSelect = this.filteredBusinessAreaList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('businessAreaMasterIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('businessAreaMasterIdControl').value
     );
-    this.businessAreaDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.businessAreaMasterId = toSelect.masterId;
-    this.OrganizationForm.get('businessAreaMasterIdControl').setValue(toSelect.masterCode);
+    this.businessAreaDescription = toSelect.description;
+    this.organizationDetailsModel.businessAreaMasterId = toSelect.jobMasterId;
+    this.OrganizationForm.get('businessAreaMasterIdControl').setValue(toSelect.jobMasterType);
 
     this.enableBusinessAreaDate()
 
@@ -1040,44 +1043,44 @@ export class OrganizationDetailComponent implements OnInit {
 
 
     const toSelect = this.filteredSubAreaList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('subAreaIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('subAreaIdControl').value
     );
-    this.subAreaDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.subAreaId = toSelect.masterId;
-    this.OrganizationForm.get('subAreaIdControl').setValue(toSelect.masterCode);
+    this.subAreaDescription = toSelect.description;
+    this.organizationDetailsModel.subAreaId = toSelect.jobMasterId;
+    this.OrganizationForm.get('subAreaIdControl').setValue(toSelect.jobMasterType);
 
     this.enableSubAreaDate();
   }
   strategicObject(strategic) {
 
     const toSelect = this.filteredStrategicBusinessAreaList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('strategicBusinessUnitIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('strategicBusinessUnitIdControl').value
     );
-    this.strategicDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.strategicBusinessUnitId = toSelect.masterId;
-    this.OrganizationForm.get('strategicBusinessUnitIdControl').setValue(toSelect.masterCode);
+    this.strategicDescription = toSelect.description;
+    this.organizationDetailsModel.strategicBusinessUnitId = toSelect.jobMasterId;
+    this.OrganizationForm.get('strategicBusinessUnitIdControl').setValue(toSelect.jobMasterType);
     this.enableStategicAreaDate();
   }
   divisionObject(division) {
 
 
     const toSelect = this.filteredDivisionList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('divisionMasterIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('divisionMasterIdControl').value
     );
-    this.divisionDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.divisionMasterId = toSelect.masterId;
-    this.OrganizationForm.get('divisionMasterIdControl').setValue(toSelect.masterCode);
+    this.divisionDescription = toSelect.description;
+    this.organizationDetailsModel.divisionMasterId = toSelect.jobMasterId;
+    this.OrganizationForm.get('divisionMasterIdControl').setValue(toSelect.jobMasterType);
 
     this.enableDivisionDate();
   }
   departmentObject(department) {
 
     const toSelect = this.filteredDepartmentList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('departmentMasterIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('departmentMasterIdControl').value
     );
-    this.departmentDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.departmentMasterId = toSelect.masterId;
-    this.OrganizationForm.get('departmentMasterIdControl').setValue(toSelect.masterCode);
+    this.departmentDescription = toSelect.description;
+    this.organizationDetailsModel.departmentMasterId = toSelect.jobMasterId;
+    this.OrganizationForm.get('departmentMasterIdControl').setValue(toSelect.jobMasterType);
 
     this.enableDepartmentDate();
   }
@@ -1085,42 +1088,42 @@ export class OrganizationDetailComponent implements OnInit {
 
 
     const toSelect = this.filteredSubDepartmentList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('subDepartmentMasterIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('subDepartmentMasterIdControl').value
     );
-    this.subDepDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.subDepartmentId = toSelect.masterId;
-    this.OrganizationForm.get('subDepartmentMasterIdControl').setValue(toSelect.masterCode);
+    this.subDepDescription = toSelect.description;
+    this.organizationDetailsModel.subDepartmentId = toSelect.jobMasterId;
+    this.OrganizationForm.get('subDepartmentMasterIdControl').setValue(toSelect.jobMasterType);
 
     this.enableSubDepartmentDate();
   }
   costObject(cost) {
     const toSelect = this.filteredCostCenterList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('costCentreIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('costCentreIdControl').value
     );
-    this.costDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.costCentreId = toSelect.masterId;
-    this.OrganizationForm.get('costCentreIdControl').setValue(toSelect.masterCode);
+    this.costDescription = toSelect.description;
+    this.organizationDetailsModel.costCentreId = toSelect.jobMasterId;
+    this.OrganizationForm.get('costCentreIdControl').setValue(toSelect.jobMasterType);
 
     this.enableCostDate();
   }
   subCostObject(subcost) {
 
     const toSelect = this.filteredSubCostCenterList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('subCostCentreIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('subCostCentreIdControl').value
     );
-    this.subCostDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.subCostCentreId = toSelect.masterId;
-    this.OrganizationForm.get('subCostCentreIdControl').setValue(toSelect.masterCode);
+    this.subCostDescription = toSelect.description;
+    this.organizationDetailsModel.subCostCentreId = toSelect.jobMasterId;
+    this.OrganizationForm.get('subCostCentreIdControl').setValue(toSelect.jobMasterType);
 
     this.enableSubCostDate();
   }
   profitObject(profit) {
     const toSelect = this.filteredProfitCenterList.find(
-      (c) => c.masterCode === this.OrganizationForm.get('profitCentreMasterIdControl').value
+      (c) => c.jobMasterType === this.OrganizationForm.get('profitCentreMasterIdControl').value
     );
-    this.profitDescription = toSelect.masterDescription;
-    this.organizationDetailsModel.profitCentreMasterId = toSelect.masterId;
-    this.OrganizationForm.get('profitCentreMasterIdControl').setValue(toSelect.masterCode);
+    this.profitDescription = toSelect.description;
+    this.organizationDetailsModel.profitCentreMasterId = toSelect.jobMasterId;
+    this.OrganizationForm.get('profitCentreMasterIdControl').setValue(toSelect.jobMasterType);
 
     this.enableProfitDate();
   }

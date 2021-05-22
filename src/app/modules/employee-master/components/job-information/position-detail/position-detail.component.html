@@ -212,8 +212,8 @@
                     (change)="validatGradeDate();gradeObject(employee);" formControlName="gradeMasterIdControl"
                     [(ngModel)]="gradeCode">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let employee of filteredGradeList" [value]="employee.masterCode">
-                        {{employee.masterCode}}
+                    <option *ngFor="let employee of filteredGradeList" [value]="employee.jobMasterType">
+                        {{employee.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -261,12 +261,12 @@
                     (onSelect)="validatDesignation1Date();designation1Object($event);">
                 </p-autoComplete> -->
                 <select class="form-control" placeholder="Select"
-                    (completeMethod)="searchDesignation1(employee.masterCode)"
+                    (completeMethod)="searchDesignation1(employee.jobMasterType)"
                     (change)="validatDesignation1Date();designation1Object(employee);"
                     formControlName="designation1Control" [(ngModel)]="designation1Code">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let employee of filteredDesignation1List" [value]="employee.masterCode">
-                        {{employee.masterCode}}
+                    <option *ngFor="let employee of filteredDesignation1List" [value]="employee.jobMasterType">
+                        {{employee.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
@@ -316,12 +316,12 @@
                     (onSelect)="validatDesignation2Date();designation2Object($event);">
                 </p-autoComplete> -->
                 <select class="form-control" placeholder="Select"
-                    (completeMethod)="searchDesignation2(employee.masterCode)"
+                    (completeMethod)="searchDesignation2(employee.jobMasterType)"
                     (change)="validatDesignation2Date();designation2Object(employee);"
                     formControlName="designation2Control" [(ngModel)]="designation2Code">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let employee of filteredDesignation2List" [value]="employee.masterCode">
-                        {{employee.masterCode}}
+                    <option *ngFor="let employee of filteredDesignation2List" [value]="employee.jobMasterType">
+                        {{employee.jobMasterType}}
                     </option>
                 </select>
                 <label class="form-label mt-10">Description</label>

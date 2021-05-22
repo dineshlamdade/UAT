@@ -135,15 +135,15 @@ export class PositionDetailComponent implements OnInit {
 
       const location = res.data.results.filter((item) => {
 
-        if (item.masterType == 'GradeMaster') {
+        if (item.jobMasterType == 'Grade') {
           this.gradeList.push(item);
           this.filteredGradeList.push(item);
         }
-        if (item.masterType == 'Designation1Master') {
+        if (item.jobMasterType == 'Designation1') {
           this.designation1List.push(item);
           this.filteredDesignation1List.push(item);
         }
-        if (item.masterType == 'Designation2Master') {
+        if (item.jobMasterType == 'Designation2') {
           this.designation2List.push(item);
           this.filteredDesignation2List.push(item);
         }
@@ -684,30 +684,30 @@ export class PositionDetailComponent implements OnInit {
   gradeObject(grade) {
 
     const toSelect = this.filteredGradeList.find(
-      (c) => c.masterCode === this.PositionForm.get('gradeMasterIdControl').value
+      (c) => c.jobMasterType === this.PositionForm.get('gradeMasterIdControl').value
     );
-    this.description = toSelect.masterDescription;
-    this.positionDetailsModel.gradeMasterId = toSelect.masterId;
-    this.PositionForm.get('gradeMasterIdControl').setValue(toSelect.masterCode);
+    this.description = toSelect.description;
+    this.positionDetailsModel.gradeMasterId = toSelect.jobMasterId;
+    this.PositionForm.get('gradeMasterIdControl').setValue(toSelect.jobMasterType);
     this.enableGradeDate()
   }
   designation1Object(designation1) {
     const toSelect = this.filteredDesignation1List.find(
-      (c) => c.masterCode === this.PositionForm.get('designation1Control').value
+      (c) => c.jobMasterType === this.PositionForm.get('designation1Control').value
     );
-    this.designation1Desc = toSelect.masterDescription;
-    this.positionDetailsModel.designation1MasterId = toSelect.masterId;
-    this.PositionForm.get('designation1Control').setValue(toSelect.masterCode);
+    this.designation1Desc = toSelect.description;
+    this.positionDetailsModel.designation1MasterId = toSelect.jobMasterId;
+    this.PositionForm.get('designation1Control').setValue(toSelect.jobMasterType);
     this.enableDesignation1Date()
   }
 
   designation2Object(designation2) {
     const toSelect = this.filteredDesignation2List.find(
-      (c) => c.masterCode === this.PositionForm.get('designation2Control').value
+      (c) => c.jobMasterType === this.PositionForm.get('designation2Control').value
     );
-    this.designation2Desc = toSelect.masterDescription;
-    this.positionDetailsModel.designation2MasterId = toSelect.masterId;
-    this.PositionForm.get('designation2Control').setValue(toSelect.masterCode);
+    this.designation2Desc = toSelect.description;
+    this.positionDetailsModel.designation2MasterId = toSelect.jobMasterId;
+    this.PositionForm.get('designation2Control').setValue(toSelect.jobMasterType);
     this.enableDesignation2Date()
   }
 

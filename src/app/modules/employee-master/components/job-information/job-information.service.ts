@@ -18,24 +18,32 @@ export class JobInformationService {
     const params = new HttpParams()
     .set('payrollAreaCode', payrollAreaCode);
 
-    return this.httpClient.get(environment.baseUrl8082 + '/job-information/summary/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
+    return this.httpClient.get(environment.baseUrl8082 + 'job-information/summary/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
 
+  // getOtherMasterDetails(){
+  //   return this.httpClient.get(environment.baseUrl8083 + '/all-other-masters/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  //   .pipe(map((res: any) =>{
+  //     return res;
+  //   }))
+  // }
+
+
+  
   getOtherMasterDetails(){
-    return this.httpClient.get(environment.baseUrl8083 + '/all-other-masters/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8083 + 'job-master/' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
-
 
   //Get position dropdown values API call
   getPositionDD(){
 
-    return this.httpClient.get(environment.baseUrl8083 + '/drop-down/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8083 + 'drop-down/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -62,7 +70,7 @@ export class JobInformationService {
 //Establishment service
   getEstaDetails(){
 
-    return this.httpClient.get(environment.baseUrl8083 + '/establishment-master/details' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8083 + 'establishment-master/details/' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))

@@ -253,9 +253,9 @@ export class PayrollAreaInformationComponent implements OnInit {
     if (this.PayrollAreaInfoForm.get('isFFS').value == '') this.PayrollAreaRequestModel.isFFS = false;
     // if (PayrollAreaRequestModel.currency == '') {
     delete PayrollAreaRequestModel.currency;
-    delete PayrollAreaRequestModel.accountNO;
-    delete PayrollAreaRequestModel.bankAccount;
-    delete PayrollAreaRequestModel.bankName;
+    //delete PayrollAreaRequestModel.accountNO;
+   // delete PayrollAreaRequestModel.bankAccount;
+   // delete PayrollAreaRequestModel.bankName;
     delete PayrollAreaRequestModel.nameAsPerBank;
     // }
     console.log(PayrollAreaRequestModel);

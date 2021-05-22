@@ -75,7 +75,7 @@
                                                         data-provide="datepicker" data-date-autoclose="true"
                                                         class="form-control" placeholder="  /   /" bsDatepicker
                                                         [minDate]="JoiningDate" formControlName="fromDate"
-                                                        (change)="setBankFromDateMinDay()"
+                                                        
                                                         [(ngModel)]="PayrollAreaRequestModel.payrollAreaFromDate"
                                                         [ngClass]="{'is-invalid' : PayrollAreaInfoForm.get('fromDate').status == 'INVALID'}">
                                                 </div>
@@ -277,7 +277,8 @@
                                                         <div class="col-sm-3 col-md-5 country-code">
                                                             <select class="form-control selectpicker"
                                                                 placeholder="Select" formControlName="currency"
-                                                                [(ngModel)]="PayrollAreaRequestModel.currency">
+                                                                [(ngModel)]="PayrollAreaRequestModel.currency"
+                                                                [ngClass]="{'is-invalid' : PayrollAreaInfoForm.get('currency').status == 'INVALID'}">
                                                                 <option value="" data-hidden="true">Select</option>
                                                                 <option *ngFor="let currency of currencyArray"
                                                                     [value]="currency">
@@ -293,7 +294,8 @@
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter Amount" formControlName="amount"
                                                                 (keyup)="amountValidCheck()"
-                                                                [(ngModel)]="PayrollAreaRequestModel.amount">
+                                                                [(ngModel)]="PayrollAreaRequestModel.amount"
+                                                                [ngClass]="{'is-invalid' : PayrollAreaInfoForm.get('amount').status == 'INVALID'}" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -302,7 +304,8 @@
                                                     <label class="form-label">Priority</label>
                                                     <input type="text" class="form-control" placeholder="Priority"
                                                         formControlName="priority"
-                                                        [(ngModel)]="PayrollAreaRequestModel.priority">
+                                                        [(ngModel)]="PayrollAreaRequestModel.priority"
+                                                        [ngClass]="{'is-invalid' : PayrollAreaInfoForm.get('priority').status == 'INVALID'}">
                                                 </div>
 
                                                 <div class="col-sm-6 col-md-3 mt-15">
@@ -316,7 +319,8 @@
                                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                 data-provide="datepicker" data-date-autoclose="true"
                                                                 class="form-control" placeholder="  /   /" bsDatepicker
-                                                                [minDate]="PayrollAreaRequestModel.fromDate" formControlName="bankfromDate"
+                                                                [minDate]="BankFromDateMinDays" formControlName="bankfromDate"
+                                                                (click)="setBankFromDateMinDay()" placement="center"
                                                                 [(ngModel)]="PayrollAreaRequestModel.payFromDate"
                                                                 [min]="payrollAreaBackFromDate"
                                                                 [ngClass]="{'is-invalid' : PayrollAreaInfoForm.get('bankfromDate').status == 'INVALID'}">
@@ -371,9 +375,9 @@
 
                                                         <button type="button"
                                                             [hidden]="payrollEditFlag || payrollviewFlag"
-                                                            [disabled]="PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse"
-                                                            [ngClass]="{'disabled-btn-bg-green':PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse,
-                                                         'btn-bg-green': !PayrollAreaInfoForm.invalid || !amountValid || !disableAddButtonMultipleBankFalse}"
+                                                            [disabled]="PayrollAreaInfoForm.invalid || amountValid "
+                                                            [ngClass]="{'disabled-btn-bg-green':PayrollAreaInfoForm.invalid || amountValid ,
+                                                         'btn-bg-green': !PayrollAreaInfoForm.invalid || !amountValid }"
                                                             (click)="savePayrollArea(PayrollAreaRequestModel);"
                                                             class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                                             tooltip="Save"><b><i
