@@ -42,7 +42,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	employeeFinDetailsData: any;
 	index: number = 0;
 	showEmployeeSelectionFlag: boolean = false;
-	selectedTransactionIndex: any;
+	selectedTransactionIndex: any = -1;
 	selectedTransactionType: any;
 	selectedFromDate: string;
 	selectedToDate: string;
@@ -72,6 +72,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	selectedTransactionClawback: any;
 	clawbackperiod: number = 0;
 	clawbackDate: any;
+	selectedTransactionTypes: any = [];
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -98,7 +99,9 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.NonRecurringTransactionGroupSummery()
 		this.selectedEmployeeMasterId = "";
 		this.selectedPayrollArea = "";
-		this.NonRecurringTransactionGroupAPIEmpwiseData = "";
+		this.showEmployeeSelectionFlag = false;
+		this.employeeFinDetailsData = null;
+		this.NonRecurringTransactionGroupAPIEmpwiseData = null;
 	}
 
 	/** When clicked on checkedbox summary page*/
@@ -412,7 +415,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.selectedPayrollArea = value;
 		if (this.selectedEmployeeMasterId != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
-			this.NonRecurringTransactionGroupUI()
+			
 			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
@@ -426,8 +429,8 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.selectedEmployeeMasterId = parseInt(value)
 		if (this.selectedPayrollArea != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
-			this.NonRecurringTransactionGroupUI()
-			this.nonRecService.employeeFinDetails(this.selectedEmpData[this.index]).subscribe(
+			
+			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
 				}
@@ -446,6 +449,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.NonRecurringTransactionGroupAPIEmpwise(formData).subscribe(
 			res => {
 				this.NonRecurringTransactionGroupAPIEmpwiseData = res.data.results;
+				this.NonRecurringTransactionGroupUI()
 
 			}
 		)
@@ -579,6 +583,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+
+		console.log("onceEvery: "+ JSON.stringify(this.saveTransactionData))
 	}
 
 	/** On change From Date */
@@ -671,10 +677,15 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("fromDate: "+ JSON.stringify(this.saveTransactionData))
 	}
 
 	/** On change Transaction Type */
 	getTransactionTypeForSave(value, rowindex, data) {
+		this.selectedTransactionTypes.push({
+			'index': rowindex,
+			'value':value
+		})
 		this.selectedTransactionIndex = rowindex;
 		this.selectedTransactionType = value
 		let todate = "";
@@ -764,6 +775,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("transaction type: "+ JSON.stringify(this.saveTransactionData))
 	}
 
 	/** On change To Date */
@@ -856,6 +868,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("todate: "+ JSON.stringify(this.saveTransactionData))
 	}
 
 	/** On change Remark */
@@ -947,6 +960,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("remark: "+ JSON.stringify(this.saveTransactionData))
+
 	}
 
 	/**on change opening balance */
@@ -1038,6 +1053,101 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("Amount: "+ JSON.stringify(this.saveTransactionData))
+
+	}
+
+	/** On change frequency */
+	getSelectedFrequency(value, data) {
+		let todate = "";
+		if (this.selectedTransactionType == 'NoOfTransaction') {
+			todate = ""
+		} else if (this.selectedTransactionType == 'Perpetual') {
+			todate = '9999-12-31 00:00:00'
+		} else {
+			todate = this.selectedToDateForSave;
+		}
+		if (this.selectedFromDate == '') {
+			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
+		}
+		if (this.saveTransactionData.length > 0) {
+			this.saveTransactionData.forEach((element, index) => {
+				if (element.headMasterId == data.headId) {
+					let ind = index;
+					this.saveTransactionData.splice(ind, 1, {
+						"employeeMasterId": this.selectedEmployeeMasterId,
+						"headMasterId": element.headMasterId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": value,
+						"fromDate": element.fromDate,
+						"transactionsType": element.transactionsType,
+						"numberOfTransactions": element.numberOfTransactions,
+						"toDate": todate,
+						"amount": element.amount,
+						"remark": element.remark,
+						"createdBy":"rahul",
+						"clawbackApplicableAt": element.clawbackApplicableAt,
+						"clawbackInputType": element.clawbackInputType,
+						"clawbackPeriod": 0,
+						"clawbackUnit": element.clawbackUnit,
+						"clawbackDate": ""
+					})
+				} else {
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					else {
+						this.saveTransactionData.push({
+							"employeeMasterId": this.selectedEmployeeMasterId,
+							"headMasterId": data.headId,
+							"standardName": data.headDescription,
+							"payrollAreaId": "1",
+							"payrollAreaCode": this.selectedPayrollArea,
+							"onceEvery": data.onceEvery,
+							"frequency": data.frequency,
+							"fromDate": data.fromdate,
+							"transactionsType": this.selectedTransactionType,
+							"numberOfTransactions": data.numberOfTransactions,
+							"toDate": todate,
+							"amount": data.openingAmount,
+							"remark": value,
+							"createdBy":"rahul",
+							"clawbackApplicableAt": data.clawbackApplicableAt,
+							"clawbackInputType": data.clawbackInputType,
+							"clawbackPeriod": 0,
+							"clawbackUnit": data.clawbackUnit,
+							"clawbackDate": ""
+						})
+					}
+				}
+			});
+		} else {
+			this.saveTransactionData.push({
+				"employeeMasterId": this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"standardName": data.headDescription,
+				"payrollAreaId": "1",
+				"payrollAreaCode": this.selectedPayrollArea,
+				"onceEvery": data.onceEvery,
+				"frequency": data.frequency,
+				"fromDate": data.fromdate,
+				"transactionsType": this.selectedTransactionType,
+				"numberOfTransactions": data.numberOfTransactions,
+				"toDate": todate,
+				"amount": data.openingAmount,
+				"remark": value,
+				"createdBy":"rahul",
+				"clawbackApplicableAt": data.clawbackApplicableAt,
+				"clawbackInputType": data.clawbackInputType,
+				"clawbackPeriod": 0,
+				"clawbackUnit": data.clawbackUnit,
+				"clawbackDate": ""
+			})
+		}
+		console.log("remark: "+ JSON.stringify(this.saveTransactionData))
+
 	}
 
 	/**on change no of transaction */
@@ -1129,6 +1239,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("No Of transaction: "+ JSON.stringify(this.saveTransactionData))
 	}
 
 	/** Clawback Popup Show */
@@ -1234,6 +1345,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("Applicable at: "+ JSON.stringify(this.saveTransactionData))
 	}
 
 	/** Get Input Type selected Value */
@@ -1326,6 +1438,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("input type: "+ JSON.stringify(this.saveTransactionData))
 	}
     
 	/**get clawback period */
@@ -1417,6 +1530,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": data.clawbackDate
 			})
 		}
+		console.log("clawback period: "+ JSON.stringify(this.saveTransactionData))
 	}
 
 	/**Get Clawback Frequency selected value */
@@ -1509,6 +1623,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
+		console.log("clawback frequency: "+ JSON.stringify(this.saveTransactionData))
+
 	}
 
 	/**Get clawback date */
