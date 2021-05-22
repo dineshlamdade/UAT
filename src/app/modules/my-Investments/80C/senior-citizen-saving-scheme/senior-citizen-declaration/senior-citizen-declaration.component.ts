@@ -727,6 +727,13 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
+      if(formatedActualAmount == null || formatedActualAmount <= 0){
+        this.alertService.sweetalertError(
+          'Please Enter Actual Amount'
+        );
+        this.enableSelectAll = false;
+        event.target.checked = false;
+      }
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(this.investmentGroup3TransactionDetailList[i].investmentGroup3TransactionId);
 

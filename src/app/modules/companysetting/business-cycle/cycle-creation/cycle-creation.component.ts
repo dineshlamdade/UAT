@@ -177,7 +177,7 @@ export class CycleCreationComponent implements OnInit {
   ngOnInit() {
     this.cycleCreationForm = this.formBuilder.group( {
       businessCycleDefinitionId: new FormControl( '', Validators.required ),
-      businessYear: new FormControl( '', Validators.required )
+      // businessYear: new FormControl( '', Validators.required )
     } );
     this.companySetttingService.getAllCycleDefinition().subscribe( res => {
       this.CycleDefinitionList = res.data.results;
@@ -218,13 +218,13 @@ export class CycleCreationComponent implements OnInit {
         console.log( 'cycle creation array', this.CycleDefinitionByid )
 
         this.name = response.data.results[0].businessCycleDefinition.name;
-        this.business = response.data.results[0].businessYear;
+        // this.business = response.data.results[0].businessYear;
         this.Frequency = response.data.results[0].businessCycleDefinition.frequency.name;
         this.fromDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
         this.toDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
 
         this.businessCycleDefinitionId = businessCycleDefinitionId;
-        this.businessYearUpdate = BusinessYear;
+        // this.businessYearUpdate = BusinessYear;
         this.data = this.CycleDefinitionByid;
         this.adjustedToNextCycle = false;
 
@@ -303,7 +303,7 @@ export class CycleCreationComponent implements OnInit {
       this.previewCycleList = res.data.results;
       this.businessCycleDefinitionId = res.data.results[0].businessCycleDefinition.businessYearDefinitionId;
       this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
-      this.Previewbusiness = res.data.results[0].businessYear;
+      // this.Previewbusiness = res.data.results[0].businessYear;
       this.PreviewFrequency = res.data.results[0].businessCycleDefinition.frequency.name;
       this.PreviewfromDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
       this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;

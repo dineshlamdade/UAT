@@ -123,7 +123,7 @@ export class PostOfficeSummaryComponent implements OnInit {
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPlanDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-      if (this.futureNewPolicyDeclaredAmount > 0) {
+      if (this.futureNewPolicyDeclaredAmount >= 0) {
       this.addFuturePlan();
     }else if(this.futureNewPolicyDeclaredAmount <0) {
       this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;

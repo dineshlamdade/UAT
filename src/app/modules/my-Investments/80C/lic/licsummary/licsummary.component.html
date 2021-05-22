@@ -16,7 +16,7 @@
               <tbody>
                 <!-- <pre>{{summaryGridData | json}}</pre> -->
                  <tr *ngFor="let summary of summaryGridData; let i = index">
-                    <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.licMasterId)">
+                    <td class="text-link wd-20 align-left" style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;" (click)="jumpToMasterPage(summary.licMasterId)">
                        <span tooltip="{{summary.institutionName}}">{{summary.institutionName}}</span>
                     </td>
                     <td class="wd-20"><span tooltip="{{summary.policyNo}}">{{summary.policyNo}}</span>

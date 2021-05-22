@@ -107,12 +107,12 @@
                                 <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="masterForm.frequencyOfPayment.value !== 'SinglePremium'">
                             <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
                             <div class="custom-controls-stacked ml-15 mt-10">
                                 <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=1 checked>
-                  <span class="custom-control-label">Yes</span>
+                  <span class="custom-control-label">Yes </span>
                 </label>
                                 <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=0>
@@ -324,7 +324,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let summary of masterGridData; let i = index">
-                                        <td class="align-left wd-15"><span tooltip="{{summary.institutionName}}">{{summary.institutionName}}</span>
+                                        <td class="align-left wd-8" style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:1px;"><span tooltip="{{summary.institutionName}}">{{summary.institutionName}}</span>
                                         </td>
                                         <td class="wd-10"><span tooltip="{{summary.policyNo}}">{{summary.policyNo}}</span>
                                         </td>

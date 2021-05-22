@@ -9,12 +9,12 @@ export class SaveBusinessYear {
 export class ServiceDetails {
   serviceName: string;
 }
-
+// serviceName: any[];
 export class SaveCycleDefinition {
   businessCycleDefinitionId?: number;
   businessYearDefinitionId: number;
   frequencyMasterId: number;
-  serviceName: any[];
+
   cycleName: string;
   addDays: number;
 
@@ -44,7 +44,7 @@ export class SaveHeadCreation {
   description: string;
   category: string;
   type: string;
-  displayName?: string;
+  displayName: string;
 }
 
 export class SavePHG {
@@ -60,10 +60,44 @@ export class SavePHG {
   isActive: boolean;
 }
 
+export class SavePHGGlobal {
+  headGroupDefinitionId: number;
+  globalHeadGroupDefinitionName: string;
+  attributeGroupName: string;
+  description: string;
+  //  headMasters:any[];
+  countryId: number;
+  headMasters: headDetail[];
+  removedHeadGroupIdList: any[];
+  createdBy: string;
+  isActive: boolean;
+}
+
 export class headDetail {
   headMasterId: number;
 }
+export class SaveAttributeAssignmentNewAssignment {
+  globalPayrollHeadGroupId?: number;
+  globalHeadGroupId: number;
+  globalAttributeGroupId: number;
+  value: string;
+  applicable: boolean;
+  dependentOn?: string;
+  fromDate: string;
+  toDate: string;
+  payrollHeadGroupAttributeValueMapping: PayrollHeadGroupAttributeValueMapping[];
+}
+export interface PayrollHeadGroupAttributeValueMapping {
+  payrollHeadGroupAttributeValueMappingId?: number;
+  value1?: number;
+  value2?: number;
+  value3?: number;
+  value4?: number;
+  fromDate?: string;
+  toDate?: string;
+  attributeMasterId?: number;
 
+}
 export class UpdateflagCycleCreationPHG {
   mappingGroupRequest: SaveAttributeAssignment[];
 
@@ -72,7 +106,6 @@ export class SaveAttributeAssignment {
   headGroupId: number;
   attributeGroupId: number
   value: string;
-  dependentOn: string;
   fromDate: string;
   toDate: string;
   payrollHeadGroupMappingId: number;
@@ -83,12 +116,13 @@ export class HeadDetailPHG {
 }
 
 export class SaveAttributeCreation {
-  globalAttributeMasterId: number;
+  attributeMasterId: number;
   code: string;
   description: string;
   attributeNature: string;
   numberOfOption: string;
   options: any[];
+  removedAttributeGroupIdList?: [];
 
 }
 
@@ -99,6 +133,7 @@ export class SaveAttributeSelection {
   attributeMasterIdList: any[];
   removedAttributeGroupIdList: any[];
 }
+
 
 
 // export class UpdateflagCycleCreation {
