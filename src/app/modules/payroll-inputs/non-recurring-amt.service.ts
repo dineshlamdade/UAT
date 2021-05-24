@@ -17,6 +17,10 @@ export class NonRecurringAmtService {
     return this.HttpClient.get<any>(this.apiUrl + `NonRecurringTransactionGroup`);
   }
 
+  getAllScheduleData(){
+    return this.HttpClient.get<any>(this.apiUrl + `NonRecurringTransactionSchedule`);
+  }
+
   /**  Popup summary - Schedule details */
   NonRecurringTransactionScheduleEMP(data):Observable<any>{
     return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionSchedule/NonRecurringTransactionScheduleEMP`, data);

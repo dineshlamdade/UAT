@@ -1158,7 +1158,8 @@
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
                                                                                             <label class="form-lable mb-0">
-                                                                                                <input class="form-control" value="{{data.numberOfTransactions}}" 
+                                                                                                <input class="form-control" [(ngModel)]="savedNumberOfTransaction"
+                                                                                                [ngModelOptions]="{standalone : true}"
                                                                                                 (focusout)="saveNoOfTransaction($event.target.value,data)"
                                                                                                 [disabled]="(selectedTransactionIndex == rowIndex && (selectedTransactionType != 'NoOfTransaction'))
                                                                                                 || selectedTransactionTypes[rowIndex] == 'NoOfTransaction' ">
@@ -1227,8 +1228,7 @@
                                                                                 <button type="submit" tooltip="Save & Next" 
                                                                                     *ngIf="!showEmployeeSelectionFlag"
                                                                                     (click)="saveAndNextTransaction()"
-                                                                                    [disabled]="selectedEmpData.length >= 1"
-                                                                                    [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length >= 1}"
+                                                                                   
                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
                                                                                     <b> <i class="fa fa-floppy-o"></i> </b>
                                                                                     Save & Next
@@ -1286,7 +1286,7 @@
 
                                         <!------------- ------------  Schedule --------------------->
                                         <input name="nav" type="radio" class="about-radio" id="Schedule"
-                                            [checked]="indexId == 3" (click)="editScheduleData()"/>
+                                            [checked]="indexId == 3" (click)="getAllScheduleData()"/>
 
                                         <div class="tabs about-page">
                                             <div class="row">
@@ -1309,7 +1309,7 @@
                                                                                     -
                                                                                     {{selectedEmpData[index].employeeMasterResponseDTO.fullName}}</label>
                                                                             </div>
-                                                                            <div class="col-md-3">
+                                                                            <div class="col-md-2">
                                                                                 <label
                                                                                     class="form-label mt-1 mb-0">Payroll Area</label>
                                                                                 <label
@@ -1317,12 +1317,20 @@
                                                                                     {{selectedEmpData[index].payrollArea.payrollAreaCode}}
                                                                                 </label>
                                                                             </div>
-                                                                            <div class="col-md-3">
+                                                                            <div class="col-md-2">
                                                                                 <label
                                                                                     class="form-label mt-1 mb-0">Head</label>
                                                                                 <label
                                                                                     class="font-12 text-ellipsis mt-1 mb-0">
                                                                                     {{selectedEmpData[index].payrollHeadMaster.displayName}}
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-md-2">
+                                                                                <label
+                                                                                    class="form-label mt-1 mb-0">Frequency</label>
+                                                                                <label
+                                                                                    class="font-12 text-ellipsis mt-1 mb-0">
+                                                                                    {{selectedEmpData[index].frequency}}
                                                                                 </label>
                                                                             </div>
                                                                             <div class="col-md-2">
@@ -2245,7 +2253,8 @@
                             <div class="row">
                                 <div class="col-md-3">Applicable At</div>
                                 <div class="col-md-6">
-                                    <select class="form-control custom-select wd-200" (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
+                                    <select class="form-control custom-select wd-200" 
+                                    (change)="getSelectedApplicable($event.target.value,selectedTransactionClawback)">
                                     <option value="">Select</option>
                                     <option [selected]="selectedApplicableAt == 'Group'"> Group </option>
                                     <option [selected]="selectedApplicableAt == 'Schedule'"> Schedule </option>
@@ -2269,7 +2278,8 @@
                                 <div class ="row" *ngIf="selectedClawbackInputType == 'Specific Period'">
                                     <div class="col-md-3">Period</div>
                                     <div class="col-md-6">
-                                        <input type="text" [(ngModel)]="clawbackperiod" (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)" class="form-control wd-200">
+                                        <input type="text" [(ngModel)]="clawbackperiod" [ngModelOptions]="{standalone : true}"
+                                        (focusout)="crawBackPeriod($event.target.value,selectedTransactionClawback)" class="form-control wd-200">
                                     </div>
                                     <div class="col-md-3"></div>
                                     <br><br>
@@ -2315,6 +2325,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i class="fa fa-times"></i>
-            &nbsp;Close</button>
+            &nbsp;save</button>
     </div>
 </ng-template>
