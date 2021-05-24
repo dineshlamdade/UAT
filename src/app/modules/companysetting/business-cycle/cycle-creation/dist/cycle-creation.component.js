@@ -98,8 +98,7 @@ var CycleCreationComponent = /** @class */ (function () {
     CycleCreationComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.cycleCreationForm = this.formBuilder.group({
-            businessCycleDefinitionId: new forms_1.FormControl('', forms_1.Validators.required),
-            businessYear: new forms_1.FormControl('', forms_1.Validators.required)
+            businessCycleDefinitionId: new forms_1.FormControl('', forms_1.Validators.required)
         });
         this.companySetttingService.getAllCycleDefinition().subscribe(function (res) {
             _this.CycleDefinitionList = res.data.results;
@@ -136,12 +135,12 @@ var CycleCreationComponent = /** @class */ (function () {
             _this.CycleDefinitionByid = response.data.results;
             console.log('cycle creation array', _this.CycleDefinitionByid);
             _this.name = response.data.results[0].businessCycleDefinition.name;
-            _this.business = response.data.results[0].businessYear;
+            // this.business = response.data.results[0].businessYear;
             _this.Frequency = response.data.results[0].businessCycleDefinition.frequency.name;
             _this.fromDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
             _this.toDate = response.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
             _this.businessCycleDefinitionId = businessCycleDefinitionId;
-            _this.businessYearUpdate = BusinessYear;
+            // this.businessYearUpdate = BusinessYear;
             _this.data = _this.CycleDefinitionByid;
             _this.adjustedToNextCycle = false;
             _this.getAllCycleCreation();
@@ -200,7 +199,7 @@ var CycleCreationComponent = /** @class */ (function () {
             _this.previewCycleList = res.data.results;
             _this.businessCycleDefinitionId = res.data.results[0].businessCycleDefinition.businessYearDefinitionId;
             _this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
-            _this.Previewbusiness = res.data.results[0].businessYear;
+            // this.Previewbusiness = res.data.results[0].businessYear;
             _this.PreviewFrequency = res.data.results[0].businessCycleDefinition.frequency.name;
             _this.PreviewfromDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
             _this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;

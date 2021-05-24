@@ -221,8 +221,12 @@ export class LicdeclarationComponent implements OnInit {
       this.globalPolicy = input.policyNo;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      if (input.canView === true){
+        this.isDisabled = true;
+      } else{
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -436,6 +440,13 @@ export class LicdeclarationComponent implements OnInit {
     i: number,
     j: number,
   ) {
+    if(data.declaredAmount == null || data.declaredAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
     const checked = event.target.checked;
 
     this.licDeclarationData = data

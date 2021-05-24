@@ -49,7 +49,9 @@ export class PpsummaryComponent implements OnInit {
       institution : institution,
       accountNumber : accountNumber,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
+    };
     this.institution = institution;
     this.accountNumber = accountNumber;
     this.myEvent.emit(data);
@@ -106,7 +108,7 @@ export class PpsummaryComponent implements OnInit {
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-      if (this.futureNewPolicyDeclaredAmount > 0) {
+      if (this.futureNewPolicyDeclaredAmount >= 0) {
       this.addFuturePolicy();
     }else if(this.futureNewPolicyDeclaredAmount <0) {
       this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;

@@ -82,7 +82,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]=" canEdit && isDisabled"
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -556,6 +556,23 @@
                     </div>
                   </td>
                   <td>
+                    <i  class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
+                    declarationEditUpload(
+                      template2,
+                      documentSummary.proofSubmissionId
+                    );
+                    viewDocumentDetail = false
+                  " tooltip="view"></i> &nbsp;&nbsp;
+                    <i *ngIf="canEdit" class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
+                    declarationEditUpload(
+                        template2,
+                        documentSummary.proofSubmissionId
+                      );
+                      viewDocumentDetail = true
+                    " tooltip="Edit"></i>
+
+                  </td>
+                  <!-- <td>
                     <i
                     class="fa fa-eye font-16 text-blue cursor-pointer"
                     (click)="
@@ -572,7 +589,7 @@
                       class="fa fa-download font-16 text-blue cursor-pointer"
                       tooltip="Download"
                     ></i> -->
-                    <div *ngFor="let doc of urlArray" hidden>
+                    <!-- <div *ngFor="let doc of urlArray" hidden>
                       <iframe
                         style="height: 100vh; width: 100%; display: block"
                         [src]="doc.blobURI"
@@ -591,7 +608,7 @@
                       "
                       tooltip="Edit"
                     ></i>
-                  </td>
+                  </td> --> 
                 </tr>
                 <!-- <tr *ngFor="let policyNo of documentSummary.group1MasterList">
               <td>{{ policyNo.policyNo }}</td>

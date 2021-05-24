@@ -1,5 +1,6 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { typeSourceSpan } from '@angular/compiler';
 import {
   Component,
   EventEmitter,
@@ -23,6 +24,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
+import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
@@ -172,7 +174,8 @@ export class DeclarationAndActualComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public transationId;
-
+  public visibilityFlagPrivious : boolean = true;
+  public visibilityFlagCurrent : boolean =  true;
   public disabilityType : string;
   public severity : string;
 
@@ -783,18 +786,18 @@ export class DeclarationAndActualComponent implements OnInit {
   // Get API call for All previous employee Names
   getpreviousEmployeName() {
     this.Service.getpreviousEmployeName().subscribe((res) => {
-      console.log('previousEmployeeList::', res);
-      if (!res.data.results[0]) {
-        return;
-      }
-      res.data.results.forEach((element) => {
-        const obj = {
-          label: element.name,
-          value: element.previousEmployerId,
-        };
-        this.previousEmployeeList.push(obj);
-      });
-      console.log('previousEmployeeList 2::', this.previousEmployeeList);
+      // console.log('previousEmployeeList::', res);
+      // if (!res.data.results[0]) {
+      //   return;
+      // }
+      // res.data.results.forEach((element) => {
+      //   const obj = {
+      //     label: element.name,
+      //     value: element.previousEmployerId,
+      //   };
+      //   this.previousEmployeeList.push(obj);
+      // });
+      // console.log('previousEmployeeList 2::', this.previousEmployeeList);
     });
   }
 
@@ -1372,10 +1375,13 @@ export class DeclarationAndActualComponent implements OnInit {
     // }
 
     if(this.priviousEmpFormArray.invalid){
+    // this.visibilityFlagPrivious =  false;
       return;
     }
 
     if(this.currEmpFormArray.invalid){
+
+    //  this.visibilityFlagCurrent = false;
       return;
     }
 
