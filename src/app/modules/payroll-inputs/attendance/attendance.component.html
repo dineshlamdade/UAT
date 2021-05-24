@@ -40,7 +40,7 @@
                                                         <div style="display: inherit;padding-right: 150px;">
                                                             <span class="form-label mt-2">Cycle Start Date Between</span>
                                                             <div class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                <div class="input-group">
+                                                                <div class="input-group" style="width: 115% !important;">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">
                                                                             <i class="fa fa-calendar"></i>
@@ -49,12 +49,12 @@
                                                                     <input data-provide="datepicker"
                                                                         data-date-autoclose="true" class="form-control"
                                                                         placeholder="Date" bsDatepicker
-                                                                        [(ngModel)]="fromDate" [bsConfig]="{ dateInputFormat: 'Do-MMMM-YY' }">
+                                                                        [(ngModel)]="fromDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }">
                                                                 </div>
-                                                            </div>
+                                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
                                                             <span class="font700 font-12 mt-2 ">To</span>
                                                             <div class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                <div class="input-group">
+                                                                <div class="input-group" style="width: 115% !important;">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">
                                                                             <i class="fa fa-calendar"></i>
@@ -63,9 +63,9 @@
                                                                     <input data-provide="datepicker"
                                                                         data-date-autoclose="true" class="form-control"
                                                                         placeholder="Date" bsDatepicker
-                                                                        [(ngModel)]="toDate" [bsConfig]="{ dateInputFormat: 'Do-MMMM-YY' }">
+                                                                        [(ngModel)]="toDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }">
                                                                 </div>
-                                                            </div>
+                                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
                                                             <button class="btn-bg-green btn-labeled mr-10"
                                                             (click)="AttendanceSummaryDatewiseRecordsUI()">Go</button>
                                                         </div>
@@ -223,6 +223,19 @@
                                                                 </th>
                                                                 <th class="wd-40">
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
+                                                                        Before-DOJ/After-DOL
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="leavewithoutpay"
+                                                                                pSortableColumn="leavewithoutpay">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="leavewithoutpay"
+                                                                                display="menu" class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="wd-40">
+                                                                    <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Adj Days
                                                                         <div class="Sort_Filter_Position">
                                                                             <p-sortIcon field="adjcycle"
@@ -310,6 +323,9 @@
                                                                 <td class="bg-color-light_gray"><label
                                                                         class="mb-0">{{summarydata.leaveWithoutPay.toFixed(2)}}
                                                                     </label></td>
+                                                                    <td class="bg-color-light_gray"><label
+                                                                        class="mb-0">{{summarydata.beforeDOJOrAfterDOL.toFixed(2)}}</label>
+                                                                </td>
                                                                 <td class="bg-color-light_gray"><label
                                                                         class="mb-0">{{summarydata.adjustment.toFixed(2)}} </label>
                                                                 </td>
@@ -346,7 +362,7 @@
                                     <span> Summary </span>
                                 </label>
                                 
-                                <input name="nav" (change)="changeTabIndex(1)" [checked]="tabIndex == 1" type="radio" class="about-radio" id="Attendance"/>
+                                <input name="nav" disabled (change)="changeTabIndex(1)" [checked]="tabIndex == 1" type="radio" class="about-radio" id="Attendance"/>
                                     <!-- [disabled]="selectedEmpData.length == 0" -->
                                 <div class="tabs about-page">
                                     <form [formGroup]="attendanceForm">
@@ -586,6 +602,15 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
+                                                            <h3>0.00
+                                                            </h3>
+                                                            <span>< DOJ & > DOL</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="wd-150" *ngIf="is30daysPayroll == '1'">
+                                                    <div class="card text-center btn-bg-green">
+                                                        <div class="card-body text-light detailedcard">
                                                             <h3>{{attendanceInputGetTotalAPIRecordsUIData.adjustment.toFixed(2)}}
                                                             </h3>
                                                             <span>Adj. Days</span>
@@ -765,7 +790,7 @@
                                                                         </th>
                                                                         <th class="wd-5">
                                                                             <div
-                                                                                class="p-d-flex p-jc-center p-ai-center">
+                                                                                class="p-d-flex p-jc-center p-ai-center" style="width:107% !important">
                                                                                 <span tooltip="Loss of Pay Days"
                                                                                     placement="bottom">Loss of Pay Days</span> &nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
@@ -796,7 +821,7 @@
                                                                         <th class="wd-8" *ngIf="is30daysPayroll == '1'">
                                                                             <div
                                                                                 class="p-d-flex p-jc-center p-ai-center">
-                                                                                Adj &nbsp;&nbsp;
+                                                                                Adjust-ment&nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="Adj">
                                                                                     </p-sortIcon>
@@ -873,6 +898,7 @@
                                                                         <td>
                                                                             <!-- {{presentCycle.weeklyOff}} -->
                                                                             <div class="d-flex">
+                                                                               
                                                                                 <!-- <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getCurrentWeeklyOff($event.target.value, presentCycle,rowIndex)">
@@ -883,7 +909,7 @@
                                                                                     <option value="1.00" [selected]="presentCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (keyup)="getCurrentWeeklyOff($event.target.value, presentCycle,rowIndex)"
-                                                                                    class="timeinput mr-1 form-control" [value]="presentCycle.weeklyOff" >
+                                                                                    class="mr-1 form-control" value="{{presentCycle.weeklyOff}}" >
                                                                                     <!-- onkeypress="return event.charCode >=48 && event.charCode <=57" -->
                                                                             </div>
                                                                         </td>
@@ -898,7 +924,7 @@
                                                                                     <option value="1.00" [selected]="presentCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                 <input (keyup)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)"
-                                                                                class="timeinput mr-1 form-control" [value]="presentCycle.holiday" >
+                                                                                class="mr-1 form-control" [value]="presentCycle.holiday" >
                                                                                 <!-- appTwoDigitDecimaNumber -->
                                                                             </div>
                                                                         </td>
@@ -933,7 +959,7 @@
                                                                                 class="timeinput mr-1 form-control" [value]="presentCycle.leaveWithoutPay">
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(presentCycle)">
+                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(presentCycle,rowIndex,'present')">
                                                                             </div>
                                                                         </td>
                                                                        
@@ -951,7 +977,7 @@
 
                                                                                     
                                                                                     <input *ngIf="defaultAttendace == '1'" 
-                                                                                    value="{{calculatePresentDay(presentCycle)}}"
+                                                                                    value="{{calculatePresentDay(presentCycle,rowIndex,'present')}}"
                                                                                         class="timeinput mr-1 form-control" disabled>
 
                                                                                 <!-- <p-inputMask mask="99:99"
@@ -961,13 +987,13 @@
                                                                             </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"  *ngIf="is30daysPayroll == '1'"><label
-                                                                            class="form-lable mb-0">{{presentCycle.adjustment}}</label>
+                                                                            class="form-lable mb-0">{{presentCycle.adjustment.toFixed(2)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" ><label
-                                                                                class="form-lable mb-0">{{calculatePayableDays(presentCycle)}}</label>
+                                                                                class="form-lable mb-0">{{calculatePayableDays(presentCycle,rowIndex,'present')}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray" >
-                                                                            <label
+                                                                            <label *ngIf="attendanceInputAPIRecordsUIData"
                                                                                 class="form-lable mb-0">{{presentCycle.pertainingCycleName}}</label>
                                                                                 <!-- {{presentCycle.pertainingCycle}}  -->
                                                                         </td>
@@ -1015,11 +1041,13 @@
                                                                 <button [disabled]="selectedEmpData.length <= 1" type="submit" tooltip="Save & Next"
                                                                     class="custom_button btn-bg-green custom_btn btn-labeled 
                                                                     btn-labeled-left ripple" 
-                                                                    [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"
+                                                                    
                                                                     (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                         <i class="fa fa-floppy-o"></i></b> Save &
                                                                     Next</button>
-                                                                <button [disabled]="selectedEmpData.length > 1" type="button" tooltip="Save"
+                                                                    <!-- [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }" -->
+                                                                    <!-- [disabled]="selectedEmpData.length > 1" -->
+                                                                <button  type="button" tooltip="Save"
                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" 
                                                                     (click)="AttendanceInput()" [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length > 1 }"><b><i
                                                                             class="fa fa-floppy-o"
@@ -1138,7 +1166,7 @@
                                                                         </th>
                                                                         <th class="wd-5">
                                                                             <div
-                                                                                class="p-d-flex p-jc-center p-ai-center">
+                                                                                class="p-d-flex p-jc-center p-ai-center" style="width:107% !important">
                                                                                 <span tooltip="Loss of Pay Days"
                                                                                     placement="bottom">Loss of Pay Days</span> &nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
@@ -1168,7 +1196,7 @@
                                                                         <th class="wd-8" *ngIf="is30daysPayroll == '1'">
                                                                             <div
                                                                                 class="p-d-flex p-jc-center p-ai-center">
-                                                                                Adj &nbsp;&nbsp;
+                                                                                Adjust-ment &nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="Adj">
                                                                                     </p-sortIcon>
@@ -1228,7 +1256,7 @@
                                                                 <ng-template pTemplate="body" let-futureCycle let-rowIndex= rowIndex
                                                                     class="tablebodyscroll">
                                                                     <tr class="p-selectable-row">
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;">
+                                                                        <td class="bg-color-light_gray" >
                                                                             <div class="form-group mb-0">
                                                                                 <div class="input-group">
                                                                                     <label
@@ -1236,10 +1264,10 @@
                                                                                 </div>
                                                                             </div>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
+                                                                        <td class="bg-color-light_gray" ><label
                                                                                 class="form-lable mb-0">{{getDays(futureCycle.date)}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
+                                                                        <td class="bg-color-light_gray" ><label
                                                                                 class="form-lable mb-0">{{futureCycle.payrollAreaCode}}</label>
                                                                         </td>
                                                                         <td>
@@ -1307,7 +1335,7 @@
                                                                                 class="timeinput mr-1 form-control" [value]="futureCycle.leaveWithoutPay">
 
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(futureCycle)">
+                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(futureCycle,rowIndex,'future')">
                                                                                 <!-- appTwoDigitDecimaNumber -->
                                                                             </div>
                                                                         </td>
@@ -1325,7 +1353,7 @@
                                                                                         class="timeinput mr-1 form-control" [disabled]="defaultAttendace == '1'">
 
                                                                                         <input *ngIf="defaultAttendace == '1'" 
-                                                                                        value="{{calculatePresentDay(futureCycle)}}"
+                                                                                        value="{{calculatePresentDay(futureCycle,rowIndex,'future')}}"
                                                                                             class="timeinput mr-1 form-control" disabled>
                                                                                 <!-- <input
                                                                                     value="{{futureCycle.presentDay}}"
@@ -1338,18 +1366,18 @@
                                                                                     class="timeinput"></p-inputMask> -->
                                                                             </label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;" *ngIf="is30daysPayroll == '1'"><label
+                                                                        <td class="bg-color-light_gray"  *ngIf="is30daysPayroll == '1'"><label
                                                                             class="form-lable mb-0">{{futureCycle.adjustment.toFixed(2)}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
-                                                                                class="form-lable mb-0">{{calculatePayableDays(futureCycle)}}</label>
+                                                                        <td class="bg-color-light_gray" ><label
+                                                                                class="form-lable mb-0">{{calculatePayableDays(futureCycle,rowIndex,'future')}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;">
+                                                                        <td class="bg-color-light_gray" >
                                                                             <label
                                                                                 class="form-lable mb-0">{{futureCycle.pertainingCycleName}} </label>
                                                                         </td>
                                                                         <!-- {{futureCycle.pertainingCycle}} -->
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
+                                                                        <td class="bg-color-light_gray" ><label
                                                                                 class="form-lable mb-0">{{futureCycle.processingCycleName}}</label>
                                                                         </td>
                                                                     </tr>
@@ -1383,14 +1411,17 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button [disabled]="selectedEmpData.length <= 1" type="submit" tooltip="Save & Next"
+                                                                <button type="submit" tooltip="Save & Next"
                                                                 class="custom_button btn-bg-green custom_btn btn-labeled 
                                                                 btn-labeled-left ripple" 
-                                                                [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"
+                                                                
                                                                 (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                     <i class="fa fa-floppy-o"></i></b> Save &
                                                                 Next</button>
-                                                            <button [disabled]="selectedEmpData.length > 1" type="button" tooltip="Save"
+                                                                <!--  [disabled]="selectedEmpData.length <= 1" -->
+                                                                <!-- [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }" -->
+                                                                <!-- [disabled]="selectedEmpData.length > 1" -->
+                                                            <button  type="button" tooltip="Save"
                                                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" 
                                                                 (click)="AttendanceInput()" [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length > 1 }"><b><i
                                                                         class="fa fa-floppy-o"
@@ -1509,7 +1540,7 @@
                                                                         </th>
                                                                         <th class="wd-5">
                                                                             <div
-                                                                                class="p-d-flex p-jc-center p-ai-center">
+                                                                                class="p-d-flex p-jc-center p-ai-center" style="width:107% !important">
                                                                                 <span tooltip="Loss of Pay Days"
                                                                                     placement="bottom">Loss of Pay Days</span> &nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
@@ -1539,7 +1570,7 @@
                                                                         <th class="wd-8" *ngIf="is30daysPayroll == '1'">
                                                                             <div
                                                                                 class="p-d-flex p-jc-center p-ai-center">
-                                                                                Adj &nbsp;&nbsp;
+                                                                                Adjust-ment &nbsp;&nbsp;
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="Adj">
                                                                                     </p-sortIcon>
@@ -1679,10 +1710,10 @@
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
                                                                                 class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber> -->
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
-                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(previousCycle)">
+                                                                                class="timeinput mr-1 form-control" [value]="calculateLOP(previousCycle,rowIndex,'previous')">
                                                                             </div>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;">
+                                                                        <td class="bg-color-light_gray" >
                                                                             <label class="form-lable mb-0 d-flex">
                                                                                 <!-- <input
                                                                                     value="{{previousCycle.presentDay}}"
@@ -1695,7 +1726,7 @@
                                                                                     class="timeinput mr-1" [disabled]="defaultAttendace == '1'">
 
                                                                                     <input *ngIf="defaultAttendace == '1'" 
-                                                                                    value="{{calculatePresentDay(previousCycle)}}"
+                                                                                    value="{{calculatePresentDay(previousCycle,rowIndex,'previous')}}"
                                                                                         class="timeinput mr-1 form-control" disabled>
                                             
                                                                                 <!-- <input
@@ -1709,17 +1740,17 @@
                                                                                     class="timeinput"></p-inputMask> -->
                                                                             </label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;" *ngIf="is30daysPayroll == '1'"><label
+                                                                        <td class="bg-color-light_gray" *ngIf="is30daysPayroll == '1'"><label
                                                                             class="form-lable mb-0">{{previousCycle.adjustment.toFixed(2)}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
-                                                                                class="form-lable mb-0">{{previousCycle.paidDays.toFixed(2)}}</label>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0">{{calculatePayableDays(previousCycle,rowIndex,'previous'}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;">
+                                                                        <td class="bg-color-light_gray">
                                                                             <label
                                                                                 class="form-lable mb-0">{{previousCycle.pertainingCycleName}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray" style="text-align: center !important;"><label
+                                                                        <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0">{{previousCycle.processingCycleName}}</label>
                                                                         </td>
                                                                     </tr>
@@ -1753,14 +1784,16 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button [disabled]="selectedEmpData.length <= 1" type="submit" tooltip="Save & Next"
+                                                                <button  type="submit" tooltip="Save & Next"
                                                                 class="custom_button btn-bg-green custom_btn btn-labeled 
                                                                 btn-labeled-left ripple" 
                                                                 [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"
                                                                 (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                     <i class="fa fa-floppy-o"></i></b> Save &
                                                                 Next</button>
-                                                            <button [disabled]="selectedEmpData.length > 1" type="button" tooltip="Save"
+                                                                <!-- [disabled]="selectedEmpData.length <= 1" -->
+                                                                <!-- [disabled]="selectedEmpData.length > 1" -->
+                                                            <button  type="button" tooltip="Save"
                                                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" 
                                                                 (click)="AttendanceInput()" [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length > 1 }"><b><i
                                                                         class="fa fa-floppy-o"
