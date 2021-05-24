@@ -38,8 +38,8 @@
                     <div class="row mt-4 mb-10">
                         <div class="col-sm-6 col-md-3">
                             <label class="form-label">Loan Account No</label>
-                            <input type="text" formControlName="loanAccountNumber" 
-                            class="form-control" 
+                            <input type="text" formControlName="loanAccountNumber"
+                            class="form-control"
                             onkeypress="return /[0-9 ']/i.test(event.key)" placeholder="Enter Loan Account No" [ngClass]="{ 'is-invalid': submitted && masterForm.loanAccountNumber.errors }">
                             <div *ngIf="submitted && masterForm.loanAccountNumber.errors" class="invalid-feedback">
                                 <div *ngIf="masterForm.loanAccountNumber.errors.required">Loan Account Number Is Mandatory</div>
@@ -180,7 +180,7 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><span tooltip="1">1</span></th>
-                                            <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                                            <td><span tooltip="RC Book"></span>RC Book
                                             </td>
                                             <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                                     class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>

@@ -115,7 +115,10 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
   public proofSubmissionId ;
   public vehicleNumbers: any;
+  public loanAccountNumbers: any;
   public validVehicleNumbers: boolean = false;
+  public validloanAccountNumber: boolean = false;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -299,6 +302,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.vehicleNumbers = res.data;
+      this.loanAccountNumbers = res.data;
       this.masterGridData.forEach((element) => {
         element.policyStartDate = new Date(element.policyStartDate);
         element.policyEndDate = new Date(element.policyEndDate);
@@ -340,7 +344,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
       console.log('electric Vehicle ::', data);
       if (data.vehicleNumber) {
-        
+
         this.vehicleNumbers.results.forEach(results => {
           if (results.vehicleNumber == data.vehicleNumber) {
             this.validVehicleNumbers = true;
@@ -354,13 +358,33 @@ export class ElectricVehicleMasterComponent implements OnInit {
           return;
         }
       }
-      if (this.validVehicleNumbers) {
-        this.validVehicleNumbers = false;
-        this.alertService.sweetalertError(
-          'Viechel number is already present.'
-        );
-        return;
+
+
+      console.log('loan Account Number ::', data);
+      if (data.loanAccountNumber) {
+
+        this.loanAccountNumbers.results.forEach(results => {
+          if (results.loanAccountNumber == data.loanAccountNumber) {
+            this.validloanAccountNumber = true;
+          }
+        });
+        if (this.validloanAccountNumber) {
+          this.validloanAccountNumber = false;
+          this.alertService.sweetalertError(
+            'Loan Account Number is already present.'
+          );
+          return;
+        }
       }
+
+
+      // if (this.validVehicleNumbers) {
+      //   this.validVehicleNumbers = false;
+      //   this.alertService.sweetalertError(
+      //     'Viechel number is already present.'
+      //   );
+      //   return;
+      // }
 
       this.electricVehicleService
         .uploadMultipleElectricVehicleasterFiles(this.masterfilesArray, data)

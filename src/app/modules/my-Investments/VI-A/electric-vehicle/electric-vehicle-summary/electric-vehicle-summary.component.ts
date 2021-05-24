@@ -106,6 +106,8 @@ export class ElectricVehicleSummaryComponent implements OnInit {
       this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.limit = res.data.results[0].limit;
+      this.benefitAvailableOnDeclaredAmount = res.data.results[0].benefitAvailableOnDeclaredAmount;
+      this.benefitAvailableOnActualAmount = res.data.results[0].benefitAvailableOnActualAmount;
     });
     this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }

@@ -58,7 +58,8 @@ import { EmployeenationalpensionComponent } from './Other/employeenationalpensio
 import { AffirmationComponent } from './affirmation/affirmation.component';
 import { SignatureaffirmationPadComponent } from './affirmation/signatureaffirmation-pad/signatureaffirmation-pad.component';
 import {ScrollPanelModule} from 'primeng/scrollpanel';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -102,8 +103,10 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
 
   ],
   imports: [
+    MatSelectModule,
     CommonModule,
     ReactiveFormsModule,
+    NgMultiSelectDropDownModule,
     FormsModule,
     MatSliderModule,
     TooltipModule.forRoot(),
