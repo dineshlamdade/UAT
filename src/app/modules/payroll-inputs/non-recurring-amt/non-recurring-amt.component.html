@@ -759,7 +759,7 @@
                                                                                             <select class="form-control custom-select wd-200"  
                                                                                                 (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">Select</option>
-                                                                                                    <option [selected]="data.frequency == 'Monthly'"> Monthly </option>
+                                                                                                    <option value="Monthly" [selected]="data.frequency == 'Monthly'"> Monthly </option>
                                                                                                     <option [selected]="data.frequency == 'Quarterly'"> Quarterly </option>
                                                                                                     <option [selected]="data.frequency == 'HalfYearly'"> HalfYearly </option>
                                                                                                     <option [selected]="data.frequency == 'Yearly'"> Yearly </option>
