@@ -104,8 +104,7 @@
                   </label>
                 </td> -->
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
-                    tooltip="Select Lender Name for proof submission">
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled" tooltip="Select checkbox">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                       onSelectCheckBoxCurrent(summary, $event, i, j);
@@ -186,6 +185,7 @@
         </div>
       </div>
     </div>
+    <br>
     <div *ngIf="previousEmployeeList.length > 0">
     <h3 class="font-14 text-purple font-bold">Previous Employer</h3>
     <div class="row mt-15">
@@ -243,7 +243,7 @@
                   count as c">
                 <td scope="row">
                   <label class="custom-control custom-checkbox checkbox-center"
-                    tooltip="Select Lender Name for proof submission">
+                    tooltip="Select checkbox">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.transactionStatus == 'Submitted'" (change)="
                         onSelectCheckBox(summary, $event, i, j);

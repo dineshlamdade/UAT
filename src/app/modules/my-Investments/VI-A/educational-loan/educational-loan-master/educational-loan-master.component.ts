@@ -99,13 +99,15 @@ export class EducationalLoanMasterComponent implements OnInit {
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
-
+public isshowHideFlag : boolean = true;
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
   public disability: string;
   public severity: string;
+  public loanAccountNumbers : any;
   public fullTimeCourse: boolean = true;
+  public validloanAccountNumber : boolean = false;
   public proofSubmissionId;
 
   constructor(
@@ -250,6 +252,7 @@ export class EducationalLoanMasterComponent implements OnInit {
       .subscribe((res) => {
         console.log('masterGridData::', res);
         this.masterGridData = res.data.results;
+        this.loanAccountNumbers = res.data;
         this.masterGridData.forEach((element) => {
           element.loanEndDate = new Date(element.loanEndDate);
         });
@@ -279,6 +282,24 @@ export class EducationalLoanMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
       data.loanEndDate = to;
       console.log('Educational Loan ::', data);
+
+        // console.log('loan Account Number ::', data);
+        if (data.loanAccountNumber) {
+
+          this.loanAccountNumbers.results.forEach(results => {
+            if (results.loanAccountNumber == data.loanAccountNumber) {
+              this.validloanAccountNumber = true;
+            }
+          });
+          if (this.validloanAccountNumber) {
+            this.validloanAccountNumber = false;
+            this.alertService.sweetalertError(
+              'Loan Account Number is already present.'
+            );
+            return;
+          }
+        }
+
 
       this.educationalLoanServiceService
         .uploadMultipleEducationalLoanMasterFiles(this.masterfilesArray, data)
@@ -338,18 +359,30 @@ export class EducationalLoanMasterComponent implements OnInit {
 
  /*  ====================hide===================== */
   show = true;
- 
-  toggle()
-   {
-    this.show = !this.show
-    if(!this.show)
-    {
+
+  // toggle()
+  //  {
+  //   this.show = !this.show
+  //   if(!this.show)
+  //   {
+  //     this.alertService.sweetalertWarning(
+  //       'You Have No Full Time Course Then Educational Loan Not To Apply ');
+  //   }
+  // }
+
+  onRadioChange(checked){
+    console.log(checked)
+    this.isshowHideFlag = true;
+    if(checked){
+      this.isshowHideFlag = false;
       this.alertService.sweetalertWarning(
         'You Have No Full Time Course Then Educational Loan Not To Apply ');
-    } 
+    }
   }
-  
- 
+
+
+
+
   // Policy End Date Validations with Current Finanacial Year
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(

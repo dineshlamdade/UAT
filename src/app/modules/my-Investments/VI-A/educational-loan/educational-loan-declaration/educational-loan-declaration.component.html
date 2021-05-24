@@ -109,7 +109,7 @@
                 </td> -->
                 <td scope="row">
                   <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
-                    tooltip="Select Lender Name for proof submission">
+                    tooltip="Select ">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                       onSelectCheckBoxCurrent(summary, $event, i, j);
@@ -228,7 +228,7 @@
                   count as c">
                 <td scope="row">
                   <label class="custom-control custom-checkbox checkbox-center"
-                    tooltip="Select Lender Name for proof submission">
+                    tooltip="Select checkbox">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.transactionStatus == 'Submitted'" (change)="
                         onSelectCheckBox(summary, $event, i, j);

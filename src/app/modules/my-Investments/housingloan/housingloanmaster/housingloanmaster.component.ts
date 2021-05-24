@@ -134,6 +134,7 @@ export class HousingloanmasterComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
   public visibilityFlagFamily : boolean  = false;
+  public relationFlag : boolean = true;
   public visibilityFlag : boolean  = true;
   public visibilityFlagStamp : boolean = true;
   public visibilityFlagProperty  : boolean = true;
@@ -154,7 +155,7 @@ export class HousingloanmasterComponent implements OnInit {
 
   public dropdownSettings: any;
   public ServicesList = [];
-  public dropdownList = [];
+  // public dropdownList = [];
   public selectedItems = [];
   public selectedEstablishmentMasterId = [];
 
@@ -214,9 +215,10 @@ export class HousingloanmasterComponent implements OnInit {
       })),
       (this.HPOwnerDetailForm = this.formBuilder.group({
         housePropertyOwnerDetailId: new FormControl(0),
-        familyMemberInfoId: new FormControl([], Validators.required),
+        familyMemberInfoId: new FormControl(null, Validators.required),
         ownerName: new FormControl('', Validators.required),
         firstTimeHomeBuyer: new FormControl('', Validators.required),
+        relationship: new FormControl({ value: null, disabled: true }),
       })),
       // this.HPUsageDetailForm.push(this.formBuilder.group({
       //   housePropertyUsageTypeId : [0],
@@ -276,13 +278,13 @@ export class HousingloanmasterComponent implements OnInit {
     // this.Service.getBusinessFinancialYear().subscribe((res) => {
     //   this.financialYearStart = res.data.results[0].fromDate;
     // });
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'familyMemberInfoId',
-      textField: 'name',
-      itemsShowLimit: 2,
-      allowSearchFilter: true,
-    };
+    // this.dropdownSettings = {
+    //   singleSelection: false,
+    //   idField: 'familyMemberInfoId',
+    //   textField: 'name',
+    //   itemsShowLimit: 2,
+    //   allowSearchFilter: true,
+    // };
 
 
     this.Service.getCountryList().subscribe((res) => {
@@ -329,45 +331,58 @@ export class HousingloanmasterComponent implements OnInit {
       console.log('editMaster policyNo', input.policyNo);
     }
 
-        // Family Member List API call
-        this.Service.getFamilyInfo().subscribe((res) => {
-          let familyMember = [];
-          this.familyMemberList = res.data.results;
-           res.data.results.forEach((element) => {
-            const obj = {
-              familyMemberInfoId: element.familyMemberInfoId,
-              familyMemberName: element.name,
-              relation: element.relationship,
-            };
-              if (element.relation !== 'Brother' || element.relation !== 'Sister') {
-                let familyNameWithRelation =
-                  element.familyMemberName + '(' + element.relation + ')';
-                familyMember.push({
-                  familyMemberInfoId: element.familyMemberInfoId,
-                  name: familyNameWithRelation,
-                });
-                // console.log('family List', this.dropdownList);
-              }
-              const data = {
-                label: 'All',
-                value: 'All',
-              };
+     // -------------- Family Member List API call ---------------------------
+     this.Service.getFamilyInfo().subscribe((res) => {
+      this.familyMemberGroup = res.data.results;
+      console.log('familyMemberName::', res);
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.familyMemberName,
+          value: element.familyMemberName,
+        };
+        this.familyMemberName.push(obj);
+      });
+    });
 
-              this.dropdownList = [];
-              this.dropdownList.push(data);
-            });
+        // // Family Member List API call
+        // this.Service.getFamilyInfo().subscribe((res) => {
+        //   let familyMember = [];
+        //   this.familyMemberList = res.data.results;
+        //    res.data.results.forEach((element) => {
+        //     const obj = {
+        //       familyMemberInfoId: element.familyMemberInfoId,
+        //       familyMemberName: element.name,
+        //       relation: element.relationship,
+        //     };
+        //       if (element.relation !== 'Brother' || element.relation !== 'Sister') {
+        //         let familyNameWithRelation =
+        //           element.familyMemberName + '(' + element.relation + ')';
+        //         familyMember.push({
+        //           familyMemberInfoId: element.familyMemberInfoId,
+        //           name: familyNameWithRelation,
+        //         });
+        //         // console.log('family List', this.dropdownList);
+        //       }
+        //       const data = {
+        //         label: 'All',
+        //         value: 'All',
+        //       };
 
-            const data = {
-              label: 'All',
-              value: 'All',
-            };
+        //       this.dropdownList = [];
+        //       this.dropdownList.push(data);
+        //     });
 
-            this.dropdownList = [];
-            this.dropdownList.push(data);
+        //     const data = {
+        //       label: 'All',
+        //       value: 'All',
+        //     };
 
-            this.dropdownList = familyMember;
-            console.log('dropdownList::', this.dropdownList);
-          });
+        //     this.dropdownList = [];
+        //     this.dropdownList.push(data);
+
+        //     this.dropdownList = familyMember;
+        //     console.log('dropdownList::', this.dropdownList);
+        //   });
 
   }
 
@@ -428,15 +443,19 @@ export class HousingloanmasterComponent implements OnInit {
       city: new FormControl(null),
       town: new FormControl(null),
       village: new FormControl(null),
-      stampDutyRegistrationDate: new FormControl(null, Validators.required),
-      stampDutyRegistrationAmount: new FormControl(null, [
-        Validators.required,
-        Validators.pattern('^[0-9]*$'),
-      ]),
-      propertyRegistrationValue: new FormControl(null, [
-        Validators.required,
-        Validators.pattern('^[0-9]*$'),
-      ]),
+      stampDutyRegistrationDate: new FormControl(null),
+      stampDutyRegistrationAmount: new FormControl(null),
+      propertyRegistrationValue: new FormControl(null),
+
+      // stampDutyRegistrationDate: new FormControl(null, Validators.required),
+      // stampDutyRegistrationAmount: new FormControl(null, [
+      //   Validators.required,
+      //   Validators.pattern('^[0-9]*$'),
+      // ]),
+      // propertyRegistrationValue: new FormControl(null, [
+      //   Validators.required,
+      //   Validators.pattern('^[0-9]*$'),
+      // ]),
       proofSubmissionId: new FormControl(''),
     });
   }
@@ -668,7 +687,7 @@ export class HousingloanmasterComponent implements OnInit {
     let stampDutyRegAprSixteenEndDate = '2017-03-31';
     let stampDutyRegAprTwentyStartDate = '2020-04-01';
     let stampDutyRegMarTwentyEndEndDate = '2022-03-31';
-    // let stampDutyRegMarCurrentFinancialDate = '2021-04-01';
+    let stampDutyRegMarCurrentFinancialDate = '2021-04-01';
 
     console.log("visibilityFlagProperty", this.visibilityFlagProperty);
 
@@ -679,7 +698,7 @@ export class HousingloanmasterComponent implements OnInit {
       else{
         this.visibilityFlagProperty = false;
       }
-      if (userDate >= stampDutyRegAprSixteenStartDate && userDate <= stampDutyRegMarTwentyEndEndDate)  {
+      if (userDate >= stampDutyRegMarCurrentFinancialDate && userDate <= stampDutyRegMarTwentyEndEndDate)  {
         this.visibilityFlagStamp = true;
         }
         else{
@@ -1069,15 +1088,25 @@ export class HousingloanmasterComponent implements OnInit {
   // Family relationship shown on Policyholder selection
   public OnSelectionfamilyMemberGroup() {
     this.visibilityFlagFamily = false;
-    const toSelect = this.familyMemberGroup.find(
-      (c) =>
-        c.familyMemberName ===
-        this.HPOwnerDetailForm.get('ownerName').value
-    );
-    this.HPOwnerDetailForm.get('familyMemberInfoId')
-      .setValue(toSelect.familyMemberInfoId);
-    this.HPOwnerDetailForm.get('relationship').setValue(toSelect.relation);
+    this.relationFlag = true;
+    if(this.HPOwnerDetailForm.value.ownerName !== 'undefined'){
+        this.visibilityFlagFamily = false;
+      if (this.HPOwnerDetailForm.get('ownerName').value == null) {
+        this.HPOwnerDetailForm.get('relationship').setValue(null);
+      }
+      const toSelect = this.familyMemberGroup.find(
+        (c) => c.familyMemberName === this.HPOwnerDetailForm.get('ownerName').value
+      );
+      this.HPOwnerDetailForm.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+      this.HPOwnerDetailForm.get('relationship').setValue(toSelect.relation);
 
+    }
+    if (this.HPOwnerDetailForm.value.ownerName == 'other' || this.HPOwnerDetailForm.value.familyMemberInfoId < 0) {
+      this.HPOwnerDetailForm.value.relationship == 'null';
+      this.relationFlag = false;
+      this.visibilityFlagFamily = true;
+
+    }
 
     if (this.HPOwnerDetailForm.value.familyMemberInfoId !== 'other') {
       this.visibilityFlagFamily = false;
@@ -1090,6 +1119,32 @@ export class HousingloanmasterComponent implements OnInit {
     }
 
   }
+
+      // // Family relationship shown on Policyholder selection
+      // OnSelectionfamilyMemberGroup() {
+      //   if (this.HPOwnerDetailForm.get('familyMemberInfoId').value == null) {
+      //     this.HPOwnerDetailForm.get('relationship').setValue(null);
+      //   }
+      //   const toSelect = this.familyMemberGroup.find(
+      //     (c) => c.familyMemberName === this.HPOwnerDetailForm.get('familyMemberInfoId').value
+      //   );
+      //   // this.HPOwnerDetailForm.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+      //   this.HPOwnerDetailForm.get('relationship').setValue(toSelect.relation);
+      // }
+
+
+
+  // OnSelectionfamilyMemberGroup() {
+  //   if (this.form.get('policyholdername').value == null) {
+  //     this.form.get('relationship').setValue(null);
+  //   }
+  //   const toSelect = this.familyMemberGroup.find(
+  //     (c) => c.familyMemberName === this.form.get('policyholdername').value
+  //   );
+  //   this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+  //   this.form.get('relationship').setValue(toSelect.relation);
+  // }
+
 
   public onSelectAddressType() {
     const toSelectAddress = this.empoyeeAddressList.find(
@@ -1556,8 +1611,26 @@ export class HousingloanmasterComponent implements OnInit {
       this.visibilityFlag = false;
       this.visibilityFlagProperty = false;
       this.visibilityFlagStamp = false;
-    }
 
+      this.housingLoanForm.get('stampDutyRegistrationDate').clearValidators();
+      this.housingLoanForm.get('stampDutyRegistrationDate').updateValueAndValidity();
+
+      this.housingLoanForm.get('stampDutyRegistrationAmount').clearValidators();
+      this.housingLoanForm.get('stampDutyRegistrationAmount').updateValueAndValidity();
+
+      this.housingLoanForm.get('propertyRegistrationValue').clearValidators();
+      this.housingLoanForm.get('propertyRegistrationValue').updateValueAndValidity();
+
+    }else {
+      this.housingLoanForm.get('stampDutyRegistrationDate').setValidators([Validators.required]);
+      this.housingLoanForm.get('stampDutyRegistrationDate').updateValueAndValidity();
+
+      this.housingLoanForm.get('stampDutyRegistrationAmount').setValidators([Validators.required]);
+      this.housingLoanForm.get('stampDutyRegistrationAmount').updateValueAndValidity();
+
+      this.housingLoanForm.get('propertyRegistrationValue').setValidators([Validators.required]);
+      this.housingLoanForm.get('propertyRegistrationValue').updateValueAndValidity();
+    }
 
   }
 

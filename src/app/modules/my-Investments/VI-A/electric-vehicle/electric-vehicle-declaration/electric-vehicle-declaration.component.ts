@@ -452,6 +452,7 @@ selectedTransactionLenderName(lenderName: any) {
     i: number,
     j: number
   ) {
+
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
@@ -465,6 +466,7 @@ selectedTransactionLenderName(lenderName: any) {
       this.transactionDetail[j].electricVehicleLoanTransactionList[
         i
       ].actualAmount = data.actualAmount;
+
 
    /*  ].actualAmount = data.declaredAmount; */
 
@@ -986,12 +988,24 @@ selectedTransactionLenderName(lenderName: any) {
   }
 
   upload() {
-    if (this.filesArray.length === 0) {
+
+
+    if(this.transactionDetail[0].electricVehicleLoanTransactionList.actualAmount > 0 && this.filesArray.length === 0){
+      // if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
       );
       return;
-    }
+     // }
+     }
+     if(this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.actualAmount > 0 && this.filesArray.length === 0){
+      // if (this.filesArray.length === 0) {
+      this.alertService.sweetalertError(
+        'Please attach Premium Receipt / Premium Statement'
+      );
+      return;
+     // }
+     }
     console.log('this.transactionDetail::', this.transactionDetail);
 
     // console.log("JSON data", this.declarationData);
