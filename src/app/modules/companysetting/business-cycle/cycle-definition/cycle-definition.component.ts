@@ -90,6 +90,7 @@ export class CycleDefinitionComponent implements OnInit {
       console.log( 'cycle creation res', this.CycleDefinitionList );
 
     } );
+
   }
 
   // get all  activeFrequencyList
@@ -160,9 +161,9 @@ export class CycleDefinitionComponent implements OnInit {
     if ( addCycleDefinition.id == undefined || addCycleDefinition.id == 0 || addCycleDefinition.id == null ) {
       // const employerContributionMethod = this.cycleDefinitionForm;
       // console.log( 'employerContributionMethod', employerContributionMethod );
-      addCycleDefinition.serviceName = [];
+      //  addCycleDefinition.serviceName = [];
       this.ServicesList.forEach( function ( f ) {
-        addCycleDefinition.serviceName.push( f );
+        //   addCycleDefinition.serviceName.push( f );
       } );
       console.log( JSON.stringify( addCycleDefinition ) );
       this.companySettings.AddCycleDefinition( addCycleDefinition ).subscribe( ( res: any ) => {
@@ -186,12 +187,12 @@ export class CycleDefinitionComponent implements OnInit {
 
       this.serviceName = [];
       //  this.serviceName.push(addCycleDefinition.services)
-      addCycleDefinition.serviceName = this.serviceName;
-      delete addCycleDefinition.serviceName;
-      addCycleDefinition.serviceName = this.cycleDefinitionForm.get( 'services' ).value;
+      //  addCycleDefinition.serviceName = this.serviceName;
+      //  delete addCycleDefinition.serviceName;
+      // addCycleDefinition.serviceName = this.cycleDefinitionForm.get( 'services' ).value;
       this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
       // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
-      addCycleDefinition.serviceName = this.serviceName;
+      // addCycleDefinition.serviceName = this.serviceName;
       console.log( 'json', JSON.stringify( addCycleDefinition ) );
       this.companySettings.UpdateCycleDefinition( addCycleDefinition ).subscribe( ( res: any ) => {
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
@@ -358,7 +359,6 @@ export class CycleDefinitionComponent implements OnInit {
       .subscribe( response => { // : saveBusinessYear[]
         this.alertService.sweetalertMasterSuccess( response.status.message, '' );
         this.getAllCycleDefinition();
-        //  this.BusinessYearform.reset();
       } );
   }
   keyPressedSpaceNotAllow( event: any ) {
@@ -391,8 +391,4 @@ export class CycleDefinitionComponent implements OnInit {
   getCycleName( name ): void {
     // this.CycleName = name;
   }
-
-
-
-
 }

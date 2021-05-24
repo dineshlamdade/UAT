@@ -82,7 +82,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]=" canEdit &&isDisabled"
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -564,7 +564,7 @@
                     </div>
                   </td>
                   <td>
-                    <i *ngIf="canEdit"
+                    <i 
                     class="fa fa-eye font-16 text-blue cursor-pointer"
                     (click)="
                       declarationEditUpload(

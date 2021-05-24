@@ -719,6 +719,14 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     i: number,
   
   ) {
+    
+    // if(data.declaredAmount == null || data.declaredAmount <= 0){
+    //   this.alertService.sweetalertError(
+    //     'Please Enter Declared Amount'
+    //   );
+    //   this.enableSelectAll = false;
+    //   event.target.checked = false;
+    // }
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
@@ -756,6 +764,13 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
+       if(formatedActualAmount == null || formatedActualAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Actual Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
      this.uploadGridData.push(this.investmentGroup3TransactionDetailList[i].investmentGroup3TransactionId);
 
