@@ -101,4 +101,8 @@ public getEmpMasterDetails(id)
 {
   return this.http.get<any>(this.apiUrl3 + 'employee-fin-details/' +id);
 }
+public addQuerywithDocs(data)
+{
+  return this.http.post<any>(this.apiUrl + 'QueryGeneration',data);
+}
 }

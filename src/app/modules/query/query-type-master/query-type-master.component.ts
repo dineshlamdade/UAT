@@ -190,11 +190,15 @@ radioButtonChanged(event){
    }else{
      this.ishidden = false;
      this.subquerview = true;
+    //  this.querytypeForm.controls['subqueryTypedescription'].setValidators([Validators.required]);
 
    }
 }
 
 getPriorityRequired(value){
+  this.querytypeForm.controls['priorityRequired'].setValue(value);
+  this.finalForm.controls['priorityRequired'].setValue(value);
+
   this.priorityRequiredFlag =! this.priorityRequiredFlag;
 }
 
@@ -219,6 +223,7 @@ priorityRequiredevent(value, priority,event)
 
 }
 onItemSubQuerySelect(item){
+  alert(item.queAnsMasterId)
   this.listSubQueryQueAnsMapping.push({
     "subQueryTypeQueAnsMappingId":0,
     "subQueryTypeMasterId":0,
@@ -283,6 +288,7 @@ this.querySubQuerySummary.splice(this.editQueryIndex,1,
 this.querytypeForm.controls['subQueryTypeCode'].reset();
 this.querytypeForm.controls['subqueryTypedescription'].reset();
 this.querytypeForm.controls['assignQATemplate2'].reset();
+this.listSubQueryQueAnsMapping = []
 this.AssignQNATemplate=[];
 }
 
@@ -422,10 +428,16 @@ addQueryType() // main post api to save all form data .
     this.getAllSummaryData();
     this.toster.success("",'Query Type Added Successfully');
 
-  this.listQueryPriorityRequestDTO =[];
-  this.subQueryRequestDTO = [];
-  })
-  this.querytypeForm.reset();
+  // this.listQueryPriorityRequestDTO =[];
+  // this.subQueryRequestDTO = [];
+  }
+  // ,error => {
+  //   if(error.error.status.code == '409'){
+  //     this.toster.error("",error.error.status.message);
+  //   }
+  // }
+  );
+  this.reset();
 
 
 }
@@ -456,8 +468,10 @@ updateQueryType()   //update all form
     this.updateQueryTypeData = res.data.results[0];
    this.getAllSummaryData();
     this.toster.success("",'Query Type Updated Successfully');
-    this.listQueryPriorityRequestDTO =[];
-    this.subQueryRequestDTO = [];
+    // this.listQueryPriorityRequestDTO =[];
+    // this.subQueryRequestDTO = [];
+  this.reset();
+
   })
 }
 getAllWorkflowMasters() // for dropdown of workflow call this api .
@@ -469,6 +483,7 @@ getAllWorkflowMasters() // for dropdown of workflow call this api .
 }
 getAll() // this api call for the assign Q & A template dropdown
 {
+
   this.queryListData=[];
    this.queryService.getAll().subscribe( res =>{
     res.data.results.forEach(element => {
@@ -477,7 +492,6 @@ getAll() // this api call for the assign Q & A template dropdown
         this.queryListData.push(element);
       }
     });
-
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'queAnsMasterId',
@@ -487,6 +501,7 @@ getAll() // this api call for the assign Q & A template dropdown
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
+
    })
   }
 
@@ -495,8 +510,8 @@ editQuery(query,index)
   this.isUpdateTempQuery = true;
   this.isAddTempQuery = false;
   this.querytypeForm.enable();
- this.querytypeForm.controls['queryTypeCode'].disable();
- this.querytypeForm.controls['subQueryTypeCode'].disable();
+  this.querytypeForm.controls['queryTypeCode'].disable();
+  this.querytypeForm.controls['subQueryTypeCode'].disable();
   //this.querytypeForm.patchValue(query);
   this.querytypeForm.controls['subQueryTypeCode'].setValue(query.subQuerCode);
   // 'subqueryTypedescription':this.querytypeForm.controls['subqueryTypedescription'].value,
@@ -527,17 +542,55 @@ reset(){
   this.querytypeForm.controls['active'].setValue(true);
   this.isUpdateTempQuery = false;
   this.isAddTempQuery = true;
+  this.querySubQuerySummary = []; // reset the subquery added table
+  this.querytypeForm.controls['queryTypeCode'].disable();
+  this.querytypeForm.controls['subQueryTypeCode'].disable();
+  // this.priorityData = []; //it reset but whole table is reset
 
 }
 cancel()
 {
-  this.querytypeForm.reset();
+  this.reset();
   this.querytypeForm.controls['active'].setValue(true);
   this.isUpdateTempQuery = false;
   this.isAddTempQuery = true;
-
+  this.querytypeForm.controls['queryTypeCode'].disable();
+  this.querytypeForm.controls['subQueryTypeCode'].disable();
+  this.isShown = true; //save &reset btn
+  this.isVisiblee = false; //update btn
+  this.isVisible = false; //cancle btn
 }
 
+editQuerySummary(query) // whole page edit function
+{
+   if(query.subcount == 0)
+  {
+    this.ishidden = true;
+    this.subquerview = false;
+  }else{
+    this.ishidden = false;
+    this.subquerview = true;
+  }
+  console.log(JSON.stringify(query));
+  this.editflagSummary = true;
+  this.querytypeForm.enable();
+  this.querytypeForm.patchValue(query);
+  this.isVisible =true;
+  this.isShown = false;
+  this.isVisiblee = true;
+
+  this.querytypeForm.controls['queryTypeCode'].disable();
+  this.querytypeForm.controls['subQueryTypeCode'].disable();
+  this.getAlldataById(query.queryTypeMasterId);
+  this.queryTypeMasterId = query.queryTypeMasterId;
+  this.moduleName = query.applicationModuleName;
+
+  this.listQueryPriorityRequestDTO =query.listQueryPriorityRequestDTO;
+  this.isAddTempQuery = true;
+  this.isUpdateTempQuery = false;
+  // this.querySubQuerySummary=[];
+
+}
 viewQuerySummary(query) // whole page view function
 {
   if(query.subcount == 0)
@@ -564,37 +617,7 @@ viewQuerySummary(query) // whole page view function
 
   // console.log(JSON.stringify(this.ishidden))
 }
-editQuerySummary(query) // whole page edit function
-{
-   if(query.subcount == 0)
-  {
-    this.ishidden = true;
-    this.subquerview = false;
-  }else{
-    this.ishidden = false;
-    this.subquerview = true;
-  }
-  console.log(JSON.stringify(query));
-  this.editflagSummary = true;
-  this.querytypeForm.enable();
-  this.querytypeForm.patchValue(query);
-  this.isVisible =true;
-  this.isShown = false;
-  this.isVisiblee = true;
 
-
-  this.querytypeForm.controls['queryTypeCode'].disable();
-  this.querytypeForm.controls['subQueryTypeCode'].disable();
-  this.getAlldataById(query.queryTypeMasterId);
-  this.queryTypeMasterId = query.queryTypeMasterId;
-  this.moduleName = query.applicationModuleName;
-
-  this.listQueryPriorityRequestDTO =query.listQueryPriorityRequestDTO;
-  this.isAddTempQuery = true;
-  this.isUpdateTempQuery = false;
-  // this.querySubQuerySummary=[];
-
-}
 
 resolutionEvent(value,prio)
 {

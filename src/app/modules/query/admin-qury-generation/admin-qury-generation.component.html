@@ -54,7 +54,7 @@
                     <div class="row mt-25">
                       <div class="col-md-3" *ngIf="editQuerySummaery">
                         <label class="form-label">Query No.</label>
-                        <input type="text" class="form-control" value="{{editQuerySummaery.queryNumber}}" disabled />
+                        <input type="text" class="form-control" formControlName="queryNumber" value="{{editQuerySummaery.queryNumber}}" disabled />
                       </div>
                       <div class="col-md-3" *ngIf="editQuerySummaery">
                         <label class="form-label">Submission Date & Time</label>
@@ -91,9 +91,11 @@
                         <!-- (change)="queryTypeChange($event.target.value)" -->
                         <select
                           formControlName="queryTypeMasterId"
-                          class="form-control custom-select">
+                          class="form-control custom-select" (change)="getSubQueryListData($event.target.value)">
                           <option [ngValue]="0" selected >Select</option>
-                          <option value="{{module.queryTypeMasterId}}" *ngFor="let module of querySubQueryTypeQAData ">{{module.queryTypeDescription}}</option>
+                          <option  *ngFor="let module of querySubQueryTypeQAData" value="{{module.queryTypeMasterId}}">
+                            {{module.queryTypeDescription}}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -114,8 +116,9 @@
                         <select
                           formControlName="priority"
                           class="form-control custom-select" >
-                          <option [ngValue]="null" selected >Select</option>
-                          <option *ngFor="let module of priorityData" value="{{module.queTypePriorityMasterId}}">{{module.priorityType}}</option>
+                          <option [ngValue]="null
+                          " selected >Select</option>
+                          <option *ngFor="let module of priorityData" value="{{module.priorityType}}">{{module.priorityType}}</option>
 
                         </select>
                       </div>
@@ -157,17 +160,16 @@
                           class="form-control"
                           placeholder="subject"
                           placeholder="Enter Subject"
-                        />
+                          formControlName = 'subject' />
                         <br />
                         <label class="form-label">Description</label>
-
-                        <ckeditor> </ckeditor>
+                        <ckeditor formControlName = "queryDescription" > </ckeditor>
                       </div>
                     </div>
                     <div class="row mt-25">
                       <div class="col-md-6">
                         <div class="table-responsive Custom_Table">
-                            <table class="table table-striped table-hover table-bordered m-b-0">
+                            <table class="table table-striped table-hover table-bordered">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col" class="font700 wd-8">Sr No.</th>
@@ -183,8 +185,8 @@
                                         <!-- <td><span tooltip="Premium Receipt/ Premium Statement"></span>Rent Agreement</td> -->
 
                                         <td>
-                                          <!-- <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
-                                          class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span> -->
+                                          <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
+                                          class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                                                               <div class="col-md-12" *ngFor="let doc of listDoc; let i = index">
                                                                   <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
                                                                       <i class="fa fa-paperclip text-orange" (click)="docViewer(template1,i)"></i> &nbsp; {{ doc.fileName }}
@@ -225,13 +227,13 @@
                                   <span class="title">
                                     Choose file
                                   </span>
-                                  <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
+                                  <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event,'listDoc');"
                                     accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
                                 </label>
                                           </div>
-                                          <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
+                                          <div *ngIf="listDoc.length > 0 " class="fileuploadbox">
                                               <span class="text-purple font-14 font700">Selected Files</span>
-                                              <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
+                                              <label *ngFor="let item of listDoc;  let index = index;" class="filelabeldisplay">
                                   <div class="text-ellipsis"><i class="fa fa-paperclip">
                                     </i>
                                     <span class="title" tooltip="{{item.name}}">
@@ -239,7 +241,7 @@
                                     </span>
                                   </div>
                                   <div>
-                                    <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index)"></i>
+                                    <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index ,'listDoc')"></i>
                                   </div>
                                 </label>
                                           </div>
@@ -273,7 +275,7 @@
                           <div class="row">
                             <div class="col-md-1">
                               <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
-                                (click)="previousDocViewerPropertyIndex()" [disabled]="urlIndex == 0">
+                                (click)="previousDocViewer()" [disabled]="urlIndex == 0">
                                 <i class="fa fa-angle-left text-white font-30 p-10"></i>
                               </button>
                             </div>
@@ -282,7 +284,7 @@
                               <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
                             </div>
                             <div class="col-md-1">
-                              <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewerPropertyIndex()"
+                              <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
                                 [disabled]="urlIndex == urlArray.length - 1">
                                 <i class="fa fa-angle-right text-white font-30 p-10"></i>
                               </button>
@@ -366,10 +368,10 @@
                   </div>
                 </div>
                 <div class="tabview-contents">
-                  <div class="row">
+                  <div class="row mt-20">
                     <div class="col-md-12">
                       <h3 class="font-14 text-purple font-bold">Summary</h3>
-                      <div class="table-responsive Custom_Table mt-25">
+                      <div class="table-responsive Custom_Table table-striped table-hover table-bordered">
                         <p-table [value]="getAllQueryGenerationData"  [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
                         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                           <ng-template pTemplate="header">
@@ -580,7 +582,7 @@
                             </tr>
                           </ng-template>
                           <ng-template pTemplate="body" let-queryGenerationSummary let-rowIndex="rowIndex">
-                            <tr class="p-selectable-row">
+                            <tr class="p-selectable-row textcenter ">
                               <td class="text-center">{{ rowIndex + 1 }}</td>
                               <td>
                                 <label class="form-lable mb-0">{{ queryGenerationSummary.queryNumber}}</label>
@@ -649,12 +651,9 @@
                               </td>
                               <td>
                                 <span class="ml-1 mt-2">
-                                  <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(queryGenerationSummary)"></i
-                                    >&nbsp;
-                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(queryGenerationSummary)"></i
-                                    >&nbsp;
-                                    <i class="fa fa-trash" tooltip="Edit" aria-hidden="true" (click)="getDeleteById(queryGenerationSummary)" ></i
-                                      >&nbsp;</span>
+                                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit" aria-hidden="true" (click)="editQuery(queryGenerationSummary)" ></i>
+                                    <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(queryGenerationSummary)"></i>
+                                    <i class="fa fa-trash font-16 text-red cursor-pointer ml-3" tooltip="Edit" aria-hidden="true" (click)="getDeleteById(queryGenerationSummary)" ></i ></span>
                                       <!--  -->
                               </td>
                             </tr>
