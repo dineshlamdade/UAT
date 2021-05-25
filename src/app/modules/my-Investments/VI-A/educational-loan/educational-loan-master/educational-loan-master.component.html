@@ -270,11 +270,11 @@
                         tooltip="{{summary.loanEndDate | date :'dd-MMM-yyyy' }}">{{summary.loanEndDate | date
                         :"dd-MMM-yyyy"}}</span>
                     </td>
-                    <td class="wd-10"><span class="text-light-green font700"
+                    <!-- <td class="wd-10"><span class="text-light-green font700"
                         tooltip="{{summary.fullTimeCourse==true?'Yes':'No'}}">{{summary.fullTimeCourse==false?'Yes':'No'}}</span>
+                    </td> -->
+                    <td class="wd-10 text-light-green font700"><span tooltip="Submitted">Submitted</span>
                     </td>
-                    <!-- <td class="wd-10"><span tooltip="Submitted">Submitted</span>
-                          </td> -->
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                         (click)="editMaster(summary.loanAccountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;

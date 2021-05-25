@@ -39,6 +39,14 @@ getEducationalLoanSummary() {
     ));
   }
 
+  getFamilyInfo() : Observable<any>  {
+    return this._HTTP.get(this.apiUrl + 'licmaster-detail/familyMemberList')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
   //  Declaration services
 
   getEducationalLoanLenderNameList() {
