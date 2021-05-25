@@ -42,7 +42,8 @@
                                                                         </button>
                                                                         <button type="button" tooltip="Edit Schedule"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                                                                            (click)="editScheduleData()">
+                                                                            [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 0}"
+                                                                            (click)="editScheduleData()" [disabled]="selectedEmpData.length == 0">
                                                                             <b><i class="fa fa-pencil"></i></b>
                                                                             Edit Schedule
                                                                         </button>
@@ -60,7 +61,7 @@
                                                                 [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
                                                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                                [rowsPerPageOptions]="[10,25,50]">
+                                                                [rowsPerPageOptions]="[10,25,50,100,200]">
                                                                 <ng-template pTemplate="header">
                                                                     <tr>
                                                                         <th class="wd-5">
@@ -309,7 +310,7 @@
                                                                         <!-- <td><span class="ml-1 mt-2"></span></td> -->
                                                                         <td>
                                                                             <span class="ml-1 mt-2">
-                                                                                <i tooltip="View Transaction"
+                                                                                <i tooltip="View Transaction History"
                                                                                     class="fa fa-clock-o font-16 text-blue cursor-pointer"
                                                                                     aria-hidden="true"
                                                                                     (click)="ViewTransactionHistory(template1,Summarydata)">
@@ -525,7 +526,7 @@
                                                                                 [paginator]="true" [rows]="10"
                                                                                 [showCurrentPageReport]="true"
                                                                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                                                [rowsPerPageOptions]="[10,25,50]"
+                                                                                [rowsPerPageOptions]="[10,25,50,100,200]"
                                                                                 [style]="{'width':'100%'}">
 
                                                                                 <ng-template pTemplate="header">
@@ -759,13 +760,13 @@
                                                                                             <select class="form-control custom-select wd-200"  
                                                                                                 (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">Select</option>
-                                                                                                    <option value="Monthly" [selected]="data.frequency == 'Monthly'"> Monthly </option>
-                                                                                                    <option [selected]="data.frequency == 'Quarterly'"> Quarterly </option>
-                                                                                                    <option [selected]="data.frequency == 'HalfYearly'"> HalfYearly </option>
-                                                                                                    <option [selected]="data.frequency == 'Yearly'"> Yearly </option>
-                                                                                                    <option [selected]="data.frequency == 'SemiMonthly'"> SemiMonthly </option>
-                                                                                                    <option [selected]="data.frequency == 'Weekly'"> Weekly </option>
-                                                                                                    <option [selected]="data.frequency == 'BiWeekly'"> BiWeekly </option>
+                                                                                                    <option value="Monthly" [selected]="data.frequency == 'Monthly'"> Month </option>
+                                                                                                    <option value="Quarterly" [selected]="data.frequency == 'Quarterly'"> Quarter </option>
+                                                                                                    <option value="HalfYearly" [selected]="data.frequency == 'HalfYearly'"> HalfYear </option>
+                                                                                                    <option value="Yearly" [selected]="data.frequency == 'Yearly'"> Year </option>
+                                                                                                    <option value="SemiMonthly" [selected]="data.frequency == 'SemiMonthly'"> SemiMonth </option>
+                                                                                                    <option value="Weekly" [selected]="data.frequency == 'Weekly'"> Week </option>
+                                                                                                    <option value="BiWeekly" [selected]="data.frequency == 'BiWeekly'"> BiWeek </option>
                                                                                             </select>
                                                                                         </td>
                                                                                         <td>
@@ -827,7 +828,7 @@
                                                                                                 || selectedTransactionType == 'Perpetual') ">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <i class="fa fa-deviantart font-16 text-blue cursor-pointer"
+                                                                                            <i class="fa fa-clock-o font-16 text-blue cursor-pointer"
                                                                                                 aria-hidden="true" (click)="ViewClawbackpopup(template4,data)">
                                                                                             </i>
                                                                                         </td>
@@ -873,7 +874,7 @@
                                                                                 [paginator]="true" [rows]="10"
                                                                                 [showCurrentPageReport]="true"
                                                                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                                                [rowsPerPageOptions]="[10,25,50]"
+                                                                                [rowsPerPageOptions]="[10,25,50,100,200]"
                                                                                 [style]="{'width':'100%'}">
 
                                                                                 <ng-template pTemplate="header">
@@ -1107,13 +1108,13 @@
                                                                                             <select class="form-control custom-select wd-200"  
                                                                                                 (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                     <option value="">Select</option>
-                                                                                                    <option> Monthly </option>
-                                                                                                    <option> Quarterly </option>
-                                                                                                    <option> HalfYearly </option>
-                                                                                                    <option> Yearly </option>
-                                                                                                    <option> SemiMonthly </option>
-                                                                                                    <option> Weekly </option>
-                                                                                                    <option> BiWeekly </option>
+                                                                                                    <option value="Monthly"> Month </option>
+                                                                                                    <option value="Quarterly"> Quarter </option>
+                                                                                                    <option value="HalfYearly"> HalfYear </option>
+                                                                                                    <option value="Yearly"> Year </option>
+                                                                                                    <option value="SemiMonthly"> SemiMonth </option>
+                                                                                                    <option value="Weekly"> Week </option>
+                                                                                                    <option value="BiWeekly"> BiWeek </option>
                                                                                             </select>
                                                                                             <!-- <input
                                                                                                 class="form-lable mb-0" (focusout)="getSelectedFrequency($event.target.value,data)" value="{{data.frequency}}"
@@ -1157,8 +1158,9 @@
                                                                                             </select>
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
+                                                                                            <!-- [(ngModel)]="savedNumberOfTransaction" -->
                                                                                             <label class="form-lable mb-0">
-                                                                                                <input class="form-control" [(ngModel)]="savedNumberOfTransaction"
+                                                                                                <input class="form-control" 
                                                                                                 [ngModelOptions]="{standalone : true}"
                                                                                                 (focusout)="saveNoOfTransaction($event.target.value,data)"
                                                                                                 [disabled]="(selectedTransactionIndex == rowIndex && (selectedTransactionType != 'NoOfTransaction'))
@@ -1179,7 +1181,7 @@
                                                                                                 || selectedTransactionType == 'Perpetual')) || selectedTransactionTypes[rowIndex] == 'NoOfTransaction' ">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <i class="fa fa-deviantart font-16 text-blue cursor-pointer"
+                                                                                            <i class="fa fa-clock-o font-16 text-blue cursor-pointer"
                                                                                             aria-hidden="true" (click)="ViewClawbackpopup(template4,data)">
                                                                                         </i>
                                                                                         </td>
@@ -1286,7 +1288,7 @@
 
                                         <!------------- ------------  Schedule --------------------->
                                         <input name="nav" type="radio" class="about-radio" id="Schedule"
-                                            [checked]="indexId == 3" (click)="getAllScheduleData()"/>
+                                            [checked]="indexId == 3" (click)="getAllScheduleData()" [disabled]="selectedEmpData.length > 0"/>
 
                                         <div class="tabs about-page">
                                             <div class="row">
@@ -1362,7 +1364,7 @@
                                                                 [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
                                                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                                [rowsPerPageOptions]="[10,25,50]">
+                                                                [rowsPerPageOptions]="[10,25,50,100,200]" *ngIf="editScheduleFlag">
                                                                
                                                                 <ng-template pTemplate="header">
                                                                     <tr>
@@ -1655,8 +1657,333 @@
                                                                                 data-provide="datepicker"
                                                                                 data-date-autoclose="true"
                                                                                 value="{{ScheduleData.resheduleDate}}"
+                                                                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                                 (bsValueChange)="getRescheduleDate($event,ScheduleData)"
-                                                                                [disabled]="ScheduleData.hold == true || ScheduleData.discard == true
+                                                                                [disabled]="(ScheduleData.hold == true || ScheduleData.discard == true)
+                                                                                || ((selectedHoldIndex == rowIndex && hold == 1) || (selecteddiscardIndex == rowIndex && discard == 1)  )"
+                                                                                class="form-control" bsDatepicker>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0">{{ScheduleData.approvalstatus}}
+                                                                            </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><input
+                                                                                type="text" class="form-control"
+                                                                                (focusout)="getScheduleRemark($event.target.value,ScheduleData)"
+                                                                                [value]="ScheduleData.remark">
+
+                                                                        </td>
+                                                                        <td><i tooltip="View Schedule"
+                                                                                class="fa fa-eye font-16 text-blue cursor-pointer"
+                                                                                (click)="ViewScheduleHistory(template3,ScheduleData)"
+                                                                                aria-hidden="true"></i></td>
+
+
+                                                                    </tr>
+                                                                </ng-template>
+                                                            </p-table>
+
+                                                            <p-table [value]="AllNonRecurringTransactionScheduledData" class="mt-10"
+                                                                [paginator]="true" [rows]="10"
+                                                                [showCurrentPageReport]="true"
+                                                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                                [rowsPerPageOptions]="[10,25,50,100,200]" *ngIf="!editScheduleFlag">
+                                                               
+                                                                <ng-template pTemplate="header">
+                                                                    <tr>
+                                                                        <th rowspan="2" class="wd-5">
+                                                                            Sr. No.
+
+                                                                        </th>
+                                                                        <th rowspan="2" class="wd-8">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Emp. Code
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="sempcode">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="sempcode"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th rowspan="2">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Emp. Name
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="sempname">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="sempname"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th rowspan="2">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Payroll Area
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="spayrollarea">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="spayrollarea"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+
+                                                                        <th rowspan="2" class="wd-5">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Head
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="shead">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="shead"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th rowspan="2">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Group Id
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="sgroupid">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="sgroupid"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th colspan="3" class="wd-8">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-center p-ai-center">
+                                                                                Schedule
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="onceevery">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="onceevery"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+
+                                                                        <th rowspan="2">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Processed Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="processedamount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                        field="processedamount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th rowspan="2">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Balance Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="balamount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter field="balamount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th rowspan="2">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Processing Cycle
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="processingcycle">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                        field="processingcycle"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+
+                                                                        <th rowspan="2"> Hold </th>
+                                                                        <th rowspan="2"> Discard </th>
+                                                                        <th rowspan="2">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Reschedule Date
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="rescheduledate">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                        field="rescheduledate"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th rowspan="2">
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Approval Status
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="approvalstatus">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter
+                                                                                        field="approvalstatus"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+
+                                                                        <th rowspan="2" class="wd-8">Remark</th>
+                                                                        <th rowspan="2"></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="wd-8">
+                                                                            No.
+                                                                        </th>
+                                                                        <th class="wd-8">
+                                                                            Date
+                                                                        </th>
+                                                                        <th class="wd-8">
+                                                                            Amount
+                                                                        </th>
+                                                                    </tr>
+                                                                </ng-template>
+
+                                                                <ng-template pTemplate="body" let-ScheduleData let-rowIndex = rowIndex>
+                                                                    <tr class="p-selectable-row">
+                                                                        <td> <label
+                                                                                class="form-lable mb-0 ">{{rowIndex+1}}</label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label
+                                                                                class="form-lable mb-0">
+                                                                                {{ScheduleData.employeeMasterResponseDTO.employeeCode}}
+                                                                            </label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0">
+                                                                                {{ScheduleData.employeeMasterResponseDTO.fullName}}</label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0">
+                                                                                {{ScheduleData.payrollArea.payrollAreaCode}}
+                                                                            </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label class="form-lable mb-0 text-link"
+                                                                                (click)="ViewTransactionHistory(template2)">
+                                                                                {{ScheduleData.payrollHeadMaster.displayName}}
+                                                                            </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label class="form-lable mb-0">
+                                                                                {{ScheduleData.nonRecurringTransactionGroupId}}
+                                                                            </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0"> {{ScheduleData.nonRecurringTransactionScheduleId}}
+                                                                            </label>
+                                                                           <!-- No -->
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><input
+                                                                                data-provide="datepicker"
+                                                                                data-date-autoclose="true"
+                                                                                [value]="ScheduleData.transactionDate | date: 'dd-MMM-yyyy'"
+                                                                                class="form-control wd-100" bsDatepicker
+                                                                                disabled>
+                                                                             <!-- date -->
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0"><input
+                                                                                    type="text"
+                                                                                    [value]="ScheduleData.transactionAmount | number: '1.00'"
+                                                                                    class="form-control wd-100" disabled>
+                                                                            </label>
+                                                                            <!-- amount -->
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0">{{ScheduleData.processedAmount}}
+                                                                            </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0">{{ScheduleData.balanceAmount}}
+                                                                            </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                                class="form-lable mb-0">{{ScheduleData.processedCycle}}
+                                                                            </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label
+                                                                                class="custom-control custom-checkbox checkbox-center">
+                                                                                <input type="checkbox"
+                                                                                    class="custom-control-input"
+                                                                                    (click)="getHoldScheduleValue($event.target,ScheduleData,rowIndex)"
+                                                                                    name="select" [checked]="ScheduleData.hold == true"/> 
+                                                                                    <span class="custom-control-label"></span>
+                                                                            </label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <label class="form-lable mb-0">
+                                                                                <label class="custom-control custom-checkbox checkbox-center">
+                                                                                    <input type="checkbox"
+                                                                                        class="custom-control-input"
+                                                                                        (click)="getDiscardScheduleValue($event.target,ScheduleData,rowIndex)"
+                                                                                        name="select" [checked]="ScheduleData.discard == true" /> 
+                                                                                        <span class="custom-control-label"></span>
+                                                                                </label> 
+                                                                            </label>
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><input
+                                                                                data-provide="datepicker"
+                                                                                data-date-autoclose="true"
+                                                                                value="{{ScheduleData.resheduleDate}}"
+                                                                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                                (bsValueChange)="getRescheduleDate($event,ScheduleData)"
+                                                                                [disabled]="(ScheduleData.hold == true || ScheduleData.discard == true)
                                                                                 || ((selectedHoldIndex == rowIndex && hold == 1) || (selecteddiscardIndex == rowIndex && discard == 1)  )"
                                                                                 class="form-control" bsDatepicker>
 
@@ -1685,10 +2012,10 @@
                                                             <div class="row mt-15">
                                                                 <div class="col-12">
                                                                     <div class="float-right mb-15">
-                                                                        <button type="submit" tooltip="Save & Next" (click)="NonRecurringTransactionScheduleupdateById()"
+                                                                        <!-- <button type="submit" tooltip="Save & Next" (click)="NonRecurringTransactionScheduleupdateById()"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
                                                                                 <i class="fa fa-floppy-o"></i></b> Save
-                                                                            & Next</button>
+                                                                            & Next</button> -->
                                                                         <button type="button" tooltip="Next" (click)="NonRecurringTransactionScheduleupdateById()"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
                                                                                     class="fa fa-floppy-o"
@@ -2288,13 +2615,13 @@
                                         <select class="form-control custom-select wd-200"  
                                         (change)="getClawbackFrequency($event.target.value,selectedTransactionClawback)">
                                             <option value="">Select</option>
-                                            <option [selected]="clawbackFrequency == 'Monthly'"> Monthly </option>
-                                            <option [selected]="clawbackFrequency == 'Quarterly'"> Quarterly </option>
-                                            <option [selected]="clawbackFrequency == 'HalfYearly'"> HalfYearly </option>
-                                            <option [selected]="clawbackFrequency == 'Yearly'"> Yearly </option>
-                                            <option [selected]="clawbackFrequency == 'SemiMonthly'"> SemiMonthly </option>
-                                            <option [selected]="clawbackFrequency == 'Weekly'"> Weekly </option>
-                                            <option [selected]="clawbackFrequency == 'BiWeekly'"> BiWeekly </option>
+                                            <option value="Monthly" [selected]="clawbackFrequency == 'Monthly'"> Month </option>
+                                            <option value="Quarterly" [selected]="clawbackFrequency == 'Quarterly'"> Quarter </option>
+                                            <option value="HalfYearly" [selected]="clawbackFrequency == 'HalfYearly'"> HalfYear </option>
+                                            <option value="Yearly" [selected]="clawbackFrequency == 'Yearly'"> Year </option>
+                                            <option value="SemiMonthly" [selected]="clawbackFrequency == 'SemiMonthly'"> SemiMonth </option>
+                                            <option value="Weekly" [selected]="clawbackFrequency == 'Weekly'"> Week </option>
+                                            <option value="BiWeekly" [selected]="clawbackFrequency == 'BiWeekly'"> BiWeek </option>
                                        </select>
                                     </div>
                                     <div class="col-md-3"></div>

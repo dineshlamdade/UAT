@@ -74,6 +74,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	clawbackDate: any = "";
 	selectedTransactionTypes: any = [];
 	savedNumberOfTransaction: any = 0;
+	AllNonRecurringTransactionScheduledData: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -381,8 +382,10 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.attendanceInputAPIRecordsUI(data, this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
 			res => {
 				this.toaster.success('', 'Transaction data updated sucessfully')
-				// this.indexId = 1;
-				// this.navigateSummary()
+				if(this.selectedEmpData.length == 1){
+				this.indexId = 1;
+				this.navigateSummary()
+				}
 			}
 		)
 	}
@@ -1775,8 +1778,19 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	getAllScheduleData(){
 		this.indexId = 3
+		this.editScheduleFlag = false;
 		this.nonRecService.getAllScheduleData().subscribe( res =>{
-			this.NonRecurringTransactionScheduleEMPdData = res.data.results;
+			this.AllNonRecurringTransactionScheduledData = res.data.results;
+			this.AllNonRecurringTransactionScheduledData.forEach(data => {
+				this.summeryData.forEach(element => {
+					if(element.nonRecurringTransactionGroupId == data.nonRecurringTransactionGroupId){
+						data.employeeMasterResponseDTO = element.employeeMasterResponseDTO
+						data.payrollArea = element.payrollArea
+						data.payrollHeadMaster = element.payrollHeadMaster
+					}
+				});
+			});
+			
 		})
 	}
 
