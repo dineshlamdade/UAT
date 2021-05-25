@@ -989,22 +989,47 @@ selectedTransactionLenderName(lenderName: any) {
 
   upload() {
 
+    // if (this.filesArray.length === 0) {
+    //   this.alertService.sweetalertError(
+    //     'Please attach Premium Receipt / Premium Statement'
+    //   );
+    //   return;
+    // }
+    // if(this.transactionDetail[0].electricVehicleLoanTransactionList.declaredAmount > 0 ||this.filesArray.length === 0 ){
+    //   if(this.transactionDetail[0].electricVehicleLoanTransactionList.length === 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
+    //   {
+    //     this.alertService.sweetalertError(
+    //       'Please enter value'
+    //     );
+    //     return;
+    //   }
+    // }
 
-    if(this.transactionDetail[0].electricVehicleLoanTransactionList.actualAmount > 0 && this.filesArray.length === 0){
-      // if (this.filesArray.length === 0) {
-      this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+    // let numberValue = Number(actualAmount);
+
+    if(this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount == '0.00' && this.transactionDetail[0].electricVehicleLoanTransactionList[0].declaredAmount == '0.00'){
+
+      if(this.transactionDetail[0].electricVehicleLoanTransactionList.length == 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
+        {
+          this.alertService.sweetalertError(
+            'Please enter value'
+          );
+          return;
+        }
+      }
+
+    if(this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount > '0.00' && this.filesArray.length === 0){
+     this.alertService.sweetalertError(
+        'Please attach Premium Receipt / Premium Statement for Current Employer table'
       );
       return;
-     // }
      }
-     if(this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.actualAmount > 0 && this.filesArray.length === 0){
-      // if (this.filesArray.length === 0) {
+     if(this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length > 0 && this.filesArray.length === 0){
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement for Previous Employer'
       );
       return;
-     // }
+
      }
     console.log('this.transactionDetail::', this.transactionDetail);
 

@@ -169,7 +169,7 @@
                   <option *ngFor="let familyMember of familyMemberName" [value]="familyMember.value">
                     {{familyMember.label}}
                   </option>
-                  <option [ngValue]="other">other</option>
+                  <option [value]="'other'">Other</option>
                 </select>
                 <div *ngIf="houseLoanOwnerDetailSubmitted &&  HPOwnerDetailF.ownerName.errors" class="invalid-feedback">
                   <div *ngIf=" HPOwnerDetailF.ownerName.errors.required">Policy Holder Name is mandatory</div>
@@ -331,7 +331,7 @@
                       <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                     </div>
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
-                      [(ngModel)]="startDateModel" [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
+                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
                       data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date"
                       bsDatepicker
                       [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">

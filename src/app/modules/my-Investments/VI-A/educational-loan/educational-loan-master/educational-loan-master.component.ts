@@ -187,7 +187,7 @@ public isshowHideFlag : boolean = true;
   }
   // Family Member List API call
   getMasterFamilyInfo() {
-    this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
+    this.educationalLoanServiceService.getFamilyInfo().subscribe((res) => {
       console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
       res.data.results.forEach((element) => {
@@ -195,7 +195,7 @@ public isshowHideFlag : boolean = true;
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Daughter' || element.relation === 'Son' ||  element.relation === 'Self' || element.ageBracket === 'Minor') {
+        if (element.relation === 'Daughter' || element.relation === 'Son' ||  element.relation === 'Self' || element.relation == 'Wife') {
           this.familyMemberName.push(obj);
         }
       });
