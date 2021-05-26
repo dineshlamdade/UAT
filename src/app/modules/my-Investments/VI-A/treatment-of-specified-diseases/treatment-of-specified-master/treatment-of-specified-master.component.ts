@@ -458,6 +458,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.isCancel = false;
     this.urlArray = [];
+    this.visibilityFlag = false;
     this.isClear = false;
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
