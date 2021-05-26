@@ -108,6 +108,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public canEdit: boolean;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
+  public onHideSaveButton: boolean = false;
   public documentRemark: any;
   public isECS = true;
   public hideCopytoActualDate = false;
@@ -389,6 +390,7 @@ selectedTransactionLenderName(lenderName: any) {
     j: number
   ) {
     const checked = event.target.checked;
+    this.onHideSaveButton = checked;
 
     this.declarationData = data
 
@@ -453,8 +455,10 @@ selectedTransactionLenderName(lenderName: any) {
     j: number
   ) {
 
-    const checked = event.target.checked;
 
+    const checked = event.target.checked;
+    this.onHideSaveButton = checked;
+    console.log("this.onHideSaveButton",this.onHideSaveButton);
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
@@ -989,54 +993,6 @@ selectedTransactionLenderName(lenderName: any) {
 
   upload() {
 
-    // if (this.filesArray.length === 0) {
-    //   this.alertService.sweetalertError(
-    //     'Please attach Premium Receipt / Premium Statement'
-    //   );
-    //   return;
-    // }
-    // if(this.transactionDetail[0].electricVehicleLoanTransactionList.declaredAmount > 0 ||this.filesArray.length === 0 ){
-    //   if(this.transactionDetail[0].electricVehicleLoanTransactionList.length === 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
-    //   {
-    //     this.alertService.sweetalertError(
-    //       'Please enter value'
-    //     );
-    //     return;
-    //   }
-    // }
-
-    // let numberValue = Number(actualAmount);
-
-    if(this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount == '0.00' && this.transactionDetail[0].electricVehicleLoanTransactionList[0].declaredAmount == '0.00'){
-
-      if(this.transactionDetail[0].electricVehicleLoanTransactionList.length == 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
-        {
-          this.alertService.sweetalertError(
-            'Please enter value'
-          );
-          return;
-        }
-      }
-
-    if(this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount > '0.00' && this.filesArray.length === 0){
-     this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement for Current Employer table'
-      );
-      return;
-     }
-     if(this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length > 0 && this.filesArray.length === 0){
-      this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement for Previous Employer'
-      );
-      return;
-
-     }
-    console.log('this.transactionDetail::', this.transactionDetail);
-
-    // console.log("JSON data", this.declarationData);
-
-    console.log(JSON.stringify(this.declarationData))
-
     this.transactionDetail.forEach((element) => {
       //current emp table number format
       element.electricVehicleLoanTransactionList.forEach((item) => {
@@ -1088,6 +1044,41 @@ selectedTransactionLenderName(lenderName: any) {
         );
       }
     });
+
+
+    // let numberValue = Number(actualAmount);
+    console.log((this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount));
+
+    if(this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount == 0 && this.transactionDetail[0].electricVehicleLoanTransactionList[0].declaredAmount == '0.00'){
+
+      if(this.transactionDetail[0].electricVehicleLoanTransactionList.length == 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
+        {
+          this.alertService.sweetalertError(
+            'Please enter value'
+          );
+          return;
+        }
+      }
+
+    if(this.transactionDetail[0].electricVehicleLoanTransactionList[0].actualAmount > 0 && this.filesArray.length === 0){
+     this.alertService.sweetalertError(
+        'Please attach Premium Receipt / Premium Statement'
+      );
+      return;
+     }
+     if(this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length > 0 && this.filesArray.length == 0){
+      this.alertService.sweetalertError(
+        'Please attach Premium Receipt / Premium Statement'
+      );
+      return;
+
+     }
+    console.log('this.transactionDetail::', this.transactionDetail);
+
+    // console.log("JSON data", this.declarationData);
+
+    console.log(JSON.stringify(this.declarationData))
+
 
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');

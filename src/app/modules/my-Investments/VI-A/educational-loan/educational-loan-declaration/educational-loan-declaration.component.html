@@ -133,14 +133,18 @@
                     <input type="text" id="declaredAmount{{ summary.educationLoanTransactionId }}"
                       name="declaredAmount{{ summary.educationLoanTransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChangeCurrentEmp(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" />
+                      [disabled]="initialArrayIndex[j] > i" [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted'
+                    " />
                   </div>
                 </td>
                 <td>
                   <input type="text" id="actualAmount{{ summary.educationLoanTransactionId }}"
                     name="actualAmount{{ summary.educationLoanTransactionId }}" [disabled]="initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeCurrent(summary, i, j)"
-                    class="form-control align-right" />
+                    class="form-control align-right" [disabled]="
+                    isDisabled || summary.transactionStatus === 'Submitted'
+                  " />
                 </td>
                 <!-- onActualAmountChange -->
                 <td>
@@ -248,8 +252,8 @@
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    ">
+                    isDisabled || summary.transactionStatus === 'Submitted'
+                  ">
                     <option [ngValue]="0">Select</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
                       [selected]="
@@ -264,7 +268,9 @@
                     <input type="text" id="actualAmount{{ summary.educationLoanTransactionId }}"
                       name="actualAmount{{ summary.educationLoanTransactionId }}" [(ngModel)]="summary.actualAmount"
                       class="form-control align-right" (change)="onActualAmountChangePrevious(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" />
+                      [disabled]="initialArrayIndex[j] > i"  [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted'
+                    "/>
                   </div>
                 </td>
                 <td>
@@ -389,7 +395,7 @@
     </div>
   </div>
   <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
-    <div class="col-12">
+    <div class="col-12" *ngIf="onHideSaveButton">
       <div class="float-right mb-15">
         <button type="button" (click)="
             receiptAmount < globalSelectedAmount

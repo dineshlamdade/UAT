@@ -202,14 +202,12 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-9 font700">
-                  Previous Employer Name
-                </th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
+                <th rowspan="2" class="wd-10 font700">Previous Employer Name</th>
+                <th rowspan="2" class="wd-10 font700">Actual</th>
                 <th colspan="2" class="wd-11 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
                 <th rowspan="2" class="wd-6">PS.ID.</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <th rowspan="2" class="wd-14 font700">Transaction Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -404,7 +402,7 @@
   </div>
   <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
-      <div class="float-right mb-15">
+      <div class="float-right mb-15" *ngIf="onHideSaveButton">
         <button type="button" (click)="
             receiptAmount < globalSelectedAmount
               ? sweetalertError(
