@@ -1380,14 +1380,16 @@ export class HouserentdeclarationComponent implements OnInit {
       });
     });
 
-    console.log('this.receiptDate::', this.receiptDate);
-    console.log('this.receiptNumber::', this.receiptNumber);
+ /*    console.log('this.receiptDate::', this.receiptDate);
+    console.log('this.receiptNumber::', this.receiptNumber); */
+
+    console.log('editTransactionUpload::', this.editTransactionUpload);
 
     const data = {
       proofSubmissionId: this.editProofSubmissionId,
-      houseRentalTransactionDetailList: this.editTransactionUpload,
+      houseRentalTransactionList: this.editTransactionUpload[0].houseRentalTransactionList,
       houseRentalTransactionIds: this.uploadGridData,
-      documentRemark: this.documentRemark,
+    //  documentRemark: this.documentRemark,
       receiptAmount: this.editReceiptAmount,
       //proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
 

@@ -417,7 +417,7 @@
                         <th scope="col" class="wd-9">From Date</th>
                         <th scope="col" class="wd-14">To Date</th>
                         <th scope="col" class="wd-13">Rent Amount</th>
-                        <th scope="col" class="wd-14">Action</th>
+                      <!--   <th scope="col" class="wd-14">Action</th> -->
                      </tr>
                   </thead>
                   <tbody>
@@ -438,10 +438,10 @@
                               {{loanDetail.rentAmount}}
                            </span>
                         </td>
-                        <td>
+                      <!--   <td>
                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editRentDetails(i)"
                               tooltip="Edit"></i>&nbsp;&nbsp;
-                        </td>
+                        </td> -->
                      </tr>
                      <tr *ngIf="!RentDetailTableList?.length">
                         <td colspan="4">
@@ -503,6 +503,10 @@
                                        aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                               </td>
                               <td>
+                                 <i class="fa fa-files-o  font-16 text-dark-green cursor-pointer"
+                                 tooltip="File Generate"
+                                  (click)="openForm12BModal(template1)" ></i>&nbsp;&nbsp;&nbsp;
+
                                  <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
                                     (click)="UploadModal(declarationofLandlordPAN)" data-toggle="modal"
                                     data-target="#UploadModal"></i>&nbsp;&nbsp;
@@ -609,9 +613,8 @@
                            </td>
 
                            <td class="wd-5">
-                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editHouseRentMaster(i)" tooltip="Edit"></i>
-                              &nbsp;&nbsp;
-                              <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewHouseRentMaster(i)"   tooltip="View"></i>
+                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editHouseRentMaster(summary.houseRentMaster.houseRentalMasterId)" tooltip="Edit"></i>
+                         
                            </td>
                         </tr>
                         <tr *ngIf="!masterGridData?.length">
@@ -740,5 +743,92 @@
    </div>
    <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+   </div>
+</ng-template>
+
+
+<ng-template #template1>
+   <div class="modal-header">
+      <div class="col-md-2">
+         <h3 class="font-14 text-purple font-bold">Declaration of Landlord PAN</h3>
+     </div>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+         aria-label="Close">
+         <span aria-hidden="true">×</span>
+      </button>
+   </div> 
+   <div class="section-body mt-3">
+      <div class="container-fluid" id="htmlData" #htmlData>
+          <div class="row clearfix">
+              <div class="col-12">
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="row border-bottom-gray">
+                             <!--  <div class="col-md-2">
+                                  <h3 class="font-14 text-purple font-bold">Form 12BB</h3>
+                              </div> -->
+                              <div class="col-md-10 mb-10">
+                                  <div class="float-right">                                    
+                                      <button type="button" tooltip="Print" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-print"></i></b> Print </button>
+                                      <button type="button" tooltip="Download PDF" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="download()"><b><i class="fa fa-file-pdf-o"></i></b> Download PDF </button>
+                                    
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row mt-20">
+                              <div class="col-md-12">
+                                  <h4 class="text-center font-16">To Whomsoever It May Concern</h4>
+                                <!--   <h5 class="text-center mb-0 mt-20 font-14">Form No. 12 BB</h5>
+                                  <label class="text-center form-label mb-0 mt-0">(See rule 26C)</label> -->
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="text-center"><label class=" text-center font500 mt-10 mb-10 ">Declaration to be provided by Landlord as per Circular No.08/2013 dated 
+                                    10.10.2013 issued by Central Board of Direct Taxes (CBDT) </label>
+                                 </div>  
+                              </div>
+                          </div>
+                          <div class="row mt-20">
+                          <p style="font-size: 21px;"> I, ________________________________________________ hereby declare that I own a 
+                           residential house located at _________________________________________________ 
+                           which has been rented to Mr.________________________________________________ 
+                           from __/__/____ to __/__/_____ for a monthly rental of Rs.______. As per Circular 
+                           no.08/2013 dated 10.10.2013 issued by CBDT, I hereby also declare that I receive rent 
+                           which exceeds Rs.100,000/- (Rupees One Lac only) per annum and I do not have a valid 
+                           Permanent Account Number (PAN).</p>
+                          </div><br>
+                          <div class="row mt-20">
+                             <p>Name of the Landlord :- ______________________________________ </p>
+                           </div>
+                           <div class="row mt-20">
+                             <p>Address :-   
+                           </div>
+                           <div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
+                           </div>
+                             <div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
+                           </div>
+                             <div class="row mt-20">
+                             <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______________________________________  </p>
+                             </div>
+                             <div class="row mt-20">
+                              <p>
+                                 Signature of Landlord :                                 
+                              </p><br>
+                           </div>
+                           <div class="row mt-20">
+                              <p>
+                                 Date:
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+   <div class="modal-footer">
    </div>
 </ng-template>
