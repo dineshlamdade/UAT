@@ -192,9 +192,9 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: Fixed Deposits More Than 5 Years' },
       },
       {
-        path:   '80C-TaxSavingSharesNabardandOtherBonds',
+        path:   '80C-NabardBonds',
         component:  TaxSavingSharesNabardComponent,
-        data: { title: ':: DelziaHR :: TaxSavingSharesNabardandOtherBonds' },
+        data: { title: ':: DelziaHR :: NabardBonds' },
       },
       {
         path:   '80C-PostOfficeTermDeposit',
