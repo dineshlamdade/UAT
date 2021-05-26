@@ -82,7 +82,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]=" canEdit &&isDisabled"
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -189,6 +189,7 @@
                   <div class="custom_icon_badge">
                     <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
+                    maxlength="22"
                       name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" />
@@ -211,6 +212,7 @@
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
+                  maxlength="22"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
@@ -564,7 +566,7 @@
                     </div>
                   </td>
                   <td>
-                    <i *ngIf="canEdit"
+                    <i 
                     class="fa fa-eye font-16 text-blue cursor-pointer"
                     (click)="
                       declarationEditUpload(

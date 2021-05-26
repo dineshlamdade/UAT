@@ -200,8 +200,12 @@ export class PPFDeclarationComponent implements OnInit {
       this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      if (input.canView === true){
+        this.isDisabled = true;
+      } else{
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -441,6 +445,13 @@ export class PPFDeclarationComponent implements OnInit {
     j: number,
 
   ) {
+    if(data.declaredAmount == null || data.declaredAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
     const checked = event.target.checked;
     this.ppfDeclarationData = data
 

@@ -1,6 +1,6 @@
 <div class="tabview-contents">
   <div>
-    <div class="row mt-15">
+    <div class="row mt-15" *ngIf="visibilityFlagCurrent">
       <div class="col-12">
         <div class="table-responsive Custom_Table">
           <table class="table table-striped table-hover table-bordered m-b-0">
@@ -232,6 +232,7 @@
     </div>
     <hr />
   </div>
+  <div *ngIf="previousEmployeeList.length > 0 && visibilityFlagPrivious">
   <h3 class="font-14 text-purple font-bold">Previous Employer</h3>
   <div>
     <div class="row mt-15">
@@ -379,7 +380,7 @@
                     </option>
                   </select>
                 </td>
-                <td>
+                <!-- <td>
                   <select formControlName="familyMemberInfoId" class="form-control custom-select"
                     (change)="OnSelectionPreviousfamilyMemberGroup(priviousEmpFormArrayElement, $event)"
                     [ngClass]="{
@@ -389,7 +390,20 @@
                       {{ element.familyMemberName }}
                     </option>
                   </select>
+                </td> -->
+
+                <td>
+                  <select formControlName="familyMemberInfoId" class="form-control custom-select"
+                    (change)="OnSelectionfamilyMemberGroup(priviousEmpFormArrayElement, $event)"
+                    [ngClass]="{
+                     'is-invalid': submitted && priviousEmpFormArrayElement.get('familyMemberInfoId').hasError('required') }">
+                    <option [ngValue]="null">Select</option>
+                    <option *ngFor="let element of remainingFamilyMemberName" [value]="element.value">
+                      {{ element.label }}
+                    </option>
+                  </select>
                 </td>
+
                 <td>
                   <span>
                     {{ priviousEmpFormArrayElement.value.severity }} <br />
@@ -446,6 +460,7 @@
     </div>
     <hr />
   </div>
+</div>
   <!-- <div class="row mt-30">
    <div class="col-12">
      <div class="card">

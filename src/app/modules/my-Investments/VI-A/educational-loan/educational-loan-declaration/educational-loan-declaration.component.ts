@@ -1192,7 +1192,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   }
 
   // --------------- ON change of declared Amount Edit Modal-------------
-  onDeclaredAmountChangeInEditCase(
+  onActualAmountChangeInEditCaseEmp(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
@@ -1590,6 +1590,20 @@ export class EducationalLoanDeclarationComponent implements OnInit {
           this.initialArrayIndex = [];
 
           this.transactionDetail.forEach((element) => {
+
+            this.initialArrayIndex.push(element.educationalLoanTransactionList.length);
+
+            element.educationalLoanTransactionList.forEach((innerElement) => {
+
+
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+            });
+
             this.initialArrayIndex.push(element.educationalLoanTransactionPreviousEmployerList.length);
 
             element.educationalLoanTransactionPreviousEmployerList.forEach((innerElement) => {
@@ -1600,13 +1614,6 @@ export class EducationalLoanDeclarationComponent implements OnInit {
                 );
               }
 
-              if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              }
               innerElement.declaredAmount = this.numberFormat.transform(
                 innerElement.declaredAmount
               );

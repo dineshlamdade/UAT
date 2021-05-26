@@ -161,6 +161,7 @@ export class LicmasterComponent implements OnInit {
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
+      { label: 'Single Premium', value: 'SinglePremium' },
     ];
 
     this.addNewRowId = 0;

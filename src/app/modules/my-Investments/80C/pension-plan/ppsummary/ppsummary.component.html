@@ -78,7 +78,8 @@
                 [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber> -->
                 <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()" 
                 (onBlur)="keyPressedSpaceNotAllow()" 
-                mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
+                mode="decimal" locale="en-IN" maxlength="33"
+                [minFractionDigits]="2" ></p-inputNumber>
              
               </td>
               <td></td>

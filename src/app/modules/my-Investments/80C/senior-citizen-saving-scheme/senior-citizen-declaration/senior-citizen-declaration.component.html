@@ -31,7 +31,7 @@
                   <span tooltip="Electronic Clearing Service">Institution</span>
                 </th>
                 <th rowspan="2" class="wd-11 font700">Account No</th>
-                <th rowspan="2" class="wd-9 font700">Declared</th>
+                <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
@@ -56,7 +56,7 @@
                   <span>Institution</span>
                 </th>
                 <th rowspan="2" class="wd-11 font700">Account No</th>
-                <th rowspan="2" class="wd-9 font700">Declared</th>
+                <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
@@ -76,7 +76,7 @@
                   let summary of transactionDetail;
                   let i = index;
                   count as c
-                "
+                "  [ngClass]="{ 'highlight': this.selectrow == summary.accountNumber }"
               >
               <td scope="row">
                 <label
@@ -154,7 +154,7 @@
                     />
                   </div>
                 </td>
-                <td>
+                <!-- <td>
                   <div class="custom_icon_badge">
                     <input
                       type="text"
@@ -170,7 +170,7 @@
                       class="form-control align-right"
                     />
                   </div>
-                </td>
+                </td> -->
                 <td>
                   <input
                     type="text"
@@ -201,6 +201,7 @@
                       summary.investmentGroup3TransactionId
                     }}"
                     [(ngModel)]="summary.actualAmount"
+                    maxlength="22"
                     [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
                     class="form-control align-right"
                   />
@@ -305,6 +306,7 @@
                     class="form-control"
                     placeholder="Institution"
                     (change)="onInstitutionChange(addRowSummary, i)"
+                    [ngClass]="{ 'is-invalid': this.requiredField }"
                   />
                 </td>
                 <td>
@@ -315,11 +317,12 @@
                       class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)"
                       placeholder="Account No."
                       (change)="onAccountNoChange(addRowSummary, i)"
+                      [ngClass]="{ 'is-invalid': this.requiredField }"
                       />
 
                   </div>
                 </td>
-                <td>
+                <!-- <td>
                   <div class="custom_icon_badge">
                     <input
                       type="text"
@@ -333,7 +336,7 @@
 
                     />
                   </div>
-                </td>
+                </td> -->
                 <td>
                   <input
                     type="text"
@@ -348,6 +351,7 @@
                     "
                     class="form-control"
                     bsDatepicker
+                    [ngClass]="{ 'is-invalid': this.requiredField }"
                   />
                 </td>
                 <td>
@@ -357,6 +361,8 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                     class="form-control align-right"
                     (change)="onActualAmountChange(addRowSummary, i)"
+                    maxlength="22"
+                    [ngClass]="{ 'is-invalid': this.requiredField }"
                   />
                 </td>
                 <td>
@@ -440,12 +446,13 @@
                 >Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right">
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
+                <!-- <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ grandDeclarationTotal | number: "1.2-2" }}
                   </span>
-                </td>
+                </td> -->
+                <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right-12">
@@ -570,7 +577,7 @@
             :upload()
           "
           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-          tooltip="Save"
+          tooltip="Save" [disabled]="this.requiredField"
         >
           <b> <i class="fa fa-floppy-o"></i></b> Save
         </button>
@@ -788,7 +795,7 @@
                     <span tooltip="Electronic Clearing Service">Institution</span>
                   </th>
                   <th rowspan="2" class="wd-11 font700">Account No</th>
-                  <th rowspan="2" class="wd-9 font700">Declared</th>
+                  <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
@@ -807,7 +814,7 @@
                     <span>Institution</span>
                   </th>
                   <th rowspan="2" class="wd-11 font700">Account No</th>
-                  <th rowspan="2" class="wd-9 font700">Declared</th>
+                  <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
@@ -912,7 +919,7 @@
                       <!-- [disabled]="summary.accountNumber" -->
                     </div>
                   </td>
-                  <td>
+                  <!-- <td>
                     <div class="custom_icon_badge">
                       <input
                         type="text"
@@ -930,9 +937,9 @@
                         isDisabled || summary.transactionStatus === 'Submitted'
                       "
                       />
-                      <!-- [disabled]=" summary.transactionStatus === 'Submitted'" -->
+                     
                     </div>
-                  </td>
+                  </td> -->
                   <td>
                     <input
                       type="text"

@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <div class="row mt-20">
+    <!-- <div class="row mt-20">
       <div class="col-12">
         <div class="card">
           <div class="mb-0">
@@ -122,8 +122,7 @@
                         title="Edit"><i class="fa fa-edit"></i>
                       </button>
 
-                      <button *ngIf="!summary.used" type="button"
-                        (click)="UploadModal1(template12);getBussinessyearName(summary.yearDefinition)"
+                      <button *ngIf="!summary.used" type="button" (click)="UploadModal1(template12); "
                         data-toggle="modal" data-target="#UploadModal" class="btn btn-icon js-sweetalert" title="Delete"
                         data-type="confirm"><i class="fa fa-trash-o"></i></button>
                     </td>
@@ -163,6 +162,152 @@
           </div>
         </div>
       </div>
+    </div> -->
+
+
+
+
+
+
+
+
+
+
+    <div class="row mb-10">
+      <div class="col-md-8">
+
+
+
+
+
+
+        <div class="cycle-table mt-4">
+
+          <h3 class="font-14 text-purple font-bold">Summary</h3>
+
+
+          <p-table [value]="BusinessyearList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50,100,200]">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="wd-8 text-center">
+                  Sr. No.
+                </th>
+                <th class="wd-20">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Description
+                    <div class="Sort_Filter_Position">
+                      <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                      <p-columnFilter field="description" display="menu" class="p-ml-auto"></p-columnFilter>
+                    </div>
+                  </div>
+                </th>
+
+                <th class="wd-12">
+                  <div class="p-d-flex p-jc-between p-ai-center">
+                    Business Year Definition
+                    <div class="Sort_Filter_Position">
+                      <p-sortIcon field="yearDefinition" pSortableColumn="yearDefinition"></p-sortIcon>
+                      <p-columnFilter field="yearDefinition" display="menu" class="p-ml-auto"></p-columnFilter>
+
+                    </div>
+                  </div>
+                </th>
+                <th class="wd-12">
+                  <div class="p-d-flex p-jc-center p-ai-center">
+                    Action
+                  </div>
+                </th>
+                <!-- <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Updation Field
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="balance"></p-sortIcon>
+                                                <p-columnFilter type="numeric" field="balance" display="menu" currency="USD" class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th> -->
+
+
+
+                <!-- <th style="width: 8rem"></th> -->
+              </tr>
+
+            </ng-template>
+
+
+
+            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+              <tr class="p-selectable-row">
+                <!-- <td><label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                <input type="checkbox" class="custom-control-input" name="select" /> <span
+                  class="custom-control-label"></span>
+              </label></td> -->
+                <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{rowIndex+1}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.yearDefinition}}</label></td>
+                <td class="wd-10 align-left">
+                  <button *ngIf="!user1.used" type="button"
+                    (click)="GetBussinessyearById(user1.businessYearDefinitionId)" class="btn btn-icon text-blue"
+                    tooltip="Edit"><i class="fa fa-edit"></i>
+                  </button>
+
+                  <button *ngIf="!user1.used" type="button" (click)="UploadModal1(template12);" data-toggle="modal"
+                    data-target="#UploadModal" class="btn btn-icon js-sweetalert text-blue" tooltip="Delete"
+                    data-type="confirm"><i class="fa fa-trash-o"></i></button>
+                </td>
+                <ng-template #template12>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="UploadModalLabel">Delete
+                      Business Year Definition</h5>
+                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row clearfix">
+                          <div class="col-md-12">
+                            <label class="form-label">Are
+                              you sure want to
+                              delete Business
+                              Year Definition
+                              from-{{Name}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                      (click)="DeleteBussinessyearById(user1.businessYearDefinitionId);modalRef.hide()">Yes</button>
+                    <button type="button" class="btn btn-secondary bg-btn-red" (click)="modalRef.hide()">No</button>
+                  </div>
+                </ng-template>
+
+
+              </tr>
+
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                    Available</span></td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+
+        </div>
+      </div>
     </div>
+
+
+
+
+
+
+
   </div>
 </form>

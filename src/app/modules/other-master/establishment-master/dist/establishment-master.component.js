@@ -42,7 +42,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
             primaryBusinessActivity: new forms_1.FormControl('', forms_1.Validators.required),
             dateOfSetup: new forms_1.FormControl(''),
             officePremisesOwnership: new forms_1.FormControl(''),
-            regionMasterId: new forms_1.FormControl(''),
+            regionMasterId: new forms_1.FormControl('', forms_1.Validators.required),
             gstNumber: new forms_1.FormControl(''),
             gstIssueDate: new forms_1.FormControl(''),
             linNumber: new forms_1.FormControl(''),
@@ -79,8 +79,8 @@ var EstablishmentMasterComponent = /** @class */ (function () {
                 if (element.isActive == 1) {
                     _this.regionMasterDetails.push({ masterCode: element.masterCode, masterId: element.masterId });
                     if (index == 0) {
-                        _this.form.controls["regionMasterId"].setValidators(forms_1.Validators.required);
-                        _this.form.controls["regionMasterId"].updateValueAndValidity();
+                        // this.form.controls["regionMasterId"].setValidators(Validators.required);
+                        // this.form.controls["regionMasterId"].updateValueAndValidity();
                         console.log('index is 0');
                     }
                 }

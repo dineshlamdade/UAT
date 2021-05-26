@@ -1252,7 +1252,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
         //   });
         // });
     };
-    ComplianceMasterComponent.prototype.onSelectStatuatoryInstitutionMaster = function (value, label) {
+    ComplianceMasterComponent.prototype.onSelectStatuatoryInstitutionMaster = function (value) {
         // this.form.patchValue({
         //   complianceName: '',
         //   statutoryInstituteName: '',
