@@ -35,7 +35,9 @@
                                                                                     class="fa fa-check-square-o"></i></b>
                                                                             Approve </button>
                                                                         <button type="button" tooltip="Edit Transaction"
+                                                                        [disabled]="selectedEmpData.length == 0"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
+                                                                            [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 0}"
                                                                             (click)="editTransaction()">
                                                                             <b><i class="fa fa-pencil"></i></b>
                                                                             Edit Transaction
@@ -281,7 +283,7 @@
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0">{{Summarydata.amount
-                                                                                | number: '1.00'}}
+                                                                                    | number: '1.2-2'}}
                                                                             </label>
 
                                                                         </td>
@@ -483,11 +485,11 @@
                                                                                         *ngIf="selectedEmpData[index]">
                                                                                         <div class="row">
                                                                                             <div class="col-md-12 pl-0">
-                                                                                                <label
+                                                                                                <!-- <label
                                                                                                     class="form-label mb-2">Default
-                                                                                                    - From Date</label>
+                                                                                                    - From Date</label> -->
                                                                                                 <div class="d-flex">
-                                                                                                    <div
+                                                                                                    <!-- <div
                                                                                                         class="form-group mr-2 mb-0">
                                                                                                         <div
                                                                                                             class="input-group">
@@ -503,7 +505,7 @@
                                                                                                                         class="fa fa-calendar"></i></span>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                    </div>
+                                                                                                    </div> -->
                                                                                                     <span
                                                                                                         class="ml-10 mt-7"><i
                                                                                                             class="fa fa-file-excel-o font-18 text-dark-green"
@@ -738,11 +740,11 @@
                                                                                                 class="form-lable mb-0">{{data.payrollHeadMaster.description}}</label>
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
-                                                                                            <input class="form-lable mb-0"  value="{{data.amount | number:'1.00'}}" disabled>
+                                                                                            <input class="form-lable mb-0"  value="{{data.amount | number: '1.2-2'}}" disabled>
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="text"
-                                                                                                value="{{data.closingAmount | number:'1.00'}}"
+                                                                                                value="{{data.amount | number: '1.2-2'}}"
                                                                                                 class="form-control"
                                                                                                 (focusout)="getUpdateOpeningAmt($event.target.value)"
                                                                                                 >
@@ -830,7 +832,9 @@
                                                                                         <td>
                                                                                             <i class="fa fa-clock-o font-16 text-blue cursor-pointer"
                                                                                                 aria-hidden="true" (click)="ViewClawbackpopup(template4,data)">
-                                                                                            </i>
+                                                                                            </i> &nbsp;&nbsp;&nbsp;
+                                                                                            <i class="fa fa-paperclip font-16 text-blue cursor-pointer" 
+                                                                                            aria-hidden="true" (click)="ViewClawbackpopup(template4,data)" *ngIf="selectedApplicableAt != ''"></i>
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="text"
@@ -1088,12 +1092,12 @@
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
                                                                                             <input class="form-control" 
-                                                                                            value="{{data.openingAmount | number:'1.00'}}"
+                                                                                            value="{{data.openingAmount | number: '1.2-2'}}"
                                                                                             disabled>
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="text"
-                                                                                                value="{{data.closingAmount | number:'1.00'}}"
+                                                                                                value="{{data.closingAmount | number: '1.2-2'}}"
                                                                                                 class="form-control"
                                                                                                 (focusout)="transactionOpeningAmount($event.target.value,data)"
                                                                                                 >
@@ -1121,6 +1125,9 @@
                                                                                             > -->
                                                                                         </td>
                                                                                         <td>
+                                                                                            <span>
+                                                                                                <i class="fa fa-clone text-blue font-16"></i >
+                                                                                            </span> &nbsp;&nbsp;
                                                                                             <input
                                                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                                                 data-provide="datepicker"
@@ -1161,13 +1168,13 @@
                                                                                             <!-- [(ngModel)]="savedNumberOfTransaction" -->
                                                                                             <label class="form-lable mb-0">
                                                                                                 <input class="form-control" 
-                                                                                                [ngModelOptions]="{standalone : true}"
                                                                                                 (focusout)="saveNoOfTransaction($event.target.value,data)"
-                                                                                                [disabled]="(selectedTransactionIndex == rowIndex && (selectedTransactionType != 'NoOfTransaction'))
-                                                                                                || selectedTransactionTypes[rowIndex] == 'NoOfTransaction' ">
+                                                                                                [disabled]="data.transactionsType != 'NoOfTransaction'">
                                                                                             </label>
                                                                                         </td>
                                                                                         <td>
+                                                                                            <!-- [disabled]="(selectedTransactionIndex == rowIndex && (selectedTransactionType == 'NoOfTransaction' -->
+                                                                                                <!-- || selectedTransactionType == 'Perpetual')) || selectedTransactionTypes[rowIndex] == 'NoOfTransaction' " -->
                                                                                             <input
                                                                                                 data-provide="datepicker"
                                                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
@@ -1177,13 +1184,15 @@
                                                                                                 value="{{data.todate}}"
                                                                                                 class="form-control wd-120"
                                                                                                 (bsValueChange)="getToDateForSave($event,data)"
-                                                                                                [disabled]="(selectedTransactionIndex == rowIndex && (selectedTransactionType == 'NoOfTransaction'
-                                                                                                || selectedTransactionType == 'Perpetual')) || selectedTransactionTypes[rowIndex] == 'NoOfTransaction' ">
+                                                                                                [disabled]="data.transactionsType != 'Defined Date'">
                                                                                         </td>
                                                                                         <td>
                                                                                             <i class="fa fa-clock-o font-16 text-blue cursor-pointer"
-                                                                                            aria-hidden="true" (click)="ViewClawbackpopup(template4,data)">
-                                                                                        </i>
+                                                                                            aria-hidden="true" (click)="ViewClawbackpopup(template4,data,rowIndex)">
+                                                                                            </i>&nbsp;&nbsp;&nbsp;
+                                                                                            <i class="fa fa-paperclip font-16 text-blue cursor-pointer" 
+                                                                                            aria-hidden="true" (click)="ViewClawbackpopup(template4,data,rowIndex)" 
+                                                                                            *ngIf="data.showClawback"></i>
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="text"
@@ -1230,7 +1239,8 @@
                                                                                 <button type="submit" tooltip="Save & Next" 
                                                                                     *ngIf="!showEmployeeSelectionFlag"
                                                                                     (click)="saveAndNextTransaction()"
-                                                                                   
+                                                                                    [disabled]="selectedEmpData.length == 1"
+                                                                                    [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1}"
                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
                                                                                     <b> <i class="fa fa-floppy-o"></i> </b>
                                                                                     Save & Next
@@ -1251,16 +1261,16 @@
                                                                                 </button>
                                                                                 <button type="button" tooltip="Next"
                                                                                 *ngIf="!showEmployeeSelectionFlag"
-                                                                                [disabled]="selectedEmpData.length >= 1"
-                                                                                [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length >= 1}"
+                                                                                [disabled]="selectedEmpData.length == 1"
+                                                                                [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1}"
                                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                                                                                     <b><i class="fa fa-angle-double-left" aria-hidden="true"></i></b>
                                                                                     Previous
                                                                                 </button>
                                                                                 <button type="button" tooltip="Next"
                                                                                 *ngIf="!showEmployeeSelectionFlag"
-                                                                                [disabled]="selectedEmpData.length >= 1"
-                                                                                [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length >= 1}"
+                                                                                [disabled]="selectedEmpData.length == 1"
+                                                                                [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1}"
                                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                                                                                     <b><i class="fa fa-angle-double-right" aria-hidden="true"></i></b>
                                                                                     Next
@@ -1509,7 +1519,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-
+                                                                        <th rowspan="2"> Clawback Date </th>
                                                                         <th rowspan="2"> Hold </th>
                                                                         <th rowspan="2"> Discard </th>
                                                                         <th rowspan="2">
@@ -1612,7 +1622,7 @@
                                                                         <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0"><input
                                                                                     type="text"
-                                                                                    [value]="ScheduleData.transactionAmount | number: '1.00'"
+                                                                                    [value]="ScheduleData.transactionAmount | number: '1.2-2'"
                                                                                     class="form-control wd-100" disabled>
                                                                             </label>
                                                                             <!-- amount -->
@@ -1631,6 +1641,10 @@
                                                                                 class="form-lable mb-0">{{ScheduleData.processedCycle}}
                                                                             </label>
 
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                            class="form-lable mb-0">{{ScheduleData.clawbackDate | date: 'dd-MMM-yyyy'}}
+                                                                           </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label
@@ -1834,7 +1848,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-
+                                                                        <th rowspan="2"> Clawback Date </th>
                                                                         <th rowspan="2"> Hold </th>
                                                                         <th rowspan="2"> Discard </th>
                                                                         <th rowspan="2">
@@ -1936,7 +1950,7 @@
                                                                         <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0"><input
                                                                                     type="text"
-                                                                                    [value]="ScheduleData.transactionAmount | number: '1.00'"
+                                                                                    [value]="ScheduleData.transactionAmount | number: '1.2-2'"
                                                                                     class="form-control wd-100" disabled>
                                                                             </label>
                                                                             <!-- amount -->
@@ -1956,26 +1970,28 @@
                                                                             </label>
 
                                                                         </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                            class="form-lable mb-0">{{ScheduleData.clawbackDate | date: 'dd-MMM-yyyy'}}
+                                                                           </label>
+                                                                        </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label
                                                                                 class="custom-control custom-checkbox checkbox-center">
                                                                                 <input type="checkbox"
                                                                                     class="custom-control-input"
                                                                                     (click)="getHoldScheduleValue($event.target,ScheduleData,rowIndex)"
-                                                                                    name="select" [checked]="ScheduleData.hold == true"/> 
+                                                                                     [checked]="ScheduleData.hold == true"/> 
                                                                                     <span class="custom-control-label"></span>
                                                                             </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
-                                                                            <label class="form-lable mb-0">
                                                                                 <label class="custom-control custom-checkbox checkbox-center">
                                                                                     <input type="checkbox"
                                                                                         class="custom-control-input"
                                                                                         (click)="getDiscardScheduleValue($event.target,ScheduleData,rowIndex)"
-                                                                                        name="select" [checked]="ScheduleData.discard == true" /> 
+                                                                                         [checked]="ScheduleData.discard == true" /> 
                                                                                         <span class="custom-control-label"></span>
                                                                                 </label> 
-                                                                            </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><input
                                                                                 data-provide="datepicker"
@@ -2286,9 +2302,9 @@
                                                 class="form-control" bsDatepicker disabled>  -->
                                             {{data.transactionDate | date : 'dd-MMM-yyyy'}}
                                         </td>
-                                        <td>{{data.transactionAmount | number:'1.00'}}</td>
-                                        <td>{{data.processedAmount | number:'1.00'}}</td>
-                                        <td>{{data.balanceAmount | number:'1.00'}}</td>
+                                        <td>{{data.transactionAmount | number: '1.2-2'}}</td>
+                                        <td>{{data.processedAmount | number: '1.2-2'}}</td>
+                                        <td>{{data.balanceAmount | number: '1.2-2'}}</td>
                                         <td>{{data.processedCycle}}</td>
                                         <td><label class="custom-control custom-checkbox checkbox-center">
                                                 <input type="checkbox" class="custom-control-input" name="select"
@@ -2401,9 +2417,9 @@
                                                 class="form-control" bsDatepicker disabled>  -->
                                             {{data.transactionDate | date : 'dd-MMM-yyyy'}}
                                         </td>
-                                        <td>{{data.transactionAmount | number:'1.00'}}</td>
-                                        <td>{{data.processedAmount | number:'1.00'}}</td>
-                                        <td>{{data.balanceAmount | number:'1.00'}}</td>
+                                        <td>{{data.transactionAmount | number: '1.2-2'}}</td>
+                                        <td>{{data.processedAmount | number: '1.2-2'}}</td>
+                                        <td>{{data.balanceAmount | number: '1.2-2'}}</td>
                                         <td>{{data.processedCycle}}</td>
                                         <td>{{data.pertainingCycle}}</td>
                                         <td><label class="custom-control custom-checkbox checkbox-center">
@@ -2500,7 +2516,7 @@
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Schedule Amount</label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
-                                        {{viewScheduleData.transactionAmount | number: '1.00'}}
+                                        {{viewScheduleData.transactionAmount | number: '1.2-2'}}
                                     </label>
                                 </div>
 
@@ -2632,6 +2648,7 @@
                                     <div class="col-md-3">Date</div>
                                     <div class="col-md-6">
                                         <input
+                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                         data-provide="datepicker"
                                         data-date-autoclose="true"
                                         placeholder="Date"
@@ -2651,7 +2668,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i class="fa fa-times"></i>
+        <button type="button" class="btn btn-secondary" (click)="saveClawBack();modalRef.hide()">
             &nbsp;save</button>
     </div>
 </ng-template>

@@ -75,6 +75,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	selectedTransactionTypes: any = [];
 	savedNumberOfTransaction: any = 0;
 	AllNonRecurringTransactionScheduledData: any;
+	selectedClawbackRowIndex: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -378,6 +379,8 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Update transaction  */
 	attendanceInputAPIRecordsUI(data) {
+
+		//console.log("data: "+ JSON.stringify(data))
 
 		this.nonRecService.attendanceInputAPIRecordsUI(data, this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
 			res => {
@@ -698,10 +701,13 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** On change Transaction Type */
 	getTransactionTypeForSave(value, rowindex, data) {
-		this.selectedTransactionTypes.push({
-			'index': rowindex,
-			'value':value
-		})
+			this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element,index) => {
+				if(index == rowindex){
+					element.transactionsType = value
+				}
+			});
+		 
+
 		this.selectedTransactionIndex = rowindex;
 		this.selectedTransactionType = value
 		let todate = "";
@@ -1262,17 +1268,28 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** Clawback Popup Show */
-	ViewClawbackpopup(template4: TemplateRef<any>,data) {
+	ViewClawbackpopup(template4: TemplateRef<any>,data,rowindex) {
 		this.modalRef = this.modalService.show(
 			template4,
 			Object.assign({}, {
 				class: 'gray modal-lg'
 			})
 		);
-
-		this.selectedTransactionClawback = data
+		this.selectedTransactionClawback = data;
+		this.selectedClawbackRowIndex = rowindex;
 	}
 
+	saveClawBack(){
+		this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element,index) => {
+			if(index == this.selectedClawbackRowIndex){
+				element.showClawback = true
+			}
+		});
+		this.selectedTransactionClawback = null;
+		this.selectedApplicableAt = ""
+		this.selectedClawbackInputType = ""
+
+	}
 
 	/** Get Applcable At selected Value */
 	getSelectedApplicable(value,data) {
@@ -1801,7 +1818,23 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.hold = 1
 		} else {
 			this.hold = 0
+			if(this.editScheduleFlag  == false){
+				this.AllNonRecurringTransactionScheduledData.forEach((element,index) => {
+					if(index == this.selectedHoldIndex){
+						element.hold = false
+					}
+				});
+		   	}else{
+				this.NonRecurringTransactionScheduleEMPdData.forEach((element,index) => {
+					if(index == this.selectedHoldIndex){
+						element.hold = false
+					}
+				});	
+			}	
 		}
+
+		
+
 		if (this.updateScheduleData.length > 0) {
 			this.updateScheduleData.forEach((element, index) => {
 				if (element.nonRecurringTransactionScheduleId == scheduleData.nonRecurringTransactionScheduleId) {
@@ -1846,6 +1879,19 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.discard = 1
 		} else {
 			this.discard = 0
+			if(this.editScheduleFlag  == false){
+				this.AllNonRecurringTransactionScheduledData.forEach((element,index) => {
+					if(index == this.selecteddiscardIndex){
+						element.discard = false
+					}
+				});
+		   	}else{
+				this.NonRecurringTransactionScheduleEMPdData.forEach((element,index) => {
+					if(index == this.selecteddiscardIndex){
+						element.discard = false
+					}
+				});	
+			}
 		}
 		if (this.updateScheduleData.length > 0) {
 			this.updateScheduleData.forEach((element, index) => {
