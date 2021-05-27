@@ -479,7 +479,7 @@ export class AttendanceComponent implements OnInit {
               this.leaveWithoutPay = 0
             }
 
-
+            console.log(totalLeaves)
 
             if (totalLeaves <= 1) {
 

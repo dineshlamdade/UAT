@@ -1027,9 +1027,9 @@
                                                                             <td class="bg-color-light_gray"><label
                                                                                     class="form-lable mb-0">{{presentCycle.payrollAreaCode}}</label>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <!-- {{presentCycle.weeklyOff}} -->
-                                                                                <div class="d-flex" *ngIf="selectedEmpData[this.index]">
+                                                                                <div class="d-flex" >
 
                                                                                     <!-- <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -1054,8 +1054,8 @@
                                                                                     <!-- onkeypress="return event.charCode >=48 && event.charCode <=57" -->
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
-                                                                                <div class="d-flex" *ngIf="selectedEmpData[this.index]">
+                                                                            <td *ngIf="selectedEmpData[this.index]">
+                                                                                <div class="d-flex" >
                                                                                     <!-- <select name="holiday" class="form-control custom-select attendance_dropdown" 
                                                                                     (change)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)">
                                                                                     <option value="0.00" [selected]="presentCycle.holiday == '0.00'"> 0.00</option>
@@ -1077,7 +1077,7 @@
                                                                                     <!-- appTwoDigitDecimaNumber -->
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown" 
@@ -1101,7 +1101,7 @@
                                                                                         *ngIf="selectedEmpData[this.index].cycleName == selectedEmpData[this.index].currentcycleName">
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown" 
@@ -1113,18 +1113,18 @@
                                                                                     <option value="1.00" [selected]="presentCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                         <input
-                                                                                        *ngIf="defaultAttendace == 1 && selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName"
+                                                                                        *ngIf="defaultAttendace == 1 && selectedEmpData[this.index].cycleName != selectedEmpData[this.index].currentcycleName"
                                                                                         (focusout)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
                                                                                         [value]="presentCycle.leaveWithoutPay"
-                                                                                        *ngIf="selectedEmpData[this.index].cycleName != selectedEmpData[this.index].currentcycleName">
+                                                                                       >
 
                                                                                         <input
-                                                                                        *ngIf="defaultAttendace == 1 && selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName"
+                                                                                        *ngIf="defaultAttendace == 1 && selectedEmpData[this.index].cycleName == selectedEmpData[this.index].currentcycleName"
                                                                                         (keyup)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
                                                                                         [value]="presentCycle.leaveWithoutPay"
-                                                                                        *ngIf="selectedEmpData[this.index].cycleName == selectedEmpData[this.index].currentcycleName">
+                                                                                       >
                                                                                         
 
                                                                                     <input
@@ -1144,12 +1144,12 @@
                                                                                     class="timeinput mr-1"  [disabled]="attendanceForm.controls.payrollArea.value == '1'" > -->
 
                                                                                     <input
-                                                                                        *ngIf="defaultAttendace == '0'"
-                                                                                        (keyup)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)"
+                                                                                        *ngIf="defaultAttendace == '0' && selectedEmpData[this.index].cycleName != selectedEmpData[this.index].currentcycleName"
+                                                                                        (focusout)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)"
                                                                                         [value]="presentCycle.presentDay_0"
                                                                                         class="timeinput mr-1 form-control">
                                                                                     <input
-                                                                                        *ngIf="defaultAttendace == '1'"
+                                                                                        *ngIf="defaultAttendace == '0' && selectedEmpData[this.index].cycleName == selectedEmpData[this.index].currentcycleName"
                                                                                         (keyup)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)"
                                                                                         [value]="presentCycle.presentDay_0"
                                                                                         class="timeinput mr-1 form-control">
@@ -1491,7 +1491,7 @@
                                                                             <td class="bg-color-light_gray"><label
                                                                                     class="form-lable mb-0">{{futureCycle.payrollAreaCode}}</label>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -1513,7 +1513,7 @@
                                                                                         [value]="futureCycle.weeklyOff" *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="holiday"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -1537,7 +1537,7 @@
                                                                                         *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -1561,7 +1561,7 @@
                                                                                         *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -1593,7 +1593,7 @@
                                                                                     <!-- appTwoDigitDecimaNumber -->
                                                                                 </div>
                                                                             </td>
-                                                                            <td class="bg-color-light_gray">
+                                                                            <td class="bg-color-light_gray" *ngIf="selectedEmpData[this.index]">
                                                                                 <label class="form-lable mb-0 d-flex">
                                                                                     <!-- <input
                                                                                     value="{{futureCycle.presentDay}}"
@@ -1941,7 +1941,7 @@
                                                                             <td class="bg-color-light_gray"><label
                                                                                     class="form-lable mb-0">{{previousCycle.payrollAreaCode}}</label>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -1965,7 +1965,7 @@
                                                                                         *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="holiday"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -1989,7 +1989,7 @@
                                                                                         *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -2013,7 +2013,7 @@
                                                                                         *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown"
@@ -2045,7 +2045,7 @@
                                                                                         [value]="calculateLOP(previousCycle,rowIndex,'previous')">
                                                                                 </div>
                                                                             </td>
-                                                                            <td class="bg-color-light_gray">
+                                                                            <td class="bg-color-light_gray" *ngIf="selectedEmpData[this.index]">
                                                                                 <label class="form-lable mb-0 d-flex">
                                                                                     <!-- <input
                                                                                     value="{{previousCycle.presentDay}}"
