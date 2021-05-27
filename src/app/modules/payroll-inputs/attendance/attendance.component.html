@@ -638,7 +638,7 @@
                                                     <div class="wd-150">
                                                         <div class="card text-center btn-bg-green ">
                                                             <div class="card-body text-light detailedcard">
-                                                                <h3>{{attendanceInputGetTotalAPIRecordsUIData.attendance.toFixed(2)}}
+                                                                <h3>{{attendanceInputGetTotalAPIRecordsUIData.total.toFixed(2)}}
                                                                 </h3>
                                                                 <span>Total Days</span>
                                                             </div>
@@ -697,10 +697,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="wd-150">
+                                                    <div class="wd-150" *ngIf="attendanceInputGetTotalAPIRecordsUIData.beforeDOJOrAfterDOL > 0">
                                                         <div class="card text-center btn-bg-green">
                                                             <div class="card-body text-light detailedcard">
-                                                                <h3>0.00
+                                                                <h3>{{attendanceInputGetTotalAPIRecordsUIData.beforeDOJOrAfterDOL.toFixed(2)}}
                                                                 </h3>
                                                                 <span>
                                                                     < DOJ & > DOL
@@ -1042,7 +1042,7 @@
                                                                                 </select> -->
                                                                                 <!-- {{presentCycle.weeklyOff | number: '1.2-2'}} -->
                                                                                     <input
-                                                                                        (keyup)="getCurrentWeeklyOff($event.target.value, presentCycle,rowIndex)"
+                                                                                        (focusout)="getCurrentWeeklyOff($event.target.value, presentCycle,rowIndex)"
                                                                                         class="mr-1 form-control"
                                                                                         value="{{presentCycle.weeklyOff}}"
                                                                                         *ngIf="selectedEmpData[this.index].cycleName != selectedEmpData[this.index].currentcycleName">
@@ -1065,9 +1065,15 @@
                                                                                     <option value="1.00" [selected]="presentCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                     <input
+                                                                                        (focusout)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)"
+                                                                                        class="mr-1 form-control"
+                                                                                        [value]="presentCycle.holiday"
+                                                                                        *ngIf="selectedEmpData[this.index].cycleName != selectedEmpData[this.index].currentcycleName">
+                                                                                        <input
                                                                                         (keyup)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)"
                                                                                         class="mr-1 form-control"
-                                                                                        [value]="presentCycle.holiday">
+                                                                                        [value]="presentCycle.holiday"
+                                                                                        *ngIf="selectedEmpData[this.index].cycleName == selectedEmpData[this.index].currentcycleName">
                                                                                     <!-- appTwoDigitDecimaNumber -->
                                                                                 </div>
                                                                             </td>
@@ -1084,9 +1090,15 @@
                                                                                     <option value="1.00" [selected]="presentCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                     <input
+                                                                                        (focusout)="getCurrentPaidLeaves($event.target.value,presentCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="presentCycle.paidLeaves"
+                                                                                        *ngIf="selectedEmpData[this.index].cycleName != selectedEmpData[this.index].currentcycleName">
+                                                                                        <input
                                                                                         (keyup)="getCurrentPaidLeaves($event.target.value,presentCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [value]="presentCycle.paidLeaves">
+                                                                                        [value]="presentCycle.paidLeaves"
+                                                                                        *ngIf="selectedEmpData[this.index].cycleName == selectedEmpData[this.index].currentcycleName">
                                                                                 </div>
                                                                             </td>
                                                                             <td>
@@ -1100,14 +1112,23 @@
                                                                                     <option value="0.75" [selected]="presentCycle.leaveWithoutPay == '0.75'"> 0.75</option>
                                                                                     <option value="1.00" [selected]="presentCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select> -->
-                                                                                    <input
-                                                                                        *ngIf="defaultAttendace == '1'"
+                                                                                        <input
+                                                                                        *ngIf="defaultAttendace == 1 && selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName"
+                                                                                        (focusout)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="presentCycle.leaveWithoutPay"
+                                                                                        *ngIf="selectedEmpData[this.index].cycleName != selectedEmpData[this.index].currentcycleName">
+
+                                                                                        <input
+                                                                                        *ngIf="defaultAttendace == 1 && selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName"
                                                                                         (keyup)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [value]="presentCycle.leaveWithoutPay">
+                                                                                        [value]="presentCycle.leaveWithoutPay"
+                                                                                        *ngIf="selectedEmpData[this.index].cycleName == selectedEmpData[this.index].currentcycleName">
+                                                                                        
 
                                                                                     <input
-                                                                                        *ngIf="defaultAttendace == '0'"
+                                                                                        *ngIf="defaultAttendace == 0"
                                                                                         disabled
                                                                                         class="timeinput mr-1 form-control"
                                                                                         [value]="calculateLOP(presentCycle,rowIndex,'present')">
@@ -1127,7 +1148,11 @@
                                                                                         (keyup)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)"
                                                                                         [value]="presentCycle.presentDay_0"
                                                                                         class="timeinput mr-1 form-control">
-
+                                                                                    <input
+                                                                                        *ngIf="defaultAttendace == '1'"
+                                                                                        (keyup)="getCurrentPresentDay($event.target.value,presentCycle,rowIndex)"
+                                                                                        [value]="presentCycle.presentDay_0"
+                                                                                        class="timeinput mr-1 form-control">
 
                                                                                     <input
                                                                                         *ngIf="defaultAttendace == '1'"
@@ -1479,9 +1504,13 @@
                                                                                 </select> -->
 
                                                                                     <input
+                                                                                        (focusout)="getFutureWeeklyOff($event.target.value, futureCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="futureCycle.weeklyOff" *ngIf="selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName">
+                                                                                    <input
                                                                                         (keyup)="getFutureWeeklyOff($event.target.value, futureCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [value]="futureCycle.weeklyOff">
+                                                                                        [value]="futureCycle.weeklyOff" *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
                                                                             <td>
@@ -1497,9 +1526,15 @@
                                                                                     <option value="1.00" [selected]="futureCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                     <input
+                                                                                        (focusout)="getFutureHoliday($event.target.value, futureCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="futureCycle.holiday"
+                                                                                        *ngIf="selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName">
+                                                                                        <input
                                                                                         (keyup)="getFutureHoliday($event.target.value, futureCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [value]="futureCycle.holiday">
+                                                                                        [value]="futureCycle.holiday"
+                                                                                        *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
                                                                             <td>
@@ -1515,9 +1550,15 @@
                                                                                     <option value="1.00" [selected]="futureCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                     <input
+                                                                                        (focusout)="getFuturePaidLeaves($event.target.value, futureCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="futureCycle.paidLeaves"
+                                                                                        *ngIf="selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName">
+                                                                                        <input
                                                                                         (keyup)="getFuturePaidLeaves($event.target.value, futureCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [value]="futureCycle.paidLeaves">
+                                                                                        [value]="futureCycle.paidLeaves"
+                                                                                        *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
                                                                             <td>
@@ -1534,10 +1575,15 @@
                                                                                 </select> -->
 
                                                                                     <input
-                                                                                        *ngIf="defaultAttendace == '1'"
-                                                                                        (keyup)="getFutureLeaveWithoutPay($event.target.value, futureCycle,rowIndex)"
+                                                                                        *ngIf="defaultAttendace == '1' && selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName"
+                                                                                        (focusout)="getFutureLeaveWithoutPay($event.target.value, futureCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
                                                                                         [value]="futureCycle.leaveWithoutPay">
+                                                                                        <input
+                                                                                        *ngIf="defaultAttendace == '1' && selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName"
+                                                                                        (keyup)="getFutureLeaveWithoutPay($event.target.value, futureCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="futureCycle.leaveWithoutPay">    
 
                                                                                     <input
                                                                                         *ngIf="defaultAttendace == '0'"
@@ -1556,11 +1602,17 @@
 
 
                                                                                     <input
-                                                                                        *ngIf="defaultAttendace == '0'"
+                                                                                        *ngIf="defaultAttendace == '0' && selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName"
+                                                                                        (focusout)="getFuturePresentDay($event.target.value,futureCycle,rowIndex)"
+                                                                                        [value]=" defaultAttendace == '1' ? futureCycle.presentDay : futureCycle.presentDay_0"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        >
+                                                                                        <input
+                                                                                        *ngIf="defaultAttendace == '0' && selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName"
                                                                                         (keyup)="getFuturePresentDay($event.target.value,futureCycle,rowIndex)"
                                                                                         [value]=" defaultAttendace == '1' ? futureCycle.presentDay : futureCycle.presentDay_0"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [disabled]="defaultAttendace == '1'">
+                                                                                        >    
 
                                                                                     <input
                                                                                         *ngIf="defaultAttendace == '1'"
@@ -1902,9 +1954,15 @@
                                                                                     <option value="1.00" [selected]="previousCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                     <input
+                                                                                        (focusout)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="previousCycle.weeklyOff"
+                                                                                        *ngIf="selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName">
+                                                                                        <input
                                                                                         (keyup)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [value]="previousCycle.weeklyOff">
+                                                                                        [value]="previousCycle.weeklyOff"
+                                                                                        *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
                                                                             <td>
@@ -1920,9 +1978,15 @@
                                                                                     <option value="1.00" [selected]="previousCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                     <input
+                                                                                        (focusout)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="previousCycle.holiday"
+                                                                                        *ngIf="selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName">
+                                                                                        <input
                                                                                         (keyup)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [value]="previousCycle.holiday">
+                                                                                        [value]="previousCycle.holiday"
+                                                                                        *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
                                                                             <td>
@@ -1938,9 +2002,15 @@
                                                                                     <option value="1.00" [selected]="previousCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                     <input
+                                                                                        (focusout)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="previousCycle.paidLeaves"
+                                                                                        *ngIf="selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName">
+                                                                                        <input
                                                                                         (keyup)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
-                                                                                        [value]="previousCycle.paidLeaves">
+                                                                                        [value]="previousCycle.paidLeaves"
+                                                                                        *ngIf="selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName">
                                                                                 </div>
                                                                             </td>
                                                                             <td>
@@ -1956,7 +2026,12 @@
                                                                                     <option value="1.00" [selected]="previousCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select> -->
                                                                                     <input
-                                                                                        *ngIf="defaultAttendace == '1'"
+                                                                                        *ngIf="defaultAttendace == '1' && selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName"
+                                                                                        (focusout)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
+                                                                                        class="timeinput mr-1 form-control"
+                                                                                        [value]="previousCycle.leaveWithoutPay">
+                                                                                        <input
+                                                                                        *ngIf="defaultAttendace == '1' && selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName"
                                                                                         (keyup)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
                                                                                         [value]="previousCycle.leaveWithoutPay">
@@ -1976,14 +2051,21 @@
                                                                                     value="{{previousCycle.presentDay}}"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1"> -->
-
+                                                                                    <!-- selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName -->
                                                                                     <input
-                                                                                        *ngIf="defaultAttendace == '0'"
+                                                                                        *ngIf="defaultAttendace == '0' && selectedEmpData[index].cycleName != selectedEmpData[index].currentcycleName"
+                                                                                        (focusout)="getPreviousPresentDay($event.target.value,previousCycle,rowIndex)"
+                                                                                        [value]=" defaultAttendace == '1' ? previousCycle.presentDay : previousCycle.presentDay_0"
+                                                                                        placeholder="00:00"
+                                                                                        class="timeinput mr-1"
+                                                                                        >
+                                                                                        <input
+                                                                                        *ngIf="defaultAttendace == '0' && selectedEmpData[index].cycleName == selectedEmpData[index].currentcycleName"
                                                                                         (keyup)="getPreviousPresentDay($event.target.value,previousCycle,rowIndex)"
                                                                                         [value]=" defaultAttendace == '1' ? previousCycle.presentDay : previousCycle.presentDay_0"
                                                                                         placeholder="00:00"
                                                                                         class="timeinput mr-1"
-                                                                                        [disabled]="defaultAttendace == '1'">
+                                                                                        >    
 
                                                                                     <input
                                                                                         *ngIf="defaultAttendace == '1'"
