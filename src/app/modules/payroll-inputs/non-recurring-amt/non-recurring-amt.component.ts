@@ -234,7 +234,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	/** Display employee info by employeeMasterId */
 	employeeFinDetails() {
 		// this.attendanceService.employeeFinDetails(this.selectedEmpData[this.index].employeeMasterId).subscribe(
-		this.nonRecService.employeeFinDetails(44).subscribe(
+		this.nonRecService.employeeFinDetails(this.selectedEmpData[this.index].employeeMasterId).subscribe(
 			res => {
 				this.employeeFinDetailsData = res.data.results[0][0];
 				// console.log("employeeFinDetailsData:", this.employeeFinDetailsData);
@@ -401,8 +401,20 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.NonRecurringTransactionGroupAPIbyId(this.index)
 	}
 
+	nextEmpData(){
+		this.index = this.index + 1
+		this.employeeFinDetails()
+		this.NonRecurringTransactionGroupAPIbyId(this.index)
+	}
 
-	
+    prevEmpData(){
+		
+			this.index = this.index - 1
+			this.employeeFinDetails()
+			this.NonRecurringTransactionGroupAPIbyId(this.index)
+		
+	}
+
 	/******************* Transaction when click on Transaction Tab and select Employee from Dropdown *******************/
 
 	/** Navigate To Transaction Tab on click radio button */
@@ -562,7 +574,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": parseInt(value),
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -587,7 +599,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": parseInt(value),
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -656,7 +668,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": this.selectedFromDateForSave,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -681,7 +693,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": this.selectedFromDateForSave,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -699,6 +711,13 @@ export class NonRecurringAmtComponent implements OnInit {
 		console.log("fromDate: "+ JSON.stringify(this.saveTransactionData))
 	}
 
+	/** Copy To From Date TO All */
+	copyFromDateToAll(){
+	this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
+		element.fromdate = this.selectedFromDateForSave
+	});	
+	}
+
 	/** On change Transaction Type */
 	getTransactionTypeForSave(value, rowindex, data) {
 			this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element,index) => {
@@ -706,8 +725,6 @@ export class NonRecurringAmtComponent implements OnInit {
 					element.transactionsType = value
 				}
 			});
-		 
-
 		this.selectedTransactionIndex = rowindex;
 		this.selectedTransactionType = value
 		let todate = "";
@@ -759,7 +776,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -784,7 +801,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -852,7 +869,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -877,7 +894,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -944,7 +961,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -969,7 +986,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -1037,7 +1054,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -1062,7 +1079,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -1094,6 +1111,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		if (this.selectedFromDate == '') {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
 		}
+		let length = 0
 		if (this.saveTransactionData.length > 0) {
 			this.saveTransactionData.forEach((element, index) => {
 				if (element.headMasterId == data.headId) {
@@ -1120,9 +1138,10 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackDate": element.clawbackDate
 					})
 				} else {
-					let length = this.saveTransactionData.length - 1;
-					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					length = this.saveTransactionData.length - 1;
+					if (parseInt(this.saveTransactionData[length].headMasterId) == parseInt(data.headId)) { return; }
 					else {
+						console.log("here in else")
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
 							"headMasterId": data.headId,
@@ -1130,7 +1149,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -1155,7 +1174,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -1170,7 +1189,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("remark: "+ JSON.stringify(this.saveTransactionData))
+		console.log("frequency: "+ JSON.stringify(this.saveTransactionData))
 
 	}
 
@@ -1224,7 +1243,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": data.transactionsType,
 							"numberOfTransactions": parseInt(value),
@@ -1249,7 +1268,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": data.transactionsType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -1345,7 +1364,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -1370,7 +1389,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -1441,7 +1460,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -1466,7 +1485,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -1534,7 +1553,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -1559,7 +1578,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -1626,7 +1645,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -1651,7 +1670,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,
@@ -1719,7 +1738,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"payrollAreaId": "1",
 							"payrollAreaCode": this.selectedPayrollArea,
 							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
+							"frequency": "",
 							"fromDate": data.fromdate,
 							"transactionsType": this.selectedTransactionType,
 							"numberOfTransactions": data.numberOfTransactions,
@@ -1744,7 +1763,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"payrollAreaId": "1",
 				"payrollAreaCode": this.selectedPayrollArea,
 				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
+				"frequency": "",
 				"fromDate": data.fromdate,
 				"transactionsType": this.selectedTransactionType,
 				"numberOfTransactions": data.numberOfTransactions,

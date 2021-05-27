@@ -359,7 +359,7 @@
                                                                     <div class="row mt-10"
                                                                         *ngIf="showEmployeeSelectionFlag">
                                                                         <div class="col-md-2">
-                                                                            <label class="form-label mb-0">Employee Code {{selectedEmployeeMasterId}}</label>
+                                                                            <label class="form-label mb-0">Employee Code </label>
                                                                             <select name="EmployeeCode" class="form-control custom-select" 
                                                                             [(ngModel)]="selectedEmployeeMasterId"
                                                                                 (change)="getSelectedEmployeeCode($event.target.value)">
@@ -1125,7 +1125,7 @@
                                                                                             > -->
                                                                                         </td>
                                                                                         <td>
-                                                                                            <span>
+                                                                                            <span (click)="copyFromDateToAll()" style="cursor: pointer !important;">
                                                                                                 <i class="fa fa-clone text-blue font-16"></i >
                                                                                             </span> &nbsp;&nbsp;
                                                                                             <input
@@ -1134,9 +1134,9 @@
                                                                                                 data-date-autoclose="true"
                                                                                                 placeholder="Date"
                                                                                                 bsDatepicker
-                                                                                                value="{{data.fromdate}}"
+                                                                                                value="{{data.fromdate | date :'dd-MMM-yyyy'}}"
                                                                                                 (bsValueChange)="getFromDateForSave($event,data)"
-                                                                                                class="form-control wd-120">
+                                                                                                class="form-control wd-100">
                                                                                         </td>
                                                                                         <td>
                                                                                             <select name="revision type"
@@ -1259,19 +1259,21 @@
                                                                                     <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
                                                                                     Save
                                                                                 </button>
-                                                                                <button type="button" tooltip="Next"
+                                                                                <button type="button" tooltip="Previous"
                                                                                 *ngIf="!showEmployeeSelectionFlag"
-                                                                                [disabled]="selectedEmpData.length == 1"
-                                                                                [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1}"
-                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                                                                                [disabled]="selectedEmpData.length == 1 || index == 0"
+                                                                                [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1 || index == 0}"
+                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                                                                                    (click)="prevEmpData()">
                                                                                     <b><i class="fa fa-angle-double-left" aria-hidden="true"></i></b>
                                                                                     Previous
                                                                                 </button>
                                                                                 <button type="button" tooltip="Next"
                                                                                 *ngIf="!showEmployeeSelectionFlag"
-                                                                                [disabled]="selectedEmpData.length == 1"
-                                                                                [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1}"
-                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                                                                                [disabled]="selectedEmpData.length == 1 || (selectedEmpData.length-1) == index"
+                                                                                [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1 || (selectedEmpData.length-1) == index}"
+                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                                                                                    (click)="nextEmpData()">
                                                                                     <b><i class="fa fa-angle-double-right" aria-hidden="true"></i></b>
                                                                                     Next
                                                                                 </button>
