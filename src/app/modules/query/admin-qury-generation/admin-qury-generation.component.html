@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form [formGroup]="queryGenerationForm" (ngSubmit)="queryGenerationFormSubmit()">
+              <form [formGroup]="queryGenerationForm" >
                 <div class="cardborder">
                   <div>
                     <div class="row" *ngIf="perticularEmpDetails">
@@ -16,35 +16,31 @@
                           <div class="row">
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0" >Employee No. & Name </label >
-                               <input type="text" class="form-control"  value="{{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}"
-                                disabled />
+                              <label class="form-label mt-1 mb-0" >{{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}</label >
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Date of Joining</label >
-                              <input type="text" class="form-control" value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
-                               disabled />
+                                <label class="form-label mt-1 mb-0">{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}</label >
                             </div>
                             <div class="col-md-2">
-                              <label class="form-label mt-1 mb-0">Establishment</label  >
-
-                              <input type="text" class="form-control" value="{{perticularEmpDetails.establishment}}" disabled />
+                              <label class="form-label mt-1 mb-0">Establishment</label>
+                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.establishment}}</label>
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Employee Type</label>
-                              <input type="text" class="form-control" value="{{perticularEmpDetails.employeeType}}"  disabled />
+                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.employeeType}}</label>
                             </div>
                             <div class="col-md-1">
                               <label class="form-label mt-1 mb-0">Grade</label>
-                              <input type="text" class="form-control" value="{{perticularEmpDetails.grade}}"  disabled />
+                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.grade}}</label>
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0" >Designation</label >
-                              <input type="text" class="form-control"  value="{{perticularEmpDetails.designation}}" disabled />
-
+                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.designation}}</label>
                             </div>
                             <div class="col-md-1">
                               <label class="form-label mt-1 mb-0">Status</label>
-                              <input type="text" class="form-control"  value="{{perticularEmpDetails.status}}" disabled />
+                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.status}}</label>
                             </div>
                           </div>
                         </div>
@@ -91,8 +87,9 @@
                         <!-- (change)="queryTypeChange($event.target.value)" -->
                         <select
                           formControlName="queryTypeMasterId"
-                          class="form-control custom-select" (change)="getSubQueryListData($event.target.value)">
-                          <option [ngValue]="0" selected >Select</option>
+                          class="form-control custom-select" (change)="getSubQueryListData($event.target.value)"
+                          [ngClass]="{'is-invalid':queryGenerationForm.get('queryTypeMasterId').status == 'INVALID'}">
+                          <option [ngValue]="null" selected >Select</option>
                           <option  *ngFor="let module of querySubQueryTypeQAData" value="{{module.queryTypeMasterId}}">
                             {{module.queryTypeDescription}}
                           </option>
@@ -142,17 +139,18 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-3"  [disabled]="viewFlag">
                         <label class="form-label">Query Template</label>
                         <select
                           name="Gender"
-                          class="form-control custom-select">
+                          class="form-control custom-select" formControlName="queAnsMasterId"
+                          [ngClass]="{'is-invalid': queryGenerationForm.get('queAnsMasterId').status == 'INVALID'}">
                           <option [ngValue]="null" selected >Select</option>
-                          <option *ngFor="let module of queryTemplateData " value="{{module.moduleId}}">{{module.description}}</option>
+                          <option *ngFor="let module of listQAData " value="{{module.queAnsMasterId}}">{{module.description}}</option>
                         </select>
                       </div>
                     </div>
-                    <div class="row mt-25">
+                    <div class="row mt-25" >
                       <div class="col-md-12">
                         <label class="form-label">Subject</label>
                         <input
@@ -166,7 +164,7 @@
                         <ckeditor formControlName = "queryDescription" > </ckeditor>
                       </div>
                     </div>
-                    <div class="row mt-25">
+                    <div class="row mt-25" >
                       <div class="col-md-6">
                         <div class="table-responsive Custom_Table">
                             <table class="table table-striped table-hover table-bordered">
@@ -175,7 +173,7 @@
                                         <th scope="col" class="font700 wd-8">Sr No.</th>
                                         <!-- <th scope="col" class="font700 wd-40">Document Name</th> -->
                                         <th scope="col" class="font700 wd-40">Attachment</th>
-                                        <th scope="col" class="font700 wd-12">Action</th>
+                                        <th scope="col" class="font700 wd-12" >Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -194,8 +192,8 @@
                                                               </div>
                                         </td>
 
-                                        <td>
-                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal">
+                                        <td >
+                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal" >
                                  </i>&nbsp;&nbsp;
                                         </td>
                                     </tr>
@@ -305,65 +303,49 @@
                 <div class="row mt-25">
                   <div class="col-md-12">
                     <div class="float-right">
-                      <button
-                        type="button"
-                        tooltip="Reset"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"
-                      >
+
+                      <button type="button" tooltip="Previous"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" >
                         <b><i class="fa fa-angle-double-left"></i></b> Previous
                       </button>
-                      <button
-                        type="button"
-                        tooltip="Button"
-                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                      >
+
+                      <button type="button"tooltip="Save Draft & Next"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" >
                         <b><i class="fa fa-file"></i></b> Save Draft & Next
                       </button>
-                      <button
-                        type="button"
-                        tooltip="Button"
+
+                      <button  type="submit" tooltip =" Save Draft "
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                      >
-                        <b><i class="fa fa-file"></i></b> Save Draft
-                      </button>
-                      <button
-                        type="button"
-                        tooltip="Button"
-                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                      >
-                        <b><i class="fa fa-save"></i></b> Save & Next
-                      </button>
+                        (click)="queryGenerationFormSubmit('Draft')" >
+                        <b><i class="fa fa-file"></i></b> Save Draft </button>
+
+                      <button type="button" tooltip=" Save & next"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
+                        <b><i class="fa fa-save"></i></b> Save & next</button>
+
                       <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" *ngIf="isSave"
-                      tooltip="Save"[disabled]="!queryGenerationForm.valid"
+                      tooltip="Save"[disabled]="!queryGenerationForm.valid" (click)="queryGenerationFormSubmit('Save')"
                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
-                      <button
-                        type="button"
-                        tooltip="Reset"
-                        *ngIf="isReset" (click)="reset()"
+
+                      <button  type="button" tooltip="Reset" *ngIf="isReset" (click)="reset()"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-refresh"></i></b> Reset </button>
 
                         <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
-                        [disabled]="!queryGenerationForm.valid" *ngIf="isUpdate"
+                        [disabled]="!queryGenerationForm.valid" *ngIf="isUpdate" (click)="updateQueryGeneration()"
                           [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
-                          <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
-                         >&nbsp;
-                      <button
-                        type="button"
-                        tooltip="Cancel" (click)="cancel()"
+                          <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button >&nbsp;
+
+                      <button type="button" tooltip="Cancel" (click)="cancel()"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10">
-                        <b><i class="fa fa-times"></i></b> Cancel
-                      </button>
+                        <b><i class="fa fa-times"></i></b> Cancel  </button>
 
-
-                      <button
-                        type="button"
-                        tooltip="Reset"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"
-                      >
+                      <button type="button" tooltip="Next"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" >
                         <b><i class="fa fa-angle-double-right"></i></b> Next
                       </button>
+
                     </div>
                   </div>
                 </div>
@@ -376,8 +358,8 @@
                         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                           <ng-template pTemplate="header">
                             <tr>
-                              <th class="wd-14">Sr. No.</th>
-                              <th class="wd-15">
+                              <th class="wd-5">Sr. No.</th>
+                              <th class="wd-5">
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Query No.
                                   <div class="Sort_Filter_Position">
@@ -392,7 +374,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-10">
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Submission Date
                                   <div class="Sort_Filter_Position">
@@ -407,7 +389,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-10">
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Creator Name
                                   <div class="Sort_Filter_Position">
@@ -422,7 +404,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-5">
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Employee Code
                                   <div class="Sort_Filter_Position">
@@ -437,7 +419,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-24">
+                              <th class="wd-5">
                                 <div
                                   class="p-d-flex justify-content-center p-ai-center"
                                 >
@@ -453,7 +435,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-5">
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Company Name
                                   <div class="Sort_Filter_Position">
@@ -467,7 +449,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-5">
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   <span tooltip="Unit of Measure"
                                     >Module Name</span
@@ -483,7 +465,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-5">
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   <span tooltip="Unit of Measure"
                                     >Query Type</span
@@ -499,7 +481,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-5">
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center">
                                   Sub-Query Type
@@ -514,7 +496,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-5">
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center"
                                 >
@@ -530,7 +512,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-5">
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center"
                                 >
@@ -546,7 +528,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-10">
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center"
                                 >
@@ -562,7 +544,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-15">
+                              <th class="wd-10">
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center"
                                 >
@@ -578,7 +560,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-25">Action</th>
+                              <th class="wd-20">Action</th>
                             </tr>
                           </ng-template>
                           <ng-template pTemplate="body" let-queryGenerationSummary let-rowIndex="rowIndex">

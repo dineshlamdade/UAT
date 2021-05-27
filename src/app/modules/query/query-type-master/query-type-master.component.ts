@@ -65,10 +65,7 @@ export class QueryTypeMasterComponent implements OnInit {
   queryTypedescriptionforedit: any;
   subqueryTypedescriptionforedit: any;
   selectedModuleId: any;
-  // listQueryAnsMapping: FormArray;
-  // listQueryPriority: FormArray;
-  // subQueryRequest: FormArray;
-  // listSubQueryQueAnsMapping: FormArray;
+  loading = false;
 
   constructor(public formBuilder : FormBuilder,public queryService :QueryService ,public toster : ToastrService) {
     this.querytypeForm = this.formBuilder.group(
@@ -223,7 +220,7 @@ priorityRequiredevent(value, priority,event)
 
 }
 onItemSubQuerySelect(item){
-  alert(item.queAnsMasterId)
+  // alert(item.queAnsMasterId)
   this.listSubQueryQueAnsMapping.push({
     "subQueryTypeQueAnsMappingId":0,
     "subQueryTypeMasterId":0,
@@ -334,7 +331,13 @@ getAlldataById(queryTypeMasterId)// for edit....
       this.getAlldataByIdforedit = res.data.results[0];
       this.finalForm.patchValue(this.getAlldataByIdforedit);
       this.querytypeForm.patchValue(this.getAlldataByIdforedit);
+    if( this.getAlldataByIdforedit.priorityRequired == false)
+    {
+     this.priorityRequiredFlag = true;
+    }else{
+     this.priorityRequiredFlag = false;
 
+    }
       this.getAlldataByIdforedit.subQueryResponseDTO.forEach(element => {
         this.subQueryRequestDTO.push(
           {
@@ -485,24 +488,45 @@ getAll() // this api call for the assign Q & A template dropdown
 {
 
   this.queryListData=[];
+let listQA =[];
+
+      //     this.dropdownSettings = {
+      //   singleSelection: false,
+      //   idField: 'queAnsMasterId',
+      //   textField: 'description',
+      //   selectAllText: 'Select All',
+      //   unSelectAllText: 'UnSelect All',
+      //   itemsShowLimit: 3,
+      //   allowSearchFilter: true,
+      //   lazyLoading: true,
+
+      // };
    this.queryService.getAll().subscribe( res =>{
     res.data.results.forEach(element => {
       if(element.moduleId == this.selectedModuleId)
       {
         this.queryListData.push(element);
       }
+
+     // alert(this.queryListData.length)
+      if(this.queryListData.length > 0){
+      // console.log("here")
+       this.dropdownSettings = {
+         singleSelection: false,
+         idField: 'queAnsMasterId',
+         textField: 'description',
+         selectAllText: 'Select All',
+         unSelectAllText: 'UnSelect All',
+         itemsShowLimit: 3,
+         allowSearchFilter: true,
+         lazyLoading: true,
+
+       };
+     }
     });
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'queAnsMasterId',
-      textField: 'description',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
 
    })
+
   }
 
 editQuery(query,index)
@@ -605,6 +629,7 @@ viewQuerySummary(query) // whole page view function
   this.editflagSummary = false;
   this.querytypeForm.patchValue(query);
   this.querytypeForm.disable();
+  // this.querySubQuerySummary.disable(); // disable the subquery added table
   this.isVisiblee = false;
   this.isVisible = true;
   this.isShown = false;
@@ -613,11 +638,8 @@ viewQuerySummary(query) // whole page view function
   this.querySubQuerySummary=[];
   this.isAddTempQuery = false;
   this.isUpdateTempQuery = false;
-
-
   // console.log(JSON.stringify(this.ishidden))
 }
-
 
 resolutionEvent(value,prio)
 {
