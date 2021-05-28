@@ -236,7 +236,7 @@
    </fieldset>
    <fieldset>
       <legend>Agreement Details</legend>
-      <div formGroupName="agreementDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
+      <div formGroupName="agreementDetail" [formGroup]="houseRentform" #formDirective_="ngForm">
          <div class="row mt-4 mb-10">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Start Date</label>
@@ -305,7 +305,7 @@
                         <th scope="col" class="wd-14">End Date</th>
                         <!--   <th scope="col" class="wd-14">Rent Agreement</th> -->
                         <th scope="col" class="wd-20">Remark</th>
-                        <th scope="col" class="wd-14">Action</th>
+                     <!--    <th scope="col" class="wd-14">Action</th> -->
                      </tr>
                   </thead>
                   <tbody>
@@ -327,9 +327,9 @@
                            </span>
                         </td>
 
-                        <td>
+                        <!-- <td>
                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editAgreementDetails(i)" tooltip="Edit"></i>&nbsp;&nbsp;
-                        </td>
+                        </td> -->
                      </tr>
                      <tr *ngIf="!agreementDetailsTableList?.length">
                         <td colspan="4">
@@ -345,7 +345,7 @@
    </fieldset>
    <fieldset>
       <legend>Rent Details</legend>
-      <div formGroupName="rentDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
+      <div formGroupName="rentDetail" [formGroup]="houseRentform" #formDirective_="ngForm">
          <div class="row">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">From Date</label>
@@ -400,10 +400,10 @@
                 <!--   <button class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" 
                    type="button" (click)="addOwnerRent()"><i class="fa fa-plus"
                   aria-hidden="true"></i> Add</button> &nbsp;&nbsp;&nbsp; -->
-                  <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" 
+                 <!--  <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" 
                   tooltip="Add " (click)="addOwnerRent()"><b><i class="fa fa-plus"
                         aria-hidden="true"></i></b> Add
-                    </button> &nbsp;&nbsp;&nbsp;
+                    </button> &nbsp;&nbsp;&nbsp; -->
                </div>
             </div>
          </div>
@@ -750,7 +750,7 @@
 <ng-template #template1>
    <div class="modal-header">
       <div class="col-md-2">
-         <h3 class="font-14 text-purple font-bold">Declaration of Landlord PAN</h3>
+         <h3 class="font-14 text-purple font-bold">Landlord PAN Declaration</h3>
      </div>
       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
          aria-label="Close">
