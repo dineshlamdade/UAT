@@ -20,9 +20,9 @@ import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-
 // import { ChaComponent } from './Child Hostel Allowance(CHA)/childhostelallowance/cha/cha.component';
 // import { ChildeducationallowanceComponent } from './Child Education Allowance/childeducationallowance/childeducationallowance.component';
 // import { CeaComponent } from './Child Education Allowance/cea/cea.component';
-import { NationalSavingCertificateNSCComponent } from './Other/national-saving-certificate-nsc/national-saving-certificate-nsc.component';
-import { HousePropertyComponent } from './Other/house-property/house-property.component';
-import { PrincipalRepaymentOnHousingLoanComponent } from './Other/principal-repayment-on-housing-loan/principal-repayment-on-housing-loan.component';
+import { NationalSavingCertificateNSCComponent } from './80C/national-saving-certificate-nsc/national-saving-certificate-nsc.component';
+import { HousePropertyComponent } from './80C/house-property/house-property.component';
+import { PrincipalRepaymentOnHousingLoanComponent } from './80C/principal-repayment-on-housing-loan/principal-repayment-on-housing-loan.component';
 import { EmployeeContributionToProvidentFundPFComponent } from './80C/employee-contribution-to-provident-fund-pf/employee-contribution-to-provident-fund-pf.component';
 import { EmployeeContributionToVPFComponent } from './80C/employee-contribution-to-vpf/employee-contribution-to-vpf.component';
 // import { TaxAdjustmentsSummaryComponent } from './Other/tax-adjustments/tax-adjustments-summary/tax-adjustments-summary.component';
@@ -52,7 +52,8 @@ import { ChildeducationallowanceComponent } from './Other/Child Education Allowa
 import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
 import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
 import { OtherincomeComponent } from './Other/Other Income/otherincome/otherincome.component';
-import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
+// import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
+import { EmployeesNPS80CCD1Component } from './80C/employees-nps80-ccd1/employees-nps80-ccd1.component';
 import { AffirmationComponent } from './affirmation/affirmation.component';
 
 const routes: Routes = [
@@ -75,6 +76,30 @@ const routes: Routes = [
           component:  SummaryComponent,
            data: { title: ':: DelziaHR :: Summary' },
           },
+          {
+            path:   '80C-NationalSavingCertificateNSCAccruedInterest',
+            component:  NationalSavingCertificateNSCComponent,
+             data: { title: ':: DelziaHR ::  NationalSavingCertificateNSCAccruedInterest' },
+            },
+
+            {
+              path:   '80C-HouseProperty',
+              component:  HousePropertyComponent,
+               data: { title: ':: DelziaHR ::  HouseProperty' },
+              },
+
+              {
+                path:   '80C-PrincipalRepaymentOnHousingLoan',
+                component: PrincipalRepaymentOnHousingLoanComponent,
+                 data: { title: ':: DelziaHR ::  PrincipalRepaymentOnHousingLoan' },
+                },
+
+                {
+                  path:   '80C-EmployeesNPS80CCD1',
+                  component: EmployeesNPS80CCD1Component,
+                   data: { title: ':: DelziaHR ::  EmployeesNPS80CCD1' },
+                  },
+
           {
             path:   '80C-EmployeeContributionToProvidentFund_PF',
             component:  EmployeeContributionToProvidentFundPFComponent,
@@ -111,29 +136,16 @@ const routes: Routes = [
                    data: { title: ':: DelziaHR :: Child-Education-Allowance' },
                   },
 
-                  {
-                    path:   'Other-NationalSavingCertificate(NSC)_AccruedInterest',
-                    component:  NationalSavingCertificateNSCComponent,
-                     data: { title: ':: DelziaHR ::  NationalSavingCertificate(NSC)_AccruedInterest' },
-                    },
+                 
 
-                    {
-                        path:   'Other-HouseProperty',
-                        component:  HousePropertyComponent,
-                         data: { title: ':: DelziaHR ::  HouseProperty' },
-                        },
+                   
                         /* {
                           path:   'Other-Employeenationalpension',
                           component:  EmployeenationalpensionComponent,
                            data: { title: ':: DelziaHR ::  Employeenationalpension' },
                           }, */
 
-                      {
-                        path:   'Other-PrincipalRepaymentOnHousingLoan',
-                        component: PrincipalRepaymentOnHousingLoanComponent,
-                         data: { title: ':: DelziaHR ::  PrincipalRepaymentOnHousingLoan' },
-                        },
-
+                     
                         {
                           path:   'Other-TaxAdjustments',
                           component:  TaxAdjustmentsComponent,
@@ -144,11 +156,7 @@ const routes: Routes = [
                             component:  OtherincomeComponent,
                              data: { title: ':: DelziaHR ::  OtherIncome' },
                             },
-                            {
-                              path:   'Other-EmployeeNationalPensionScheme80CCD',
-                              component: EmployeeNPS80CCDComponent,
-                               data: { title: ':: DelziaHR ::  EmployeeNationalPensionScheme80CCD' },
-                              },
+                           
 
 
         {
