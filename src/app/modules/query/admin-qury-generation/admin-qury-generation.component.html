@@ -161,7 +161,7 @@
                           formControlName = 'subject' />
                         <br />
                         <label class="form-label">Description</label>
-                        <ckeditor formControlName = "queryDescription" > </ckeditor>
+                        <ckeditor formControlName = "queryDescription"  > </ckeditor>
                       </div>
                     </div>
                     <div class="row mt-25" >
@@ -182,7 +182,7 @@
 
                                         <!-- <td><span tooltip="Premium Receipt/ Premium Statement"></span>Rent Agreement</td> -->
 
-                                        <td>
+                                        <td  [disabled]="viewFlag">
                                           <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
                                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                                                               <div class="col-md-12" *ngFor="let doc of listDoc; let i = index">
@@ -316,7 +316,8 @@
 
                       <button  type="submit" tooltip =" Save Draft "
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                        (click)="queryGenerationFormSubmit('Draft')" >
+                        (click)="queryGenerationFormSubmit('Draft')" [disabled]="!queryGenerationForm.valid"
+                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}" >
                         <b><i class="fa fa-file"></i></b> Save Draft </button>
 
                       <button type="button" tooltip=" Save & next"
@@ -332,12 +333,12 @@
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-refresh"></i></b> Reset </button>
 
-                        <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
+                      <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
                         [disabled]="!queryGenerationForm.valid" *ngIf="isUpdate" (click)="updateQueryGeneration()"
-                          [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
-                          <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button >&nbsp;
+                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button >&nbsp;
 
-                      <button type="button" tooltip="Cancel" (click)="cancel()"
+                      <button type="button" tooltip="Cancel" (click)="cancel()" *ngIf="isCancle"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-times"></i></b> Cancel  </button>
 

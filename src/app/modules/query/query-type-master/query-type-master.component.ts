@@ -66,7 +66,8 @@ export class QueryTypeMasterComponent implements OnInit {
   subqueryTypedescriptionforedit: any;
   selectedModuleId: any;
   loading = false;
-
+  isChecked;
+  isCheckedName;
   constructor(public formBuilder : FormBuilder,public queryService :QueryService ,public toster : ToastrService) {
     this.querytypeForm = this.formBuilder.group(
         {
@@ -84,7 +85,7 @@ export class QueryTypeMasterComponent implements OnInit {
         "active": new FormControl(true),
         "Replayworkflow": new FormControl(""),
         "subQueryTypeCode":new FormControl(''),
-        "subqueryTypedescription":new FormControl(''),
+        "subqueryTypedescription":new FormControl(null),
         "remark":new FormControl(true),
         "assignQATemplate1":new FormControl(''),
         "assignQATemplate2":new FormControl(''),
@@ -154,6 +155,10 @@ export class QueryTypeMasterComponent implements OnInit {
     }]
   }
 
+  // onChange(e){ //for single select dropdown
+  //   this.isChecked = !this.isChecked;
+  //   this.isCheckedName = e.target.name;
+  // }
 
   onItemSelect(item: any) {
     console.log(item);
@@ -184,6 +189,8 @@ radioButtonChanged(event){
    if(radioValue == 0){
      this.ishidden = true;
      this.subquerview = false;
+    //  this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
+
    }else{
      this.ishidden = false;
      this.subquerview = true;
@@ -442,7 +449,6 @@ addQueryType() // main post api to save all form data .
   );
   this.reset();
 
-
 }
 queryTypeQueAnsMappingId :number;
 queAnsMasterId :number;
@@ -542,6 +548,7 @@ editQuery(query,index)
   this.querytypeForm.controls['subqueryTypedescription'].setValue(query.subqueryTypedescription);
   this.querytypeForm.controls['assignQATemplate2'].setValue(query.assignQATemplate2);
   this.editQueryIndex = index;
+  this.querySubQuerySummary = []; // reset the subquery added table
 
 }
 viewQuery(query,index)
@@ -583,6 +590,7 @@ cancel()
   this.isShown = true; //save &reset btn
   this.isVisiblee = false; //update btn
   this.isVisible = false; //cancle btn
+  this.subquerview = true;
 }
 
 editQuerySummary(query) // whole page edit function
