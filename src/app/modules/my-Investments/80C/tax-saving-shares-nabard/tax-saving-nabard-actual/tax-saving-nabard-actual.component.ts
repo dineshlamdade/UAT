@@ -102,6 +102,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   public grandActualTotalEditModal: number;
   public grandRejectedTotalEditModal: number;
   public grandApprovedTotalEditModal: number;
+  public requiredField: boolean = false;
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
   public isDisabled: boolean = true;
@@ -166,6 +167,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   dateOfJoining: Date;
+  public selectrow : any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -214,6 +216,11 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getTransactionFilterData();
+    if (this.data) {
+      this.selectrow = this.data.accountNumber;
+      } else {
+        this.selectrow = "any";
+      }
     // console.log('data::', this.data);
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -637,6 +644,24 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(event: { target: { checked: any } }, i: number) {
+
+
+    if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null || this.investmentGroup3TransactionDetailList[i].actualAmount == "0" ) {
+      this.requiredField = true;
+      event.target.checked = false;
+     if(this.investmentGroup3TransactionDetailList[i].actualAmount == "0") {
+       this.alertService.sweetalertError(
+         'Please Enter Actual Amount'
+       );
+     } else {
+       this.alertService.sweetalertError(
+         'Please Fill Required Field.'
+       );
+     }
+      return;
+    } else {
+      this.requiredField = false;
+    }
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(

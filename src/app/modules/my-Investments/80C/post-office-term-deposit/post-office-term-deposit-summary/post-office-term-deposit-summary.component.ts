@@ -16,15 +16,15 @@ export class PostOfficeTermDepositSummaryComponent implements OnInit {
       @Output() myEvent = new EventEmitter<any>();
   accountNumber: string;
 
-      onEditSummary(institution: string, policyNo: string) {
+      onEditSummary(institution: string, accountNumber: string) {
         this.tabIndex = 2;
         const data = {
           institution: institution,
-          policyNo: policyNo,
+          accountNumber: accountNumber,
           tabIndex: this.tabIndex,
         };
         this.institution = institution;
-        this.policyNo = policyNo;
+        this.accountNumber = accountNumber;
         //console.log('institution::', institution);
         //console.log('policyNo::', policyNo);
         this.myEvent.emit(data);
@@ -147,12 +147,12 @@ export class PostOfficeTermDepositSummaryComponent implements OnInit {
       }
 
       // On onEditSummary
-      onEditSummary1(institution: string, policyNo: string) {
+      onEditSummary1(institution: string, accountNumber: string) {
         this.tabIndex = 2;
         this.institution = institution;
-        this.policyNo = policyNo;
+        this.policyNo = accountNumber;
         console.log('institution::', institution);
-        console.log('policyNo::', policyNo);
+        console.log('policyNo::', accountNumber);
       }
       // On onEditSummary
    onViewSummary1(institution: string, accountNumber: string) {

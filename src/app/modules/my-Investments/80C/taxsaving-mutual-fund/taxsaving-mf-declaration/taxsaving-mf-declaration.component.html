@@ -47,18 +47,27 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Account No. :</label>
+        <label class="form-label mt-1">Institution :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip=" {{item.institutionName}}:{{ item.policyNo }}">
-          {{item.institutionName}} : {{ item.policyNo }}
+          tooltip=" {{item.institutionName}}">
+          {{item.institutionName}}
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1">Account No. :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-1">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+          tooltip=" {{ item.policyNo }}">
+          {{ item.policyNo }}
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1 pl-10">Account Holder Name :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
           tooltip="{{ item.policyholdername }}">
           {{ item.policyholdername }}
@@ -67,9 +76,9 @@
       <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1">Frequency :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip="{{ item.frequency }}">
+          tooltip="">
           {{ item.frequency }}
         </label>
       </div>
@@ -189,6 +198,7 @@
                   <div class="custom_icon_badge">
                     <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
+                    maxlength="22"
                       name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" />
@@ -211,6 +221,7 @@
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
+                  maxlength="22"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
@@ -396,7 +407,7 @@
                   <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                      <span tooltip="Fund Statement"></span>Fund Statement
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"

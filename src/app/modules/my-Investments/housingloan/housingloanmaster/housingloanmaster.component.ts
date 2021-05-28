@@ -142,7 +142,8 @@ export class HousingloanmasterComponent implements OnInit {
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
-  public startDateModel: any = { date: null };
+  // public startDateModel: any = { date: null };
+  // [(ngModel)]="startDateModel"
   public houseLoanDetailSubmitted = false;
   public houseLoanOwnerDetailSubmitted = false;
   public globalAddRowIndex: number;
@@ -215,10 +216,10 @@ export class HousingloanmasterComponent implements OnInit {
       })),
       (this.HPOwnerDetailForm = this.formBuilder.group({
         housePropertyOwnerDetailId: new FormControl(0),
-        familyMemberInfoId: new FormControl(null, Validators.required),
+        familyMemberInfoId: new FormControl(0, Validators.required),
         ownerName: new FormControl('', Validators.required),
         firstTimeHomeBuyer: new FormControl('', Validators.required),
-        relationship: new FormControl({ value: null, disabled: true }),
+        relationship: new FormControl({ value:'', disabled: true }),
       })),
       // this.HPUsageDetailForm.push(this.formBuilder.group({
       //   housePropertyUsageTypeId : [0],
@@ -272,7 +273,7 @@ export class HousingloanmasterComponent implements OnInit {
 
   public ngOnInit(): void {
     //  this.addOwner(0);
-    this.startDateModel = '31-dec-9999';
+    // this.startDateModel = '31-dec-9999';
     this.housingLoanForm.get('country').setValue('India');
     // Business Financial Year API Call
     // this.Service.getBusinessFinancialYear().subscribe((res) => {
@@ -443,19 +444,19 @@ export class HousingloanmasterComponent implements OnInit {
       city: new FormControl(null),
       town: new FormControl(null),
       village: new FormControl(null),
-      stampDutyRegistrationDate: new FormControl(null),
-      stampDutyRegistrationAmount: new FormControl(null),
-      propertyRegistrationValue: new FormControl(null),
+      // stampDutyRegistrationDate: new FormControl(null),
+      // stampDutyRegistrationAmount: new FormControl(null),
+      // propertyRegistrationValue: new FormControl(null),
 
-      // stampDutyRegistrationDate: new FormControl(null, Validators.required),
-      // stampDutyRegistrationAmount: new FormControl(null, [
-      //   Validators.required,
-      //   Validators.pattern('^[0-9]*$'),
-      // ]),
-      // propertyRegistrationValue: new FormControl(null, [
-      //   Validators.required,
-      //   Validators.pattern('^[0-9]*$'),
-      // ]),
+      stampDutyRegistrationDate: new FormControl(null, Validators.required),
+      stampDutyRegistrationAmount: new FormControl(null, [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
+      propertyRegistrationValue: new FormControl(null, [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
       proofSubmissionId: new FormControl(''),
     });
   }
@@ -469,6 +470,7 @@ export class HousingloanmasterComponent implements OnInit {
     this.houseLoanOwnerDetailSubmitted = true;
     // housePropertyLoanDetailList  HPUsageDetailForm HPOwnerDetailForm
     if (this.HPOwnerDetailForm.invalid) {
+      console.log("HPOwnerDetailForm",this.HPOwnerDetailForm);
       return;
     }
 
@@ -490,12 +492,14 @@ export class HousingloanmasterComponent implements OnInit {
     //   (owner) =>
     //   owner.ownerName === this.HPOwnerDetailForm.value.ownerName
     // )
+    console.log("this.HPOwnerDetailForm.value", this.HPOwnerDetailForm)
 
     if (
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === 0 ||
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === null
     ) {
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId = this.globalAddRowIndex1;
+      console.log("this.HPOwnerDetailForm.value", this.HPOwnerDetailForm.value)
       this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.value);
     } else {
       const index = this.houseLoanOwnerTypeList.findIndex(
@@ -508,12 +512,11 @@ export class HousingloanmasterComponent implements OnInit {
       //   'HPOwnerDetailForm'
       // ).value.rentAmount;
 
-      this.houseLoanOwnerTypeList[
-        index
-      ].rentAmount = this.HPOwnerDetailForm.value.rentAmount;
+
     }
     /* this.houseLoanOwnerTypeList.housePropertyOwnerDetailId  = this.globalAddRowIndex1;    */
     console.log('houseLoanOwnerTypeList', this.houseLoanOwnerTypeList);
+
     this.HPOwnerDetailForm.reset();
     this.houseLoanOwnerDetailSubmitted = false;
   }
@@ -1089,7 +1092,8 @@ export class HousingloanmasterComponent implements OnInit {
   public OnSelectionfamilyMemberGroup() {
     this.visibilityFlagFamily = false;
     this.relationFlag = true;
-    if(this.HPOwnerDetailForm.value.ownerName !== 'undefined'){
+    // if(this.HPOwnerDetailForm.value.ownerName != undefined || this.HPOwnerDetailForm.value.ownerName != null || this.HPOwnerDetailForm.value.ownerName != "other"){
+      if(this.HPOwnerDetailForm.value.ownerName != "other"){
         this.visibilityFlagFamily = false;
       if (this.HPOwnerDetailForm.get('ownerName').value == null) {
         this.HPOwnerDetailForm.get('relationship').setValue(null);
@@ -1101,19 +1105,20 @@ export class HousingloanmasterComponent implements OnInit {
       this.HPOwnerDetailForm.get('relationship').setValue(toSelect.relation);
 
     }
-    if (this.HPOwnerDetailForm.value.ownerName == 'other' || this.HPOwnerDetailForm.value.familyMemberInfoId < 0) {
-      this.HPOwnerDetailForm.value.relationship == 'null';
+    if (this.HPOwnerDetailForm.value.ownerName == "other" || this.HPOwnerDetailForm.value.familyMemberInfoId < 0) {
+      this.HPOwnerDetailForm.value.relationship = "other";
+     this.HPOwnerDetailForm.value.familyMemberInfoId = -1;
       this.relationFlag = false;
       this.visibilityFlagFamily = true;
 
     }
 
-    if (this.HPOwnerDetailForm.value.familyMemberInfoId !== 'other') {
-      this.visibilityFlagFamily = false;
+    if (this.HPOwnerDetailForm.value.familyMemberInfoId !== "other") {
+
       this.HPOwnerDetailForm.get('ownerName').clearValidators();
       this.HPOwnerDetailForm.get('ownerName').updateValueAndValidity();
     } else {
-      this.visibilityFlagFamily = true;
+
       this.HPOwnerDetailForm.get('ownerName').setValidators([Validators.required]);
       this.HPOwnerDetailForm.get('ownerName').updateValueAndValidity();
     }

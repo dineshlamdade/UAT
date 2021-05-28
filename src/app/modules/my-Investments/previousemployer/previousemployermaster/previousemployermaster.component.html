@@ -183,6 +183,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col" class="font700 wd-8">Sr No.</th>
+                                        <th scope="col" class="font700 wd-30">Document Name</th>
                                         <th scope="col" class="font700 wd-40">Attachment</th>
                                         <th scope="col" class="font700 wd-12">Action</th>
                                     </tr>
@@ -191,7 +192,13 @@
                                     <tr>
                                         <th scope="row"><span tooltip="1">1</span></th>
 
-                                        <td><span tooltip=""></span></td>
+                                        <td><span tooltip="Tax Computation Statement"></span>Tax Computation Statement</td>
+                                        <td>
+                                            <span *ngFor="let item of masterfilesArray; let j = index" class="text-orange"
+                                              tooltip="{{ item.name }}">
+                                              <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp; {{ item.name }},
+                                            </span>
+                                          </td>
 
                                         <td>
                                             <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(previousEmployerDetailsIndex)" data-toggle="modal" data-target="#UploadModal">

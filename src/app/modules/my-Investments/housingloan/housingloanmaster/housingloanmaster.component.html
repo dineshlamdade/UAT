@@ -169,7 +169,7 @@
                   <option *ngFor="let familyMember of familyMemberName" [value]="familyMember.value">
                     {{familyMember.label}}
                   </option>
-                  <option [ngValue]="other">other</option>
+                  <option [value]="'other'">Other</option>
                 </select>
                 <div *ngIf="houseLoanOwnerDetailSubmitted &&  HPOwnerDetailF.ownerName.errors" class="invalid-feedback">
                   <div *ngIf=" HPOwnerDetailF.ownerName.errors.required">Policy Holder Name is mandatory</div>
@@ -331,7 +331,7 @@
                       <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                     </div>
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
-                      [(ngModel)]="startDateModel" [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
+                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
                       data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date"
                       bsDatepicker
                       [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">
@@ -818,7 +818,7 @@
 
                   <tr>
                     <th scope="row"><span tooltip="2">2</span></th>
-                    <td><span tooltip="Stamp Duty & Registration Charges"></span>Stamp Duty & Registration Charges
+                    <td><span tooltip="Receipt for Stamp Duty & Registration Charges"></span>Receipt for Stamp Duty & Registration Charges
                     </td>
                     <td><span *ngFor="let item of stampDutyRegistration" class="text-orange" tooltip="{{item.name}},"><i
                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
