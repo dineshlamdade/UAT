@@ -449,12 +449,16 @@
               aria-expanded="true"><i class="icon-credit-card"></i><span>Eighty-C</span></a>
             <ul class="collapse" id="eightyCCollapsed" [collapse]="isEightyCCollapsed" [isAnimated]="true">
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+                class="submenu text-ellipsis " [routerLink]="['/investment/80C-Summary']"><span>Summary</span></a>
+            </li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis " [routerLink]="['/investment/80C-LIC']"><span>LIC</span></a></li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis" [routerLink]="['/investment/80C-PPF']"><span>PPF</span></a></li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/80C-PensionPlan']"><span>PensionPlan</span></a></li>
+                
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/80C-SukanyaSamriddhiScheme']"><span>SukanyaSamriddhiScheme</span></a>
@@ -481,7 +485,7 @@
               </li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-TaxSavingSharesNabardandOtherBonds']"><span>TaxSavingSharesNabardandOtherBonds</span></a>
+                  [routerLink]="['/investment/80C-NabardBonds']"><span>NabardBonds</span></a>
               </li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
@@ -496,8 +500,21 @@
                   [routerLink]="['/investment/80C-TuitionFees']"><span>TuitionFees</span></a>
               </li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis " [routerLink]="['/investment/80C-Summary']"><span>Summary</span></a>
-              </li>
+                class="submenu text-ellipsis "
+                [routerLink]="['/investment/80C-NationalSavingCertificateNSCAccruedInterest']"><span>NationalSavingCertificateNSCAccruedInterest</span></a>
+            </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+              class="submenu text-ellipsis"
+              [routerLink]="['/investment/80C-HouseProperty']"><span>HouseProperty</span></a></li>
+              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+                class="submenu text-ellipsis"
+                [routerLink]="['/investment/80C-PrincipalRepaymentOnHousingLoan']"><span>PrincipalRepaymentOnHousingLoan</span></a>
+            </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+              class="submenu text-ellipsis"
+              [routerLink]="['/investment/80C-EmployeesNPS80CCD1']"><span>EmployeesNPS80CCD1</span></a>
+          </li>
+             
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/80C-EmployeeContributionToProvidentFund_PF']"><span>EmployeeContributionToProvidentFund_PF</span></a>
@@ -584,34 +601,34 @@
               [attr.aria-expanded]="!isOtherCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
               aria-expanded="true"><i class="icon-credit-card"></i><span>Other</span></a>
             <ul class="collapse" id="otherCollapsed" [collapse]="isOtherCollapsed" [isAnimated]="true">
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+              <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis "
                   [routerLink]="['/investment/Other-NationalSavingCertificate(NSC)_AccruedInterest']"><span>NationalSavingCertificate(NSC)_AccruedInterest</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+              </li> -->
+              <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
-                  [routerLink]="['/investment/Other-HouseProperty']"><span>HouseProperty</span></a></li>
+                  [routerLink]="['/investment/Other-HouseProperty']"><span>HouseProperty</span></a></li> -->
               <!--   17.04.2021 Sutej-->
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+              <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-Employeenationalpension']"><span>Employeenationalpension</span></a>
-              </li>
+              </li> -->
 
 
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+              <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-PrincipalRepaymentOnHousingLoan']"><span>PrincipalRepaymentOnHousingLoan</span></a>
-              </li>
+              </li> -->
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-TaxAdjustments']"><span>TaxAdjustments</span></a></li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-OtherIncome']"><span>OtherIncome</span></a></li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
+              <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-EmployeeNationalPensionScheme80CCD']"><span>EmployeeNationalPensionScheme80CCD</span></a>
-              </li>
+              </li> -->
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/Other-Child-Hostel-Allowance']"><span>Child-Hostel-Allowance</span></a>
@@ -637,13 +654,6 @@
               [routerLink]="['/investment/affirmation']"><span>Affirmation</span></a></li>
         </ul>
       </li>
-
-
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-          [routerLink]="['/investment/previousemployer']"><span>Previous Employer</span></a></li>
-
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-          [routerLink]="['/investment/Affirmation']"><span>Affirmation</span></a></li>
 
 
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">

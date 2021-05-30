@@ -407,6 +407,13 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    if(data.declaredAmount == null || data.declaredAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
     const checked = event.target.checked;
 
     this.taxsavingDeclarationData = data

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmployeeNPS80CCDComponent } from './employee-nps80-ccd.component';
+import { EmployeesNPS80CCD1Component } from './employees-nps80-ccd1.component';
 
-describe('EmployeeNPS80CCDComponent', () => {
-  let component: EmployeeNPS80CCDComponent;
-  let fixture: ComponentFixture<EmployeeNPS80CCDComponent>;
+describe('EmployeesNPS80CCD1Component', () => {
+  let component: EmployeesNPS80CCD1Component;
+  let fixture: ComponentFixture<EmployeesNPS80CCD1Component>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmployeeNPS80CCDComponent ]
+      declarations: [ EmployeesNPS80CCD1Component ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmployeeNPS80CCDComponent);
+    fixture = TestBed.createComponent(EmployeesNPS80CCD1Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

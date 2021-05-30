@@ -57,7 +57,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPolicyEndDate()" placeholder="account Start Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                        formControlName="policyStartDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPolicyEndDate()" placeholder="account Start Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }"
                             [maxDate]="today">
                         <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
                             <div *ngIf="masterForm.policyStartDate.errors.required">Policy Start Date is mandatory</div>
@@ -99,7 +100,11 @@
                         </div>
                         <div class="col-sm-6 col-md-3" *ngIf="frequencyOfPayment.value !== 'As & When'">
                             <label class="form-label">Contribution Amount</label>
-                            <p-inputNumber class="p-inputright" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+                            <p-inputNumber class="p-inputright" 
+                            formControlName="premiumAmount" name="Premium Amount" 
+                            (onBlur)="calculateAnnualAmount()" 
+                            [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" 
+                            mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
                             <!-- <p-inputNumber class="align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
 
                             <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
@@ -277,7 +282,7 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><span tooltip="1">1</span></th>
-                                            <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                                            <td><span tooltip="Account Statement"></span>Account Statement
                                             </td>
                                             <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                             class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
