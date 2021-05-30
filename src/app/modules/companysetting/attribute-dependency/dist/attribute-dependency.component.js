@@ -105,6 +105,7 @@ var AttributeDependencyComponent = /** @class */ (function () {
         var _this = this;
         this.summary = [];
         this.companySettingService.getAllActiveAndNonActiveAttributeDependency().subscribe(function (res) {
+            console.log('ress', res);
             _this.summary = res.data.results;
         });
     };
@@ -231,11 +232,6 @@ var AttributeDependencyComponent = /** @class */ (function () {
             this.baseAttributeValue1List = [];
             this.companySettingService.getGlobalAttribute2New(this.attributeGroupDefinitionId, this.selectedBaseAttribute1Id).subscribe(function (res) {
                 _this.attribute2List = res.data.results;
-                // for ( let i = 0; i < res.data.results.length; i++ ) {
-                //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-                //     this.dependentAttributeList.push( res.data.results[i] );
-                //   }
-                // }
                 _this.dependentAttributeList = res.data.results;
             });
             console.log(this.attribute1List);
@@ -277,11 +273,6 @@ var AttributeDependencyComponent = /** @class */ (function () {
             this.baseAttributeValue2List = [];
             this.companySettingService.getGlobalAttribut33New(this.attributeGroupDefinitionId, this.selectedBaseAttribute1Id, this.selectedBaseAttribute2Id).subscribe(function (res) {
                 _this.attribute3List = res.data.results;
-                // for ( let i = 0; i < res.data.results.length; i++ ) {
-                //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-                //     this.dependentAttributeList.push( res.data.results[i] );
-                //   }
-                // }
                 _this.dependentAttributeList = res.data.results;
                 console.log('att3list', _this.attribute3List);
             });
@@ -341,11 +332,6 @@ var AttributeDependencyComponent = /** @class */ (function () {
             }
             this.companySettingService.getDerivedAttribute4(this.attributeGroupDefinitionId, this.selectedBaseAttribute1Id, this.selectedBaseAttribute2Id, this.selectedBaseAttribute3Id).subscribe(function (res) {
                 // this.baseAttributeValue1List = res.data.results;
-                // for ( let i = 0; i < res.data.results.length; i++ ) {
-                //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-                //     this.dependentAttributeList.push( res.data.results[i] );
-                //   }
-                // }
                 _this.dependentAttributeList = res.data.results;
             });
             this.resetValueWhenBaseAttribute3Changed();
@@ -412,31 +398,50 @@ var AttributeDependencyComponent = /** @class */ (function () {
             this.AttDepForm.get('remark').disable();
         }
     };
-    AttributeDependencyComponent.prototype.edit = function (payrollHeadGroupAttributeDependencyId, i) {
-        this.forEditGetAllAttributeGroupList(this.summary[i].attributeGroupDefinitionId);
-        this.isEditMode = true;
-        this.viewCancelButton = true;
-        this.viewUpdateButton = true;
-        this.editedRecordId = payrollHeadGroupAttributeDependencyId;
-        window.scrollTo(0, 0);
-        this.AttDepForm.reset();
-        this.attribute2List = this.attribute1List;
-        this.attribute3List = this.attribute1List;
-        this.dependentAttributeList = this.attribute1List;
-        this.baseAttributeValue1List.push(this.summary[i].value1);
-        this.baseAttributeValue2List.push(this.summary[i].value2);
-        this.baseAttributeValue3List.push(this.summary[i].value3);
-        this.dependentAttributeValueList.push(this.summary[i].derivedAttributeValue);
-        console.log('summary', this.summary[i]);
-        this.AttDepForm.patchValue(this.summary[i]);
-        this.AttDepForm.get('value1').disable();
-        this.AttDepForm.get('attribute2').disable();
-        this.AttDepForm.get('value2').disable();
-        this.AttDepForm.get('attribute3').disable();
-        this.AttDepForm.get('value3').disable();
-        this.AttDepForm.get('derivedAttribute').disable();
-        this.AttDepForm.get('derivedAttributeValue').disable();
-        this.AttDepForm.get('activeStatus').enable();
+    AttributeDependencyComponent.prototype.edit = function (payrollHeadGroupAttributeDependencyId, i, attributeGroupName) {
+        var _this = this;
+        var index = this.AttributeSelectionList.findIndex(function (o) { return o.name == attributeGroupName; });
+        this.attributeGroupDefinitionId = this.AttributeSelectionList[index].id;
+        // this.companySettingService.getAttributeGroupByGroupDefId( this.AttributeSelectionList[index].id ).subscribe( res => {
+        //   this.attribute1List = res.data.results;
+        //   this.dependentAttributeList = res.data.results;
+        //   this.attribute1List = res.data.results;
+        //   this.attribute2List = res.data.results;
+        //   this.attribute3List = res.data.results;
+        // } );
+        this.companySettingService.getAttributeGroupByGroupDefId(this.AttributeSelectionList[index].id).subscribe(function (res) {
+            _this.attribute1List = res.data.results;
+            _this.dependentAttributeList = res.data.results;
+            _this.attribute1List = res.data.results;
+            _this.attribute2List = res.data.results;
+            _this.attribute3List = res.data.results;
+        }, function (error) {
+            console.log('error', error);
+        }, function () {
+            _this.isEditMode = true;
+            _this.viewCancelButton = true;
+            _this.viewUpdateButton = true;
+            _this.editedRecordId = payrollHeadGroupAttributeDependencyId;
+            window.scrollTo(0, 0);
+            _this.AttDepForm.reset();
+            // this.attribute2List = this.attribute1List;
+            // this.attribute3List = this.attribute1List;
+            // this.dependentAttributeList = this.attribute1List;
+            _this.baseAttributeValue1List.push(_this.summary[i].value1);
+            _this.baseAttributeValue2List.push(_this.summary[i].value2);
+            _this.baseAttributeValue3List.push(_this.summary[i].value3);
+            _this.dependentAttributeValueList.push(_this.summary[i].derivedAttributeValue);
+            console.log('summary', _this.summary[i]);
+            _this.AttDepForm.patchValue(_this.summary[i]);
+            _this.AttDepForm.get('value1').disable();
+            _this.AttDepForm.get('attribute2').disable();
+            _this.AttDepForm.get('value2').disable();
+            _this.AttDepForm.get('attribute3').disable();
+            _this.AttDepForm.get('value3').disable();
+            _this.AttDepForm.get('derivedAttribute').disable();
+            _this.AttDepForm.get('derivedAttributeValue').disable();
+            _this.AttDepForm.get('activeStatus').enable();
+        });
     };
     AttributeDependencyComponent.prototype.view = function (payrollHeadGroupAttributeDependencyId, i) {
         this.viewCancelButton = true;
@@ -492,34 +497,14 @@ var AttributeDependencyComponent = /** @class */ (function () {
             derivedAttributeValue: null
         });
     };
-    AttributeDependencyComponent.prototype.onChangeAttributeGroup = function (evt, id) {
+    AttributeDependencyComponent.prototype.onChangeAttributeGroup = function (id) {
         this.attributeGroupDefinitionId = id;
-        console.log(evt.target.value);
         this.getAllAttributeGroupList(id);
     };
     AttributeDependencyComponent.prototype.getAllAttributeGroupList = function (id) {
         var _this = this;
         this.companySettingService.getAttributeGroupByGroupDefId(id).subscribe(function (res) {
             _this.attribute1List = res.data.results;
-            // for ( let i = 0; i < res.data.results.length; i++ ) {
-            //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-            //     this.dependentAttributeList.push( res.data.results[i] );
-            //   }
-            // }
-            _this.dependentAttributeList = res.data.results;
-        });
-    };
-    AttributeDependencyComponent.prototype.forEditGetAllAttributeGroupList = function (id) {
-        var _this = this;
-        this.companySettingService.getAttributeGroupByGroupDefId(id).subscribe(function (res) {
-            _this.attribute1List = res.data.results;
-            _this.attribute2List = res.data.results;
-            _this.attribute3List = res.data.results;
-            // for ( let i = 0; i < res.data.results.length; i++ ) {
-            //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-            //     this.dependentAttributeList.push( res.data.results[i] );
-            //   }
-            // }
             _this.dependentAttributeList = res.data.results;
         });
     };
