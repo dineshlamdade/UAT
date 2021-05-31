@@ -47,18 +47,27 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Policy No. :</label>
+        <label class="form-label mt-1">Institution :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+          tooltip="{{item.institutionName}}">
+          {{item.institutionName}}
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1">Policy No. :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
           tooltip="{{ item.policyNo }}">
           {{ item.policyNo }}
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1 pl-10">Policy Holder Name :</label>
+        <label class="form-label mt-1">Policy Holder Name :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
           tooltip="{{ item.policyholdername }}">
           {{ item.policyholdername }}
@@ -67,9 +76,9 @@
       <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1">Frequency :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip="{{ item.frequency }}">
+          tooltip="">
           {{ item.frequency }}
         </label>
       </div>
@@ -84,7 +93,7 @@
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
                       [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
-                      (change)="checkUncheckAll(item, j)" />
+                      (change)="checkUncheckAll(item,$event)" />
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
@@ -112,7 +121,9 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" name="select" />
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
+                    [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
+                    (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
@@ -138,13 +149,13 @@
                 count as c
               ">
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                  <!-- <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
                     tooltip="Select institution for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                       onSelectCheckBox(summary, $event, i, j);
                       enableCheckboxFlag = j
-                    " class="custom-control-input" value="option{{ summary.licTransactionId }}" />
+                    " class="custom-control-input" value="option{{ summary.licTransactionId }}"/>
                     <span class="custom-control-label"></span>
                   </label>
                   <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
@@ -152,7 +163,15 @@
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                       onSelectCheckBox(summary, $event, i, j);
                       enableCheckboxFlag = j
-                    " class="custom-control-input" value="option{{ summary.licTransactionId }}" />
+                    " class="custom-control-input" value="option{{ summary.licTransactionId }}"/>
+                    <span class="custom-control-label"></span>
+                  </label> -->
+                  <label *ngIf="summary.transactionStatus=='Pending'" class="custom-control custom-checkbox checkbox-center">
+                    <input type="checkbox" [ngModel]="enableSelectAll"
+                    [disabled]="isDisabled"  (change)="
+                      onSelectCheckBox(summary, $event, i, j);
+                      enableCheckboxFlag = j
+                    " class="custom-control-input" value="option{{ summary.licTransactionId }}"/>
                     <span class="custom-control-label"></span>
                   </label>
                 </td>

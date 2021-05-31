@@ -65,7 +65,8 @@
                   let summary of transactionDetail;
                   let i = index;
                   count as c
-                ">
+                "  [ngClass]="{ 'highlight': this.selectrow == summary.accountNumber }"
+                >
                 <td scope="row">
                   <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
                     tooltip="Select institution for proof submission">
@@ -125,7 +126,8 @@
 
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup3TransactionId }}"
-                    onkeypress="return /[0-9 ]/i.test(event.key)" name="actualAmount{{
+                    onkeypress="return /[0-9 ]/i.test(event.key)"   maxlength="22"
+                    name="actualAmount{{
                       summary.investmentGroup3TransactionId
                     }}" [(ngModel)]="summary.actualAmount"
                     [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
@@ -201,13 +203,15 @@
                 </td>
                 <td>
                   <input type="text" [(ngModel)]="addRowSummary.institution" class="form-control"
-                    placeholder="Institution" (change)="onInstitutionChange(addRowSummary, i)" />
+                    placeholder="Institution" (change)="onInstitutionChange(addRowSummary, i)"
+                    [ngClass]="{ 'is-invalid': this.requiredField }"  />
                 </td>
                 <td>
                   <div class="custom_icon_badge">
                     <input type="text" [(ngModel)]="addRowSummary.accountNumber" class="form-control"
                       onkeypress="return /[0-9 ]/i.test(event.key)" placeholder="Account No."
-                      (change)="onAccountNoChange(addRowSummary, i)" />
+                      (change)="onAccountNoChange(addRowSummary, i)"
+                      [ngClass]="{ 'is-invalid': this.requiredField }"  />
 
                   </div>
                 </td>
@@ -232,12 +236,15 @@
                     (ngModelChange)="
                     addRowSummary.dateOfPayment = $event.toLocaleDateString();
                     onChangeDateOfPayment(addRowSummary, i)
-                    " class="form-control" bsDatepicker />
+                    " class="form-control" bsDatepicker 
+                    [ngClass]="{ 'is-invalid': this.requiredField }" />
                 </td>
                 <td>
                   <input type="text" [(ngModel)]="addRowSummary.actualAmount"
-                    onkeypress="return /[0-9 ]/i.test(event.key)" class="form-control align-right"
-                    (change)="onActualAmountChange(addRowSummary, i)" />
+                    onkeypress="return /[0-9 ]/i.test(event.key)" 
+                    class="form-control align-right" maxlength="22"
+                    (change)="onActualAmountChange(addRowSummary, i)" 
+                    [ngClass]="{ 'is-invalid': this.requiredField }" />
                 </td>
                 <td>
                   <!-- <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -365,8 +372,8 @@
                   <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Receipt / Certificate"></span>
-                      Receipt / Certificate
+                      <span tooltip="Bond Certificate"></span>
+                      Bond Certificate
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -413,7 +420,8 @@
                   'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
                 )
             :upload()
-          " class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+          " class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"
+          [disabled]="this.requiredField">
           <b> <i class="fa fa-floppy-o"></i></b> Save
         </button>
       </div>

@@ -5,20 +5,21 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeNPS80CCDService {
-
+export class PrincipalRepaymentOnHousingLoanService {
   apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
 
-   //Summary services
-   getEmployeeNPSCCD() {
-    return this._HTTP.get(this.apiUrl + 'npsMaster-detail/nps80CCD1Summary')
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
+ //Principal Repayment on Housing Lon services
+
+ getPrincipalRepaymentOnHousingLoan() {
+  return this._HTTP.get(this.apiUrl + 'housingLoanMaster/principalRepaymentOther')
+  .pipe(map((res: any) => {
+    return res;
+  }));
+}
 }

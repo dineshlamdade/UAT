@@ -1,6 +1,6 @@
 
 import { CompanySettingsService } from './../company-settings.service';
-import { Component, OnInit, Inject, ViewEncapsulation, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation, TemplateRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
@@ -16,7 +16,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./attribute-creation.component.scss'],
   encapsulation: ViewEncapsulation.None
 } )
-export class AttributeCreationComponent implements OnInit {
+export class AttributeCreationComponent implements OnInit, OnChanges {
   // sort alphabetically
   totalRecords: number = 0;
   @ViewChild( 'paginator', { static: true } ) paginator: Paginator
@@ -57,6 +57,9 @@ export class AttributeCreationComponent implements OnInit {
     @Inject( DOCUMENT ) private document: Document ) {
 
   }
+  ngOnChanges( changes: SimpleChanges ): void {
+    throw new Error( 'Method not implemented.' );
+  }
 
   ngOnInit(): void {
 
@@ -95,11 +98,7 @@ export class AttributeCreationComponent implements OnInit {
           } else {
             label = '';
           }
-
         }
-
-
-
 
         let obj = {
           attributeMasterId: element.attributeMasterId,
@@ -113,7 +112,7 @@ export class AttributeCreationComponent implements OnInit {
         this.attributeCreationSummaryList.push( obj );
       } );
     } );
-    this.totalRecords = this.attributeCreationSummaryList.length;
+    // this.totalRecords = this.attributeCreationSummaryList.length;
   }
 
 
@@ -386,7 +385,7 @@ export class AttributeCreationComponent implements OnInit {
     //if ( i !== 0 ) {
     //  console.log( 'i!==0' )
     var setsFormArray = this.AttributeCreationForm.get( 'pfFormArray' ) as FormArray;
-    this.pfArray.insert( 0, this.formBuilder.group( {
+    this.pfArray.insert( this.pfArray.length, this.formBuilder.group( {
       optionList: ['', Validators.required],
     } ) );
     // }
