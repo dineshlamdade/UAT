@@ -35,14 +35,15 @@ import { BusinessCycleComponent } from './business-cycle/business-cycle.componen
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { AttributeSelectionComponent } from './attribute-selection/attribute-selection.component';
 import { HeadCreationComponent } from './head-creation/head-creation.component';
-import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
 import { AttributeGlobalComponent } from './attribute-global/attribute-global.component';
+import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
 
 
 
 @NgModule( {
   declarations: [
     HeadCreationComponent,
+    //   PayrollHeadGroupCreationComponent,
     PayrollHeadGroupCreationComponent,
     BusinessCycleComponent,
     AttributeSelectionComponent,

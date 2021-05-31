@@ -116,6 +116,7 @@ export class AttributeDependencyComponent implements OnInit {
   getSummary(): void {
     this.summary = [];
     this.companySettingService.getAllActiveAndNonActiveAttributeDependency().subscribe( res => {
+      console.log( 'ress', res );
       this.summary = res.data.results;
     } );
   }
@@ -265,11 +266,7 @@ export class AttributeDependencyComponent implements OnInit {
 
       this.companySettingService.getGlobalAttribute2New( this.attributeGroupDefinitionId, this.selectedBaseAttribute1Id ).subscribe( res => {
         this.attribute2List = res.data.results;
-        // for ( let i = 0; i < res.data.results.length; i++ ) {
-        //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-        //     this.dependentAttributeList.push( res.data.results[i] );
-        //   }
-        // }
+
         this.dependentAttributeList = res.data.results;
 
       } );
@@ -314,11 +311,7 @@ export class AttributeDependencyComponent implements OnInit {
       this.baseAttributeValue2List = [];
       this.companySettingService.getGlobalAttribut33New( this.attributeGroupDefinitionId, this.selectedBaseAttribute1Id, this.selectedBaseAttribute2Id ).subscribe( res => {
         this.attribute3List = res.data.results;
-        // for ( let i = 0; i < res.data.results.length; i++ ) {
-        //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-        //     this.dependentAttributeList.push( res.data.results[i] );
-        //   }
-        // }
+
         this.dependentAttributeList = res.data.results;
         console.log( 'att3list', this.attribute3List );
 
@@ -382,11 +375,7 @@ export class AttributeDependencyComponent implements OnInit {
       }
       this.companySettingService.getDerivedAttribute4( this.attributeGroupDefinitionId, this.selectedBaseAttribute1Id, this.selectedBaseAttribute2Id, this.selectedBaseAttribute3Id ).subscribe( res => {
         // this.baseAttributeValue1List = res.data.results;
-        // for ( let i = 0; i < res.data.results.length; i++ ) {
-        //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-        //     this.dependentAttributeList.push( res.data.results[i] );
-        //   }
-        // }
+
         this.dependentAttributeList = res.data.results;
       } );
       this.resetValueWhenBaseAttribute3Changed();
@@ -460,33 +449,61 @@ export class AttributeDependencyComponent implements OnInit {
     }
 
   }
-  edit( payrollHeadGroupAttributeDependencyId: number, i: number ) {
-    this.forEditGetAllAttributeGroupList( this.summary[i].attributeGroupDefinitionId );
-    this.isEditMode = true;
-    this.viewCancelButton = true;
-    this.viewUpdateButton = true;
-    this.editedRecordId = payrollHeadGroupAttributeDependencyId;
-    window.scrollTo( 0, 0 );
-    this.AttDepForm.reset();
-    this.attribute2List = this.attribute1List;
-    this.attribute3List = this.attribute1List;
-    this.dependentAttributeList = this.attribute1List;
-    this.baseAttributeValue1List.push( this.summary[i].value1 );
-    this.baseAttributeValue2List.push( this.summary[i].value2 )
-    this.baseAttributeValue3List.push( this.summary[i].value3 );
-    this.dependentAttributeValueList.push( this.summary[i].derivedAttributeValue );
-    console.log( 'summary', this.summary[i] );
-    this.AttDepForm.patchValue( this.summary[i] );
+  edit( payrollHeadGroupAttributeDependencyId: number, i: number, attributeGroupName: string ) {
 
 
-    this.AttDepForm.get( 'value1' ).disable();
-    this.AttDepForm.get( 'attribute2' ).disable();
-    this.AttDepForm.get( 'value2' ).disable();
-    this.AttDepForm.get( 'attribute3' ).disable();
-    this.AttDepForm.get( 'value3' ).disable();
-    this.AttDepForm.get( 'derivedAttribute' ).disable();
-    this.AttDepForm.get( 'derivedAttributeValue' ).disable();
-    this.AttDepForm.get( 'activeStatus' ).enable();
+    let index = this.AttributeSelectionList.findIndex( o => o.name == attributeGroupName );
+    this.attributeGroupDefinitionId = this.AttributeSelectionList[index].id;
+
+    // this.companySettingService.getAttributeGroupByGroupDefId( this.AttributeSelectionList[index].id ).subscribe( res => {
+    //   this.attribute1List = res.data.results;
+    //   this.dependentAttributeList = res.data.results;
+    //   this.attribute1List = res.data.results;
+    //   this.attribute2List = res.data.results;
+    //   this.attribute3List = res.data.results;
+    // } );
+
+
+
+    this.companySettingService.getAttributeGroupByGroupDefId( this.AttributeSelectionList[index].id ).subscribe( res => {
+      this.attribute1List = res.data.results;
+      this.dependentAttributeList = res.data.results;
+      this.attribute1List = res.data.results;
+      this.attribute2List = res.data.results;
+      this.attribute3List = res.data.results;
+    }, ( error ) => {
+      console.log( 'error', error );
+    }, () => {
+      this.isEditMode = true;
+      this.viewCancelButton = true;
+      this.viewUpdateButton = true;
+      this.editedRecordId = payrollHeadGroupAttributeDependencyId;
+      window.scrollTo( 0, 0 );
+      this.AttDepForm.reset();
+
+      // this.attribute2List = this.attribute1List;
+      // this.attribute3List = this.attribute1List;
+      // this.dependentAttributeList = this.attribute1List;
+      this.baseAttributeValue1List.push( this.summary[i].value1 );
+      this.baseAttributeValue2List.push( this.summary[i].value2 )
+      this.baseAttributeValue3List.push( this.summary[i].value3 );
+      this.dependentAttributeValueList.push( this.summary[i].derivedAttributeValue );
+      console.log( 'summary', this.summary[i] );
+      this.AttDepForm.patchValue( this.summary[i] );
+
+
+      this.AttDepForm.get( 'value1' ).disable();
+      this.AttDepForm.get( 'attribute2' ).disable();
+      this.AttDepForm.get( 'value2' ).disable();
+      this.AttDepForm.get( 'attribute3' ).disable();
+      this.AttDepForm.get( 'value3' ).disable();
+      this.AttDepForm.get( 'derivedAttribute' ).disable();
+      this.AttDepForm.get( 'derivedAttributeValue' ).disable();
+      this.AttDepForm.get( 'activeStatus' ).enable();
+    } );
+
+
+
 
 
 
@@ -551,37 +568,29 @@ export class AttributeDependencyComponent implements OnInit {
 
     } );
   }
-  onChangeAttributeGroup( evt: any, id: any ) {
+  onChangeAttributeGroup( id: any ) {
     this.attributeGroupDefinitionId = id;
-    console.log( evt.target.value );
+
     this.getAllAttributeGroupList( id );
   }
   getAllAttributeGroupList( id: number ) {
 
     this.companySettingService.getAttributeGroupByGroupDefId( id ).subscribe( res => {
       this.attribute1List = res.data.results;
-      // for ( let i = 0; i < res.data.results.length; i++ ) {
-      //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-      //     this.dependentAttributeList.push( res.data.results[i] );
-      //   }
-      // }
-      this.dependentAttributeList = res.data.results;
-    } );
-  }
-  forEditGetAllAttributeGroupList( id: number ) {
 
-    this.companySettingService.getAttributeGroupByGroupDefId( id ).subscribe( res => {
-      this.attribute1List = res.data.results;
-      this.attribute2List = res.data.results;
-      this.attribute3List = res.data.results;
-      // for ( let i = 0; i < res.data.results.length; i++ ) {
-      //   if ( res.data.results[i].attributeMasters.attributeNature == 'List' ) {
-      //     this.dependentAttributeList.push( res.data.results[i] );
-      //   }
-      // }
       this.dependentAttributeList = res.data.results;
     } );
   }
+  // forEditGetAllAttributeGroupList( id: number ) {
+
+  //   this.companySettingService.getAttributeGroupByGroupDefId( id ).subscribe( res => {
+  //     this.attribute1List = res.data.results;
+  //     this.attribute2List = res.data.results;
+  //     this.attribute3List = res.data.results;
+
+  //     this.dependentAttributeList = res.data.results;
+  //   } );
+  // }
   // getAttribute1() {
   //   this.attribute1List = [];
   //   this.companySettingService.getGlobalAttribute1().subscribe( res => {
