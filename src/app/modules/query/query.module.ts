@@ -19,8 +19,7 @@ import {SidebarModule} from 'primeng/sidebar';
 import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import {TreeModule} from 'primeng/tree';
-
-// import { QueryCOmmunicationComponent } from './query-communication/query-communication.component';
+import { QueryCOmmunicationComponent } from './query-communication/query-communication.component';
 
 
 // import { ChartComponent } from "ng-apexcharts";
@@ -30,7 +29,7 @@ import {TreeModule} from 'primeng/tree';
   QueryTypeMasterComponent,
   AdminQuryGenerationComponent,
   QueryDashboardComponent,
-  // QueryCOmmunicationComponent,
+  QueryCOmmunicationComponent,
   ],
   imports: [
     TreeModule,

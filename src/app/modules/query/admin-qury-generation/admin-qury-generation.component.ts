@@ -7,6 +7,7 @@ import { QueryService } from '../query.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+// import { AlertServiceService } from '@src/app/core/services/alert-service.service';
 
 @Component({
   selector: 'app-admin-qury-generation',
@@ -55,10 +56,13 @@ export class AdminQuryGenerationComponent implements OnInit {
   listSubQA: any;
   listSubQueryTypeData: any = [];
   viewFlag :boolean = false;
+  queryDocs: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
     private router: Router,public sanitizer: DomSanitizer,
-    private modalService: BsModalService,) {
+    private modalService: BsModalService, )
+    // private alertService: AlertServiceService
+    {
     this.queryGenerationForm = this.formBuilder.group(
     {
         "queryGenerationEmpId":new FormControl(0),
@@ -206,6 +210,8 @@ addQueryGeneration(){ //post api for saving data
       console.log(JSON.stringify(this.addQueryGenerationData));
       this.getAllQueryListSummary();
       this.toster.success("",'Query Generation Employee Details saved Successfully');
+      // this.alertService.sweetalertMasterSuccess('Query Generation Employee Details saved Successfully.', '' );
+
       this.reset();
     })
     }else{
@@ -220,9 +226,6 @@ addQuerywithDocs() //not yet used
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
 
-    //  let queryDocs :any ={
-    // "listDoc":this.listDoc,
-    //  }
     let data = []
     data.push(this.queryGenerationForm.value)
     let queryGenerationEmployeeData  = {
@@ -231,9 +234,12 @@ addQuerywithDocs() //not yet used
       let queryDocs  :any = {
         "listDoc":this.listDoc,
         }
+
+      // this.queryDocs = this.queryGenerationForm.get( 'file' ).value;
+
       const formData  = new FormData();
       formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
-      formData.append( this.employeeMasterId + 'queryDocs', JSON.stringify(queryGenerationEmployeeData));
+      formData.append( 'queryDocs' , this.employeeMasterId  + queryDocs);
 
       console.log(JSON.stringify(queryGenerationEmployeeData));
       this.queryService.addQueryGeneration(formData).subscribe(res =>
@@ -242,6 +248,7 @@ addQuerywithDocs() //not yet used
         console.log(JSON.stringify(this.addQueryGenerationData));
         this.getAllQueryListSummary();
         this.toster.success("",'Query Generation Employee Details saved Successfully');
+        // this.alertService.sweetalertMasterSuccess('Query Generation Employee Details saved Successfully.', '' );
         this.reset();
       })
 }
@@ -268,6 +275,8 @@ updateQueryGeneration() //put api for update data
       console.log(JSON.stringify(this.addQueryGenerationData));
       this.getAllQueryListSummary();
       this.toster.success("",'Query Generation Employee Details updated Successfully');
+      // this.alertService.sweetalertMasterSuccess('Query Generation Employee Details updated Successfully.', '' );
+
       this.editflag =false;
       this.reset();
     })
@@ -318,10 +327,14 @@ getDeleteById(queryGenerationEmpId) // delete the record from summary
   this.queryService.getDeleteById(queryGenerationEmpId.queryGenerationEmpId).subscribe(res =>
     {
       this.toster.success("",'Query Generation Employee Details Deleted Successfully');
+      // this.alertService.sweetalertMasterSuccess('Query Generation Employee Details Deleted Successfully.', '' );
+
       this.getAllQueryListSummary();
     },error => {
       if(error.error.status.code == '4001'){
         this.toster.error("", 'You can not delete this query because the query status is Closed..!');
+        // this.alertService.sweetalertWarning( res.status.messsage );
+
       }
     });
 }
@@ -394,6 +407,7 @@ public onMasterUpload(
           };
           this.urlArray.push(data);
           this.listDoc.push(file);
+          console.log("file...............",file);
     }
   }
 }
