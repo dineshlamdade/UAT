@@ -51,7 +51,7 @@ export class LeftmenuComponent implements OnInit {
   updateEmpIdSubscription: Subscription;
   employeeMasterId: number;
   ischaptersettingCollapsed = true;
-  isCollapsedpayrollinput: boolean = false;
+  isCollapsedpayrollinput : boolean = false
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService ) {
