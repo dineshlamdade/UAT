@@ -64,6 +64,7 @@ export class LicsummaryComponent implements OnInit {
       policyNo: policyNo,
       tabIndex: this.tabIndex,
       canEdit: mode == 'edit' ? true : false,
+      canView: mode == 'view' ? true : false,
     };
     this.institution = institution;
     this.policyNo = policyNo;
@@ -122,7 +123,7 @@ export class LicsummaryComponent implements OnInit {
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-    if (this.futureNewPolicyDeclaredAmount > 0) {
+    if (this.futureNewPolicyDeclaredAmount >= 0) {
     this.addFuturePolicy();
   }else if(this.futureNewPolicyDeclaredAmount <0) {
     this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;

@@ -805,7 +805,7 @@
                     <!-- <tr *ngIf = "expenseType == 'Mediclaim Premium'">  -->
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt
+                      <span tooltip="Premium Receipt"></span>Premium Receipt
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -838,9 +838,9 @@
                     </td>
                   </tr>
                   <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
-                    <th scope="row"><span tooltip="1">1</span></th>
+                    <th scope="row"><span tooltip="2">2</span></th>
                     <td>
-                      <span tooltip="Health Check Up Charges Receipt"></span>Health Check Up Charges Receipt
+                      <span tooltip="Health Checkup Receipt"></span>Health Checkup Receipt
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -873,9 +873,9 @@
                     </td>
                   </tr>
                   <tr *ngIf="expenseType == 'Medical Expenses for Parents' || expenseType == 'All'">
-                    <th scope="row"><span tooltip="1">1</span></th>
+                    <th scope="row"><span tooltip="3">3</span></th>
                     <td>
-                      <span tooltip="Medical Bills"></span>Medical Bills
+                      <span tooltip="Medical Expenses Bills"></span>Medical Expenses Bills
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"

@@ -53,6 +53,16 @@
                                                 </div>
                                             </div>
                                         </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Payroll Area
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="date"></p-sortIcon>
+                                                    <p-columnFilter type="date" field="date" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </ng-template>
 
@@ -61,12 +71,14 @@
                                         <td style="width: 3rem">
                                             <input type="checkbox">
                                         </td>
-                                        <td class="bg-color-light_gray"><label
-                                                class="form-lable mb-0">{{user1.employeeCode}}</label>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0">{{user1.employeeCode}}</label>
                                         </td>
-                                        <!-- <td class="bg-color-light_gray"> <span class="text-link" (click)="ViewHistory(template)">{{user1.headcode}}</span></td> -->
                                         <td class="bg-color-light_gray"><label
                                                 class="form-lable mb-0">{{user1.fullName}}</label></td>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0"> </label>
+                                        </td>
                                     </tr>
                                 </ng-template>
 

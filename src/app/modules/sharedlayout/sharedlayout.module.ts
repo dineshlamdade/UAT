@@ -16,7 +16,7 @@ registerLocaleData( localeFr, 'fr' );
 registerLocaleData( localeGb, 'en-GB' );
 import { PrimeNGModule } from './../../app.primeNG.module';
 import { LeftadminmenuComponent } from './leftadminmenu/leftadminmenu';
-
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 @NgModule( {
   declarations: [FooterComponent, HeaderComponent, LeftmenuComponent, LeftadminmenuComponent],
   imports: [
@@ -26,7 +26,8 @@ import { LeftadminmenuComponent } from './leftadminmenu/leftadminmenu';
     CollapseModule.forRoot(),
     TranslocoModule,
     AccordionModule,
-    PrimeNGModule
+    PrimeNGModule,
+    TooltipModule,
   ],
   exports: [
     CommonModule,

@@ -289,11 +289,8 @@
       <div class="table-responsive Custom_Table">
         <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
           <tbody>
-            <tr>
+            <!-- <tr>
               <td  colspan="2" class="bg-lightgray font-18 font700">Grand Total</td>
-              <!-- <td  colspan="2" class="bg-gray font-18 font700">Grand Total</td> -->
-              <!-- <td class="bg-gray font-18 font700 align-right"></td> -->
-              <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
               <td class="bg-gray font-18 font700 align-right">
               <td class="bg-gray font-18 font700 align-right" >
                 <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
@@ -318,40 +315,68 @@
               <td class="bg-gray font-18 font700"></td>
               <td class="bg-gray font-18 font700"></td>
               <td class="bg-gray font-18 font700"></td>
+            </tr> -->
+            <tr *ngIf="!previousEmployeeList?.length">
+              <td colspan="2" class="bg-lightgray font-18 font700"> Grand Total</td>
+              <!-- <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td> -->
+              <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
+              <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right">
+                <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
+                  {{ grandDeclarationTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-lightgray font-18 font700"></td>
+              <td class="bg-lightgray font-18 font700 align-right">
+                <span class="padding-right-12" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+                  {{ grandActualTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right">
+                <span class="padding-right-12" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-lightgray font-18 font700 align-right">
+                <span class="padding-right-12" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-lightgray font-18 font700"></td>
+              <td class="bg-lightgray font-18 font700"></td>
+              <td class="bg-lightgray font-18 font700"></td>
             </tr>
           </tbody>
         </table>
         <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
           <tbody>
-            <tr>
-              <td  colspan="2" class="bg-lightgray font-18 font700">Grand Total</td>
-              <!-- <td  colspan="2" class="bg-gray font-18 font700">Grand Total</td> -->
-              <!-- <td class="bg-gray font-18 font700 align-right"></td> -->
-              <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
-              <td class="bg-gray font-18 font700 align-right">
-              <td class="bg-gray font-18 font700 align-right" >
+            <tr *ngIf="!previousEmployeeList?.length">
+              <td colspan="2" class="bg-lightgray font-18 font700">Grand Total</td>
+              <!-- <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td> -->
+              <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
+              <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right">
                 <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
                   {{ grandDeclarationTotal | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="bg-gray font-18 font700 align-right">
-                <span class="padding-right-12" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+              <td class="bg-lightgray font-18 font700"></td>
+              <td class="bg-lightgray font-18 font700 align-right">
+               <span class="padding-right-12" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
                   {{ grandActualTotal | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="bg-gray font-18 font700 align-right">
-                <span class="padding-right-12" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
-                  {{ grandRejectedTotal | number: "1.2-2" }}
-                </span>
-              </td>
-              <td class="bg-gray font-18 font700 align-right">
+              <td class="bg-lightgray font-18 font700 align-right">
                 <span class="padding-right-12" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
                   {{ grandApprovedTotal | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="bg-gray font-18 font700"></td>
-              <td class="bg-gray font-18 font700"></td>
-              <td class="bg-gray font-18 font700"></td>
+              <td class="bg-lightgray font-18 font700 align-right">
+                <span class="padding-right-12" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-lightgray font-18 font700"></td>
+              <td class="bg-lightgray font-18 font700"></td>
+              <td class="bg-lightgray font-18 font700"></td>
             </tr>
           </tbody>
         </table>
@@ -751,7 +776,7 @@
                         [(ngModel)]="summary.declaredAmount"
                         class="form-control align-right"
                         (change)="onDeclaredAmountChange(summary, i, j)"
-                        [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
+                        [disabled]="summary.transactionStatus === 'Submitted'"
                       />
                     </div>
                   </td>

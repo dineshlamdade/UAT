@@ -1,447 +1,381 @@
-<form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
-    <div class="tabview-contents">
-        <div class="row">
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <fieldset>
-                    <legend>Bank Account Details</legend>
-                    <div class="row">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="custom-controls-stacked  mt-10 mb-10">
-                                <label class="custom-control custom-radio custom-control-inline">
-                                    <input formControlName="existingBank" type="radio" class="custom-control-input"
-                                        name="existingBank" value=1 (change)='DemoOncheck($event)'>
-                                    <span class="custom-control-label pt-1"
-                                        tooltip="Select Existing Bank Account">Select Existing Bank Account</span>
-                                </label>
-                                <!-- <label class="form-label ml-15" tooltip="Select Existing Bank Account" placement="Bank Account Details">Select Existing Bank Account</label> -->
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="custom-controls-stacked mt-10 mb-10">
-                                <label class="custom-control custom-radio custom-control-inline">
-                                    <input formControlName="addBack" type="radio" class="custom-control-input"
-                                        name="existingBank" value=2 (change)='DemoOncheck($event)'>
-                                    <span class="custom-control-label pt-1" tooltip="Add New Back account details">Add
-                                        New Back account details</span>
-                                </label>
-                                <!--  <label class="form-label ml-15" tooltip="Add New Back account details" placement="">Add New Back account details</label> -->
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="existingBank == 1 || existingBank == 2 ">
-                    <div class="row">
-                        <div class="col-sm-6 col-md-3" *ngIf="existingBank == 1">
-                            <label class="form-label">Select Bank Name</label>
-                         <!--    <select name="bankName" *ngIf=" accountNoList.length == 0 " id="bankName"
-                                formControlName="savingBankMasterId" disabled class="form-control custom-select"
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                                <option [ngValue]="null">Select</option>
-                                <option *ngFor="let bankName of accountNoList" [value]="bankName.value">
-                                    {{bankName .label}}
-                                </option>
-                            </select> -->
-                            <select name="bankName" *ngIf="accountNoList.length > 0 && existingBank == 1 " id="bankName"
-                                formControlName="savingBankMasterId" (change)='onSelectBankCode($event.target.value)'
-                                class="form-control custom-select"
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                                <option [ngValue]="null">Select</option>
-                                <option *ngFor="let bankName of accountNoList" [value]="bankName.value">
-                                    {{bankName.label}}
-                                </option>
-                            </select>
-
-                            <select name="bankName" *ngIf="accountNoList.length == 0 || existingBank == 2 " id="bankName"
-                            formControlName="savingBankMasterId" (change)='onSelectBankCode($event.target.value)'
-                            class="form-control custom-select"
-                            [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                            <option [ngValue]="null">Select</option>
-                            <option *ngFor="let bankName of accountNoList" [value]="bankName.value">
-                                {{bankName.label}}
-                            </option>
-                        </select>
-                           <!--  <select name="bankName" *ngIf="accountNoList.length > 0 " id="bankName"
-                                formControlName="savingBankMasterId" (change)='onSelectBankCode($event.target.value)'
-                                class="form-control custom-select"
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                                <option [ngValue]="null">Select</option>
-                                <option *ngFor="let bankName of accountNoList" [value]="bankName.value">
-                                    {{bankName.label}}
-                                </option>
-                            </select> -->
-                            <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
-                                <div *ngIf="masterForm.state.errors.required">Bank A/C Is Mandatory</div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">State Name</label>
-                            <select id="state" *ngIf="accountNoList.length > 0 && existingBank == 1" formControlName="state"
-                                (change)='onSelectState()' disabled 
-                                class="form-control custom-select"
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                                <option [ngValue]="null">Select</option>
-                                <option *ngFor="let state of stateNameList" [value]="state">
-                                    {{state}}
-                                </option>
-                            </select>
-
-                            <select id="state" *ngIf="accountNoList.length == 0 || existingBank == 2 " formControlName="state"
-                                (change)='onSelectState()'
-                                class="form-control custom-select"
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                                <option [ngValue]="null">Select</option>
-                                <option *ngFor="let state of stateNameList" [value]="state">
-                                    {{state}}
-                                </option>
-                            </select>
-                            <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
-                                <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
-                            </div>
-                        </div>
-
-
-                       <div class="col-sm-6 col-md-3">
-                            <label class="form-label">IFSC Code</label>
-                            <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList"
-                                placeholder="Search IFSC" [disabled]="accountNoList?.length && existingBank == 1"
-                                (completeMethod)="searchIFSC($event, bankIFSC)" formControlName="ifscCode"
-                                (ngModelChange)="bankIFSC = $event?.toUpperCase();
-                        onSelectIFSCCode(bankIFSC)">
-                                <ng-template let-ifsc pTemplate="item">
-                                    <div class="country-item">
-                                        <div>
-                                            {{ifsc}}</div>
-                                    </div>
-                                </ng-template>
-                            </p-autoComplete>
-                            <i class="fa fa-chevron-down down-arrow-icon"></i>
-                        </div>
-
-                        <div class="col-sm-6 col-md-3" *ngIf="existingBank == 2">
-                            <label class="form-label">Bank Name</label>
-                            <input type="text" formControlName="bankName" class="form-control" placeholder="Bank Name"
-                                disabled [ngClass]="{ 'is-invalid': submitted && masterForm.bankName.errors }">
-                            <div *ngIf="submitted && masterForm.bankName.errors" class="invalid-feedback">
-                                <div *ngIf="masterForm.bankName.errors.required">Bank Name Is Mandatory</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4 mb-10">
-                            <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Branch Name</label>
-                            <input type="text" formControlName="branchName" class="form-control"
-                                placeholder="Branch Name" disabled
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.branchName.errors }">
-                            <div *ngIf="submitted && masterForm.branchName.errors" class="invalid-feedback">
-                                <div *ngIf="masterForm.branchName.errors.required">Branch Name Is Mandatory</div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Branch Address</label>
-                            <textarea class="text-area" formControlName="bankAddress" class="form-control"
-                                placeholder="Branch Address" disabled
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.bankAddress.errors }"></textarea>
-                            <div *ngIf="submitted && masterForm.bankAddress.errors" class="invalid-feedback">
-                                <div *ngIf="masterForm.bankAddress.errors.required">Branch Address Is Mandatory</div>
-                            </div>
-                        </div>
-
-                         <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Account Number</label>
-
-                            <input type="text" *ngIf="accountNoList.length > 0 && existingBank == 1 " formControlName="accountNumber"
-                                class="form-control" [type]="accountNo ? 'text' : 'password'"  disabled
-                                onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Account Number"
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
-
-                                <i
-                                class="fa fa-eye" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
-                                [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }">
-                                {{accountNo ? 'visibility' : 'visibility_off'}}</i>
-
-                            <input type="text" *ngIf="accountNoList.length == 0 || existingBank == 2 " formControlName="accountNumber"
-                                class="form-control" [type]="accountNo ? 'text' : 'password'" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
-                                placeholder="Enter Account Number"
-                                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
-
-                            <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
-                                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
-                            </div>
-                        </div>
-                    </div>                    
-                    </div>
-
-                    <div class="row mt-30" *ngIf="paymentDetailGridData?.length">
-                        <div class="col-12 col-md-12 col-sm-12">
-                            <div class="table-responsive Custom_Table ">
-                                <table class="table table-striped table-bordered table-hover m-b-0">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col" class="wd-9">Sr No.</th>
-                                            <!-- <th scope="col" class="wd-15">State Name</th> -->
-                                            <th scope="col" class="wd-15">IFSC Code</th>
-                                            <th scope="col" class="wd-15">Bank Name</th>
-                                            <th scope="col" class="wd-15">Branch Name</th>
-                                            <th scope="col" class="wd-15">Branch Address</th>
-                                            <th scope="col" class="wd-15">Account Number</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let summary of paymentDetailGridData; let i = index">
-                                            <td class="wd-9">
-                                                <span tooltip="{{i+1}}">
-                        {{i+1}}
-                      </span>
-                                            </td>
-                                            <!-- <td class="wd-20">
-                                <span tooltip="{{summary.state}}">
-                                {{summary.state}}
-                                </span>
-                             </td> -->
-                                            <td class="wd-20">
-                                                <span tooltip="{{summary.ifscCode}}">
-                        {{summary.ifscCode}}
-                      </span>
-                                            </td>
-                                            <td class="wd-20">
-                                                <span tooltip="{{summary.bankName}}">
-                        {{summary.bankName}}
-                      </span>
-                                            </td>
-                                            <td class="wd-20">
-                                                <span tooltip="{{summary.branchName}}">
-                        {{summary.branchName}}
-                      </span>
-                                            </td>
-                                            <td class="wd-20">
-                                                <span tooltip="{{summary.bankAddress}}">
-                        {{summary.bankAddress}}
-                      </span>
-                                            </td>
-                                            <td class="wd-20">
-                                                <span tooltip="{{summary.accountNumber}}">
-                        {{summary.accountNumber}}
-                      </span>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="!paymentDetailGridData?.length">
-                                            <td colspan="7">
-                                                <span class="font-14 font500 align-center text-red">No
-                        Data Available</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-        <div class="row mt-30">
-            <div class="col-12">
-                <div class="card">
-                    <div class="mb-0 row">
-                        <div class="col-md-6">
-                            <h3 class="font-14 text-purple font-bold">Upload Documents </h3>
-                            <div class="float-left" *ngIf="submitted && masterfilesArray.length == 0">
-                                <label class="text-red mb-0">Please upload document</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <span class="font-bold text-link float-right"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div class="table-responsive Custom_Table">
-                                <table class="table table-striped table-hover table-bordered m-b-0">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col" class="font700 wd-8">Sr No.</th>
-                                            <th scope="col" class="font700 wd-40">Document Name</th>
-                                            <th scope="col" class="font700 wd-40">Attachment</th>
-                                            <th scope="col" class="font700 wd-12">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row"><span tooltip="1">1</span></th>
-                                            <td><span tooltip="Premium Receipt/ Premium Statement"></span>Medical Certificate/Form 10-1A</td>
-                                            <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
-                          class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                                                <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
-                                                    <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
-                                                        <i class="fa fa-paperclip text-orange" (click)="docViewer(template3,i)"></i> &nbsp; {{ doc.fileName }}
-                                                    </div>
-                                                </div>
-                                            </td>
-
-
-
-                                            <td>
-                                                <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-15">
-            <div class="col-12">
-                <div class="float-right mb-15">
-                    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
-            <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                    <button type="button" (click)="resetView()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
-            <i class=" fa fa-refresh"></i></b> Reset</button>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-20">
-            <div class="col-12">
-                <div class="card">
-                    <div class="mb-0">
-                        <h3 class="font-14 text-purple font-bold">Summary</h3>
-                    </div>
-                    <div class="">
-                        <div class="table-responsive Custom_Table">
-                            <table class="table table-striped table-hover table-bordered m-b-0">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th scope="col" class="wd-15">State Name</th>
-                                        <th scope="col" class="wd-15">IFSC Code</th>
-                                        <th scope="col" class="wd-15">Bank Name</th>
-                                        <th scope="col" class="wd-15">Branch Name</th>
-                                        <th scope="col" class="wd-15">Account Number</th>
-                                        <th scope="col" class="wd-15">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let summary of masterGridData; let i = index">
-                                        <td class="align-left wd-15"><span tooltip="{{summary.state}}">{{summary.state}}</span>
-                                        </td>
-                                        <td class="align-left wd-15"><span tooltip="{{summary.ifscCode}}">{{summary.ifscCode}}</span>
-                                        </td>
-                                        <td class="wd-10"><span tooltip="{{summary.bankName}}">{{summary.bankName}}</span>
-                                        </td>
-                                        <td class="wd-10"><span tooltip="{{summary.branchName}}">{{summary.branchName}}</span>
-                                        </td>
-                                        <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
-                                        </td>
-                                        <td class="wd-5">
-                                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
-                                        </td>
-                                    </tr>
-                                    <tr *ngIf="!masterGridData?.length">
-                                        <td colspan="6">
-                                            <span class="font-14 font500 align-center text-red">No Data
-                      Available</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm"
+  method="post" novalidate>
+  <div class="tabview-contents">
+    <div class="row">
     </div>
+    <div class="row mt-25">
+      <div class="col-12">
+        <fieldset>
+          <legend>Bank Account Details</legend>
+          <div class="row">
+            <!-- <div class="col-sm-6 col-md-3">
+                    <label class="form-label">State</label>
+                    <select name="state" id="state" class="form-control" formControlName="state"
+                      [ngClass]="{'is-invalid' : form.get('state').status == 'INVALID'}"
+                      (change)='onSelectState($event.target.value)'>
+                      <option *ngFor="let state of stateNameList" [value]="state">
+                        {{state}}
+                      </option>
+                    </select>
+                  </div> -->
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">State Name</label>
+              <select name="family_Member_Name" id="state" formControlName="state" (change)='onSelectState()'
+                class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+                <option [ngValue]="null">Select</option>
+                <option *ngFor="let state of stateNameList" [value]="state">
+                  {{state}}
+                  <!-- <option *ngFor="let state of stateNameList" [value]="state.value">
+                        {{state.label}} -->
+                </option>
+              </select>
+              <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <label class="form-label">IFSC Code</label>
+              <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList" placeholder="Search IFSC"
+                (completeMethod)="searchIFSC($event, bankIFSC)" formControlName="ifscCode" (ngModelChange)="bankIFSC = $event?.toUpperCase();
+                          onSelectIFSCCode(bankIFSC)">
+                <ng-template let-ifsc pTemplate="item">
+                  <div class="country-item">
+                    <div>
+                      {{ifsc}}</div>
+                  </div>
+                </ng-template>
+              </p-autoComplete>
+              <i class="fa fa-chevron-down down-arrow-icon"></i>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Bank Name</label>
+              <input type="text" formControlName="bankName" class="form-control" disabled
+                [ngClass]="{ 'is-invalid': submitted && masterForm.bankName.errors }">
+              <div *ngIf="submitted && masterForm.bankName.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.bankName.errors.required">Bank Name Is Mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Branch Name</label>
+              <input type="text" formControlName="branchName" class="form-control" disabled
+                [ngClass]="{ 'is-invalid': submitted && masterForm.branchName.errors }">
+              <div *ngIf="submitted && masterForm.branchName.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.branchName.errors.required">Branch Name Is Mandatory</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4 mb-10">
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label" for="">Branch Address</label>
+              <textarea class="text-area" formControlName="bankAddress" class="form-control" disabled
+                [ngClass]="{ 'is-invalid': submitted && masterForm.bankAddress.errors }"></textarea>
+              <div *ngIf="submitted && masterForm.bankAddress.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.bankAddress.errors.required">Branch Address Is Mandatory</div>
+              </div>
+            </div>
+            <!-- <div class="col-sm-6 col-md-3">
+              <label class="form-label">Account Number</label>
+              <input type="text" formControlName="accountNumber" class="form-control"
+                onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Account Number"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
+              </div>
+            </div> -->
+
+
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Account Number</label>
+              <input type="password" [type]="accountNo ? 'text' : 'password'"
+              formControlName="accountNumber" class="form-control"
+                placeholder="Enter Account Number"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+                <i
+                   class="fa fa-eye" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
+                   [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
+              <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="row mt-30" *ngIf="paymentDetailGridData?.length">
+            <div class="col-12 col-md-12 col-sm-12">
+              <div class="table-responsive Custom_Table ">
+                <table class="table table-striped table-bordered table-hover m-b-0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" class="wd-9">Sr No.</th>
+                      <!-- <th scope="col" class="wd-15">State Name</th> -->
+                      <th scope="col" class="wd-15">IFSC Code</th>
+                      <th scope="col" class="wd-15">Bank Name</th>
+                      <th scope="col" class="wd-15">Branch Name</th>
+                      <th scope="col" class="wd-15">Branch Address</th>
+                      <th scope="col" class="wd-15">Account Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let summary of paymentDetailGridData; let i = index">
+                      <td class="wd-9">
+                        <span tooltip="{{i+1}}">
+                          {{i+1}}
+                        </span>
+                      </td>
+                      <!-- <td class="wd-20">
+                                  <span tooltip="{{summary.state}}">
+                                  {{summary.state}}
+                                  </span>
+                               </td> -->
+                      <td class="wd-20">
+                        <span tooltip="{{summary.ifscCode}}">
+                          {{summary.ifscCode}}
+                        </span>
+                      </td>
+                      <td class="wd-20">
+                        <span tooltip="{{summary.bankName}}">
+                          {{summary.bankName}}
+                        </span>
+                      </td>
+                      <td class="wd-20">
+                        <span tooltip="{{summary.branchName}}">
+                          {{summary.branchName}}
+                        </span>
+                      </td>
+                      <td class="wd-20">
+                        <span tooltip="{{summary.bankAddress}}">
+                          {{summary.bankAddress}}
+                        </span>
+                      </td>
+                      <td class="wd-20">
+                        <span tooltip="{{summary.accountNumber}}">
+                          {{summary.accountNumber}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr *ngIf="!paymentDetailGridData?.length">
+                      <td colspan="7">
+                        <span class="font-14 font500 align-center text-red">No
+                          Data Available</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row mt-30">
+      <div class="col-12">
+        <div class="card">
+          <div class="mb-10 row">
+            <div class="col-md-6">
+              <h3 class="font-14 text-purple font-bold">Upload Documents </h3>
+              <div class="float-left" *ngIf="submitted && masterfilesArray.length == 0">
+                <label class="text-red mb-0">Please upload document</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <span class="font-bold text-link float-right"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-9">
+              <div class="table-responsive Custom_Table">
+                <table class="table table-striped table-hover table-bordered m-b-0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" class="font700 wd-8">Sr No.</th>
+                      <th scope="col" class="font700 wd-40">Document Name</th>
+                      <th scope="col" class="font700 wd-40">Attachment</th>
+                      <th scope="col" class="font700 wd-12">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row"><span tooltip="1">1</span></th>
+                      <td><span tooltip="Interest Certificate / Bank Statement"></span>Interest Certificate / Bank Statement</td>
+                      <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
+                            class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                        <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
+                          <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                            <i class="fa fa-paperclip text-orange" (click)="docViewer(template3,i)"></i> &nbsp;
+                            {{ doc.fileName }}
+                          </div>
+                        </div>
+                      </td>
+
+
+
+                      <td>
+                        <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                          (click)="UploadModal(template)" data-toggle="modal"
+                          data-target="#UploadModal"></i>&nbsp;&nbsp;
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-15">
+      <div class="col-12">
+        <div class="float-right mb-15">
+          <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+            tooltip="Save"><b>
+              <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+          <button type="button" (click)="resetView()"
+            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+              <i class="fa fa-floppy-o"></i></b> Reset</button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-12">
+        <div class="card">
+          <div class="mb-0">
+            <h3 class="font-14 text-purple font-bold">Summary</h3>
+          </div>
+          <div class="">
+            <div class="table-responsive Custom_Table">
+              <table class="table table-striped table-hover table-bordered m-b-0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="wd-15">State Name</th>
+                    <th scope="col" class="wd-15">IFSC Code</th>
+                    <th scope="col" class="wd-15">Bank Name</th>
+                    <th scope="col" class="wd-15">Branch Name</th>
+                    <th scope="col" class="wd-15">Account Number</th>
+                    <th scope="col" class="wd-15">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let summary of masterGridData; let i = index">
+                    <td class="align-left wd-15"><span tooltip="{{summary.state}}">{{summary.state}}</span>
+                    </td>
+                    <td class="align-left wd-15"><span tooltip="{{summary.ifscCode}}">{{summary.ifscCode}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.bankName}}">{{summary.bankName}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.branchName}}">{{summary.branchName}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
+                    </td>
+                    <td class="wd-5">
+                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                        (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
+                    </td>
+                  </tr>
+                  <tr *ngIf="!masterGridData?.length">
+                    <td colspan="6">
+                      <span class="font-14 font500 align-center text-red">No Data
+                        Available</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </form>
 <ng-template #template>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-      aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-        <div class="card">
-            <div class="card-body">
-                <div class="row clearfix">
-                    <!-- <div class="col-md-12">
-                 <label class="form-label">Upload File here :</label>
-              </div> -->
-                    <div class="col-md-12">
-                        <div class="fileuploadbox bg-color-lightgray">
-                            <label class="filelabel">
-              <i class="fa fa-upload">
-              </i>
-              <span class="title">
-                Choose file
-              </span>
-              <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
-                accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
-            </label>
-                        </div>
-                        <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
-                            <span class="text-purple font-14 font700">Selected Files</span>
-                            <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
-              <div class="text-ellipsis"><i class="fa fa-paperclip">
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+          <!-- <div class="col-md-12">
+                   <label class="form-label">Upload File here :</label>
+                </div> -->
+          <div class="col-md-12">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
+                <i class="fa fa-upload">
                 </i>
-                <span class="title"  tooltip="{{ item.name }}">
-                  {{ item.name }}
+                <span class="title">
+                  Choose file
                 </span>
-              </div>
-              <div>
-                <i class="fa fa-times text-red font-18" (click)="removeSelectedDocument(index)"></i>
-              </div>
-            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-10">
-                        <label class="form-label">Remark</label>
-                    </div>
-                    <div class="col-md-12">
-                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-                    </div>
-                </div>
+                <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+              </label>
             </div>
+            <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
+                <div class="text-ellipsis"><i class="fa fa-paperclip">
+                  </i>
+                  <span class="title">
+                    {{ item.name }}
+                  </span>
+                </div>
+                <div>
+                  <i class="fa fa-times text-red font-18" (click)="removeSelectedDocument(index)"></i>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-12 mt-10">
+            <label class="form-label">Remark</label>
+          </div>
+          <div class="col-md-12">
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
 </ng-template>
 
 <!-- For Doc Viewer  -->
 <ng-template #template3>
-    <div class="modal-header">
-        <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
-    <span aria-hidden="true">×</span>
-  </button>
-    </div>
-    <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
 <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document" (click)="previousDocViewer()" [disabled]="urlIndex == 0">
-        <i class="fa fa-angle-left text-white font-30 p-10"></i>
-      </button>
-            </div>
-            <div class="col-md-10">
-                <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
-                <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()" [disabled]="urlIndex == urlArray.length - 1">
-        <i class="fa fa-angle-right text-white font-30 p-10"></i>
-      </button>
-            </div>
-        </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+          (click)="previousDocViewer()" [disabled]="urlIndex == 0">
+          <i class="fa fa-angle-left text-white font-30 p-10"></i>
+        </button>
+      </div>
+      <div class="col-md-10">
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
+          [disabled]="urlIndex == urlArray.length - 1">
+          <i class="fa fa-angle-right text-white font-30 p-10"></i>
+        </button>
+      </div>
     </div>
-    <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary">Save</button>  -->
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
-    Ok
-  </button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+      Ok
+    </button>
+  </div>
 </ng-template>

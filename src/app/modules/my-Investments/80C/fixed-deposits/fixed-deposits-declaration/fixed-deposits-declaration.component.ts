@@ -94,6 +94,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
   public grandDeclarationTotal: number;
+  public requiredField: boolean = false;
   public grandActualTotal: number;
   public grandRejectedTotal: number;
   public grandApprovedTotal: number;
@@ -164,6 +165,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   dateOfJoining: Date;
+  public selectrow : any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -210,6 +212,11 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getTransactionFilterData();
+    if (this.data) {
+    this.selectrow = this.data.accountNumber;
+    } else {
+      this.selectrow = "any";
+    }
     // console.log('data::', this.data);
     // if (this.data === undefined || this.data === null) {
     //   this.declarationPage();
@@ -719,6 +726,30 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     i: number,
   
   ) {
+    if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null || this.investmentGroup3TransactionDetailList[i].actualAmount == "0" ) {
+      this.requiredField = true;
+      event.target.checked = false;
+     if(this.investmentGroup3TransactionDetailList[i].actualAmount == "0") {
+       this.alertService.sweetalertError(
+         'Please Enter Actual Amount'
+       );
+     } else {
+       this.alertService.sweetalertError(
+         'Please Fill Required Field.'
+       );
+     }
+      return;
+    } else {
+      this.requiredField = false;
+    }
+    
+    // if(data.declaredAmount == null || data.declaredAmount <= 0){
+    //   this.alertService.sweetalertError(
+    //     'Please Enter Declared Amount'
+    //   );
+    //   this.enableSelectAll = false;
+    //   event.target.checked = false;
+    // }
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
@@ -756,6 +787,13 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
+       if(formatedActualAmount == null || formatedActualAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Actual Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
      this.uploadGridData.push(this.investmentGroup3TransactionDetailList[i].investmentGroup3TransactionId);
 

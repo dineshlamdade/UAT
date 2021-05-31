@@ -200,8 +200,12 @@ export class PPFDeclarationComponent implements OnInit {
       this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      if (input.canView === true){
+        this.isDisabled = true;
+      } else{
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -411,6 +415,8 @@ export class PPFDeclarationComponent implements OnInit {
     }
 
     this.resetAll();
+    this.enableSelectAll=false;
+    this.isCheckAll=false;
   }
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
@@ -441,6 +447,13 @@ export class PPFDeclarationComponent implements OnInit {
     j: number,
 
   ) {
+    if(data.declaredAmount == null || data.declaredAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
     const checked = event.target.checked;
     this.ppfDeclarationData = data
 
@@ -509,6 +522,7 @@ export class PPFDeclarationComponent implements OnInit {
       console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(data.investmentGroup1TransactionId);
       this.uploadGridData.splice(index, 1);
+      this.isCheckAll=false;
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
@@ -543,16 +557,19 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
-  checkUncheckAll(item: any) {
-    // console.log(this.isCheckAll);
-    if (this.isCheckAll) {
-      // console.log('CHECK ALL IS FALSE ');
+  checkUncheckAll(item: any,event: { target: { checked: any } }) {
+
+    console.log(event.target.checked);
+    this.isCheckAll=event.target.checked;
+    console.log(this.isCheckAll);
+    if (!this.isCheckAll) {
+      console.log('CHECK ALL IS FALSE ');
       this.isCheckAll = false;
       this.enableSelectAll = false;
       this.enableCheckboxFlag2 = null;
       this.uploadGridData = [];
     } else {
-      // console.log('CHECK ALL IS TRUE ');
+      console.log('CHECK ALL IS TRUE ');
       this.isCheckAll = true;
       this.enableSelectAll = true;
       this.enableCheckboxFlag2 = item.institutionName;
