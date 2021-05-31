@@ -7,11 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.CompanySettingRoutingModule = void 0;
+var attribute_dependency_component_1 = require("./attribute-dependency/attribute-dependency.component");
 var garnishment_master_component_1 = require("./payroll/garnishment-master/garnishment-master.component");
 var attribute_creation_component_1 = require("./attribute-creation/attribute-creation.component");
 var business_cycle_component_1 = require("./business-cycle/business-cycle.component");
 var head_creation_component_1 = require("./head-creation/head-creation.component");
-var attribute_selection_component_1 = require("./attribute-selection/attribute-selection.component");
 var payroll_head_group_creation_component_1 = require("./payroll-head-group-creation/payroll-head-group-creation.component");
 var user_rolesand_permission_component_1 = require("./user-rolesand-permission/user-rolesand-permission.component");
 var role_privilege_component_1 = require("./user-rolesand-permission/role-privilege/role-privilege.component");
@@ -22,6 +22,7 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var claim_form_component_1 = require("./claim-form/claim-form.component");
 var declaration_form_component_1 = require("./declaration-form/declaration-form.component");
+var attribute_global_component_1 = require("./attribute-global/attribute-global.component");
 var routes = [
     {
         path: 'business-cycle',
@@ -40,7 +41,7 @@ var routes = [
     },
     {
         path: 'attribute-group',
-        component: attribute_selection_component_1.AttributeSelectionComponent,
+        component: attribute_global_component_1.AttributeGlobalComponent,
         data: { title: ':: Epic :: Company Settings' }
     },
     {
@@ -87,6 +88,16 @@ var routes = [
         path: 'declarationForm',
         component: declaration_form_component_1.DeclarationFormComponent,
         data: { title: 'Declaration-Message :: Company Setting' }
+    },
+    {
+        path: 'attribute-global',
+        component: attribute_global_component_1.AttributeGlobalComponent,
+        data: { title: ':: Epic :: Company Setting' }
+    },
+    {
+        path: 'attribute-dependency',
+        component: attribute_dependency_component_1.AttributeDependencyComponent,
+        data: { title: ':: Epic :: Company Setting' }
     },
 ];
 var CompanySettingRoutingModule = /** @class */ (function () {

@@ -371,7 +371,7 @@ export class NpsMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
+    // console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'National Pension Scheme Document needed to Create Master.'
@@ -386,11 +386,47 @@ export class NpsMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      // const data = this.form.getRawValue();
+      // data.proofSubmissionId = this.proofSubmissionId;
+      // if (this.form.value.frequencyOfPayment === 'As & When') {
+      //   const start = this.datePipe.transform(
+      //     this.form.get('policyStartDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   const end = this.datePipe.transform(
+      //     this.form.get('policyEndDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   data.policyStartDate = start;
+      //   data.policyEndDate = end;
+        // const from = this.datePipe.transform(
+        //   this.form.get('fromDate').value,
+        //   'yyyy-MM-dd'
+        // );
+        // const to = this.datePipe.transform(
+        //   this.form.get('toDate').value,
+        //   'yyyy-MM-dd'
+        // );
+
+      //   data.fromDate = from;
+      //   data.toDate = to;
+      // }
+      // if (this.form.value.frequencyOfPayment !== 'As & When') {
+      //   const from = this.datePipe.transform(
+      //     this.form.get('fromDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   const to = this.datePipe.transform(
+      //     this.form.get('toDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
+        // }
 
       console.log('National Pension Scheme ::', data);
 
@@ -409,7 +445,7 @@ export class NpsMasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
@@ -461,6 +497,28 @@ export class NpsMasterComponent implements OnInit {
 
   // Calculate annual amount on basis of premium and frquency
   public calculateAnnualAmount() {
+
+    console.log(this.form.value.frequencyOfPayment);
+    if (this.form.value.frequencyOfPayment === 'As & When') {
+      console.log('in as and when');
+      //this.form.get(this.form.value.premiumAmoun).setValue(null);
+      const financialYearStartDate = this.datePipe.transform(
+        this.financialYearStartDate,
+        'dd-MMM-YYYY'
+      );
+      const financialYearEndDate = this.datePipe.transform(
+        this.financialYearEndDate,
+        'dd-MMM-YYYY'
+      );
+      // this.form.get('policyStartDate').setValue(financialYearStartDate);
+      // this.form.get('policyEndDate').setValue(financialYearEndDate);
+
+      this.form.get('premiumAmount').setValue(0);
+      this.form.get('annualAmount').setValue(0);
+      // this.form.get('fromDate').setValue(financialYearStartDate);
+      // this.form.get('toDate').setValue(financialYearEndDate);
+      this.form.get('ecs').setValue('0');
+    }else{
     let installment = this.form.value.premiumAmount;
     if (!this.form.value.frequencyOfPayment) {
       installment = 0;
@@ -475,6 +533,7 @@ export class NpsMasterComponent implements OnInit {
       installment = installment * 1;
     }
     this.form.get('annualAmount').setValue(installment);
+  }
   }
 
   // Family relationship shown on Policyholder selection

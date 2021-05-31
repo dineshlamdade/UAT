@@ -52,7 +52,9 @@ export class PostOfficeSummaryComponent implements OnInit {
       institution : institution,
       accountNumber : accountNumber,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
+    };
     this.institution = institution;
     this.accountNumber = accountNumber;
     // this.policyNo = policyNo;
@@ -121,7 +123,7 @@ export class PostOfficeSummaryComponent implements OnInit {
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPlanDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-      if (this.futureNewPolicyDeclaredAmount > 0) {
+      if (this.futureNewPolicyDeclaredAmount >= 0) {
       this.addFuturePlan();
     }else if(this.futureNewPolicyDeclaredAmount <0) {
       this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;

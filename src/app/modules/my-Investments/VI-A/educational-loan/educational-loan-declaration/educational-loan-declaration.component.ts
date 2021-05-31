@@ -166,6 +166,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   public canEdit : boolean;
   public updateReceiptAmount: any;
+  public onHideSaveButton : boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -462,7 +463,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     j: number
   ) {
     const checked = event.target.checked;
-
+    this.onHideSaveButton = checked;
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
@@ -473,7 +474,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     if (checked) {
       this.transactionDetail[j].educationalLoanTransactionList[
         i
-      ].actualAmount = data.declaredAmount;
+      ].actualAmount = data.actualAmount;
 
 
       formatedActualAmount = Number(
@@ -535,7 +536,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     j: number
   ) {
     const checked = event.target.checked;
-
+    this.onHideSaveButton = checked;
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
@@ -1039,12 +1040,12 @@ export class EducationalLoanDeclarationComponent implements OnInit {
 
   upload() {
 
-    if (this.filesArray.length === 0) {
-      this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
-      );
-      return;
-    }
+    // if (this.filesArray.length === 0) {
+    //   this.alertService.sweetalertError(
+    //     'Please attach Premium Receipt / Premium Statement'
+    //   );
+    //   return;
+    // }
     console.log('this.transactionDetail::', this.transactionDetail);
 
     this.transactionDetail.forEach((element) => {
@@ -1084,6 +1085,36 @@ export class EducationalLoanDeclarationComponent implements OnInit {
         innerElement.declaredAmount = 0.0;
       });
     });
+
+
+     // let numberValue = Number(actualAmount);
+     console.log((this.transactionDetail[0].educationalLoanTransactionList[0].actualAmount));
+
+     if(this.transactionDetail[0].educationalLoanTransactionList[0].actualAmount == 0 && this.transactionDetail[0].educationalLoanTransactionList[0].declaredAmount == '0.00'){
+
+       if(this.transactionDetail[0].educationalLoanTransactionList.length == 0 || this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList.length == 0)
+         {
+           this.alertService.sweetalertError(
+             'Please enter value'
+           );
+           return;
+         }
+       }
+
+       if(this.transactionDetail[0].educationalLoanTransactionList[0].actualAmount > 0 && this.filesArray.length === 0){
+       this.alertService.sweetalertError(
+           'Please attach Premium Receipt / Premium Statement'
+         );
+         return;
+       }
+       if(this.transactionDetail[0].educationalLoanTransactionPreviousEmployerList.length > 0 && this.filesArray.length == 0){
+         this.alertService.sweetalertError(
+           'Please attach Premium Receipt / Premium Statement'
+         );
+         return;
+
+       }
+
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -1192,7 +1223,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   }
 
   // --------------- ON change of declared Amount Edit Modal-------------
-  onDeclaredAmountChangeInEditCase(
+  onActualAmountChangeInEditCaseEmp(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
@@ -1590,6 +1621,20 @@ export class EducationalLoanDeclarationComponent implements OnInit {
           this.initialArrayIndex = [];
 
           this.transactionDetail.forEach((element) => {
+
+            this.initialArrayIndex.push(element.educationalLoanTransactionList.length);
+
+            element.educationalLoanTransactionList.forEach((innerElement) => {
+
+
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+            });
+
             this.initialArrayIndex.push(element.educationalLoanTransactionPreviousEmployerList.length);
 
             element.educationalLoanTransactionPreviousEmployerList.forEach((innerElement) => {
@@ -1600,13 +1645,6 @@ export class EducationalLoanDeclarationComponent implements OnInit {
                 );
               }
 
-              if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              }
               innerElement.declaredAmount = this.numberFormat.transform(
                 innerElement.declaredAmount
               );

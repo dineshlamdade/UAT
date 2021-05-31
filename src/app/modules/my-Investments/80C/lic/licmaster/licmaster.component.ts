@@ -161,6 +161,7 @@ export class LicmasterComponent implements OnInit {
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
+      { label: 'Single Premium', value: 'SinglePremium' },
     ];
 
     this.addNewRowId = 0;
@@ -397,7 +398,7 @@ export class LicmasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Transaction" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               this.alertService.sweetalertWarning(res.status.messsage);
