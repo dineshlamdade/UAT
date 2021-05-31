@@ -76,6 +76,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	savedNumberOfTransaction: any = 0;
 	AllNonRecurringTransactionScheduledData: any;
 	selectedClawbackRowIndex: any;
+	newDataRow: any = [];
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -712,10 +713,17 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** Copy To From Date TO All */
-	copyFromDateToAll(){
+	copyFromDateToAll(data){
 	this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
 		element.fromdate = this.selectedFromDateForSave
 	});	
+    
+	this.getFromDateForSave(this.selectedFromDateForSave, data)
+	}
+
+	/** Add new Row into table */
+	addNewRow(data, rowIndex){
+		this.NonRecurringTransactionGroupAPIEmpwiseData.push(data)
 	}
 
 	/** On change Transaction Type */

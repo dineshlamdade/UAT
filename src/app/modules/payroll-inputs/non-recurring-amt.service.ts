@@ -64,10 +64,6 @@ export class NonRecurringAmtService {
     return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup`, data);
   }
   
-  
-  
-  
-  
   NonRecurringTransactionGroupAPIbyId(data):Observable<any>{
     return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupAPIbyId`, data);
   }
