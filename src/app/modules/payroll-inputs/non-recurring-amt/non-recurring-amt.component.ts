@@ -77,6 +77,8 @@ export class NonRecurringAmtComponent implements OnInit {
 	AllNonRecurringTransactionScheduledData: any;
 	selectedClawbackRowIndex: any;
 	newDataRow: any = [];
+	NonRecurringTransactionGroupHistoryAPIbyIdData: any;
+	updatefrequency: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -170,6 +172,33 @@ export class NonRecurringAmtComponent implements OnInit {
 		)
 	}
 
+	/** Transaction History by group id */
+	NonRecurringTransactionGroupHistoryAPIbyId(){
+		const formData = new FormData();
+		formData.append('nonRecurringTransactionGroupId', this.nonRecurringTransactionGroupId)
+
+		this.nonRecService.NonRecurringTransactionGroupHistoryAPIbyId(formData).subscribe(
+			res => {
+				this.NonRecurringTransactionGroupHistoryAPIbyIdData = res.data.results[0];
+			}
+		)
+	}
+
+	/** view transaction group */
+	viewTransaction(template1: TemplateRef<any>,Summarydata){
+		this.modalRef = this.modalService.show(
+			template1,
+			Object.assign({}, {
+				class: 'gray modal-lg'
+			})
+		);
+		this.viewHeadHistory = Summarydata
+		this.employeeMasterId = Summarydata.employeeMasterId
+		this.headMasterId = Summarydata.payrollHeadMaster.headMasterId
+		this.nonRecurringTransactionGroupId = Summarydata.nonRecurringTransactionGroupId
+		this.NonRecurringTransactionGroupHistoryAPIbyId()
+	}
+
 	/** View Header History */
 	ViewHeaderHistory(template: TemplateRef<any>, Summarydata) {
 		this.modalRef = this.modalService.show(
@@ -186,9 +215,9 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** Open Popup for View Transaction History */
-	ViewTransactionHistory(template1: TemplateRef<any>, Summarydata) {
+	ViewTransactionHistory(template1i: TemplateRef<any>, Summarydata) {
 		this.modalRef = this.modalService.show(
-			template1,
+			template1i,
 			Object.assign({}, {
 				class: 'gray modal-xl'
 			})
@@ -266,7 +295,12 @@ export class NonRecurringAmtComponent implements OnInit {
 			    this.selectedClawbackInputType = transactionData.clawbackInputType
 			    this.clawbackperiod = transactionData.clawbackPeriod
 			    this.clawbackFrequency = transactionData.clawbackUnit
+				this.updatefrequency = transactionData.frequency
+				if(transactionData.clawbackDate == null){
+					this.clawbackDate = ""
+				}else{
 				this.clawbackDate = transactionData.clawbackDate
+				}
 				// console.log(this.NonRecurringTransactionGroupAPIbyIdData[0])
 			}
 		)
@@ -307,6 +341,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	getTransactionType(transactiontype, index) {
 		this.selectedTransactionIndex = index;
 		this.selectedTransactionType = transactiontype
+		
 	}
 
 	/** Get selected From Date */
@@ -359,7 +394,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			"payrollAreaId": this.selectedEmpData[this.index].payrollArea.payrollAreaId.toString(),
 			"payrollAreaCode": this.selectedEmpData[this.index].payrollArea.payrollAreaCode,
 			"onceEvery": parseInt(this.onceEvery),
-			"frequency": this.selectedEmpData[this.index].frequency,
+			"frequency": this.updatefrequency,
 			"fromDate": this.selectedFromDate,
 			"transactionsType": this.selectedTransactionType,
 			"numberOfTransactions": parseInt(this.updateNoOfTransaction),
@@ -1108,6 +1143,8 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** On change frequency */
 	getSelectedFrequency(value, data) {
+		this.updatefrequency = value
+		console.log(this.updatefrequency)
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -2048,7 +2085,11 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.NonRecurringTransactionScheduleupdateById(this.updateScheduleData).subscribe(
 			res => {
 				this.toaster.success("", "Transaction Schedule updated successfully")
+				if(this.nonRecurringTransactionGroupId != undefined){
 				this.NonRecurringTransactionScheduleEMP()
+				}else{
+					this.getAllScheduleData()
+				}
 			}
 		)
 	}
@@ -2063,6 +2104,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		);
 
 		this.viewScheduleData = scheduleData
+		console.log(JSON.stringify(this.viewScheduleData))
 		this.nonRecurringTransactionScheduleId = scheduleData.nonRecurringTransactionScheduleId
 		this.nonRecurringTransactionGroupId = scheduleData.nonRecurringTransactionGroupId
 		this.NonRecurringTransactionScheduleRemarkHistorybyScheduleId()
