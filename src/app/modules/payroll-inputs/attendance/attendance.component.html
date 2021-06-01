@@ -439,11 +439,8 @@
                                                                         class="form-control custom-select"
                                                                         (change)="getSelectedCycleByEmp($event.target.value)">
                                                                         <option value="">Select</option>
-                                                                        <option> 7 </option>
-                                                                        <option> 8 </option>
-                                                                        <option> 9 </option>
-                                                                        <option> 11 </option>
-                                                                        <option> 13</option>
+                                                                        <option value="{{cycleIdName.id}}" *ngFor="let cycleIdName of businessCycleIDData">{{cycleIdName.periodName}}</option>
+                                                                       
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-2">
@@ -521,34 +518,36 @@
                                                                     <label class="form-label mt-1 mb-0">Business
                                                                         Year</label>
                                                                     <label
-                                                                        class="font-12 text-ellipsis mt-1 mb-0"></label>
+                                                                        class="font-12 text-ellipsis mt-1 mb-0" *ngIf="businessCycleData">{{businessCycleData.businessYear}}</label>
                                                                 </div>
                                                                 <div class="col-md-2" *ngIf="selectedEmpData[index]">
                                                                     <label class="form-label mt-1 mb-0">Cycle</label>
                                                                     <label class="font-12 text-ellipsis mt-1 mb-0">
                                                                         {{selectedEmpData[index].cycleName}}
+                                                                       
                                                                     </label>
+                                                                   
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-2" *ngIf="businessFrequencyName">
                                                                     <label
                                                                         class="form-label mt-1 mb-0">Frequency</label>
                                                                     <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                        {{frequencyArray ? frequencyArray.name : '' }}
+                                                                        {{businessFrequencyName.name}}
                                                                     </label>
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-2" *ngIf="businessCycleData">
 
                                                                     <label class="form-label mt-1 mb-0">Start
                                                                         Date</label>
                                                                     <label class="font-12 text-ellipsis mt-1 mb-0">
-
+                                                                        {{businessCycleData.fromDate}}
                                                                     </label>
                                                                 </div>
-                                                                <div class="col-md-1">
+                                                                <div class="col-md-1" *ngIf="businessCycleData">
 
                                                                     <label class="form-label mt-1 mb-0">End Date</label>
                                                                     <label class="font-12 text-ellipsis mt-1 mb-0">
-
+                                                                        {{businessCycleData.toDate}}
                                                                     </label>
                                                                 </div>
                                                                 <div class="col-md-2" *ngIf="selectedEmpData[index]">
@@ -825,7 +824,7 @@
                                                         </span><span class="count-badge"
                                                             style="top: -36px !important;">{{attendanceInputGetAPIFuturecyclesData.length}}</span></label>
 
-                                                    <input id="tab4" class="border-tab-input" type="radio" name="tabs"
+                                                    <input (click)="allCycleTab()" id="tab4" class="border-tab-input" type="radio" name="tabs"
                                                         [checked]="tabsIndex == 4">
                                                     <label class="border-tab-label" for="tab4"
                                                         style="width: 25% !important;height: 74px !important;"><i
@@ -837,7 +836,7 @@
                                                                 days processed</p>
                                                             <p>in All cycles</p>
                                                         </span><span class="count-badge"
-                                                            style="top: -36px !important;">{{attendanceInputGetAPIFuturecyclesData.length}}</span></label>
+                                                            style="top: -36px !important;">{{AllCycleRecordsData.length}}</span></label>
                                                     <input id="tab3" class="border-tab-input" type="radio" name="tabs"
                                                         (click)="previousCycleTab()" [checked]="tabsIndex == 3">
                                                     <label class="border-tab-label" for="tab3"
@@ -1272,7 +1271,7 @@
                                                         <div class="row mt-20">
                                                             <div class="col-md-12">
                                                                 <div class="float-right">
-                                                                    <button [disabled]="selectedEmpData.length <= 1"
+                                                                    <button *ngIf="!showEmpSelectionFlag" [disabled]="selectedEmpData.length <= 1"
                                                                         type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled 
                                                                     btn-labeled-left ripple"
                                                                         (click)="AttendanceInput();attendanceForNextEmp()"><b>
@@ -1723,7 +1722,7 @@
                                                         <div class="row mt-20">
                                                             <div class="col-md-12">
                                                                 <div class="float-right">
-                                                                    <button type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled 
+                                                                    <button *ngIf="!showEmpSelectionFlag" type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled 
                                                                 btn-labeled-left ripple"
                                                                         (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                             <i class="fa fa-floppy-o"></i></b> Save &
@@ -2177,7 +2176,7 @@
                                                         <div class="row mt-20">
                                                             <div class="col-md-12">
                                                                 <div class="float-right">
-                                                                    <button type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled 
+                                                                    <button *ngIf="!showEmpSelectionFlag" type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled 
                                                                 btn-labeled-left ripple"
                                                                         [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"
                                                                         (click)="AttendanceInput();attendanceForNextEmp()"><b>
@@ -2211,6 +2210,338 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </section>
+
+
+
+                                                    <section id="content4" class="tab-content">
+                                                        <div class="row mt-20">
+                                                            <div class="col-md-12">
+                                                                <p-table
+                                                                    [value]="AllCycleRecordsData">
+                                                                    <ng-template pTemplate="header">
+                                                                        <tr>
+                                                                            <th class="wd-10">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    Date &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="date">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter field="date"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-10">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    Day &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="days">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter field="days"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-20">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    Payroll Area &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="days">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter field="days"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-8">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    <span tooltip="Weekly Off"
+                                                                                        placement="bottom"> Weekly
+                                                                                        Off</span> &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="WO">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter field="WO"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-8">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    <span tooltip="Holiday"
+                                                                                        placement="bottom">
+                                                                                        Holiday</span>
+                                                                                    &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="holiday">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter field="holiday"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-8">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    <span tooltip="Paid Leave"
+                                                                                        placement="bottom">Leave</span>
+                                                                                    &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="PL">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter field="PL"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-5">
+                                                                                <div class="p-d-flex p-jc-center p-ai-center"
+                                                                                    style="width:107% !important">
+                                                                                    <span tooltip="Loss of Pay Days"
+                                                                                        placement="bottom">Loss of Pay
+                                                                                        Days</span> &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="LOP">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter field="LOP"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-8">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    Present Day &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="Presentdays">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter
+                                                                                            field="Presentdays"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-8"
+                                                                                *ngIf="is30daysPayroll == '1'">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    Adjust-ment &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="Adj">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter field="Adj"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-10">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    Payable Day &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon field="payableday">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter
+                                                                                            field="payableday"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-8">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    Pertaining Cycle &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon
+                                                                                            field="pretainingcycle">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter
+                                                                                            field="pretainingcycle"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th class="wd-5">
+                                                                                <div
+                                                                                    class="p-d-flex p-jc-center p-ai-center">
+                                                                                    Processing Cycle &nbsp;&nbsp;
+                                                                                    <div class="Sort_Filter_Position">
+                                                                                        <p-sortIcon
+                                                                                            field="processingcycle">
+                                                                                        </p-sortIcon>
+                                                                                        <p-columnFilter
+                                                                                            field="processingcycle"
+                                                                                            display="menu"
+                                                                                            class="p-ml-auto">
+                                                                                        </p-columnFilter>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                    <ng-template pTemplate="body" let-allCycle
+                                                                        let-rowIndex=rowIndex class="tablebodyscroll">
+                                                                        <tr class="p-selectable-row">
+                                                                            <td class="bg-color-light_gray">
+                                                                                <div class="form-group mb-0">
+                                                                                    <div class="input-group">
+                                                                                        <label
+                                                                                            class="form-lable mb-0">{{allCycle.date
+                                                                                            | date:
+                                                                                            'dd-MMM-yyyy'}}</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="bg-color-light_gray"><label
+                                                                                    class="form-lable mb-0">{{getDays(allCycle.date)}}</label>
+                                                                            </td>
+                                                                            <td class="bg-color-light_gray"><label
+                                                                                    class="form-lable mb-0">{{allCycle.payrollAreaCode}}</label>
+                                                                            </td>
+                                                                            <td *ngIf="selectedEmpData[this.index]" class="bg-color-light_gray">
+                                                                                <!-- <div class="d-flex">
+                                                                                    (keyup)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)"
+                                                                                    
+                                                                                    <input class="timeinput mr-1 form-control"
+                                                                                        [value]="allCycle.weeklyOff">
+                                                                                        
+                                                                                </div> -->
+                                                                                <label class="form-lable mb-0">{{allCycle.weeklyOff.toFixed(2)}}</label>
+                                                                                
+                                                                            </td>
+                                                                            <td *ngIf="selectedEmpData[this.index]" class="bg-color-light_gray">
+                                                                                <!-- <div class="d-flex">
+                                                                                    
+                                                                                    (keyup)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)"
+                                                                                    <input  class="timeinput mr-1 form-control" [value]="allCycle.holiday">
+                                                                                    
+                                                                                </div> -->
+                                                                                <label class="form-lable mb-0">{{allCycle.holiday.toFixed(2)}}</label>
+                                                                                
+                                                                            </td>
+                                                                            <td *ngIf="selectedEmpData[this.index]" class="bg-color-light_gray">
+                                                                                <!-- <div class="d-flex">
+                                                                                    
+                                                                                    (keyup)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)"
+                                                                                    <input  class="timeinput mr-1 form-control" [value]="allCycle.paidLeaves">
+                                                                                    
+                                                                                </div> -->
+                                                                                <label class="form-lable mb-0">{{allCycle.paidLeaves.toFixed(2)}}</label>
+                                                                                
+                                                                            </td>
+                                                                            <td *ngIf="selectedEmpData[this.index]" class="bg-color-light_gray">
+                                                                                <!-- <div class="d-flex">
+                                                                                    (keyup)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
+                                                                                   
+                                                                                    <input  class="timeinput mr-1 form-control"
+                                                                                        [value]="allCycle.leaveWithoutPay">
+                                                                                       
+                                                                                </div> -->
+                                                                                <label class="form-lable mb-0">{{allCycle.leaveWithoutPay.toFixed(2)}}</label>
+                                                                                
+                                                                            </td>
+                                                                            <td class="bg-color-light_gray"
+                                                                                *ngIf="selectedEmpData[this.index]">
+                                                                                <label class="form-lable mb-0 d-flex">
+                                                                                   
+                                                                                    <!-- <input  [value]="allCycle.presentDay"
+                                                                                        placeholder="00:00"
+                                                                                        class="timeinput mr-1"> -->
+                                                                                        {{allCycle.presentDay.toFixed(2)}}
+
+                                                                                </label>
+                                                                            </td>
+                                                                            <td class="bg-color-light_gray"
+                                                                                *ngIf="is30daysPayroll == '1'"><label
+                                                                                    class="form-lable mb-0">{{allCycle.adjustment.toFixed(2)}}</label>
+                                                                            </td>
+                                                                            <td class="bg-color-light_gray"><label
+                                                                                    class="form-lable mb-0">{{allCycle.paidDays.toFixed(2)}}</label>
+                                                                            </td>
+                                                                            <td class="bg-color-light_gray">
+                                                                                <label
+                                                                                    class="form-lable mb-0">{{allCycle.pertainingCycleName}}</label>
+                                                                            </td>
+                                                                            <td class="bg-color-light_gray"><label
+                                                                                    class="form-lable mb-0">{{allCycle.processingCycleName}}</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                    <ng-template pTemplate="footer">
+                                                                        <tr>
+                                                                            <td colspan="3"
+                                                                                style="font-size: 100%;font-weight: 800">
+                                                                                Total </td>
+                                                                            <td
+                                                                                style="padding-left: 17px;font-size: 100%;font-weight: 800">
+                                                                                {{getAllCycleWeeklyOffTotal()}}
+                                                                            </td>
+                                                                            <td
+                                                                                style="padding-left: 17px;font-size: 100%;font-weight: 800">
+                                                                                {{getAllCycleHolidayTotal()}}</td>
+                                                                            <td
+                                                                                style="padding-left: 17px;font-size: 100%;font-weight: 800">
+                                                                                {{getAllCycleLeaveTotal()}}</td>
+                                                                            <td
+                                                                                style="padding-left: 17px;font-size: 100%;font-weight: 800">
+                                                                                {{getAllCycleLeaveWithoutPayTotal()}}
+                                                                            </td>
+                                                                            <td
+                                                                                style="padding-left: 17px;font-size: 100%;font-weight: 800">
+                                                                                {{getAllCyclePresentDayTotal()}}
+                                                                            </td>
+                                                                            <td *ngIf="is30daysPayroll == '1'"
+                                                                                style="padding-left: 17px;font-size: 100%;font-weight: 800">
+                                                                                {{getAllCycleAdjTotal()}}</td>
+                                                                            <td
+                                                                                style="padding-left: 17px;font-size: 100%;font-weight: 800">
+                                                                                {{getAllCyclePaybleDaysTotal()}}
+                                                                            </td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                    <ng-template pTemplate="emptymessage">
+                                                                        <tr>
+                                                                            <td colspan="15"
+                                                                                class="font-14 font500 text-center text-red">
+                                                                                <span>No Data
+                                                                                    Available</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                </p-table>
+                                                            </div>
+                                                        </div>
+                                                       
                                                     </section>
                                                 </div>
                                             </div>

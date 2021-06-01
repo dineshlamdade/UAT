@@ -72,4 +72,16 @@ export class AttendanceService {
     return this.HttpClient.post<any>(this.url + `payrollArea-details/PayrollAreaByPayrollAreaCode`,data); 
   }
 
+  getCycleById(cycleID):Observable<any>{
+    return this.HttpClient.get<any>(this.url1 + `business-cycle/getCycleById/`+cycleID); 
+  }
+
+  cycleDefinitionGetAll():Observable<any>{
+    return this.HttpClient.get<any>(this.url1 + `business-cycle/cycle-definition-getAll`); 
+  }
+
+  attendanceInputAPIAllCycleRecords(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `AttendanceInput/attendanceInputAPIAllCycleRecords`,data); 
+  }
+
 }

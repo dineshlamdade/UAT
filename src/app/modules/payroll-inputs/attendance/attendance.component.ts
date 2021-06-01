@@ -110,6 +110,10 @@ export class AttendanceComponent implements OnInit {
   tempAttendanceFutureData: any;
 
   tabsIndex = 1
+  businessCycleData: any;
+  businessFrequencyName: any;
+  businessCycleIDData: any;
+  AllCycleRecordsData: any;
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
     private payrollservice: PayrollInputsService,
@@ -2539,6 +2543,86 @@ export class AttendanceComponent implements OnInit {
 
   // **********************************Previous Cycle Functions Ends***********************************************
 
+  // **********************************ALL Cycle Total Functions Starts***********************************************
+  getAllCyclePaybleDaysTotal() {
+    let total = 0.0
+    this.AllCycleRecordsData.forEach(element => {
+      total = total + parseFloat(element.paidDays)
+
+    });
+    return total.toFixed(2);
+  }
+
+  getAllCycleWeeklyOffTotal() {
+    let total = 0.0
+    this.AllCycleRecordsData.forEach(element => {
+      total = total + parseFloat(element.weeklyOff)
+
+    });
+    return total.toFixed(2);
+  }
+
+
+  getAllCycleHolidayTotal() {
+    let total = 0.0
+    this.AllCycleRecordsData.forEach(element => {
+      total = total + parseFloat(element.holiday)
+
+    });
+    return total.toFixed(2);
+  }
+
+  getAllCycleLeaveTotal() {
+    let total = 0.0
+    this.AllCycleRecordsData.forEach(element => {
+      total = total + parseFloat(element.paidLeaves)
+
+    });
+    return total.toFixed(2);
+  }
+
+  getAllCycleLeaveWithoutPayTotal() {
+    let total = 0.0
+    if (this.defaultAttendace == '1') {
+      this.AllCycleRecordsData.forEach(element => {
+        total = total + parseFloat(element.leaveWithoutPay)
+
+      });
+    } else {
+      this.AllCycleRecordsData.forEach(element => {
+        total = total + parseFloat(element.leaveWithoutPay_0)
+
+      });
+    }
+    return total.toFixed(2);
+  }
+
+  getAllCyclePresentDayTotal() {
+    let total = 0.0
+    if (this.defaultAttendace == '0') {
+      this.AllCycleRecordsData.forEach(element => {
+        total = total + parseFloat(element.presentDay_0)
+
+      });
+    } else {
+      this.AllCycleRecordsData.forEach(element => {
+        total = total + parseFloat(element.presentDay)
+
+      });
+    }
+    return total.toFixed(2);
+  }
+
+  getAllCycleAdjTotal() {
+    let total = 0.0
+    this.AllCycleRecordsData.forEach(element => {
+      total = total + parseFloat(element.adjustment)
+
+    });
+    return total.toFixed(2);
+  }
+
+
   /** Save Button Click */
   AttendanceInput() {
     console.log("Save Button Click: " + JSON.stringify(this.attendanceSaveData))
@@ -2619,11 +2703,13 @@ export class AttendanceComponent implements OnInit {
       this.currentCycle = parseInt(this.selectedEmpData[this.index].pertainingCycle);
       this.attendanceInputGetTotalAPIRecordsUI(this.index);
       this.attendanceInputAPIRecordsUI();
+      this.attendanceInputAPIAllCycleRecords(this.index);
       // this.getAllActiveBussinessYear();
       // this.businessCycleDefinition();
       this.employeeFinDetails();
       this.payrollAssigned();
-      this.PayrollAreaByPayrollAreaCode()
+      this.PayrollAreaByPayrollAreaCode();
+      this.getCycleById();
     } else {
       this.toster.warning("", "Please select atleast one employee")
     }
@@ -2654,6 +2740,10 @@ export class AttendanceComponent implements OnInit {
 
   previousCycleTab() {
     this.attendanceInputGetAPIPreviouscycle(this.index);
+  }
+
+  allCycleTab(){
+    this.attendanceInputAPIAllCycleRecords(this.index);
   }
 
   /** Business year list */
@@ -2736,6 +2826,8 @@ export class AttendanceComponent implements OnInit {
      this.attendanceInputAPIRecordsUIData = [];
      this.attendanceInputGetAPIFuturecyclesData = []
      this.attendanceInputGetAPIPreviouscycleData = []
+     this.AllCycleRecordsData = []
+     this.cycleDefinitionGetAll();
     // }
   }
 
@@ -2798,7 +2890,10 @@ export class AttendanceComponent implements OnInit {
     this.attendanceInputAPIRecordsUI();
     this.employeeFinDetails();
     this.payrollAssigned();
-    this.PayrollAreaByPayrollAreaCode()
+    this.PayrollAreaByPayrollAreaCode();
+    this.attendanceInputAPIAllCycleRecords(this.index);
+    this.getCycleById(); 
+    
   }
 
 
@@ -2816,6 +2911,45 @@ export class AttendanceComponent implements OnInit {
 
   allCycleClick(){
     this.tabsIndex = 4
+  }
+
+  getCycleById() {
+    this.attendanceService.getCycleById(this.selectedEmpData[this.index].processingCycle).subscribe(
+      res => {
+        this.businessCycleData = res.data.results[0];
+        this.businessFrequencyName = this.businessCycleData.businessCycleDefinition.frequency;
+       
+      }
+    )
+  }
+
+  cycleDefinitionGetAll() {
+    this.attendanceService.cycleDefinitionGetAll().subscribe(
+      res => {
+        this.businessCycleIDData = res.data.results;
+       
+       
+      }
+    )
+  }
+
+
+  attendanceInputAPIAllCycleRecords(index) {
+    const formData = new FormData();
+
+
+      formData.append('CycleId', this.selectedEmpData[this.index].processingCycle)
+      formData.append('payrollAreaCode', this.selectedEmpData[index].payrollAreacode) 
+      formData.append('employeeMasterId', this.selectedEmpData[index].employeeMasterId)
+     
+
+
+    this.attendanceService.attendanceInputAPIAllCycleRecords(formData).subscribe(
+      res => {
+        this.AllCycleRecordsData = res.data.results;
+       
+      }
+    )
   }
 
 
