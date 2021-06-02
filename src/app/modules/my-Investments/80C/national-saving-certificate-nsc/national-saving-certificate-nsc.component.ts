@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NumberFormatPipe } from '../../../../core/utility/pipes/NumberFormatPipe';
-import { NationalSavingCertificateNSCAccruedInterestService } from '../national-saving-certificate-nsc/national-saving-certificate-nscaccrued-interest.service';
+import { NationalSavingCertificateNSCAccruedInterestService } from './national-saving-certificate-nscaccrued-interest.service';
 
 @Component({
   selector: 'app-national-saving-certificate-nsc',
