@@ -128,6 +128,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+    this.getIntialData();
+ 
+  }
+  getIntialData() {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       issueType: new FormControl(null, Validators.required),
@@ -180,6 +184,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.getDetails();
+  
+  }
+  getDetails() {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     this.deactivateRemark();
     // Business Financial Year API Call
@@ -420,6 +428,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
+      this.getIntialData();
+      this.getDetails();
     }
   }
 
@@ -444,7 +454,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   changeStartMaxDate(event: any) {
     console.log('event::', event.target.value);
 
-    if (event.target.value === 'IX th Issue') {
+    if (event.target.value === 'IX') {
       this.today = new Date('2015-12-20');
     } else {
       this.today = new Date();
