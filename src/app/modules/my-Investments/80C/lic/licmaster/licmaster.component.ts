@@ -269,6 +269,7 @@ export class LicmasterComponent implements OnInit {
     }
     this.form.patchValue({
       fromDate: this.policyMinDate,
+      
     });
 
     this.setPaymentDetailToDate();
@@ -293,7 +294,7 @@ export class LicmasterComponent implements OnInit {
       this.form.patchValue({
         toDate: this.form.value.policyEndDate,
       });
-      this.maxFromDate = this.form.value.policyEndDate;
+      // this.maxFromDate = this.form.value.policyEndDate;
     }
   }
 
@@ -398,7 +399,7 @@ export class LicmasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Transaction" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               this.alertService.sweetalertWarning(res.status.messsage);

@@ -397,7 +397,7 @@ export class PostOfficeMasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);

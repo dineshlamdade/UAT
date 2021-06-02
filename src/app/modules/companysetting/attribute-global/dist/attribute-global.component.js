@@ -15,7 +15,6 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.formBuilder = formBuilder;
         this.attributeSelectionService = attributeSelectionService;
         this.alertService = alertService;
-        // removedAttributeGroupIdList = [];
         this.selectedSummarySourceProducts = [];
         this.userHasSelectedMandatoryFieldOnly = false;
         this.summaryList = [];
@@ -23,7 +22,6 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.AttributeSelectionList = [];
         this.disabled = true;
         this.viewCancelButton = false;
-        ///hidevalue = false;
         this.optionList = [];
         this.viewupdateButton = false;
         this.sourceProducts = [];
@@ -51,7 +49,6 @@ var AttributeGlobalComponent = /** @class */ (function () {
             _this.sourceProducts = res.data.results;
         });
     };
-    // get All Attribute Selection
     AttributeGlobalComponent.prototype.getAllAttributeSelection = function () {
         var _this = this;
         this.summaryList = [];
@@ -65,7 +62,8 @@ var AttributeGlobalComponent = /** @class */ (function () {
                     description: element.description,
                     options: (element.attributeMasters).length,
                     id: element.id,
-                    name: element.name
+                    name: element.name,
+                    used: element.used
                 };
                 _this.summaryList.push(obj);
             });
@@ -157,7 +155,7 @@ var AttributeGlobalComponent = /** @class */ (function () {
             element.isHighlight = false;
             _this.sourceProducts.push(element);
         });
-        var v = this.selectedUser;
+        // var v = this.selectedUser;
         this.selectedUser2.forEach(function (element) {
             var index = _this.targetProducts.indexOf(element, index);
             _this.selectedUser2 = [];
@@ -187,43 +185,40 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.getAllAttributeCreation();
     };
     AttributeGlobalComponent.prototype.CancelAttributeCreation = function () {
-        this.AttributeGlobalForm.enable();
         this.targetProducts = [];
         this.sourceProducts = [];
         this.selectedUser2 = [];
         this.selectedUser = [];
-        this.disabled = true;
         this.AttributeGlobalForm.reset();
+        this.AttributeGlobalForm.enable();
+        this.disabled = true;
         this.viewCancelButton = false;
         this.viewupdateButton = false;
         this.sourceProducts = this.originalSourceProductList;
         this.AttributeGlobalForm.patchValue({
             attributeNature: ''
         });
+        this.getAllAttributeCreation();
     };
     AttributeGlobalComponent.prototype.onStatusChange = function (event) {
         var _this = this;
-        console.log('evt', event.target.value);
+        this.selectedUser2 = [];
+        this.selectedUser = [];
+        this.sourceProducts = [];
+        this.targetProducts = [];
         if (event.target.value == '') {
             this.AttributeGlobalForm.setErrors(null);
-            this.selectedUser2 = [];
-            this.selectedUser = [];
-            this.sourceProducts = [];
-            this.targetProducts = [];
             this.attributeSelectionService.getGlobalAttribute1().subscribe(function (res) {
                 _this.originalSourceProductList = res.data.results;
                 _this.sourceProducts = res.data.results;
             });
         }
         else {
-            this.selectedUser2 = [];
-            this.selectedUser = [];
-            this.sourceProducts = [];
-            this.targetProducts = [];
             this.attributeSelectionService.getGlobalAttribute1().subscribe(function (res) {
                 _this.originalSourceProductList = res.data.results;
                 _this.sourceProducts = res.data.results[0];
-            }, function (err) {
+            }, function (error) {
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             }, function () {
                 _this.sourceProducts = _this.originalSourceProductList;
                 _this.attributeSelectionService.GetHeadGroupByGetGlobalPHGByName(event.target.value).subscribe(function (res) {
@@ -245,64 +240,83 @@ var AttributeGlobalComponent = /** @class */ (function () {
             });
         }
     };
-    AttributeGlobalComponent.prototype.onStatusChange1 = function (event) {
-        var _this = this;
-        this.selectedUser2 = [];
-        this.selectedUser = [];
-        this.sourceProducts = [];
-        this.targetProducts = [];
-        this.getAllAttributeCreation();
-        this.sourceProducts = this.originalSourceProductList;
-        console.log('name', event.target.value);
-        this.attributeSelectionService.GetHeadGroupByGetGlobalPHGByName(event.target.value).subscribe(function (res) {
-            console.log('GetHeadGroupByGetGlobalPHGByName res is', res);
-            _this.targetProducts = res.data.results[0].attributeMasters;
-            _this.targetProducts.forEach(function (element) {
-                //  element.disabled = true;
-                _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
-            });
-        });
-        // this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
-    };
-    // Get Attribute Selection ById
+    // onStatusChange1( event ) {
+    //   this.selectedUser2 = [];
+    //   this.selectedUser = [];
+    //   this.sourceProducts = [];
+    //   this.targetProducts = [];
+    //   this.getAllAttributeCreation();
+    //   this.sourceProducts = this.originalSourceProductList;
+    //   console.log( 'name', event.target.value );
+    //   this.attributeSelectionService.GetHeadGroupByGetGlobalPHGByName( event.target.value ).subscribe( res => {
+    //     console.log( 'GetHeadGroupByGetGlobalPHGByName res is', res );
+    //     this.targetProducts = res.data.results[0].attributeMasters;
+    //     this.targetProducts.forEach( element => {
+    //       //  element.disabled = true;
+    //       this.sourceProducts = this.sourceProducts.filter( e => e.code !== element.code );
+    //     } );
+    //   }, ( error ) => {
+    //     this.alertService.sweetalertError( error["error"]["status"]["message"] );
+    //   } );
+    //   // this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+    // }
     AttributeGlobalComponent.prototype.GetAttributeSelectionByIdDisable = function (id) {
         var _this = this;
-        this.disabled = false;
-        this.viewupdateButton = false;
-        this.viewCancelButton = true;
-        this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal(id)
-            .subscribe(function (response) {
-            _this.targetProducts = response.data.results[0].attributeMasters;
-            _this.targetProducts.forEach(function (element) {
-                _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+        this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe(function (res) {
+            console.log('check source res ', res);
+            _this.originalSourceProductList = res.data.results;
+            _this.sourceProducts = res.data.results;
+        }, function (error) {
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+        }, function () {
+            _this.disabled = false;
+            _this.viewupdateButton = false;
+            _this.viewCancelButton = true;
+            _this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal(id)
+                .subscribe(function (response) {
+                _this.targetProducts = response.data.results[0].attributeMasters;
+                _this.targetProducts.forEach(function (element) {
+                    _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+                });
+                _this.AttributeGlobalForm.patchValue({ name: response.data.results[0].name });
+                _this.AttributeGlobalForm.patchValue({ description: response.data.results[0].description });
+                //   this.AttributeGlobalForm.patchValue( { attributeNature: response.data.results[0].name } );
+            }, function (error) {
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
-            _this.AttributeGlobalForm.patchValue({ name: response.data.results[0].name });
-            _this.AttributeGlobalForm.patchValue({ description: response.data.results[0].description });
-            _this.AttributeGlobalForm.patchValue({ attributeNature: response.data.results[0].name });
+            _this.AttributeGlobalForm.disable();
         });
-        this.AttributeGlobalForm.disable();
     };
-    // Get Attribute Selection ById
-    AttributeGlobalComponent.prototype.GetAttributeSelectionById = function (id) {
+    AttributeGlobalComponent.prototype.GetAttributeSelectionById = function (id, isUsed) {
         var _this = this;
-        this.originalTargetList = [];
-        this.disabled = true;
-        this.viewupdateButton = true;
-        this.viewCancelButton = true;
-        this.attributeGroupId = id;
-        this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal(id)
-            .subscribe(function (response) {
-            _this.targetProducts = response.data.results[0].attributeMasters;
-            _this.originalTargetList = response.data.results[0].attributeMasters;
-            _this.targetProducts.forEach(function (element) {
-                _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+        this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe(function (res) {
+            console.log('check source res ', res);
+            _this.originalSourceProductList = res.data.results;
+            _this.sourceProducts = res.data.results;
+        }, function (error) {
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+        }, function () {
+            _this.originalTargetList = [];
+            _this.disabled = true;
+            _this.viewupdateButton = true;
+            _this.viewCancelButton = true;
+            _this.attributeGroupId = id;
+            _this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal(id)
+                .subscribe(function (response) {
+                _this.targetProducts = response.data.results[0].attributeMasters;
+                _this.originalTargetList = response.data.results[0].attributeMasters;
+                _this.targetProducts.forEach(function (element) {
+                    element.disabled = isUsed;
+                    _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
+                });
+                _this.AttributeGlobalForm.patchValue({ name: response.data.results[0].name });
+                _this.AttributeGlobalForm.patchValue({ description: response.data.results[0].description });
+                //       this.AttributeGlobalForm.patchValue( { attributeNature: response.data.results[0].name } );
+            }, function (error) {
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
-            _this.AttributeGlobalForm.patchValue({ name: response.data.results[0].name });
-            _this.AttributeGlobalForm.patchValue({ description: response.data.results[0].description });
-            _this.AttributeGlobalForm.patchValue({ attributeNature: response.data.results[0].name });
         });
     };
-    //Delete Attribute Selection by id
     AttributeGlobalComponent.prototype.DeleteAttributeSelection = function () {
         var _this = this;
         this.attributeSelectionService.DeleteAttributeSelectionAtGlobal(this.idToBeDeletetd)
@@ -311,9 +325,10 @@ var AttributeGlobalComponent = /** @class */ (function () {
             _this.getAllAttributeSelection();
             _this.AttributeGlobalForm.reset();
             _this.targetProducts = [];
+        }, function (error) {
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
     };
-    //add new AttributeCreation
     AttributeGlobalComponent.prototype.addAttributeSelection = function () {
         var _this = this;
         var addAttributeCreation = Object.assign({});
@@ -327,11 +342,12 @@ var AttributeGlobalComponent = /** @class */ (function () {
         this.attributeSelectionService.AddAttributeSelectionGlobal(addAttributeCreation).subscribe(function (res) {
             addAttributeCreation.attributeMasterIdList = [];
             _this.targetProducts = [];
-            _this.alertService.sweetalertMasterSuccess(res.status.message, ''); //success
             _this.getAllAttributeSelection();
+            _this.alertService.sweetalertMasterSuccess(res.status.message, '');
             _this.AttributeGlobalForm.reset();
             _this.resetAttributeSelection();
         }, function (error) {
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
     };
     AttributeGlobalComponent.prototype.UpdateAttributeSelection = function () {
@@ -344,19 +360,19 @@ var AttributeGlobalComponent = /** @class */ (function () {
         });
         addAttributeCreation.name = this.AttributeGlobalForm.value.name;
         addAttributeCreation.description = this.AttributeGlobalForm.value.description;
+        console.log(JSON.stringify(addAttributeCreation));
         this.attributeSelectionService.UpdateAttributeGlobal(this.attributeGroupId, addAttributeCreation).subscribe(function (res) {
             addAttributeCreation.attributeMasterIdList = [];
             _this.targetProducts = [];
             _this.viewCancelButton = false;
             _this.viewupdateButton = false;
             _this.alertService.sweetalertMasterSuccess(res.status.message, '');
-            _this.getAllAttributeSelection();
             _this.AttributeGlobalForm.reset();
             _this.resetAttributeSelection();
+            _this.getAllAttributeSelection();
         }, function (error) {
-            // this.alertService.sweetalertError( error[error][status][message] );
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
-        //}
     };
     AttributeGlobalComponent.prototype.doubleClickOnLeftTable = function (u) {
         this.RowSelected(u, -1);
@@ -385,8 +401,7 @@ var AttributeGlobalComponent = /** @class */ (function () {
             selector: 'app-attribute-global',
             templateUrl: './attribute-global.component.html',
             styleUrls: ['./attribute-global.component.scss'],
-            styles: ["\n        .outofstock {\n          background-color: #ddd!important;\n          color: #000!important;\n          font-weight: 500;\n        }\n        .disable{\n           background-color:#D3D3D3 !important;\n          color: #000!important;\n          font-weight: 500;\n\n        }"
-            ]
+            styles: ["\n        .outofstock {\n          background-color: #ddd!important;\n          color: #000!important;\n          font-weight: 500;\n        }\n        .disable1{\n           background-color:#D3D3D3 !important;\n          color: #000!important;\n          font-weight: 500;\n        }"]
         })
     ], AttributeGlobalComponent);
     return AttributeGlobalComponent;

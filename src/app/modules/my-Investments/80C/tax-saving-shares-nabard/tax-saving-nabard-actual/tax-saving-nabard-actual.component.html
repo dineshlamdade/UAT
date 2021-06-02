@@ -22,13 +22,14 @@
                   <span tooltip="Electronic Clearing Service">Institution</span>
                 </th>
                 <th rowspan="2" class="wd-11 font700">Account No</th>
-                <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
+                <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Invested Amount</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
                 <th rowspan="2" class="wd-8">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                <th rowspan="2" class="wd-10 font700">Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -47,13 +48,14 @@
                   <span>Institution</span>
                 </th>
                 <th rowspan="2" class="wd-11 font700">Account No</th>
-                <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
+                <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Invested Amount</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
                 <th rowspan="2" class="wd-10">Proof Submission ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                <th rowspan="2" class="wd-10 font700">Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -108,6 +110,23 @@
                   <div class="custom_icon_badge">
                     <input type="text" class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)"
                       [ngModel]="summary.accountNumber" [disabled]="summary.accountNumber" />
+                  </div>
+                </td>
+                <td>
+                  <div class="custom_icon_badge">
+                    <input
+                      type="text"
+                      id="declaredAmount{{
+                        summary.investmentGroup3TransactionId
+                      }}"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
+                      name="declaredAmount{{
+                        summary.investmentGroup3TransactionId
+                      }}"
+                      [(ngModel)]="summary.declaredAmount"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                      class="form-control align-right"
+                    />
                   </div>
                 </td>
                 <td>
@@ -215,7 +234,7 @@
 
                   </div>
                 </td>
-                <!-- <td>
+                <td>
                   <div class="custom_icon_badge">
                     <input
                       type="text"
@@ -229,7 +248,7 @@
 
                     />
                   </div>
-                </td> -->
+                </td>
                 <td>
                   <input type="text" [ngModel]="addRowSummary.dateOfPayment | date: 'dd-MMM-yyyy'" [maxDate]="today"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true"
@@ -279,11 +298,22 @@
                   colspan="12"
                   class="align-right font700 font-16 text-light-green cursor-pointer"
                 > -->
-                <td colspan="11" class="align-right font700 font-16 text-light-green cursor-pointer">
-                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService)"></i>
+                <td
+                  colspan="12"
+                class="align-right font700 font-16 text-light-green cursor-pointer"
+              >
+                  <i
+                    class="fa fa-plus-circle font-20"
+                    tooltip="Add"
+                    (click)="addRowInList(declarationService)"
+                  ></i>
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
-                    (click)="deleteRow()"></i>
+                  <i
+                    class="fa fa-times font-16 text-red cursor-pointer"
+                    *ngIf="hideRemoveRow"
+                    tooltip="Cancel"
+                    (click)="deleteRow()"
+                  ></i>
                 </td>
                 <!-- <td
                   *ngIf="!previousEmployeeList?.length"
@@ -313,6 +343,11 @@
                 <td class="bg-lightgray font-18 font700 align-left"></td>
               <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
+                <td class="bg-lightgray font-18 font700 align-right">
+                  <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
+                    {{ grandDeclarationTotal | number: "1.2-2" }}
+                  </span>
+                </td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right-12">
@@ -372,8 +407,8 @@
                   <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Receipt / Certificate"></span>
-                      Receipt / Certificate
+                      <span tooltip="Bond Certificate"></span>
+                      Bond Certificate
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -585,13 +620,14 @@
                     <span tooltip="Electronic Clearing Service">Institution</span>
                   </th>
                   <th rowspan="2" class="wd-11 font700">Account No</th>
-                  <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
+                  <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Invested Amount</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
                   <th rowspan="2" class="wd-8">PS ID</th>
-                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                  <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                  <th rowspan="2" class="wd-10 font700">Status</th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -604,13 +640,14 @@
                     <span>Institution</span>
                   </th>
                   <th rowspan="2" class="wd-11 font700">Account No</th>
-                  <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
+                  <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Invested Amount</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
                   <th rowspan="2" class="wd-10">PS ID</th>
-                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                  <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                  <th rowspan="2" class="wd-10 font700">Status</th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -650,6 +687,27 @@
                         isDisabled || summary.transactionStatus === 'Submitted'
                       " />
                       <!-- [disabled]="summary.accountNumber" -->
+                    </div>
+                  </td>
+                  <td>
+                    <div class="custom_icon_badge">
+                      <input
+                        type="text"
+                        id="declaredAmount{{
+                          summary.investmentGroup3TransactionId
+                        }}"
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
+                        name="declaredAmount{{
+                          summary.investmentGroup3TransactionId
+                        }}"
+                        [(ngModel)]="summary.declaredAmount"
+                        (change)="setActualAmoutInEditModal($event)"
+                        class="form-control align-right"
+                        [disabled]="
+                        isDisabled || summary.transactionStatus === 'Submitted'
+                      "
+                      />
+                     
                     </div>
                   </td>
                   <td>
@@ -704,6 +762,11 @@
                   <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                   
                   <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <td class="bg-lightgray font-18 font700 align-right">
+                    <span tooltip=" {{ grandDeclarationTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
+                      {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
+                    </span>
+                  </td>
                   <td class="bg-lightgray font-18 font700 align-right">
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">

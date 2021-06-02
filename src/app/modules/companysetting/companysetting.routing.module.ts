@@ -42,7 +42,7 @@ const routes: Routes = [
   },
   {
     path: 'attribute-group',
-    component: AttributeSelectionComponent,
+    component: AttributeGlobalComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
   {

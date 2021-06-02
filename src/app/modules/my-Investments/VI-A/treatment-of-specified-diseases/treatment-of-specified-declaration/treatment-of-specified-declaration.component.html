@@ -327,16 +327,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngIf="visibilityFlag">
+                  <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Proof for Amount Spent"></span>Proof for Amount Spent
+                      <span tooltip="Proof for Expenses Incurred (Medical / hospital / Consultation bills)"></span> Proof for Expenses Incurred (Medical / hospital / Consultation bills)
                     </td>
                     <td>
-                      <span *ngFor="let item of proofForAmountSpent; let j = index" class="text-orange"
+                      <span *ngFor="let item of filesArray; let j = index" class="text-orange"
                         tooltip="{{ item.name }}">
                         <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;
                         {{ item.name }},
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmountPreventive"
+                          [disabled]="true" />
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormatPreventive()"
+                          [(ngModel)]="receiptAmount" />
                       </span>
                     </td>
                     <td>
@@ -347,6 +359,42 @@
                               )
                             : UploadModal(template4)
                         "></i>&nbsp;&nbsp;
+                      <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
+                    </td>
+                  </tr>
+                  <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
+                    <th scope="row"><span tooltip="2">2</span></th>
+                    <td>
+                      <span tooltip=" Proof of Amount paid by Insurance Company"></span> Proof of Amount paid by Insurance Company
+                    </td>
+                    <td>
+                      <span *ngFor="let item of filesArray; let j = index" class="text-orange"
+                        tooltip="{{ item.name }}">
+                        <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;
+                        {{ item.name }},
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmountPreventive"
+                          [disabled]="true" />
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormatPreventive()"
+                          [(ngModel)]="receiptAmount" />
+                      </span>
+                    </td>
+                    <td>
+                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+                          !enableFileUpload
+                            ? sweetalertWarning(
+                                'Please select transaction to Upload Document'
+                              )
+                            : UploadModal(template4)
+                        "></i>&nbsp;&nbsp;
+                      <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
                     </td>
                   </tr>
                   <tr *ngIf="visibilityFlagForRecovery">
