@@ -1,502 +1,1373 @@
-import { Component, HostListener, OnInit,TemplateRef } from '@angular/core';
+import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { RolePrivilegeService } from './role-privilege.service';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
+import { AuthService } from '../../../auth/auth.service';
+import { threadId } from 'node:worker_threads';
+import { JsonpClientBackend } from '@angular/common/http';
 
-export interface User1 {
-  full; read; write; modify; delete;
-}
-export interface User2 {
- enabledisabled
-}
-export interface data {
-  srno; company ; usergrup; userrole; userrole1;
-}
+
 @Component({
-  selector: 'app-role-privilege',
-  templateUrl: './role-privilege.component.html',
-  styleUrls: ['./role-privilege.component.scss']
+   selector: 'app-role-privilege',
+   templateUrl: './role-privilege.component.html',
+   styleUrls: ['./role-privilege.component.scss']
 })
 export class RolePrivilegeComponent implements OnInit {
 
-  rolePrivilegeForm: FormGroup;
-    submitted = false;
+   rolePrivilegeForm: FormGroup;
+   submitted = false;
 
-  public modalRef: BsModalRef;
-  public windowScrolled: boolean;
-  dropdownSettings = {};
-  dropdownList = [];
-  selectedItems = [];
-  
-  data: data[];
-  groupNamesData: any;
-  userGroupNames: any;
-  userGroupNameList: any;
-  userRoleNameList: any;
-  companyNameList: any = [];
-  menuAllMasterData: any[];
-  menuSummaryData: any;
-  editFlag: any;
-  userGroupNamesData: any;
-  userRollNamesData: any;
-  userRoleNamesData: any;
-  userGroupList: any =[];
-  userRoleList:any =[];
-  userRoleData: any=[];
-  privilegeData: any = [];
+   public modalRef: BsModalRef;
+   public windowScrolled: boolean;
+   dropdownSettings = {};
+   dropdownList = [];
+   selectedItems = [];
+   ischecked: boolean = false;
+   groupNamesData: any;
+   userGroupNames: any;
+   userGroupNameList: any;
+   userRoleNameList: any = [];
+   companyNameList: any = [];
+   menuAllMasterData: any[];
+   menuSummaryData: any;
+   editFlag: any;
+   isVisible: boolean = false;
+   isShown: boolean = true;
+   userGroupNamesData: any;
+   //userRollNamesData: any;
+   userRoleNamesData: any;
+   userGroupList: any = [];
+   userRoleList: any = [];
+   userRoleData: any = [];
+   privilegeData: any = [];
 
-  get f(){
-    return this.rolePrivilegeForm.controls;
-  }
 
-  constructor(private modalService: BsModalService,
-    private formBuilder: FormBuilder, private service:RolePrivilegeService, private alertService: AlertServiceService, ) { }
+   userData: any;
+   subId: any;
+   public companyGroupMasterId: any = null;
 
-  ngOnInit(): void {
-    this.rolePrivilegeForm = this.formBuilder.group({
-      employeeRoleAssignmentId: new FormControl(''),
-      globalUserMasterId: new FormControl(''),
-       companyGroupMasterId: new FormControl(''),
-      globalCompanyMasterId: new FormControl(''),
-      userRoleId: new FormControl(''),
-      applicationMenusId:new FormControl(''),
-      userGroupId: new FormControl(''),
-      companyId: new FormControl(''),
-      companyGroupName: new FormControl(''),
-      companyName: new FormControl(''),
-      remark: new FormControl(''),
-      readAccess: new FormControl(''),
-      writeAccess: new FormControl(''),
-      modifyAccess: new FormControl(''),
-      deleteAccess: new FormControl(''),
-      rolePrivilegeMatrixId:new FormControl(''),
-      isActive: new FormControl(''),
-      createdBy: new FormControl(''),
-      createdDateTime: new FormControl(''),
-      lastModifiedBy: new FormControl(''),
-      lastModifiedDateTime: new FormControl(''),
+
+   data: any = []
+   SelectedData: any = [];
+   isChecked: boolean = false;
+   isCheckedRead: boolean = false;
+   isCheckedWrite: boolean = false;
+   isCheckedModify: boolean = false;
+   isCheckedDelete: boolean = false;
+   response: any;
+   menusData: any;
+   globalCompanyMasterId: any = [];
+   selectedUsrGroupId: any;
+   menuSummary: any;
+   rolePrivilegeMatrixId: any;
+   viewFlag: boolean = false;
+   page: any = 1;
+   size: any = 10;
+   userRoleId: any = [];
+   totalRecords: any;
+   companyName: any;
+
+
+
+
+   get f() {
+      return this.rolePrivilegeForm.controls;
+   }
+
+   constructor(private modalService: BsModalService,
+      private formBuilder: FormBuilder, private service: RolePrivilegeService,
+      private alertService: AlertServiceService, private authService: AuthService,) {
+
+
+      this.userData = this.authService.getprivileges()
+      console.log("userData::", this.userData);
+      this.subId = this.userData.sub
+
+      this.service.employeeRoleAssignmentUser(this.subId).subscribe(res => {
+         this.companyGroupMasterId = res.data.results.companyGroupMasterId
+         this.getRolePrivilegeSummaryByUserRoleId();
+         this.getApplicationMenus();
+         //this.getRolePrivilegeSummary();
+
       })
-  
-      this.selectedItems = [];
-      this.dropdownSettings = { };
-       this.dropdownList= [];
+   }
 
-//this.onloadSubmit();
+   ngOnInit(): void {
+      console.log("condition is false")
 
- this.getGroupName()
- this.getUserGroupName()
-this.getRoleName()
-//  this.getCompanyName()
- this.getApplicationMenus()
- this.getRolePrivilegeSummaryByUserRoleId()
+      this.getGroupName()
+      // this.getUserGroupName()
 
 
-     }
-
-     getGroupName(){
-      this.service.getEmployeeRoleAssignment().subscribe((res) => {
-        // res.data.results.forEach(element => {
-        //   this.dropdownList.push({ id:element.globalUserMasterId , label: element.companyGroupName })
-        // });
-     this.groupNamesData = res.data.results;
-
-        this.dropdownSettings ={
-        singleSelection: false,  
-        idField: 'globalUserMasterId', 
-        textField: 'companyGroupName',  
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',  
-        itemsShowLimit: 2,  
-        allowSearchFilter: true  
-        }
-        
-     });
-     }
-     getUserGroupName(){
-       
-      this.service.getByCompanyGroupId().subscribe((res) => {
-      this.userGroupNameList = res.data.results;
-      }) ;
-     }
-
-     getRoleName(){
-       
-      this.service.userRoleGetByCompanyGroupMasterId().subscribe((res) => {
-      this.userRoleNameList = res.data.results;
-      }) ;
-     }
+      this.rolePrivilegeForm = this.formBuilder.group({
+         employeeRoleAssignmentId: new FormControl(''),
+         globalUserMasterId: new FormControl(''),
+         companyGroupMasterId: new FormControl(''),
+         globalCompanyMasterId: new FormControl(''),
+         userRoleId: new FormControl(''),
+         applicationMenusId: new FormControl(''),
+         userGroupId: new FormControl(''),
+         companyId: new FormControl(''),
+         companyGroupName: new FormControl(''),
+         companyName: new FormControl(''),
+         remark: new FormControl(''),
+         readAccess: new FormControl(''),
+         writeAccess: new FormControl(''),
+         modifyAccess: new FormControl(''),
+         deleteAccess: new FormControl(''),
+         rolePrivilegeMatrixId: new FormControl(''),
+         isActive: new FormControl(''),
+         createdBy: new FormControl(''),
+         createdDateTime: new FormControl(''),
+         lastModifiedBy: new FormControl(''),
+         lastModifiedDateTime: new FormControl(''),
+         userName: new FormControl(''),
+         roleName: new FormControl(''),
 
 
-     getCompanyName(){
-       
-      this.service.getCompanyId().subscribe((res) => {
-       this.companyNameList = res.data.results;
-      }) ;
-     }
-
-     getApplicationMenus(){
-      this.menuAllMasterData = []; 
-      this.service.getApplicationMenusData().subscribe((res) => {
-        console.log('menuAllMasterData::', res);
-       this.menuAllMasterData = res.data.results;
-
-       let temp = [];
-       temp.push( this.menuAllMasterData[0]);
-
-      //  this.menuAllMasterData.forEach(element =>
-      //   {
-      //     temp.forEach(ele =>{
-      //       if(ele.mainMenuName == element.mainMenuName){
-      //         element.subMenuList.push({
-      //           'menuName': element.subMenuOrFormName1
-      //         })
-      //       }
-      //     })
-      //   })
-     })
-
-     console.log("this.menuAllMasterData: "+ this.menuAllMasterData)
-    }
-
-     getRolePrivilegeSummaryByUserRoleId(){
-      this.menuSummaryData = []; 
-      this.service.getUserRolePrivilegesByUserRoleId().subscribe((res) => {
-        console.log('menuSummaryData::', res);
-       this.menuSummaryData = res.data.results;
-      }) ;
-     }
-
-     onSubmit(){
-      if(!this.editFlag){
-        console.log(JSON.stringify(this.rolePrivilegeForm.value));
-        this.service.addUserRolePrivilege(this.rolePrivilegeForm.value).subscribe(res =>
-          {
-            this.alertService.sweetalertMasterSuccess("User Group data save successfully","");
-          })
-      }else{
-        this.updateRolePrivilege();
-      }
-     }
-
-     updateRolePrivilege(){
-      this.service.updateUserRolePrivilege(this.rolePrivilegeForm.value).subscribe(res =>
-        {
-          this.alertService.sweetalertMasterSuccess("User Group data save successfully","");
-        }
-        )
-     }
-
-     editMenuSummary(menuSummary)
-     {
-       this.editFlag = true;
-       this.rolePrivilegeForm.enable();
-       this.rolePrivilegeForm.patchValue(menuSummary);
-     }
-     viewMenuSummary(menuSummary)
-     {
-       this.editFlag = false;
-      this.rolePrivilegeForm.patchValue(menuSummary);
-      this.rolePrivilegeForm.disable();
-     }
-     reset(){
-       this.rolePrivilegeForm.enable();
-       this.rolePrivilegeForm.reset();
-     }
+      })
 
 
 
+   }
 
-     
+   getGroupName() {
+      this.service.getEmployeeRoleAssignment(this.subId).subscribe((res) => {
 
- @HostListener('window:scroll', [])
-  onWindowScroll() {
-    if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
-      this.windowScrolled = true;
-    } else if (this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop ||
-    document.body.scrollTop < 10) {
-      this.windowScrolled = false;
-    }
-  }
-
-  scrollToTop() {
-    (function smoothscroll() {
-      let currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      if (currentScroll > 0) {
-              window.requestAnimationFrame(smoothscroll);
-              window.scrollTo(0, currentScroll - (currentScroll / 8));
-      }
-    })();
-  }
-  onItemSelect(item: any) {
-    // console.log(item);
-    this.groupNamesData.forEach(element => {
-      // console.log(element)
-      if(item.globalUserMasterId == element.globalUserMasterId){
-        this.companyNameList.push(
-          {
-            'companyId': element.companyId,
-            'companyName': element.companyName
-          })
-      }
-    });
-
-    console.log(this.companyNameList)
-  }
-
-
-  onSelectAll(items: any) {
-    console.log(items);
-    items.forEach(element => {
-      this.userGroupNameList.forEach(ele => {
-        if(element.globalUserMasterId == ele.globalUserMasterId){
-          this.companyNameList.push({
-            'companyId': element.companyId,
-            'companyName': element.companyName
-          })
-        }
+         this.groupNamesData = res.data.results;
+         console.log(JSON.stringify(this.groupNamesData)
+         )
       });
-    });
+   }
 
-  }
+   // getUserGroupName() {
+   //    this.service.getByCompanyGroupId(this.companyGroupMasterId).subscribe((res) => {
+   //       this.userGroupNameList = res.data.results;
+   //    });
+   // }
 
-  onSelectCompanyName(companyId:any){
-    console.log(companyId);
-    let userGroupId : any;
-    this.groupNamesData.forEach(element => {
-      if(element.companyId == companyId){
-        userGroupId = element.userGroupId
-      }
-    });
-
-    this.userGroupNameList.forEach(element => {
-     
-      if(userGroupId == element.userGroupId){
-        this.userGroupList.push(
-          {
-            'userGroupId': element.userGroupId,
-            'groupName': element.groupName
-          })
-      }
-    });
-    console.log(this.groupNamesData)
-    console.log(this.userGroupNameList)
-  }
-
-  onSelectGroupName(userGroupId:any){
-    console.log(userGroupId);
-    let userRoleId : any;
-    this.groupNamesData.forEach(element => {
-      if(element.userGroupId == userGroupId){
-        userRoleId = element.userRoleId
-      }
-    });
-    this.userRoleNameList.forEach(element => {
-      // console.log(element)
-      if(userGroupId == element.userGroupId){
-        this.userRoleData.push(
-          {
-            'userRoleId': element.userRoleId,
-            'roleName': element.roleName
-          })
-      }
-    });
-    console.log(this.groupNamesData)
-    console.log(this.userRoleData)
-  }
+   getRoleName() {
+      
+      this.service.userRoleGetByCompanyGroupMasterId(this.companyGroupMasterId).subscribe((res) => {
+         this.userRoleNameList = res.data.results;
+      });
+   }
 
 
-  onSelectAllReadCheckBox(event,menuData,accessName){
-    // debugger
-      if(event.checked){
-       
-        if(this.privilegeData.length > 0){
-          
-          this.privilegeData.forEach((element,index) => {
-            if(menuData.menuId == element.applicationMenusId){
-              let ind = index;
-                this.privilegeData.splice(ind,1,{
-                  "userRoleId":1,
-                  "applicationMenusId":menuData.menuId,
-                  "globalCompanyMasterId":1,
-                  "readAccess": 1,
-                  "writeAccess":0,
-                  "modifyAccess":0,
-                  "deleteAccess":0
-        
-              })
-              }else{
-                this.privilegeData.push({
-                  "userRoleId":1,
-                  "applicationMenusId":menuData.menuId,
-                  "globalCompanyMasterId":1,
-                  "readAccess": 1,
-                  "writeAccess":0,
-                  "modifyAccess":0,
-                  "deleteAccess":0
-        
-              })
-              }
-            
+   getCompanyName() {
+      this.service.getCompanyId(this.companyGroupMasterId).subscribe((res) => {
+         this.companyNameList = res.data.results;
+      });
+   }
+
+
+   getApplicationMenus() {
+      this.menuAllMasterData = [];
+      this.service.getApplicationMenusData().subscribe((res) => {
+         console.log('menuAllMasterData::', res);
+         this.menuAllMasterData = res.data.results;
+         this.menusData = res.data.results
+         //  let temp = [];
+         //  temp.push( this.menuAllMasterData[0]);
+
+
+      })
+      console.log("this.menuAllMasterData: " + this.menuAllMasterData)
+   }
+   //  getRolePrivilegeSummary(){
+   //    this.menuSummaryData = []
+   //    this.service.getUserRolePrivilegesByUserRoleId(this.page,this.size).subscribe((res) => {
+   //              this.menuSummaryData = res.data.results;
+   //    })
+   // }
+
+
+   getRolePrivilegeSummaryByUserRoleId() {
+      let roleId = this.rolePrivilegeForm.controls['roleName'].value
+      this.menuSummaryData = []
+      this.service.getSummaryData(this.page,this.size).subscribe((res) => {
+         let ressultdata = res.data.results;
+           ressultdata.forEach(ele => {
+            ele.content.forEach(element => {
+               this.menuSummaryData.push({
+                  'companyName': element.companyName,
+                  'roleName': element.userRoleDetail.roleName,
+                  'groupName': element.userRoleDetail.groupName,
+                  'rolePrivilegeMatrixId': element.rolePrivilegeMatrixId,
+                  'globalCompanyMasterId': element.globalCompanyMasterId,
+                  'accessibleMenuDetail': element.accessibleMenuDetail,
+                  'readAccess': element.readAccess,
+                  'writeAccess': element.writeAccess,
+                  'modifyAccess': element.modifyAccess,
+                  'deleteAccess': element.deleteAccess
+               })
+            }); 
             });
-            
-          }
-          else{
-            this.privilegeData.push({
-              "userRoleId":1,
-              "applicationMenusId":menuData.menuId,
-              "globalCompanyMasterId":1,
-              "readAccess": 1,
-              "writeAccess":0,
-              "modifyAccess":0,
-              "deleteAccess":0
-    
-          })
-          }
-        }
-
-        console.log("privilegeData::",this.privilegeData)
-  }
-
-  onSelectAllWriteCheckBox(event,menuData,accessName){
-    if(event.checked){
-      if(this.privilegeData.length > 0){
           
-        this.privilegeData.forEach((element,index) => {
-          if(menuData.menuId == element.applicationMenusId){
-            let ind = index;
-            this.privilegeData.splice(ind,1,{
-              "userRoleId":1,
-              "applicationMenusId":menuData.menuId,
-              "globalCompanyMasterId":1,
-              "readAccess": element.readAccess,
-              "writeAccess":1,
-              "modifyAccess":0,
-              "deleteAccess":0
-    
-          })
-          }
-          
-          else{
-            this.privilegeData.push({
-              "userRoleId":1,
-              "applicationMenusId":menuData.menuId,
-              "globalCompanyMasterId":1,
-              "readAccess": element.readAccess,
-              "writeAccess":1,
-              "modifyAccess":0,
-              "deleteAccess":0
-    
-          })
-          }
-        
-        });   
+             //this.menuSummaryData = res.data.results.userRoleDetail;
+
+            this.totalRecords = res.data.results[0].totalElements
+           
+          console.log(JSON.stringify(this.menuSummaryData))
+
+      });
+   }
+
+
+   paginate(event) {
+      console.log(JSON.stringify(event));
+
+      let pageIndex = event.first / event.rows + 1 // Index of the new page if event.page not defined.
+
+      this.page = pageIndex;
+       this.getRolePrivilegeSummaryByUserRoleId()
+   }
+
+
+
+   checkUncheckall() {
+      if (this.isChecked == true) {
+         this.isChecked = false;
+
+         this.SelectedData = []
       }
-    }
-
-  }
-
-  onSelectAllModifyCheckBox(event,menuData,accessName){
-    if(event.checked){
-      if(this.privilegeData.length > 0){
-          
-        this.privilegeData.forEach((element,index) => {
-          if(menuData.menuId == element.applicationMenusId){
-            let ind = index;
-            this.privilegeData.splice(ind,1,{
-              "userRoleId":1,
-              "applicationMenusId":menuData.menuId,
-              "globalCompanyMasterId":1,
-              "readAccess": element.readAccess,
-              "writeAccess":element.writeAccess,
-              "modifyAccess":1,
-              "deleteAccess":0
-    
-          })
-          }else{
-            this.privilegeData.push({
-              "userRoleId":1,
-              "applicationMenusId":menuData.menuId,
-              "globalCompanyMasterId":1,
-              "readAccess": element.readAccess,
-              "writeAccess":element.writeAccess,
-              "modifyAccess":0,
-              "deleteAccess":0
-    
-          })
-          }
-        
-        });   
+      else {
+         this.isChecked = true;
+         this.menusData.forEach((ele: any) => {
+            if (ele.childItems != null) {
+               ele.childItems.forEach(element => {
+                  element.readAccess = false
+                  ele.readFlag = false;
+                  element.writeAccess = false
+                  element.deleteAccess = false
+                  element.modifyAccess = false
+                  element.allAccess = false
+                  ele.allFlag = false
+               });
+            }
+            this.SelectedData.push({
+               "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+               "applicationMenusId": ele.applicationMenuId,
+               "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+               "readAccess": 1,
+               "writeAccess": 1,
+               "modifyAccess": 1,
+               "deleteAccess": 1
+            })
+         })
       }
-    }else{
-      this.privilegeData.push({
-        "userRoleId":1,
-        "applicationMenusId":menuData.menuId,
-        "globalCompanyMasterId":1,
-        "readAccess": 0,
-        "writeAccess":0,
-        "modifyAccess":1,
-        "deleteAccess":0
 
-    })
-    }
+      // console.log("Data all is: " + JSON.stringify(this.SelectedData))
 
-  } 
+   }
 
-  onSelectAllDeleteCheckBox(event,menuData,accessName){
-    if(event.checked){
-      if(this.privilegeData.length > 0){
-          
-        this.privilegeData.forEach((element,index) => {
-          if(menuData.menuId == element.applicationMenusId){
-            let ind = index;
-            this.privilegeData.splice(ind,1,{
-              "userRoleId":1,
-              "applicationMenusId":menuData.menuId,
-              "globalCompanyMasterId":1,
-              "readAccess": element.readAccess,
-              "writeAccess":element.writeAccess,
-              "modifyAccess":element.modifyAccess,
-              "deleteAccess":1
-    
-          })
-          }else{
-            this.privilegeData.push({
-              "userRoleId":1,
-              "applicationMenusId":menuData.menuId,
-              "globalCompanyMasterId":1,
-              "readAccess": element.readAccess,
-              "writeAccess":element.writeAccess,
-              "modifyAccess":element.modifyAccess,
-              "deleteAccess":1
-    
-          })
-          }
-        
-        });   
+   checkUncheckallRead() {
+      if (this.isCheckedRead == true) {
+         this.isCheckedRead = false;
+         this.SelectedData = []
       }
-    }else{
-      this.privilegeData.push({
-        "userRoleId":1,
-        "applicationMenusId":menuData.menuId,
-        "globalCompanyMasterId":1,
-        "readAccess": 0,
-        "writeAccess":0,
-        "modifyAccess":1,
-        "deleteAccess":1
+      else {
+         this.isCheckedRead = true;
+         this.menusData.forEach((ele: any) => {
 
-    })
-   
-    }
-    console.log("privilegeData::",this.privilegeData)
+            if (ele.childItems != null) {
+               ele.childItems.forEach(element => {
+                  element.readAccess = false
+                  ele.readFlag = false;
+                  element.writeAccess = false
+                  element.deleteAccess = false
+                  element.modifyAccess = false
+                  element.allAccess = false
+                  ele.allFlag = false
+               });
+            }
 
-  } 
+            this.SelectedData.push({
+               "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+               "applicationMenusId": ele.applicationMenuId,
+               "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+               "readAccess": 1,
+               "writeAccess": 0,
+               "modifyAccess": 0,
+               "deleteAccess": 0
+            })
+         })
+      }
+
+      console.log("Data Read is: " + JSON.stringify(this.SelectedData))
+   }
+
+   checkUncheckallWrite() {
+      if (this.isCheckedWrite == true) {
+         this.isCheckedWrite = false;
+         this.SelectedData = []
+      }
+      else {
+         this.isCheckedWrite = true;
+         this.menusData.forEach((ele: any) => {
+            if (ele.childItems != null) {
+               ele.childItems.forEach(element => {
+                  element.readAccess = false
+                  ele.readFlag = false;
+                  element.writeAccess = false
+                  element.deleteAccess = false
+                  element.modifyAccess = false
+                  element.allAccess = false
+                  ele.allFlag = false
+               });
+            }
+            this.SelectedData.push({
+               "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+               "applicationMenusId": ele.applicationMenuId,
+               "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+               "readAccess": 0,
+               "writeAccess": 1,
+               "modifyAccess": 0,
+               "deleteAccess": 0
+            })
+         })
+      }
+
+      console.log("Data Read is: " + JSON.stringify(this.SelectedData))
+   }
+
+   checkUncheckallModify() {
+      if (this.isCheckedModify == true) {
+         this.isCheckedModify = false;
+         this.SelectedData = []
+      }
+      else {
+         this.isCheckedModify = true;
+         this.menusData.forEach((ele: any) => {
+            if (ele.childItems != null) {
+               ele.childItems.forEach(element => {
+                  element.readAccess = false
+                  ele.readFlag = false;
+                  element.writeAccess = false
+                  element.deleteAccess = false
+                  element.modifyAccess = false
+                  element.allAccess = false
+                  ele.allFlag = false
+               });
+            }
+            this.SelectedData.push({
+               "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+               "applicationMenusId": ele.applicationMenuId,
+               "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+               "readAccess": 0,
+               "writeAccess": 0,
+               "modifyAccess": 1,
+               "deleteAccess": 0
+            })
+         })
+      }
+
+      console.log("Data Read is: " + JSON.stringify(this.SelectedData))
+   }
+   checkUncheckallDelete() {
+      if (this.isCheckedDelete == true) {
+         this.isCheckedDelete = false;
+         this.SelectedData = []
+      }
+      else {
+         this.isCheckedDelete = true;
+         this.menusData.forEach((ele: any) => {
+            if (ele.childItems != null) {
+               ele.childItems.forEach(element => {
+                  element.readAccess = false
+                  ele.readFlag = false;
+                  element.writeAccess = false
+                  element.deleteAccess = false
+                  element.modifyAccess = false
+                  element.allAccess = false
+                  ele.allFlag = false
+               });
+            }
+            this.SelectedData.push({
+               "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+               "applicationMenusId": ele.applicationMenuId,
+               "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+               "readAccess": 0,
+               "writeAccess": 0,
+               "modifyAccess": 0,
+               "deleteAccess": 1
+            })
+         })
+      }
+
+      console.log("Data Read is: " + JSON.stringify(this.SelectedData))
+   }
+
+   checkUncheckAllSelectedMenu(group: any, event: any) {
+      if (event.checked) {
+         this.menusData.forEach((ele: any) => {
+            // ele.readAccess = false
+            // ele.readFlag = false;
+            // ele.writeAccess = false
+            // ele.deleteAccess = false
+            // ele.modifyAccess = false
+            // ele.allAccess = false
+            // ele.allFlag = false
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.allFlag = true
+               this.SelectedData.push({
+                  "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  "applicationMenusId": ele.applicationMenuId,
+                  "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  "readAccess": 1,
+                  "writeAccess": 1,
+                  "modifyAccess": 1,
+                  "deleteAccess": 1
+               })
+            }
+         })
+      } else {
+         this.menusData.forEach((ele: any) => {
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.allFlag = false
+            }
+         })
+      }
+
+   }
+
+   checkUncheckReadSelectedMenu(group: any, event: any) {
+      if (event.checked) {
+         this.menusData.forEach((ele: any) => {
+            ele.readAccess = false
+            ele.readFlag = false;
+            ele.writeAccess = false
+            ele.deleteAccess = false
+            ele.modifyAccess = false
+            ele.allAccess = false
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.readFlag = true
+               this.SelectedData.push({
+                  "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  "applicationMenusId": ele.applicationMenuId,
+                  "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  "readAccess": 1,
+                  "writeAccess": 0,
+                  "modifyAccess": 0,
+                  "deleteAccess": 0
+               })
+            }
+         })
+      } else {
+         this.menusData.forEach((ele: any) => {
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.readFlag = false
+            }
+         })
+      }
+
+   }
+
+   checkUncheckWriteSelectedMenu(group: any, event: any) {
+      if (event.checked) {
+         this.menusData.forEach((ele: any) => {
+            ele.readAccess = false
+            ele.readFlag = false;
+            ele.writeAccess = false
+            ele.deleteAccess = false
+            ele.modifyAccess = false
+            ele.allAccess = false
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.writeFlag = true
+               this.SelectedData.push({
+                  "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  "applicationMenusId": ele.applicationMenuId,
+                  "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  "readAccess": 0,
+                  "writeAccess": 1,
+                  "modifyAccess": 0,
+                  "deleteAccess": 0
+               })
+            }
+         })
+      } else {
+         this.menusData.forEach((ele: any) => {
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.writeFlag = false
+            }
+         })
+      }
+   }
+
+   checkUncheckModifySelectedMenu(group: any, event: any) {
+      if (event.checked) {
+         this.menusData.forEach((ele: any) => {
+            ele.readAccess = false
+            ele.readFlag = false;
+            ele.writeAccess = false
+            ele.deleteAccess = false
+            ele.modifyAccess = false
+            ele.allAccess = false
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.modifyFlag = true
+               this.SelectedData.push({
+                  "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  "applicationMenusId": ele.applicationMenuId,
+                  "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  "readAccess": 0,
+                  "writeAccess": 0,
+                  "modifyAccess": 1,
+                  "deleteAccess": 0
+               })
+            }
+         })
+      } else {
+         this.menusData.forEach((ele: any) => {
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.modifyFlag = false
+            }
+         })
+      }
+   }
+
+   checkUncheckDeleteSelectedMenu(group: any, event: any) {
+      if (event.checked) {
+         this.menusData.forEach((ele: any) => {
+            ele.readAccess = false
+            ele.readFlag = false;
+            ele.writeAccess = false
+            ele.deleteAccess = false
+            ele.modifyAccess = false
+            ele.allAccess = false
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.deleteFlag = true
+               this.SelectedData.push({
+                  "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  "applicationMenusId": ele.applicationMenuId,
+                  "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  "readAccess": 0,
+                  "writeAccess": 0,
+                  "modifyAccess": 0,
+                  "deleteAccess": 1
+               })
+            }
+         })
+      } else {
+         this.menusData.forEach((ele: any) => {
+            if (group.applicationMenuId == ele.applicationMenuId) {
+               ele.deleteFlag = false
+            }
+         })
+      }
+   }
 
 
-  largepopup(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      template,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
+   /** single menu checked uncheked full */
+   checkeUncheckSingleMenuAll(submenu, event) {
+      if (event.checked) {
+         this.menusData.forEach((ele: any) => {
+            //console.log(ele.childItems)
+            if (ele.childItems != null) {
+               ele.childItems.forEach(element => {
+                  if (element.applicationMenuId == submenu.applicationMenuId) {
+                     // console.log("element.allFlag: "+ element.allFlag)
+                     element.allFlag = true
+                     this.SelectedData.push({
+                        "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                        "applicationMenusId": ele.applicationMenuId,
+                        "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                        "readAccess": 1,
+                        "modifyAccess": 1,
+                        "deleteAccess": 1,
+                        "writeAccess": 1
+                     })
+                  }
+
+                  if (element.childItems != null) {
+                     element.childItems.forEach(subchild => {
+                        if (subchild.applicationMenuId == submenu.applicationMenuId) {
+                           console.log("element.allFlag: " + JSON.stringify(subchild))
+                           subchild.allFlag = true
+                           this.SelectedData.push({
+                              "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                              "applicationMenusId": ele.applicationMenuId,
+                              "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                              "readAccess": 1,
+                              "modifyAccess": 1,
+                              "deleteAccess": 1,
+                              "writeAccess": 1
+                           })
+                        }
+                     });
+                  }
+               });
+            }
+         })
+      } else {
+         this.menusData.forEach((ele: any) => {
+            if (ele.childItems != null) {
+               ele.childItems.forEach(element => {
+                  if (element.applicationMenuId == submenu.applicationMenuId) {
+
+                     element.allFlag = false
+                  }
+                  if (element.childItems != null) {
+                     element.childItems.forEach(subchild => {
+                        if (subchild.applicationMenuId == submenu.applicationMenuId) {
+                           subchild.allFlag = false
+                        }
+                     })
+                  }
+               })
+            }
+         })
+      }
+   } 
+   /** single menu checked uncheked read */
+   checkeUncheckSingleMenuRead(submenu, event) {
+            if(event.checked) {
+            this.menusData.forEach((ele: any) => {
+
+               if (ele.applicationMenuId == submenu.parentMenuId) {
+
+                  //  element.allFlag = true
+                  this.SelectedData.push({
+                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                     "applicationMenusId": submenu.applicationMenuId,
+                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                     "readAccess": 1,
+                     "writeAccess": 0,
+                     "modifyAccess": 0,
+                     "deleteAccess": 0
+                  })
+               }
+
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (element.applicationMenuId == submenu.applicationMenuId) {
+                        element.readFlag = true
+                        element.readAccess = true
+                     }
+                  })
+               }
+            });
+
+
+         } else {
+            this.menusData.forEach((ele: any) => {
+               if (ele.applicationMenuId == submenu.parentMenuId) {
+                  this.SelectedData.forEach((item, index) => {
+                     if (item.menuId == submenu.parentMenuId) {
+                        let ind = index;
+                        this.SelectedData.splice(ind, 1, {
+                           "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                           "applicationMenusId": submenu.applicationMenuId,
+                           "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                           "readAccess": 0,
+                           "modifyAccess": ele.modifyAccess,
+                           "deleteAccess": ele.deleteAccess,
+                           "writeAccess": ele.writeAccess
+                        })
+                     }
+                  });
+
+               }
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (element.applicationMenuId == submenu.applicationMenuId) {
+                        element.readFlag = false
+                        element.readAccess = false
+                     }
+                  })
+               }
+            })
+         }
+
+         console.log("read single value: " + JSON.stringify(this.SelectedData))
+      }
+
+      /** single menu checked uncheked write */
+      checkeUncheckSingleMenuWrite(submenu, event) {
+         if (event.checked) {
+            this.menusData.forEach((ele: any) => {
+
+               if (ele.applicationMenuId == submenu.parentMenuId) {
+
+                  //  element.allFlag = true
+                  this.SelectedData.push({
+                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                     "applicationMenusId": submenu.applicationMenuId,
+                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                     "readAccess": 0,
+                     "modifyAccess": 0,
+                     "deleteAccess": 0,
+                     "writeAccess": 1
+                  })
+               }
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (element.applicationMenuId == submenu.applicationMenuId) {
+                        element.writeFlag = true
+                        element.writeAccess = true
+                     }
+                  })
+               }
+            });
+
+
+         } else {
+            this.menusData.forEach((ele: any) => {
+
+               if (ele.applicationMenuId == submenu.parentMenuId) {
+                  this.SelectedData.forEach((item, index) => {
+                     if (item.menuId == submenu.parentMenuId) {
+                        let ind = index;
+                        this.SelectedData.splice(ind, 1, {
+                           "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                           "applicationMenusId": submenu.applicationMenuId,
+                           "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                           "readAccess": ele.readAccess,
+                           "modifyAccess": ele.modifyAccess,
+                           "deleteAccess": ele.deleteAccess,
+                           "writeAccess": 0
+                        })
+                     }
+                  });
+
+               }
+
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (element.applicationMenuId == submenu.applicationMenuId) {
+                        element.writeFlag = false
+                        element.writeAccess = false
+                     }
+                  })
+               }
+            })
+
+         }
+      }
+      /** single menu checked uncheked modify */
+      checkeUncheckSingleMenuModify(submenu, event) {
+         if (event.checked) {
+            this.menusData.forEach((ele: any) => {
+
+               if (ele.applicationMenuId == submenu.parentMenuId) {
+
+                  //  element.allFlag = true
+                  this.SelectedData.push({
+                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                     "applicationMenusId": submenu.applicationMenuId,
+                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                     "readAccess": 0,
+                     "modifyAccess": 1,
+                     "deleteAccess": 0,
+                     "writeAccess": 0
+                  })
+               }
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (element.applicationMenuId == submenu.applicationMenuId) {
+                        element.modifyFlag = true
+                        element.modifyAccess = true
+                     }
+                  })
+               }
+            });
+
+         } else {
+            this.menusData.forEach((ele: any) => {
+               if (ele.applicationMenuId == submenu.parentMenuId) {
+                  this.SelectedData.forEach((item, index) => {
+                     if (item.menuId == submenu.parentMenuId) {
+                        let ind = index;
+                        this.SelectedData.splice(ind, 1, {
+                           "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                           "applicationMenusId": submenu.applicationMenuId,
+                           "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                           "readAccess": ele.readAccess,
+                           "modifyAccess": 0,
+                           "deleteAccess": ele.deleteAccess,
+                           "writeAccess": ele.writeAccess
+                        })
+                     }
+                  });
+
+               }
+               if (ele.childItems != null) {
+
+                  ele.childItems.forEach(element => {
+                     if (element.applicationMenuId == submenu.applicationMenuId) {
+                        element.modifyFlag = false
+                        element.modifyAccess = false
+                     }
+                  })
+               }
+            })
+         }
+      }
+
+      checkeUncheckSingleMenuDelete(submenu, event) {
+         if (event.checked) {
+            this.menusData.forEach((ele: any) => {
+
+               if (ele.applicationMenuId == submenu.parentMenuId) {
+
+                  //  element.allFlag = true
+                  this.SelectedData.push({
+                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                     "applicationMenusId": submenu.applicationMenuId,
+                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                     "readAccess": 0,
+                     "modifyAccess": 0,
+                     "deleteAccess": 1,
+                     "writeAccess": 0
+                  })
+               }
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (element.applicationMenuId == submenu.applicationMenuId) {
+                        element.deleteFlag = true
+                        element.deleteAccess = true
+                     }
+                  })
+               }
+            });
+
+         } else {
+            this.menusData.forEach((ele: any) => {
+               if (ele.applicationMenuId == submenu.parentMenuId) {
+                  this.SelectedData.forEach((item, index) => {
+                     if (item.menuId == submenu.parentMenuId) {
+                        let ind = index;
+                        this.SelectedData.splice(ind, 1, {
+                           "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                           "applicationMenusId": submenu.applicationMenuId,
+                           "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                           "readAccess": ele.readAccess,
+                           "modifyAccess": ele.modifyAccess,
+                           "deleteAccess": 0,
+                           "writeAccess": ele.writeAccess
+                        })
+                     }
+                  });
+
+               }
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (element.applicationMenuId == submenu.applicationMenuId) {
+                        element.deleteFlag = false
+                        element.deleteAccess = false
+                     }
+                  })
+               }
+            })
+         }
+      }
+
+
+
+
+      onSubmit() {
+         this.privilegeData = this.SelectedData
+         console.log(JSON.stringify(this.privilegeData))
+         if (!this.editFlag) {
+            this.service.addUserRolePrivilege(this.privilegeData).subscribe(res => {
+               this.alertService.sweetalertMasterSuccess("Role Privilege data saved successfully", "");
+               this.rolePrivilegeForm.reset();
+               this.getApplicationMenus();
+               this.menusData.forEach(element => {
+                  element.modifyFlag = false
+                  element.writeFlag = false
+                  element.readFlag = false
+                  element.allFlag = false
+                  element.deleteFlag = false
+
+               });
+            })
+         } else {
+            this.updateRolePrivilege();
+         }
+      }
+
+      updateRolePrivilege() {
+         this.service.updateUserRolePrivilege(this.privilegeData).subscribe(res => {
+            this.alertService.sweetalertMasterSuccess("Role Privilege data updated successfully", "");
+            this.rolePrivilegeForm.reset();
+            this.getApplicationMenus();
+            this.menusData.forEach(element => {
+               element.modifyFlag = false
+               element.writeFlag = false
+               element.readFlag = false
+               element.allFlag = false
+               element.deleteFlag = false
+
+            });
+         }
+         )
+      }
+
+      editMenuSummary(menuSummary) {
+         this.editFlag = true;
+         this.viewFlag = false
+         this.isVisible = true;
+         this.isShown = false;
+         console.log("menuSummay::", menuSummary)
+         //menuSummary.companyGroupMasterId
+         this.onSelectCompanyName(menuSummary.companyGroupMasterId)
+
+         this.rolePrivilegeForm.reset();
+
+         this.rolePrivilegeForm.enable();
+         this.rolePrivilegeForm.controls['companyGroupName'].setValue(menuSummary.companyGroupMasterId)
+
+         let com = [{
+            'globalCompanyMasterId': menuSummary.globalCompanyMasterId,
+            'companyName': menuSummary.companyName
+         }]
+         this.rolePrivilegeForm.controls['companyName'].setValue(com)
+
+         this.rolePrivilegeForm.controls['userName'].setValue(menuSummary.userGroupId)
+         this.rolePrivilegeForm.controls['roleName'].setValue(menuSummary.userRoleId)
+
+         this.menusData.forEach((ele: any) => {
+            if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+               //  element.allFlag = true
+               this.SelectedData.push({
+                  "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  "applicationMenusId": ele.applicationMenuId,
+                  "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  "readAccess": menuSummary.readAccess,
+                  "modifyAccess": menuSummary.modifyAccess,
+                  "deleteAccess": menuSummary.deleteAccess,
+                  "writeAccess": menuSummary.writeAccess
+               })
+            }
+
+         });
+
+         this.menusData.forEach((ele: any) => {
+            if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     
+                     if (ele.applicationMenuId == element.parentMenuId) {
+                        if (menuSummary.readAccess == 1) {
+                           element.readAccess = true
+                           ele.readFlag = true;
+                           this.isCheckedRead = true
+                        }
+                        if (menuSummary.writeAccess == 1) {
+                           element.writeAccess = true
+                           // ele.writeFlag = true;
+                           // this.isCheckedWrite = true
+                        }
+                        if (menuSummary.deleteAccess == 1) {
+                           element.deleteAccess = true
+                           // ele.deleteFlag = true;
+                           // this.isCheckedDelete = true
+                        }
+                        if (menuSummary.modifyAccess == 1) {
+                           element.modifyAccess = true
+                           // ele.modifyFlag = true;
+                           // this.isCheckeModify = true
+                        }
+                        if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                           element.allAccess = true
+                           ele.allFlag = true
+                           //this.isChecked = true;
+                        }
+                     } 
+                   
+                     if(element.childItems != null){
+                        element.childItems.forEach(element => {
+                        if (ele.applicationMenuId == element.parentMenuId) {
+                           if (menuSummary.readAccess == 1) {
+                              element.readAccess = true
+                              ele.readFlag = true;
+                              this.isCheckedRead = true
+                           }
+                           if (menuSummary.writeAccess == 1) {
+                              element.writeAccess = true
+                              // ele.writeFlag = true;
+                              // this.isCheckedWrite = true
+                           }
+                           if (menuSummary.deleteAccess == 1) {
+                              element.deleteAccess = true
+                              // ele.deleteFlag = true;
+                              // this.isCheckedDelete = true
+                           }
+                           if (menuSummary.modifyAccess == 1) {
+                              element.modifyAccess = true
+                              // ele.modifyFlag = true;
+                              // this.isCheckeModify = true
+                           }
+                           if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                              element.allAccess = true
+                              ele.allFlag = true
+                              //this.isChecked = true;
+                           }
+                        } 
+                     }) 
+
+                     }
+                     else {
+                        element.readAccess = false
+                        ele.readFlag = false;
+                        element.writeAccess = false
+                        element.deleteAccess = false
+                        element.modifyAccess = false
+                        element.allAccess = false
+                        ele.allFlag = false
+
+                     }
+                  });
+               } else {
+                  if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+                     if (menuSummary.readAccess == 1) {
+                        ele.readAccess = true
+                     }
+                     if (menuSummary.writeAccess == 1) {
+                        ele.writeAccess = true
+                     }
+                     if (menuSummary.deleteAccess == 1) {
+                        ele.deleteAccess = true
+                     }
+                     if (menuSummary.modifyAccess == 1) {
+                        ele.modifyAccess = true
+                     }
+                     if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                        ele.allAccess = true
+                        ele.allFlag = true
+                        //this.isChecked = true;
+                     }
+                  }
+               }
+            } else {
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (menuSummary.accessibleMenuDetail.applicationMenuId == element.applicationMenuId) {
+                        if (menuSummary.readAccess == 1) {
+                           element.readAccess = true
+
+                        }
+                        if (menuSummary.writeAccess == 1) {
+                           element.writeAccess = true
+                           // ele.writeFlag = true;
+                           // this.isCheckedWrite = true
+                        }
+                        if (menuSummary.deleteAccess == 1) {
+                           element.deleteAccess = true
+                           // ele.deleteFlag = true;
+                           // this.isCheckedDelete = true
+                        }
+                        if (menuSummary.modifyAccess == 1) {
+                           element.modifyAccess = true
+                           // ele.modifyFlag = true;
+                           // this.isCheckeModify = true
+                        }
+                        if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                           element.allAccess = true
+                           ele.allFlag = true
+                           //this.isChecked = true;
+                        }
+                     } else {
+                        element.readAccess = false
+                        ele.readFlag = false;
+                        element.writeAccess = false
+                        element.deleteAccess = false
+                        element.modifyAccess = false
+                        element.allAccess = false
+                        ele.allFlag = false
+
+                     }
+                  });
+               } else {
+                  if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+                     if (menuSummary.readAccess == 1) {
+                        ele.readAccess = true
+                     }
+                     if (menuSummary.writeAccess == 1) {
+                        ele.writeAccess = true
+                     }
+                     if (menuSummary.deleteAccess == 1) {
+                        ele.deleteAccess = true
+                     }
+                     if (menuSummary.modifyAccess == 1) {
+                        ele.modifyAccess = true
+                     }
+                     if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                        ele.allAccess = true
+                        ele.allFlag = true
+                        //this.isChecked = true;
+                     }
+                  }
+               }
+            }
+
+
+         });
+      }
+
+      viewMenuSummary(menuSummary) {
+         this.editFlag = false;
+         this.viewFlag = true;
+         this.isVisible = true;
+         this.isShown = false;
+
+
+         let com = [{
+            'globalCompanyMasterId': menuSummary.globalCompanyMasterId,
+            'companyName': menuSummary.companyName
+         }]
+         this.rolePrivilegeForm.controls['companyName'].setValue(com)
+
+
+         this.menusData.forEach((ele: any) => {
+            if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+               //  element.allFlag = true
+               this.SelectedData.push({
+                  "menuId": ele.applicationMenuId,
+                  "readAccess": menuSummary.readAccess,
+                  "modifyAccess": menuSummary.modifyAccess,
+                  "deleteAccess": menuSummary.deleteAccess,
+                  "writeAccess": menuSummary.writeAccess
+               })
+            }
+
+         });
+
+         this.menusData.forEach((ele: any) => {
+            if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (ele.applicationMenuId == element.parentMenuId) {
+                        if (menuSummary.readAccess == 1) {
+                           element.readAccess = true
+                           ele.readFlag = true;
+                           this.isCheckedRead = true
+                        }
+                        if (menuSummary.writeAccess == 1) {
+                           element.writeAccess = true
+                           // ele.writeFlag = true;
+                           // this.isCheckedWrite = true
+                        }
+                        if (menuSummary.deleteAccess == 1) {
+                           element.deleteAccess = true
+                           // ele.deleteFlag = true;
+                           // this.isCheckedDelete = true
+                        }
+                        if (menuSummary.modifyAccess == 1) {
+                           element.modifyAccess = true
+                           // ele.modifyFlag = true;
+                           // this.isCheckeModify = true
+                        }
+                        if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                           element.allAccess = true
+                           ele.allFlag = true
+                           //this.isChecked = true;
+                        }
+                     } else {
+                        element.readAccess = false
+                        ele.readFlag = false;
+                        element.writeAccess = false
+                        element.deleteAccess = false
+                        element.modifyAccess = false
+                        element.allAccess = false
+                        ele.allFlag = false
+
+                     }
+                  });
+               } else {
+                  if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+                     if (menuSummary.readAccess == 1) {
+                        ele.readAccess = true
+                     }
+                     if (menuSummary.writeAccess == 1) {
+                        ele.writeAccess = true
+                     }
+                     if (menuSummary.deleteAccess == 1) {
+                        ele.deleteAccess = true
+                     }
+                     if (menuSummary.modifyAccess == 1) {
+                        ele.modifyAccess = true
+                     }
+                     if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                        ele.allAccess = true
+                        ele.allFlag = true
+                        //this.isChecked = true;
+                     }
+                  }
+               }
+            } else {
+               if (ele.childItems != null) {
+                  ele.childItems.forEach(element => {
+                     if (menuSummary.accessibleMenuDetail.applicationMenuId == element.applicationMenuId) {
+                        if (menuSummary.readAccess == 1) {
+                           element.readAccess = true
+
+                        }
+                        if (menuSummary.writeAccess == 1) {
+                           element.writeAccess = true
+                           // ele.writeFlag = true;
+                           // this.isCheckedWrite = true
+                        }
+                        if (menuSummary.deleteAccess == 1) {
+                           element.deleteAccess = true
+                           // ele.deleteFlag = true;
+                           // this.isCheckedDelete = true
+                        }
+                        if (menuSummary.modifyAccess == 1) {
+                           element.modifyAccess = true
+                           // ele.modifyFlag = true;
+                           // this.isCheckeModify = true
+                        }
+                        if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                           element.allAccess = true
+                           ele.allFlag = true
+                           //this.isChecked = true;
+                        }
+                     } else {
+                        element.readAccess = false
+                        ele.readFlag = false;
+                        element.writeAccess = false
+                        element.deleteAccess = false
+                        element.modifyAccess = false
+                        element.allAccess = false
+                        ele.allFlag = false
+
+                     }
+                  });
+               } else {
+                  if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+                     if (menuSummary.readAccess == 1) {
+                        ele.readAccess = true
+                     }
+                     if (menuSummary.writeAccess == 1) {
+                        ele.writeAccess = true
+                     }
+                     if (menuSummary.deleteAccess == 1) {
+                        ele.deleteAccess = true
+                     }
+                     if (menuSummary.modifyAccess == 1) {
+                        ele.modifyAccess = true
+                     }
+                     if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                        ele.allAccess = true
+                        ele.allFlag = true
+                        //this.isChecked = true;
+                     }
+                  }
+               }
+            }
+
+
+         });
+
+
+
+
+         // this.rolePrivilegeForm.patchValue(menuSummary);
+         this.rolePrivilegeForm.reset();
+         this.rolePrivilegeForm.disable();
+      }
+      reset() {
+         this.rolePrivilegeForm.enable();
+         this.rolePrivilegeForm.reset();
+      }
+      cancel(){
+         this.reset();
+         this.isShown = true;
+         this.isVisible = false;
+      }
+
+      @HostListener('window:scroll', [])
+      onWindowScroll() {
+         if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
+            this.windowScrolled = true;
+         } else if (this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop ||
+            document.body.scrollTop < 10) {
+            this.windowScrolled = false;
+         }
+      }
+
+      scrollToTop() {
+         (function smoothscroll() {
+            let currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            if (currentScroll > 0) {
+               window.requestAnimationFrame(smoothscroll);
+               window.scrollTo(0, currentScroll - (currentScroll / 8));
+            }
+         })();
+      }
+
+      onItemSelect(item: any) {
+         console.log("Items is: " + JSON.stringify(item));
+
+         this.globalCompanyMasterId.push(item.globalCompanyMasterId)
+      }
+
+      /** on selection comapny group name fetched comapny list and group list */
+      onSelectCompanyName(companyGroupMasterId) {
+         this.companyGroupMasterId = companyGroupMasterId
+         this.getRoleName()
+         this.companyNameList = []
+         this.companyName = null
+         //  console.log( JSON.stringify(this.groupNamesData))
+         this.groupNamesData
+            .forEach(element => {
+               //console.log(element)
+               if (companyGroupMasterId == element.companyGroupMasterId) {
+                  this.companyNameList.push(
+                     {
+                        'globalCompanyMasterId': element.globalCompanyMasterId,
+                        'companyName': element.companyName
+                     })
+               }
+            });
+
+         this.dropdownSettings = {
+            singleSelection: false,
+            idField: 'globalCompanyMasterId',
+            textField: 'companyName',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 2,
+            allowSearchFilter: true
+         }
+
+         //console.log(this.companyNameList)
+         this.service.getByCompanyGroupId(this.companyGroupMasterId).subscribe(res => {
+            this.userGroupNameList = res.data.results;
+         })
+      }
+
+      /** On selection on group fetched role list */
+      onSelectGroupName(userGroupId: any) {
+         this.selectedUsrGroupId = userGroupId
+         this.userRoleData = []
+         this.userRoleNameList.forEach(element => {
+            console.log(element)
+            if (userGroupId == element.userGroupId) {
+               this.userRoleData.push(
+                  {
+                     'userRoleId': element.userRoleId,
+                     'roleName': element.roleName
+                  })
+            }
+         });
+
+         console.log(this.userRoleData)
+
+      }
+
+
+      getSelectedRole() {
+         this.getApplicationMenus();
+         // this.getRolePrivilegeSummaryByUserRoleId();
+      }
+
+      largepopup(template: TemplateRef<any>) {
+         this.modalRef = this.modalService.show(
+            template,
+            Object.assign({}, { class: 'gray modal-xl' })
+         );
+      }
 }
