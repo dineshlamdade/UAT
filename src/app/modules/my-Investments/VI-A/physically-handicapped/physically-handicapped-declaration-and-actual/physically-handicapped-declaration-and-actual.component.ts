@@ -1,5 +1,5 @@
 import { element } from 'protractor';
-import { data } from './../../../../companysetting/user-rolesand-permission/role-privilege/role-privilege.component';
+//import { data } from './../../../../companysetting/user-rolesand-permission/role-privilege/role-privilege.component';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import {
