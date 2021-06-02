@@ -41,10 +41,6 @@
                       </option>
                     </select>
                   </div>
-                  <br><br><br>
-
-
-
                 </div>
 
 
@@ -336,7 +332,7 @@
                           <tr (click)="RowSelectedtargetProducts(user1, rowIndex);"
                             (dblclick)="doubleClickOnRightTable(user1)"
                             [ngClass]="{'outofstock':user1.isHighlightright == true}"
-                            [ngClass]="{'disable':user1.disabled == true}">
+                            [ngClass]="{'disable1':user1.disabled == true}">
 
                             <td>{{user1.code}}</td>
                             <td>{{user1.description}}
@@ -470,7 +466,7 @@
 
 
 
-                          <th rowspan="1" class="wd-12 text-center">
+                          <th rowspan="1" class="wd-10 text-center">
                             <div class="p-d-flex p-jc-center p-ai-center">
                               Action
                             </div>
@@ -493,14 +489,14 @@
                           <td class="wd-10 align-left">
 
                             <button type="button" class="btn btn-icon text-blue" tooltip="Edit"
-                              (click)="GetAttributeSelectionById(user1.id)">
+                              (click)="GetAttributeSelectionById(user1.id,user1.used)">
                               <i class="fa fa-edit"></i></button>
 
                             <button type="button" class="btn btn-icon text-blue" tooltip="View"
                               (click)="GetAttributeSelectionByIdDisable(user1.id)">
                               <i class="fa fa-eye"></i></button>
 
-                            <button type="button" *ngIf="!user1.used" (click)="UploadModal1(template12,user1.id);"
+                            <button type="button" *ngIf="user1.used==false" (click)="UploadModal1(template12,user1.id);"
                               class="btn btn-icon js-sweetalert text-blue" tooltip="Delete" data-type="confirm"><i
                                 class="fa fa-trash-o"></i></button>
                           </td>

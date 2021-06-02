@@ -649,8 +649,9 @@ var CompanySettingsService = /** @class */ (function () {
             return res;
         }));
     };
+    // PayrollHeadGroup-AttributeDependency/getAll active as well as non-active record
     CompanySettingsService.prototype.getAllActiveAndNonActiveAttributeDependency = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'PayrollHeadGroup-AttributeDependency/getAll')
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'PayrollHeadGroup-AttributeDependency')
             .pipe(operators_1.map(function (res) {
             return res;
         }));

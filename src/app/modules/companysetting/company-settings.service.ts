@@ -821,9 +821,10 @@ export class CompanySettingsService {
         return res;
       } ) );
   }
+  // PayrollHeadGroup-AttributeDependency/getAll active as well as non-active record
 
   getAllActiveAndNonActiveAttributeDependency() {
-    return this._HTTP.get( environment.baseUrl8084 + 'PayrollHeadGroup-AttributeDependency/getAll' )
+    return this._HTTP.get( environment.baseUrl8084 + 'PayrollHeadGroup-AttributeDependency' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
