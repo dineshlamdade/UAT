@@ -114,6 +114,7 @@ export class AttendanceComponent implements OnInit {
   businessFrequencyName: any;
   businessCycleIDData: any;
   AllCycleRecordsData: any;
+  selectedProcessingCyclename: any;
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
     private payrollservice: PayrollInputsService,
@@ -247,7 +248,7 @@ export class AttendanceComponent implements OnInit {
           this.attendanceInputAPIRecordsUIData = res.data.results;
           this.empData = res.data.results[0].employeeMaster;
           this.tempAttendancePresentData = res.data.results
-          console.log(JSON.stringify(this.tempAttendancePresentData))
+          //console.log(JSON.stringify(this.tempAttendancePresentData))
           localStorage.setItem('tempAttendancePresentData',JSON.stringify(this.tempAttendancePresentData))
          
         }
@@ -2852,7 +2853,9 @@ export class AttendanceComponent implements OnInit {
 
   /**Get selected Employee Cycle */
   getSelectedCycleByEmp(value){
-    this.selectedProcessingCycle = value;
+    let cycle = value.split(',')
+    this.selectedProcessingCycle = cycle[0];
+    this.selectedProcessingCyclename = cycle[1];
   }
 
   PayrollAreaByPayrollAreaCode() {
@@ -2883,7 +2886,8 @@ export class AttendanceComponent implements OnInit {
         'payrollAreacode' : this.selectedPayrollAreaCode,
         'processingCycle': this.selectedProcessingCycle
       })
-    
+      this.selectedEmpData[this.index].cycleName = this.selectedProcessingCyclename;
+      this.selectedEmpData[this.index].currentcycleName = this.selectedProcessingCyclename;
     this.payrollAreaDetails(); 
     this.currentCycle = parseInt(this.selectedEmpData[this.index].pertainingCycle);
     this.attendanceInputGetTotalAPIRecordsUI(this.index);

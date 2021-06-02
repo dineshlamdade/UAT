@@ -439,7 +439,8 @@
                                                                         class="form-control custom-select"
                                                                         (change)="getSelectedCycleByEmp($event.target.value)">
                                                                         <option value="">Select</option>
-                                                                        <option value="{{cycleIdName.id}}" *ngFor="let cycleIdName of businessCycleIDData">{{cycleIdName.periodName}}</option>
+                                                                        <option value="{{cycleIdName.id}},{{cycleIdName.periodName}}" 
+                                                                        *ngFor="let cycleIdName of businessCycleIDData">{{cycleIdName.periodName}}</option>
                                                                        
                                                                     </select>
                                                                 </div>
@@ -731,7 +732,8 @@
                                                 </div>
                                                 <div class="row mt-10" *ngIf="selectedEmpData[index]">
                                                     <div class="col-md-8">
-                                                        <div class="card dottedbordercard"
+                                                        <div class="card "
+                                                        [class.dottedbordercard] ="attendanceInputGetTotalAPIRecordsUIData"
                                                             *ngIf="attendanceInputGetTotalAPIRecordsUIData">
                                                             <div class="row m-0" *ngIf="selectedEmpData[index]">
                                                                 <div
@@ -772,7 +774,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <div class="card dottedbordercard">
+                                                        <div class="card" [class.dottedbordercard]="attendanceInputGetTotalAPIRecordsUIData">
                                                             <div class="row m-0"
                                                                 *ngIf="attendanceInputGetTotalAPIRecordsUIData">
                                                                 <div class="col-md-12 text-center font700 font16 p-1 border-bottom-cyan"
@@ -793,8 +795,9 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="bordered-tab_container"
-                                                    *ngIf="attendanceInputAPIRecordsUIData.length > 0">
+                                                <!-- <span  *ngIf="attendanceInputAPIRecordsUIData.length == 0"> No Data Found </span> -->
+
+                                                <div class="bordered-tab_container"  *ngIf="attendanceInputAPIRecordsUIData.length > 0">
                                                     <input id="tab1" class="border-tab-input" type="radio" name="tabs"
                                                         [checked]="tabsIndex == 1" (click)="presentCycleTab()">
                                                     <label class="border-tab-label" for="tab1"
@@ -850,12 +853,13 @@
                                                             <p>for previous cycles</p>
                                                         </span><span class="count-badge"
                                                             style="top: -36px !important;">{{attendanceInputGetAPIPreviouscycleData.length}}</span></label>
-                                                    <section id="content1" class="bordered-tab-content"
-                                                        *ngIf="attendanceInputAPIRecordsUIData">
+                                                  
+                                                    <section id="content1" class="bordered-tab-content" *ngIf="attendanceInputAPIRecordsUIData">
                                                         <div class="row mt-20">
                                                             <div class="col-md-12">
                                                                 <p-table [value]="attendanceInputAPIRecordsUIData"
-                                                                    styleClass="sticky-table">
+                                                                    styleClass="sticky-table" >
+                                                                    <!-- [scrollable]="true" scrollHeight="800px" -->
                                                                     <ng-template pTemplate="header">
                                                                         <tr>
                                                                             <th class="wd-10">
