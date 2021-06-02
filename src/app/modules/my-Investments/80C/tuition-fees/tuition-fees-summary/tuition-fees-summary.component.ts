@@ -110,3 +110,49 @@ export class TuitionFeesSummaryComponent implements OnInit {
   }
 }
 
+
+// constructor(
+//   private service: MyInvestmentsService,
+//   private tuitionFeesService : TuitionFeesService,
+
+
+//   private numberFormat: NumberFormatPipe,
+//   private alertService: AlertServiceService
+// ) {}
+
+// public ngOnInit(): void {
+//   // Summary get Call on Page Load
+//   this.summaryPage();
+// }
+
+
+// // ---------------------Summary ----------------------
+// // Summary get Call
+// summaryPage() {
+//   this.tuitionFeesService.getTuitionFeesSummary().subscribe((res) => {
+//     this.summaryGridData = res.data.results[0].transactionDetailList;
+//     this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+//     this.totalActualAmount = res.data.results[0].totalActualAmount;
+//     this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+//     this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+//     console.log(res);
+//   });
+// }
+
+
+
+// }
+
+
+
+
+// // On onEditSummary
+// // onEditSummary1(institution: string, policyNo: string) {
+// //   this.tabIndex = 2;
+// //   this.institution = institution;
+// //   this.policyNo = policyNo;
+// //   console.log('institution::', institution);
+// //   console.log('policyNo::', policyNo);
+// // }
+
+

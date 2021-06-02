@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { data } from './../../../../companysetting/user-rolesand-permission/role-privilege/role-privilege.component';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
@@ -1090,6 +1091,40 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
+
+  onSelectCurrentEmp(element, event: { target: { checked: any } })
+  {
+    const checked = event.target.checked;
+    this.physicallyHandicappedDetail.physicallyHandicappedDetailId = element.physicallyHandicappedDetailId;
+    this.physicallyHandicappedDetail.declaredAmount = this.unformatAmount(element.declaredAmount);
+    this.physicallyHandicappedDetail.actualAmount = this.unformatAmount(element.actualAmount);
+    this.physicallyHandicappedDetail.transactionStatus = 'Pending';
+
+    this.physicallyHandicappedDetail.proofSubmissionId = element.proofSubmissionId;
+    this.physicallyHandicappedDetail.employeeMasterId = element.employeeMasterId;
+
+    if (checked) {
+
+      this.uploadGridData.push(element.physicallyHandicappedDetailId);
+      console.log("this.uploadGridData",this.uploadGridData)
+    } else {
+       const index = this.uploadGridData.indexOf(
+        element.physicallyHandicappedDetailId
+      );
+      this.uploadGridData.splice(index, 1);
+    }
+}
+
+unformatAmount(amount) {
+  if (amount !== null && amount != undefined) {
+    amount = amount.toString().replace(/,/g, '');
+  } else {
+    amount = 0.0;
+  }
+  return amount;
+}
+
+
   upload() {
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
@@ -1097,6 +1132,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       );
       return;
     }
+
+
 
     // this.transactionDetail.forEach((element) => {
       //current emp table number format
@@ -1482,14 +1519,14 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
         //   );
         // });
 
-        // this.previousEmployerHandicappedDetailList.forEach((element) => {
-        //   element.declaredAmount = this.numberFormat.transform(
-        //     element.declaredAmount
-        //   );
-        //   element.actualAmount = this.numberFormat.transform(
-        //     element.actualAmount
-        //   );
-        // });
+        this.previousEmployerHandicappedDetailList.forEach((element) => {
+          element.declaredAmount = this.numberFormat.transform(
+            element.declaredAmount
+          );
+          element.actualAmount = this.numberFormat.transform(
+            element.actualAmount
+          );
+        });
       }
     });
   }
@@ -1576,6 +1613,7 @@ class DeclarationService {
   public amountRejected: number;
   public amountApproved: number;
   public severity: string;
+  proofSubmissionId: any;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
