@@ -109,16 +109,41 @@ export class HandicappedDependentService {
       });
   }
 
-  uploadHandicappedTransactionwithDocument(data:any): Observable<any> {
-    console.log('handicappedDependent-Transaction', data);
+  // uploadHandicappedTransactionwithDocument(data:any): Observable<any> {
+  //   console.log('handicappedDependent-Transaction', data);
 
+  //   return this._HTTP.post<any>(
+  //     this.apiUrl + 'handicappedDependent-Transaction',data,
+  //     {
+
+  //     });
+
+
+  // }
+
+
+  uploadHandicappedTransactionwithDocument(files: File[], data:any): Observable<any> {
+    var formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (let file of files) {
+      formData.append('handicappedDependantDocuments', file);
+    }
+    //formData.append('licDocuments', files);
+    formData.append('transactionWithDocument', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key," ",value)
+    });
+    //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'handicappedDependent-Transaction',data,
+      this.apiUrl + 'handicappedDependent-Transaction',
+      formData,
       {
 
       });
-
-
   }
+
 }
 
