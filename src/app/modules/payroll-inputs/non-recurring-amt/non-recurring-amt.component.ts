@@ -189,7 +189,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.modalRef = this.modalService.show(
 			template1,
 			Object.assign({}, {
-				class: 'gray modal-lg'
+				class: 'gray modal-xl'
 			})
 		);
 		this.viewHeadHistory = Summarydata
@@ -514,6 +514,9 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
 					if(element.onceEvery == 0){
 						element.onceEvery = 1
+						element.frequency = 'Monthly'
+						element.transactionsType = 'NoOfTransaction'
+						element.numberOfTransactions = 1
 					}
 				});
 				// this.NonRecurringTransactionGroupUI()
@@ -2123,5 +2126,9 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.NonRecurringHistorybyScheduleIdData = res.data.results;
 			}
 		)
+	}
+
+	cancelBtn(){
+		this.navigateSummary()
 	}
 }

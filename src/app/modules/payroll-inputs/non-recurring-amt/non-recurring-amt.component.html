@@ -230,9 +230,10 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
+                                                                        <th>Clawback</th>
                                                                         <th> Remark </th>
                                                                         <th>Approval Status </th>
-
+                                                             
                                                                         <th class="wd-8">Action</th>
                                                                     </tr>
                                                                 </ng-template>
@@ -297,6 +298,11 @@
                                                                                 class="form-lable mb-0">{{Summarydata.toDate}}
                                                                             </label>
 
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray">
+                                                                            <i class="fa fa-history font-16 text-blue cursor-pointer"
+                                                                            aria-hidden="true"
+                                                                            *ngIf="Summarydata.clawbackApplicableAt != ''"></i>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0">{{Summarydata.remark}}
@@ -512,10 +518,10 @@
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div> -->
-                                                                                                    <span
+                                                                                                    <!-- <span
                                                                                                         class="ml-10 mt-7"><i
                                                                                                             class="fa fa-file-excel-o font-18 text-dark-green"
-                                                                                                            tooltip="Export to Excel"></i></span>
+                                                                                                            tooltip="Export to Excel"></i></span> -->
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -859,11 +865,11 @@
                                                                                                 || selectedTransactionType == 'Perpetual') ">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <i class="fa fa-clock-o font-16 text-blue cursor-pointer"
+                                                                                            <i class="fa fa-external-link font-16 text-blue cursor-pointer"
                                                                                                 aria-hidden="true"
                                                                                                 (click)="ViewClawbackpopup(template4,data)">
                                                                                             </i> &nbsp;&nbsp;&nbsp;
-                                                                                            <i class="fa fa-paperclip font-16 text-blue cursor-pointer"
+                                                                                            <i class="fa fa-history font-16 text-blue cursor-pointer"
                                                                                                 aria-hidden="true"
                                                                                                 (click)="ViewClawbackpopup(template4,data)"
                                                                                                 *ngIf="selectedApplicableAt != ''"></i>
@@ -1145,23 +1151,29 @@
                                                                                                 (change)="getSelectedFrequency($event.target.value,data)">
                                                                                                 <option value="">Select
                                                                                                 </option>
-                                                                                                <option value="Monthly">
+                                                                                                <option value="Monthly"
+                                                                                                    [selected]="data.frequency == 'Monthly'">
                                                                                                     Month </option>
                                                                                                 <option
-                                                                                                    value="Quarterly">
+                                                                                                    value="Quarterly"
+                                                                                                    [selected]="data.frequency == 'Quarterly'">
                                                                                                     Quarter </option>
                                                                                                 <option
-                                                                                                    value="HalfYearly">
+                                                                                                    value="HalfYearly"
+                                                                                                    [selected]="data.frequency == 'HalfYearly'">
                                                                                                     HalfYear </option>
-                                                                                                <option value="Yearly">
+                                                                                                <option value="Yearly"
+                                                                                                    [selected]="data.frequency == 'Yearly'">
                                                                                                     Year </option>
                                                                                                 <option
-                                                                                                    value="SemiMonthly">
+                                                                                                    value="SemiMonthly"
+                                                                                                    [selected]="data.frequency == 'SemiMonthly'">
                                                                                                     SemiMonth </option>
-                                                                                                <option value="Weekly">
+                                                                                                <option value="Weekly"
+                                                                                                    [selected]="data.frequency == 'Weekly'">
                                                                                                     Week </option>
-                                                                                                <option
-                                                                                                    value="BiWeekly">
+                                                                                                <option value="BiWeekly"
+                                                                                                    [selected]="data.frequency == 'BiWeekly'">
                                                                                                     BiWeek </option>
                                                                                             </select>
                                                                                             <!-- <input
@@ -1217,6 +1229,7 @@
                                                                                                 class="form-lable mb-0">
                                                                                                 <input
                                                                                                     class="form-control"
+                                                                                                    value="1"
                                                                                                     (focusout)="saveNoOfTransaction($event.target.value,data)"
                                                                                                     [disabled]="data.transactionsType != 'NoOfTransaction'">
                                                                                             </label>
@@ -1236,11 +1249,11 @@
                                                                                                 [disabled]="data.transactionsType != 'Defined Date'">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <i class="fa fa-clock-o font-16 text-blue cursor-pointer"
+                                                                                            <i class="fa fa-external-link font-16 text-blue cursor-pointer"
                                                                                                 aria-hidden="true"
                                                                                                 (click)="ViewClawbackpopup(template4,data,rowIndex)">
                                                                                             </i>&nbsp;&nbsp;&nbsp;
-                                                                                            <i class="fa fa-paperclip font-16 text-blue cursor-pointer"
+                                                                                            <i class="fa fa-history font-16 text-blue cursor-pointer"
                                                                                                 aria-hidden="true"
                                                                                                 (click)="ViewClawbackpopup(template4,data,rowIndex)"
                                                                                                 *ngIf="data.showClawback"></i>
@@ -1289,8 +1302,8 @@
                                                                                     tooltip="Save & Next"
                                                                                     *ngIf="!showEmployeeSelectionFlag"
                                                                                     (click)="saveAndNextTransaction()"
-                                                                                    [disabled]="selectedEmpData.length == 1"
-                                                                                    [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1}"
+                                                                                    [disabled]="selectedEmpData.length == 1 || (selectedEmpData.length-1) == index"
+                                                                                    [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length == 1 || (selectedEmpData.length-1) == index}"
                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
                                                                                     <b> <i class="fa fa-floppy-o"></i>
                                                                                     </b>
@@ -1338,6 +1351,12 @@
                                                                                             aria-hidden="true"></i></b>
                                                                                     Reset
                                                                                 </button>
+                                                                                <button type="button" tooltip="Cancel"
+                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="cancelBtn()">
+                                                                                    <b><i class="fa fa-times-circle"
+                                                                                            aria-hidden="true"></i></b>
+                                                                                    Cancel
+                                                                                </button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1357,7 +1376,8 @@
                                         <!------------- ------------  Schedule --------------------->
                                         <input name="nav" type="radio" class="about-radio" id="Schedule"
                                             [checked]="indexId == 3" (click)="getAllScheduleData()"
-                                            [disabled]="selectedEmpData.length > 0" />
+                                            [disabled]="selectedEmpData.length > 0" 
+                                            />
 
                                         <div class="tabs about-page">
                                             <div class="row">
@@ -1431,11 +1451,13 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <!-- Edit schedule data-->
                                                             <p-table [value]="NonRecurringTransactionScheduleEMPdData"
                                                                 class="mt-10" [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
                                                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                                                 [rowsPerPageOptions]="[10,25,50,100,200]"
+                                                                
                                                                 *ngIf="editScheduleFlag">
 
                                                                 <ng-template pTemplate="header">
@@ -1771,7 +1793,9 @@
                                                                     </tr>
                                                                 </ng-template>
                                                             </p-table>
-
+                                                            
+                                                            <!-- All schedule data-->
+                                                            <!-- [scrollable]="true" scrollHeight="800px" -->
                                                             <p-table [value]="AllNonRecurringTransactionScheduledData"
                                                                 class="mt-10" [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
@@ -2104,6 +2128,7 @@
                                                                     </tr>
                                                                 </ng-template>
                                                             </p-table>
+
                                                             <!-- Buttons -->
                                                             <div class="row mt-15">
                                                                 <div class="col-12">
@@ -2132,7 +2157,7 @@
                                             </div>
                                         </div>
 
-                                        <label class="nav" for="Schedule">
+                                        <label class="nav" for="Schedule" [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length > 0}">
                                             <span> Schedule </span>
                                         </label>
                                     </div>
@@ -2387,13 +2412,13 @@
                                         <td>{{data.processedAmount | number: '1.2-2'}}</td>
                                         <td>{{data.transactionAmount | number: '1.2-2'}}</td>
                                         <td>{{data.cycleName}}</td>
-                                        <td><label class="custom-control custom-checkbox checkbox-center">
+                                        <td><label class="custom-control  checkbox-center">
                                                 <input type="checkbox" class="custom-control-input" name="select"
                                                     disabled [checked]="data.hold == true" />
                                                 <span class="custom-control-label"></span>
                                             </label>
                                         </td>
-                                        <td><label class="custom-control custom-checkbox checkbox-center">
+                                        <td><label class="custom-control  checkbox-center">
                                                 <input type="checkbox" class="custom-control-input" name="select"
                                                     disabled [checked]="data.discard == true" />
                                                 <span class="custom-control-label"></span>
