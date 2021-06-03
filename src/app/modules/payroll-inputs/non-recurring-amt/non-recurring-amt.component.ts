@@ -5,6 +5,7 @@ import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { PayrollInputsService } from '../payroll-inputs.service';
+import { ExcelserviceService } from '../../loan/excelservice.service';
 
 @Component({
 	selector: 'app-non-recurring-amt',
@@ -79,10 +80,11 @@ export class NonRecurringAmtComponent implements OnInit {
 	newDataRow: any = [];
 	NonRecurringTransactionGroupHistoryAPIbyIdData: any;
 	updatefrequency: any;
+	excelData: any[];
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
-		private payrollservice: PayrollInputsService) { }
+		private payrollservice: PayrollInputsService,private excelservice: ExcelserviceService) { }
 
 	ngOnInit() {
 		this.NonRecurringTransactionGroupSummery();
@@ -2131,4 +2133,26 @@ export class NonRecurringAmtComponent implements OnInit {
 	cancelBtn(){
 		this.navigateSummary()
 	}
+
+
+	SummaryexportAsXLSX(): void {
+		this.excelData = [];
+		this.excelData = this.summeryData
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary');
+	}
+
+
+	AllScheduleExportAsXLSX(): void {
+		this.excelData = [];
+		this.excelData = this.AllNonRecurringTransactionScheduledData
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-All-Schedules');
+	}
+
+
+	ScheduleExportAsXLSX(): void {
+		this.excelData = [];
+		this.excelData = this.NonRecurringTransactionScheduleEMPdData
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Schedules');
+	}
+	
 }

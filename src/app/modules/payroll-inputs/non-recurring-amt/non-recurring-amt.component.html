@@ -59,6 +59,12 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <a tooltip="Download" style="cursor: pointer"
+                                                                (click)="SummaryexportAsXLSX()">
+                                                                <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                                                    aria-hidden="true">
+                                                                </i>
+                                                            </a>
 
                                                             <p-table [value]="summeryData" class="mt-10"
                                                                 [paginator]="true" [rows]="10"
@@ -1452,6 +1458,12 @@
                                                                 </div>
                                                             </div>
                                                             <!-- Edit schedule data-->
+                                                            <a tooltip="Download" style="cursor: pointer"
+                                                                (click)="ScheduleExportAsXLSX()" *ngIf="editScheduleFlag">
+                                                                <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                                                    aria-hidden="true">
+                                                                </i>
+                                                            </a>
                                                             <p-table [value]="NonRecurringTransactionScheduleEMPdData"
                                                                 class="mt-10" [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
@@ -1796,6 +1808,12 @@
                                                             
                                                             <!-- All schedule data-->
                                                             <!-- [scrollable]="true" scrollHeight="800px" -->
+                                                            <a tooltip="Download" style="cursor: pointer"
+                                                                (click)="AllScheduleExportAsXLSX()" *ngIf="!editScheduleFlag">
+                                                                <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                                                    aria-hidden="true">
+                                                                </i>
+                                                            </a>
                                                             <p-table [value]="AllNonRecurringTransactionScheduledData"
                                                                 class="mt-10" [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
