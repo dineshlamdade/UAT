@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { typeSourceSpan } from '@angular/compiler';
@@ -178,7 +179,9 @@ export class DeclarationAndActualComponent implements OnInit {
   public visibilityFlagCurrent : boolean =  true;
   public disabilityType : string;
   public severity : string;
-
+  public hideShowSaveButton  : boolean = false;
+  public proofSubmissionId: '';
+  element: any;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -200,7 +203,7 @@ export class DeclarationAndActualComponent implements OnInit {
     // add default row to current employer table
     this.addCurrentEmployerRow();
     // add default row to previous employer table
-    this.addPreviousEmployerRow()
+    this.addPreviousEmployerRow();
 
     // ----------------  Handicapped FormTransaction Form -----------------
     // this.handicappedDependentForm = this.formBuilder.group({
@@ -288,9 +291,9 @@ export class DeclarationAndActualComponent implements OnInit {
     this.currEmpFormArray.push(
       this.formBuilder.group({
         checkboxx: [false],
-        familyMemberName: [null, Validators.required],
+        familyMemberName: [''],
         // familyMemberInfoId: [null, Validators.required],
-        familyMemberInfoId: [null, Validators.required],
+        familyMemberInfoId: [''],
         severity: [null],
         disabilityType: [null],
         // actualAmount: [{value:null, disabled: true}],
@@ -317,12 +320,12 @@ export class DeclarationAndActualComponent implements OnInit {
         checkbox1: [false],
         previousEmployerId:  [null],
         // previousEmployerId:  [null, Validators.required],
-        familyMemberName: [null, Validators.required],
-        familyMemberInfoId: [null, Validators.required],
+        familyMemberName: [null],
+        familyMemberInfoId: [null],
         // familyMemberInfoId: [null, Validators.required],
         severity: [null],
         disabilityType: [null],
-        actualAmount: [null, Validators.required],
+        actualAmount: [null],
         // declaredAmount: [null],
         accepted: [{value:null, disabled: true}],
         rejected: [{value:null, disabled: true}],
@@ -383,7 +386,7 @@ export class DeclarationAndActualComponent implements OnInit {
       );
       console.log('formatedDeclaredAmount::', formatedDeclaredAmount);
       this.editTransactionUpload[0].declaredAmount = formatedDeclaredAmount;
-      this.editTransactionUpload[0].actualAmount = formatedDeclaredAmount
+      this.editTransactionUpload[0].actualAmount = formatedDeclaredAmount;
     }
   }
 
@@ -403,10 +406,10 @@ export class DeclarationAndActualComponent implements OnInit {
     }
 
 
-    // if (this.filesArray.length === 0) {
-    //   this.alertService.sweetalertError('Please attach Receipt / Certificate');
-    //   return;
-    // }
+    if (this.filesArray.length === 0) {
+      this.alertService.sweetalertError('Please attach Receipt / Certificate');
+      return;
+    }
 
     //else {
     const transactionDetail = this.handicappedDependentForm.getRawValue();
@@ -433,7 +436,7 @@ export class DeclarationAndActualComponent implements OnInit {
     console.log('Handicapped Dependent  Data::', data);
 
     this.handicappedDependentService
-      .uploadHandicappedTransactionwithDocument(data)
+      .uploadHandicappedTransactionwithDocument(this.filesArray,data)
       .subscribe((res) => {
         console.log('saveTransaction res::', res);
         if (res) {
@@ -567,7 +570,7 @@ export class DeclarationAndActualComponent implements OnInit {
           accepted: matchedElement.accepted,
           rejected: matchedElement.rejected,
           handicappedDependentDetailMasterId: matchedElement.handicappedDependentDetailMasterId,
-          limit: matchedElement.limit,
+          // limit: matchedElement.limit,
           proofSubmissionId: matchedElement.proofSubmissionId,
           relationship: matchedElement.relationship,
           claiming80U: matchedElement.claiming80U,
@@ -595,7 +598,7 @@ export class DeclarationAndActualComponent implements OnInit {
           accepted: matchedElement.accepted,
           rejected: matchedElement.rejected,
           handicappedDependentDetailMasterId: matchedElement.handicappedDependentDetailMasterId,
-          limit: matchedElement.limit,
+          // limit: matchedElement.limit,
           proofSubmissionId: matchedElement.proofSubmissionId,
           relationship: matchedElement.relationship,
           claiming80U: matchedElement.claiming80U,
@@ -711,7 +714,7 @@ export class DeclarationAndActualComponent implements OnInit {
     console.log('uploadUpdateTransaction data::', data);
 
     this.handicappedDependentService
-      .uploadHandicappedTransactionwithDocument(data)
+      .uploadHandicappedTransactionwithDocument(this.filesArray,data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
@@ -731,7 +734,7 @@ export class DeclarationAndActualComponent implements OnInit {
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
             this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-            this.initialArrayIndex = []
+            this.initialArrayIndex = [];
               this.initialArrayIndex.push(this.previousEmployerHandicappedDependentResponseList.length);
 
               this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
@@ -762,7 +765,7 @@ export class DeclarationAndActualComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
-      this.resetEditVariable()
+      this.resetEditVariable();
   }
 
 
@@ -940,14 +943,14 @@ export class DeclarationAndActualComponent implements OnInit {
   }
 
   // -------- ON select to check input boxex--------
-  public onSelectCheckBox(
+  public onSelectCheckBoxPrevious(
     data: any,
     event: { target: { checked: any } },
     i: number,
     j: number
   ) {
     const checked = event.target.checked;
-
+    this.hideShowSaveButton = checked;
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
@@ -957,36 +960,36 @@ export class DeclarationAndActualComponent implements OnInit {
     let formatedActualAmount: number = 0;
     let formatedSelectedAmount: string;
     if (checked) {
-      this.previousEmployerHandicappedDependentResponseList[i].actualAmount =  data.actualAmount;
+      this.currentEmployerHandicappedDependentResponseList[i].actualAmount =  data.actualAmount;
 
       formatedActualAmount = Number(
-        this.previousEmployerHandicappedDependentResponseList[i].actualAmount
+        this.currentEmployerHandicappedDependentResponseList[i].actualAmount
           .toString()
           .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
-      this.uploadGridData.push(data.handicappedDependentDetailMasterId);
+      this.uploadGridData.push(data.handicappedDependentTransactionId);
     } else {
       formatedActualAmount = Number(
-        this.previousEmployerHandicappedDependentResponseList[i].actualAmount
+        this.currentEmployerHandicappedDependentResponseList[i].actualAmount
           .toString()
           .replace(/,/g, '')
       );
-      this.previousEmployerHandicappedDependentResponseList[i].actualAmount = this.numberFormat.transform(0);
+      this.currentEmployerHandicappedDependentResponseList[i].actualAmount = this.numberFormat.transform(0);
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
       const index = this.uploadGridData.indexOf(
-        data.handicappedDependentDetailMasterId
+        data.handicappedDependentTransactionId
       );
       this.uploadGridData.splice(index, 1);
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
     this.actualTotal = 0;
-    this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
+    this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(/,/g, '')
@@ -998,6 +1001,58 @@ export class DeclarationAndActualComponent implements OnInit {
       this.enableFileUpload = true;
     }
   }
+
+    // -------- ON select to check input boxex--------
+    public onSelectCheckBox(
+      data: any,
+      event: { target: { checked: any } },
+      i: number,
+      j: number
+    ) {
+      const checked = event.target.checked;
+
+
+
+      let formatedActualAmount: number = 0;
+      let formatedSelectedAmount: string;
+      if (checked) {
+        this.previousEmployerHandicappedDependentResponseList[i].actualAmount =  data.actualAmount;
+
+        formatedActualAmount = Number(
+          this.previousEmployerHandicappedDependentResponseList[i].actualAmount
+            .toString()
+            .replace(/,/g, '')
+        );
+
+        this.uploadGridData.push(data.handicappedDependentDetailMasterId);
+      } else {
+        formatedActualAmount = Number(
+          this.previousEmployerHandicappedDependentResponseList[i].actualAmount
+            .toString()
+            .replace(/,/g, '')
+        );
+        this.previousEmployerHandicappedDependentResponseList[i].actualAmount = this.numberFormat.transform(0);
+
+        const index = this.uploadGridData.indexOf(
+          data.handicappedDependentDetailMasterId
+        );
+        this.uploadGridData.splice(index, 1);
+      }
+
+      this.globalSelectedAmount = formatedSelectedAmount;
+      this.actualTotal = 0;
+      this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
+        // console.log(element.actualAmount.toString().replace(',', ""));
+        this.actualTotal += Number(
+          element.actualAmount.toString().replace(/,/g, '')
+        );
+      });
+      // this.previousEmployerHandicappedDependentResponseList.actualTotal = this.actualTotal;
+
+      if (this.uploadGridData.length) {
+        this.enableFileUpload = true;
+      }
+    }
 
 
     // ------------ To Check / Uncheck All  Checkboxes-------------
@@ -1015,7 +1070,7 @@ export class DeclarationAndActualComponent implements OnInit {
         this.enableSelectAll = true;
         this.enableCheckboxFlag2 = item.institutionName;
         item.group2TransactionList.forEach((element) => {
-          this.uploadGridData.push(element.handicappedDependentDetailMasterId);
+          this.uploadGridData.push(element.handicappedDependentTransactionId);
         });
         this.enableFileUpload = true;
       }
@@ -1084,7 +1139,7 @@ export class DeclarationAndActualComponent implements OnInit {
   onEmployerActualAmountChange(formArrayElement, event) {
     formArrayElement.patchValue({
       actualAmount: this.numberFormat.transform(event.target.value)
-    })
+    });
   }
 
 
@@ -1367,13 +1422,60 @@ export class DeclarationAndActualComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-  upload(formDirective: FormGroupDirective,) {
+  onSelectCurrentEmp(element, event: { target: { checked: any } })
+  {
+    const checked = event.target.checked;
+    this.declarationService.handicappedDependentTransactionId = 0;
+        this.declarationService.declaredAmount = this.unformatAmount(element.declaredAmount);
+        this.declarationService.actualAmount = this.unformatAmount(element.actualAmount);
+        this.declarationService.transactionStatus = 'Pending';
+        this.declarationService.handicappedDependentDetailMaster.familyMemberInfoId = element.handicappedDependentDetailMaster.familyMemberInfoId;
+        this.declarationService.handicappedDependentDetailMaster.familyMemberName = element.handicappedDependentDetailMaster.familyMemberName;
+        this.declarationService.handicappedDependentDetailMaster.disabilityType = element.handicappedDependentDetailMaster.disabilityType;
+        this.declarationService.handicappedDependentDetailMaster.severity = element.handicappedDependentDetailMaster.severity;
+        // this.declarationService.handicappedDependentDetailMaster.amountRejected = 0.0;
+        // this.declarationService.handicappedDependentDetailMaster.amountApproved = 0.0;
+        this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
+        this.declarationService.handicappedDependentDetailMaster.relationship = element.handicappedDependentDetailMaster.relationship;
+        // this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
+        this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
+        this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
+        this.currentEmployerHandicappedDependentList.push(this.declarationService);
+
+        const parentsDelete = this.currentEmployerHandicappedDependentList[0].handicappedDependentDetailMaster;
+        delete parentsDelete.documentInformationList;
+
+    if (checked) {
+
+      this.uploadGridData.push(element.handicappedDependentTransactionId);
+      console.log("this.uploadGridData",this.uploadGridData)
+    } else {
+       const index = this.uploadGridData.indexOf(
+        element.handicappedDependentTransactionId
+      );
+      this.uploadGridData.splice(index, 1);
+    }
+}
+
+// unformatAmount(amount) {
+//   if (amount !== null && amount != undefined) {
+//     amount = amount.toString().replace(/,/g, '');
+//   } else {
+//     amount = 0.0;
+//   }
+//   return amount;
+// }
+
+
+  upload() {
     this.submitted = true;
     // stop here if form is invalid
     // if (this.handicappedDependentForm.invalid) {
     //   return;
     // }
 
+
+    console.log(this.currentEmployerHandicappedDependentList);
     if(this.priviousEmpFormArray.invalid){
     // this.visibilityFlagPrivious =  false;
       return;
@@ -1385,25 +1487,39 @@ export class DeclarationAndActualComponent implements OnInit {
       return;
     }
 
-    // if (this.filesArray.length === 0) {
-    //   this.alertService.sweetalertError(
-    //     'Please attach Premium Receipt / Premium Statement'
-    //   );
-    //   return;
-    // }
+    if (this.filesArray.length === 0) {
+      this.alertService.sweetalertError(
+        'Please attach Premium Receipt / Premium Statement'
+      );
+      return;
+    }
 
-    // console.log(this.handicappedDependentForm.getRawValue());
+    this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
+      if (element.declaredAmount !== null) {
+        element.declaredAmount = element.declaredAmount
+          .toString()
+          .replace(/,/g, '');
+      } else {
+        element.declaredAmount = 0.0;
+      }
+      if (element.actualAmount !== null) {
+        element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
+      } else {
+        element.actualAmount = 0.0;
+      }
+    });
+
+
     const handicappedDependentFormValues = this.handicappedDependentForm.getRawValue();
-    if (handicappedDependentFormValues.currentEmployerHandicappedDetails.length > 0) {
-      handicappedDependentFormValues.currentEmployerHandicappedDetails.forEach(element => {
-        // console.log(element);
+
+
+    if (handicappedDependentFormValues.priviousEmployerHandicappedDetails.length > 0) {
+      handicappedDependentFormValues.priviousEmployerHandicappedDetails.forEach(element => {
         this.declarationService = new DeclarationService();
-        this.declarationService.handicappedDependentTransactionId = null;
         this.declarationService.previousEmployerId = element.previousEmployerId;
-        this.declarationService.declaredAmount = this.unformatAmount(element.limit);
-        this.declarationService.actualAmount = this.unformatAmount(element.limit);
-        // this.declarationService.declaredAmount = this.unformatAmount(element.declaredAmount);
-        // this.declarationService.actualAmount = this.unformatAmount(element.actualAmount);
+        this.declarationService.handicappedDependentTransactionId = 0;
+        this.declarationService.declaredAmount =  this.unformatAmount(element.actualAmount);
+        this.declarationService.actualAmount = this.unformatAmount(element.actualAmount);
         this.declarationService.transactionStatus = 'Pending';
         this.declarationService.handicappedDependentDetailMaster.familyMemberInfoId = element.familyMemberInfoId;
         this.declarationService.handicappedDependentDetailMaster.familyMemberName = element.familyMemberName;
@@ -1417,43 +1533,32 @@ export class DeclarationAndActualComponent implements OnInit {
         this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
         this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
-        this.currentEmployerHandicappedDependentList.push(this.declarationService);
-      });
-    }
-
-    if (handicappedDependentFormValues.priviousEmployerHandicappedDetails.length > 0) {
-      handicappedDependentFormValues.priviousEmployerHandicappedDetails.forEach(element => {
-        this.declarationService = new DeclarationService();
-        this.declarationService.previousEmployerId = element.previousEmployerId;
-        this.declarationService.handicappedDependentTransactionId = null;
-        this.declarationService.declaredAmount =  this.unformatAmount(element.actualAmount);
-        this.declarationService.actualAmount = this.unformatAmount(element.actualAmount);
-        this.declarationService.transactionStatus = 'Pending';
-        this.declarationService.handicappedDependentDetailMaster.familyMemberInfoId = element.familyMemberInfoId;
-        this.declarationService.handicappedDependentDetailMaster.familyMemberName = element.familyMemberName;
-        this.declarationService.handicappedDependentDetailMaster.disabilityType = element.disabilityType;
-        this.declarationService.handicappedDependentDetailMaster.severity = element.severity;
-        // this.declarationService.handicappedDependentDetailMaster.amountRejected = 0.0;
-        // this.declarationService.handicappedDependentDetailMaster.amountApproved = 0.0;
-        this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
-        this.declarationService.handicappedDependentDetailMaster.limit = element.limit;
-        this.declarationService.handicappedDependentDetailMaster.relationship = element.relationship;
-        this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
-        this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
-        this.declarationService.handicappedDependentDetailMaster.handicappedDependentDetailMasterId = element.handicappedDependentDetailMasterId;
         this.previousEmployerHandicappedDependentList.push(this.declarationService);
+
       });
+
+      this.previousEmployerHandicappedDependentList.forEach(element =>{
+        this.uploadGridData.push(element.handicappedDependentTransactionId)
+      });
+
+      const parentsDelete = this.previousEmployerHandicappedDependentList[0].handicappedDependentDetailMaster;
+      delete parentsDelete.documentInformationList;
+
     }
 
+
+    // previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
 
 
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentList,
       previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
-      // transactionIds: this.uploadGridData,
+      // previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentResponseList,
+      transactionIds: this.uploadGridData,
       // receiptAmount: this.receiptAmount,
-      // documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
+      proofSubmissionId: '',
     };
 
     // this.fileService.uploadSingleFile(this.currentFileUpload, data)
@@ -1463,7 +1568,7 @@ export class DeclarationAndActualComponent implements OnInit {
     //     }
     // }))
     this.handicappedDependentService
-      .uploadHandicappedTransactionwithDocument(data)
+      .uploadHandicappedTransactionwithDocument(this.filesArray,data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -1755,7 +1860,7 @@ export class DeclarationAndActualComponent implements OnInit {
         });
         this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
           // remove saved family member from dropdown
-          const index = this.remainingFamilyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName)
+          const index = this.remainingFamilyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName);
           if (index > -1) {
             this.remainingFamilyMemberName.splice(index, 1);
           }
@@ -1764,7 +1869,7 @@ export class DeclarationAndActualComponent implements OnInit {
 
         this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
           // remove saved family member from dropdown
-          const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName)
+          const index = this.familyMemberName.findIndex(item => item.label == element.handicappedDependentDetailMaster.familyMemberName);
           if (index > -1) {
             this.familyMemberName.splice(index, 1);
           }
@@ -1814,7 +1919,7 @@ export class DeclarationAndActualComponent implements OnInit {
     }
 
     docViewer(template3: TemplateRef<any>, documentInformationResponseList: any) {
-      console.log("documentInformationResponseList::", documentInformationResponseList)
+      console.log("documentInformationResponseList::", documentInformationResponseList);
       this.urlArray = documentInformationResponseList;
       this.urlIndex = 0;
       this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -1885,11 +1990,11 @@ class DeclarationService {
     // amountRejected: 0.0,
     // amountApproved: 0.0,
     proofSubmissionId: null,
-    limit: null,
-    documentRemark: null,
+    // limit: null,
+    // documentRemark: null,
     documentInformationList: [],
     claiming80U: true
-  }
+  };
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

@@ -677,45 +677,45 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
-  addRowInList(
-    summarynew: {
-      investmentGroup2TransactionId: number;
-      investmentGroup2MasterPaymentDetailId: number;
-      previousEmployerId: number;
-      dueDate: Date;
-      declaredAmount: any;
-      dateOfPayment: Date;
-      actualAmount: any;
-      isECS: number;
-    },
-    j: number
-  ) {
-    // console.log('summary::',  summarynew);
-    // if (this.initialArrayIndex[j] > i) {
-    //   this.hideRemoveRow = false;
-    // } else {
-    //   this.hideRemoveRow  = true;
-    // }
-    this.declarationService = new DeclarationService(summarynew);
-    // console.log('declarationService::', this.declarationService);
-    this.globalAddRowIndex -= 1;
-    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
-    this.shownewRow = true;
-    this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
-    this.declarationService.declaredAmount = null;
-    this.declarationService.dueDate = null;
-    this.declarationService.actualAmount = null;
-    this.declarationService.dateOfPayment = null;
-    this.declarationService.isECS = 0;
-    this.declarationService.transactionStatus = 'Pending';
-    this.declarationService.amountRejected = 0.0;
-    this.declarationService.amountApproved = 0.0;
-    this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
-      j
-    ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
-    this.transactionDetail[j].group2TransactionList.push(this.declarationService);
-    console.log('addRow::', this.transactionDetail[j].group2TransactionList);
-  }
+  // addRowInList(
+  //   summarynew: {
+  //     investmentGroup2TransactionId: number;
+  //     investmentGroup2MasterPaymentDetailId: number;
+  //     previousEmployerId: number;
+  //     dueDate: Date;
+  //     declaredAmount: any;
+  //     dateOfPayment: Date;
+  //     actualAmount: any;
+  //     isECS: number;
+  //   },
+  //   j: number
+  // ) {
+  //   // console.log('summary::',  summarynew);
+  //   // if (this.initialArrayIndex[j] > i) {
+  //   //   this.hideRemoveRow = false;
+  //   // } else {
+  //   //   this.hideRemoveRow  = true;
+  //   // }
+  //   this.declarationService = new DeclarationService(summarynew);
+  //   // console.log('declarationService::', this.declarationService);
+  //   this.globalAddRowIndex -= 1;
+  //   console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+  //   this.shownewRow = true;
+  //   this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
+  //   this.declarationService.declaredAmount = null;
+  //   this.declarationService.dueDate = null;
+  //   this.declarationService.actualAmount = null;
+  //   this.declarationService.dateOfPayment = null;
+  //   this.declarationService.isECS = 0;
+  //   this.declarationService.transactionStatus = 'Pending';
+  //   this.declarationService.amountRejected = 0.0;
+  //   this.declarationService.amountApproved = 0.0;
+  //   this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
+  //     j
+  //   ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
+  //   this.transactionDetail[j].group2TransactionList.push(this.declarationService);
+  //   console.log('addRow::', this.transactionDetail[j].group2TransactionList);
+  // }
 
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
