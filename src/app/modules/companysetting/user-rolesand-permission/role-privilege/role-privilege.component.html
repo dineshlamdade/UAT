@@ -25,26 +25,34 @@
                        </select>
                     </div>
                       <div class="col-md-2">
-                        <label class="form-label mt-1 mb-0">Company Name</label>
+                        <label class="form-label mt-1 mb-0">Company Name
+                          {{rolePrivilegeForm.controls.companyName.value}}
+                        </label>
                         <ng-multiselect-dropdown
                           [placeholder]="'None Selected'"
                           [settings]="dropdownSettings"
                           [data]="companyNameList"
+                       
                           (onSelect)="onItemSelect($event)"
                           formControlName="companyName"
                         >
                         </ng-multiselect-dropdown>
                       </div>
-                    
+                      
+                      
                     <div class="col-md-2">
-                      <label class="form-label mt-1 mb-0">User Group</label>
+                      <label class="form-label mt-1 mb-0">User Group
+                        <!-- {{rolePrivilegeForm.controls.userName.value}} -->
+                      </label>
                       <select name="userName" class="form-control custom-select" formControlName="userName" 
-                      [ngClass]="{'is-invalid' : rolePrivilegeForm.get('userName').status == 'INVALID'}" (change)="onSelectGroupName($event.target.value)">
+                      [ngClass]="{'is-invalid' : rolePrivilegeForm.get('userName').status == 'INVALID'}" (change)="onSelectGroupName($event.target.value)"
+                      >
                         <option value="">select</option>
                         <option *ngFor="let userGroupName of userGroupNameList" [value]="userGroupName.userGroupId" >
-                            {{userGroupName.groupName}}
+                            {{userGroupName.groupName}} 
                           </option>
                        </select>
+                      
                     </div>
                     <div class="col-md-2">
                       <label class="form-label mt-1 mb-0">User Role</label>
@@ -385,7 +393,6 @@
                           [rows]="10"
                           [showCurrentPageReport]="true"
                           [totalRecords]= "totalRecords"
-                         
                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                           [rowsPerPageOptions]="[10, 25, 50]"
                           (onPage)="paginate($event)"
