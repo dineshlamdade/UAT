@@ -895,7 +895,7 @@ export class AttendanceComponent implements OnInit {
             if(presentCycle.pertainingCycle == presentCycle.processingCycle){
               payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));                
             }else{
-              payableDay = 0 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));    
+              payableDay = 0 -(parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));    
             }
           }
         }else{
@@ -910,13 +910,15 @@ export class AttendanceComponent implements OnInit {
             if(presentCycle.pertainingCycle == presentCycle.processingCycle){
               payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));              
             }else{
-              payableDay = 0 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));    
+              payableDay = presentCycle.paidDays
+              //payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));    
             }
           }else if(cycle == 'previous'){
               if(presentCycle.pertainingCycle == presentCycle.processingCycle){
                 payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));                
               }else{
-                payableDay = 0 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));    
+                payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));                
+              // payableDay = 0 - (parseFloat(presentCycle.presentDay_0)  + parseFloat(presentCycle.adjustment));    
               }
             }
           //payableDay = presentCycle.paidDays
@@ -943,45 +945,45 @@ export class AttendanceComponent implements OnInit {
 
   calculateLOP(presentCycle, rowIndex, cycle) {
     let LOP
-    if (this.selectedEmpData[this.index]) {
-      if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
-        if(this.defaultAttendace == 0){
+    // if (this.selectedEmpData[this.index]) {
+    //   if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
+    //     if(this.defaultAttendace == 0){
          
-          LOP = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
-          
-        }else{
+    //      // LOP = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
+    //      LOP = presentCycle.leaveWithoutPay_0
+    //     }else{
          
-          //LOP = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
-          LOP = presentCycle.leaveWithoutPay
-        }
+    //       //LOP = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
+    //       LOP = presentCycle.leaveWithoutPay
+    //     }
         
-      } else {
+    //   } else {
 
-        if(this.defaultAttendace == 1){
-          LOP = presentCycle.leaveWithoutPay
+    //     if(this.defaultAttendace == 1){
+    //       LOP = presentCycle.leaveWithoutPay
           
         
-        }else{
-          LOP = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
-          //LOP = presentCycle.leaveWithoutPay
-        }
-        //payableDay = presentCycle.paidDays
-      }
-      if (cycle == 'present') {
-        this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay_0 = LOP;
-        this.getPresentCycleLeaveWithoutPayTotal()
-      }
-      if (cycle == 'future') {
-        this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay_0 = LOP.toFixed(2);
-        this.getFutureCycleLeaveWithoutPayTotal()
-      }
-      if (cycle == 'previous') {
-        this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay_0 = LOP.toFixed(2);
-        this.getPreviousCycleLeaveWithoutPayTotal()
-      }
+    //     }else{
+    //       LOP = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
+    //       //LOP = presentCycle.leaveWithoutPay
+    //     }
+    //     //payableDay = presentCycle.paidDays
+    //   }
+    //   if (cycle == 'present') {
+    //     this.attendanceInputAPIRecordsUIData[rowIndex].leaveWithoutPay_0 = LOP;
+    //     this.getPresentCycleLeaveWithoutPayTotal()
+    //   }
+    //   if (cycle == 'future') {
+    //     this.attendanceInputGetAPIFuturecyclesData[rowIndex].leaveWithoutPay_0 = LOP.toFixed(2);
+    //     this.getFutureCycleLeaveWithoutPayTotal()
+    //   }
+    //   if (cycle == 'previous') {
+    //     this.attendanceInputGetAPIPreviouscycleData[rowIndex].leaveWithoutPay_0 = LOP.toFixed(2);
+    //     this.getPreviousCycleLeaveWithoutPayTotal()
+    //   }
       
-      return LOP.toFixed(2);
-    }
+    //   return LOP.toFixed(2);
+    // }
 
 
     if (this.selectedEmpData[this.index]) {
@@ -990,7 +992,8 @@ export class AttendanceComponent implements OnInit {
         if(presentCycle.pertainingCycle == presentCycle.processingCycle){
           LOP = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
         }else{
-          LOP = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
+          LOP = presentCycle.leaveWithoutPay_0
+          //LOP = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.presentDay_0) + parseFloat(presentCycle.adjustment))
         }
       }
       else if(cycle == 'future'){
@@ -2545,83 +2548,83 @@ export class AttendanceComponent implements OnInit {
   // **********************************Previous Cycle Functions Ends***********************************************
 
   // **********************************ALL Cycle Total Functions Starts***********************************************
-  getAllCyclePaybleDaysTotal() {
-    let total = 0.0
-    this.AllCycleRecordsData.forEach(element => {
-      total = total + parseFloat(element.paidDays)
+  // getAllCyclePaybleDaysTotal() {
+  //   let total = 0.0
+  //   this.AllCycleRecordsData.forEach(element => {
+  //     total = total + parseFloat(element.paidDays)
 
-    });
-    return total.toFixed(2);
-  }
+  //   });
+  //   return total.toFixed(2);
+  // }
 
-  getAllCycleWeeklyOffTotal() {
-    let total = 0.0
-    this.AllCycleRecordsData.forEach(element => {
-      total = total + parseFloat(element.weeklyOff)
+  // getAllCycleWeeklyOffTotal() {
+  //   let total = 0.0
+  //   this.AllCycleRecordsData.forEach(element => {
+  //     total = total + parseFloat(element.weeklyOff)
 
-    });
-    return total.toFixed(2);
-  }
+  //   });
+  //   return total.toFixed(2);
+  // }
 
 
-  getAllCycleHolidayTotal() {
-    let total = 0.0
-    this.AllCycleRecordsData.forEach(element => {
-      total = total + parseFloat(element.holiday)
+  // getAllCycleHolidayTotal() {
+  //   let total = 0.0
+  //   this.AllCycleRecordsData.forEach(element => {
+  //     total = total + parseFloat(element.holiday)
 
-    });
-    return total.toFixed(2);
-  }
+  //   });
+  //   return total.toFixed(2);
+  // }
 
-  getAllCycleLeaveTotal() {
-    let total = 0.0
-    this.AllCycleRecordsData.forEach(element => {
-      total = total + parseFloat(element.paidLeaves)
+  // getAllCycleLeaveTotal() {
+  //   let total = 0.0
+  //   this.AllCycleRecordsData.forEach(element => {
+  //     total = total + parseFloat(element.paidLeaves)
 
-    });
-    return total.toFixed(2);
-  }
+  //   });
+  //   return total.toFixed(2);
+  // }
 
-  getAllCycleLeaveWithoutPayTotal() {
-    let total = 0.0
-    if (this.defaultAttendace == '1') {
-      this.AllCycleRecordsData.forEach(element => {
-        total = total + parseFloat(element.leaveWithoutPay)
+  // getAllCycleLeaveWithoutPayTotal() {
+  //   let total = 0.0
+  //   if (this.defaultAttendace == '1') {
+  //     this.AllCycleRecordsData.forEach(element => {
+  //       total = total + parseFloat(element.leaveWithoutPay)
 
-      });
-    } else {
-      this.AllCycleRecordsData.forEach(element => {
-        total = total + parseFloat(element.leaveWithoutPay_0)
+  //     });
+  //   } else {
+  //     this.AllCycleRecordsData.forEach(element => {
+  //       total = total + parseFloat(element.leaveWithoutPay_0)
 
-      });
-    }
-    return total.toFixed(2);
-  }
+  //     });
+  //   }
+  //   return total.toFixed(2);
+  // }
 
-  getAllCyclePresentDayTotal() {
-    let total = 0.0
-    if (this.defaultAttendace == '0') {
-      this.AllCycleRecordsData.forEach(element => {
-        total = total + parseFloat(element.presentDay_0)
+  // getAllCyclePresentDayTotal() {
+  //   let total = 0.0
+  //   if (this.defaultAttendace == '0') {
+  //     this.AllCycleRecordsData.forEach(element => {
+  //       total = total + parseFloat(element.presentDay_0)
 
-      });
-    } else {
-      this.AllCycleRecordsData.forEach(element => {
-        total = total + parseFloat(element.presentDay)
+  //     });
+  //   } else {
+  //     this.AllCycleRecordsData.forEach(element => {
+  //       total = total + parseFloat(element.presentDay)
 
-      });
-    }
-    return total.toFixed(2);
-  }
+  //     });
+  //   }
+  //   return total.toFixed(2);
+  // }
 
-  getAllCycleAdjTotal() {
-    let total = 0.0
-    this.AllCycleRecordsData.forEach(element => {
-      total = total + parseFloat(element.adjustment)
+  // getAllCycleAdjTotal() {
+  //   let total = 0.0
+  //   this.AllCycleRecordsData.forEach(element => {
+  //     total = total + parseFloat(element.adjustment)
 
-    });
-    return total.toFixed(2);
-  }
+  //   });
+  //   return total.toFixed(2);
+  // }
 
 
   /** Save Button Click */
