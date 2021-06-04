@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QueryService } from '../query.service';
-import { ToastrService } from 'ngx-toastr';
 import { Table } from "primeng/table";
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
 @Component({
   selector: 'app-query-type-master',
@@ -68,7 +68,8 @@ export class QueryTypeMasterComponent implements OnInit {
   loading = false;
   isChecked;
   isCheckedName;
-  constructor(public formBuilder : FormBuilder,public queryService :QueryService ,public toster : ToastrService) {
+  isActionShow:boolean=true;
+  constructor(public formBuilder : FormBuilder,public queryService :QueryService , private alertService: AlertServiceService) {
     this.querytypeForm = this.formBuilder.group(
         {
 
@@ -86,7 +87,7 @@ export class QueryTypeMasterComponent implements OnInit {
         "Replayworkflow": new FormControl(""),
         "subQueryTypeCode":new FormControl(''),
         "subqueryTypedescription":new FormControl(null),
-        "remark":new FormControl(true),
+        "remark":new FormControl(''),
         "assignQATemplate1":new FormControl(''),
         "assignQATemplate2":new FormControl(''),
         }
@@ -108,7 +109,7 @@ export class QueryTypeMasterComponent implements OnInit {
         "listQueryAnsMappingReqDTO": new FormControl([]),
         "listQueryPriorityRequestDTO": new FormControl([]),
         "subQueryRequestDTO": new FormControl([]),
-        "remark":new FormControl(true),
+        "remark":new FormControl(''),
 
       }
     )
@@ -204,6 +205,10 @@ getPriorityRequired(value){
   this.finalForm.controls['priorityRequired'].setValue(value);
 
   this.priorityRequiredFlag =! this.priorityRequiredFlag;
+  if(value == '0')
+  {
+    this.listQueryPriorityRequestDTO=[];
+  }
 }
 
 priorityRequiredevent(value, priority,event)
@@ -338,6 +343,8 @@ getAlldataById(queryTypeMasterId)// for edit....
       this.getAlldataByIdforedit = res.data.results[0];
       this.finalForm.patchValue(this.getAlldataByIdforedit);
       this.querytypeForm.patchValue(this.getAlldataByIdforedit);
+      // this.listQueryPriorityRequestDTO =  this.getAlldataByIdforedit.listQueryPriorityRequestDTO;
+      // console.log(JSON.stringify(  this.getAlldataByIdforedit))
     if( this.getAlldataByIdforedit.priorityRequired == false)
     {
      this.priorityRequiredFlag = true;
@@ -378,6 +385,8 @@ getAlldataById(queryTypeMasterId)// for edit....
           });
         })
       // this.priorityData2 = this.getAlldataByIdforedit.listQueryPriorityResponseDTO;
+  let multiSelectValue = this.querytypeForm.controls['assignQATemplate2'].setValue(this.AssignQNATemplate);
+
       this.getAlldataByIdforedit.subQueryResponseDTO.forEach(element => {
         this.querySubQuerySummary.push({
           'ModuleName':this.moduleName,
@@ -385,8 +394,8 @@ getAlldataById(queryTypeMasterId)// for edit....
           'subQuerCode':element.subQueryTypeCode,
           'subqueryTypedescription':element.subqueryTypedescription,
           'queryTypedescription': this.getAlldataByIdforedit.queryTypedescription,
-          // 'multiselectDropDown': multiSelectValue,
-          // 'assignQATemplate2':this.querytypeForm.controls['assignQATemplate2'].value,
+          'multiselectDropDown': multiSelectValue,
+          'assignQATemplate2':this.querytypeForm.controls['assignQATemplate2'].value,
         })
       })
       this.moduleListData.forEach(element => {
@@ -396,7 +405,8 @@ getAlldataById(queryTypeMasterId)// for edit....
         }
       });
       this.getAll();
-      console.log(JSON.stringify(this.querySubQuerySummary))
+      console.log(JSON.stringify(this.querySubQuerySummary));
+
       });
 
 }
@@ -436,7 +446,8 @@ addQueryType() // main post api to save all form data .
   {
     this.addQueryTypeData = res.data.results;
     this.getAllSummaryData();
-    this.toster.success("",'Query Type Added Successfully');
+    this.alertService.sweetalertMasterSuccess('Query Type Added Successfully.', '' );
+    this.listQueryPriorityRequestDTO=[];
 
   // this.listQueryPriorityRequestDTO =[];
   // this.subQueryRequestDTO = [];
@@ -476,8 +487,9 @@ updateQueryType()   //update all form
   {
     this.updateQueryTypeData = res.data.results[0];
    this.getAllSummaryData();
-    this.toster.success("",'Query Type Updated Successfully');
-    // this.listQueryPriorityRequestDTO =[];
+    this.alertService.sweetalertMasterSuccess('Query Type Updated Successfully.', '' );
+
+    this.listQueryPriorityRequestDTO =[];
     // this.subQueryRequestDTO = [];
   this.reset();
 
@@ -494,19 +506,6 @@ getAll() // this api call for the assign Q & A template dropdown
 {
 
   this.queryListData=[];
-let listQA =[];
-
-      //     this.dropdownSettings = {
-      //   singleSelection: false,
-      //   idField: 'queAnsMasterId',
-      //   textField: 'description',
-      //   selectAllText: 'Select All',
-      //   unSelectAllText: 'UnSelect All',
-      //   itemsShowLimit: 3,
-      //   allowSearchFilter: true,
-      //   lazyLoading: true,
-
-      // };
    this.queryService.getAll().subscribe( res =>{
     res.data.results.forEach(element => {
       if(element.moduleId == this.selectedModuleId)
@@ -514,7 +513,6 @@ let listQA =[];
         this.queryListData.push(element);
       }
 
-     // alert(this.queryListData.length)
       if(this.queryListData.length > 0){
       // console.log("here")
        this.dropdownSettings = {
@@ -528,7 +526,7 @@ let listQA =[];
          lazyLoading: true,
 
        };
-     }
+     }setTimeout(()=> { this.queryListData = this.queryListData; },1000);
     });
 
    })
@@ -547,8 +545,8 @@ editQuery(query,index)
   // 'subqueryTypedescription':this.querytypeForm.controls['subqueryTypedescription'].value,
   this.querytypeForm.controls['subqueryTypedescription'].setValue(query.subqueryTypedescription);
   this.querytypeForm.controls['assignQATemplate2'].setValue(query.assignQATemplate2);
+  console.log("!!!!!!!!!!!!!!!!",query)
   this.editQueryIndex = index;
-  this.querySubQuerySummary = []; // reset the subquery added table
 
 }
 viewQuery(query,index)
@@ -591,6 +589,8 @@ cancel()
   this.isVisiblee = false; //update btn
   this.isVisible = false; //cancle btn
   this.subquerview = true;
+  // this.querytypeForm.controls['priorityRequired'].setValue('1');
+
 }
 
 editQuerySummary(query) // whole page edit function
@@ -617,10 +617,10 @@ editQuerySummary(query) // whole page edit function
   this.queryTypeMasterId = query.queryTypeMasterId;
   this.moduleName = query.applicationModuleName;
 
-  this.listQueryPriorityRequestDTO =query.listQueryPriorityRequestDTO;
   this.isAddTempQuery = true;
   this.isUpdateTempQuery = false;
-  // this.querySubQuerySummary=[];
+  this.querySubQuerySummary = []; // reset the subquery added table
+
 
 }
 viewQuerySummary(query) // whole page view function
@@ -637,16 +637,16 @@ viewQuerySummary(query) // whole page view function
   this.editflagSummary = false;
   this.querytypeForm.patchValue(query);
   this.querytypeForm.disable();
-  // this.querySubQuerySummary.disable(); // disable the subquery added table
   this.isVisiblee = false;
   this.isVisible = true;
   this.isShown = false;
   this.getAlldataById(query.queryTypeMasterId);
   this.queryTypeMasterId = query.queryTypeMasterId;
+  this.moduleName = query.applicationModuleName;
   this.querySubQuerySummary=[];
   this.isAddTempQuery = false;
   this.isUpdateTempQuery = false;
-  // console.log(JSON.stringify(this.ishidden))
+  this.isActionShow = false;
 }
 
 resolutionEvent(value,prio)

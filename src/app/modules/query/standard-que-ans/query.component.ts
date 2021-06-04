@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditorModule } from 'ckeditor4-angular';
-import { ToastrService } from 'ngx-toastr';
 import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { QueryService } from '../query.service';
 import { Table } from 'primeng/table';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
@@ -34,8 +33,8 @@ export class QueryComponent implements OnInit {
   isVisiblee:boolean=false;
   queryCode: any;
 
-  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
-   )
+  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,
+    private alertService: AlertServiceService)
   {
     this.queryForm = this.formBuilder.group({
       // "createdBy": new FormControl(''),
@@ -77,7 +76,8 @@ export class QueryComponent implements OnInit {
       this.queryService.addQuery(this.queryForm.value).subscribe(res =>
         {
 
-          this.toster.success("",'Q&A Template Added Successfully');
+      this.alertService.sweetalertMasterSuccess('Q&A Template Added Successfully.', '' );
+
           this.queryForm.controls['active'].setValue(true);
           this.getAllData();
         })
@@ -102,7 +102,8 @@ export class QueryComponent implements OnInit {
   {
     this.queryService.updateQuery(this.queryForm.value).subscribe(res =>
       {
-    this.toster.success("",'Q&A Template Updated Successfully');
+    this.alertService.sweetalertMasterSuccess('Q&A Template Updated Successfully.', '' );
+
     this.getAllData();
       }
       )
@@ -224,8 +225,4 @@ editorConfig = {
 
 };
 
-// paginate(event) {
-//   console.log(JSON.stringify(event));
-//   let pageIndex = event.first/event.rows + 1
-//   }
 }

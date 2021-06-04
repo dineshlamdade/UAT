@@ -9,11 +9,17 @@
             <div class="card-body">
               <form  [formGroup]="querytypeForm" (ngSubmit)="querytypeFormSubmit()" >
                 <div></div>
-                <fieldset>
-                  <legend>Query Type Master</legend>
+
+                  <div class="mb-0">
+                    <h3 class="font-14 text-purple font-bold">
+                      Query Type Master
+                    </h3>&nbsp;
+
+
+                     </div>
                   <div class="tabview-contents">
                     <div class="row">
-                      <div class="form-group col-sm-6 col-md-4">
+                      <div class="form-group col-md-3">
                         <label class="form-label">Module Name</label>
                         <select class="form-control" formControlName="applicationModuleId" (change)="moduleChange($event.target.value)"
                         [ngClass]="{'is-invalid' : querytypeForm.get('applicationModuleId').status == 'INVALID'}">
@@ -50,8 +56,8 @@
                         />
                       </div>
                       <div class="col-md-3 form-group">
-                        <label class="form-label">Sub Query</label>
-                        <div class="custom-controls-stacked">
+                        <label class="form-label"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub Query</label>
+                        <div class="custom-controls-stacked">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           <label class="custom-control custom-radio custom-control-inline">
                             <input
                               name="query"
@@ -86,9 +92,19 @@
                           formControlName="assignQATemplate1"
                           (onSelect)="onItemSelect($event)"
                           (onSelectAll)="onSelectAll($event)"
-                          [disabled]="viewFlag">
+                          [disabled]="viewFlag" [multiple]="true">
                         </ng-multiselect-dropdown>
-                        <!-- [data]="queryListData" -->
+
+                        <!-- <select
+                        formControlName="assignQATemplate1"
+                        class="form-control custom-select" >
+                        <option [ngValue]="null" selected >Select</option>
+                        <option  *ngFor="let module of queryListData" value="{{module.queAnsMasterId}}">
+                          {{module.queryTypeDescription}}
+                        </option>
+                      </select> -->
+                        <!-- <p-multiSelect [options]="queryListData"  formControlName="assignQATemplate1" ngDefaultControl defaultLabel="Select a City" optionLabel="name">
+                        </p-multiSelect> -->
                       </div>
                     </div>
                   </fieldset>
@@ -126,7 +142,7 @@
                           [data]="queryListData"
                           formControlName="assignQATemplate2"
                           (onSelect)="onItemSubQuerySelect($event)"
-                          (onSelectAll)="onSelectAllSubQuery($event)"  [disabled]="viewFlag" >
+                          (onSelectAll)="onSelectAllSubQuery($event)"  [disabled]="viewFlag" [multiple]="true" >
                         <!-- [ngClass]="{'is-invalid' : querytypeForm.get('assignQATemplate2').status == 'INVALID'}"> -->
                         </ng-multiselect-dropdown>
                       </div>
@@ -162,21 +178,21 @@
                       </div>
                     </ng-container>
                     <div class="float-right">
-                      <button type="button" class=" btn-sm  btn-bg-green "
-                      tooltip="Add" *ngIf="isAddTempQuery" (click)="addSubqueryInTable()">
-                        <i class="fa fa-plus" aria-hidden="true" ></i >&nbsp; ADD</button>&nbsp;&nbsp;
 
-                          <button type="button"  class="btn-labeled btn-labeled-left btn-bg-green btn-sm"
-                          tooltip="Update" *ngIf="isUpdateTempQuery"  (click)="addSubqueryInTable()">
-                            <i class="fa fa-plus" aria-hidden="true" ></i >&nbsp; Update</button>&nbsp;&nbsp;
+                          <button type="button" class="custom_button custom_btn btn-labeled btn-labeled-left ripple" tooltip="Add"
+                          *ngIf="isAddTempQuery" (click)="addSubqueryInTable()" style="background-color: #5a5278;color: white;"><b>
+                            <i class="fa fa-plus"></i></b>ADD</button>&nbsp;
+
+                          <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                           tooltip="Update" *ngIf="isUpdateTempQuery"  (click)="addSubqueryInTable()" ><b>
+                            <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
                     </div>
-                  </fieldset >
-                  <div class="tabview-contents" style="margin-top: 70px" *ngIf="subquerview">
-                    <div class="row mt-20">
+                    <br>
+                    <div class="row mt-20"  *ngIf="subquerview">
                       <div class="col-12 col-md-8 col-sm-8">
-                        <div class="table-responsive Custom_Table table-striped table-hover table-bordered">
+                        <div class="table-responsive Custom_Table table-bordered">
 
-                        <p-table [value]="querySubQuerySummary">
+                        <p-table  [value]="querySubQuerySummary">
                             <ng-template pTemplate="header">
                               <tr class="textcenter">
                                 <th class="wd-10">Sr.No.</th>
@@ -223,14 +239,14 @@
                                     </div>
                                   </div>
                                 </th>
-                                <th class="wd-20">Action</th>
+                                <th class="wd-20" *ngIf="isActionShow">Action</th>
                               </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-query let-rowIndex="rowIndex" >
                               <tr  [disabled]="viewFlag" class="p-selectable-row textcenter" >
                                 <td class="text-center" >{{ rowIndex + 1 }}</td>
                                 <td>
-                                  <label class="form-lable mb-0" >{{(query.ModuleName)}} </label>
+                                  <label class="form-lable mb-0"  [disabled]="viewFlag"  >{{(query.ModuleName)}} </label>
                                 </td>
                                 <td>
                                   <label class="form-lable mb-0">{{query.queryTypedescription}}</label>
@@ -239,7 +255,7 @@
                                   <label class="form-lable mb-0">{{query.subqueryTypedescription}}</label>
                                 </td>
 
-                                <td>
+                                <td  *ngIf="isActionShow">
                                   <span class="ml-1 mt-2" >
                                     <i class="fa fa-eye font-16 text-blue cursor-pointer" style="padding: 5px; "
                                       aria-hidden="true" (click)="viewQuery(query,rowIndex)" ></i >&nbsp;
@@ -267,14 +283,17 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                    <br>
+                  </fieldset >
+                        <br>
+
                   <fieldset>
                     <legend>General Setting</legend>
 
-                    <div class="row mt-20">
-                      <div class="col-sm-6 col-md-3 form-group">
-                        <label class="form-label">Priority Require</label>
-                      </div>
+                    <div class="row d-flex mt-20">
+
+                        <label class="form-label mt-1 ml-2">Priority Require</label>&nbsp;&nbsp;
+
                       <div class="col-sm-3 col-md-3 form-group">
                         <div class="custom-controls-stacked">
                           <label
@@ -309,7 +328,7 @@
                         class="col-md-8 form-group"
                         *ngIf="!priorityRequiredFlag"
                       >
-                        <div class="tabview-contents">
+
                           <div class="row mt-20">
                             <div class="col-12 col-md-12 col-sm-12">
                               <div class="table-responsive Custom_Table table-bordered">
@@ -415,13 +434,13 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+
                       </div>
                       <div
                         class="col-md-6 form-group"
                         *ngIf="priorityRequiredFlag"
                       >
-                        <div class="tabview-contents">
+
                           <div class="row mt-20">
                             <div class="col-12 col-md-12 col-sm-12">
                               <div class="table-responsive Custom_Table">
@@ -452,12 +471,12 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+
                       </div>
                     </div>
                     <br />
                     <div class="row">
-                      <div class="col-md-4 form-group">
+                      <!-- <div class="col-md-3 form-group">
                         <label class="form-label">Reply Workflow</label>
                         <select
                           class="form-control custom-select"
@@ -471,7 +490,7 @@
                           </option>
                         </select>
                       </div>
-                      <div class="col-md-4 form-group">
+                      <div class="col-md-3 form-group">
                         <label class="form-label">Forward Workflow</label>
                         <select
                           class="form-control custom-select"
@@ -483,37 +502,38 @@
                             {{ workflow.workflowCode }}
                           </option>
                         </select>
+                      </div> -->
+                      <div class="col-md-2 form-group">
+                        <label
+                          class="custom-control custom-checkbox custom-control-inline pl-45"
+                        >
+                          <input
+                            autocomplete="off"
+                            type="checkbox"
+                            class="custom-control-input"
+                            name="example-inline-checkbox1"
+                            checked
+                            (change)="changeEvent1($event)"
+                            readonly
+                          />
+                          <span class="custom-control-label">Active </span>
+                        </label>
+                      </div>
+                      <div class="col-md-2 form-group" *ngIf="hideRemarkDiv1">
+                        <label class="form-label">Remark</label>
+                        <textarea
+                          autocomplete="off"
+                          class="form-control"
+                          rows="2"
+                          placeholder="Enter Remark"
+                          [required]="hideRemarkDiv1"
+                          formControlName="remark"
+                        ></textarea>
                       </div>
                     </div>
                     <ng-container>
                       <div class="row mt-20">
-                        <div class="col-md-3 form-group">
-                          <label
-                            class="custom-control custom-checkbox custom-control-inline pl-45"
-                          >
-                            <input
-                              autocomplete="off"
-                              type="checkbox"
-                              class="custom-control-input"
-                              name="example-inline-checkbox1"
-                              checked
-                              (change)="changeEvent1($event)"
-                              readonly
-                            />
-                            <span class="custom-control-label">Active </span>
-                          </label>
-                        </div>
-                        <div class="col-md-3 form-group" *ngIf="hideRemarkDiv1">
-                          <label class="form-label">Remark</label>
-                          <textarea
-                            autocomplete="off"
-                            class="form-control"
-                            rows="2"
-                            placeholder="Enter Remark"
-                            [required]="hideRemarkDiv1"
-                            formControlName="remark"
-                          ></textarea>
-                        </div>
+
                       </div>
                     </ng-container>
                   </fieldset>
@@ -523,11 +543,10 @@
                       <button
                         type="submit"
                         *ngIf="isShown"
-                        class="custom_button custom_btn btn-labeled btn-labeled-left"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                         tooltip="Save"
                         [disabled]="!querytypeForm.valid"
-                        [ngClass]="{
-                          'disabled-btn-bg-green': querytypeForm.invalid,
+                        [ngClass]="{ 'disabled-btn-bg-green': querytypeForm.invalid,
                           'btn-bg-green': !querytypeForm.invalid }" >
                         <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b >Save</button>&nbsp;
 
@@ -563,7 +582,7 @@
                     <legend>Summary</legend>
                     <div>
                       <div class="row ">
-                        <div class="col-12 col-md-12 col-sm-12">
+                        <div class="col-12 col-md-10 col-sm-12">
                           <div class="table-responsive Custom_Table table-striped table-hover table-bordered">
 
                             <p-table [value]="allSummaryData"
@@ -632,7 +651,7 @@
                                       </div>
                                     </div>
                                   </th>
-                                  <th class="wd-10">
+                                  <!-- <th class="wd-10">
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                       Reply Workflow
                                       <div class="Sort_Filter_Position">
@@ -660,7 +679,7 @@
                                         </p-columnFilter>
                                       </div>
                                     </div>
-                                  </th>
+                                  </th> -->
                                   <th class="wd-10">Action</th>
                                 </tr>
                               </ng-template>
@@ -674,17 +693,17 @@
                                     <label class="form-lable mb-0 ">{{query.queryTypeCode}}</label>
                                   </td>
                                   <td>
-                                    <label class="form-lable mb-0 ">{{query.queryTypeCode}}</label>
+                                    <label class="form-lable mb-0 ">{{query.queryTypedescription}}</label>
                                   </td>
                                   <td>
                                     <label class="form-lable mb-0 ">{{query.subcount}}</label>
                                   </td>
-                                  <td>
+                                  <!-- <td>
                                     <label class="form-lable mb-0 ">{{query.replyWorkflowId}}</label>
                                   </td>
                                   <td>
                                     <label class="form-lable mb-0 ">{{query.forwardWorkFlowId}}</label>
-                                  </td>
+                                  </td> -->
                                   <!-- <td>
                                     <label class="form-lable mb-0" *ngIf="query.active">Active</label>
                                     <label class="form-lable mb-0"  *ngIf="!query.active">Inactive</label>
@@ -713,7 +732,7 @@
                       </div>
                     </div>
                   </fieldset>
-                </fieldset>
+
               </form>
             </div>
           </div>

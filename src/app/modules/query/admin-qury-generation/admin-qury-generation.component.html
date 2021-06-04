@@ -16,31 +16,31 @@
                           <div class="row">
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0" >Employee No. & Name </label >
-                              <label class="form-label mt-1 mb-0" >{{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}</label >
+                              <label class="font-12 text-ellipsis mt-1 mb-0" >{{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}</label >
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Date of Joining</label >
-                                <label class="form-label mt-1 mb-0">{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}</label >
+                                <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}</label >
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Establishment</label>
-                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.establishment}}</label>
+                              <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.establishment}}</label>
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Employee Type</label>
-                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.employeeType}}</label>
+                              <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.employeeType}}</label>
                             </div>
                             <div class="col-md-1">
                               <label class="form-label mt-1 mb-0">Grade</label>
-                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.grade}}</label>
+                              <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.grade}}</label>
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0" >Designation</label >
-                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.designation}}</label>
+                              <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.designation}}</label>
                             </div>
                             <div class="col-md-1">
                               <label class="form-label mt-1 mb-0">Status</label>
-                              <label class="form-label mt-1 mb-0">{{perticularEmpDetails.status}}</label>
+                              <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.status}}</label>
                             </div>
                           </div>
                         </div>
@@ -164,6 +164,12 @@
                         <ckeditor formControlName = "queryDescription"  > </ckeditor>
                       </div>
                     </div>
+
+
+
+
+
+
                     <div class="row mt-25" >
                       <div class="col-md-6">
                         <div class="table-responsive Custom_Table">
@@ -185,9 +191,10 @@
                                         <td  [disabled]="viewFlag">
                                           <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
                                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                                                              <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
+                                                              <div class="col-md-12" *ngFor="let doc of listDoc; let i = index">
                                                                   <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
-                                                                      <i class="fa fa-paperclip text-orange" (click)="docViewer(template1,i)"></i> &nbsp; {{ doc.fileName }}
+                                                                      <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
+                                                                      {{ doc.fileName }}
                                                                   </div>
                                                               </div>
                                         </td>
@@ -298,6 +305,10 @@
                       </ng-template>
 
                     </div>
+
+
+
+
                   </div>
                 </div>
                 <div class="row mt-25">
@@ -309,7 +320,7 @@
                         <b><i class="fa fa-angle-double-left"></i></b> Previous
                       </button>
 
-                      <button type="button"tooltip="Save Draft & Next"
+                      <button type="button" tooltip="Save Draft & Next"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" >
                         <b><i class="fa fa-file"></i></b> Save Draft & Next
                       </button>
@@ -359,8 +370,8 @@
                         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                           <ng-template pTemplate="header">
                             <tr>
-                              <th class="wd-5">Sr. No.</th>
-                              <th class="wd-5">
+                              <th >Sr. No.</th>
+                              <th >
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Query No.
                                   <div class="Sort_Filter_Position">
@@ -375,7 +386,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-10">
+                              <th >
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Submission Date
                                   <div class="Sort_Filter_Position">
@@ -390,7 +401,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-10">
+                              <th >
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Creator Name
                                   <div class="Sort_Filter_Position">
@@ -405,7 +416,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-5">
+                              <th >
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Employee Code
                                   <div class="Sort_Filter_Position">
@@ -420,7 +431,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-5">
+                              <th >
                                 <div
                                   class="p-d-flex justify-content-center p-ai-center"
                                 >
@@ -436,7 +447,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-5">
+                              <th >
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   Company Name
                                   <div class="Sort_Filter_Position">
@@ -450,7 +461,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-5">
+                              <th >
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   <span tooltip="Unit of Measure"
                                     >Module Name</span
@@ -466,7 +477,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-5">
+                              <th >
                                 <div class="p-d-flex p-jc-between p-ai-center">
                                   <span tooltip="Unit of Measure"
                                     >Query Type</span
@@ -482,7 +493,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-5">
+                              <th >
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center">
                                   Sub-Query Type
@@ -497,7 +508,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-5">
+                              <th>
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center"
                                 >
@@ -513,7 +524,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-5">
+                              <th >
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center"
                                 >
@@ -529,7 +540,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-10">
+                              <th >
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center"
                                 >
@@ -545,7 +556,7 @@
                                   </div>
                                 </div>
                               </th>
-                              <th class="wd-10">
+                              <th >
                                 <div
                                   class="p-d-flex p-ai-center justify-content-center"
                                 >

@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { TemplateRef} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CKEditorModule } from 'ckeditor4-angular';
-import { ToastrService } from 'ngx-toastr';
+// import { ToastrService } from 'ngx-toastr';
 import { QueryService } from '../query.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-// import { AlertServiceService } from '@src/app/core/services/alert-service.service';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
 @Component({
   selector: 'app-admin-qury-generation',
@@ -48,20 +48,22 @@ export class AdminQuryGenerationComponent implements OnInit {
   queryTemplateData: any;
   selectedModule: any;
   queryNumberData: any;
-  listDoc: Array<any> = [];
+  listDoc: File[] = [];
   editQuerySummaery: any;
+
   employeeMasterId: any;
+
   addQuerywithDocsData: any;
   queryTempData: any;
   listSubQA: any;
   listSubQueryTypeData: any = [];
   viewFlag :boolean = false;
   queryDocs: any;
-
-  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
-    private router: Router,public sanitizer: DomSanitizer,
+  fileName:any;
+  constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
+    ,private router: Router,public sanitizer: DomSanitizer,
     private modalService: BsModalService, )
-    // private alertService: AlertServiceService
+
     {
     this.queryGenerationForm = this.formBuilder.group(
     {
@@ -84,6 +86,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   ngOnInit(): void {
     this.getModuleName();
     this.getAllQueryListSummary();
+
   }
 
   queryGenerationFormSubmit(value)
@@ -119,9 +122,10 @@ this.queryService.getAllQueryList().subscribe(res =>
   {
     this.getAllQueryGenerationData = res.data.results;
     this.getAllQueryGenerationData.forEach(element => {
-    this.employeeMasterIdData = element.employeeMasterId;
+    // this.employeeMasterIdData = element.employeeMasterId;
     this.queryNumberData = element.queryNumber;
-    this.employeeMasterId = element.employeeMasterId;
+    this.employeeMasterId = element.employeeMasterId
+    console.log("getAllQueryListSummary",this.employeeMasterId )
     });
     this.getEmpMasterDetails(this.employeeMasterIdData);
 
@@ -144,20 +148,16 @@ getById(queryGenerationEmpId){ //used for the edit
 }
 querySubQueryTypeQA(applicationModuleId)  //for all dropdown
 {
-  // alert(applicationModuleId)
   this.queryService.querySubQueryTypeQA(applicationModuleId).subscribe(res =>
     {
       this.querySubQueryTypeQAData = res.data.results;
-      // this.listSubQueryTypeData = res.data.results;
       this.querySubQueryTypeQAData.forEach(element => {
         if(element.subQuery == false){
         this.listQAData = element.listQA;
-        // console.log("####",this.listQAData);
         }
         else{
         element.listSubQueryTypeData.forEach(element => {
         this.listQAData = element.listSubQA;
-        // console.log("*****",this.listQAData);
 
       });
         }
@@ -165,6 +165,7 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
 
       if(this.editflag){
       this.getSubQueryListData(this.getByIdData.queryTypeMasterId);
+      console.log("@@@@@@@@@@@@@",this.getByIdData.queryTypeMasterId)
       }
     })
 }
@@ -187,8 +188,6 @@ moduleChange(value) // when module is changed then template also changed.
   this.selectedModuleId = value;
   this.querySubQueryTypeQA( this.selectedModuleId);
 }
-
-
 addQueryGeneration(){ //post api for saving data
   if(this.listDoc.length == 0){
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
@@ -203,57 +202,25 @@ addQueryGeneration(){ //post api for saving data
     }
     const formData  = new FormData();
     formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
-    console.log(JSON.stringify(queryGenerationEmployeeData));
     this.queryService.addQueryGeneration(formData).subscribe(res =>
     {
       this.addQueryGenerationData = res.data.results;
       console.log(JSON.stringify(this.addQueryGenerationData));
+    // console.log("Without Doc**********",queryGenerationEmployeeData)
+
       this.getAllQueryListSummary();
-      this.toster.success("",'Query Generation Employee Details saved Successfully');
-      // this.alertService.sweetalertMasterSuccess('Query Generation Employee Details saved Successfully.', '' );
+      this.alertService.sweetalertMasterSuccess('Query Generation Employee Details saved Successfully.', '' );
 
       this.reset();
     })
     }else{
       this.addQuerywithDocs();
     }
-
 }
-addQuerywithDocs() //not yet used
-{
-  this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-  this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
-  this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
-  this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
 
-    let data = []
-    data.push(this.queryGenerationForm.value)
-    let queryGenerationEmployeeData  = {
-      "queryRequestDTO": data,
-      }
-      let queryDocs  :any = {
-        "listDoc":this.listDoc,
-        }
-
-      // this.queryDocs = this.queryGenerationForm.get( 'file' ).value;
-
-      const formData  = new FormData();
-      formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
-      formData.append( 'queryDocs' , this.employeeMasterId  + queryDocs);
-
-      console.log(JSON.stringify(queryGenerationEmployeeData));
-      this.queryService.addQueryGeneration(formData).subscribe(res =>
-      {
-        this.addQueryGenerationData = res.data.results;
-        console.log(JSON.stringify(this.addQueryGenerationData));
-        this.getAllQueryListSummary();
-        this.toster.success("",'Query Generation Employee Details saved Successfully');
-        // this.alertService.sweetalertMasterSuccess('Query Generation Employee Details saved Successfully.', '' );
-        this.reset();
-      })
-}
 updateQueryGeneration() //put api for update data
 {
+  if(this.listDoc.length == 0){
   this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
@@ -267,21 +234,92 @@ updateQueryGeneration() //put api for update data
     }
     const formData  = new FormData();
     formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
-    console.log(JSON.stringify(queryGenerationEmployeeData));
-
     this.queryService.updateQueryGeneration(formData).subscribe(res =>
     {
       this.addQueryGenerationData = res.data.results;
-      console.log(JSON.stringify(this.addQueryGenerationData));
+    console.log("Without Doc**********",queryGenerationEmployeeData)
+
       this.getAllQueryListSummary();
-      this.toster.success("",'Query Generation Employee Details updated Successfully');
-      // this.alertService.sweetalertMasterSuccess('Query Generation Employee Details updated Successfully.', '' );
+      this.alertService.sweetalertMasterSuccess('Query Generation Employee Details updated Successfully.', '' );
 
       this.editflag =false;
       this.reset();
     })
 
+  }else{
+    this.updateQuerywithDoc();
+  }
+
 }
+
+addQuerywithDocs() //not yet used
+{
+  this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
+  this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
+  this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
+  this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
+
+    let data = []
+    data.push(this.queryGenerationForm.value)
+    let queryGenerationEmployeeData  = {
+      "queryRequestDTO": data,
+      }
+      console.log(JSON.stringify(queryGenerationEmployeeData));
+      const formData  = new FormData();
+      formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
+      this.employeeMasterId = 1;
+      console.log("employeeMasterId",this.employeeMasterId)
+      for (const queryDoc of this.listDoc) {
+        formData.append('queryDocs', queryDoc,this.employeeMasterId + queryDoc.name);
+      }
+      formData.forEach((value, key) => {
+        console.log(key,' ', value);
+      });
+      this.queryService.addQuerywithDocs(formData).subscribe(res =>
+      {
+        this.addQueryGenerationData = res.data.results;
+        // console.log(JSON.stringify(this.addQueryGenerationData));
+
+        this.alertService.sweetalertMasterSuccess('Query Generation Employee Details saved Successfully.', '' );
+        this.getAllQueryListSummary();
+        this.reset();
+      })
+}
+updateQuerywithDoc()
+{
+  this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
+  this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
+  this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
+  this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
+  this.queryGenerationForm.controls['status'].setValue('Save');
+
+  let data = []
+  data.push(this.queryGenerationForm.value)
+  let queryGenerationEmployeeData  = {
+    "queryRequestDTO": data,
+    }
+    console.log(JSON.stringify(queryGenerationEmployeeData));
+    const formData  = new FormData();
+    formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
+    this.employeeMasterId = 1;
+    console.log("employeeMasterId",this.employeeMasterId)
+    for (const queryDoc of this.listDoc) {
+      formData.append('queryDocs', queryDoc,this.employeeMasterId + queryDoc.name);
+    }
+    formData.forEach((value, key) => {
+      console.log(key,' ', value);
+    });
+
+      this.queryService.updateQuerywithDoc(formData).subscribe(res =>
+      {
+        this.addQueryGenerationData = res.data.results;
+        console.log("update with documents",this.addQueryGenerationData);
+        this.alertService.sweetalertMasterSuccess('Query Generation Employee Details updated Successfully.', '' );
+        this.getAllQueryListSummary();
+        this.reset();
+      })
+}
+
 getEmpMasterDetails(employeeMasterIdData)// temp id is used
 {
   this.queryService.getEmpMasterDetails(60).subscribe(res =>
@@ -326,14 +364,12 @@ getDeleteById(queryGenerationEmpId) // delete the record from summary
 {
   this.queryService.getDeleteById(queryGenerationEmpId.queryGenerationEmpId).subscribe(res =>
     {
-      this.toster.success("",'Query Generation Employee Details Deleted Successfully');
-      // this.alertService.sweetalertMasterSuccess('Query Generation Employee Details Deleted Successfully.', '' );
+      this.alertService.sweetalertMasterSuccess('Query Generation Employee Details Deleted Successfully.', '' );
 
       this.getAllQueryListSummary();
     },error => {
       if(error.error.status.code == '4001'){
-        this.toster.error("", 'You can not delete this query because the query status is Closed..!');
-        // this.alertService.sweetalertWarning( res.status.messsage );
+        this.alertService.sweetalertWarning( 'You can not delete this query because the query status is Closed.' );
 
       }
     });
@@ -384,15 +420,6 @@ public UploadModal(template: TemplateRef<any>) {
   );
 }
 
-// onMasterUpload(event: { target: { files: string | any[] } }) {
-
-//   if (event.target.files.length > 0) {
-//     for (const file of event.target.files) {
-//       this.listDoc.push(file);
-//     }
-//   }
-
-// }
 public onMasterUpload(
   event: { target: { files: string | any[] } },
   docType: string
@@ -405,15 +432,14 @@ public onMasterUpload(
           const data = {
             name: file.name,
           };
+
           this.urlArray.push(data);
           this.listDoc.push(file);
-          console.log("file...............",file);
     }
+
   }
 }
-// public removeSelectedLicMasterDocument(index: number) {
-//   this.listDoc.splice(index, 1);
-// }
+
 public removeSelectedLicMasterDocument(index: number, docType: string) {
       this.listDoc.splice(index, 1);
 }
@@ -423,9 +449,9 @@ public docViewer(template1: TemplateRef<any>, index: any) {
   this.urlIndex = index;
 
   console.log('listDoc::', this.listDoc);
-  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.listDoc[this.urlIndex].blobURI
-  );
+  // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+  //   this.listDoc[this.urlIndex].blobURI
+  // );
 
   console.log('urlSafe::', this.urlSafe);
   this.modalRef = this.modalService.show(

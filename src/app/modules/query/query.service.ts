@@ -105,4 +105,30 @@ public addQuerywithDocs(data)
 {
   return this.http.post<any>(this.apiUrl + 'QueryGeneration',data);
 }
+public updateQuerywithDoc(data)
+{
+  return this.http.put<any>(this.apiUrl + 'QueryGeneration',data);
+}
+// .........................query-Communication api..........................................................
+public addQueryIteration(data)
+{
+  return this.http.post<any>(this.apiUrl + 'QueryIteration',data);
+}
+public updateQueryIteration(data)
+{
+  return this.http.put<any>(this.apiUrl + 'QueryIteration',data);
+}
+public getIterationdetailsbyQueryID(id)
+  {
+  return this.http.get<any>(this.apiUrl3 + 'QueryIteration/' +id);
+  }
+  public documentInfoById(id)
+  {
+  return this.http.get<any>(this.apiUrl3 + 'DocumentInfo/' +id);
+  }
+  public getQueAnstemplistById(id)
+  {
+  return this.http.get<any>(this.apiUrl3 + 'DocumentInfo/' +id);
+  }
+
 }

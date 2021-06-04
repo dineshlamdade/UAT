@@ -2,13 +2,13 @@ import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { LoanService } from '../loan.service';
-import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import jspdf from 'jspdf';
 import * as _html2canvas from "html2canvas";
 import { Router } from '@angular/router';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 const html2canvas: any = _html2canvas;
 
 
@@ -90,7 +90,7 @@ export class AddNewLoanComponent implements OnInit {
 
   constructor(public formBuilder: FormBuilder,
     private router: Router,
-    private modalService: BsModalService, public loanservice: LoanService, public toster: ToastrService,
+    private modalService: BsModalService, public loanservice: LoanService, private alertService: AlertServiceService,
     private datePipe: DatePipe, private excelservice: ExcelService, public sanitizer: DomSanitizer,) {
     this.AddLoanForm = this.formBuilder.group(
       {
@@ -400,7 +400,8 @@ export class AddNewLoanComponent implements OnInit {
       this.loanservice.addLoan(this.AddLoanForm.value).subscribe(res => {
         this.approvalData = res.data.results.approverDetails;
         console.log("approverDetails*******", this.approvalData);
-        this.toster.success("", 'Loan Application Added Successfully');
+      this.alertService.sweetalertMasterSuccess('Loan Application Added Successfully.', '' );
+
         this.reset();
         this.router.navigate(['/loan/application']);
         this.getAllData();
@@ -408,7 +409,8 @@ export class AddNewLoanComponent implements OnInit {
         // console.log(JSON.stringify(error))
         // console.log(JSON.stringify(error.error.status));
         if(error.error.status.code == '409'){
-          this.toster.error("", 'Provided  employeeeCode is Already Exist!');
+      this.alertService.sweetalertMasterSuccess('Provided  employeeeCode is Already Exist!.', '' );
+
         }
       });
     } else {
@@ -796,7 +798,8 @@ export class AddNewLoanComponent implements OnInit {
 
 
     } else {
-      this.toster.success("Please Enter Eligible" + ' ' + this.allowedLoanAmount + " amount")
+      this.alertService.sweetalertMasterSuccess('Please Enter Eligible.', '' + this.allowedLoanAmount + " amount");
+
       this.devaiationData.forEach((ele, index) => {
         if (ele.deviationType == 'LoanAmount') {
           let ind = index;
@@ -987,7 +990,8 @@ export class AddNewLoanComponent implements OnInit {
 
     }
     else {
-      this.toster.success("Please Enter Eligible " + ' ' + this.allowedInstallment + " installment")
+      this.alertService.sweetalertMasterSuccess('Please Enter Eligible.', '' + this.allowedLoanAmount + " installment");
+
       this.noOfInstallment = this.allowedInstallment;
 
       this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
@@ -1107,7 +1111,8 @@ export class AddNewLoanComponent implements OnInit {
           })
         }
       }else {
-        this.toster.success("Please Enter Eligible " + ' ' + this.allowedInstallment + " installment")
+      this.alertService.sweetalertMasterSuccess('Please Enter Eligible.', '' + this.allowedLoanAmount + " installment");
+
         this.noOfInstallment = this.allowedInstallment;
 
         this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
@@ -1221,8 +1226,7 @@ export class AddNewLoanComponent implements OnInit {
 
     }
     else {
-      this.toster.success("Please Enter Eligible" + ' ' + this.allowedRateInterest + " interest rate")
-
+      this.alertService.sweetalertMasterSuccess('Please Enter Eligible.', '' + this.allowedRateInterest + " interest rate");
       this.devaiationData.forEach((ele, index) => {
         if (ele.deviationType == 'interestRate') {
           let ind = index;
@@ -1394,7 +1398,7 @@ export class AddNewLoanComponent implements OnInit {
     this.loanservice.updateLoan(this.AddLoanForm.value).subscribe(res => {
       this.updatedData = res.data.results;
      // console.log("&&&&&&&&&&&&", this.updatedData);
-      this.toster.success("Updated loanApplication details Successfully.");
+      this.alertService.sweetalertMasterSuccess('Updated loanApplication details Successfully.', '');
       this.router.navigate(['/loan/application']);
 
     })
