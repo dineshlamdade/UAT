@@ -27,7 +27,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	NonRecurringTransactionGroupAPIbyIdData: any;
 	NonRecurringTransactionScheduleEMPdData: any;
 	NonRecurringTransactionScheduleupdateByIdData: any;
-	NonRecurringHistorybyScheduleIdData: any;
+	NonRecurringHistorybyScheduleIdData: any ='';
 	NonRecurringHeadwiseHistorydData: any;
 	summeryData: any;
 	empData: any;
@@ -2110,6 +2110,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		this.viewScheduleData = scheduleData
 		console.log(JSON.stringify(this.viewScheduleData))
+		this.selectedEmpData[this.index] = scheduleData
 		this.nonRecurringTransactionScheduleId = scheduleData.nonRecurringTransactionScheduleId
 		this.nonRecurringTransactionGroupId = scheduleData.nonRecurringTransactionGroupId
 		this.NonRecurringTransactionScheduleRemarkHistorybyScheduleId()

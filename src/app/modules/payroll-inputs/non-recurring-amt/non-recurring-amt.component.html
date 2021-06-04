@@ -1374,7 +1374,8 @@
                                             </div>
                                         </div>
 
-                                        <label class="nav" for="Transaction">
+                                        <label class="nav" for="Transaction"
+                                        [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length > 0}">
                                             <span> Transaction </span>
                                         </label>
 
@@ -1653,6 +1654,7 @@
 
                                                                         <th rowspan="2" class="wd-8">Remark</th>
                                                                         <th rowspan="2"></th>
+                                                                        <th rowspan="2">Reschedule</th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th class="wd-8">
@@ -1791,15 +1793,16 @@
 
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><input
-                                                                                type="text" class="form-control"
+                                                                                type="text" class="form-control wd-100"
                                                                                 (focusout)="getScheduleRemark($event.target.value,ScheduleData)"
                                                                                 [value]="ScheduleData.remark">
-
                                                                         </td>
                                                                         <td><i tooltip="View Schedule"
                                                                                 class="fa fa-eye font-16 text-blue cursor-pointer"
                                                                                 (click)="ViewScheduleHistory(template3,ScheduleData)"
                                                                                 aria-hidden="true"></i></td>
+
+                                                                        <td>Yes</td>        
 
 
                                                                     </tr>
@@ -2002,6 +2005,7 @@
 
                                                                         <th rowspan="2" class="wd-8">Remark</th>
                                                                         <th rowspan="2"></th>
+                                                                        <th rowspan="2">Reschedule</th>
                                                                     </tr>
                                                                     <tr>
                                                                         <th class="wd-8">
@@ -2132,7 +2136,7 @@
 
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><input
-                                                                                type="text" class="form-control"
+                                                                                type="text" class="form-control wd-100" 
                                                                                 (focusout)="getScheduleRemark($event.target.value,ScheduleData)"
                                                                                 [value]="ScheduleData.remark">
 
@@ -2141,7 +2145,7 @@
                                                                                 class="fa fa-eye font-16 text-blue cursor-pointer"
                                                                                 (click)="ViewScheduleHistory(template3,ScheduleData)"
                                                                                 aria-hidden="true"></i></td>
-
+                                                                        <td>Yes</td>
 
                                                                     </tr>
                                                                 </ng-template>
@@ -2175,7 +2179,8 @@
                                             </div>
                                         </div>
 
-                                        <label class="nav" for="Schedule" [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length > 0}">
+                                        <label class="nav" for="Schedule" 
+                                        [ngClass]="{'disabled-btn-bg-green' : selectedEmpData.length > 0}">
                                             <span> Schedule </span>
                                         </label>
                                     </div>
