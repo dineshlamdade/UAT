@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
+import { AuthService } from '../../auth/auth.service';
+import { RolePrivilegeService } from '../../companysetting/user-rolesand-permission/role-privilege/role-privilege.service';
 import { EventEmitterService } from './../../employee-master/employee-master-services/event-emitter/event-emitter.service';
 @Component( {
   selector: 'app-leftmenu',
@@ -51,9 +53,15 @@ export class LeftmenuComponent implements OnInit {
   updateEmpIdSubscription: Subscription;
   employeeMasterId: number;
   ischaptersettingCollapsed = true;
+  userData: any;
+  subId: any;
+  companyGroupMasterId: any;
+  userRoleId: any;
+  menuData: any;
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
-    private EventEmitterService: EventEmitterService ) {
+    private EventEmitterService: EventEmitterService,
+    private RoleRrivilegeService : RolePrivilegeService, private authService: AuthService ) {
 
     if ( ( this.router.url ).includes( 'payroll' ) ) {
       this.isCollapsed = false;
@@ -163,6 +171,46 @@ export class LeftmenuComponent implements OnInit {
       this.employeeMasterId = res;
       this.checkEmpId();
     } )
+    this.userData = this.authService.getprivileges()
+    console.log("userData::", this.userData);
+    this.subId = this.userData.sub
+
+    this.RoleRrivilegeService.employeeRoleAssignmentUser(this.subId).subscribe(res => {
+       this.companyGroupMasterId = res.data.results.companyGroupMasterId
+       console.log(res.data.results)
+       this.userRoleId = res.data.results[0].userRoleId
+       this.RoleRrivilegeService.getApplicationMenusData().subscribe(res =>{
+        //this.menuData = res.data.results
+        this.menuData = []
+        let actualMenuData = res.data.results
+        let privillegemenu 
+        this.RoleRrivilegeService.getUserPrivilegeByRoleId(4).subscribe(res =>{
+          privillegemenu = res.data.results
+          actualMenuData.forEach(actualmenu => {
+            privillegemenu.forEach(privillege => {
+              if(privillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
+                if(privillege.modifyAccess == 1 || privillege.readAccess || privillege.writeAccess || privillege.deleteAccess){
+                  this.menuData.push(actualmenu)
+                }
+              }
+              if(privillege.childItems != null){
+                privillege.childItems.forEach(childprivillege => {
+                  if(childprivillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
+                    if(childprivillege.modifyAccess == 1 || childprivillege.readAccess || childprivillege.writeAccess || childprivillege.deleteAccess){
+                      this.menuData.push(actualmenu)
+                    }
+                  }
+                }) 
+              }
+            });
+          });
+        })
+      })
+    })
+
+    
+ 
+
   }
 
   checkEmpId() {

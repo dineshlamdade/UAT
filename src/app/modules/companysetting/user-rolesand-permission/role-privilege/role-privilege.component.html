@@ -24,10 +24,9 @@
                           </option>
                        </select>
                     </div>
-                      <div class="col-md-2">
+                      <div class="col-md-2" *ngIf="!editFlag">
                         <label class="form-label mt-1 mb-0">Company Name
-                          {{rolePrivilegeForm.controls.companyName.value}}
-                        </label>
+                                               </label>
                         <ng-multiselect-dropdown
                           [placeholder]="'None Selected'"
                           [settings]="dropdownSettings"
@@ -38,6 +37,21 @@
                         >
                         </ng-multiselect-dropdown>
                       </div>
+                      <div class="col-md-2" *ngIf="editFlag">
+                        <label class="form-label mt-1 mb-0">Company Name
+                          <!-- {{rolePrivilegeForm.controls.companyName.value | json}} -->
+                        </label>
+                        <ng-multiselect-dropdown
+                          [placeholder]="'None Selected'"
+                          [settings]="dropdownSettings"
+                          [data]="companyNameList"
+                          [ngModelOptions]="{standalone: true}"
+                          (onSelect)="onItemSelect($event)"
+                          [(ngModel)]="selectedCompanyName"
+                        >
+                        </ng-multiselect-dropdown>
+                      </div>
+                      
                       
                       
                     <div class="col-md-2">
@@ -392,6 +406,7 @@
                           [paginator]="true"
                           [rows]="10"
                           [showCurrentPageReport]="true"
+                          [lazy]="true"
                           [totalRecords]= "totalRecords"
                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                           [rowsPerPageOptions]="[10, 25, 50]"
