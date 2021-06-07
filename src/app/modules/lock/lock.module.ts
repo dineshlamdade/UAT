@@ -25,19 +25,28 @@ import {TableModule} from 'primeng/table';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AdhocComponent } from './adhoc/adhoc.component';
+import { NewlockComponent } from './newlock/newlock.component';
+import {MultiSelectModule} from 'primeng/multiselect';
+import { CKEditorModule } from 'ckeditor4-angular';
+import { PrimeNGModule } from './../../app.primeNG.module';
+
 @NgModule({
   declarations: [
     LockComponent,
     BusinessYearComponent,
     CycleComponent,
     EmployeeComponent,
-    AdhocComponent
+    AdhocComponent,
+    NewlockComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    MultiSelectModule,
+    PrimeNGModule,
     MatSliderModule,
+    CKEditorModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),

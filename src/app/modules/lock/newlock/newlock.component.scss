@@ -69,17 +69,54 @@ input[type="radio"]:checked+.fourtabs .fourtabview-contents>* {
     transform: translateY(0px);
 }
 
-.fourtabview-contents {
+// .fourtabview-contents {
+//     max-width: 100%;
+//     padding: 20px;
+//     margin: 15px;
+//     border: 1px solid #ccc;
+//     border-radius: 5px;
+//     font-family: Montserrat, sans-serif!important;
+// }
+
+.text-dark-green
+{font: size 1.4em;
+   vertical-align :middle;
+   color: #346f16 !important;
+}
+.fourtabview-contents{
     max-width: 100%;
     padding: 20px;
     margin: 15px;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
+    box-shadow: 1px 4px 20px 0px #ecc3dfb8;
     border-radius: 5px;
-    font-family: Montserrat, sans-serif!important;
+    font-family: Montserrat, sans-serif !important;
 }
 
-.text-green 
-{font: size 1.4em;
-    vertical-align:middle;
-   color: #346f16 !important;
-}
+.tabset>input:checked+label {
+    border: 2px solid #33ad36 !important;
+    border-top: 7px solid #33ad36 !important;
+    border-bottom: 1px solid #fff !important;
+    margin-bottom: -1px;
+    color: #713f93 !important;}
+
+    textarea {
+      font: 15px "Gloria Hallelujah", cursive;
+      line-height: 1.5;
+      border: 0;
+      border-radius: 3px;
+      background: aliceblue;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: box-shadow 0.5s ease;
+      font-smooth: subpixel-antialiased;
+      
+    }
+    textarea:hover {
+      box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+    }
+    textarea:focus {
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+      outline: none;
+    }
+    

@@ -40,8 +40,7 @@
                                             </div>
 
                                             <div class="row mt-20">
-                                                <div class="col-md-12">
-                                                </div>
+                                               
                                                 <div class="col-md-12 bg-color-light_gray p-10 m-0">
 
                                                     <label style="display: inline-grid;"
@@ -52,10 +51,19 @@
                                                             ({{selectedEmpData.length}})
                                                         </span>
                                                     </label>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <div class="col-md-2" style="display: inline-flex;">
+                                                        <label class="form-label mb-0">Select</label>
+                                                        <select name="EmployeeCode" class="form-control custom-select">
+                                                            <option value="">Select</option>
+                                                            <option value="">1</option>
+                                                        </select>
+
+                                                    </div>
 
                                                     <!-- Buttons and filter -->
                                                     <div class="float-right d-flex justify-content-end">
-                                                        <div style="display: inherit;padding-right: 150px;">
+                                                        <div style="display: inherit;padding-right: 40px;">
                                                             <span class="form-label mt-2">Cycle Start Date
                                                                 Between</span>
                                                             <div class="form-group mb-0  mt-1 SMDatepickerWidth">
@@ -150,9 +158,9 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Emp. Name
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="empname"
-                                                                                pSortableColumn="empname"></p-sortIcon>
-                                                                            <p-columnFilter field="empname"
+                                                                            <p-sortIcon field="empName"
+                                                                                pSortableColumn="empName"></p-sortIcon>
+                                                                            <p-columnFilter field="empName"
                                                                                 display="menu" class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -162,10 +170,10 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Payroll Area
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="payrollarea"
-                                                                                pSortableColumn="payrollarea">
+                                                                            <p-sortIcon field="payrollAreacode"
+                                                                                pSortableColumn="payrollAreacode">
                                                                             </p-sortIcon>
-                                                                            <p-columnFilter field="payrollarea"
+                                                                            <p-columnFilter field="payrollAreacode"
                                                                                 display="menu" class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -175,9 +183,9 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Cycle
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="cycle"
-                                                                                pSortableColumn="cycle"></p-sortIcon>
-                                                                            <p-columnFilter field="cycle" display="menu"
+                                                                            <p-sortIcon field="cycleName"
+                                                                                pSortableColumn="cycleName"></p-sortIcon>
+                                                                            <p-columnFilter field="cycleName" display="menu"
                                                                                 class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -187,10 +195,10 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Total Days
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="totaldays"
-                                                                                pSortableColumn="totaldays">
+                                                                            <p-sortIcon field="totalDaysInCycle"
+                                                                                pSortableColumn="totalDaysInCycle">
                                                                             </p-sortIcon>
-                                                                            <p-columnFilter field="totaldays"
+                                                                            <p-columnFilter field="totalDaysInCycle"
                                                                                 display="menu" class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -200,10 +208,10 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         WO
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="weeklyoff"
-                                                                                pSortableColumn="weeklyoff">
+                                                                            <p-sortIcon field="weeklyOff"
+                                                                                pSortableColumn="weeklyOff">
                                                                             </p-sortIcon>
-                                                                            <p-columnFilter field="weeklyoff"
+                                                                            <p-columnFilter field="weeklyOff"
                                                                                 display="menu" class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -225,10 +233,10 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         L
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="paidleave"
-                                                                                pSortableColumn="paidleave">
+                                                                            <p-sortIcon field="paidLeave"
+                                                                                pSortableColumn="paidLeave">
                                                                             </p-sortIcon>
-                                                                            <p-columnFilter field="paidleave"
+                                                                            <p-columnFilter field="paidLeave"
                                                                                 display="menu" class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -238,10 +246,10 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         LOP
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="leavewithoutpay"
-                                                                                pSortableColumn="leavewithoutpay">
+                                                                            <p-sortIcon field="leaveWithoutPay"
+                                                                                pSortableColumn="leaveWithoutPay">
                                                                             </p-sortIcon>
-                                                                            <p-columnFilter field="leavewithoutpay"
+                                                                            <p-columnFilter field="leaveWithoutPay"
                                                                                 display="menu" class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -251,10 +259,10 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Before-DOJ/After-DOL
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="leavewithoutpay"
-                                                                                pSortableColumn="leavewithoutpay">
+                                                                            <p-sortIcon field="beforeDOJOrAfterDOL"
+                                                                                pSortableColumn="beforeDOJOrAfterDOL">
                                                                             </p-sortIcon>
-                                                                            <p-columnFilter field="leavewithoutpay"
+                                                                            <p-columnFilter field="beforeDOJOrAfterDOL"
                                                                                 display="menu" class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -264,9 +272,9 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Adj Days
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="adjcycle"
-                                                                                pSortableColumn="adjcycle"></p-sortIcon>
-                                                                            <p-columnFilter field="adjcycle"
+                                                                            <p-sortIcon field="adjustment"
+                                                                                pSortableColumn="adjustment"></p-sortIcon>
+                                                                            <p-columnFilter field="adjustment"
                                                                                 display="menu" class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -276,9 +284,9 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Present Days
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="desc"
-                                                                                pSortableColumn="desc"></p-sortIcon>
-                                                                            <p-columnFilter field="desc" display="menu"
+                                                                            <p-sortIcon field="presentDays"
+                                                                                pSortableColumn="presentDays"></p-sortIcon>
+                                                                            <p-columnFilter field="presentDays" display="menu"
                                                                                 class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -288,9 +296,9 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Future Days
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="desc"
-                                                                                pSortableColumn="desc"></p-sortIcon>
-                                                                            <p-columnFilter field="desc" display="menu"
+                                                                            <p-sortIcon field="futureDays"
+                                                                                pSortableColumn="futureDays"></p-sortIcon>
+                                                                            <p-columnFilter field="futureDays" display="menu"
                                                                                 class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -300,9 +308,9 @@
                                                                     <div class="p-d-flex p-jc-center p-ai-center">
                                                                         Payable Days
                                                                         <div class="Sort_Filter_Position">
-                                                                            <p-sortIcon field="desc"
-                                                                                pSortableColumn="desc"></p-sortIcon>
-                                                                            <p-columnFilter field="desc" display="menu"
+                                                                            <p-sortIcon field="paidDays"
+                                                                                pSortableColumn="paidDays"></p-sortIcon>
+                                                                            <p-columnFilter field="paidDays" display="menu"
                                                                                 class="p-ml-auto">
                                                                             </p-columnFilter>
                                                                         </div>
@@ -428,8 +436,10 @@
                                                                         class="form-control custom-select"
                                                                         (change)="getSelectedPayrollAreaByEmp($event.target.value)">
                                                                         <option value="">Select</option>
-                                                                        <option> PA-Staff </option>
-                                                                        <option> PA-Worker</option>
+                                                                        <option *ngFor="let payroll of payrollListData"
+                                                                        [selected]="selectedPayrollAreaCode == payroll.payrollAreaCode"> 
+                                                                        {{payroll.payrollAreaCode}}</option>
+                                                                        <!-- <option> PA-Worker</option> -->
                                                                     </select>
                                                                 </div>
 
@@ -867,7 +877,7 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Date &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="date">
+                                                                                        <p-sortIcon field="date" pSortableColumn="date">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter field="date"
                                                                                             display="menu"
@@ -876,14 +886,16 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </th>
+
+                                                                           
                                                                             <th class="wd-10">
                                                                                 <div
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="days">
+                                                                                        <p-sortIcon field="date" pSortableColumn="date">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="days"
+                                                                                        <p-columnFilter field="date"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -895,9 +907,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payroll Area &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="days">
+                                                                                        <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="days"
+                                                                                        <p-columnFilter field="payrollAreaCode"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -911,9 +923,9 @@
                                                                                         placement="bottom"> Weekly
                                                                                         Off</span> &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="WO">
+                                                                                        <p-sortIcon field="weeklyOff" pSortableColumn="weeklyOff">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="WO"
+                                                                                        <p-columnFilter field="weeklyOff"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -928,7 +940,7 @@
                                                                                         Holiday</span>
                                                                                     &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="holiday">
+                                                                                        <p-sortIcon field="holiday" pSortableColumn="holiday">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter field="holiday"
                                                                                             display="menu"
@@ -944,9 +956,9 @@
                                                                                         placement="bottom">Leave</span>
                                                                                     &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="PL">
+                                                                                        <p-sortIcon field="paidLeaves" pSortableColumn="paidLeaves">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="PL"
+                                                                                        <p-columnFilter field="paidLeaves"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -960,9 +972,9 @@
                                                                                         placement="bottom">Loss of Pay
                                                                                         Days</span> &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="LOP">
+                                                                                        <p-sortIcon field="leaveWithoutPay" pSortableColumn="leaveWithoutPay">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="LOP"
+                                                                                        <p-columnFilter field="leaveWithoutPay"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -974,10 +986,10 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Present Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="Presentdays">
+                                                                                        <p-sortIcon field="presentDay" pSortableColumn="presentDay">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="Presentdays"
+                                                                                            field="presentDay"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -991,9 +1003,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Adjust-ment&nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="Adj">
+                                                                                        <p-sortIcon field="adjustment" pSortableColumn="adjustment">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="Adj"
+                                                                                        <p-columnFilter field="adjustment"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1005,10 +1017,10 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payable Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="payableday">
+                                                                                        <p-sortIcon field="paidDays" pSortableColumn="paidDays"> 
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="payableday"
+                                                                                            field="paidDays"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1021,10 +1033,10 @@
                                                                                     Pertaining Cycle &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
                                                                                         <p-sortIcon
-                                                                                            field="pretainingcycle">
+                                                                                            field="pertainingCycleName" pSortableColumn="pertainingCycleName">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="pretainingcycle"
+                                                                                            field="pertainingCycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1037,10 +1049,10 @@
                                                                                     Processing Cycle &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
                                                                                         <p-sortIcon
-                                                                                            field="processingcycle">
+                                                                                            field="processingCycleName" pSortableColumn="processingCycleName">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="processingcycle"
+                                                                                            field="processingCycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1322,7 +1334,7 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Date &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="date">
+                                                                                        <p-sortIcon field="date" pSortableColumn="date">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter field="date"
                                                                                             display="menu"
@@ -1336,9 +1348,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="days">
+                                                                                        <p-sortIcon field="date" pSortableColumn="date">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="days"
+                                                                                        <p-columnFilter field="date"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1350,9 +1362,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payroll Area &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="days">
+                                                                                        <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="days"
+                                                                                        <p-columnFilter field="payrollAreaCode"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1366,9 +1378,9 @@
                                                                                         placement="bottom"> Weekly
                                                                                         Off</span> &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="WO">
+                                                                                        <p-sortIcon field="weeklyOff" pSortableColumn="weeklyOff">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="WO"
+                                                                                        <p-columnFilter field="weeklyOff"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1383,7 +1395,7 @@
                                                                                         Holiday</span>
                                                                                     &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="holiday">
+                                                                                        <p-sortIcon field="holiday" pSortableColumn="holiday">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter field="holiday"
                                                                                             display="menu"
@@ -1399,9 +1411,9 @@
                                                                                         placement="bottom">Leave</span>
                                                                                     &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="PL">
+                                                                                        <p-sortIcon field="paidLeaves" pSortableColumn="paidLeaves">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="PL"
+                                                                                        <p-columnFilter field="paidLeaves"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1415,9 +1427,9 @@
                                                                                         placement="bottom">Loss of Pay
                                                                                         Days</span> &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="LOP">
+                                                                                        <p-sortIcon field="leaveWithoutPay" pSortableColumn="leaveWithoutPay">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="LOP"
+                                                                                        <p-columnFilter field="leaveWithoutPay"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1429,10 +1441,10 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Present Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="Presentdays">
+                                                                                        <p-sortIcon field="presentDay" pSortableColumn="presentDay">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="Presentdays"
+                                                                                            field="presentDay"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1445,9 +1457,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Adjust-ment &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="Adj">
+                                                                                        <p-sortIcon field="adjustment" pSortableColumn="adjustment">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="Adj"
+                                                                                        <p-columnFilter field="adjustment"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1459,10 +1471,10 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payable Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="payableday">
+                                                                                        <p-sortIcon field="paidDays" pSortableColumn="paidDays">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="payableday"
+                                                                                            field="paidDays"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1475,10 +1487,10 @@
                                                                                     Pertaining Cycle &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
                                                                                         <p-sortIcon
-                                                                                            field="pretainingcycle">
+                                                                                            field="pertainingCycleName" pSortableColumn="pertainingCycleName">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="pretainingcycle"
+                                                                                            field="pertainingCycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1491,10 +1503,10 @@
                                                                                     Processing Cycle &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
                                                                                         <p-sortIcon
-                                                                                            field="processingcycle">
+                                                                                            field="processingCycleName" pSortableColumn="processingCycleName">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="processingcycle"
+                                                                                            field="processingCycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1773,7 +1785,7 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Date &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="date">
+                                                                                        <p-sortIcon field="date" pSortableColumn="date">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter field="date"
                                                                                             display="menu"
@@ -1787,9 +1799,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="days">
+                                                                                        <p-sortIcon field="date" pSortableColumn="date">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="days"
+                                                                                        <p-columnFilter field="date"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1801,9 +1813,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payroll Area &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="days">
+                                                                                        <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="days"
+                                                                                        <p-columnFilter field="payrollAreaCode"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1817,9 +1829,9 @@
                                                                                         placement="bottom"> Weekly
                                                                                         Off</span> &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="WO">
+                                                                                        <p-sortIcon field="weeklyOff" pSortableColumn="weeklyOff">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="WO"
+                                                                                        <p-columnFilter field="weeklyOff"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1834,7 +1846,7 @@
                                                                                         Holiday</span>
                                                                                     &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="holiday">
+                                                                                        <p-sortIcon field="holiday" pSortableColumn="holiday">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter field="holiday"
                                                                                             display="menu"
@@ -1850,9 +1862,9 @@
                                                                                         placement="bottom">Leave</span>
                                                                                     &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="PL">
+                                                                                        <p-sortIcon field="paidLeaves" pSortableColumn="paidLeaves">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="PL"
+                                                                                        <p-columnFilter field="paidLeaves"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1866,9 +1878,9 @@
                                                                                         placement="bottom">Loss of Pay
                                                                                         Days</span> &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="LOP">
+                                                                                        <p-sortIcon field="leaveWithoutPay" pSortableColumn="leaveWithoutPay">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="LOP"
+                                                                                        <p-columnFilter field="leaveWithoutPay"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1880,10 +1892,10 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Present Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="Presentdays">
+                                                                                        <p-sortIcon field="presentDay" pSortableColumn="presentDay">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="Presentdays"
+                                                                                            field="presentDay"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1896,9 +1908,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Adjust-ment &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="Adj">
+                                                                                        <p-sortIcon field="adjustment" pSortableColumn="adjustment">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="Adj"
+                                                                                        <p-columnFilter field="adjustment"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1910,10 +1922,10 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payable Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="payableday">
+                                                                                        <p-sortIcon field="paidDays" pSortableColumn="paidDays">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="payableday"
+                                                                                            field="paidDays"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1926,10 +1938,10 @@
                                                                                     Pertaining Cycle &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
                                                                                         <p-sortIcon
-                                                                                            field="pretainingcycle">
+                                                                                            field="pertainingCycleName" pSortableColumn="pertainingCycleName">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="pretainingcycle"
+                                                                                            field="pertainingCycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -1942,10 +1954,10 @@
                                                                                     Processing Cycle &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
                                                                                         <p-sortIcon
-                                                                                            field="processingcycle">
+                                                                                            field="processingCycleName" pSortableColumn="processingCycleName">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="processingcycle"
+                                                                                            field="processingCycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2230,7 +2242,7 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Date &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="date">
+                                                                                        <p-sortIcon field="date" pSortableColumn="date">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter field="date"
                                                                                             display="menu"
@@ -2244,9 +2256,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="days">
+                                                                                        <p-sortIcon field="date" pSortableColumn="date">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="days"
+                                                                                        <p-columnFilter field="date"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2258,9 +2270,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payroll Area &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="days">
+                                                                                        <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="days"
+                                                                                        <p-columnFilter field="payrollAreaCode"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2274,9 +2286,9 @@
                                                                                         placement="bottom"> Weekly
                                                                                         Off</span> &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="WO">
+                                                                                        <p-sortIcon field="weeklyOff" pSortableColumn="weeklyOff">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="WO"
+                                                                                        <p-columnFilter field="weeklyOff"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2291,7 +2303,7 @@
                                                                                         Holiday</span>
                                                                                     &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="holiday">
+                                                                                        <p-sortIcon field="holiday" pSortableColumn="holiday">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter field="holiday"
                                                                                             display="menu"
@@ -2307,9 +2319,9 @@
                                                                                         placement="bottom">Leave</span>
                                                                                     &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="PL">
+                                                                                        <p-sortIcon field="paidLeaves" pSortableColumn="paidLeaves">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="PL"
+                                                                                        <p-columnFilter field="paidLeaves"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2323,9 +2335,9 @@
                                                                                         placement="bottom">Loss of Pay
                                                                                         Days</span> &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="LOP">
+                                                                                        <p-sortIcon field="leaveWithoutPay" pSortableColumn="leaveWithoutPay">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="LOP"
+                                                                                        <p-columnFilter field="leaveWithoutPay"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2337,10 +2349,10 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Present Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="Presentdays">
+                                                                                        <p-sortIcon field="presentDay" pSortableColumn="presentDay">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="Presentdays"
+                                                                                            field="presentDay"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2353,9 +2365,9 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Adjust-ment &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="Adj">
+                                                                                        <p-sortIcon field="adjustment" pSortableColumn="adjustment">
                                                                                         </p-sortIcon>
-                                                                                        <p-columnFilter field="Adj"
+                                                                                        <p-columnFilter field="adjustment"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2367,10 +2379,10 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payable Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="payableday">
+                                                                                        <p-sortIcon field="paidDays" pSortableColumn="paidDays">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="payableday"
+                                                                                            field="paidDays"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2383,10 +2395,10 @@
                                                                                     Pertaining Cycle &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
                                                                                         <p-sortIcon
-                                                                                            field="pretainingcycle">
+                                                                                            field="pertainingCycleName" pSortableColumn="pertainingCycleName">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="pretainingcycle"
+                                                                                            field="pertainingCycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>
@@ -2399,10 +2411,10 @@
                                                                                     Processing Cycle &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
                                                                                         <p-sortIcon
-                                                                                            field="processingcycle">
+                                                                                            field="processingCycleName" pSortableColumn="processingCycleName">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
-                                                                                            field="processingcycle"
+                                                                                            field="processingCycleName"
                                                                                             display="menu"
                                                                                             class="p-ml-auto">
                                                                                         </p-columnFilter>

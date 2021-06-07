@@ -113,8 +113,9 @@ export class AttendanceComponent implements OnInit {
   businessCycleData: any;
   businessFrequencyName: any;
   businessCycleIDData: any;
-  AllCycleRecordsData: any;
+  AllCycleRecordsData: any = [];
   selectedProcessingCyclename: any;
+  payrollListData: any;
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
     private payrollservice: PayrollInputsService,
@@ -2711,7 +2712,7 @@ export class AttendanceComponent implements OnInit {
       // this.getAllActiveBussinessYear();
       // this.businessCycleDefinition();
       this.employeeFinDetails();
-      this.payrollAssigned();
+      this.payrollAssigned(this.selectedEmpData[this.index].employeeMasterId);
       this.PayrollAreaByPayrollAreaCode();
       this.getCycleById();
     } else {
@@ -2792,11 +2793,12 @@ export class AttendanceComponent implements OnInit {
     )
   }
 
-  payrollAssigned() {
+  payrollAssigned(employeeMasterId) {
 
-    this.attendanceService.payrollAssigned(this.selectedEmpData[this.index].employeeMasterId).subscribe(
+    this.attendanceService.payrollAssigned(employeeMasterId).subscribe(
       res => {
         this.payrollAssignedData = res.data.results[0][0];
+        this.payrollListData = res.data.results[0];
         //console.log("attendanceData:", this.attendanceData);
       }
     )
@@ -2847,6 +2849,7 @@ export class AttendanceComponent implements OnInit {
   /** Get Selected Employee master Id */
 	getSelectedEmployeeCode(value) {
 		this.selectedEmployeeMasterId = parseInt(value)
+    this.payrollAssigned(this.selectedEmployeeMasterId)
 	}
 
   /**Get Selected Employy Payroll Area */
@@ -2896,7 +2899,7 @@ export class AttendanceComponent implements OnInit {
     this.attendanceInputGetTotalAPIRecordsUI(this.index);
     this.attendanceInputAPIRecordsUI();
     this.employeeFinDetails();
-    this.payrollAssigned();
+    this.payrollAssigned(this.selectedEmpData[this.index].employeeMasterId);
     this.PayrollAreaByPayrollAreaCode();
     this.attendanceInputAPIAllCycleRecords(this.index);
     this.getCycleById(); 
