@@ -56,7 +56,7 @@ export class NonRecurringAmtService {
 
   /** Update Transaction */
   attendanceInputAPIRecordsUI(data,id):Observable<any>{
-    return this.HttpClient.put<any>(this.apiUrl + `NonRecurringTransactionGroup/updateById/` + id , data);
+    return this.HttpClient.put<any>(this.apiUrl + `NonRecurringTransactionGroup/updateById/`  , data);
   }
   
   
@@ -72,4 +72,17 @@ export class NonRecurringAmtService {
     return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupHistoryAPIbyId`, data);
   }
   
+  PayrollAreaByPayrollAreaCode(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `payrollArea-details/PayrollAreaByPayrollAreaCode`, data);
+  }
+  
+  payrollAreaDetails(headGroupDefinitionId):Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl + `payrollArea-details/`+headGroupDefinitionId);
+ 
+  }
+
+  getEmployeeWisePayrollList(employeeMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl1 + `payroll-information/payrollAssigned/`+employeeMasterId);
+ 
+  }
 }

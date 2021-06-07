@@ -91,9 +91,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Code
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="empcode">
+                                                                                    <p-sortIcon field="employeeMasterResponseDTO.employeeCode">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="empcode"
+                                                                                    <p-columnFilter field="employeeMasterResponseDTO.employeeCode"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
@@ -105,9 +105,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Name
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="empname">
+                                                                                    <p-sortIcon field="employeeMasterResponseDTO.fullName">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="empname"
+                                                                                    <p-columnFilter field="employeeMasterResponseDTO.fullName"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -120,9 +120,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Payroll Area
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="payrollarea">
+                                                                                    <p-sortIcon field="payrollArea.payrollAreaCode">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="payrollarea"
+                                                                                    <p-columnFilter field="payrollArea.payrollAreaCode"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
@@ -135,9 +135,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Head
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="head">
+                                                                                    <p-sortIcon field="payrollHeadMaster.displayName">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="head"
+                                                                                    <p-columnFilter field="payrollHeadMaster.displayName"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -150,9 +150,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Group Id
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="groupid">
+                                                                                    <p-sortIcon field="nonRecurringTransactionGroupId">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="groupid"
+                                                                                    <p-columnFilter field="nonRecurringTransactionGroupId"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -165,9 +165,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Once Every
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="onceevery">
+                                                                                    <p-sortIcon field="onceEvery">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="onceevery"
+                                                                                    <p-columnFilter field="onceEvery"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -211,9 +211,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 From Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="fromdate">
+                                                                                    <p-sortIcon field="fromDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="fromdate"
+                                                                                    <p-columnFilter field="fromDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -226,9 +226,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 To Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="todate">
+                                                                                    <p-sortIcon field="toDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="todate"
+                                                                                    <p-columnFilter field="toDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -396,8 +396,9 @@
                                                                                 [(ngModel)]="selectedPayrollArea"
                                                                                 (change)="getSelectedPayrollArea($event.target.value)">
                                                                                 <option value="">Select</option>
-                                                                                <option> PA-Staff </option>
-                                                                                <option> PA_Worker</option>
+                                                                                <!-- <option> PA-Staff </option>
+                                                                                <option> PA_Worker</option> -->
+                                                                                <option *ngFor="let payroll of payrollListData"> {{payroll.payrollAreaCode}}</option>
                                                                             </select>
                                                                         </div>
 
@@ -817,6 +818,8 @@
                                                                                                 data-date-autoclose="true"
                                                                                                 placeholder="Date"
                                                                                                 bsDatepicker
+                                                                                                [minDate]="effectiveFromDate"
+                                                                                                [maxDate]="effectiveToDate"
                                                                                                 value="{{data.fromDate}}"
                                                                                                 (bsValueChange)="getFromDate($event)"
                                                                                                 class="form-control wd-120">
@@ -858,6 +861,7 @@
                                                                                             </label>
                                                                                         </td>
                                                                                         <td>
+                                                                                            <!-- [maxDate]="effectiveToDate" -->
                                                                                             <input
                                                                                                 data-provide="datepicker"
                                                                                                 data-date-autoclose="true"
@@ -865,6 +869,8 @@
                                                                                                 placeholder="Date"
                                                                                                 bsDatepicker
                                                                                                 value="{{data.toDate}}"
+                                                                                                [minDate]="setMinToDate"
+                                                                                                
                                                                                                 (bsValueChange)="getToDate($event)"
                                                                                                 class="form-control wd-120"
                                                                                                 [disabled]="selectedTransactionIndex == rowIndex && (selectedTransactionType == 'NoOfTransaction'
@@ -1113,8 +1119,7 @@
                                                                                             Clawback </th>
                                                                                         <th rowspan="2" class="wd-10">
                                                                                             Remark </th>
-                                                                                        <th rowspan="2" class="wd-8">
-                                                                                        </th>
+                                                                                        
                                                                                         <!-- <th rowspan="2"></th> -->
                                                                                     </tr>
                                                                                 </ng-template>
@@ -1199,6 +1204,8 @@
                                                                                                 data-date-autoclose="true"
                                                                                                 placeholder="Date"
                                                                                                 bsDatepicker
+                                                                                                [minDate]="effectiveFromDate"
+                                                                                                [maxDate]="effectiveToDate"
                                                                                                 value="{{data.fromdate | date :'dd-MMM-yyyy'}}"
                                                                                                 (bsValueChange)="getFromDateForSave($event,data)"
                                                                                                 class="form-control wd-100">
@@ -1251,6 +1258,7 @@
                                                                                                 bsDatepicker
                                                                                                 value="{{data.todate}}"
                                                                                                 class="form-control wd-120"
+                                                                                                [minDate]="setMinToDate"
                                                                                                 (bsValueChange)="getToDateForSave($event,data)"
                                                                                                 [disabled]="data.transactionsType != 'Defined Date'">
                                                                                         </td>
@@ -1270,15 +1278,7 @@
                                                                                                 class="form-control wd-100"
                                                                                                 (focusout)="getRemarkChangeForSave($event.target.value,data)">
                                                                                         </td>
-                                                                                        <td>
-                                                                                            <span
-                                                                                                class="ml-1 mt-2 d-flex"
-                                                                                                (click)="addNewRow(data,rowIndex)">
-                                                                                                <i class="fa fa-plus-square font-16 text-blue cursor-pointer"
-                                                                                                    aria-hidden="true">
-                                                                                                </i>
-                                                                                            </span>
-                                                                                        </td>
+                                                                                       
                                                                                     </tr>
 
 
@@ -1484,9 +1484,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Code
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="sempcode">
+                                                                                    <p-sortIcon field="employeeCode">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="sempcode"
+                                                                                    <p-columnFilter field="employeeCode"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
@@ -1498,9 +1498,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Name
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="sempname">
+                                                                                    <p-sortIcon field="fullName">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="sempname"
+                                                                                    <p-columnFilter field="fullName"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1513,9 +1513,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Payroll Area
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="spayrollarea">
+                                                                                    <p-sortIcon field="payrollAreaCode">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="spayrollarea"
+                                                                                    <p-columnFilter field="payrollAreaCode"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
@@ -1528,9 +1528,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Head
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="shead">
+                                                                                    <p-sortIcon field="displayName">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="shead"
+                                                                                    <p-columnFilter field="displayName"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1543,9 +1543,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Group Id
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="sgroupid">
+                                                                                    <p-sortIcon field="nonRecurringTransactionGroupId">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="sgroupid"
+                                                                                    <p-columnFilter field="nonRecurringTransactionGroupId"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1558,9 +1558,9 @@
                                                                                 class="p-d-flex p-jc-center p-ai-center">
                                                                                 Schedule
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="onceevery">
+                                                                                    <p-sortIcon field="nonRecurringTransactionScheduleId">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="onceevery"
+                                                                                    <p-columnFilter field="nonRecurringTransactionScheduleId"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1574,10 +1574,10 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Processed Amount
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="processedamount">
+                                                                                    <p-sortIcon field="transactionAmount">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="processedamount"
+                                                                                        field="transactionAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1590,9 +1590,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Balance Amount
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="balamount">
+                                                                                    <p-sortIcon field="transactionAmount">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="balamount"
+                                                                                    <p-columnFilter field="transactionAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1605,10 +1605,10 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Processing Cycle
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="processingcycle">
+                                                                                    <p-sortIcon field="processedAmount">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="processingcycle"
+                                                                                        field="processedAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1616,7 +1616,18 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th rowspan="2"> Clawback Date </th>
+                                                                        <th rowspan="2"> Clawback Date 
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="clawbackDate">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter
+                                                                                    field="clawbackDate"
+                                                                                    display="menu"
+                                                                                    class="p-ml-auto">
+
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </th>
                                                                         <th rowspan="2"> Hold </th>
                                                                         <th rowspan="2"> Discard </th>
                                                                         <th rowspan="2">
@@ -1624,10 +1635,10 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Reschedule Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="rescheduledate">
+                                                                                    <p-sortIcon field="resheduleDate">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="rescheduledate"
+                                                                                        field="resheduleDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1802,7 +1813,7 @@
                                                                                 (click)="ViewScheduleHistory(template3,ScheduleData)"
                                                                                 aria-hidden="true"></i></td>
 
-                                                                        <td>Yes</td>        
+                                                                        <td></td>        
 
 
                                                                     </tr>
@@ -1835,9 +1846,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Code
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="sempcode">
+                                                                                    <p-sortIcon field="employeeCode">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="sempcode"
+                                                                                    <p-columnFilter field="employeeCode"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
@@ -1849,9 +1860,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Name
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="sempname">
+                                                                                    <p-sortIcon field="fullName">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="sempname"
+                                                                                    <p-columnFilter field="fullName"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1864,9 +1875,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Payroll Area
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="spayrollarea">
+                                                                                    <p-sortIcon field="payrollAreaCode">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="spayrollarea"
+                                                                                    <p-columnFilter field="payrollAreaCode"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
                                                                                     </p-columnFilter>
@@ -1879,9 +1890,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Head
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="shead">
+                                                                                    <p-sortIcon field="displayName">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="shead"
+                                                                                    <p-columnFilter field="displayName"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1894,9 +1905,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Group Id
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="sgroupid">
+                                                                                    <p-sortIcon field="nonRecurringTransactionGroupId">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="sgroupid"
+                                                                                    <p-columnFilter field="nonRecurringTransactionGroupId"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1909,9 +1920,9 @@
                                                                                 class="p-d-flex p-jc-center p-ai-center">
                                                                                 Schedule
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="onceevery">
+                                                                                    <p-sortIcon field="nonRecurringTransactionScheduleId">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="onceevery"
+                                                                                    <p-columnFilter field="nonRecurringTransactionScheduleId"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1925,10 +1936,10 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Processed Amount
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="processedamount">
+                                                                                    <p-sortIcon field="processedAmount">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="processedamount"
+                                                                                        field="processedAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1941,9 +1952,9 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Balance Amount
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="balamount">
+                                                                                    <p-sortIcon field="transactionAmount">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="balamount"
+                                                                                    <p-columnFilter field="transactionAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1956,10 +1967,10 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Processing Cycle
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="processingcycle">
+                                                                                    <p-sortIcon field="cycleName">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="processingcycle"
+                                                                                        field="cycleName"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1967,7 +1978,18 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th rowspan="2"> Clawback Date </th>
+                                                                        <th rowspan="2"> Clawback Date 
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="clawbackDate">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter
+                                                                                    field="clawbackDate"
+                                                                                    display="menu"
+                                                                                    class="p-ml-auto">
+
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </th>
                                                                         <th rowspan="2"> Hold </th>
                                                                         <th rowspan="2"> Discard </th>
                                                                         <th rowspan="2">
@@ -1975,10 +1997,10 @@
                                                                                 class="p-d-flex p-jc-between p-ai-center">
                                                                                 Reschedule Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="rescheduledate">
+                                                                                    <p-sortIcon field="resheduleDate">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
-                                                                                        field="rescheduledate"
+                                                                                        field="resheduleDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -2145,7 +2167,7 @@
                                                                                 class="fa fa-eye font-16 text-blue cursor-pointer"
                                                                                 (click)="ViewScheduleHistory(template3,ScheduleData)"
                                                                                 aria-hidden="true"></i></td>
-                                                                        <td>Yes</td>
+                                                                        <td>Yes {{ScheduleData.isReschedule}}</td>
 
                                                                     </tr>
                                                                 </ng-template>
@@ -2353,7 +2375,7 @@
     </div>
 </ng-template>
 
-<!-- View Schedule details-->
+<!-- View Schedule details summary page click on action button-->
 <ng-template #template2>
     <div class="modal-header">
         <h5 class="modal-title" id="UploadModalLabel"> Schedule Details</h5>
@@ -2462,6 +2484,9 @@
         </div>
     </div>
     <div class="modal-footer">
+        <pre>{{viewEmployeeData | json}}</pre>
+        <h6 *ngIf="showNoteFlag">Note : The schedule of a business year shall get created 3
+            months before its start date </h6>
         <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i class="fa fa-times"></i>
             &nbsp;Close</button>
     </div>
@@ -2595,7 +2620,7 @@
             <div class="card-body p-0 m-0">
                 <div class="row">
                     <div class="col-md-12 pl-0 pr-0">
-                        <div class="border-dark-card radius-10 p-2 mt-3">
+                        <div class="border-dark-card radius-10 p-2 mt-3" *ngIf="selectedEmpData[index]">
                             <div class="row">
                                 <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Emp. Code</label>
@@ -2653,6 +2678,66 @@
                                 </div>
 
 
+                            </div>
+                        </div>
+                        <div class="border-dark-card radius-10 p-2 mt-3" *ngIf="scheduleAllData">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Emp. Code</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="scheduleAllData">
+                                        {{scheduleAllData.employeeMasterResponseDTO.employeeCode}} </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Emp. Name</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="scheduleAllData">
+                                        {{scheduleAllData.employeeMasterResponseDTO.fullName}}
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Payroll Area</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="scheduleAllData">
+                                        {{scheduleAllData.payrollArea.payrollAreaCode}}
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Group Id</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
+                                        {{viewScheduleData.nonRecurringTransactionGroupId}}
+                                    </label>
+                                </div>
+                        
+                        
+                            </div>
+                            <div class="row mt-10">
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Head</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="scheduleAllData">
+                                        {{scheduleAllData.payrollHeadMaster.displayName}}
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Schedule No.</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
+                                        {{viewScheduleData.nonRecurringTransactionScheduleId}} </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Original Schedule Date
+                                    </label>
+                                    <!-- <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="NonRecurringHistorybyScheduleIdData != ''">
+                                        <span *ngIf="NonRecurringHistorybyScheduleIdData[0]">{{NonRecurringHistorybyScheduleIdData[0].transactionDate | date: 'dd-MMM-yyyy'}}</span>
+                                    </label> -->
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+                                        <span *ngIf="originalTransactionDate">{{originalTransactionDate | date: 'dd-MMM-yyyy'}}</span>
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Schedule Amount</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0" *ngIf="viewScheduleData">
+                                        {{viewScheduleData.transactionAmount | number: '1.2-2'}}
+                                    </label>
+                                </div>
+                        
+                        
                             </div>
                         </div>
                     </div>
@@ -2851,7 +2936,8 @@
                                         <option [selected]="selectedClawbackInputType == 'SDM'"> SDM </option>
                                         <option [selected]="selectedClawbackInputType == 'Specific Period'" > Specific
                                             Period </option>
-                                        <option [selected]="selectedClawbackInputType == 'Specific Date'"> Specific Date
+                                        <option [selected]="selectedClawbackInputType == 'Specific Date'" *ngIf="selectedApplicableAt != 'Schedule'"> 
+                                            Specific Date {{selectedApplicableAt == 'Schedule'}}
                                         </option>
                                     </select>
                                 </div>

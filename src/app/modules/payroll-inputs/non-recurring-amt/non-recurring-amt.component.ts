@@ -27,7 +27,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	NonRecurringTransactionGroupAPIbyIdData: any;
 	NonRecurringTransactionScheduleEMPdData: any;
 	NonRecurringTransactionScheduleupdateByIdData: any;
-	NonRecurringHistorybyScheduleIdData: any ='';
+	NonRecurringHistorybyScheduleIdData: any = '';
 	NonRecurringHeadwiseHistorydData: any;
 	summeryData: any;
 	empData: any;
@@ -81,10 +81,20 @@ export class NonRecurringAmtComponent implements OnInit {
 	NonRecurringTransactionGroupHistoryAPIbyIdData: any;
 	updatefrequency: any;
 	excelData: any[];
+	effectiveFromDate: any;
+	effectiveToDate: any;
+	setMinToDate: any;
+	headGroupDefinitionId: Date;
+	frequencyDataByPayroll: any;
+	showNoteFlag: boolean = false;
+	scheduleAllData: any;
+	originalTransactionDate: any;
+	isReschedule: boolean;
+	payrollListData: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
-		private payrollservice: PayrollInputsService,private excelservice: ExcelserviceService) { }
+		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) { }
 
 	ngOnInit() {
 		this.NonRecurringTransactionGroupSummery();
@@ -175,7 +185,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** Transaction History by group id */
-	NonRecurringTransactionGroupHistoryAPIbyId(){
+	NonRecurringTransactionGroupHistoryAPIbyId() {
 		const formData = new FormData();
 		formData.append('nonRecurringTransactionGroupId', this.nonRecurringTransactionGroupId)
 
@@ -187,7 +197,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** view transaction group */
-	viewTransaction(template1: TemplateRef<any>,Summarydata){
+	viewTransaction(template1: TemplateRef<any>, Summarydata) {
 		this.modalRef = this.modalService.show(
 			template1,
 			Object.assign({}, {
@@ -234,6 +244,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Open Popup for View Schedule Details */
 	ViewScheduleDetail(template2: TemplateRef<any>, Summarydata) {
+		this.showNoteFlag = false;
 		this.modalRef = this.modalService.show(
 			template2,
 			Object.assign({}, {
@@ -243,6 +254,14 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		this.nonRecurringTransactionGroupId = Summarydata.nonRecurringTransactionGroupId
 		this.viewEmployeeData = Summarydata
+		if (this.viewEmployeeData.transactionsType != 'NoOfTransaction') {
+			this.showNoteFlag = false;
+		}
+		else if (this.viewEmployeeData.transactionsType == 'Defined Date') {
+			this.showNoteFlag = true;
+		} else {
+			this.showNoteFlag = true;
+		}
 		this.NonRecurringTransactionScheduleEMP()
 
 	}
@@ -258,6 +277,8 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.selectedTransactionIndex = 0;
 			this.employeeFinDetails()
 			this.NonRecurringTransactionGroupAPIbyId(this.index)
+
+			this.PayrollAreaByPayrollAreaCode(this.selectedEmpData[this.index].payrollArea.payrollAreaCode)
 		} else {
 			this.toaster.warning("", "Please select atleast one employee")
 		}
@@ -289,19 +310,23 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.onceEvery = transactionData.onceEvery
 				this.updateNoOfTransaction = transactionData.numberOfTransactions
 				this.openingAmount = transactionData.amount
+				if(transactionData.remark == null){
+					this.remark = ''
+				}else{
 				this.remark = transactionData.remark
+				}
 				this.standardName = transactionData.payrollHeadMaster.standardName
 				this.headMasterId = transactionData.payrollHeadMaster.headMasterId
-				this.selectedFromDate = this.datepipe.transform(new Date(transactionData.fromDate),'yyyy-MM-dd')+' 00:00:00'
+				this.selectedFromDate = this.datepipe.transform(new Date(transactionData.fromDate), 'yyyy-MM-dd') + ' 00:00:00'
 				this.selectedApplicableAt = transactionData.clawbackApplicableAt
-			    this.selectedClawbackInputType = transactionData.clawbackInputType
-			    this.clawbackperiod = transactionData.clawbackPeriod
-			    this.clawbackFrequency = transactionData.clawbackUnit
+				this.selectedClawbackInputType = transactionData.clawbackInputType
+				this.clawbackperiod = transactionData.clawbackPeriod
+				this.clawbackFrequency = transactionData.clawbackUnit
 				this.updatefrequency = transactionData.frequency
-				if(transactionData.clawbackDate == null){
+				if (transactionData.clawbackDate == null) {
 					this.clawbackDate = ""
-				}else{
-				this.clawbackDate = transactionData.clawbackDate
+				} else {
+					this.clawbackDate = transactionData.clawbackDate
 				}
 				// console.log(this.NonRecurringTransactionGroupAPIbyIdData[0])
 			}
@@ -343,11 +368,12 @@ export class NonRecurringAmtComponent implements OnInit {
 	getTransactionType(transactiontype, index) {
 		this.selectedTransactionIndex = index;
 		this.selectedTransactionType = transactiontype
-		
+
 	}
 
 	/** Get selected From Date */
 	getFromDate(event) {
+		this.setMinToDate = event
 		this.selectedFromDate = this.datepipe.transform(new Date(event), 'yyyy-MM-dd') + ' 00:00:00'
 	}
 
@@ -389,7 +415,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		if (this.selectedFromDate == '') {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
 		}
-		let data = {
+		let data = [{
 			"employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
 			"headMasterId": parseInt(this.headMasterId),
 			"standardName": this.standardName,
@@ -402,6 +428,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			"numberOfTransactions": parseInt(this.updateNoOfTransaction),
 			"toDate": todate,
 			"amount": parseFloat(this.openingAmount),
+			"nonRecurringTransactionGroupId": this.selectedEmpData[this.index].nonRecurringTransactionGroupId,
 			"remark": this.remark,
 			"createdBy": "rahul",
 			"clawbackApplicableAt": this.selectedApplicableAt,
@@ -409,7 +436,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			"clawbackPeriod": this.clawbackperiod,
 			"clawbackUnit": this.clawbackFrequency,
 			"clawbackDate": this.clawbackDate
-		}
+		}]
 
 		console.log("Data is: " + JSON.stringify(data))
 		this.attendanceInputAPIRecordsUI(data)
@@ -420,12 +447,12 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		//console.log("data: "+ JSON.stringify(data))
 
-		this.nonRecService.attendanceInputAPIRecordsUI(data, this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
+		this.nonRecService.attendanceInputAPIRecordsUI(data,this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
 			res => {
 				this.toaster.success('', 'Transaction data updated sucessfully')
-				if(this.selectedEmpData.length == 1){
-				this.indexId = 1;
-				this.navigateSummary()
+				if (this.selectedEmpData.length == 1) {
+					this.indexId = 1;
+					this.navigateSummary()
 				}
 			}
 		)
@@ -439,32 +466,54 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.NonRecurringTransactionGroupAPIbyId(this.index)
 	}
 
-	nextEmpData(){
+	nextEmpData() {
 		this.index = this.index + 1
 		this.employeeFinDetails()
 		this.NonRecurringTransactionGroupAPIbyId(this.index)
 	}
 
-    prevEmpData(){
-		
-			this.index = this.index - 1
-			this.employeeFinDetails()
-			this.NonRecurringTransactionGroupAPIbyId(this.index)
-		
+	prevEmpData() {
+
+		this.index = this.index - 1
+		this.employeeFinDetails()
+		this.NonRecurringTransactionGroupAPIbyId(this.index)
+
 	}
 
 	/******************* Transaction when click on Transaction Tab and select Employee from Dropdown *******************/
 
 	/** Navigate To Transaction Tab on click radio button */
 	navigateToTransaction() {
-		this.indexId = 2
-		this.showEmployeeSelectionFlag = true;
-		this.selectedApplicableAt = ""
-		this.clawbackDate = ""
-		this.clawbackFrequency =""
-		this.clawbackperiod = 0
-		this.selectedClawbackInputType = ""
-		this.getAllEmployeeDetails();
+		if (this.selectedEmpData.length == 0) {
+			this.indexId = 2
+			this.showEmployeeSelectionFlag = true;
+			this.selectedApplicableAt = ""
+			this.clawbackDate = ""
+			this.clawbackFrequency = ""
+			this.clawbackperiod = 0
+			this.selectedClawbackInputType = ""
+			this.getAllEmployeeDetails();
+		}
+	}
+
+	/** selected payroll area get effective fromdte and todate */
+	PayrollAreaByPayrollAreaCode(payrollArea) {
+		const formData = new FormData();
+
+		formData.append('payrollArea', payrollArea)
+		this.nonRecService.PayrollAreaByPayrollAreaCode(formData).subscribe(
+			res => {
+				this.effectiveFromDate = new Date(res.data.results[0].effectiveFromDate)
+				this.effectiveToDate = new Date(res.data.results[0].effectiveToDate)
+				this.headGroupDefinitionId = res.data.results[0].headGroupDefinitionResponse.headGroupDefinitionId
+				//alert(this.effectiveFromDate)
+				this.nonRecService.payrollAreaDetails(this.headGroupDefinitionId).subscribe(
+					res => {
+						this.frequencyDataByPayroll = res.data.results
+					}
+				)
+			}
+		)
 	}
 
 	/** Get all  Employee data */
@@ -477,9 +526,10 @@ export class NonRecurringAmtComponent implements OnInit {
 	/** get Selected Payroll Area from Dropdown */
 	getSelectedPayrollArea(value) {
 		this.selectedPayrollArea = value;
+		this.PayrollAreaByPayrollAreaCode(value)
 		if (this.selectedEmployeeMasterId != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
-			
+
 			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
@@ -493,14 +543,24 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.selectedEmployeeMasterId = parseInt(value)
 		if (this.selectedPayrollArea != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
-			
+
 			this.nonRecService.employeeFinDetails(this.selectedEmployeeMasterId).subscribe(
 				res => {
 					this.employeeFinDetailsData = res.data.results[0][0];
 				}
 			)
 		}
+		this.payrollAssigned()
 	}
+
+	payrollAssigned() {
+
+		this.nonRecService.getEmployeeWisePayrollList(this.selectedEmployeeMasterId).subscribe(
+		  res => {
+			this.payrollListData = res.data.results[0];
+		  }
+		)
+	  }
 
 	/** Selected Employee Wise Data */
 	NonRecurringTransactionGroupAPIEmpwise() {
@@ -514,7 +574,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			res => {
 				this.NonRecurringTransactionGroupAPIEmpwiseData = res.data.results;
 				this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
-					if(element.onceEvery == 0){
+					if (element.onceEvery == 0) {
 						element.onceEvery = 1
 						element.frequency = 'Monthly'
 						element.transactionsType = 'NoOfTransaction'
@@ -539,7 +599,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.NonRecurringTransactionGroupUIData = res.data.results;
 				this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
 					this.NonRecurringTransactionGroupUIData.forEach(ele => {
-						if(element.headId == ele.headId){
+						if (element.headId == ele.headId) {
 							element.frequency = ele.frequency
 						}
 					});
@@ -597,7 +657,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": element.toDate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -622,7 +682,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -647,7 +707,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -656,11 +716,12 @@ export class NonRecurringAmtComponent implements OnInit {
 			})
 		}
 
-		console.log("onceEvery: "+ JSON.stringify(this.saveTransactionData))
+		console.log("onceEvery: " + JSON.stringify(this.saveTransactionData))
 	}
 
 	/** On change From Date */
 	getFromDateForSave(event, data) {
+		this.setMinToDate = event;
 		this.selectedFromDateForSave = this.datepipe.transform(new Date(event), 'yyyy-MM-dd') + ' 00:00:00'
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -691,7 +752,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": element.toDate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -716,7 +777,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -741,7 +802,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -749,30 +810,30 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("fromDate: "+ JSON.stringify(this.saveTransactionData))
+		console.log("fromDate: " + JSON.stringify(this.saveTransactionData))
 	}
 
 	/** Copy To From Date TO All */
-	copyFromDateToAll(data){
-	this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
-		element.fromdate = this.selectedFromDateForSave
-	});	
-    
-	this.getFromDateForSave(this.selectedFromDateForSave, data)
+	copyFromDateToAll(data) {
+		this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
+			element.fromdate = this.selectedFromDateForSave
+		});
+
+		this.getFromDateForSave(this.selectedFromDateForSave, data)
 	}
 
 	/** Add new Row into table */
-	addNewRow(data, rowIndex){
+	addNewRow(data, rowIndex) {
 		this.NonRecurringTransactionGroupAPIEmpwiseData.push(data)
 	}
 
 	/** On change Transaction Type */
 	getTransactionTypeForSave(value, rowindex, data) {
-			this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element,index) => {
-				if(index == rowindex){
-					element.transactionsType = value
-				}
-			});
+		this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element, index) => {
+			if (index == rowindex) {
+				element.transactionsType = value
+			}
+		});
 		this.selectedTransactionIndex = rowindex;
 		this.selectedTransactionType = value
 		let todate = "";
@@ -780,7 +841,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			todate = ""
 		} else if (this.selectedTransactionType == 'Perpetual') {
 			todate = '9999-12-31 00:00:00'
-            this.savedNumberOfTransaction = 0
+			this.savedNumberOfTransaction = 0
 		} else {
 			todate = this.selectedToDateForSave;
 			this.savedNumberOfTransaction = 0
@@ -806,7 +867,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -831,7 +892,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -856,7 +917,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -864,7 +925,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("transaction type: "+ JSON.stringify(this.saveTransactionData))
+		console.log("transaction type: " + JSON.stringify(this.saveTransactionData))
 	}
 
 	/** On change To Date */
@@ -899,7 +960,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -924,7 +985,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -949,7 +1010,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -957,7 +1018,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("todate: "+ JSON.stringify(this.saveTransactionData))
+		console.log("todate: " + JSON.stringify(this.saveTransactionData))
 	}
 
 	/** On change Remark */
@@ -991,7 +1052,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": value,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -1016,7 +1077,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": value,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -1041,7 +1102,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": value,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -1049,7 +1110,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("remark: "+ JSON.stringify(this.saveTransactionData))
+		console.log("remark: " + JSON.stringify(this.saveTransactionData))
 
 	}
 
@@ -1084,7 +1145,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": parseInt(value),
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -1109,7 +1170,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": parseInt(value),
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -1134,7 +1195,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": parseInt(value),
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -1142,7 +1203,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("Amount: "+ JSON.stringify(this.saveTransactionData))
+		console.log("Amount: " + JSON.stringify(this.saveTransactionData))
 
 	}
 
@@ -1180,7 +1241,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -1206,7 +1267,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": value,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -1231,7 +1292,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": value,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -1239,12 +1300,12 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("frequency: "+ JSON.stringify(this.saveTransactionData))
+		console.log("frequency: " + JSON.stringify(this.saveTransactionData))
 
 	}
 
 	/**on change no of transaction */
-	saveNoOfTransaction(value,data){
+	saveNoOfTransaction(value, data) {
 		this.savedNumberOfTransaction = value
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -1275,7 +1336,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -1300,7 +1361,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -1325,7 +1386,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -1333,11 +1394,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("No Of transaction: "+ JSON.stringify(this.saveTransactionData))
+		console.log("No Of transaction: " + JSON.stringify(this.saveTransactionData))
 	}
 
 	/** Clawback Popup Show */
-	ViewClawbackpopup(template4: TemplateRef<any>,data,rowindex) {
+	ViewClawbackpopup(template4: TemplateRef<any>, data, rowindex) {
 		this.modalRef = this.modalService.show(
 			template4,
 			Object.assign({}, {
@@ -1348,9 +1409,9 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.selectedClawbackRowIndex = rowindex;
 	}
 
-	saveClawBack(){
-		this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element,index) => {
-			if(index == this.selectedClawbackRowIndex){
+	saveClawBack() {
+		this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element, index) => {
+			if (index == this.selectedClawbackRowIndex) {
 				element.showClawback = true
 			}
 		});
@@ -1361,12 +1422,12 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** Get Applcable At selected Value */
-	getSelectedApplicable(value,data) {
+	getSelectedApplicable(value, data) {
 		this.selectedApplicableAt = value
 		this.selectedClawbackInputType = ""
 		this.clawbackperiod = 0;
-		this.clawbackDate ="";
-		this.clawbackFrequency =""
+		this.clawbackDate = "";
+		this.clawbackFrequency = ""
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -1396,7 +1457,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": value,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -1421,7 +1482,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": value,
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -1446,7 +1507,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": value,
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -1454,15 +1515,15 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("Applicable at: "+ JSON.stringify(this.saveTransactionData))
+		console.log("Applicable at: " + JSON.stringify(this.saveTransactionData))
 	}
 
 	/** Get Input Type selected Value */
-	getSelectedInputType(value,data) {
+	getSelectedInputType(value, data) {
 		this.selectedClawbackInputType = value
 		this.clawbackperiod = 0;
-		this.clawbackDate ="";
-		this.clawbackFrequency =""
+		this.clawbackDate = "";
+		this.clawbackFrequency = ""
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -1492,7 +1553,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": value,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -1517,7 +1578,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": value,
 							"clawbackPeriod": 0,
@@ -1542,7 +1603,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": value,
 				"clawbackPeriod": 0,
@@ -1550,11 +1611,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("input type: "+ JSON.stringify(this.saveTransactionData))
+		console.log("input type: " + JSON.stringify(this.saveTransactionData))
 	}
-    
+
 	/**get clawback period */
-	crawBackPeriod(value,data){
+	crawBackPeriod(value, data) {
 		this.clawbackperiod = parseInt(value)
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -1585,7 +1646,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": parseInt(value),
@@ -1610,7 +1671,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": parseInt(value),
@@ -1642,11 +1703,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("clawback period: "+ JSON.stringify(this.saveTransactionData))
+		console.log("clawback period: " + JSON.stringify(this.saveTransactionData))
 	}
 
 	/**Get Clawback Frequency selected value */
-	getClawbackFrequency(value,data) {
+	getClawbackFrequency(value, data) {
 		this.clawbackFrequency = value
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
@@ -1677,7 +1738,7 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
@@ -1702,7 +1763,7 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
@@ -1727,7 +1788,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
@@ -1735,12 +1796,12 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": ""
 			})
 		}
-		console.log("clawback frequency: "+ JSON.stringify(this.saveTransactionData))
+		console.log("clawback frequency: " + JSON.stringify(this.saveTransactionData))
 
 	}
 
 	/**Get clawback date */
-	getClawbackDate(value,data){
+	getClawbackDate(value, data) {
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -1770,12 +1831,12 @@ export class NonRecurringAmtComponent implements OnInit {
 						"toDate": todate,
 						"amount": element.amount,
 						"remark": element.remark,
-						"createdBy":"rahul",
+						"createdBy": "rahul",
 						"clawbackApplicableAt": element.clawbackApplicableAt,
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": this.datepipe.transform(new Date(value),'yyyy-MM-dd') + ' 00:00:00'
+						"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1795,12 +1856,12 @@ export class NonRecurringAmtComponent implements OnInit {
 							"toDate": todate,
 							"amount": data.openingAmount,
 							"remark": data.remark,
-							"createdBy":"rahul",
+							"createdBy": "rahul",
 							"clawbackApplicableAt": "",
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": this.datepipe.transform(new Date(value),'yyyy-MM-dd') + ' 00:00:00'
+							"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
 						})
 					}
 				}
@@ -1820,12 +1881,12 @@ export class NonRecurringAmtComponent implements OnInit {
 				"toDate": todate,
 				"amount": data.openingAmount,
 				"remark": data.remark,
-				"createdBy":"rahul",
+				"createdBy": "rahul",
 				"clawbackApplicableAt": "",
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": this.datepipe.transform(new Date(value),'yyyy-MM-dd') + ' 00:00:00'
+				"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
 			})
 		}
 	}
@@ -1837,10 +1898,10 @@ export class NonRecurringAmtComponent implements OnInit {
 			res => {
 				this.toaster.success("", "Transaction Saved Successfully")
 				this.saveTransactionData = [];
-				
-					this.indexId = 1;
-					this.navigateSummary()
-				
+
+				this.indexId = 1;
+				this.navigateSummary()
+
 			}
 		)
 	}
@@ -1862,21 +1923,43 @@ export class NonRecurringAmtComponent implements OnInit {
 		}
 	}
 
-	getAllScheduleData(){
+	getRescheduleInfo(summarydata) {
+		const formData = new FormData();
+		formData.append('nonRecurringTransactionScheduleId', summarydata.nonRecurringTransactionScheduleId)
+		formData.append('nonRecurringTransactionGroupId', summarydata.nonRecurringTransactionGroupId)
+
+		this.nonRecService.NonRecurringTransactionScheduleRemarkHistorybyScheduleId(formData).subscribe(
+			res => {
+					if (res.data.results[0].transactionDate != null) {
+						this.originalTransactionDate = res.data.results[0].transactionDate
+						this.isReschedule = true;
+					}else{
+						this.isReschedule = false;
+					}
+				});
+
+			
+		
+    return this.isReschedule;
+
+	}
+
+	getAllScheduleData() {
 		this.indexId = 3
 		this.editScheduleFlag = false;
-		this.nonRecService.getAllScheduleData().subscribe( res =>{
+		this.nonRecService.getAllScheduleData().subscribe(res => {
 			this.AllNonRecurringTransactionScheduledData = res.data.results;
 			this.AllNonRecurringTransactionScheduledData.forEach(data => {
 				this.summeryData.forEach(element => {
-					if(element.nonRecurringTransactionGroupId == data.nonRecurringTransactionGroupId){
+					if (element.nonRecurringTransactionGroupId == data.nonRecurringTransactionGroupId) {
 						data.employeeMasterResponseDTO = element.employeeMasterResponseDTO
 						data.payrollArea = element.payrollArea
 						data.payrollHeadMaster = element.payrollHeadMaster
 					}
 				});
 			});
-			
+
+
 		})
 	}
 
@@ -1887,22 +1970,22 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.hold = 1
 		} else {
 			this.hold = 0
-			if(this.editScheduleFlag  == false){
-				this.AllNonRecurringTransactionScheduledData.forEach((element,index) => {
-					if(index == this.selectedHoldIndex){
+			if (this.editScheduleFlag == false) {
+				this.AllNonRecurringTransactionScheduledData.forEach((element, index) => {
+					if (index == this.selectedHoldIndex) {
 						element.hold = false
 					}
 				});
-		   	}else{
-				this.NonRecurringTransactionScheduleEMPdData.forEach((element,index) => {
-					if(index == this.selectedHoldIndex){
+			} else {
+				this.NonRecurringTransactionScheduleEMPdData.forEach((element, index) => {
+					if (index == this.selectedHoldIndex) {
 						element.hold = false
 					}
-				});	
-			}	
+				});
+			}
 		}
 
-		
+
 
 		if (this.updateScheduleData.length > 0) {
 			this.updateScheduleData.forEach((element, index) => {
@@ -1948,18 +2031,18 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.discard = 1
 		} else {
 			this.discard = 0
-			if(this.editScheduleFlag  == false){
-				this.AllNonRecurringTransactionScheduledData.forEach((element,index) => {
-					if(index == this.selecteddiscardIndex){
+			if (this.editScheduleFlag == false) {
+				this.AllNonRecurringTransactionScheduledData.forEach((element, index) => {
+					if (index == this.selecteddiscardIndex) {
 						element.discard = false
 					}
 				});
-		   	}else{
-				this.NonRecurringTransactionScheduleEMPdData.forEach((element,index) => {
-					if(index == this.selecteddiscardIndex){
+			} else {
+				this.NonRecurringTransactionScheduleEMPdData.forEach((element, index) => {
+					if (index == this.selecteddiscardIndex) {
 						element.discard = false
 					}
-				});	
+				});
 			}
 		}
 		if (this.updateScheduleData.length > 0) {
@@ -2090,9 +2173,9 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.NonRecurringTransactionScheduleupdateById(this.updateScheduleData).subscribe(
 			res => {
 				this.toaster.success("", "Transaction Schedule updated successfully")
-				if(this.nonRecurringTransactionGroupId != undefined){
-				this.NonRecurringTransactionScheduleEMP()
-				}else{
+				if (this.editScheduleFlag) {
+					this.NonRecurringTransactionScheduleEMP()
+				} else {
 					this.getAllScheduleData()
 				}
 			}
@@ -2109,8 +2192,11 @@ export class NonRecurringAmtComponent implements OnInit {
 		);
 
 		this.viewScheduleData = scheduleData
-		console.log(JSON.stringify(this.viewScheduleData))
-		this.selectedEmpData[this.index] = scheduleData
+		this.originalTransactionDate = this.viewScheduleData.transactionDate
+		if (!this.editScheduleFlag) {
+			this.scheduleAllData = this.viewScheduleData
+		}
+		//	this.selectedEmpData[this.index] = scheduleData
 		this.nonRecurringTransactionScheduleId = scheduleData.nonRecurringTransactionScheduleId
 		this.nonRecurringTransactionGroupId = scheduleData.nonRecurringTransactionGroupId
 		this.NonRecurringTransactionScheduleRemarkHistorybyScheduleId()
@@ -2127,14 +2213,22 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.nonRecService.NonRecurringTransactionScheduleRemarkHistorybyScheduleId(formData).subscribe(
 			res => {
 				this.NonRecurringHistorybyScheduleIdData = res.data.results;
+				this.NonRecurringHistorybyScheduleIdData.forEach(element => {
+					if (element.transactionDate != null) {
+						this.originalTransactionDate = element.transactionDate
+					}
+				});
+
 			}
 		)
 	}
 
-	cancelBtn(){
+	cancelBtn() {
 		this.navigateSummary()
 	}
 
+
+	/** Excel donload summary and Schedule page */
 
 	SummaryexportAsXLSX(): void {
 		this.excelData = [];
@@ -2155,5 +2249,5 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.excelData = this.NonRecurringTransactionScheduleEMPdData
 		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
-	
+
 }
