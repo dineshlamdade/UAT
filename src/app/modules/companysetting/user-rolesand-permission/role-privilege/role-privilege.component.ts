@@ -759,7 +759,7 @@ export class RolePrivilegeComponent implements OnInit {
          console.log(JSON.stringify(submenu))
          if (event.checked) {
            
-               debugger
+              // debugger
             if(this.SelectedData.length > 0){
                this.SelectedData.forEach((privillegedata,index) => {
                   if(privillegedata.applicationMenusId == submenu.applicationMenuId ){
@@ -856,23 +856,56 @@ export class RolePrivilegeComponent implements OnInit {
       }
       /** single menu checked uncheked modify */
       checkeUncheckSingleMenuModify(submenu, event) {
+         console.log(JSON.stringify(submenu))
          if (event.checked) {
-            this.menusData.forEach((ele: any) => {
-
+           
+              // debugger
+            if(this.SelectedData.length > 0){
+               this.SelectedData.forEach((privillegedata,index) => {
+                  if(privillegedata.applicationMenusId == submenu.applicationMenuId ){
+                     let ind = index;
+                     this.SelectedData.splice(ind,1,{
+                        "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                        "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                        "applicationMenusId": submenu.applicationMenuId,
+                        "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                        "readAccess": privillegedata.readAccess,
+                        "writeAccess":privillegedata.writeAccess,
+                        "modifyAccess": 1,
+                        "deleteAccess": privillegedata.deleteAccess
+                     })
+                  }else{
+                     let index = this.SelectedData.length -1
+                     if(this.SelectedData[length].applicationMenusId == submenu.applicationMenuId ){return;}
+                  //    else{this.SelectedData.push({
+                  //       "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                  //       "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  //       "applicationMenusId": submenu.applicationMenuId,
+                  //       "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  //       "readAccess":0,
+                  //       "writeAccess": 1,
+                  //       "modifyAccess": 0,
+                  //       "deleteAccess": 0
+                  //    }) 
+                  // }
+                  }
+               })
+               //  element.allFlag = true
+              
+             }else{
+               this.SelectedData.push({
+                  "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                  "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  "applicationMenusId": submenu.applicationMenuId,
+                  "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  "readAccess": 0,
+                  "writeAccess": 0,
+                  "modifyAccess": 1,
+                  "deleteAccess": 0
+               }) 
+             }
+             this.menusData.forEach((ele: any,index) => {
                if (ele.applicationMenuId == submenu.parentMenuId) {
-
-                  //  element.allFlag = true
-                  this.SelectedData.push({
-                     "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
-                     "applicationMenusId": submenu.applicationMenuId,
-                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
-                     "readAccess": 0,
-                     "modifyAccess": 1,
-                     "deleteAccess": 0,
-                     "writeAccess": 0
-                  })
-               }
                if (ele.childItems != null) {
                   ele.childItems.forEach(element => {
                      if (element.applicationMenuId == submenu.applicationMenuId) {
@@ -881,10 +914,13 @@ export class RolePrivilegeComponent implements OnInit {
                      }
                   })
                }
+            }
             });
+
 
          } else {
             this.menusData.forEach((ele: any) => {
+
                if (ele.applicationMenuId == submenu.parentMenuId) {
                   this.SelectedData.forEach((item, index) => {
                      if (item.menuId == submenu.parentMenuId) {
@@ -903,8 +939,8 @@ export class RolePrivilegeComponent implements OnInit {
                   });
 
                }
-               if (ele.childItems != null) {
 
+               if (ele.childItems != null) {
                   ele.childItems.forEach(element => {
                      if (element.applicationMenuId == submenu.applicationMenuId) {
                         element.modifyFlag = false
@@ -913,27 +949,63 @@ export class RolePrivilegeComponent implements OnInit {
                   })
                }
             })
+
          }
+
+         console.log("modifyAccess data: "+ JSON.stringify(this.SelectedData))
       }
 
       checkeUncheckSingleMenuDelete(submenu, event) {
+         console.log(JSON.stringify(submenu))
          if (event.checked) {
-            this.menusData.forEach((ele: any) => {
-
+           
+              // debugger
+            if(this.SelectedData.length > 0){
+               this.SelectedData.forEach((privillegedata,index) => {
+                  if(privillegedata.applicationMenusId == submenu.applicationMenuId ){
+                     let ind = index;
+                     this.SelectedData.splice(ind,1,{
+                        "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                        "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                        "applicationMenusId": submenu.applicationMenuId,
+                        "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                        "readAccess": privillegedata.readAccess,
+                        "writeAccess": privillegedata.writeAccess,
+                        "modifyAccess": privillegedata.modifyAccess,
+                        "deleteAccess": 1
+                     })
+                  }else{
+                     let index = this.SelectedData.length -1
+                     if(this.SelectedData[length].applicationMenusId == submenu.applicationMenuId ){return;}
+                  //    else{this.SelectedData.push({
+                  //       "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                  //       "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  //       "applicationMenusId": submenu.applicationMenuId,
+                  //       "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  //       "readAccess":0,
+                  //       "writeAccess": 1,
+                  //       "modifyAccess": 0,
+                  //       "deleteAccess": 0
+                  //    }) 
+                  // }
+                  }
+               })
+               //  element.allFlag = true
+              
+             }else{
+               this.SelectedData.push({
+                  "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                  "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                  "applicationMenusId": submenu.applicationMenuId,
+                  "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                  "readAccess": 0,
+                  "writeAccess": 0,
+                  "modifyAccess": 0,
+                  "deleteAccess": 1
+               }) 
+             }
+             this.menusData.forEach((ele: any,index) => {
                if (ele.applicationMenuId == submenu.parentMenuId) {
-
-                  //  element.allFlag = true
-                  this.SelectedData.push({
-                     "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
-                     "applicationMenusId": submenu.applicationMenuId,
-                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
-                     "readAccess": 0,
-                     "modifyAccess": 0,
-                     "deleteAccess": 1,
-                     "writeAccess": 0
-                  })
-               }
                if (ele.childItems != null) {
                   ele.childItems.forEach(element => {
                      if (element.applicationMenuId == submenu.applicationMenuId) {
@@ -942,10 +1014,13 @@ export class RolePrivilegeComponent implements OnInit {
                      }
                   })
                }
+            }
             });
+
 
          } else {
             this.menusData.forEach((ele: any) => {
+
                if (ele.applicationMenuId == submenu.parentMenuId) {
                   this.SelectedData.forEach((item, index) => {
                      if (item.menuId == submenu.parentMenuId) {
@@ -964,6 +1039,7 @@ export class RolePrivilegeComponent implements OnInit {
                   });
 
                }
+
                if (ele.childItems != null) {
                   ele.childItems.forEach(element => {
                      if (element.applicationMenuId == submenu.applicationMenuId) {
@@ -973,7 +1049,10 @@ export class RolePrivilegeComponent implements OnInit {
                   })
                }
             })
+
          }
+
+         console.log("writeaccess data: "+ JSON.stringify(this.SelectedData))
       }
 
 
@@ -988,6 +1067,7 @@ export class RolePrivilegeComponent implements OnInit {
                this.alertService.sweetalertMasterSuccess("Role Privilege data saved successfully", "");
                this.rolePrivilegeForm.reset();
                this.getApplicationMenus();
+              this.getRolePrivilegeSummaryByUserRoleId();
                this.editFlag = false
                this.isVisible = false;
                this.isShown = true;

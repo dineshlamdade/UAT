@@ -216,9 +216,9 @@
                                     <!-- <p-table [value]="summarydata"> -->
                                         <p-table #dt [value]="summarydata"  
                                        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" 
-                                    [totalRecords]= "totalUsersCount"   
+                                    [totalRecords]= "totalUsersCount"   [loading]="loading"
                               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                         (onPage)="paginate($event)">
+                               (onPage)="paginate($event)" >
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th class="text-center">
