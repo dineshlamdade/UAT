@@ -135,7 +135,7 @@
                                                     <div class="cardborder">
                                                         <span class="heading">Priority</span>
 
-                                                        <p-chart type="pie" [data]="data" [options]="pieOptions">
+                                                        <p-chart type="pie" [data]="data" [options]="">
                                                         </p-chart>
                                                     </div>
                                                 </div>
@@ -267,16 +267,18 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="table-responsive Custom_Table mt-25">
-                                                <p-table [value]="users3">
+                                                <p-table [value]="getAllQueryGenerationData" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+                                                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                                                     <ng-template pTemplate="header">
                                                         <tr>
                                                             <th class="wd-14">Sr. No.</th>
                                                             <th class="wd-15">
                                                                 <div class="p-d-flex p-jc-between p-ai-center">Query No.
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="name"></p-sortIcon>
-                                                                        <p-columnFilter type="text" field="name"
-                                                                            display="menu" class="p-ml-auto">
+                                                                      <p-sortIcon field="name" pSortableColumn="queryNumber"></p-sortIcon>
+                                                                        <p-columnFilter type="text"
+                                                                            display="menu" class="p-ml-auto"
+                                                                            field="queryNumber">
                                                                         </p-columnFilter>
                                                                     </div>
                                                                 </div>
@@ -285,8 +287,8 @@
                                                                 <div class="p-d-flex p-jc-between p-ai-center">
                                                                     Submission Date
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="date"></p-sortIcon>
-                                                                        <p-columnFilter type="date" field="date"
+                                                                        <p-sortIcon field="date"  pSortableColumn="submissionDate"></p-sortIcon>
+                                                                        <p-columnFilter type="date" field="submissionDate"
                                                                             display="menu" class="p-ml-auto">
                                                                         </p-columnFilter>
                                                                     </div>
@@ -310,10 +312,13 @@
                                                                     class="p-d-flex justify-content-center p-ai-center">
                                                                     Emp. Name
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="empName"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="empName"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -321,10 +326,13 @@
                                                                 <div class="p-d-flex p-jc-between p-ai-center">Company
                                                                     Name
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="companyName"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="companyName"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -332,10 +340,13 @@
                                                                 <div class="p-d-flex p-jc-between p-ai-center">
                                                                     <span tooltip="Unit of Measure">Module Name</span>
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="queryTypeCode"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="queryTypeCode"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -343,10 +354,13 @@
                                                                 <div class="p-d-flex p-jc-between p-ai-center">
                                                                     <span tooltip="Unit of Measure">Query Type</span>
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="queryTypeCode"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="queryTypeCode"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -355,10 +369,13 @@
                                                                     class="p-d-flex p-ai-center justify-content-center">
                                                                     Sub-Query Type
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="subQueryTypeCode"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="subQueryTypeCode"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -367,10 +384,13 @@
                                                                     class="p-d-flex p-ai-center justify-content-center">
                                                                     Subject
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="subject"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="subject"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -379,10 +399,13 @@
                                                                     class="p-d-flex p-ai-center justify-content-center">
                                                                     Priority
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="priority"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="priority"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -392,10 +415,13 @@
                                                                     Lastupdate
                                                                     Date
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="escalationDate"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="escalationDate"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -404,10 +430,13 @@
                                                                     class="p-d-flex p-ai-center justify-content-center">
                                                                     Status
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="activity"></p-sortIcon>
-                                                                        <p-columnFilter field="activity" display="menu"
-                                                                            class="p-ml-auto">
-                                                                        </p-columnFilter>
+                                                                      <p-sortIcon field="activity" pSortableColumn="status"></p-sortIcon>
+                                                                      <p-columnFilter
+                                                                        field="status"
+                                                                        display="menu"
+                                                                        class="p-ml-auto"
+                                                                      >
+                                                                      </p-columnFilter>
                                                                     </div>
                                                                 </div>
                                                             </th>
@@ -415,54 +444,56 @@
                                                         </tr>
 
                                                     </ng-template>
-                                                    <ng-template pTemplate="body" let-user2>
+                                                    <ng-template pTemplate="body" let-summary let let-rowIndex="rowIndex">
                                                         <tr class="p-selectable-row">
-                                                            <td class="text-center">{{user2.srno}}</td>
+                                                            <td class="text-center">{{rowIndex + 1}}</td>
                                                             <td>
                                                                 <label
-                                                                    class="form-lable mb-0 ">{{user2.Query_Number}}</label>
+                                                                    class="form-lable mb-0"><a class="text-link"
+                                                                    [routerLink]="['/Query-Communication/',summary.queryGenerationEmpId]">
+                                                                    {{summary.queryNumber}}</a></label>
                                                             </td>
                                                             <td>
                                                                 <label
-                                                                    class="form-lable mb-0 ">{{user2.Submissiondate}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.submissionDate | date :"dd-MMM-yyyy"}}</label>
                                                             </td>
 
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{user2.Employee_Code}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.employeeCode}}</label>
 
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{user2.Employee_Name}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.empName}}</label>
 
                                                             </td>
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{user2.Comapny_name}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.companyName}}</label>
                                                             </td>
 
 
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{user2.Module_name}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.applicationModuleName}}</label>
                                                             </td>
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{user2.Query_Type}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.queryTypeCode}}</label>
 
                                                             </td>
                                                             <td><label
-                                                                    class="form-lable mb-0 ">{{user2.SubQuery_Type}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.subQueryTypeCode}}</label>
 
                                                             </td>
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{user2.Subject}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.subject}}</label>
 
                                                             </td>
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{user2.Priority}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.priority}}</label>
 
                                                             </td>
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{user2.Lastupdate_Date}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.escalationDate |date:"dd-MMM-yyyy"}}</label>
 
                                                             </td>
-                                                            <td><label class="form-lable mb-0 ">{{user2.Status}}</label>
+                                                            <td><label class="form-lable mb-0 ">{{summary.status}}</label>
 
                                                             </td>
                                                             <td><span class="ml-1 mt-2">

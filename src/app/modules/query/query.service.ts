@@ -120,15 +120,19 @@ public updateQueryIteration(data)
 }
 public getIterationdetailsbyQueryID(id)
   {
-  return this.http.get<any>(this.apiUrl3 + 'QueryIteration/' +id);
+  return this.http.get<any>(this.apiUrl + 'QueryIteration/' +id);
   }
-  public documentInfoById(id)
-  {
-  return this.http.get<any>(this.apiUrl3 + 'DocumentInfo/' +id);
-  }
+  // public documentInfoById(id) //not used
+  // {
+  // return this.http.get<any>(this.apiUrl + 'DocumentInfo/' +id);
+  // }
   public getQueAnstemplistById(id)
   {
-  return this.http.get<any>(this.apiUrl3 + 'DocumentInfo/' +id);
+  return this.http.get<any>(this.apiUrl + 'QueryIteration/QA/' +id);
+  }
+  public getRootCasuelist()
+  {
+  return this.http.get<any>(this.apiUrl + 'QueryIteration/RootCause');
   }
 
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { CKEditorModule } from 'ckeditor4-angular';
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -65,49 +66,55 @@ queryCommunicationForm: FormGroup;
   public urlSafe: SafeResourceUrl;
   documentList: any = [];
   listDoc: File[] = [];
+  queryGenerationEmpId: any;
+  getAllQueryGenerationData: any;
+  documents: any;
+  getRootCasuelistData: any;
 
-constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,public sanitizer: DomSanitizer, ){}
+constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,
+  public sanitizer: DomSanitizer,private alertService: AlertServiceService, private route:ActivatedRoute ){
+    this.route.params.subscribe(value =>{
+      this.queryGenerationEmpId = value.id
+    })
+    this.queryCommunicationForm = this.formBuilder.group(
+      {
+
+        "queryIterationId":new FormControl(0),
+         "queryGenerationEmpId":new FormControl(0),
+         "addressedToEmpId":new FormControl(0),
+         "queAnsMasterId":new FormControl(null),
+         "queryDescription":new FormControl(0),
+         "queryRootCause":new FormControl(null),
+         "rootCauseDescription":new FormControl(null),
+         "rating":new FormControl(null),
+         "remark": new FormControl(null),
+         "action":new FormControl('reply'),
+         "status":new FormControl('save'),
+
+      })
+  }
+
+
 Popup1(template: TemplateRef<any>) {
   this.modalRef = this.modalService.show(
     template,
     Object.assign({}, { class: 'gray modal-md' })
   );
-  this.queryCommunicationForm = this.formBuilder.group(
-    {
 
-      "queryIterationId":new FormControl(0),
-       "queryGenerationEmpId":new FormControl(0),
-       "addressedToEmpId":new FormControl(0),
-       "queAnsMasterId":new FormControl(0),
-       "queryDescription":new FormControl(0),
-       "queryRootCause":new FormControl(null),
-       "rootCauseDescription":new FormControl(null),
-       "rating":new FormControl(null),
-       "remark": new FormControl(null),
-       "action":new FormControl('reply'),
-       "status":new FormControl('save'),
 
-    })
 }
 
-  users: user2[];
-  status1:status[];
   contact1:contact[];
 
   ngOnInit(): void {
 
 this.queryCommunicationForm = this.formBuilder.group({})
 this.getEmpMasterDetails(60);
-this.getIterationdetailsbyQueryID(120);
+this.getIterationdetailsbyQueryID(this.queryGenerationEmpId);
+this.getQueAnstemplistById(this.queryGenerationEmpId);
+this.getAllQueryListSummary();
+this.getRootCasuelist();
 
-    this.users = [
-      { SrNo: '1', RefNo:'1111',Documents:'DOC1',Description:'aaaa', By:'AAA',Date_Time:'12-8-2020 '},
-      { SrNo: '2', RefNo:'1112',Documents:'Doc 2',Description:'aaaa', By:'AAA',Date_Time:'12-9-2021 ' },
-    ];
-      this.status1 = [
-        { SrNo: '1', RefNo:'1111', By:'AAA',Date_Time:'12-8-2020 ',status:'done'},
-        { SrNo: '2', RefNo:'1112', By:'AAA',Date_Time:'12-9-2021',status:'done'},
-      ];
       this.contact1 = [
         { role: '1', Comapny:'1111', Name:'AAA',Tel_No:'12-8-2020 ',Email:'done',Grade:'A',Designation:'Worker'},
         { role: '2', Comapny:'1112', Name:'AAA',Tel_No:'12-9-2021',Email:'done',Grade:'A',Designation:'Worker'},
@@ -157,33 +164,46 @@ this.getIterationdetailsbyQueryID(120);
 
 // ..................................QueryIteration API calling...................................................
 
-  getEmpMasterDetails(employeeMasterIdData)// temp id is used for employee details
+  getEmpMasterDetails(employeeMasterIdData)// temp id is used for employee details...
 {
   this.queryService.getEmpMasterDetails(60).subscribe(res =>
     {
       this.perticularEmpDetails = res.data.results[0][0];
     })
 }
-getIterationdetailsbyQueryID(queryIterationId) //Get Iteration details by Query ID
+getAllQueryListSummary() //left side card data....
 {
-  this.queryService.getIterationdetailsbyQueryID(queryIterationId).subscribe(res =>
+this.queryService.getAllQueryList().subscribe(res =>
+  {
+    this.getAllQueryGenerationData = res.data.results[0];
+
+  })
+}
+getIterationdetailsbyQueryID(queryGenerationEmpId) //Get Iteration details by Query ID // for all table
+{
+  this.queryService.getIterationdetailsbyQueryID(this.queryGenerationEmpId).subscribe(res =>
     {
       this.GetIterationdetailsbyQueryIDData = res.data.results[0];
+      this.documents = this.GetIterationdetailsbyQueryIDData.documents;
+      console.log("GetIterationdetailsbyQueryIDData" ,this.GetIterationdetailsbyQueryIDData);
+      console.log("documents" ,this.documents);
+
+
     })
 }
-getQueAnstemplistById(queryIterationId) //Get Question Answer template list by QueryGenerationEmpId
+getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list by QueryGenerationEmpId
                                         //for Query Iteration reply screen dropdown.
 {
-  this.queryService.getQueAnstemplistById(queryIterationId).subscribe(res =>
+  this.queryService.getQueAnstemplistById(this.queryGenerationEmpId).subscribe(res =>
     {
-      this.getQueAnstemplistByIdData = res.data.results[0];
+      this.getQueAnstemplistByIdData = res.data.results;
     })
 }
-documentInfoById(queryIterationId) //Get Document details by Query Iteration Id
+getRootCasuelist()
 {
-  this.queryService.documentInfoById(queryIterationId).subscribe(res =>
+  this.queryService.getRootCasuelist().subscribe(res =>
     {
-      this.documentInfoByIdData = res.data.results[0];
+      this.getRootCasuelistData = res.data.results;
     })
 }
 

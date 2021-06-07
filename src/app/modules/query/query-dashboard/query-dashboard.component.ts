@@ -13,7 +13,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
  } from "ng-apexcharts";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { QueryService } from '../query.service';
-import { ToastrService } from 'ngx-toastr';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
 
 export interface user2 {
@@ -52,8 +52,9 @@ export class QueryDashboardComponent implements OnInit {
   data: any;
   modalService: any;
   queryDashboardForm:FormGroup;
+  getAllQueryGenerationData: any;
 
-  constructor(public formBuilder : FormBuilder,public queryService :QueryService ,public toster : ToastrService)
+  constructor(public formBuilder : FormBuilder,public queryService :QueryService ,private alertService: AlertServiceService)
    {
     this.data = {
         labels: ['Urgent','High','Medium','Low'],
@@ -116,13 +117,10 @@ export class QueryDashboardComponent implements OnInit {
    }
 
 
-  users: user2[];
-  ngOnInit(): void {
 
-    this.users = [
-      { srno: '1', Query_Number:'1111',Submissiondate:'John',Employee_Code:'AAA ',Employee_Name:'SSS',Comapny_name:'MNS',Module_name:'XYZ',Query_Type:'query',SubQuery_Type:'Sub', Priority:'high', Lastupdate_Date:'22-march',Status:'Status1' },
-      { srno: '2', Query_Number:'1112',Submissiondate:'ABC',Employee_Code:'AAA ',Employee_Name:'SSS',Comapny_name:'MPB',Module_name:'YZX',Query_Type:'query',SubQuery_Type:'Mquery',Priority:'Low', Lastupdate_Date:'24-march',Status:'Status1' },
-     ];
+  ngOnInit(): void {
+this.getAllQueryListSummary();
+
   }
   isShowDiv = true;
 
@@ -133,5 +131,12 @@ export class QueryDashboardComponent implements OnInit {
   {
 
   }
+  getAllQueryListSummary() //summary table
+{
+this.queryService.getAllQueryList().subscribe(res =>
+  {
+    this.getAllQueryGenerationData = res.data.results;
+  })
+}
 
 }

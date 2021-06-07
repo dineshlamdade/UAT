@@ -37,7 +37,7 @@ const routes :Routes =[
 
       },
       {
-        path:'Query-Communication',
+        path:'Query-Communication/:id',
         component:QueryCOmmunicationComponent,
         data: { title: ':: DelziaHR :: Query Communication' },
 
