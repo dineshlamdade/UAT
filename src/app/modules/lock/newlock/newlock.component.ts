@@ -56,7 +56,7 @@ export interface sumbusiness {
   companyname;
   service;
   businessyear;
-  
+
   fromdate;
   todate;
   lockdate;
@@ -116,14 +116,22 @@ export class NewlockComponent implements OnInit {
   customers: Customer[];
   groups: group[];
   aswhens: aswhen[];
-  sumbusinesss:sumbusiness[];
+  sumbusinesss: sumbusiness[];
   cities: City[];
   users1: User1[];
   sumareas: sumarea[];
   arealists: arealist[];
-  sumemps:sumemp[];
-  sumaswhns:sumaswhn[];
+  sumemps: sumemp[];
+  sumaswhns: sumaswhn[];
   emplists: emplist[];
+  val: any;
+  displayedColumns: string[];
+  dataSource: any[] = [];
+  employeedata: any[] = [];
+  areadata: any = []
+  ;
+  areadataSource: any;
+  empdataSource: any;
   constructor(private modalService: BsModalService) { }
 
   ngOnInit(): void {
@@ -165,21 +173,25 @@ export class NewlockComponent implements OnInit {
 
     ];
     this.sumareas = [{
-      area: '', companyname: '', service: '', businessyear: '', cyclename: '', cycledefinition: 'a',fromdatearea: 't', todatearea: '11', lockdatearea: 'aa', lockbyarea: 'SS'}
+      area: '', companyname: '', service: '', businessyear: '', cyclename: '', cycledefinition: 'a', fromdatearea: 't', todatearea: '11', lockdatearea: 'aa', lockbyarea: 'SS'
+    }
     ];
     this.sumbusinesss = [{
-      area: '', companyname: '', service: '', businessyear: '', fromdate: '', todate: '', lockdate: '', lockby: '' }
+      area: '', companyname: '', service: '', businessyear: '', fromdate: '', todate: '', lockdate: '', lockby: ''
+    }
     ];
     this.sumemps = [{
-    empcode:'111',empname:'Rihan',  area: '', companyname: '', service: '', businessyear: '',cyclename: '', cycledefinition: '', fromdate: '', todate: '', lockdate: '', lockby: '', }
+      empcode: '111', empname: 'Rihan', area: '', companyname: '', service: '', businessyear: '', cyclename: '', cycledefinition: '', fromdate: '', todate: '', lockdate: '', lockby: '',
+    }
     ];
-    
+
     this.sumaswhns = [{
-      companyname: '', service: '',businessyear:'',type:'', cyclename: '', remark: 'a',fromdate: 't', todate: '11', lockdate: 'aa', lockby: 'SS'}
+      companyname: '', service: '', businessyear: '', type: '', cyclename: '', remark: 'a', fromdate: 't', todate: '11', lockdate: 'aa', lockby: 'SS'
+    }
     ];
-     
-     
-   
+
+
+
     this.aswhens = [
       {
         companyname: 'Paysquare',
@@ -227,7 +239,7 @@ export class NewlockComponent implements OnInit {
         type: 'Supplementry Cycle',
         cyclename: 'Weekly',
         cyclecreationdate: '22-jan-2021',
-       
+
         fromdate: '23-jan-2021',
         todate: '29-jan-2021',
 
@@ -238,7 +250,7 @@ export class NewlockComponent implements OnInit {
         type: 'Supplementry Cycle',
         cyclename: 'Weekly',
         cyclecreationdate: '22-jan-2021',
-        
+
         fromdate: '23-jan-2021',
         todate: '29-jan-2021',
 
@@ -331,6 +343,60 @@ export class NewlockComponent implements OnInit {
 
       return (event.order * result);
     });
+  }
+
+
+  AreaListPasteData(event: ClipboardEvent) {
+    let clipboardData = event.clipboardData;
+    let pastedText = clipboardData.getData('text');
+    let row_data = pastedText.split('\n');
+    //this.displayedColumns = row_data[0].split('\t');
+    //this.displayedColumns = ["employeeCode", "employeeName"]
+    this.displayedColumns = ["area"]
+    //delete row_data[0];
+    // Create table dataSource
+    row_data.forEach(row_data => {
+      let row = {};
+      this.displayedColumns.forEach((a, index) => {
+        row[a] = row_data.split('\t')[index]
+      });
+      this.areadata.push(row);
+    })
+    this.areadataSource = this.areadata;
+    this.areadataSource.splice(this.areadataSource.length-1,1)
+    //console.log(this.dataSource);
+  }
+
+  ResetareaData(){
+    this.areadataSource = []
+  }
+
+  
+
+
+  EmployeeListPasteData(event: ClipboardEvent) {
+    let clipboardData = event.clipboardData;
+    let pastedText = clipboardData.getData('text');
+    let row_data = pastedText.split('\n');
+    //this.displayedColumns = row_data[0].split('\t');
+    //this.displayedColumns = ["employeeCode", "employeeName"]
+    this.displayedColumns = ["employeeCode"]
+    //delete row_data[0];
+    // Create table dataSource
+    row_data.forEach(row_data => {
+      let row = {};
+      this.displayedColumns.forEach((a, index) => {
+        row[a] = row_data.split('\t')[index]
+      });
+      this.employeedata.push(row);
+    })
+    this.empdataSource = this.employeedata;
+    this.empdataSource.splice(this.empdataSource.length-1,1)
+    //console.log(this.dataSource);
+  }
+
+  ResetempData(){
+    this.empdataSource = []
   }
 }
 

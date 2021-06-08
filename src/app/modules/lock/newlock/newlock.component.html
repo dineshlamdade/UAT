@@ -2648,14 +2648,14 @@
                                         <div class="card-body">
                                             <div class="row  ">
                                                 <div class="col-md-12"> 
-                                                    <textarea >    </textarea>
+                                                    <textarea (paste)="EmployeeListPasteData($event)"></textarea>
 
                                                 </div>
                                             </div>
                                             <div class="row mt-15">
                                                 <div class="col-md-12">
 
-                                                    <p-table #dt2 [value]="customers" [paginator]="true" [rows]="10"
+                                                    <p-table #dt2 [value]="empdataSource" [paginator]="true" [rows]="10"
                                                     [showCurrentPageReport]="true"
                                                     (sortFunction)="customSort($event)" [customSort]="true"
                                                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -2812,22 +2812,18 @@
 
                                                         </tr>
                                                     </ng-template>
-                                                    <ng-template pTemplate="body" let-customer>
+                                                    <ng-template pTemplate="body" let-emp>
                                                         <tr class="p-selectable-row">
                                                            
-                                                            <td>{{ customer.empcode}}</td>
-                                                            <td>{{ customer.empName}}</td>
-                                                            <td> {{customer.companyname}}</td>
-                                                            <td> {{customer.service}}</td>
-                                                            <td> {{customer.area}}</td>
-                                                            <td> {{ customer.establishment}}</td>
-                                                            <td> {{ customer.department}}</td>
-                                                            <td>
-                                                                {{ customer.grade}}
-                                                            </td>
-                                                            <td>
-                                                                {{ customer.designation}}
-                                                            </td>
+                                                            <td>{{ emp.employeeCode }}</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
                                                            
                                                           
                                                             
@@ -2850,7 +2846,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
-                                        (click)="modalRef.hide()">Cancel</button>
+                                        (click)="ResetempData();modalRef.hide();">Cancel</button>
                                     <button type="submit"
                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                         tooltip="Save"><b>
@@ -3009,8 +3005,8 @@
                                         tooltip="Save"><b>
                                             <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
                                             <button type="button" tooltip="Cancel"class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i class="fa fa-refresh"></i></b> Reset</button>
-                                            <!-- <button type="button" class="btn btn-secondary"
-                                        (click)="modalRef.hide()">Clear</button> -->
+                                            <button type="button" class="btn btn-secondary"
+                                        (click)="ResetareaData();modalRef.hide()">Cancel</button>
                                 </div>
                             </ng-template>
 
@@ -3183,13 +3179,13 @@
                                         <div class="card-body">
                                             <div class="row  ">
                                                 <div class="col-md-12"> 
-                                                    <textarea rows="3" cols="60">    </textarea>
+                                                    <textarea (paste)="AreaListPasteData($event)" rows="3" cols="60"></textarea>
                                                 </div>
                                             </div>
                                             <div class="row mt-15 clearfix">
                                                 <div class="col-md-10">
 
-                                                    <p-table [value]="users1" [paginator]="true" [rows]="10"
+                                                   <p-table [value]="areadataSource" [paginator]="true" [rows]="10"
                                                     [showCurrentPageReport]="true"
                                                     (sortFunction)="customSort($event)" [customSort]="true"
                                                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -3202,9 +3198,9 @@
                                                                 <div class="p-d-flex p-jc-between p-ai-center">
                                                                     Area
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="empcode"
-                                                                            pSortableColumn="empcode"></p-sortIcon>
-                                                                        <p-columnFilter field="empcode"
+                                                                        <p-sortIcon field="area"
+                                                                            pSortableColumn="area"></p-sortIcon>
+                                                                        <p-columnFilter field="area"
                                                                             display="menu" class="p-ml-auto">
                                                                         </p-columnFilter>
                                                                     </div>
@@ -3214,9 +3210,9 @@
                                                                 <div class="p-d-flex p-jc-between p-ai-center">
                                                                     Company Name
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="empcode"
-                                                                            pSortableColumn="empcode"></p-sortIcon>
-                                                                        <p-columnFilter field="empcode"
+                                                                        <p-sortIcon field="companyName"
+                                                                            pSortableColumn="companyName"></p-sortIcon>
+                                                                        <p-columnFilter field="companyName"
                                                                             display="menu" class="p-ml-auto">
                                                                         </p-columnFilter>
                                                                     </div>
@@ -3226,9 +3222,9 @@
                                                                 <div class="p-d-flex p-jc-between p-ai-center">
                                                                     Service
                                                                     <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="empcode"
-                                                                            pSortableColumn="empcode"></p-sortIcon>
-                                                                        <p-columnFilter field="empcode"
+                                                                        <p-sortIcon field="service"
+                                                                            pSortableColumn="service"></p-sortIcon>
+                                                                        <p-columnFilter field="service"
                                                                             display="menu" class="p-ml-auto">
                                                                         </p-columnFilter>
                                                                     </div>
@@ -3238,12 +3234,12 @@
 
                                                         </tr>
                                                     </ng-template>
-                                                    <ng-template pTemplate="body" let-user1>
+                                                    <ng-template pTemplate="body" let-areaCode>
                                                         <tr>
                                                            
-                                                            <td>{{ user1.area }} </td>
-                                                            <td>{{ user1.cmpnyname }} </td>
-                                                            <td>{{ user1.service }} </td>
+                                                            <td>{{ areaCode.area }} </td>
+                                                            <td></td>
+                                                            <td></td>
 
 
                                                         </tr>
@@ -3261,7 +3257,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
-                                        (click)="modalRef.hide()">Cancel</button>
+                                        (click)="ResetareaData();modalRef.hide()">Cancel</button>
                                     <button type="submit"
                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                         tooltip="Save"><b>
