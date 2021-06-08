@@ -15,7 +15,7 @@ export class TuitionFeesService {
 
 
   getTuitionFeesSummary() {
-    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/summary')
+    return this._HTTP.get(this.apiUrl + 'tuitionFeesMaster-detail/tuitionFeesMasterSummary')
     .pipe(map((res: any) => {
       return res;
     }
@@ -23,7 +23,7 @@ export class TuitionFeesService {
   }
 
   getTuitionFeesSummaryFuturePolicy(data) {
-    return this._HTTP.post(this.apiUrl + 'tuitionFees-transaction/SummaryFuturePolicy', data)
+    return this._HTTP.post(this.apiUrl + 'tuitionFeesMaster-detail/tuitionFeesMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -32,12 +32,12 @@ export class TuitionFeesService {
 
    //Declaration services
 
-  getTransactionFilterData() {
-    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/')
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
+  // getTransactionFilterData() {
+  //   return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/')
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
     return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/psid/' + proofSubmissionId)
@@ -53,13 +53,13 @@ export class TuitionFeesService {
     }));
   }
 
-  getpreviousEmployeName() {
+  // getpreviousEmployeName() {
 
-    return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
+  //   return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
   getChildsName() {
     // return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
@@ -96,7 +96,98 @@ export class TuitionFeesService {
 
       });
   }
+///////////////////////////////////
+  //Master Services
+
+  geMaster() : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'tuitionFeesMaster-detail')
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+   //Declaration services
+
+   getTuitionFeesInstitutionListWithPolicyNo() {
+    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/institutionListWithPolicyNo')
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+  getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
+    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+  postULIPTransaction(data) {
+    return this._HTTP.post(this.apiUrl + 'tuitionFees-transaction', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  getpreviousEmployeName() {
+
+    return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+
+  uploadMultipleULIPDepositMasterFiles(files: File[], data:any): Observable<any> {
+    var formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (let file of files) {
+      formData.append('group2MasterDocuments', file);
+    }
+    //formData.append('licDocuments', files);
+    formData.append('investmentGroup2MasterRequestDTO', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key," ",value)
+    });
+    //return null;
+    return this._HTTP.post<any>(
+      this.apiUrl + 'tuitionFeesMaster-detail',
+      formData,
+      {
+
+      });
+  }
+
+  uploaTuitionFeesTransactionwithDocument(files: File[], data:any): Observable<any> {
+    var formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (let file of files) {
+      formData.append('transactionDocuments', file);
+    }
+    //formData.append('licDocuments', files);
+    formData.append('transactionWithDocumentBeanJson', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key," ",value)
+    });
+    //return null;
+    return this._HTTP.post<any>(
+      this.apiUrl + 'tuitionFees-transaction/uploadtuitionFeesTransactionDocuments',formData,
+      {
+
+      });
+  }
 }
+
 
 
 

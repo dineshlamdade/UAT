@@ -1124,6 +1124,12 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
   upload() 
   {
+    if (this.investmentGroup3TransactionDetailList[0].accountNumber == null && this.investmentGroup3TransactionDetailList[0].actualAmount == '0' && this.investmentGroup3TransactionDetailList[0].institution == null && this.investmentGroup3TransactionDetailList[0].dateOfPayment == null){
+      this.alertService.sweetalertError(
+        'Please Fill Required Field'
+      );
+      return;
+    }
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'

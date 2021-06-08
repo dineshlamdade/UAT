@@ -50,7 +50,7 @@
                                   <span tooltip="Electronic Clearing Service">Institution</span>
                               </th>
                               <th rowspan="2" class="wd-11 font700">Account No</th>
-                              <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
+                              <th rowspan="2" class="wd-9 font700">Declared</th>
                               <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                               <!-- <th rowspan="2" class="wd-11 font700">Date of Payment</th> -->
                               <th rowspan="2" class="wd-9 font700">Actual</th>
@@ -58,7 +58,9 @@
                               <th rowspan="2" class="wd-7 font700">Remark</th>
                               <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
                               <th rowspan="2" class="wd-4">PS ID</th>
-                              <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                              <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                              <th rowspan="2" class="wd-10 font700">Status</th>
+                              
                               <!-- <th rowspan="2" class="wd-10 font700">Action</th> -->
                           </tr>
                           <tr>
@@ -97,7 +99,7 @@
                                   <span>Institution</span>
                               </th>
                               <th rowspan="2" class="wd-11 font700">Account No</th>
-                              <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
+                              <th rowspan="2" class="wd-9 font700">Declared</th>
                               <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                               <!-- <th rowspan="2" class="wd-11 font700">Date of Payment</th> -->
                               <th rowspan="2" class="wd-9 font700">Actual</th>
@@ -214,7 +216,7 @@
                                       <input type="text" class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)" [ngModel]="summary.accountNumber" [disabled]="summary.accountNumber" />
                                   </div>
                               </td>
-                              <!-- <td>
+                              <td>
                                   <div class="custom_icon_badge">
                                       <input type="text" id="declaredAmount{{
                       summary.investmentGroup3TransactionId
@@ -222,7 +224,7 @@
                       summary.investmentGroup3TransactionId
                     }}" [(ngModel)]="summary.declaredAmount" [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" class="form-control align-right" />
                                   </div>
-                              </td> -->
+                              </td>
                               <td>
                                   <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'" [maxDate]="today" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" (ngModelChange)="
                     summary.dateOfPayment = $event.toLocaleDateString();
@@ -371,11 +373,11 @@
                                       <input type="text" [(ngModel)]="addRowSummary.accountNumber" class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)" placeholder="Account No." (change)="onAccountNoChange(addRowSummary, i)" [ngClass]="{ 'is-invalid': this.requiredField }" />
                                   </div>
                               </td>
-                              <!-- <td>
+                              <td>
                                   <div class="custom_icon_badge">
                                       <input type="text" [(ngModel)]="addRowSummary.declaredAmount" onkeypress="return /[0-9 ]/i.test(event.key)" class="form-control align-right" placeholder="Declared" (change)="setActualAmout($event)" disabled />
                                   </div>
-                              </td> -->
+                              </td>
                               <td>
                                   <input type="text" [ngModel]="addRowSummary.dateOfPayment | date: 'dd-MMM-yyyy'" [maxDate]="today" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" (ngModelChange)="
                   addRowSummary.dateOfPayment = $event.toLocaleDateString();
@@ -472,14 +474,14 @@
                               <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                               <td class="bg-lightgray font-18 font700 align-right"></td>
                               <td class="bg-lightgray font-18 font700 align-right"></td>
-                              <!-- <td class="bg-lightgray font-18 font700 align-right">
+                              <td class="bg-lightgray font-18 font700 align-right">
                                   <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
                   {{ grandDeclarationTotal | number: "1.2-2" }}
                 </span>
-                              </td> -->
+                              </td>
                               <td class="bg-lightgray font-18 font700 align-right"></td>
                               <td class="bg-lightgray font-18 font700 align-right">
-                                  <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right-12">
+                                  <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right">
                   {{ grandActualTotal | number: "1.2-2" }}
                 </span>
                               </td>
@@ -1070,13 +1072,14 @@
                                       <span tooltip="Electronic Clearing Service">Institution</span>
                                   </th>
                                   <th rowspan="2" class="wd-11 font700">Account No</th>
-                                  <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
+                                  <th rowspan="2" class="wd-9 font700">Declared</th>
                                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                                   <th rowspan="2" class="wd-9 font700">Actual</th>
                                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                                   <th rowspan="2" class="wd-7 font700">Remark</th>
                                   <th rowspan="2" class="wd-4">PS.ID.</th>
-                                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                                  <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                                  <th rowspan="2" class="wd-10 font700">Status</th>
                               </tr>
                               <tr>
                                   <th>Rejected</th>
@@ -1089,13 +1092,15 @@
                                       <span>Institution</span>
                                   </th>
                                   <th rowspan="2" class="wd-11 font700">Account No</th>
-                                  <!-- <th rowspan="2" class="wd-9 font700">Declared</th> -->
+                                  <th rowspan="2" class="wd-9 font700">Declared</th>
                                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                                   <th rowspan="2" class="wd-9 font700">Actual</th>
                                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                                   <th rowspan="2" class="wd-10 font700">Remark</th>
                                   <th rowspan="2" class="wd-10">PS.ID.</th>
-                                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                                  <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                                  <th rowspan="2" class="wd-10 font700">Status</th>
+
                               </tr>
                               <tr>
                                   <th>Rejected</th>
@@ -1171,7 +1176,7 @@
                                           <!-- [disabled]="summary.accountNumber" -->
                                       </div>
                                   </td>
-                                  <!-- <td>
+                                  <td>
                                       <div class="custom_icon_badge">
                                           <input type="text" id="declaredAmount{{
                         summary.investmentGroup3TransactionId
@@ -1184,7 +1189,7 @@
                       class="form-control align-right" />
                                           [disabled]=" summary.transactionStatus === 'Submitted'"
                                       </div>
-                                  </td> -->
+                                  </td>
                                   <td>
                                       <input type="text" 
                                       [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'" 
@@ -1258,6 +1263,7 @@
                   </span>
                                   </td>
                                   <td class="bg-lightgray font-18 font700"></td>
+                                  
                                  
                                   <td class="bg-lightgray font-18 font700 align-right">
                                       <span tooltip="{{ summary.actualAmount }}" class="padding-right-12">
