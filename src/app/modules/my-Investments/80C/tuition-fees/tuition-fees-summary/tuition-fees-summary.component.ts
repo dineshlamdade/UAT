@@ -55,6 +55,11 @@ export class TuitionFeesSummaryComponent implements OnInit {
   public grandTabStatus: boolean;
   public selectedInstitution: string;
 
+  public futureNewPolicyDeclaredAmount: 0
+  public futureGlobalPolicyDeclaredAmount: 0
+  public tempFlag: boolean;
+
+
   constructor(
     private service: MyInvestmentsService,
     private tuitionFeesService : TuitionFeesService,
@@ -72,11 +77,12 @@ export class TuitionFeesSummaryComponent implements OnInit {
   summaryPage() {
     this.tuitionFeesService.getTuitionFeesSummary().subscribe((res) => {
       if (res.data.results.length > 0) {
-        this.summaryGridData = res.data.results[0].tuitionFeesTransactionDetailList;
+        this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].grandTotalActualAmount;
-        this.grandTotalDeclaredAmount =
-          res.data.results[0].grandTotalDeclaredAmount;
+        this.futureNewPolicyDeclaredAmount =res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         console.log(res);
       }
@@ -108,6 +114,63 @@ export class TuitionFeesSummaryComponent implements OnInit {
     console.log('institution::', institution);
     console.log('childName::', childName);
   }
+
+    // Post New Future Policy Data API call
+    public addFuturePolicy(): void {
+
+      const data = {
+        futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
+      };
+
+      //console.log('addFuturePolicy Data..', data);
+      this.tuitionFeesService.getTuitionFeesSummaryFuturePolicy(data).subscribe((res) => {
+          //console.log('addFuturePolicy Res..', res);
+          this.summaryGridData = res.data.results[0].transactionDetailList;
+          this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+          this.totalActualAmount = res.data.results[0].totalActualAmount;
+          this.futureNewPolicyDeclaredAmount =res.data.results[0].futureNewPolicyDeclaredAmount;
+          this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+          this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+          this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+          this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+        });
+
+    }
+
+    // On Change Future New Policy Declared Amount with formate
+    onChangeFutureNewPolicyDeclaredAmount() {
+      this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+      if (this.futureNewPolicyDeclaredAmount >= 0) {
+      this.addFuturePolicy();
+    }else if(this.futureNewPolicyDeclaredAmount <0) {
+      this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+    }
+    }
+
+
+    // On onEditSummary
+    // onEditSummary1(institution: string, policyNo: string) {
+    //   this.tabIndex = 2;
+    //   this.institution = institution;
+    //   this.policyNo = policyNo;
+    //   console.log('institution::', institution);
+    //   console.log('policyNo::', policyNo);
+    // }
+    keyPressedSpaceNotAllow(event: any) {
+      console.log('HI ');
+      const pattern = /[0-9\+\-\ ]/;
+      let inputChar = String.fromCharCode(event.key);
+
+      if (!pattern.test(inputChar)) {
+        // this.futureNewPolicyDeclaredAmount = 0;
+        this.tempFlag = true;
+        // invalid character, prevent input
+        event.preventDefault();
+      } else {
+        this.tempFlag = false;
+      }
+    }
+
 }
 
 
