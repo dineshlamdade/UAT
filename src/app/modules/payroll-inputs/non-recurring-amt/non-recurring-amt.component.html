@@ -380,9 +380,10 @@
                                                                                 [(ngModel)]="selectedEmployeeMasterId"
                                                                                 (change)="getSelectedEmployeeCode($event.target.value)">
                                                                                 <option value="">Select</option>
-                                                                                <option value="1"> 1111 </option>
+                                                                                <!-- <option value="1"> 1111 </option> -->
                                                                                 <option value="{{emp.employeeMasterId}}"
-                                                                                    *ngFor="let emp of employeeData">
+                                                                                    *ngFor="let emp of employeeData"
+                                                                                    [selected]="selectedEmployeeMasterId == emp.employeeMasterId">
                                                                                     {{emp.employeeCode}}
                                                                                 </option>
                                                                             </select>
@@ -398,7 +399,9 @@
                                                                                 <option value="">Select</option>
                                                                                 <!-- <option> PA-Staff </option>
                                                                                 <option> PA_Worker</option> -->
-                                                                                <option *ngFor="let payroll of payrollListData"> {{payroll.payrollAreaCode}}</option>
+                                                                                <option *ngFor="let payroll of payrollListData"
+                                                                                [selected]="selectedPayrollArea == payroll.payrollAreaCode"> 
+                                                                                    {{payroll.payrollAreaCode}}</option>
                                                                             </select>
                                                                         </div>
 

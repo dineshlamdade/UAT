@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PayrollInputsService } from '../payroll-inputs.service';
 
@@ -27,8 +28,9 @@ export class PayrollListComponent implements OnInit {
   public users: Array<any> = [];
   public checkedEmployeeList: Array<any> = [];
   public modalRef: BsModalRef;
+  selectedEmployeeData: any = [];
 
-  constructor(private service: PayrollInputsService) { }
+  constructor(private service: PayrollInputsService, private router: Router) { }
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
@@ -37,7 +39,6 @@ export class PayrollListComponent implements OnInit {
   public getAllEmployeeDetails(): void {
     this.service.getAllEmployeeDetails().subscribe((res) => {
       this.users = res.data.results[0];
-      console.log(this.users);
     });
   }
 
@@ -66,4 +67,16 @@ export class PayrollListComponent implements OnInit {
     }
     this.service.setEmployeeListArray(this.checkedEmployeeList);
   }
+
+
+  /** get selected employee data */
+  getSelectedEmployee(user){
+    this.selectedEmployeeData.push(user)
+  }
+
+  navigateToNRAmt(){
+    localStorage.setItem('payrollListEmpData',JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
+  }
+
 }

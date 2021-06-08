@@ -91,10 +91,29 @@ export class NonRecurringAmtComponent implements OnInit {
 	originalTransactionDate: any;
 	isReschedule: boolean;
 	payrollListData: any;
+	payrollListEmpData: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
-		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) { }
+		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) {
+			if(localStorage.getItem('payrollListEmpData') != null){
+               this.indexId = 2
+			   this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
+			   localStorage.removeItem('payrollListEmpData')
+			   this.indexId = 2
+				this.showEmployeeSelectionFlag = true;
+				this.selectedApplicableAt = ""
+				this.clawbackDate = ""
+				this.clawbackFrequency = ""
+				this.clawbackperiod = 0
+				this.selectedClawbackInputType = ""
+			   //console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
+			   this.getAllEmployeeDetails();
+			   this.selectedPayrollArea = 'PA-Staff'
+			   this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
+
+			}
+		 }
 
 	ngOnInit() {
 		this.NonRecurringTransactionGroupSummery();
@@ -540,6 +559,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Get Selected Employee master Id */
 	getSelectedEmployeeCode(value) {
+		this.payrollListData = ''
 		this.selectedEmployeeMasterId = parseInt(value)
 		if (this.selectedPayrollArea != '') {
 			this.NonRecurringTransactionGroupAPIEmpwise()
