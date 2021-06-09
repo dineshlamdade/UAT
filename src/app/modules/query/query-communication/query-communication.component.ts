@@ -1,10 +1,9 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { CKEditorModule } from 'ckeditor4-angular';
-
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { QueryService } from '../query.service';
 
@@ -56,6 +55,7 @@ queryCommunicationForm: FormGroup;
   GetIterationdetailsbyQueryIDData: any;
   getQueAnstemplistByIdData: any;
   documentInfoByIdData: any;
+  editflag: boolean = false;
 
   documentIndex: any;
   selectedDoc: any;
@@ -70,22 +70,27 @@ queryCommunicationForm: FormGroup;
   getAllQueryGenerationData: any;
   documents: any;
   getRootCasuelistData: any;
+  getReplayDataByIdData: any;
+  attachementData: any;
+  addressedTodropdownData: any;
 
 constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,
   public sanitizer: DomSanitizer,private alertService: AlertServiceService, private route:ActivatedRoute ){
+
     this.route.params.subscribe(value =>{
       this.queryGenerationEmpId = value.id
     })
+
     this.queryCommunicationForm = this.formBuilder.group(
       {
 
-        "queryIterationId":new FormControl(0),
+         "queryIterationId":new FormControl(0),
          "queryGenerationEmpId":new FormControl(0),
          "addressedToEmpId":new FormControl(0),
-         "queAnsMasterId":new FormControl(null),
-         "queryDescription":new FormControl(0),
+         "queAnsMasterId":new FormControl(null,[Validators.required]),
+         "queryDescription":new FormControl(''),
          "queryRootCause":new FormControl(null),
-         "rootCauseDescription":new FormControl(null),
+         "rootCauseDescription":new FormControl(''),
          "rating":new FormControl(null),
          "remark": new FormControl(null),
          "action":new FormControl('reply'),
@@ -100,20 +105,19 @@ Popup1(template: TemplateRef<any>) {
     template,
     Object.assign({}, { class: 'gray modal-md' })
   );
-
-
 }
 
   contact1:contact[];
 
   ngOnInit(): void {
 
-this.queryCommunicationForm = this.formBuilder.group({})
 this.getEmpMasterDetails(60);
 this.getIterationdetailsbyQueryID(this.queryGenerationEmpId);
 this.getQueAnstemplistById(this.queryGenerationEmpId);
 this.getAllQueryListSummary();
 this.getRootCasuelist();
+this.addressedTodropdown();
+
 
       this.contact1 = [
         { role: '1', Comapny:'1111', Name:'AAA',Tel_No:'12-8-2020 ',Email:'done',Grade:'A',Designation:'Worker'},
@@ -162,6 +166,26 @@ this.getRootCasuelist();
     this.emoji5=true;
   }
 
+  queryCommunicationFormSubmit(value)
+  {
+    if(value == 'Save'){
+     this.queryCommunicationForm.controls['status'].setValue('Save');
+    }else{
+    this.queryCommunicationForm.controls['status'].setValue('Draft');
+    }
+
+    if(!this.editflag){
+      this.addQueryIteration();
+    }else{
+      this.updateQueryIteration();
+
+    }
+
+  if (this.queryCommunicationForm.invalid) {
+    return;
+  }
+  this.reset();
+  }
 // ..................................QueryIteration API calling...................................................
 
   getEmpMasterDetails(employeeMasterIdData)// temp id is used for employee details...
@@ -184,11 +208,8 @@ getIterationdetailsbyQueryID(queryGenerationEmpId) //Get Iteration details by Qu
   this.queryService.getIterationdetailsbyQueryID(this.queryGenerationEmpId).subscribe(res =>
     {
       this.GetIterationdetailsbyQueryIDData = res.data.results[0];
-      this.documents = this.GetIterationdetailsbyQueryIDData.documents;
-      console.log("GetIterationdetailsbyQueryIDData" ,this.GetIterationdetailsbyQueryIDData);
-      console.log("documents" ,this.documents);
-
-
+      this.attachementData = res.data.results;
+      this.documents = this.GetIterationdetailsbyQueryIDData.documents[0];
     })
 }
 getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list by QueryGenerationEmpId
@@ -208,31 +229,81 @@ getRootCasuelist()
 }
 
 addQueryIteration(){ // post api for save data
-  // let data = []
-  // data.push(this.queryCommunicationForm.value)
-  let queryIterationData  = {
-    "queryIterationData": this.queryCommunicationForm.value,
-    }
+    this.queryCommunicationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryCommunicationForm.controls['queAnsMasterId'].value));
+    this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
+    this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
+    this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
+    this.queryCommunicationForm.controls['action'].setValue('reply');
+
+    console.log(JSON.stringify(this.queryGenerationEmpId));
     const formData  = new FormData();
-    formData.append('queryIterationData', JSON.stringify(queryIterationData));
+    formData.append('queryIterationData', JSON.stringify(this.queryCommunicationForm.value));
+    for (const queryDoc of this.listDoc) {
+      formData.append('queryDocs', queryDoc,queryDoc.name);
+    }
+    formData.forEach((value, key) => {
+      console.log(key,' ', value);
+    });
     this.queryService.addQueryIteration(formData).subscribe(res =>
     {
+      this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Saved Successfully.', '' );
 
     })
+    this.reset();
 }
 updateQueryIteration() // update api for save data
 {
-  // let data = []
-  // data.push(this.queryCommunicationForm.value)
-  let queryIterationData  = {
-    "queryIterationData": this.queryCommunicationForm.value,
-    }
+     this.queryCommunicationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryCommunicationForm.controls['queAnsMasterId'].value));
+    this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
+    this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
+    this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
+    this.queryCommunicationForm.controls['action'].setValue('reply');
+
+    console.log(JSON.stringify(this.queryGenerationEmpId));
     const formData  = new FormData();
-    formData.append('queryIterationData', JSON.stringify(queryIterationData));
+    formData.append('queryIterationData', JSON.stringify(this.queryCommunicationForm.value));
+    for (const queryDoc of this.listDoc) {
+      formData.append('queryDocs', queryDoc,queryDoc.name);
+    }
+    formData.forEach((value, key) => {
+      console.log(key,' ', value);
+    });
   this.queryService.updateQueryIteration(formData).subscribe(res =>
     {
+      this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Updated Successfully.', '' );
 
     })
+    this.reset();
+}
+getReplayDataById(queryGenerationEmpId) //Replay button data Api
+{
+this.queryService.getReplayDataById(this.queryGenerationEmpId).subscribe(res =>
+  {
+    this.getReplayDataByIdData = res.data.results[0];
+    console.log("getReplayDataByIdData!!!!!!!!!!!!!!", this.getReplayDataByIdData);
+    this.reset();
+  })
+}
+addressedTodropdown()
+{
+  let data =
+  {
+    "employeeMasterId":1,
+    "flag":"ApproversInfo",
+    "workflowMasterHeaderId":31
+  }
+  this.queryService.addressedTodropdown(data).subscribe(res =>
+    {
+      this.addressedTodropdownData = res.data.results;
+      console.log(JSON.stringify( this.addressedTodropdownData ));
+    })
+}
+reset()
+{
+  this.queryCommunicationForm.reset();
+  this.queryCommunicationForm.enable();
+  this.listDoc = []; //reset the upload document
+  this.queryCommunicationForm.controls['queryRootCause'].reset();
 }
 // ........................upload Document..............................................................
 

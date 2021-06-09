@@ -807,9 +807,9 @@
 
             <!-- 23nd March 21 Pooja k-->
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-              <a href="javascript:void(0)" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+              <a href="javascript:void(0)" (click)="isCollapsedQuery = !isCollapsedQuery" [attr.aria-expanded]="!isCollapsedQuery"
                 aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i class="fa fa-question-circle" aria-hidden="true"></i><span>Query Management</span></a>
-              <ul class="collapse" id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+              <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedQuery" [isAnimated]="true">
                 <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                     [routerLink]="['/standard-query']" href="javascript:void(0)"><span>Standard Question & Answer</span></a></li>
                 <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"

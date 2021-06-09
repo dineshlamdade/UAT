@@ -7,7 +7,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form [formGroup]="queryCommunicationForm">
+                            <form [formGroup]="queryCommunicationForm" >
                                 <div class="row">
                                     <div class="col-md-12">
                                         <fieldset>
@@ -127,7 +127,7 @@
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
                                                                             class="form-control" placeholder="Date"
-                                                                            bsDatepicker disabled>
+                                                                            bsDatepicker disabled value="{{getAllQueryGenerationData.submissionDate| date:'dd-MMM-yyyy'}}">
                                                                     </div>
                                                                 </div>
 
@@ -165,7 +165,7 @@
                                                             <div class="col-md-6"> <label class="form-label">Q & A
                                                                     Template</label></div>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.companyName}}" disabled>
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.queAnsDescription}}" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-10">
@@ -189,8 +189,7 @@
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
                                                                             class="form-control" placeholder="Date"
-                                                                            bsDatepicker  disabled />
-                                                                            <!-- {{getAllQueryGenerationData.submissionDate | date :"dd-MMM-yyyy"}}" -->
+                                                                            bsDatepicker  disabled value="{{getAllQueryGenerationData.updatedDateTime | date:'dd-MMM-yyyy'}}"/>
                                                                     </div>
                                                                 </div>
 
@@ -235,7 +234,7 @@
                                                                                             <button type="button"
                                                                                                 tooltip="Reply"
                                                                                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                                                                                                (click)=toggleDisplayDiv()><b><i
+                                                                                                (click)=toggleDisplayDiv();getReplayDataById(queryGenerationEmpId)><b><i
                                                                                                         class="fa fa-reply"></i></b>
                                                                                                 Reply</button>
                                                                                             <button type="button"
@@ -255,7 +254,9 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="card2 mt-25">
+                                                                                <div class="card2 mt-25" *ngFor="let GetIterationdetailsbyQueryIDData of attachementData ">
+                                                                                  <!-- | orderBy: 'refNumber': 'desc'
+                                                                                   -->
                                                                                     <div class="row">
                                                                                         <div class="col-md-2">
                                                                                             <div _ngcontent-kmp-c585=""
@@ -296,7 +297,7 @@
                                                                                                         data-date-autoclose="true"
                                                                                                         class="form-control"
                                                                                                         placeholder="Date"
-                                                                                                        bsDatepicker disabled value="{{GetIterationdetailsbyQueryIDData.updatedDateTime }}">
+                                                                                                        bsDatepicker disabled value="{{GetIterationdetailsbyQueryIDData.updatedDateTime | date:'dd-MMM-yyyy'}}">
                                                                                                 </div>
                                                                                             </div>
 
@@ -309,14 +310,14 @@
                                                                                 </div>
 
                                                                             </div>
-                                                                            <div id="reply" [hidden]="isRelyDiv">
+                                                                            <div id="reply" [hidden]="isRelyDiv" *ngIf="getReplayDataByIdData">
                                                                                 <div class="card1">
                                                                                     <div class="row">
                                                                                         <div class="col-md-3">
                                                                                             <label
                                                                                                 class="form-label">Ref.
                                                                                                 No.</label>
-                                                                                            <input class="form-control" value="{{GetIterationdetailsbyQueryIDData.refNumber}}"
+                                                                                            <input class="form-control" value="{{getReplayDataByIdData.refUpdatedById}}"
                                                                                                 disabled>
                                                                                         </div>
                                                                                         <div class="col-md-3">
@@ -324,7 +325,7 @@
                                                                                                 class="form-label">Addressed
                                                                                                 To</label>
                                                                                             <input class="form-control"
-                                                                                            value="{{GetIterationdetailsbyQueryIDData.addressedToEmpName}}"  disabled>
+                                                                                            value="{{getReplayDataByIdData.addressedToEmpName}}" disabled>
 
                                                                                         </div>
                                                                                         <div class="col-md-3">
@@ -332,7 +333,7 @@
                                                                                                 class="form-label">Addressed
                                                                                                 to Role</label>
                                                                                             <input class="form-control"
-                                                                                            value="{{GetIterationdetailsbyQueryIDData.addressedToEmpRole}}" disabled>
+                                                                                            value="{{getReplayDataByIdData.addressedToEmpRole}}" disabled>
 
                                                                                         </div>
                                                                                         <div class="col-md-3">
@@ -356,7 +357,8 @@
                                                                                                         class="form-control"
                                                                                                         placeholder="Date"
                                                                                                         bsDatepicker
-                                                                                                        disabled>
+                                                                                                        disabled
+                                                                                                        >
                                                                                                 </div>
                                                                                             </div>
 
@@ -369,7 +371,8 @@
                                                                                                 <label
                                                                                                     class="form-label">Answer
                                                                                                     Template</label>
-                                                                                                <select formControlName="queAnsMasterId"   class="form-control custom-select" >
+                                                                                                <select formControlName="queAnsMasterId"   class="form-control custom-select"
+                                                                                                [ngClass]="{'is-invalid':queryCommunicationForm.get('queAnsMasterId').status == 'INVALID'}">
                                                                                                   <option [ngValue]="null" selected >Select</option>
                                                                                                   <option value="{{module.queAnsMasterId}}" *ngFor="let module of getQueAnstemplistByIdData ">
                                                                                                     {{module.questionSubject}}</option>
@@ -532,9 +535,9 @@
                                                                                                 class="form-label">Root
                                                                                                 Cause(RCA) of
                                                                                                 Query</label>
-                                                                                                <select formControlName="queAnsMasterId"   class="form-control custom-select" >
+                                                                                                <select formControlName="queryRootCause"   class="form-control custom-select" >
                                                                                                   <option [ngValue]="null" selected >Select</option>
-                                                                                                  <option value="{{module.queryRootCauseId}}" *ngFor="let module of getRootCasuelistData ">
+                                                                                                  <option *ngFor="let module of getRootCasuelistData ">
                                                                                                     {{module.queryRootCause}}</option>
                                                                                                 </select>
                                                                                         </div>
@@ -553,18 +556,20 @@
                                                                                             <div class="float-right">
                                                                                                 <button type="button"
                                                                                                     tooltip="Button"
-                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration()"><b><i
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="queryCommunicationFormSubmit('Draft')"
+                                                                                                    [disabled]="!queryCommunicationForm.valid" [ngClass]="{'disabled-btn-bg-green' : queryCommunicationForm.invalid,'btn-bg-green': !queryCommunicationForm.invalid}"><b><i
                                                                                                             class="fa fa-file"></i></b>
                                                                                                     Save Draft </button>
                                                                                                 <button type="button"
                                                                                                     tooltip="Button"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                                                                                                    (click)=toggleReplyDiv()><b><i
+                                                                                                    [disabled]="!queryCommunicationForm.valid" [ngClass]="{'disabled-btn-bg-green' : queryCommunicationForm.invalid,'btn-bg-green': !queryCommunicationForm.invalid}"
+                                                                                                   (click)="queryCommunicationFormSubmit('Save');toggleReplyDiv()"><b><i
                                                                                                             class="fa fa-file"></i></b>
-                                                                                                    Reply </button>
+                                                                                                    Save </button>
                                                                                                 <button type="button"
                                                                                                     tooltip="Reset"
-                                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i
+                                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " (click)="reset()"><b><i
                                                                                                             class="fa fa-angle-double-left"></i></b>
                                                                                                     Reset</button>
                                                                                             </div>
@@ -582,7 +587,7 @@
                                                                                     <fieldset>
                                                                                         <legend>Forward</legend>
 
-                                                                                    <div class="row">
+                                                                                    <div class="row" *ngIf="GetIterationdetailsbyQueryIDData">
                                                                                         <div class="col-md-3">
                                                                                             <label
                                                                                                 class="form-label">Ref.
@@ -594,11 +599,11 @@
                                                                                             <label
                                                                                                 class="form-label">Addressed
                                                                                                 To</label>
-                                                                                                <!-- <select formControlName="queAnsMasterId"   class="form-control custom-select" >
+                                                                                                <select  class="form-control custom-select" >
                                                                                                   <option [ngValue]="null" selected >Select</option>
-                                                                                                  <option value="{{module.queAnsMasterId}}" *ngFor="let module of getQueAnstemplistByIdData ">
-                                                                                                    {{module.questionSubject}}</option>
-                                                                                                </select> -->
+                                                                                                  <option value="{{module.approverId}}" *ngFor="let module of addressedTodropdownData">
+                                                                                                    {{module.approverName}}</option>
+                                                                                                </select>
 
 
                                                                                         </div>
@@ -631,7 +636,7 @@
                                                                                                         class="form-control"
                                                                                                         placeholder="Date"
                                                                                                         bsDatepicker
-                                                                                                        disabled>
+                                                                                                        disabled value="{{GetIterationdetailsbyQueryIDData.updatedDateTime | date:'dd-MMM-yyyy'}}">
                                                                                                 </div>
                                                                                             </div>
 
@@ -840,7 +845,7 @@
                                                                                                 <div
                                                                                                     class="table-responsive Custom_Table mt-25">
                                                                                                     <p-table
-                                                                                                        [value]="GetIterationdetailsbyQueryIDData">
+                                                                                                        [value]="attachementData">
                                                                                                         <ng-template
                                                                                                             pTemplate="header">
                                                                                                             <tr>
@@ -964,23 +969,24 @@
                                                                                                                     {{rowIndex + 1}}
                                                                                                                 </td>
                                                                                                                 <td>
+                                                                                                                  <!-- {{ documents | json }} -->
                                                                                                                     <label
-                                                                                                                        class="form-lable mb-0 ">{{documentlist[0].refNumber}}</label>
+                                                                                                                        class="form-lable mb-0 ">{{documentlist.refNumber}}</label>
                                                                                                                 </td>
                                                                                                                 <td>
                                                                                                                     <label
-                                                                                                                        class="form-lable mb-0 ">{{documentlist.documents.fileName}}</label>
+                                                                                                                        class="form-lable mb-0 ">{{documents.fileName}}</label>
                                                                                                                 </td>
 
                                                                                                                 <td> <label
                                                                                                                         class="form-lable mb-0 ">{{documentlist.queryDescription}}</label>
 
                                                                                                                 <td> <label
-                                                                                                                        class="form-lable mb-0 ">{{documentlist.documents.createdBy}}</label>
+                                                                                                                        class="form-lable mb-0 ">{{documents.createdBy}}</label>
 
                                                                                                                 </td>
                                                                                                                 <td> <label
-                                                                                                                        class="form-lable mb-0 ">{{documentlist.documents.createdDateTime | date :"dd-MMM-yyyy" }}</label>
+                                                                                                                        class="form-lable mb-0 ">{{documents.createdDateTime | date :"dd-MMM-yyyy" }}</label>
                                                                                                                 </td>
 
 
@@ -1015,7 +1021,7 @@
                                                                                             <div class="col-md-12">
                                                                                                 <div
                                                                                                     class="table-responsive Custom_Table mt-25">
-                                                                                                    <p-table [value]="GetIterationdetailsbyQueryIDData"  >
+                                                                                                    <p-table [value]="attachementData"  >
                                                                                                         <ng-template
                                                                                                             pTemplate="header">
                                                                                                             <tr>
@@ -1122,6 +1128,7 @@
                                                                                                                 <td
                                                                                                                     class="text-center">
                                                                                                                     {{rowIndex + 1}}
+                                                                                                                    <!-- {{status |json}} -->
                                                                                                                 </td>
                                                                                                                 <td>
                                                                                                                     <label
@@ -1132,7 +1139,7 @@
 
                                                                                                                 </td>
                                                                                                                 <td> <label
-                                                                                                                        class="form-lable mb-0 ">{{status.createdDateTime |date:"dd-MM-YYYY"}}</label>
+                                                                                                                        class="form-lable mb-0 ">{{status.createdDateTime |date:"dd-MMM-YYYY"}}</label>
                                                                                                                 </td>
                                                                                                                 <td> <label
                                                                                                                         class="form-lable mb-0 ">{{status.status}}</label>
