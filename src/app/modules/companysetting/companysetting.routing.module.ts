@@ -21,6 +21,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ClaimFormComponent } from './claim-form/claim-form.component';
 import { DeclarationFormComponent } from './declaration-form/declaration-form.component';
 import { AttributeGlobalComponent } from './attribute-global/attribute-global.component';
+import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
 
 const routes: Routes = [
 
@@ -42,7 +43,7 @@ const routes: Routes = [
   },
   {
     path: 'attribute-group',
-    component: AttributeSelectionComponent,
+    component: AttributeGlobalComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
   {
@@ -66,6 +67,11 @@ const routes: Routes = [
   {
     path: 'roleprivilege',
     component: RolePrivilegeComponent,
+    data: { title: ':: Epic :: Company Settings' }
+  },
+  {
+    path: 'userDashboard',
+    component: UserDashboardComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
   {

@@ -17,7 +17,7 @@
               <td>
                 <span tooltip="{{summary.institution}}">{{summary.institution}}</span>
               </td>
-              <td class="wd-20"><span tooltip="{{summary.childName}}">{{summary.childName}}</span>
+              <td class="wd-20"><span tooltip="{{summary.childName}}">{{summary.accountHolderName}}</span>
               </td>
               <td class="wd-15 align-right">
                 <span class="padding-right-12" tooltip="{{summary.declaredAmount | number:'1.2-2'}}">
@@ -50,6 +50,37 @@
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
                   {{totalActualAmount | number:'1.2-2'}}
+                </span>
+              </td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="2" class="align-right font700">Future New Policies &nbsp;
+                 <span class="Letterbadge">B</span>
+              </td>
+              <td>
+                <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
+               (onBlur)="keyPressedSpaceNotAllow()"
+               mode="decimal" locale="en-IN" maxlength="33"
+               [minFractionDigits]="2" ></p-inputNumber>
+              </td>
+              <td></td>
+              <td></td>
+           </tr>
+
+            <tr class="table-light-color">
+              <td colspan="2" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
+                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B
+                </span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-12" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
+                  {{grandTotalDeclaredAmount | number:'1.2-2'}}
+                </span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-12" tooltip="{{grandTotalActualAmount | number:'1.2-2'}}">
+                  {{grandTotalActualAmount | number:'1.2-2'}}
                 </span>
               </td>
               <td></td>

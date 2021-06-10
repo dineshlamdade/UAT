@@ -48,6 +48,9 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.isView = true;
         this.optionList = [];
     }
+    AttributeCreationComponent.prototype.ngOnChanges = function (changes) {
+        throw new Error('Method not implemented.');
+    };
     AttributeCreationComponent.prototype.ngOnInit = function () {
         this.AttributeCreationForm = this.formBuilder.group({
             id: new forms_1.FormControl(null),
@@ -97,7 +100,7 @@ var AttributeCreationComponent = /** @class */ (function () {
                 _this.attributeCreationSummaryList.push(obj);
             });
         });
-        this.totalRecords = this.attributeCreationSummaryList.length;
+        // this.totalRecords = this.attributeCreationSummaryList.length;
     };
     AttributeCreationComponent.prototype.editAttributeCreation = function (attributeMasterId) {
         this.AttributeCreationForm.setControl('pfFormArray', new forms_1.FormArray([]));
@@ -341,7 +344,7 @@ var AttributeCreationComponent = /** @class */ (function () {
         //if ( i !== 0 ) {
         //  console.log( 'i!==0' )
         var setsFormArray = this.AttributeCreationForm.get('pfFormArray');
-        this.pfArray.insert(0, this.formBuilder.group({
+        this.pfArray.insert(this.pfArray.length, this.formBuilder.group({
             optionList: ['', forms_1.Validators.required]
         }));
         // }

@@ -63,9 +63,11 @@
 
             <div class="col-sm-6 col-md-3 mt-10">
                 <label class="form-label">Relationship</label>
-                <input type="text" formControlName="relationship" class="form-control" disabled [ngClass]="{
+                <input type="text" formControlName="relationship" class="form-control" disabled [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
+<!-- <input type="text" formControlName="relationship" class="form-control" disabled [ngClass]="{
             'is-invalid': submitted && masterForm.relationship.errors
-          }" />
+          }" /> -->
+        
                 <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
                     <div *ngIf="masterForm.relationship.errors.required">
                         Relationship is mandatory
@@ -166,7 +168,7 @@
             </div> -->
                     </div>
                     <div class="row mt-4 mb-10">
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="masterForm.frequencyOfPayment.value !== 'OneTime'">
                             <label class="form-label">From Date</label>
                             <div class="form-group">
                                 <div class="input-group">
@@ -185,7 +187,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="masterForm.frequencyOfPayment.value !== 'OneTime'">
                             <label class="form-label">To Date</label>
                             <div class="form-group">
                                 <div class="input-group">

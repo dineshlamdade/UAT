@@ -109,7 +109,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
       console.log( 'summary table data', res );
       let k = 1;
       res.data.results.forEach( ( element ) => {
-        debugger
+        // debugger
         console.log( this.bankMasterDetailsResponse );
 
         console.log( element );
@@ -382,9 +382,9 @@ export class BankMasterAtCompanyComponent implements OnInit {
       this.bankMasterAtGroupService.postBankMasterMapping( s ).subscribe( ( res ) => {
         console.log( res );
 
-        if ( res.data.results.length > 0 ) {
+              if ( res.data.results.length > 0 ) {
           //  this.alertService.sweetalertMasterSuccess('Bank Master Mapping Successfully.', '');
-          this.alertService.sweetalertWarning( res.status.messsage );
+          this.alertService.sweetalertMasterSuccess( res.status.messsage,'' );
           this.form.reset();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;

@@ -19,12 +19,12 @@ import { AuthService } from '../../../auth/auth.service';
 })
 export class UserRoleComponent implements OnInit {
   public form: FormGroup;
-  userRoleId:number =0;
-  userGroupId:number =null;
+  userRoleId: number = 0;
+  userGroupId: number = null;
   public modalRef: BsModalRef;
   public companyListResponse = [];
   public summary: Array<any> = [];
-  getUserRoleDetailsResponse:any;
+  getUserRoleDetailsResponse: any;
   public hideRemarkDiv: boolean;
   public isSaveAndReset: boolean = true;
   public showButtonSaveAndReset: boolean = true;
@@ -32,218 +32,255 @@ export class UserRoleComponent implements OnInit {
   public userGroupName: Array<any> = [];
   public groupNameList: Array<any> = [];
   public historyArrayData: Array<any> = [];
+  public userData: any;
+  public employeeMasterId: any;
+  public companyGroupMasterId: any = null;
+  subId: any;
+  companyGroupName: any;
+  comapnyGroupNamesData: any[];
+  companyGroupMasterIdArray: any[];
 
-  constructor(private modalService: BsModalService, 
+  constructor(private modalService: BsModalService,
     private service: UserRolesPermissionService,
     private formBuilder: FormBuilder,
     private alertService: AlertServiceService,
-    private authService: AuthService,){
-    
-      this.form = this.formBuilder.group({
+    private authService: AuthService,) {
+
+    this.userData = this.authService.getprivileges()
+    console.log("userData::", this.userData);
+    //  this.companyGroupMasterId  = this.userData.UserDetails.companyGroupMasterId
+
+    this.subId = this.userData.sub
+
+    this.service.employeeRoleAssignmentUser(this.subId).subscribe(res => {
+      // 111 1 112 111 -> 111 1 112
+      this.companyGroupMasterIdArray = []
+       this.comapnyGroupNamesData = []
+      this.service.employeeRoleAssignmentUser(this.subId).subscribe(res => {
+
+        res.data.results.forEach(element => {
+          console.log(element.companyGroupMasterId);
+           this.companyGroupMasterIdArray.push(element.companyGroupMasterId)
+          this.comapnyGroupNamesData.push({
+            'companyGroupMasterId': element.companyGroupMasterId,
+            'companyGroupName': element.companyGroupName
+          })
+        });
+
+        console.log(JSON.stringify(this.comapnyGroupNamesData))
+        this.onPageLoad();
+     
+      })
+
+      this.deactivateRemark();
+
+
+    })
+    this.form = this.formBuilder.group({
+
       userRoleId: new FormControl(0),
-      userGroupId:new FormControl(''),
+      userGroupId: new FormControl(null),
       roleName: new FormControl(null, Validators.required),
-      companyGroupMasterId:new FormControl(12),
-     // groupName: new FormControl(null, Validators.required),
+      companyGroupMasterId: new FormControl(),
       roleDescription: new FormControl(null, Validators.required),
-      default:new FormControl(1),
-     isActive: new FormControl(1),
-     remark: new FormControl(null),
-   
+      default: new FormControl(false),
+      active: new FormControl(true),
+      remark: new FormControl(null),
+
     });
-   }
+
+  }
 
   ngOnInit() {
-    this.onPageLoad();
-
-    //  const temp = this.authService.getprivileges();
-    // console.log("auth data ...",temp);
-
-   
-// debugger
-
-//-------------- Family Member List API call ---------------------------
-// this.service.getUserGroupForRoleGroup().subscribe((res) => {
-//   this.userGroupName = res.data.results;
-//   res.data.results.forEach((element) => {
-//     const obj = {
-//       label: element.groupName,
-//       value: element.userGroupId,
-//     };
-//     this.groupNameList.push(obj);
-//   });
-//   console.log("groupName",this.groupNameList)
-// });
-  
-
-this.deactivateRemark();
-}
-   
- // --------------- Deactivate the Remark -------------------
- deactivateRemark() {
-  if (this.form.value.isActive === false) {
-    // this.form.get('remark').enable();
-    this.hideRemarkDiv = true;
-    this.form.get('remark').setValidators([Validators.required]);
-  } else {
-    this.form.get('remark').clearValidators();
-    this.hideRemarkDiv = false;
-    //this.form.get('remark').disable();
-    this.form.get('remark').reset();
   }
+
+
+
+onSelectCompanyName(companyGroupMasterId){
+  this.companyGroupMasterId = companyGroupMasterId
+  this.groupNameList = []
+  this.service.getUserGroupForRoleGroup(companyGroupMasterId).subscribe((res) => {
+    this.userGroupName = res.data.results;
+    res.data.results.forEach((element) => {
+      const obj = {
+        label: element.groupName,
+        value: element.userGroupId,
+      };
+      this.groupNameList.push(obj);
+    });
+    console.log("groupName",this.groupNameList)
+  });
+
+  // this.onPageLoad();
+  this.form.controls['roleName'].reset();
+  this.form.controls['userGroupId'].reset();
+  this.form.controls['roleDescription'].reset();
 }
-  
-save() {
-  console.log(" save", this.masterGridData)
-    if (this.userRoleId > 0) {
+
+
+  // --------------- Deactivate the Remark -------------------
+  deactivateRemark() {
+    if (this.form.value.active === false) {
+      // this.form.get('remark').enable();
+      this.hideRemarkDiv = true;
+      this.form.get('remark').setValidators([Validators.required]);
+    } else {
+      this.form.get('remark').clearValidators();
+      this.hideRemarkDiv = false;
+      //this.form.get('remark').disable();
+      this.form.get('remark').reset();
+
+    }
+    //this.form.value.active=1;
+  }
+
+  save() {
+    console.log(" save", this.masterGridData)
+    
+    if (this.isSaveAndReset == false) {
       console.log('in edit');
-      let companyId = [];
-    //  const data = {
-    //         userRoleId: this.userRoleId,
-    //         userGroupId: this.userGroupId,
-    //          roleName: this.form.get('roleName').value,
-    //          groupName:this.form.get('groupName').value,
-    //          roleDescription: this.form.get('roleDescription').value,
-    //          isActive:this.form.get('isActive').value,
-    //          remark:this.form.get('remark').value,
 
+      this.form.controls['companyGroupMasterId'].setValue(this.companyGroupMasterId)
+      const id = this.form.get('userRoleId').value;
+      console.log(JSON.stringify(this.form.value));
 
-            
-    //       };
-         const id = this.form.get('userRoleId').value;
-         console.log(JSON.stringify(this.form.value));
-         this.service.updateUserRollData(this.userRoleId, this.form.value).subscribe(res => {
-         console.log('after save..', res);
-         if (res.data.results.length > 0) {
+      this.service.updateUserRollData(this.form.value).subscribe(res => {
+        console.log('after save..', res);
+        if (res.data.results.length > 0) {
           console.log('data is updated');
-         this.alertService.sweetalertMasterSuccess(res.data.messsage, '');
+          this.alertService.sweetalertMasterSuccess(res.data.messsage,'Updated User Role Details Successfully');
+          this.onPageLoad();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
-         } 
-      
-      }, );
-      this.form.reset();
-      this.onPageLoad();
+
+        }
+
+      });
+      this.form.controls['active'].setValue(true);
+     
     }
     else {
       console.log('clcicked on new record save button');
-      let companyId = [];
-      // companyId.push(Number(this.form.get('arraylistCompanyIds').value))
-      // const data = {
-      //   userRoleId: this.userRoleId,
-      //   userGroupId: this.userGroupId,
-      //    roleName: this.form.get('roleName').value,
-      //    groupName:this.form.get('groupName').value,
-      //    roleDescription: this.form.get('roleDescription').value,
-      //   //  default:this.form.get('default').value,
-      //    isActive:this.form.get('isActive').value,
-      //    remark:this.form.get('remark').value,
-      //        };
-             console.log(JSON.stringify(this.form.value));
-             this.service.postUserRollData(this.form.value).subscribe(res => {
-              console.log("before save", this.form.value)
-               if (res.data.results.length > 0) {
-                  console.log('data is updated');
-                 this.alertService.sweetalertMasterSuccess(res.data.messsage, '');
-                 this.form.reset();
-         
-          }
-          else {
-            this.alertService.sweetalertWarning(res.status.messsage);
-          }
-          
-         },
-         
-         );
-         this.onPageLoad();
+      console.log(JSON.stringify(this.form.value));
+      this.service.postUserRollData(this.form.value).subscribe(res => {
+        console.log("before save", this.form.value)
+        if (res.data.results.length > 0) {
+          console.log('data is updated');
+          this.alertService.sweetalertMasterSuccess('', res.data.messsage);
+          this.onPageLoad();
           this.form.reset();
+
+        }
+        else {
+          this.alertService.sweetalertWarning(res.status.messsage);
+        }
+
+      });
+      
     }
   }
 
+ // Summary get Call
+onPageLoad(){
+  this.masterGridData = [];
+  let data = {
+    "listCompanyGroupIds":this.companyGroupMasterIdArray
+}
+console.log(this.companyGroupMasterId);
+   this.service.getByCompanyGroupMaster(data).subscribe((res) => {
+      this.masterGridData = res.data.results;
+       console.log('masterGridData::', this.masterGridData);
+      });
+}
 
-  onPageLoad() {
-   this.masterGridData = [];
-  //  alert("here")
-  //     this.service.getByCompanyGroupMaster().subscribe((res) => {
-  //           console.log('getuserroledata::', res);
-  //           this.getUserRoleDetailsResponse = res.data.results;
-  //           let i =1;
-  //           // console.log('company list',this.companyListResponse)
-  //           res.data.results.forEach(element => {
-  //            let index = this.companyListResponse.findIndex(o=>o.userGroupId ==element.userGroupId );
 
-  //             const obj = {
-  //               SrNo: i++,
-  //               userRoleId:  element.userRoleId ,
-  //               userGroupId: element.userGroupId,
-  //               roleName: element.roleName,
-  //               groupName: element.groupName,
-  //               roleDescription: element.roleDescription,
-  //             };
-  //           this.masterGridData.push(obj);
-          
-  //     }) ;
-  // //  console.log("mastergrid data::"+this.masterGridData);
+
+  // onPageLoad() {
+  //   this.masterGridData = [];
+  //   //alert("here")
+  //   this.service.getByCompanyGroupMaster(this.companyGroupMasterId).subscribe((res) => {
+  //     console.log('getuserroledata::', res);
+  //     this.getUserRoleDetailsResponse = res.data.results;
+  //     let i = 1;
+  //     // console.log('company list',this.companyListResponse)
+  //     res.data.results.forEach(element => {
+  //       let index = this.companyListResponse.findIndex(o => o.userGroupId == element.userGroupId);
+
+  //       const obj = {
+  //         SrNo: i++,
+  //         userRoleId: element.userRoleId,
+  //         userGroupId: parseInt(element.userGroupId),
+  //         roleName: element.roleName,
+  //         groupName: element.groupName,
+  //         roleDescription: element.roleDescription,
+  //       };
+  //       this.masterGridData.push(obj);
+
+  //     });
+  //     //  console.log("mastergrid data::"+this.masterGridData);
   //   });
-  }
-  
+  // }
 
 
-  edit(rowIndex: number, userRoleId:number) {
-   this.userRoleId = userRoleId;
-    console.log(rowIndex);
-    // companyId
-    console.log(this.getUserRoleDetailsResponse[rowIndex]);
-    this.isSaveAndReset = false;
-    this.showButtonSaveAndReset = true;
-    this.form.enable();
-    this.form.reset();
-    this.form.patchValue(this.getUserRoleDetailsResponse[rowIndex]);
-   
-    this.form.patchValue({
-     
 
-    })
-  
-  }
-  view(rowIndex: number) {
+  edit(summary, userGroupId: number) {
+
+    this.companyGroupMasterId =summary.companyGroupMasterId;
+    this.groupNameList = []
+    this.service.getUserGroupForRoleGroup(this.companyGroupMasterId).subscribe((res) => {
+      this.userGroupName = res.data.results;
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.groupName,
+          value: element.userGroupId,
+        };
+        this.groupNameList.push(obj);
+      });
+      console.log("groupName",this.groupNameList)
+    },(error)=>{console.log(error)},()=>{
+      
+   //this.onSelectCompanyName(summary.userGroupId);
+   console.log("summary::", summary)
+   this.userGroupId = userGroupId;
+  this.userGroupId=summary.userGroupId
+   this.form.patchValue(summary)
    this.isSaveAndReset = false;
-   this.showButtonSaveAndReset = false;
-    this.form.reset();
-  
-    console.log(rowIndex);
-    // companyId
-    console.log(this.getUserRoleDetailsResponse[rowIndex]);
+   this.showButtonSaveAndReset = true;
+   this.form.enable();
+
+    });
+
+
+
+  }
+  view(summary) {
+   
     this.isSaveAndReset = false;
     this.showButtonSaveAndReset = false;
-    this.form.enable();
     this.form.reset();
-    this.form.patchValue(this.getUserRoleDetailsResponse[rowIndex]);
-    this.form.patchValue({
-     })
-    this.form.disable();
+    this.form.controls['active'].setValue(true);
+    this.form.patchValue(summary);
+     this.form.disable();
+
   }
   cancelView() {
-  this.userRoleId =0;
+    this.userRoleId = 0;
     this.isSaveAndReset = true;
-    this.showButtonSaveAndReset = true;
     this.form.enable();
     this.form.reset();
     this.showButtonSaveAndReset = true;
-   }
-  // public viewHistory(template1: TemplateRef<any>, id: number, headname: string): void {
-  //   this.modalRef = this.modalService.show(
-  //     template1,
-  //     Object.assign({}, { class: 'gray modal-md' }),
-  //   );
-  //   const roleId = this.form.get('userRoleId').value;
-  //  this.groupName =  headname;
-  //   this.service.getByCompanyGroupMaster().subscribe((res) => {
-  //     console.log(res);
-  //     this.historyArrayData = res.data.results;
-  //   });
-
-  // }
+    this.form.controls['active'].setValue(true);
+  }
  
+
+
+  // getUserGroupID(groupid) {
+  //   this.groupNameList.forEach(ele => {
+  //     if (ele.label == groupid) {
+  //       this.form.controls['userGroupId'].setValue(parseInt(ele.value))
+  //     }
+  //   })
+  //   console.log("selected: " + JSON.stringify(this.form.value))
+  // }
 
 }
