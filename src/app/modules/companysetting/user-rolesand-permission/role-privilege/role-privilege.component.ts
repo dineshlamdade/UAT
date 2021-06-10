@@ -69,6 +69,7 @@ export class RolePrivilegeComponent implements OnInit {
    companyName: any;
    editMenuSummaryData: any;
    selectedCompanyName: { globalCompanyMasterId: any; companyName: any; }[];
+   
 
 
 

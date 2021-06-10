@@ -14,13 +14,14 @@ export class LeftmenuComponent implements OnInit {
   public menuDetails: Array<any>;
 
   public isCollapsed = true;
-
+public isCollapsedQuery = true;
   public isEmployeeMaster = true;
   public isProjectCollapsed = true;
   public isJobportalCollapsed = true;
 
   public isPayrollInputsCollapsed = true;
   public isCollapsedRolesPermission = true;
+  public isCollapsedDynamicMenu = true;
   public isInvestmentCollapsed = true;
   public isOtherCollapsed = true;
   public isEightyCCollapsed = true;
@@ -171,6 +172,7 @@ export class LeftmenuComponent implements OnInit {
       this.employeeMasterId = res;
       this.checkEmpId();
     } )
+
     this.userData = this.authService.getprivileges()
     console.log("userData::", this.userData);
     this.subId = this.userData.sub
@@ -184,7 +186,7 @@ export class LeftmenuComponent implements OnInit {
         this.menuData = []
         let actualMenuData = res.data.results
         let privillegemenu 
-        this.RoleRrivilegeService.getUserPrivilegeByRoleId(4).subscribe(res =>{
+        this.RoleRrivilegeService.getUserPrivilegeByRoleId(5).subscribe(res =>{
           privillegemenu = res.data.results
           actualMenuData.forEach(actualmenu => {
             privillegemenu.forEach(privillege => {
