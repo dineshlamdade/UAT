@@ -22,6 +22,7 @@ import { ClaimFormComponent } from './claim-form/claim-form.component';
 import { DeclarationFormComponent } from './declaration-form/declaration-form.component';
 import { AttributeGlobalComponent } from './attribute-global/attribute-global.component';
 import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
+import { PaymentTrackingMasterComponent } from './payment-tracking-master/payment-tracking-master.component';
 
 const routes: Routes = [
 
@@ -49,6 +50,12 @@ const routes: Routes = [
   {
     path: 'payroll-head-group-creation',
     component: PayrollHeadGroupCreationComponent,
+    data: { title: ':: Epic :: Company Settings' }
+  },
+
+  {
+    path: 'payment-tracking-master',
+    component: PaymentTrackingMasterComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
 

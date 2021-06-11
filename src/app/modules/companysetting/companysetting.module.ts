@@ -42,6 +42,7 @@ import { UserRoleComponent } from './user-rolesand-permission/user-role/user-rol
 import { UserGroupComponent } from './user-rolesand-permission/user-group/user-group.component';
 import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
 import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
+import { PaymentTrackingMasterComponent } from './payment-tracking-master/payment-tracking-master.component';
 
 
 
@@ -62,6 +63,7 @@ import { UserDashboardComponent } from './user-rolesand-permission/user-dashboar
     UserGroupComponent,
     RolePrivilegeComponent,
      UserDashboardComponent,
+     PaymentTrackingMasterComponent
   ],
   imports: [
     CommonModule,

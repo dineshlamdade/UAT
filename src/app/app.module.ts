@@ -84,12 +84,14 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 
 
 
+
 @NgModule( {
   declarations: [
     AppComponent,
     ProfileComponent,
     ShortenStringPipe,
     SettingsComponent,
+    
   ],
 
   exports: [],

@@ -25,7 +25,7 @@ export class GarnishmentService {
   //post api for ganish master
 
   postGarnishmentMaster(data) {
-    return this._HTTP.post(this.apiUrl + '/garnishment-master', data)
+    return this._HTTP.post(this.apiUrl + 'garnishment-master', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -33,7 +33,8 @@ export class GarnishmentService {
 
   // get api for ganish master
   getGarnishmentMaster() : Observable<any> {
-    return this._HTTP.get('http://localhost:8084/hrms/v1/garnishment-master' )
+    
+    return this._HTTP.get(this.apiUrl + 'garnishment-master' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
     .pipe(map((res: any) => {
       console.log(res)
       return res;
@@ -43,7 +44,7 @@ export class GarnishmentService {
 
   // get api for ganish master
   getGarnishmentMasterDetailsbyId() : Observable<any> {
-    return this._HTTP.get(this.apiUrl + '/garnishment-master/get/1007' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+    return this._HTTP.get(this.apiUrl + 'garnishment-master/get/1007' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
     .pipe(map((res: any) => {
       return res;
     }
@@ -60,7 +61,7 @@ export class GarnishmentService {
  
   
   deleteGarnishmentMasterDetails(masterid:number):Observable<number> {
-    return this._HTTP.delete<number>(this.apiUrl + '/garnishment-master/delete/'+ masterid)
+    return this._HTTP.delete<number>(this.apiUrl + 'garnishment-master/delete/'+ masterid)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -80,7 +81,7 @@ export class GarnishmentService {
 
     // get api for sdm details
     getSDMdetails() : Observable<any> {
-      return this._HTTP.get(this.apiUrl + '/companySDMForm' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+      return this._HTTP.get(this.apiUrl + 'companySDMForm' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
       .pipe(map((res: any) => {
         return res;
       }
@@ -90,7 +91,7 @@ export class GarnishmentService {
 
      // get api for formula
      getFromuladetails() : Observable<any> {
-      return this._HTTP.get(this.apiUrl + '/formula-master' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+      return this._HTTP.get(this.apiUrl + 'formula-master' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
       .pipe(map((res: any) => {
         return res;
       }
@@ -100,7 +101,7 @@ export class GarnishmentService {
     
      // get api for Deduction
      getloanMasterAllDeductionHead() : Observable<any> {
-      return this._HTTP.get(this.apiUrl1 + '/loan-Master/getDeduction' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+      return this._HTTP.get(this.apiUrl1 + 'loan-Master/getDeduction')
       .pipe(map((res: any) => {
         return res;
       }
@@ -111,7 +112,7 @@ export class GarnishmentService {
 
      // get api for GET ALL FrequecyDetails.
      getALLFrequecyDetails() : Observable<any> {
-      return this._HTTP.get(this.apiUrl2 + '/frequency-master' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+      return this._HTTP.get(this.apiUrl2 + 'frequency-master')
       .pipe(map((res: any) => {
         return res;
       }
@@ -119,7 +120,7 @@ export class GarnishmentService {
     }
     // get api for institution Name.
     getInstitutionMaster() : Observable<any> {
-      return this._HTTP.get(this.apiUrl3 + '/compliance-institution-master/details' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+      return this._HTTP.get(this.apiUrl3 + 'compliance-institution-master/details' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
       .pipe(map((res: any) => {
         return res;
       }
@@ -128,7 +129,7 @@ export class GarnishmentService {
 
     // get api for compliance head Name.
     getComplianceHeadNane() : Observable<any> {
-      return this._HTTP.get(this.apiUrl3 + '/compliance-head/details' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+      return this._HTTP.get(this.apiUrl3 + 'compliance-head/details' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
       .pipe(map((res: any) => {
         return res;
       }
@@ -138,7 +139,7 @@ export class GarnishmentService {
     // get api for IndianIncomeTex
 
     getindianincometax() : Observable<any> {
-      return this._HTTP.get(this.apiUrl + '/indian-income-tax' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+      return this._HTTP.get(this.apiUrl + 'indian-income-tax' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
       .pipe(map((res: any) => {
         return res;
       }

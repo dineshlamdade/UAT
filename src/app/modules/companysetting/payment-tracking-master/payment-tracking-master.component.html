@@ -1,0 +1,669 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+      <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+        <div class="tabview-contents">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body p-0">
+                    <div class="col-12 mt-10">
+                      <!-- Payment Tracking-->
+                      <div class="mb-0">
+                        <h3 class="font-14 text-purple font-bold">Payment Tracking</h3>
+                      </div>
+                            <div class="row mt-10">
+                                <div class="col-sm-3">
+                                  <label class="form-label"> Code</label>
+                                  <input type="text" class="form-control" placeholder="" >
+                                </div>
+        
+                                <div class="col-sm-3">
+                                  <label class="form-label">Description</label>
+                                  
+                                 <input type="text" class="form-control" placeholder="" > 
+        
+                                </div>
+        
+                                <div class="col-sm-3">
+                                  <label class="form-label">  Copy From</label>
+                                  <select name="Select" class="form-control" placeholder="Select">
+                                    <option value="Select"> Select </option>                                      
+                                    <option value=""> </option>
+                                    <option value=""> </option>
+                                    <option value=""> </option>
+                                </select>
+                                   </div>
+        
+                           
+        
+        
+                              </div> <!-- end of row -->                   
+                              <br>
+                              <!-- Nature -->
+                              <fieldset style="margin-top:-20px;">
+                                <legend>Nature</legend>
+                                <div class="row mt-10" style="margin-top:-15px;">
+                                    <div class="col-sm-4">
+                                      <label class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" name="example-inline-radios" value="option1" checked>
+                                          <span class="custom-control-label">Employee Payments</span>
+                                     </label>
+                                  
+                                      </div>
+                                      <div class="col-sm-4">
+                                    
+
+                                      <label class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" name="example-inline-radios" value="option1" checked>
+                                          <span class="custom-control-label">Compliance</span>
+                                     </label>
+                                    </div> 
+                                     <div class="col-sm-4">
+                                    
+                                      <label class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" class="custom-control-input" name="example-inline-radios" value="option1" checked>
+                                          <span class="custom-control-label">Garnishment / Third Party Payments
+                                          </span>
+                                     </label>
+                                    </div> 
+                                  </div> <!-- end of row -->
+                                
+                                  <div class="container">
+                                    <div class="column column-two"> 
+                                      <div class="row mt-10">
+                                      <div class="col-sm-5">
+                                      <label class="form-label">Module</label>
+                                      <select name="Select" class="form-control text-center">
+                                        <option value="Select"> Select </option>
+                                        <option value=""> Payroll</option>
+                                        <option value=""> Reimb.</option>
+                                </select>
+
+                                    </div>
+                                    <div class="col-sm-5">
+
+                                      <label class="form-label">Payment Mode</label>
+                                      <select name="Select" class="form-control">
+                                        <option value="Select"> Select </option>                                      
+                                        <option value="">Cheque </option>
+                                        <option value="">Bank Transfer </option>
+                                        <option value=""> Cash</option>
+                                    </select>
+                                    </div>
+                                  </div>
+                                  </div>
+                                    <div class="column column-one">
+                                      <div class="row mt-10">
+                                      <div class="col-sm-6">
+                                        <label class="form-label">Compliance Head</label>
+                                        <select name="Select" class="form-control">
+                                          <option value="Select"> Select </option>                                      
+                                          <option value="">PF  </option>
+                                          <option value="">PT </option>
+                                          <option value=""> TDS </option>
+                                          <option value=""> ESIS </option>
+                                          <option value=""> ADF </option>
+                                      </select>
+  
+                                      </div>
+                                      <div class="col-sm-6">
+                                        <label class="form-label">Compliance Master</label>
+                                        <select name="Select" class="form-control">
+                                          <option value="Select"> Select </option>                                      
+                                          <option value="">PF Pune </option>
+                                          <option value="">PF Mumbai</option>
+                                          <option value=""> PF Chennai</option>
+                                          <option value=""> PF Delhi</option>
+                                      </select>
+  
+                                      </div>
+                                    </div>
+                                    </div>
+                                   
+                                    <div class="column column-three">
+                                      <div class="row mt-10" >
+                                        <div class="col-sm-7" style="margin-right: -30px;">
+                                          <label class="form-label">Payee Name</label>
+                                          <select name="Select" class="form-control">
+                                            <option value="Select"> Select </option>                                      
+                                            <option value="">XYA </option>
+                                            <option value="">ADF </option>
+                                            <option value=""> VRW</option>
+                                            <option value=""> WWE</option>
+                                        </select>
+                                          </div>
+                                          </div>
+                                    </div>
+                                    
+                                 </div>
+                                 
+                                 
+                                
+                       </fieldset>
+                       <br>
+                       <br>
+                       <!-- Additional Payment in Voucher -->
+                       <fieldset style="margin-top:-20px;">
+                        <legend>Additional Payments in Voucher</legend>
+                       
+                        <div class="col-md-7">
+                          <div class="mb-0">
+                            <h3 class="font-14 text-purple font-bold"></h3>
+                          </div>
+                     <p-table [value]="users1">
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <th rowspan="2" class="wd-12 text-center">Sr. No.
+  
+                              </th>
+                             
+                             <th rowspan="2" class="wd-12 text-center">
+                              <div class="p-d-flex p-jc-between p-ai-center">Head 
+  
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="representative.name"></p-sortIcon>
+                         <p-columnFilter type="text" field="Desc"  display="menu" class="p-ml-auto">
+                         </p-columnFilter>
+                              </div>
+                              </div>
+                            </th>
+                            <th rowspan="2" class="wd-12 text-center">
+                             <div class="p-d-flex p-jc-between p-ai-center">Logic
+  
+                             <div class="Sort_Filter_Position">
+                             <p-sortIcon field="date"></p-sortIcon>
+                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">     </p-columnFilter>
+                            </div>
+                            </div>
+                           </th> 
+
+                           <th rowspan="2" class="wd-12 text-center">
+                            <div class="p-d-flex p-jc-between p-ai-center">Formula
+ 
+                            <div class="Sort_Filter_Position">
+                            <p-sortIcon field="date"></p-sortIcon>
+                       <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                            </p-columnFilter>
+                           </div>
+                           </div>
+                          </th>
+                          <th rowspan="2" class="wd-12 text-center">
+                            <div class="p-d-flex p-jc-between p-ai-center"> Value
+ 
+                            <div class="Sort_Filter_Position">
+                            <p-sortIcon field="date"></p-sortIcon>
+                       <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                            </p-columnFilter>
+                           </div>
+                           </div>
+                          </th>
+                           <th rowspan="2" class="wd-8 text-center"> Action 
+  
+                           </th>
+                        <!-- <th rowspan="2"></th> -->
+                        </tr>
+                      
+                       </ng-template>
+                      <ng-template pTemplate="body" let-user1>
+                         <tr class="p-selectable-row">
+                            <td class="text-center">1</td>
+                         
+                           <td class="text-center">Interest
+                             
+                            <!-- <div value={{head}} >Interest</div> -->
+                             <!-- <label class="form-label" style="font: size 16px;;"> </label> -->
+                             
+                           </td>
+                          <td>
+                             
+                             <select name="custom-select" class="form-control" value={{logic}}>
+                              <option value="Select">Select</option>
+                              <option value="Input"> </option>
+                              <option value="Formula"> </option>
+                              </select> 
+                        </td>
+
+
+                        <td>
+                          <select name="custom-select" class="form-control" value={{Select}}>
+                            <option value="Select">Select</option>
+                            <option value=""> </option>
+                            </select> 
+                     </td>
+
+                     <td>
+                      <input type="text" class="form-control" placeholder="" value={{value}}>
+                     </td>
+                     <td class="text-center">
+                       <span class="ml-1 mt-2"> <i
+                          class="fa fa-plus-circle font-20 text-dark-green" 
+                          tooltip="Add"></i></span>
+                          <span class="ml-1 mt-2"> <i
+                             class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel">
+                          </i>
+                       </span>
+                    </td>
+                       
+                     </tr>
+                     </ng-template>
+                     <ng-template pTemplate="emptymessage">
+                          <tr>
+                           <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                         Available</span>
+                           </td>
+                          </tr>
+                     </ng-template>
+                     </p-table>
+  
+                    </div>
+                
+                  </fieldset>
+                  <br>
+                  <br>
+                  <!-- Dropdown Fields -->
+                  <div class="row mt-10">
+                    <div class="col-sm-3">
+                      <label class="form-label"> Automatic Creation of Payments Voucher &nbsp;&nbsp; &nbsp;  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value=""> </option>
+                        </select> 
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label">Option to Pay at one go for more than one Processing Cycles</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="Yes"> Yes</option>
+                        <option value="No"> No</option>
+                        </select> 
+
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label"> Option to Pay at one go for more than one Pertaining Cycles</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="Yes"> Yes</option>
+                        <option value="No"> No</option>
+                        </select> 
+                     </div>
+                     <div class="col-sm-3">
+                      <label class="form-label"> Option to Pay Partial Amount
+                        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="Yes"> Yes</option>
+                        <option value="No"> No</option>
+                        </select> 
+                     </div>
+               
+
+
+                  </div> 
+                   <br>
+                   <div class="row mt-10">
+                    <div class="col-sm-3">
+                      <label class="form-label"> Job Field</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="">Grade </option>
+                        <option value="">Replace </option>
+                        <option value="">Job Field Value </option>
+                        <option value="">Payroll Area </option>
+                        </select> 
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label"> Job Field Value</label>
+      
+                        <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Select"></p-multiSelect>
+                        
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label">Approval Workflow</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="Yes"> Workflow 1</option>
+                        <option value="No">  Workflow 2</option>
+                        <option value="Yes">  Workflow 3</option>
+                        <option value="No">  Workflow 4</option>
+                        </select> 
+                     </div>
+                     <div class="col-sm-3">
+                      <label class="form-label"> Approval SDM</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="Yes"> SDM 1</option>
+                        <option value="No"> SDM 2</option>
+                        <option value="Yes"> SDM 3</option>
+                        <option value="No"> SDM 4</option>
+                        </select> 
+                     </div>
+               
+
+
+                  </div>  
+                  <br>
+                 
+                  <div class="row mt-10">
+                    <div class="col-sm-3">
+                      <label class="form-label"> Default Mode of Payment</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Bank Transfer</option>
+                        <option value="Cheque"> Cheque</option>
+                        <option value="Cash"> Cash</option>
+                        </select> 
+                     </div>
+                     <div class="col-sm-3">
+                      <label class="form-label"> Remark</label>
+                      <input type="text" class="form-control" placeholder="" >
+                     </div>
+                  </div>
+
+                  <br>
+                  <br>
+                  <!-- bank details -->
+                  
+                  <fieldset style="margin-top:-20px;">
+                    <legend>Bank Details</legend>
+                    <div class="col-md-8">
+                      <div class="mb-0">
+                        <h3 class="font-14 text-purple font-bold"></h3>
+                      </div>
+                 <p-table [value]="users2">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th rowspan="2" class="wd-12 text-center">Sr. No.
+
+                          </th>
+                         
+                         <th rowspan="2" class="wd-14 text-center">
+                          <div class="p-d-flex p-jc-between p-ai-center">IFSC
+
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="representative.name"></p-sortIcon>
+                     <p-columnFilter type="text" field="Desc"  display="menu" class="p-ml-auto">
+                     </p-columnFilter>
+                          </div>
+                          </div>
+                        </th>
+                        <th rowspan="2" class="wd-12 text-center">
+                         <div class="p-d-flex p-jc-between p-ai-center"> Bank Name 
+
+                         <div class="Sort_Filter_Position">
+                         <p-sortIcon field="date"></p-sortIcon>
+                    <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">     </p-columnFilter>
+                        </div>
+                        </div>
+                       </th> 
+
+                       <th rowspan="2" class="wd-12 text-center">
+                        <div class="p-d-flex p-jc-between p-ai-center">Address
+
+                        <div class="Sort_Filter_Position">
+                        <p-sortIcon field="date"></p-sortIcon>
+                   <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                        </p-columnFilter>
+                       </div>
+                       </div>
+                      </th>
+
+                      
+                      <th rowspan="2" class="wd-12 text-center">
+                        <div class="p-d-flex p-jc-between p-ai-center">Account No.
+
+                        <div class="Sort_Filter_Position">
+                        <p-sortIcon field="date"></p-sortIcon>
+                   <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                        </p-columnFilter>
+                       </div>
+                       </div>
+                      </th>
+                      <th rowspan="2" class="wd-12 text-center">
+                        <div class="p-d-flex p-jc-between p-ai-center">Default
+
+                        <div class="Sort_Filter_Position">
+                        <p-sortIcon field="date"></p-sortIcon>
+                   <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                        </p-columnFilter>
+                       </div>
+                       </div>
+                      </th>
+                       <th rowspan="2" class="wd-8 text-center"> Action 
+
+                       </th>
+                    <!-- <th rowspan="2"></th> -->
+                    </tr>
+                  
+                   </ng-template>
+                  <ng-template pTemplate="body" let-user1>
+                     <tr class="p-selectable-row">
+                        <td class="text-center">1</td>
+                     
+                       <td>
+                         
+                         
+                          <select name="custom-select" class="form-control" value={{ifsc}}>
+                            <option value="Select">Select</option>
+                            <option value=""> </option>
+                            <option value=""> </option>
+                            </select> 
+                       </td>
+                    
+                    <td>
+                      <input type="text"  class="form-control" value={{bankname}} disabled>
+                 </td>
+                 <td>
+                 <input type="text" class="form-control" value={{address}} disabled>
+                </td>
+                 <td>
+               
+                    <input type="text" class="form-control" value={{accountno}}>
+             </td>
+             <td class=" text-center">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="example-checkbox1" value={{default}} checked>
+                <span class="custom-control-label"></span>
+            </label>
+       
+              
+       </td>
+           
+                 <td>
+                   <span class="ml-1 mt-2"> <i
+                      class="fa fa-plus-circle font-20 text-dark-green" 
+                      tooltip="Add"></i></span>
+                      <span class="ml-1 mt-2"> <i
+                         class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel">
+                      </i>
+                   </span>
+                </td>
+                   
+                 </tr>
+                 </ng-template>
+                 <ng-template pTemplate="emptymessage">
+                      <tr>
+                       <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                     Available</span>
+                       </td>
+                      </tr>
+                 </ng-template>
+                 </p-table>
+
+                </div>
+                      
+
+                 </fieldset>
+                
+                 <br>
+                 <!-- Button -->
+                 <div class="row mt-15">
+                   <div class="col-12">
+                      <div class="float-right mb-15">
+                       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+                         <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                     <button type="button" 
+                       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+                       <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+                       <!-- <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left">
+                         <b><i class="fa fa-times"></i></b> Cancel</button> -->
+                      </div>
+                   </div>
+              </div>
+
+              <br>
+              <!-- summary -->
+              <div class="mb-0" style="margin-left:10px;">
+                <h3 class="font-14 text-purple font-bold">Summary</h3>
+              </div>
+                <div class="col-md-8">
+                  <div class="mb-0">
+                    <h3 class="font-14 text-purple font-bold"></h3>
+                  </div>
+             <p-table [value]="users3">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th rowspan="2" class="wd-8 text-center">Sr. No.
+
+                      </th>
+                     
+                     <th rowspan="2" class="wd-8 text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">Code
+
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="representative.name"></p-sortIcon>
+                 <p-columnFilter type="text" field="Desc"  display="menu" class="p-ml-auto">
+                 </p-columnFilter>
+                      </div>
+                      </div>
+                    </th>
+                    <th rowspan="2" class="wd-8 text-center">
+                     <div class="p-d-flex p-jc-between p-ai-center">Description
+
+                     <div class="Sort_Filter_Position">
+                     <p-sortIcon field="date"></p-sortIcon>
+                <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">   
+                    </p-columnFilter>
+                    </div>
+                    </div>
+                   </th> 
+
+                   <th rowspan="2" class="wd-8 text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">Nature
+
+                    <div class="Sort_Filter_Position">
+                    <p-sortIcon field="date"></p-sortIcon>
+               <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                    </p-columnFilter>
+                   </div>
+                   </div>
+                  </th>
+ 
+                  
+                  <th rowspan="2" class="wd-8 text-center">
+                    <div class="p-d-flex p-jc-between p-ai-center">Remark
+
+                    <div class="Sort_Filter_Position">
+                    <p-sortIcon field="date"></p-sortIcon>
+               <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                    </p-columnFilter>
+                   </div>
+                   </div>
+                  </th>
+                 
+                   <th rowspan="2" class="wd-8 text-center"> Action 
+
+                   </th>
+                <!-- <th rowspan="2"></th> -->
+                </tr>
+              
+               </ng-template>
+              <ng-template pTemplate="body" let-user1>
+                 <tr class="p-selectable-row">
+                    <td class="text-center">{{srno}}</td>
+                 
+                   <td class="bg-color-light_gray">
+                     
+                        
+                    <input type="text"  class="form-control" value={{code}} >
+                     
+                   </td>
+                  <td class="bg-color-light_gray">
+                     
+                    <input type="text"  class="form-control" value={{description}} >
+                </td>
+                <td class="bg-color-light_gray">
+                  <input type="text"  class="form-control" value={{nature}} disabled>
+             </td>
+
+
+             <td class="bg-color-light_gray">
+              <input type="text"  class="form-control" value={{remark}} disabled>
+         </td>
+       
+             <td>
+              <i class="fa fa-eye" aria-hidden="true"
+              style="color:darkcyan"></i>&nbsp;
+          <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+          <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;
+            </td>
+               
+             </tr>
+             </ng-template>
+             <ng-template pTemplate="emptymessage">
+                  <tr>
+                   <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                 Available</span>
+                   </td>
+                  </tr>
+             </ng-template>
+             </p-table>
+
+            </div>
+            <br>
+          
+            
+                   <!-- </fieldset>  -->
+                    
+                 
+                </div>
+              </div> <!-- card body -->
+               
+          </div>
+        </div>
+
+
+       </div>
+     </div>
+    <app-footer></app-footer>
+   </div>
+</div>
+</div>
+
+
+<ng-template #template>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Full Page Dialog</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+      aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+      <div class="card">
+          <div class="card-body">
+              <div class="row clearfix">
+                  <div class="col-md-12">
+                      <h4>Full Page Popup</h4>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
+</ng-template>
