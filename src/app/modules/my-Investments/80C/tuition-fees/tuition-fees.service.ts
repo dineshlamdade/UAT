@@ -15,7 +15,7 @@ export class TuitionFeesService {
 
 
   getTuitionFeesSummary() {
-    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/summary')
+    return this._HTTP.get(this.apiUrl + 'tuitionFeesMaster-detail/tuitionFeesMasterSummary')
     .pipe(map((res: any) => {
       return res;
     }
@@ -23,7 +23,7 @@ export class TuitionFeesService {
   }
 
   getTuitionFeesSummaryFuturePolicy(data) {
-    return this._HTTP.post(this.apiUrl + 'tuitionFees-transaction/SummaryFuturePolicy', data)
+    return this._HTTP.post(this.apiUrl + 'tuitionFeesMaster-detail/tuitionFeesMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));

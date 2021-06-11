@@ -417,6 +417,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -429,6 +430,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       .subscribe((res) => {
 
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
@@ -499,6 +501,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
       groupTransactionIDs:this.uploadGridData,
+      
     };
     console.log('uploadUpdateTransaction data::', data);
 
