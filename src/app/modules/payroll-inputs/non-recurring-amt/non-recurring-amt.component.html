@@ -59,7 +59,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <a tooltip="Download" style="cursor: pointer"
+                                                            <a tooltip="Download" style="cursor: pointer;float:right;"
                                                                 (click)="SummaryexportAsXLSX()">
                                                                 <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
                                                                     aria-hidden="true">
@@ -305,7 +305,7 @@
                                                                             </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray">
+                                                                        <td class="bg-color-light_gray" style="text-align:center;">
                                                                             <i class="fa fa-history font-16 text-blue cursor-pointer"
                                                                             aria-hidden="true"
                                                                             *ngIf="Summarydata.clawbackApplicableAt != ''"></i>
@@ -477,6 +477,10 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                    </div>
+
+                                                                    <div style="float:right;" *ngIf="selectedEmpData[index] && !showEmployeeSelectionFlag">
+                                                                         <strong>Record {{index + 1 }} of {{selectedEmpData.length}}</strong>
                                                                     </div>
 
                                                                     <div class="row mt-20">
@@ -873,7 +877,7 @@
                                                                                                 bsDatepicker
                                                                                                 value="{{data.toDate}}"
                                                                                                 [minDate]="setMinToDate"
-                                                                                                
+                                                                                                [maxDate]="effectiveToDate"
                                                                                                 (bsValueChange)="getToDate($event)"
                                                                                                 class="form-control wd-120"
                                                                                                 [disabled]="selectedTransactionIndex == rowIndex && (selectedTransactionType == 'NoOfTransaction'
@@ -1262,6 +1266,7 @@
                                                                                                 value="{{data.todate}}"
                                                                                                 class="form-control wd-120"
                                                                                                 [minDate]="setMinToDate"
+                                                                                                [maxDate]="effectiveToDate"
                                                                                                 (bsValueChange)="getToDateForSave($event,data)"
                                                                                                 [disabled]="data.transactionsType != 'Defined Date'">
                                                                                         </td>
@@ -1462,7 +1467,7 @@
                                                                 </div>
                                                             </div>
                                                             <!-- Edit schedule data-->
-                                                            <a tooltip="Download" style="cursor: pointer"
+                                                            <a tooltip="Download" style="cursor: pointer;float:right;"
                                                                 (click)="ScheduleExportAsXLSX()" *ngIf="editScheduleFlag">
                                                                 <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
                                                                     aria-hidden="true">
@@ -1619,7 +1624,8 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th rowspan="2"> Clawback Date 
+                                                                        <th rowspan="2"> 
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Clawback Date 
                                                                             <div class="Sort_Filter_Position">
                                                                                 <p-sortIcon field="clawbackDate">
                                                                                 </p-sortIcon>
@@ -1629,6 +1635,7 @@
                                                                                     class="p-ml-auto">
 
                                                                                 </p-columnFilter>
+                                                                            </div>
                                                                             </div>
                                                                         </th>
                                                                         <th rowspan="2"> Hold </th>
@@ -1825,7 +1832,7 @@
                                                             
                                                             <!-- All schedule data-->
                                                             <!-- [scrollable]="true" scrollHeight="800px" -->
-                                                            <a tooltip="Download" style="cursor: pointer"
+                                                            <a tooltip="Download" style="cursor: pointer;float:right;"
                                                                 (click)="AllScheduleExportAsXLSX()" *ngIf="!editScheduleFlag">
                                                                 <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
                                                                     aria-hidden="true">
@@ -1981,7 +1988,8 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th rowspan="2"> Clawback Date 
+                                                                        <th rowspan="2">
+                                                                            <div class="p-d-flex p-jc-between p-ai-center"> Clawback Date 
                                                                             <div class="Sort_Filter_Position">
                                                                                 <p-sortIcon field="clawbackDate">
                                                                                 </p-sortIcon>
@@ -1991,6 +1999,7 @@
                                                                                     class="p-ml-auto">
 
                                                                                 </p-columnFilter>
+                                                                            </div>
                                                                             </div>
                                                                         </th>
                                                                         <th rowspan="2"> Hold </th>
@@ -2170,7 +2179,7 @@
                                                                                 class="fa fa-eye font-16 text-blue cursor-pointer"
                                                                                 (click)="ViewScheduleHistory(template3,ScheduleData)"
                                                                                 aria-hidden="true"></i></td>
-                                                                        <td>Yes {{ScheduleData.isReschedule}}</td>
+                                                                        <td> {{ScheduleData.isReschedule}}</td>
 
                                                                     </tr>
                                                                 </ng-template>
@@ -2487,9 +2496,9 @@
         </div>
     </div>
     <div class="modal-footer">
-        <pre>{{viewEmployeeData | json}}</pre>
-        <h6 *ngIf="showNoteFlag">Note : The schedule of a business year shall get created 3
-            months before its start date </h6>
+        <!-- <pre>{{viewEmployeeData | json}}</pre> -->
+        <!-- <h6 *ngIf="showNoteFlag">Note : The schedule of future business year/s shall get created 3
+            months before their respective start date </h6> -->
         <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i class="fa fa-times"></i>
             &nbsp;Close</button>
     </div>
