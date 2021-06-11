@@ -359,26 +359,26 @@ export class PPFMasterComponent implements OnInit {
       return;
     }
    
-    console.log('urlArray.length', this.urlArray.length);
+    // console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'PPF Document needed to Create Master.'
       );
       return;
     } else {
-      const data = this.form.getRawValue();
-      data.proofSubmissionId = this.proofSubmissionId;
-      if (this.form.value.frequencyOfPayment === 'As & When') {
-        const start = this.datePipe.transform(
-          this.form.get('policyStartDate').value,
-          'yyyy-MM-dd'
-        );
-        const end = this.datePipe.transform(
-          this.form.get('policyEndDate').value,
-          'yyyy-MM-dd'
-        );
-        data.policyStartDate = start;
-        data.policyEndDate = end;
+      // const data = this.form.getRawValue();
+      // data.proofSubmissionId = this.proofSubmissionId;
+      // if (this.form.value.frequencyOfPayment === 'As & When') {
+      //   const start = this.datePipe.transform(
+      //     this.form.get('policyStartDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   const end = this.datePipe.transform(
+      //     this.form.get('policyEndDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   data.policyStartDate = start;
+      //   data.policyEndDate = end;
         const from = this.datePipe.transform(
           this.form.get('fromDate').value,
           'yyyy-MM-dd'
@@ -389,24 +389,24 @@ export class PPFMasterComponent implements OnInit {
         );
 
         // data.proofSubmissionId = this.proofSubmissionId;
-        data.fromDate = from;
-        data.toDate = to;
-      }
-      if (this.form.value.frequencyOfPayment !== 'As & When') {
-        const from = this.datePipe.transform(
-          this.form.get('fromDate').value,
-          'yyyy-MM-dd'
-        );
-        const to = this.datePipe.transform(
-          this.form.get('toDate').value,
-          'yyyy-MM-dd'
-        );
-
+        // data.fromDate = from;
+        // data.toDate = to;
+      // }
+      // if (this.form.value.frequencyOfPayment !== 'As & When') {
+      //   const from = this.datePipe.transform(
+      //     this.form.get('fromDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   const to = this.datePipe.transform(
+      //     this.form.get('toDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      const data = this.form.getRawValue();
         data.proofSubmissionId = this.proofSubmissionId;
         data.fromDate = from;
         data.toDate = to;
         data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
-      }
+      // }
 
       console.log('PPF::', data);
 
@@ -425,7 +425,7 @@ export class PPFMasterComponent implements OnInit {
               if (data.frequencyOfPayment !== 'As & When') {
                 this.alertService.sweetalertMasterSuccess(
                   'Record saved Successfully.',
-                  'Go to "Declaration & Actual" Page to see Schedule.'
+                  'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
                 );
               } else if (data.frequencyOfPayment === 'As & When') {
                 this.alertService.sweetalertMasterSuccess(
@@ -488,13 +488,13 @@ export class PPFMasterComponent implements OnInit {
         this.financialYearEndDate,
         'dd-MMM-YYYY'
       );
-      this.form.get('policyStartDate').setValue(financialYearStartDate);
-      this.form.get('policyEndDate').setValue(financialYearEndDate);
+      // this.form.get('policyStartDate').setValue(financialYearStartDate);
+      // this.form.get('policyEndDate').setValue(financialYearEndDate);
 
       this.form.get('premiumAmount').setValue(0);
       this.form.get('annualAmount').setValue(0);
-      this.form.get('fromDate').setValue(financialYearStartDate);
-      this.form.get('toDate').setValue(financialYearEndDate);
+      // this.form.get('fromDate').setValue(financialYearStartDate);
+      // this.form.get('toDate').setValue(financialYearEndDate);
       this.form.get('ecs').setValue('0');
     } else {
       let installment = this.form.value.premiumAmount;

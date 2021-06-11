@@ -121,7 +121,8 @@ export class HouserentsummaryComponent implements OnInit {
     };
     this.policyNumber.emit(data);
   } */
-  jumpToMasterPage(houseRentalMasterId: number) {
+
+jumpToMasterPage(houseRentalMasterId: number) {
   this.tabIndex = 1;
   const houseRentalMasterIds = {
     houseRentalMasterId: houseRentalMasterId,
@@ -129,6 +130,7 @@ export class HouserentsummaryComponent implements OnInit {
   };
   this.houseRentalMasterIds.emit(houseRentalMasterIds);
 }
+
 
   opencomputationModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(

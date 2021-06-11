@@ -128,6 +128,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+    this.getIntialData();
+ 
+  }
+  getIntialData() {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       issueType: new FormControl(null, Validators.required),
@@ -145,7 +149,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
       remark: new FormControl(null),
-      frequencyOfPayment: new FormControl(null, Validators.required),
+      frequencyOfPayment: new FormControl('OneTime', Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
         { value: null, disabled: true },
@@ -161,6 +165,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     });
 
     this.frequencyOfPaymentList = [{ label: 'One Time', value: 'OneTime' }];
+  
 
     this.issueTypeOfList = [
       { label: 'VIII th Issue', value: 'VIII' },
@@ -179,6 +184,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.getDetails();
+  
+  }
+  getDetails() {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     this.deactivateRemark();
     // Business Financial Year API Call
@@ -394,7 +403,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
@@ -419,6 +428,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
+      this.getIntialData();
+      this.getDetails();
     }
   }
 
@@ -443,7 +454,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   changeStartMaxDate(event: any) {
     console.log('event::', event.target.value);
 
-    if (event.target.value === 'IX th Issue') {
+    if (event.target.value === 'IX') {
       this.today = new Date('2015-12-20');
     } else {
       this.today = new Date();

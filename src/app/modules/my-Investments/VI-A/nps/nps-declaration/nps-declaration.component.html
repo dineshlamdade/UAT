@@ -47,29 +47,38 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Account No.</label>
+        <label class="form-label mt-1">Institution :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip=" {{item.institutionName}}:{{ item.policyNo }}">
-          {{item.institutionName}} : {{ item.policyNo }}
+          tooltip=" {{item.institutionName}}">
+          {{item.institutionName}}
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1 pl-10">Account Holder Name</label>
+        <label class="form-label mt-1">Account No. :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+          tooltip=" {{ item.policyNo }}">
+         {{ item.policyNo }}
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1 pl-10">Account Holder Name :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
           tooltip="{{ item.policyholdername }}">
           {{ item.policyholdername }}
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Frequency</label>
+        <label class="form-label mt-1">Frequency :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip="{{ item.frequency }}">
+          tooltip="">
           {{ item.frequency }}
         </label>
       </div>
@@ -82,7 +91,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="canEdit && isDisabled"
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -112,7 +121,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" name="select" />
+                    <input type="checkbox"  class="custom-control-input" name="select" />
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
@@ -233,7 +242,7 @@
                       summary.dateOfPayment = $event.toLocaleDateString();
                       setDateOfPayment(summary, i, j)
                     " [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
+                      (isDisabled && !canEdit) || summary.transactionStatus === 'Submitted'
                     " class="form-control" 
                     bsDatepicker 
                     />
@@ -324,6 +333,7 @@
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
               </tr>
             </tbody>
@@ -442,7 +452,7 @@
                   <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                      <span tooltip="Account Statement"></span>Account Statement
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -620,7 +630,7 @@
                   </td>
                   <td>
 
-                    <i *ngIf="canEdit"
+                    <i 
                       class="fa fa-eye font-16 text-blue cursor-pointer"
                       (click)="
                       editViewTransaction(
@@ -632,7 +642,7 @@
                       tooltip="view"
                     ></i>
                     &nbsp;&nbsp;
-                    <i
+                    <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
                       editViewTransaction(
@@ -860,7 +870,7 @@
                       data-date-autoclose="true"
                       (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
                         setDateOfPaymentInEditCase(summary, i, j)"
-                      [disabled]="summary.transactionStatus=='Approved'"
+                      [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
                       class="form-control"
                       bsDatepicker
                     />
@@ -870,7 +880,7 @@
                       type="text"
                       id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                       name="actualAmount{{ summary.investmentGroup1TransactionId }}"
-                      [disabled]="!summary.additionalPayment=='Approved'"
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
@@ -1185,7 +1195,7 @@
     <button
       *ngIf="viewDocumentDetail"
       type="button"
-      tooltip="View Document"
+      tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >

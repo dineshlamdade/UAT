@@ -208,8 +208,12 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      if (input.canView === true){
+        this.isDisabled = true;
+      } else{
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -405,6 +409,13 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    if(data.declaredAmount == null || data.declaredAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
     const checked = event.target.checked;
 
     this.nscDeclarationData = data
@@ -666,45 +677,45 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
-  addRowInList(
-    summarynew: {
-      investmentGroup2TransactionId: number;
-      investmentGroup2MasterPaymentDetailId: number;
-      previousEmployerId: number;
-      dueDate: Date;
-      declaredAmount: any;
-      dateOfPayment: Date;
-      actualAmount: any;
-      isECS: number;
-    },
-    j: number
-  ) {
-    // console.log('summary::',  summarynew);
-    // if (this.initialArrayIndex[j] > i) {
-    //   this.hideRemoveRow = false;
-    // } else {
-    //   this.hideRemoveRow  = true;
-    // }
-    this.declarationService = new DeclarationService(summarynew);
-    // console.log('declarationService::', this.declarationService);
-    this.globalAddRowIndex -= 1;
-    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
-    this.shownewRow = true;
-    this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
-    this.declarationService.declaredAmount = null;
-    this.declarationService.dueDate = null;
-    this.declarationService.actualAmount = null;
-    this.declarationService.dateOfPayment = null;
-    this.declarationService.isECS = 0;
-    this.declarationService.transactionStatus = 'Pending';
-    this.declarationService.amountRejected = 0.0;
-    this.declarationService.amountApproved = 0.0;
-    this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
-      j
-    ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
-    this.transactionDetail[j].group2TransactionList.push(this.declarationService);
-    console.log('addRow::', this.transactionDetail[j].group2TransactionList);
-  }
+  // addRowInList(
+  //   summarynew: {
+  //     investmentGroup2TransactionId: number;
+  //     investmentGroup2MasterPaymentDetailId: number;
+  //     previousEmployerId: number;
+  //     dueDate: Date;
+  //     declaredAmount: any;
+  //     dateOfPayment: Date;
+  //     actualAmount: any;
+  //     isECS: number;
+  //   },
+  //   j: number
+  // ) {
+  //   // console.log('summary::',  summarynew);
+  //   // if (this.initialArrayIndex[j] > i) {
+  //   //   this.hideRemoveRow = false;
+  //   // } else {
+  //   //   this.hideRemoveRow  = true;
+  //   // }
+  //   this.declarationService = new DeclarationService(summarynew);
+  //   // console.log('declarationService::', this.declarationService);
+  //   this.globalAddRowIndex -= 1;
+  //   console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+  //   this.shownewRow = true;
+  //   this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
+  //   this.declarationService.declaredAmount = null;
+  //   this.declarationService.dueDate = null;
+  //   this.declarationService.actualAmount = null;
+  //   this.declarationService.dateOfPayment = null;
+  //   this.declarationService.isECS = 0;
+  //   this.declarationService.transactionStatus = 'Pending';
+  //   this.declarationService.amountRejected = 0.0;
+  //   this.declarationService.amountApproved = 0.0;
+  //   this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
+  //     j
+  //   ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
+  //   this.transactionDetail[j].group2TransactionList.push(this.declarationService);
+  //   console.log('addRow::', this.transactionDetail[j].group2TransactionList);
+  // }
 
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
@@ -943,30 +954,33 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-          this.transactionDetail.forEach((element) => {
-            element.group2TransactionList.forEach((innerElement) => {
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
-              if (this.employeeJoiningDate < innerElement.dueDate) {
-                innerElement.active = false;
-              }
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
-            });
-          });
+
+          // this.selectedTransactionInstName(this.globalInstitution);
+
+          // this.transactionDetail =
+          //   res.data.results[0].investmentGroupTransactionDetail;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          // this.transactionDetail.forEach((element) => {
+          //   element.group2TransactionList.forEach((innerElement) => {
+          //     if (innerElement.dateOfPayment !== null) {
+          //       innerElement.dateOfPayment = new Date(
+          //         innerElement.dateOfPayment
+          //       );
+          //     }
+          //     if (this.employeeJoiningDate < innerElement.dueDate) {
+          //       innerElement.active = false;
+          //     }
+          //     innerElement.declaredAmount = this.numberFormat.transform(
+          //       innerElement.declaredAmount
+          //     );
+          //     // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
+          //   });
+          // });
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
@@ -1401,44 +1415,45 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
             'Transaction Saved Successfully.',
             ''
           );
+          this.selectedTransactionInstName(this.globalInstitution);
 
-          this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          // this.transactionDetail =
+          //   res.data.results[0].investmentGroupTransactionDetail;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-          this.initialArrayIndex = [];
+          // this.initialArrayIndex = [];
 
-          this.transactionDetail.forEach((element) => {
-            this.initialArrayIndex.push(element.group2TransactionList.length);
+          // this.transactionDetail.forEach((element) => {
+          //   this.initialArrayIndex.push(element.group2TransactionList.length);
 
-            element.group2TransactionList.forEach((innerElement) => {
+          //   element.group2TransactionList.forEach((innerElement) => {
 
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
+          //     if (innerElement.dateOfPayment !== null) {
+          //       innerElement.dateOfPayment = new Date(
+          //         innerElement.dateOfPayment
+          //       );
+          //     }
 
-              if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              }
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
-              );
-            });
-          });
+          //     if (innerElement.isECS === 0) {
+          //       this.glbalECS == 0;
+          //     } else if (innerElement.isECS === 1) {
+          //       this.glbalECS == 1;
+          //     } else {
+          //       this.glbalECS == 0;
+          //     }
+          //     innerElement.declaredAmount = this.numberFormat.transform(
+          //       innerElement.declaredAmount
+          //     );
+          //     innerElement.actualAmount = this.numberFormat.transform(
+          //       innerElement.actualAmount
+          //     );
+          //   });
+          // });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }

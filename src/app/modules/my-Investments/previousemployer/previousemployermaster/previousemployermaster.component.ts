@@ -47,6 +47,8 @@ import { from } from 'rxjs';
 export class PreviousemployermasterComponent implements OnInit {
   public previousEmployerDetailssubmitted = false;
 
+  public rentAgreementDocument: File[] = [];
+  
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -430,7 +432,7 @@ export class PreviousemployermasterComponent implements OnInit {
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-lg' })
+      Object.assign({}, { class: 'gray modal-md' })
     );
   }
   openForm12BModal(template1: TemplateRef<any>) {

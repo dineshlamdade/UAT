@@ -1,179 +1,197 @@
-.product-item {
-  display: flex;
-  align-items: center;
-  padding: .5rem;
-  width: 100%;
-
-  img {
-    width: 75px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    margin-right: 1rem;
-  }
-
-  .product-list-detail {
-    flex: 1 1 0;
-  }
-
-
-  .product-list-action {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }
-
-  .product-category-icon {
-    vertical-align: middle;
-    margin-right: .5rem;
-  }
-
-  .product-category {
-    vertical-align: middle;
-    line-height: 1;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .product-item {
-    flex-wrap: wrap;
-
-    .image-container {
-      width: 100%;
-      text-align: center;
-    }
-
-    img {
-      margin: 0 0 1rem 0;
-      width: 100px;
-    }
-  }
-}
-
-
-// .dot {
-//     height: 2em;
-//     width: 5%;
-//     background-color: #2b3035;
-//     border-radius: 50%;
-//     display: inline-block;
-//     padding: 1% 1.7% 4% 0%;
-//     color: #18BADD !important;
-//     ;
+// .red {
+//  background-color:red
 // }
-// .form-label {
-//     font-size: 90%;
-//     font-weight: 400;
+// .green{
+//   background-color:green;
 // }
-// .agreementBox {
-//     background-color: #80808014;
-//     border: 0.09em solid black;
-//     padding: 2%;
+// .blue{
+//   background-color:blue;
 // }
-// ::ng-deep .mat-tab-label {
-//     color: #2c2945 !important;
+// .product-item {
+//   display: flex;
+//   align-items: center;
+//   padding: .5rem;
+//   width: 100%;
+
+//   img {
+//     width: 75px;
+//     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+//     margin-right: 1rem;
+//   }
+
+//   .product-list-detail {
+//     flex: 1 1 0;
+//   }
+
+
+//   .product-list-action {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: flex-end;
+//   }
+
+//   .product-category-icon {
+//     vertical-align: middle;
+//     margin-right: .5rem;
+//   }
+
+//   .product-category {
+//     vertical-align: middle;
+//     line-height: 1;
+//   }
 // }
-// .ng-valid.ng-dirty:not(form) {
-//     border: solid 0.15em lightgreen;
+
+// @media screen and (max-width: 576px) {
+//   .product-item {
+//     flex-wrap: wrap;
+
+//     .image-container {
+//       width: 100%;
+//       text-align: center;
+//     }
+
+//     img {
+//       margin: 0 0 1rem 0;
+//       width: 100px;
+//     }
+//   }
 // }
+
+
+// // .dot {
+// //     height: 2em;
+// //     width: 5%;
+// //     background-color: #2b3035;
+// //     border-radius: 50%;
+// //     display: inline-block;
+// //     padding: 1% 1.7% 4% 0%;
+// //     color: #18BADD !important;
+// //     ;
+// // }
+// // .form-label {
+// //     font-size: 90%;
+// //     font-weight: 400;
+// // }
+// // .agreementBox {
+// //     background-color: #80808014;
+// //     border: 0.09em solid black;
+// //     padding: 2%;
+// // }
+// // ::ng-deep .mat-tab-label {
+// //     color: #2c2945 !important;
+// // }
+// // .ng-valid.ng-dirty:not(form) {
+// //     border: solid 0.15em lightgreen;
+// // }
+// // .ng-invalid.ng-dirty:not(form),
+// // .ng-invalid:not(form).form-submitted {
+// //     border: solid 0.15em #F2DEDE;
+// //     background-color: #F2DEDE;
+// // }
+// ::ng-deep .fc-button-primary {
+//   background: transparent !important;
+//   color: #808488 !important;
+//   border: none !important;
+// }
+
+// ::ng-deep .fc-event {
+//   color: #fff;
+//   text-decoration: none;
+//   position: relative;
+//   display: block;
+//   font-size: .85em;
+//   line-height: 1.3;
+//   border-radius: 3px;
+// }
+
+// p {
+//   font-family: Lato;
+// }
+
+// //   .custom .bs-datepicker-head button:nth-child(3){
+// //     display:none;
+// //   }
+
+// .disableDiv {
+//   pointer-events: none;
+// }
+
+// .textcolor {
+//   color: grey;
+// }
+
+// .disabled-btn-bg-green {
+//   background-color: #94c1c1 !important;
+// }
+
+
+
+// .form-control.is-invalid {
+//   background-image: none !important;
+// }
+
+// .disabled-btn-bg-lightgrey {
+//   background-color: lightgrey !important;
+// }
+
+// //   .bs-datepicker-head button:nth-child(3){
+// //     display:none!important;
+// //   }
+// //The problem with ViewEncapsultaion.None is that all your .css in component affect to all the application. So, better write a .css like
+
+// .custom .bs-datepicker-head button:nth-child(3) {
+//   display: none !important;
+// }
+
+// // .mat-datepicker-toggle {
+// //     color: slategray !important;
+// // }
+// // .ng-valid.ng-dirty:not(form) {
+// //     border: solid 0.15em lightgreen;
+// // }
 // .ng-invalid.ng-dirty:not(form),
 // .ng-invalid:not(form).form-submitted {
-//     border: solid 0.15em #F2DEDE;
-//     background-color: #F2DEDE;
+//   border: solid 0.15em #F2DEDE;
+//   background-color: #F2DEDE;
 // }
-::ng-deep .fc-button-primary {
-  background: transparent !important;
-  color: #808488 !important;
-  border: none !important;
-}
 
-::ng-deep .fc-event {
-  color: #fff;
-  text-decoration: none;
-  position: relative;
-  display: block;
-  font-size: .85em;
-  line-height: 1.3;
-  border-radius: 3px;
-}
-
-p {
-  font-family: Lato;
-}
-
-//   .custom .bs-datepicker-head button:nth-child(3){
-//     display:none;
-//   }
-
-.disableDiv {
-  pointer-events: none;
-}
-
-.textcolor {
-  color: grey;
-}
-
-.disabled-btn-bg-green {
-  background-color: #94c1c1 !important;
-}
-
-
-
-.form-control.is-invalid {
-  background-image: none !important;
-}
-
-.disabled-btn-bg-lightgrey {
-  background-color: lightgrey !important;
-}
-
-//   .bs-datepicker-head button:nth-child(3){
-//     display:none!important;
-//   }
-//The problem with ViewEncapsultaion.None is that all your .css in component affect to all the application. So, better write a .css like
-
-.custom .bs-datepicker-head button:nth-child(3) {
-  display: none !important;
-}
-
-// .mat-datepicker-toggle {
-//     color: slategray !important;
+// p-dropdown.ng-invalid:not(form)>div {
+//   border: 1px solid #D40000;
 // }
-// .ng-valid.ng-dirty:not(form) {
-//     border: solid 0.15em lightgreen;
+
+// p-dropdown.ng-invalid.ng-touched.ui-inputwrapper-focus:not(form)>div {
+//   box-shadow: 0 0 0 0.05em #F40000;
+//   border: 1px solid #D40000;
+//   border-radius: 2px;
 // }
-.ng-invalid.ng-dirty:not(form),
-.ng-invalid:not(form).form-submitted {
-  border: solid 0.15em #F2DEDE;
-  background-color: #F2DEDE;
-}
 
-p-dropdown.ng-invalid:not(form)>div {
-  border: 1px solid #D40000;
-}
+// p-dropdown.ng-invalid.ng-untouched.ui-inputwrapper-focus:not(form)>div {
+//   box-shadow: 0 0 0 0.05em #F40000;
+//   border: 1px solid #D40000;
+//   border-radius: 2px;
+// }
 
-p-dropdown.ng-invalid.ng-touched.ui-inputwrapper-focus:not(form)>div {
-  box-shadow: 0 0 0 0.05em #F40000;
-  border: 1px solid #D40000;
-  border-radius: 2px;
-}
+// ::ng-deep .fc-button-primary {
+//   background: transparent !important;
+//   color: #808488 !important;
+//   border: none !important;
+// }
 
-p-dropdown.ng-invalid.ng-untouched.ui-inputwrapper-focus:not(form)>div {
-  box-shadow: 0 0 0 0.05em #F40000;
-  border: 1px solid #D40000;
-  border-radius: 2px;
-}
+// ::ng-deep .fc-event {
+//   color: #fff;
+//   text-decoration: none;
+//   position: relative;
+//   display: block;
+//   font-size: .85em;
+//   line-height: 1.3;
+//   border-radius: 3px;
+// }
+// .table tr.active td {
+//   background-color: #48da24 !important;
+//   color: white;
+// }
 
-::ng-deep .fc-button-primary {
-  background: transparent !important;
-  color: #808488 !important;
-  border: none !important;
-}
-
-::ng-deep .fc-event {
-  color: #fff;
-  text-decoration: none;
-  position: relative;
-  display: block;
-  font-size: .85em;
-  line-height: 1.3;
-  border-radius: 3px;
-}
+// .table tr.activeleft td {
+//   background-color: #5aa5bd !important;
+//   color: white;
+// }

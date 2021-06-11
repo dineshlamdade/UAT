@@ -63,9 +63,11 @@
 
             <div class="col-sm-6 col-md-3 mt-10">
                 <label class="form-label">Relationship</label>
-                <input type="text" formControlName="relationship" class="form-control" disabled [ngClass]="{
+                <input type="text" formControlName="relationship" class="form-control" disabled [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
+<!-- <input type="text" formControlName="relationship" class="form-control" disabled [ngClass]="{
             'is-invalid': submitted && masterForm.relationship.errors
-          }" />
+          }" /> -->
+        
                 <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
                     <div *ngIf="masterForm.relationship.errors.required">
                         Relationship is mandatory
@@ -126,7 +128,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-3">
                             <label class="form-label">Frequency of Payment</label>
-                            <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)="calculateAnnualAmount()" formControlName="frequencyOfPayment" class="form-control custom-select" [ngClass]="{
+                            <!-- <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)="calculateAnnualAmount()" formControlName="frequencyOfPayment" class="form-control custom-select" [ngClass]="{
                   'is-invalid':
                     submitted && masterForm.frequencyOfPayment.errors
                 }">
@@ -134,7 +136,10 @@
                 <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
                   {{ frequencyOfPayment.label }}
                 </option>
-              </select>
+              </select> -->
+              <input type="text" formControlName="frequencyOfPayment" class="form-control" disabled [ngClass]="{
+                'is-invalid': submitted && masterForm.frequencyOfPayment.errors
+              }" />
                             <div *ngIf="submitted && masterForm.frequencyOfPayment.errors" class="invalid-feedback">
                                 <div *ngIf="masterForm.frequencyOfPayment.errors.required">
                                     Frequency of payment is mandatory
@@ -163,7 +168,7 @@
             </div> -->
                     </div>
                     <div class="row mt-4 mb-10">
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="masterForm.frequencyOfPayment.value !== 'OneTime'">
                             <label class="form-label">From Date</label>
                             <div class="form-group">
                                 <div class="input-group">
@@ -182,7 +187,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="masterForm.frequencyOfPayment.value !== 'OneTime'">
                             <label class="form-label">To Date</label>
                             <div class="form-group">
                                 <div class="input-group">
@@ -306,7 +311,7 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><span tooltip="1">1</span></th>
-                                            <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                                            <td><span tooltip="NSC Certificate"></span>NSC Certificate
                                             </td>
                                             <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                             class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>

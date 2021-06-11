@@ -37,7 +37,8 @@
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
                 <th rowspan="2" class="wd-7">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                <th rowspan="2" class="wd-10 font700">Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -63,7 +64,8 @@
                 <th rowspan="2" class="wd-10 font700">Remark</th>
        <!--          <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
                 <th rowspan="2" class="wd-7">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                <th rowspan="2" class="wd-10 font700">Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -76,7 +78,7 @@
                   let summary of transactionDetail;
                   let i = index;
                   count as c
-                "
+                "  [ngClass]="{ 'highlight': this.selectrow == summary.accountNumber }"
               >
               <td scope="row">
                 <label
@@ -201,6 +203,7 @@
                       summary.investmentGroup3TransactionId
                     }}"
                     [(ngModel)]="summary.actualAmount"
+                    maxlength="22"
                     [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
                     class="form-control align-right"
                   />
@@ -305,6 +308,7 @@
                     class="form-control"
                     placeholder="Institution"
                     (change)="onInstitutionChange(addRowSummary, i)"
+                    [ngClass]="{ 'is-invalid': this.requiredField }"
                   />
                 </td>
                 <td>
@@ -315,6 +319,7 @@
                       class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)"
                       placeholder="Account No."
                       (change)="onAccountNoChange(addRowSummary, i)"
+                      [ngClass]="{ 'is-invalid': this.requiredField }"
                       />
 
                   </div>
@@ -348,6 +353,7 @@
                     "
                     class="form-control"
                     bsDatepicker
+                    [ngClass]="{ 'is-invalid': this.requiredField }"
                   />
                 </td>
                 <td>
@@ -357,6 +363,8 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                     class="form-control align-right"
                     (change)="onActualAmountChange(addRowSummary, i)"
+                    maxlength="22"
+                    [ngClass]="{ 'is-invalid': this.requiredField }"
                   />
                 </td>
                 <td>
@@ -440,12 +448,14 @@
                 >Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ grandDeclarationTotal | number: "1.2-2" }}
                   </span>
                 </td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right-12">
@@ -507,8 +517,8 @@
                   <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Receipt / Certificate"></span>
-                      Receipt / Certificate
+                      <span tooltip="Scheme Certificate "></span>
+                      Scheme Certificate 
                     </td>
                     <td>
                       <span
@@ -570,7 +580,7 @@
             :upload()
           "
           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-          tooltip="Save"
+          tooltip="Save" [disabled]="this.requiredField"
         >
           <b> <i class="fa fa-floppy-o"></i></b> Save
         </button>
@@ -794,7 +804,8 @@
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
                   <th rowspan="2" class="wd-8">PS ID</th>
-                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                  <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                  <th rowspan="2" class="wd-10 font700">Status</th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -813,7 +824,8 @@
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
                   <th rowspan="2" class="wd-10">PS ID</th>
-                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                  <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                  <th rowspan="2" class="wd-10 font700">Status</th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -930,7 +942,7 @@
                         isDisabled || summary.transactionStatus === 'Submitted'
                       "
                       />
-                      <!-- [disabled]=" summary.transactionStatus === 'Submitted'" -->
+                     
                     </div>
                   </td>
                   <td>

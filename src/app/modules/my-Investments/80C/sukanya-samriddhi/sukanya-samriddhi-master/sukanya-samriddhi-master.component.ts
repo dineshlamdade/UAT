@@ -164,6 +164,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
+      { label: 'As & When', value: 'As & When' },
     ];
     this.masterPage();
     this.addNewRowId = 0;
@@ -398,7 +399,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               this.alertService.sweetalertError(
@@ -445,6 +446,28 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
   // Calculate annual amount on basis of premium and frquency
   calculateAnnualAmount() {
+
+    console.log(this.form.value.frequencyOfPayment);
+    if (this.form.value.frequencyOfPayment === 'As & When') {
+      console.log('in as and when');
+      //this.form.get(this.form.value.premiumAmoun).setValue(null);
+      const financialYearStartDate = this.datePipe.transform(
+        this.financialYearStartDate,
+        'dd-MMM-YYYY'
+      );
+      const financialYearEndDate = this.datePipe.transform(
+        this.financialYearEndDate,
+        'dd-MMM-YYYY'
+      );
+      // this.form.get('policyStartDate').setValue(financialYearStartDate);
+      // this.form.get('policyEndDate').setValue(financialYearEndDate);
+
+      this.form.get('premiumAmount').setValue(0);
+      this.form.get('annualAmount').setValue(0);
+      // this.form.get('fromDate').setValue(financialYearStartDate);
+      // this.form.get('toDate').setValue(financialYearEndDate);
+      this.form.get('ecs').setValue('0');
+    }else{
     let installment = this.form.value.premiumAmount;
     if (!this.form.value.frequencyOfPayment) {
       installment = 0;
@@ -460,7 +483,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     }
     this.form.get('annualAmount').setValue(installment);
   }
-
+  }
   // Family relationship shown on accountHolderName selection
   OnSelectionfamilyMemberGroup() {
     if(this.form.get('accountHolderName').value == null ){

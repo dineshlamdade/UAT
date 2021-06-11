@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.CompanySettingModule = void 0;
+var attribute_dependency_component_1 = require("./attribute-dependency/attribute-dependency.component");
 var common_1 = require("@angular/common");
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
@@ -26,9 +27,6 @@ var ng_multiselect_dropdown_1 = require("ng-multiselect-dropdown");
 var slider_1 = require("@angular/material/slider");
 var attribute_creation_component_1 = require("./attribute-creation/attribute-creation.component");
 var companysetting_routing_module_1 = require("./companysetting.routing.module");
-// import {TableModule} from 'primeng/table';
-// import {ButtonModule} from 'primeng/button';
-// import { CustomerService } from './payroll/financial-master/customerservice';
 var table_1 = require("primeng/table");
 var button_1 = require("primeng/button");
 var calendar_1 = require("primeng/calendar");
@@ -39,11 +37,6 @@ var contextmenu_1 = require("primeng/contextmenu");
 var toast_1 = require("primeng/toast");
 var inputtext_1 = require("primeng/inputtext");
 var progressbar_2 = require("primeng/progressbar");
-// import { UserRoleComponent } from './user-rolesand-permission/user-role/user-role.component';
-// import { UserGroupComponent } from './user-rolesand-permission/user-group/user-group.component';
-// import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
-// import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
-// import { HttpClientModule } from '@angular/common/http';
 var business_year_component_1 = require("./business-cycle/business-year/business-year.component");
 var cycle_definition_component_1 = require("./business-cycle/cycle-definition/cycle-definition.component");
 var cycle_creation_component_1 = require("./business-cycle/cycle-creation/cycle-creation.component");
@@ -51,6 +44,7 @@ var business_cycle_component_1 = require("./business-cycle/business-cycle.compon
 var sharedlayout_module_1 = require("../sharedlayout/sharedlayout.module");
 var attribute_selection_component_1 = require("./attribute-selection/attribute-selection.component");
 var head_creation_component_1 = require("./head-creation/head-creation.component");
+var attribute_global_component_1 = require("./attribute-global/attribute-global.component");
 var payroll_head_group_creation_component_1 = require("./payroll-head-group-creation/payroll-head-group-creation.component");
 var CompanySettingModule = /** @class */ (function () {
     function CompanySettingModule() {
@@ -59,13 +53,16 @@ var CompanySettingModule = /** @class */ (function () {
         core_1.NgModule({
             declarations: [
                 head_creation_component_1.HeadCreationComponent,
+                //   PayrollHeadGroupCreationComponent,
                 payroll_head_group_creation_component_1.PayrollHeadGroupCreationComponent,
                 business_cycle_component_1.BusinessCycleComponent,
                 attribute_selection_component_1.AttributeSelectionComponent,
                 attribute_creation_component_1.AttributeCreationComponent,
                 business_year_component_1.BusinessYearComponent,
                 cycle_definition_component_1.CycleDefinitionComponent,
-                cycle_creation_component_1.CycleCreationComponent
+                cycle_creation_component_1.CycleCreationComponent,
+                attribute_global_component_1.AttributeGlobalComponent,
+                attribute_dependency_component_1.AttributeDependencyComponent,
             ],
             imports: [
                 common_1.CommonModule,
@@ -76,14 +73,11 @@ var CompanySettingModule = /** @class */ (function () {
                 datepicker_1.BsDatepickerModule.forRoot(),
                 collapse_1.CollapseModule.forRoot(),
                 accordion_1.AccordionModule.forRoot(),
-                tooltip_1.TooltipModule.forRoot(),
                 popover_1.PopoverModule.forRoot(),
                 alert_1.AlertModule.forRoot(),
                 dropdown_1.BsDropdownModule.forRoot(),
                 modal_1.ModalModule.forRoot(),
                 progressbar_1.ProgressbarModule.forRoot(),
-                carousel_1.CarouselModule.forRoot(),
-                datepicker_1.BsDatepickerModule.forRoot(),
                 carousel_1.CarouselModule.forRoot(),
                 ng_multiselect_dropdown_1.NgMultiSelectDropDownModule.forRoot(),
                 ngx_toastr_1.ToastrModule.forRoot({
