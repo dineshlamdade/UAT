@@ -410,12 +410,12 @@
                         }}</span>
                                         </td>
                                         <td class="wd-10">
-                                            <span tooltip="{{ summary.policyEndDate }}">{{
+                                            <span tooltip="{{ summary.policyStartDate  | date: 'dd-MMM-yyyy'}}">{{
                         summary.policyStartDate | date: "dd-MMM-yyyy"
                         }}</span>
                                         </td>
                                         <td class="wd-10">
-                                            <span tooltip="{{ summary.policyEndDate }}">{{
+                                            <span tooltip="{{ summary.policyEndDate  | date: 'dd-MMM-yyyy'}}">{{
                         summary.policyEndDate | date: "dd-MMM-yyyy"
                         }}</span>
                                         </td>

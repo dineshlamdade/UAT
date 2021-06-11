@@ -1195,6 +1195,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1206,6 +1208,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       .getELSSTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload =
@@ -1356,7 +1359,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       groupTransactionIDs: this.uploadGridData,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
-      //documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
     };
     console.log('uploadUpdateTransaction data::', data);
 

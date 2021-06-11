@@ -482,7 +482,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
 
   OnSpecifiedDiseaseChange() {
-    this.masterfilesArray = [];
+    // this.masterfilesArray = [];
     if (this.form.value.specifiedDiseaseName !== 'Neurological diseases with disability level >=40% per cent and above') {
       this.visibilityFlag = false;
       // this.form.get('neurologicalDiseaseName').setValidators([Validators.required]);

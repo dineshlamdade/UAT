@@ -348,11 +348,11 @@
                                         </td>
                                         <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date
-                        :"dd-MMM-yyyy"}}</span>
+                                        <td class="wd-10"><span tooltip="{{summary.policyStartDate | date: 'dd-MMM-yyyy'}}">
+                                            {{summary.policyStartDate | date: "dd-MMM-yyyy"}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date
-                        :"dd-MMM-yyyy"}}</span>
+                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate | date: 'dd-MMM-yyyy'}}">
+                                            {{summary.policyEndDate | date: "dd-MMM-yyyy"}}</span>
                                         </td>
                                         <td class="wd-10"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
                                         </td>

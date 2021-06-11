@@ -7,9 +7,10 @@
             <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
               <tr>
                 
-                <th rowspan="2" class="wd-4">
+                <th rowspan="2" class="wd-6">
                   <label
                     class="custom-control custom-checkbox checkbox-center"
+                    placement="bottom" [adaptivePosition]="false"
                     tooltip="Select All"
                   >
                     <input
@@ -47,8 +48,9 @@
             </thead>
             <thead class="thead-dark" *ngIf="!previousEmployeeList.length">
               <tr>
-                <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                <th rowspan="2" class="wd-6">
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false"
+                  tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" name="select" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -601,7 +603,7 @@
                   <th scope="col" class="font700 wd-15">PS ID</th>
                   <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Policy No.</th>
+                  <th scope="col" class="font700 wd-15">Account No.</th>
                   <th scope="col" class="font700 wd-10">Receipt Amount</th>
                   <th scope="col" class="font700 wd-15">Document Name</th>
                   <th scope="col" class="font700 wd-10">Action</th>
