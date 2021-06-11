@@ -567,6 +567,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.urlArray = [];
     this.isCancel = false;
+    this.form.get('frequencyOfPayment').setValue('OneTime');
   }
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(

@@ -157,6 +157,7 @@ export class PPFDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   ppfDeclarationData: any;
   dateOfJoining: Date;
+  selectedFrequency: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -445,8 +446,27 @@ export class PPFDeclarationComponent implements OnInit {
     event: { target: { checked: any } },
     i: number,
     j: number,
+    frequency: any,
 
   ) {
+    this.selectedFrequency = frequency;
+    // if (frequency == 'As & When' && data.actualAmount <= 0)
+    // {
+    //   this.alertService.sweetalertError(
+    //     'Please Enter Actual Amount'
+    //   );
+    //   this.enableSelectAll = false;
+    //   event.target.checked = false;
+    //   return;
+    // }
+    // else if ((frequency !== 'As & When') && (data.declaredAmount == null || data.declaredAmount <= 0)){
+    //   this.alertService.sweetalertError(
+    //     'Please Enter Declared Amount'
+    //   );
+    //   this.enableSelectAll = false;
+    //   event.target.checked = false;
+    //   return;
+    // }
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
         'Please Enter Declared Amount'
@@ -471,7 +491,7 @@ export class PPFDeclarationComponent implements OnInit {
     );
     if (checked) {
           //console.log('item' ,item);
-          if (this.transactionDetail[j].frequency !== 'As & When') {
+        
       if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
@@ -489,7 +509,7 @@ export class PPFDeclarationComponent implements OnInit {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
       }
-     }
+     
 
           formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
@@ -851,6 +871,57 @@ export class PPFDeclarationComponent implements OnInit {
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
     console.log(this.editTransactionUpload[j].actualTotal);
+    // this.transactionDetail[j].groupTransactionList[
+    //   i
+    // ].actualAmount = this.declarationService.actualAmount;
+    // // console.log("Actual Amount changed::" , this.transactionDetail[j].groupTransactionList[i].actualAmount);
+    // const formatedActualAmount = this.numberFormat.transform(
+    //   this.transactionDetail[j].groupTransactionList[i].actualAmount
+    // );
+    // // console.log(`formatedActualAmount::`,formatedActualAmount);
+    // this.transactionDetail[j].groupTransactionList[
+    //   i
+    // ].actualAmount = formatedActualAmount;
+
+    // if (
+    //   this.transactionDetail[j].groupTransactionList[i].actualAmount !==
+    //     Number(0) ||
+    //   this.transactionDetail[j].groupTransactionList[i].actualAmount !== null
+    // ) {
+    //   // console.log(`in if::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
+    //   this.isDisabled = false;
+    // } else {
+    //   // console.log(`in else::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
+    //   this.isDisabled = true;
+    // }
+
+    // this.actualTotal = 0;
+    // this.actualAmount = 0;
+    // this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualAmount.toString().replace(/,/g, '')
+    //   );
+    //   // console.log(this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
+
+    // this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    // this.actualTotal = 0;
+    // this.transactionDetail.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualTotal.toString().replace(/,/g, '')
+    //   );
+    //   // console.log("Actual Total")(this.actualTotal);
+    //  console.log("Actual Total::" , this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
+
+    // this.grandActualTotal = this.actualTotal;
+    // console.log(this.grandActualTotal);
+
   }
 
   // --------Add New ROw Function---------
@@ -1101,7 +1172,7 @@ export class PPFDeclarationComponent implements OnInit {
       );
       return false;
     }
-    if (this.ppfDeclarationData.dueDate == null) {
+    if (this.selectedFrequency !== 'As & When' && this.ppfDeclarationData.dueDate == null) {
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected due date for all selected lines',
         'Please Select Date Of DueDate',
@@ -1268,6 +1339,8 @@ export class PPFDeclarationComponent implements OnInit {
   // When Edit of Document Details
   declarationEditUpload(template2: TemplateRef<any>, proofSubmissionId: string) {
 
+    this.documentRemark = '';
+
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1278,6 +1351,7 @@ export class PPFDeclarationComponent implements OnInit {
     this.Service.getPPFTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
@@ -1435,7 +1509,7 @@ export class PPFDeclarationComponent implements OnInit {
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
-      // documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
     };
