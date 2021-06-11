@@ -479,10 +479,9 @@ export class HousingloanmasterComponent implements OnInit {
 
     console.log("houseLoanOwnerTypeList",this.houseLoanOwnerTypeList);
     console.log("HPOwnerDetailForm", this.HPOwnerDetailForm.value.ownerName);
-    if( this.houseLoanOwnerTypeList.find(
-      (owner) =>
-      owner.ownerName === this.HPOwnerDetailForm.value.ownerName
-    )){
+    if(this.houseLoanOwnerTypeList.find(
+      (owner) => owner.ownerName === this.HPOwnerDetailForm.value.ownerName))
+      {
     this.alertService.sweetalertWarning('Owner name is already exists');
     return;
   }
@@ -624,9 +623,17 @@ export class HousingloanmasterComponent implements OnInit {
     this.loansubmitted = true;
 
 
+    // if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
+    //  this.alertService.sweetalertWarning('Please enter PAN details');
+    //  return;
+    // }
+
+
     if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
-     this.alertService.sweetalertWarning('Please enter PAN details');
-     return;
+      if(this.housePropertyLoanDetailList.value.lenderPANOrAadhar == undefined || this.housePropertyLoanDetailList.value.lenderPANOrAadhar == null ){
+        this.alertService.sweetalertWarning('Please enter PAN details');
+        return
+      }
     }
     console.log('this.loansubmitted', this.housePropertyLoanDetailList);
     if (this.housePropertyLoanDetailList.invalid) {

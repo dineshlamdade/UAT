@@ -37,13 +37,17 @@ import { AttributeSelectionComponent } from './attribute-selection/attribute-sel
 import { HeadCreationComponent } from './head-creation/head-creation.component';
 import { AttributeGlobalComponent } from './attribute-global/attribute-global.component';
 import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
+import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
+import { UserRoleComponent } from './user-rolesand-permission/user-role/user-role.component';
+import { UserGroupComponent } from './user-rolesand-permission/user-group/user-group.component';
+import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
+import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
 
 
 
 @NgModule( {
   declarations: [
     HeadCreationComponent,
-    //   PayrollHeadGroupCreationComponent,
     PayrollHeadGroupCreationComponent,
     BusinessCycleComponent,
     AttributeSelectionComponent,
@@ -53,6 +57,11 @@ import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation
     CycleCreationComponent,
     AttributeGlobalComponent,
     AttributeDependencyComponent,
+    UserRolesandPermissionComponent,
+    UserRoleComponent,
+    UserGroupComponent,
+    RolePrivilegeComponent,
+     UserDashboardComponent,
   ],
   imports: [
     CommonModule,
