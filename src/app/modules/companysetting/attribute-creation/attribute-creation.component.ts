@@ -17,6 +17,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   encapsulation: ViewEncapsulation.None
 } )
 export class AttributeCreationComponent implements OnInit, OnChanges {
+
+  public codeInvalid : boolean = false;
+  public descriptionInvalid : boolean = false;
+  public listInvalid : boolean = false;
   // sort alphabetically
   totalRecords: number = 0;
   @ViewChild( 'paginator', { static: true } ) paginator: Paginator
@@ -117,6 +121,7 @@ export class AttributeCreationComponent implements OnInit, OnChanges {
 
 
   editAttributeCreation( attributeMasterId ) {
+    window.scrollTo( 0, 0 );
     this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
     this.isView = true;
     this.viewCancelButton = true;
@@ -144,6 +149,7 @@ export class AttributeCreationComponent implements OnInit, OnChanges {
 
   // Get Attribute Creation ById
   GetAttributeCreationByIdDisable( id ): void {
+    window.scrollTo( 0, 0 );
     this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
     this.disabled = false;
     this.viewCancelButton = true;
@@ -423,4 +429,85 @@ export class AttributeCreationComponent implements OnInit, OnChanges {
   paginate( evt: any ) {
     console.log( evt );
   }
+
+  //Enter only Number Special Character/Character
+    isContainsOnlySpecialCharacter() {
+    this.codeInvalid = false
+    console.log( 'isContainsOnlySpecialCharacter' );
+    var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.AttributeCreationForm.get( 'code' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.AttributeCreationForm.get( 'code' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.codeInvalid = true;
+      } else {
+        this.codeInvalid = false;
+        break;
+      }
+
+    }
+    if ( this.codeInvalid == true ) {
+      //this.companyGroupNameInvalid = false;
+      //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+      // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+    }
+  }
+
+
+    //Enter only Number Special Character/Character Form control Description
+    isContainsOnlySpecialCharacterDescription() {
+    this.descriptionInvalid = false
+    console.log( 'isContainsOnlySpecialCharacterDescription' );
+    var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.AttributeCreationForm.get( 'description' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.AttributeCreationForm.get( 'description' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.descriptionInvalid = true;
+      } else {
+        this.descriptionInvalid = false;
+        break;
+      }
+
+    }
+    if ( this.descriptionInvalid == true ) {
+      //this.companyGroupNameInvalid = false;
+      //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+      // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+    }
+  }
+
+  keyPressedSpaceNotAllow( event: any ) {
+    const pattern = /[ ]/;
+    let inputChar = String.fromCharCode( event.charCode );
+    if ( pattern.test( inputChar ) ) {
+      event.preventDefault();
+    }
+  }
+
+  isListOnlySpecialCharacter() {
+    this.listInvalid = false
+    console.log( 'isListOnlySpecialCharacter' );
+    var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.AttributeCreationForm.get( 'pfFormArray' )['controls'][i].get('optionList').value.length; i++ ) {
+      if ( splChars.indexOf( this.AttributeCreationForm.get( 'pfFormArray' )['controls'][i].get('optionList').value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.listInvalid = true;
+      } else {
+        this.listInvalid = false;
+        break;
+      }
+    }
+    // AttributeCreationForm.get('pfFormArray')['controls'][i].get('optionList')
+
+    if ( this.listInvalid == true ) {
+      //this.companyGroupNameInvalid = false;
+      //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+      // this.AttributeCreationForm.get( 'optionList' ).status = 'INVALID';
+
+    }
+  }
+
+
+
 }

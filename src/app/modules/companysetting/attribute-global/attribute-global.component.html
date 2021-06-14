@@ -16,7 +16,7 @@
                   <div class="col-sm-6 col-md-4">
                     <label class="form-label">Attribute Group Name</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="name" class="form-control"
+                      <input type="text" [readonly]="!disabled" formControlName="name" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" [maxlength]="25" class="form-control"
                         placeholder="Enter Attribute Group Name" (keypress)="keyPressedSpaceNotAllow($event)"
                         [ngClass]="{'is-invalid' : AttributeGlobalForm.get('name').status == 'INVALID'}">
                     </div>
@@ -25,7 +25,7 @@
                     <label class="form-label">Description</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
-                        placeholder="Enter Description"
+                        placeholder="Enter Description" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50"
                         [ngClass]="{'is-invalid' : AttributeGlobalForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
@@ -183,9 +183,16 @@
                           Selected Attributes:
                           <span class="font-14 text-dark-green">
                             ({{selectedUser.length}}) </span></span></h3> -->
-                      <p-table [value]="sourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      <!-- <p-table [value]="sourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                         selectionMode="multiple" [(selection)]="selectedSummarySourceProducts"
-                        [rowsPerPageOptions]="[10,25,50,100,200]">
+                        [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                      <p-table [value]="sourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        [pageLinks]="5" (onPage)="paginate($event)"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        totalRecords={{sourceProducts.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
                         <ng-template pTemplate="header">
                           <tr>
 
@@ -249,7 +256,7 @@
                   </div>
 
 
-                  <div class="col-1">
+                  <div class="col-1"  *ngIf="!viewupdateButton">
                     <div class="row mt-150">
                       <div class="col-md-12 mt-10 text-center">
                         <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusg()"><i
@@ -289,8 +296,14 @@
                           Attributes: &nbsp;<span class="font-14 text-dark-green">({{selectedUser2.length}})</span>
 
                         </span></h3> -->
+                      <!-- <p-table [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        selectionMode="multiple" [rowsPerPageOptions]="[10,20,50,100,200]"> -->
+
                       <p-table [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                        selectionMode="multiple" [rowsPerPageOptions]="[10,20,50,100,200]">
+                        [pageLinks]="5" (onPage)="paginate($event)"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        totalRecords={{targetProducts.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
                         <ng-template pTemplate="header">
                           <tr>
 
@@ -425,9 +438,13 @@
                 <div class="col-md-10">
                   <div class="cycle-table mt-4">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
-                    <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    <!-- <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+                    <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      [pageLinks]="5" (onPage)="paginate($event)"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{summaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
                       <ng-template pTemplate="header">
                         <tr>
                           <th rowspan="1" class="wd-8 text-center">
