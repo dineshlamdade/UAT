@@ -313,8 +313,8 @@ export class PreviousemployermasterComponent implements OnInit {
   //----------------- Remove LicMaster Document -----------------------------
   removeSelectedRentAgreementDocumentDetailDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
-    //console.log('this.filesArray::', this.masterfilesArray);
-    //console.log('this.filesArray.size::', this.masterfilesArray.length);
+    console.log('this.filesArray::', this.masterfilesArray);
+    console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
   //------------------Date of Joining  Validations with Current Finanacial Year -------------------

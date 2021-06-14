@@ -1552,9 +1552,9 @@ export class DeclarationAndActualComponent implements OnInit {
 
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
-      currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentList,
-      previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
-      // previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentResponseList,
+      currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentResponseList,
+    //  previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
+       previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentResponseList,
       transactionIds: this.uploadGridData,
       // receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,

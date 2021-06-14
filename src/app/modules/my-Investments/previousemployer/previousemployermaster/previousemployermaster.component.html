@@ -233,7 +233,7 @@
                               Choose file
                            </span>
                            <input class="FileUpload1" class="dropify"
-                              (change)="onMasterUpload($event,'rentAgreementDocument');"
+                              (change)="onMasterUpload($event);"
                               accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
                         </label>
                      </div>
@@ -249,7 +249,8 @@
                            </div>
                            <div>
                               <i class="fa fa-times text-red font-18"
-                                 (click)="removeSelectedRentAgreementDocumentDetailDocument(index , 'rentAgreementDocument')"></i>
+                                 (click)="removeSelectedRentAgreementDocumentDetailDocument(index)"></i>
+                                 
                            </div>
                         </label>
                      </div>

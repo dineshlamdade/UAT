@@ -44,7 +44,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
   public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
-  public name = 'Set iframe source';
+  public PreviousEmployer = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
   public summarynew: any = {};
   public summaryGridData: Array<any> = [];
@@ -61,7 +61,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   public transactionInstitutionNames: Array<any> = [];
 
-  public previousEmployerNameList: Array<any> = [];
+  public previousEmployerTransactionDetailList: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
@@ -254,7 +254,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   // ------- On declaration page get API call for All Institutions added into Master-------
   declarationPage() {
-    this.previousEmployerNameList = [];
+    this.previousEmployerTransactionDetailList = [];
     /*     this.transactionPolicyList = [];
     this.transactionStatustList = [];
  */
@@ -263,7 +263,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       value: 'All',
     };
 
-    this.previousEmployerNameList.push(data);
+    this.previousEmployerTransactionDetailList.push(data);
     this.transactionPolicyList.push(data);
     /*     this.refreshTransactionStatustList(); */
 
@@ -276,25 +276,24 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   public getInstitutionListWithPolicyNo() {
     this.previousEmployerService.getPreviousEmployerNameList().subscribe((res) => {
       console.log('this.getInstitutionListWithPolicyNo::', res);
-      this.transactionInstitutionListWithPolicies = res.data.results;
+      this.transactionInstitutionListWithPolicies = res.data.results[0];
 
       res.data.results[0].forEach((element) => {
         console.log('element:', element);
         const obj = {
-          label: element.value,
-          value: element.value,
+          label: element,
+          value: element,
         };
         console.log('obj:', obj);
-        this.previousEmployerNameList.push(obj);
+        this.previousEmployerTransactionDetailList.push(obj);
 
       });
     });
   }
-
   // --------- On institution selection show all transactions list accordingly all policies--------
-  selectedTransactionInstName(institutionName: any) {
-    this.globalInstitution = institutionName;
-    console.log('this.institutionName', institutionName);
+  selectedTransactionInstName(previousEmployer: any) {
+    this.globalInstitution = previousEmployer;
+    console.log('this.previousEmployer', previousEmployer);
     this.getTransactionFilterPreviousEmployerData(this.globalInstitution);
     this.globalSelectedAmount = this.numberFormat.transform(0);
     const data = {
@@ -303,11 +302,13 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     };
 
     this.transactionPolicyList = [];
+
     console.log('transactionPolicyList', (this.transactionPolicyList = []));
+
     this.transactionPolicyList.push(data);
    
 
-    if (institutionName == 'All') {
+    if (previousEmployer == 'All') {
       this.grandTabStatus = true;
       this.isDisabled = true;
     } else {
@@ -347,33 +348,33 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     /* console.log(
       'in IS ECS::',
-      this.transactionDetail[j].houseRentalTransactionList[i].isECS
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i].isECS
     ); */
     if (checked) {
-      if (this.transactionDetail[j].houseRentalTransactionList[i].isECS === 1) {
-        this.transactionDetail[j].houseRentalTransactionList[
+      if (this.transactionDetail[j].previousEmployerTransactionDetailList[i].isECS === 1) {
+        this.transactionDetail[j].previousEmployerTransactionDetailList[
           i
         ].actualAmountPerMonth = data.declaredAmountPerMonth;
-        // this.transactionDetail[j].houseRentalTransactionList[
+        // this.transactionDetail[j].previousEmployerTransactionDetailList[
         //   i
         // ].paymentDate = new Date(data.dueDate);
         console.log(
           'in IS actualAmountPerMonth::',
-          this.transactionDetail[j].houseRentalTransactionList[i]
+          this.transactionDetail[j].previousEmployerTransactionDetailList[i]
             .actualAmountPerMonth
         );
         console.log(
           'in IS paymentDate::',
-          this.transactionDetail[j].houseRentalTransactionList[i].paymentDate
+          this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate
         );
       } else {
-        this.transactionDetail[j].houseRentalTransactionList[
+        this.transactionDetail[j].previousEmployerTransactionDetailList[
           i
         ].actualAmountPerMonth = data.declaredAmountPerMonth;
       }
 
       formatedActualAmount = Number(
-        this.transactionDetail[j].houseRentalTransactionList[
+        this.transactionDetail[j].previousEmployerTransactionDetailList[
           i
         ].actualAmountPerMonth
           .toString()
@@ -389,18 +390,18 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       // this.actualAmountGlobal = Number(data.declaredAmountPerMonth);
     } else {
       formatedActualAmount = Number(
-        this.transactionDetail[j].houseRentalTransactionList[
+        this.transactionDetail[j].previousEmployerTransactionDetailList[
           i
         ].actualAmountPerMonth
           .toString()
           .replace(/,/g, '')
       );
-      this.transactionDetail[j].houseRentalTransactionList[
+      this.transactionDetail[j].previousEmployerTransactionDetailList[
         i
       ].actualAmountPerMonth = this.numberFormat.transform(0);
-      this.transactionDetail[j].houseRentalTransactionList[i].paymentDate =
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate =
         null;
-      /*  this.transactionDetail[j].houseRentalTransactionList[i]; */
+      /*  this.transactionDetail[j].previousEmployerTransactionDetailList[i]; */
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
@@ -414,7 +415,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
-    this.transactionDetail[j].houseRentalTransactionList.forEach((element) => {
+    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach((element) => {
       // console.log(element.actualAmountPerMonth.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmountPerMonth.toString().replace(/,/g, '')
@@ -427,29 +428,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     }
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);
-  }
-
-  // ------------ To Check / Uncheck All  Checkboxes-------------
-  checkUncheckAll(item: any) {
-    // console.log(this.isCheckAll);
-    if (this.isCheckAll) {
-      // console.log('CHECK ALL IS FALSE ');
-      this.isCheckAll = false;
-      this.enableSelectAll = false;
-      this.enableCheckboxFlag2 = null;
-      this.uploadGridData = [];
-    } else {
-      // console.log('CHECK ALL IS TRUE ');
-      this.isCheckAll = true;
-      this.enableSelectAll = true;
-      this.enableCheckboxFlag2 = item.institutionName;
-      item.houseRentalTransactionList.forEach((element) => {
-        this.uploadGridData.push(element.houseRentalTransactionDetailId);
-      });
-      this.enableFileUpload = true;
-    }
-    // console.log('enableSelectAll...',  this.enableSelectAll);
-    // console.log('uploadGridData...',  this.uploadGridData);
   }
 
   // --------------- ON change of declared Amount Main Page-------------
@@ -467,22 +445,22 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmountPerMonth);
 
-    this.transactionDetail[j].houseRentalTransactionList[
+    this.transactionDetail[j].previousEmployerTransactionDetailList[
       i
     ].declaredAmountPerMonth = this.declarationService.declaredAmountPerMonth;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].houseRentalTransactionList[i]
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i]
         .declaredAmountPerMonth
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[j].houseRentalTransactionList[
+    this.transactionDetail[j].previousEmployerTransactionDetailList[
       i
     ].declaredAmountPerMonth = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmountPerMonth=0;
 
-    this.transactionDetail[j].houseRentalTransactionList.forEach((element) => {
+    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach((element) => {
       // console.log(element.declaredAmountPerMonth.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmountPerMonth.toString().replace(/,/g, '')
@@ -513,22 +491,22 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         summary.declaredAmountPerMonth
     );
 
-    this.editTransactionUpload[j].houseRentalTransactionList[
+    this.editTransactionUpload[j].previousEmployerTransactionDetailList[
       i
     ].declaredAmountPerMonth = this.declarationService.declaredAmountPerMonth;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].houseRentalTransactionList[i]
+      this.editTransactionUpload[j].previousEmployerTransactionDetailList[i]
         .declaredAmountPerMonth
     );
     console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
 
-    this.editTransactionUpload[j].houseRentalTransactionList[
+    this.editTransactionUpload[j].previousEmployerTransactionDetailList[
       i
     ].declaredAmountPerMonth = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
 
-    this.editTransactionUpload[j].houseRentalTransactionList.forEach(
+    this.editTransactionUpload[j].previousEmployerTransactionDetailList.forEach(
       (element) => {
         console.log(
           'declaredAmountPerMonth::',
@@ -559,7 +537,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    // this.transactionDetail[j].houseRentalTransactionList[i].dueDate = summary.dueDate;
+    // this.transactionDetail[j].previousEmployerTransactionDetailList[i].dueDate = summary.dueDate;
   }
 
   // ------------ ON change of DueDate in Edit Modal----------
@@ -574,10 +552,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    //this.editTransactionUpload[j].houseRentalTransactionList[i].dueDate =  summary.dueDate;
+    //this.editTransactionUpload[j].previousEmployerTransactionDetailList[i].dueDate =  summary.dueDate;
     /*    console.log(
       'onDueDateChangeInEditCase::',
-      this.editTransactionUpload[j].houseRentalTransactionList[i].dueDate,
+      this.editTransactionUpload[j].previousEmployerTransactionDetailList[i].dueDate,
     ); */
   }
 
@@ -596,35 +574,35 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
 
-    this.transactionDetail[j].houseRentalTransactionList[
+    this.transactionDetail[j].previousEmployerTransactionDetailList[
       i
     ].actualAmountPerMonth = this.declarationService.actualAmountPerMonth;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].houseRentalTransactionList[i].actualAmountPerMonth);
+    // console.log("Actual Amount changed::" , this.transactionDetail[j].previousEmployerTransactionDetailList[i].actualAmountPerMonth);
     const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].houseRentalTransactionList[i]
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i]
         .actualAmountPerMonth
     );
     // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[j].houseRentalTransactionList[
+    this.transactionDetail[j].previousEmployerTransactionDetailList[
       i
     ].actualAmountPerMonth = formatedActualAmount;
 
     if (
-      this.transactionDetail[j].houseRentalTransactionList[i]
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i]
         .actualAmountPerMonth !== Number(0) ||
-      this.transactionDetail[j].houseRentalTransactionList[i]
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i]
         .actualAmountPerMonth !== null
     ) {
-      // console.log(`in if::`,this.transactionDetail[j].houseRentalTransactionList[i].actualAmountPerMonth);
+      // console.log(`in if::`,this.transactionDetail[j].previousEmployerTransactionDetailList[i].actualAmountPerMonth);
       this.isDisabled = false;
     } else {
-      // console.log(`in else::`,this.transactionDetail[j].houseRentalTransactionList[i].actualAmountPerMonth);
+      // console.log(`in else::`,this.transactionDetail[j].previousEmployerTransactionDetailList[i].actualAmountPerMonth);
       this.isDisabled = true;
     }
 
     this.actualTotal = 0;
     this.actualAmountPerMonth = 0;
-    this.transactionDetail[j].houseRentalTransactionList.forEach((element) => {
+    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach((element) => {
       // console.log(element.actualAmountPerMonth.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmountPerMonth.toString().replace(/,/g, '')
@@ -658,47 +636,47 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       summary
     );
 
-    this.editTransactionUpload[j].houseRentalTransactionList[
+    this.editTransactionUpload[j].previousEmployerTransactionDetailList[
       i
     ].actualAmountPerMonth = this.declarationService.actualAmountPerMonth;
     console.log(
       'Actual Amount changed::',
-      this.editTransactionUpload[j].houseRentalTransactionList[i]
+      this.editTransactionUpload[j].previousEmployerTransactionDetailList[i]
         .actualAmountPerMonth
     );
 
     const formatedActualAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].houseRentalTransactionList[i]
+      this.editTransactionUpload[j].previousEmployerTransactionDetailList[i]
         .actualAmountPerMonth
     );
     console.log(`formatedActualAmount::`, formatedActualAmount);
 
-    this.editTransactionUpload[j].houseRentalTransactionList[
+    this.editTransactionUpload[j].previousEmployerTransactionDetailList[
       i
     ].actualAmountPerMonth = formatedActualAmount;
 
     if (
-      this.editTransactionUpload[j].houseRentalTransactionList[i]
+      this.editTransactionUpload[j].previousEmployerTransactionDetailList[i]
         .actualAmountPerMonth !== Number(0) ||
-      this.editTransactionUpload[j].houseRentalTransactionList[i]
+      this.editTransactionUpload[j].previousEmployerTransactionDetailList[i]
         .actualAmountPerMonth !== null
     ) {
       console.log(
         `in if::`,
-        this.editTransactionUpload[j].houseRentalTransactionList[i]
+        this.editTransactionUpload[j].previousEmployerTransactionDetailList[i]
           .actualAmountPerMonth
       );
     } else {
       console.log(
         `in else::`,
-        this.editTransactionUpload[j].houseRentalTransactionList[i]
+        this.editTransactionUpload[j].previousEmployerTransactionDetailList[i]
           .actualAmountPerMonth
       );
     }
 
     this.actualTotal = 0;
     this.actualAmountPerMonth = 0;
-    this.editTransactionUpload[j].houseRentalTransactionList.forEach(
+    this.editTransactionUpload[j].previousEmployerTransactionDetailList.forEach(
       (element) => {
         console.log(element.actualAmountPerMonth.toString().replace(/,/g, ''));
         this.actualTotal += Number(
@@ -752,14 +730,14 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.declarationService.houseRentalMasterId =
       this.transactionDetail[
         j
-      ].houseRentalTransactionList[0].houseRentalMasterId;
-    this.transactionDetail[j].houseRentalTransactionList.push(
+      ].previousEmployerTransactionDetailList[0].houseRentalMasterId;
+    this.transactionDetail[j].previousEmployerTransactionDetailList.push(
       this.declarationService
     );
 
     console.log(
       'addRow::',
-      this.transactionDetail[j].houseRentalTransactionList
+      this.transactionDetail[j].previousEmployerTransactionDetailList
     );
   }
 
@@ -774,13 +752,13 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   // -------- Delete Row--------------
   deleteRow(j: number) {
     const rowCount =
-      this.transactionDetail[j].houseRentalTransactionList.length - 1;
+      this.transactionDetail[j].previousEmployerTransactionDetailList.length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].houseRentalTransactionList.length == 1) {
+    if (this.transactionDetail[j].previousEmployerTransactionDetailList.length == 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].houseRentalTransactionList.splice(rowCount, 1);
+      this.transactionDetail[j].previousEmployerTransactionDetailList.splice(rowCount, 1);
       return true;
     }
   }
@@ -803,9 +781,9 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.transactionDetail[j].actualTotal +=
       this.declarationService.actualAmountPerMonth -
-      this.transactionDetail[j].houseRentalTransactionList[i]
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i]
         .actualAmountPerMonth;
-    this.transactionDetail[j].houseRentalTransactionList[i] =
+    this.transactionDetail[j].previousEmployerTransactionDetailList[i] =
       this.declarationService;
     this.declarationService = new DeclarationService();
   }
@@ -821,7 +799,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.grandActualTotal += this.declarationService.actualAmountPerMonth;
     this.grandDeclarationTotal +=
       this.declarationService.declaredAmountPerMonth;
-    this.transactionDetail[j].houseRentalTransactionList.push(
+    this.transactionDetail[j].previousEmployerTransactionDetailList.push(
       this.declarationService
     );
     this.declarationService = new DeclarationService();
@@ -832,7 +810,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log(this.transactionDetail);
     this.tabIndex = 0;
     this.transactionDetail.forEach((element) => {
-      element.houseRentalTransactionList.forEach((element) => {
+      element.previousEmployerTransactionDetailList.forEach((element) => {
         element.paymentDate = this.datePipe.transform(
           element.paymentDate,
           'yyyy-MM-dd'
@@ -846,14 +824,14 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         console.log(res);
 
         this.transactionDetail =
-          res.data.results[0].houseRentalTransactionDetailList;
+          res.data.results[0].previousEmployerTransactionDetailList;
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
         this.transactionDetail.forEach((element) => {
-          element.houseRentalTransactionList.forEach((element) => {
+          element.previousEmployerTransactionDetailList.forEach((element) => {
             element.paymentDate = new Date(element.paymentDate);
           });
         });
@@ -927,7 +905,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('this.transactionDetail::', this.transactionDetail);
 
     this.transactionDetail.forEach((element) => {
-      element.houseRentalTransactionList.forEach((innerElement) => {
+      element.previousEmployerTransactionDetailList.forEach((innerElement) => {
         if (innerElement.declaredAmountPerMonth !== null) {
           innerElement.declaredAmountPerMonth =
             innerElement.declaredAmountPerMonth.toString().replace(/,/g, '');
@@ -977,8 +955,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       proofSubmissionId: '',
-      houseRentalTransactionList:
-        this.transactionDetail[0].houseRentalTransactionList,
+      previousEmployerTransactionDetailList:
+        this.transactionDetail[0].previousEmployerTransactionDetailList,
       houseRentalTransactionIds: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       receiptDate: Date,
@@ -991,7 +969,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         console.log(res);
         if (res.data.results.length > 0) {
           this.transactionDetail =
-            res.data.results[0].houseRentalTransactionDetailList;
+            res.data.results[0].previousEmployerTransactionDetailList;
           this.documentDetailList = res.data.results[0].documentInformationList;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -1003,10 +981,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
           this.transactionDetail.forEach((element) => {
             this.initialArrayIndex.push(
-              element.houseRentalTransactionList.length
+              element.previousEmployerTransactionDetailList.length
             );
 
-            element.houseRentalTransactionList.forEach((innerElement) => {
+            element.previousEmployerTransactionDetailList.forEach((innerElement) => {
               if (innerElement.paymentDate !== null) {
                 innerElement.paymentDate = new Date(innerElement.paymentDate);
               }
@@ -1075,18 +1053,18 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     }
   } */
 
-  copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
+/*   copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
     dueDate = new Date(dueDate);
-    item.houseRentalTransactionList.paymentDate = dueDate;
-    this.transactionDetail[0].houseRentalTransactionList[i].paymentDate =
+    item.previousEmployerTransactionDetailList.paymentDate = dueDate;
+    this.transactionDetail[0].previousEmployerTransactionDetailList[i].paymentDate =
       dueDate;
     this.declarationService.paymentDate =
-      this.transactionDetail[0].houseRentalTransactionList[i].paymentDate;
+      this.transactionDetail[0].previousEmployerTransactionDetailList[i].paymentDate;
     this.paymentDate = dueDate;
     alert('hiiii');
     console.log('Date OF PAyment' + this.declarationService.paymentDate);
   }
-
+ */
   // When Edit of Document Details
   declarationEditUpload(
     template2: TemplateRef<any>,
@@ -1107,7 +1085,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         this.urlArray =
           res.data.results[0].documentInformationList[0].documentDetailList;
         this.editTransactionUpload =
-          res.data.results[0].houseRentalTransactionDetailList;
+          res.data.results[0].previousEmployerTransactionDetailList;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].y;
         this.grandDeclarationTotalEditModal =
@@ -1119,7 +1097,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           res.data.results[0].grandApprovedTotal;
         // console.log(this.urlArray);      
         this.editTransactionUpload.forEach((element) => {
-          element.houseRentalTransactionList.forEach((innerElement) => {
+          element.previousEmployerTransactionDetailList.forEach((innerElement) => {
             innerElement.declaredAmountPerMonth = this.numberFormat.transform(
               innerElement.declaredAmountPerMonth
             );
@@ -1131,42 +1109,22 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         // console.log('converted:: ', this.urlArray);
       });
   }
-/* 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  } */
-
-/*   previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  } */
-
- /*  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  } */
 
   // -----------Common Function for filter to call API---------------
-  getTransactionFilterPreviousEmployerData(name: String) {
-    console.log('this.name::', name);
+  getTransactionFilterPreviousEmployerData(PreviousEmployer: String) {
+
+    console.log('this.PreviousEmployer::', PreviousEmployer);
+
     this.previousEmployerService
-      .getTransactionFilterPreviousEmployerData(name)
+      .getTransactionFilterPreviousEmployerData(PreviousEmployer)
       .subscribe((res) => {
-        console.log(res);
-        this.transactionDetail =
-          res.data.results[0].houseRentalTransactionDetailList;
+
+        console.log("getTransactionFilterPreviousEmployerData:::",res);
+
+        this.transactionDetail = res.data.results[0].previousEmployerTransactionDetailList;
+
+        console.log("previousEmployerTransactionDetailList::",this.transactionDetail)
+
         this.documentDetailList = res.data.results[0].documentInformationList;
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -1177,22 +1135,13 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
         this.transactionDetail.forEach((element) => {
           this.initialArrayIndex.push(
-            element.houseRentalTransactionList.length
+            element.previousEmployerTransactionDetailList.length
           );
 
-          element.houseRentalTransactionList.forEach((innerElement) => {
+          element.previousEmployerTransactionDetailList.forEach((innerElement) => {
             if (innerElement.paymentDate !== null) {
               innerElement.paymentDate = new Date(innerElement.paymentDate);
             }
-
-            /*     if (innerElement.isECS === 0) {
-            this.glbalECS == 0;
-          } else if (innerElement.isECS === 1) {
-            this.glbalECS == 1;
-          } else {
-            this.glbalECS == 0;
-          } */
-
             innerElement.declaredAmountPerMonth = this.numberFormat.transform(
               innerElement.declaredAmountPerMonth
             );
@@ -1213,7 +1162,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     );
 
     this.editTransactionUpload.forEach((element) => {
-      element.houseRentalTransactionList.forEach((innerElement) => {
+      element.previousEmployerTransactionDetailList.forEach((innerElement) => {
         if (innerElement.declaredAmountPerMonth !== null) {
           innerElement.declaredAmountPerMonth =
             innerElement.declaredAmountPerMonth.toString().replace(/,/g, '');
@@ -1252,7 +1201,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload.forEach((element) => {
-      element.houseRentalTransactionList.forEach((innerElement) => {
+      element.previousEmployerTransactionDetailList.forEach((innerElement) => {
         const paymentDate = this.datePipe.transform(
           innerElement.paymentDate,
           'yyyy-MM-dd'
@@ -1268,7 +1217,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     const data = {
       proofSubmissionId: this.editProofSubmissionId,
-      houseRentalTransactionList: this.editTransactionUpload[0].houseRentalTransactionList,
+      previousEmployerTransactionDetailList: this.editTransactionUpload[0].previousEmployerTransactionDetailList,
       houseRentalTransactionIds: this.uploadGridData,
     //  documentRemark: this.documentRemark,
       receiptAmount: this.editReceiptAmount,
@@ -1296,7 +1245,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           );
 
           this.transactionDetail =
-            res.data.results[0].houseRentalTransactionDetailList;
+            res.data.results[0].previousEmployerTransactionDetailList;
           this.documentDetailList = res.data.results[0].documentInformationList;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -1308,10 +1257,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
           this.transactionDetail.forEach((element) => {
             this.initialArrayIndex.push(
-              element.houseRentalTransactionList.length
+              element.previousEmployerTransactionDetailList.length
             );
 
-            element.houseRentalTransactionList.forEach((innerElement) => {
+            element.previousEmployerTransactionDetailList.forEach((innerElement) => {
               if (innerElement.paymentDate !== null) {
                 innerElement.paymentDate = new Date(innerElement.paymentDate);
               }
@@ -1374,10 +1323,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('i::', i);
     console.log('j::', j);
     console.log('summary::', summary);
-    this.transactionDetail[j].houseRentalTransactionList[i].paymentDate =
+    this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate =
       summary.paymentDate;
     console.log(
-      this.transactionDetail[j].houseRentalTransactionList[i].paymentDate
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate
     );
   }
 
@@ -1396,9 +1345,9 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('i::', i);
     console.log('j::', j);
     console.log('summary::', summary);
-    this.transactionDetail[j].houseRentalTransactionList[i].toDate =
+    this.transactionDetail[j].previousEmployerTransactionDetailList[i].toDate =
       summary.toDate;
-    console.log(this.transactionDetail[j].houseRentalTransactionList[i].toDate);
+    console.log(this.transactionDetail[j].previousEmployerTransactionDetailList[i].toDate);
   }
 
   setFromDate(
@@ -1416,35 +1365,12 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('i::', i);
     console.log('j::', j);
     console.log('summary::', summary);
-    this.transactionDetail[j].houseRentalTransactionList[i].fromDate =
+    this.transactionDetail[j].previousEmployerTransactionDetailList[i].fromDate =
       summary.fromDate;
     console.log(
-      this.transactionDetail[j].houseRentalTransactionList[i].fromDate
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i].fromDate
     );
   }
-
-  // ---- Set Date of Payment On Edit Modal----
-  /*  setDateOfPaymentInEditCase(
-    summary: {
-      
-      declaredAmountPerMonth: number;
-      paymentDate: Date;
-      actualAmountPerMonth: number;
-     
-    },
-    i: number,
-    j: number
-  ) {
-    console.log('transactionDetail::', this.transactionDetail);
-    console.log('declaredAmountPerMonth::', this.declaredAmountPerMonth);
-    console.log('j::', j);
-    console.log('summary::', summary);
-    this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate =
-      summary.paymentDate;
-    console.log(
-      this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate
-    );
-  } */
   setDateOfPaymentInEditCase(
     summary: {
       previousEmployerName: any;
@@ -1456,10 +1382,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate =
+    this.editTransactionUpload[j].previousEmployerTransactionDetailList[i].paymentDate =
       summary.paymentDate;
     console.log(
-      this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate
+      this.editTransactionUpload[j].previousEmployerTransactionDetailList[i].paymentDate
     );
   }
   // ---------------- Doc Viewr Code ----------------------------

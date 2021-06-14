@@ -86,7 +86,7 @@ public getPreviousEmployerMaster(): Observable<any> {
       formData.append('document', file);
     }
     // formData.append('licDocuments', document);
-    formData.append('previousEmployerMaster', JSON.stringify(data));
+    formData.append('previousEmployerDetail', JSON.stringify(data));
 
     console.log('formData', formData);
 
@@ -150,9 +150,9 @@ getPreviousEmpList() : Observable<any>  {
   }
 
   /*................All...https://dev.deliziahr.com:8085/hrms/v1/previousEmployerTransactionDetail/All....GET....reviousEmployerMaster...................... */
-  public getTransactionFilterPreviousEmployerData(name: String): Observable<any> {
+  public getTransactionFilterPreviousEmployerData(previousEmployer: String): Observable<any> {
     return this._HTTP
-      .get(this.apiUrl + 'previousEmployerTransactionDetail/' + name)
+      .get(this.apiUrl + 'previousEmployerTransactionDetail/' + previousEmployer)
       .pipe(
         map((res: any) => {
           return res;
