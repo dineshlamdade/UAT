@@ -7,8 +7,9 @@
             <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
               <tr>
 
-                <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                <th rowspan="2" class="wd-6">
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false"
+                  tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" (change)="checkUncheckAll()" />
                     <span class="custom-control-label"></span>
@@ -38,8 +39,9 @@
             </thead>
             <thead class="thead-dark" *ngIf="!previousEmployeeList.length">
               <tr>
-                <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                <th rowspan="2" class="wd-6">
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false"
+                  tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" name="select" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -242,8 +244,9 @@
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       class="form-control align-right"
                       placeholder="Declared"
-                      (change)="setActualAmout($event)"
-                      disabled
+                      (change)="onDeclearedAmountChange(addRowSummary, i)"
+                      [ngClass]="{ 'is-invalid': this.requiredField }"
+                      
 
 
                     />
@@ -263,7 +266,7 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)" 
                     class="form-control align-right" maxlength="22"
                     (change)="onActualAmountChange(addRowSummary, i)" 
-                    [ngClass]="{ 'is-invalid': this.requiredField }" />
+                     />
                 </td>
                 <td>
                   <!-- <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -420,7 +423,7 @@
                     <td>
                       <span>
                         <input type="text" class="form-control align-right" 
-                        [(ngModel)]="globalSelectedAmount"
+                        [(ngModel)]="totalSelectedAmount"
                           [disabled]="true" />
                       </span>
                     </td>
