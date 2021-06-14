@@ -403,6 +403,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
   //------------- When Edit of Document Details -----------------------
   editViewTransaction(template2: TemplateRef<any>, proofSubmissionId: string) {
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -414,6 +415,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
