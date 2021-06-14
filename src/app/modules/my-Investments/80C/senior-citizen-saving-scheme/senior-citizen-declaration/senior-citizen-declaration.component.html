@@ -334,8 +334,9 @@
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       class="form-control align-right"
                       placeholder="Declared"
-                      (change)="setActualAmout($event)"
-                      disabled
+                      (change)="onDeclearedAmountChange(addRowSummary, i)"
+                      [ngClass]="{ 'is-invalid': this.requiredField }"
+                      
 
 
                     />
@@ -366,7 +367,7 @@
                     class="form-control align-right"
                     (change)="onActualAmountChange(addRowSummary, i)"
                     maxlength="22"
-                    [ngClass]="{ 'is-invalid': this.requiredField }"
+                    
                   />
                 </td>
                 <td>
@@ -536,7 +537,7 @@
                         <input
                           type="text"
                           class="form-control align-right"
-                          [(ngModel)]="globalSelectedAmount"
+                          [(ngModel)]="globalSelectedAmounts"
                           [disabled]="true"
                         />
                       </span>
