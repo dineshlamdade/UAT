@@ -85,5 +85,7 @@ export class AttendanceService {
     return this.HttpClient.post<any>(this.url + `AttendanceInput/attendanceInputAPIAllCycleRecords`,data); 
   }
 
- 
+  attendanceInputGetHistoryfuturecycle(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `AttendanceInput/attendanceInputGetHistoryfuturecycle` , data);
+  }
 }

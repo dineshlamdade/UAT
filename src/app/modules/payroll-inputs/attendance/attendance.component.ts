@@ -116,6 +116,7 @@ export class AttendanceComponent implements OnInit {
   AllCycleRecordsData: any = [];
   selectedProcessingCyclename: any;
   payrollListData: any;
+  attendanceInputGetHistoryfuturecyclesData: any;
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
     private payrollservice: PayrollInputsService,
@@ -2548,85 +2549,26 @@ export class AttendanceComponent implements OnInit {
 
   // **********************************Previous Cycle Functions Ends***********************************************
 
-  // **********************************ALL Cycle Total Functions Starts***********************************************
-  // getAllCyclePaybleDaysTotal() {
-  //   let total = 0.0
-  //   this.AllCycleRecordsData.forEach(element => {
-  //     total = total + parseFloat(element.paidDays)
+  // **********************************Future cycle history function starts****************************
+  attendanceInputGetHistoryfuturecycle(index) {
+    const formData = new FormData();
 
-  //   });
-  //   return total.toFixed(2);
-  // }
-
-  // getAllCycleWeeklyOffTotal() {
-  //   let total = 0.0
-  //   this.AllCycleRecordsData.forEach(element => {
-  //     total = total + parseFloat(element.weeklyOff)
-
-  //   });
-  //   return total.toFixed(2);
-  // }
+    
+    formData.append('employeeMasterId', this.selectedEmpData[index].employeeMasterId)
+    formData.append('processingCycle', this.selectedEmpData[this.index].processingCycle)
+    formData.append('pertainingCycle', this.selectedEmpData[this.index].processingCycle)
+    formData.append('payrollAreaCode', this.selectedEmpData[index].payrollAreacode)
+    formData.append('attendanceToDate', this.selectedEmpData[index].payrollAreacode)
 
 
-  // getAllCycleHolidayTotal() {
-  //   let total = 0.0
-  //   this.AllCycleRecordsData.forEach(element => {
-  //     total = total + parseFloat(element.holiday)
-
-  //   });
-  //   return total.toFixed(2);
-  // }
-
-  // getAllCycleLeaveTotal() {
-  //   let total = 0.0
-  //   this.AllCycleRecordsData.forEach(element => {
-  //     total = total + parseFloat(element.paidLeaves)
-
-  //   });
-  //   return total.toFixed(2);
-  // }
-
-  // getAllCycleLeaveWithoutPayTotal() {
-  //   let total = 0.0
-  //   if (this.defaultAttendace == '1') {
-  //     this.AllCycleRecordsData.forEach(element => {
-  //       total = total + parseFloat(element.leaveWithoutPay)
-
-  //     });
-  //   } else {
-  //     this.AllCycleRecordsData.forEach(element => {
-  //       total = total + parseFloat(element.leaveWithoutPay_0)
-
-  //     });
-  //   }
-  //   return total.toFixed(2);
-  // }
-
-  // getAllCyclePresentDayTotal() {
-  //   let total = 0.0
-  //   if (this.defaultAttendace == '0') {
-  //     this.AllCycleRecordsData.forEach(element => {
-  //       total = total + parseFloat(element.presentDay_0)
-
-  //     });
-  //   } else {
-  //     this.AllCycleRecordsData.forEach(element => {
-  //       total = total + parseFloat(element.presentDay)
-
-  //     });
-  //   }
-  //   return total.toFixed(2);
-  // }
-
-  // getAllCycleAdjTotal() {
-  //   let total = 0.0
-  //   this.AllCycleRecordsData.forEach(element => {
-  //     total = total + parseFloat(element.adjustment)
-
-  //   });
-  //   return total.toFixed(2);
-  // }
-
+    this.attendanceService.attendanceInputGetHistoryfuturecycle(formData).subscribe(
+      res => {
+        this.attendanceInputGetHistoryfuturecyclesData = res.data.results;
+        // this.tempAttendanceFutureData = this.attendanceInputGetAPIFuturecyclesData
+        // localStorage.setItem('tempAttendanceFutureData',JSON.stringify(this.tempAttendanceFutureData))
+      }
+    )
+  }
 
   /** Save Button Click */
   AttendanceInput() {
