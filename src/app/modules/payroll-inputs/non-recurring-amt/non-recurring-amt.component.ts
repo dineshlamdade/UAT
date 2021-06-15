@@ -93,28 +93,31 @@ export class NonRecurringAmtComponent implements OnInit {
 	payrollListData: any;
 	payrollListEmpData: any;
 	copyFlag: boolean = false;
+	showDropdownDisabled: boolean = false;
+	parollListIndex: number = 0;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
 		private payrollservice: PayrollInputsService, private excelservice: ExcelserviceService) {
-			if(localStorage.getItem('payrollListEmpData') != null){
-               this.indexId = 2
-			   this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
-			   localStorage.removeItem('payrollListEmpData')
-			   this.indexId = 2
-				this.showEmployeeSelectionFlag = true;
-				this.selectedApplicableAt = ""
-				this.clawbackDate = ""
-				this.clawbackFrequency = ""
-				this.clawbackperiod = 0
-				this.selectedClawbackInputType = ""
-			   //console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
-			   this.getAllEmployeeDetails();
-			   this.selectedPayrollArea = 'PA-Staff'
-			   this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
+		if (localStorage.getItem('payrollListEmpData') != null) {
+			this.payrollListEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
+			localStorage.removeItem('payrollListEmpData')
+			this.indexId = 2
+			this.showEmployeeSelectionFlag = true;
+			this.selectedApplicableAt = ""
+			this.clawbackDate = ""
+			this.clawbackFrequency = ""
+			this.clawbackperiod = 0
+			this.selectedClawbackInputType = ""
+			this.showDropdownDisabled = true
+			this.parollListIndex = 0
+			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
+			this.getAllEmployeeDetails();
+			this.selectedPayrollArea = 'PA-Staff'
+			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
 
-			}
-		 }
+		}
+	}
 
 	ngOnInit() {
 		this.NonRecurringTransactionGroupSummery();
@@ -184,7 +187,36 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		this.nonRecService.NonRecurringTransactionScheduleEMP(formData).subscribe(
 			res => {
+				//this.NonRecurringTransactionScheduleEMPdData = res.data.results;
+				//console.log(JSON.stringify(this.NonRecurringTransactionScheduleEMPdData))
+				// res.data.results.forEach(element => {
+				// 	const formData = new FormData();
+				// 	formData.append('nonRecurringTransactionScheduleId', element.nonRecurringTransactionScheduleId)
+				// 	formData.append('nonRecurringTransactionGroupId', element.nonRecurringTransactionGroupId)
+
+				// 	this.nonRecService.NonRecurringTransactionScheduleRemarkHistorybyScheduleId(formData).subscribe(
+				// 		res => {
+				// 			this.NonRecurringHistorybyScheduleIdData = res.data.results;
+				// 			this.NonRecurringHistorybyScheduleIdData.forEach(data => {
+				// 				if(data.resheduleDate != null || data.resheduleDate != ''){
+				// 					element.isReschedule = true;
+				// 				}
+				// 			});
+
+				// 		}
+				// 	)
+				// });
+
 				this.NonRecurringTransactionScheduleEMPdData = res.data.results;
+				this.NonRecurringTransactionScheduleEMPdData.forEach(element => {
+					if(element.processedAmount != null || element.processedAmount != ''){
+						element.isDisabledFlag = true;
+					}
+					if(element.processedAmount == null || element.processedAmount == ''){
+						element.isDisabledFlag = false;
+					}
+				});
+				//console.log(JSON.stringify(this.NonRecurringTransactionScheduleEMPdData))
 			}
 		)
 	}
@@ -330,10 +362,10 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.onceEvery = transactionData.onceEvery
 				this.updateNoOfTransaction = transactionData.numberOfTransactions
 				this.openingAmount = transactionData.amount
-				if(transactionData.remark == null){
+				if (transactionData.remark == null) {
 					this.remark = ''
-				}else{
-				this.remark = transactionData.remark
+				} else {
+					this.remark = transactionData.remark
 				}
 				this.standardName = transactionData.payrollHeadMaster.standardName
 				this.headMasterId = transactionData.payrollHeadMaster.headMasterId
@@ -385,10 +417,12 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/**Get selected Transaction Type */
-	getTransactionType(transactiontype, index) {
+	getTransactionType(transactiontype, index,data) {
 		this.selectedTransactionIndex = index;
 		this.selectedTransactionType = transactiontype
-
+		if(this.selectedTransactionType == 'Perpetual' || this.selectedTransactionType == 'Defined Date'){
+        this.NonRecurringTransactionGroupAPIbyIdData[index].numberOfTransactions = 0
+		}
 	}
 
 	/** Get selected From Date */
@@ -429,8 +463,10 @@ export class NonRecurringAmtComponent implements OnInit {
 			todate = ""
 		} else if (this.selectedTransactionType == 'Perpetual') {
 			todate = '9999-12-31 00:00:00'
+			this.updateNoOfTransaction = 0
 		} else {
 			todate = this.selectedToDate;
+			this.updateNoOfTransaction = 0
 		}
 		if (this.selectedFromDate == '') {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
@@ -467,7 +503,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		//console.log("data: "+ JSON.stringify(data))
 
-		this.nonRecService.attendanceInputAPIRecordsUI(data,this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
+		this.nonRecService.attendanceInputAPIRecordsUI(data, this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
 			res => {
 				this.toaster.success('', 'Transaction data updated sucessfully')
 				if (this.selectedEmpData.length == 1) {
@@ -486,10 +522,33 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.NonRecurringTransactionGroupAPIbyId(this.index)
 	}
 
+	saveAndNextPayrollTransaction() {
+		//this.NonRecurringTransactionGroup()
+		this.showEmployeeSelectionFlag = true;
+		this.selectedApplicableAt = ""
+		this.clawbackDate = ""
+		this.clawbackFrequency = ""
+		this.clawbackperiod = 0
+		this.selectedClawbackInputType = ""
+		this.showDropdownDisabled = true
+		this.parollListIndex = this.parollListIndex + 1
+		this.getAllEmployeeDetails();
+		this.selectedPayrollArea = 'PA-Staff'
+		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
+	}
+
 	nextEmpData() {
 		this.index = this.index + 1
 		this.employeeFinDetails()
 		this.NonRecurringTransactionGroupAPIbyId(this.index)
+	}
+
+	prevEmpPayrollData(){
+		this.showDropdownDisabled = true
+		this.parollListIndex = this.parollListIndex - 1
+		this.getAllEmployeeDetails();
+		this.selectedPayrollArea = 'PA-Staff'
+		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
 	}
 
 	prevEmpData() {
@@ -498,6 +557,14 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.employeeFinDetails()
 		this.NonRecurringTransactionGroupAPIbyId(this.index)
 
+	}
+
+	nextEmpPayrollData(){
+		this.showDropdownDisabled = true
+		this.parollListIndex = this.parollListIndex + 1
+		this.getAllEmployeeDetails();
+		this.selectedPayrollArea = 'PA-Staff'
+		this.getSelectedEmployeeCode(this.payrollListEmpData[this.parollListIndex].employeeMasterId)
 	}
 
 	/******************* Transaction when click on Transaction Tab and select Employee from Dropdown *******************/
@@ -512,6 +579,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.clawbackFrequency = ""
 			this.clawbackperiod = 0
 			this.selectedClawbackInputType = ""
+			this.saveTransactionData = []
 			this.getAllEmployeeDetails();
 		}
 	}
@@ -577,11 +645,11 @@ export class NonRecurringAmtComponent implements OnInit {
 	payrollAssigned() {
 
 		this.nonRecService.getEmployeeWisePayrollList(this.selectedEmployeeMasterId).subscribe(
-		  res => {
-			this.payrollListData = res.data.results[0];
-		  }
+			res => {
+				this.payrollListData = res.data.results[0];
+			}
 		)
-	  }
+	}
 
 	/** Selected Employee Wise Data */
 	NonRecurringTransactionGroupAPIEmpwise() {
@@ -837,16 +905,16 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** Copy To From Date TO All */
 	copyFromDateToAll(data) {
-		this.copyFlag =! this.copyFlag
-		if(!this.copyFlag){
+		this.copyFlag = !this.copyFlag
+		if (!this.copyFlag) {
 			this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
-				if(element.headId == data.headId){
-				element.fromdate = this.selectedFromDateForSave
+				if (element.headId == data.headId) {
+					element.fromdate = this.selectedFromDateForSave
 				}
 			});
 
 			this.getFromDateForSave(this.selectedFromDateForSave, data)
-	   }
+		}
 	}
 
 	/** Add new Row into table */
@@ -856,13 +924,17 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** On change Transaction Type */
 	getTransactionTypeForSave(value, rowindex, data) {
+		this.selectedTransactionIndex = rowindex;
+		this.selectedTransactionType = value
+		if(this.selectedTransactionType == 'Perpetual' || this.selectedTransactionType == 'Defined Date'){
+			this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].numberOfTransactions = 0
+		}
 		this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element, index) => {
 			if (index == rowindex) {
 				element.transactionsType = value
 			}
 		});
-		this.selectedTransactionIndex = rowindex;
-		this.selectedTransactionType = value
+		
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -1957,17 +2029,17 @@ export class NonRecurringAmtComponent implements OnInit {
 
 		this.nonRecService.NonRecurringTransactionScheduleRemarkHistorybyScheduleId(formData).subscribe(
 			res => {
-					if (res.data.results[0].transactionDate != null) {
-						this.originalTransactionDate = res.data.results[0].transactionDate
-						this.isReschedule = true;
-					}else{
-						this.isReschedule = false;
-					}
-				});
+				if (res.data.results[0].transactionDate != null) {
+					this.originalTransactionDate = res.data.results[0].transactionDate
+					this.isReschedule = true;
+				} else {
+					this.isReschedule = false;
+				}
+			});
 
-			
-		
-    return this.isReschedule;
+
+
+		return this.isReschedule;
 
 	}
 
@@ -1985,7 +2057,14 @@ export class NonRecurringAmtComponent implements OnInit {
 					}
 				});
 			});
-
+			this.AllNonRecurringTransactionScheduledData.forEach(element => {
+				if(element.processedAmount != null || element.processedAmount != ''){
+					element.isDisabledFlag = true;
+				}
+				if(element.processedAmount == null || element.processedAmount == ''){
+					element.isDisabledFlag = false;
+				}
+			});
 
 		})
 	}
@@ -2259,21 +2338,77 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	SummaryexportAsXLSX(): void {
 		this.excelData = [];
-		this.excelData = this.summeryData
+		this.summeryData.forEach(element => {
+			let obj = {
+				"Emp. Code":element.employeeMasterResponseDTO.employeeCode,      
+                "Emp. Name":element.employeeMasterResponseDTO.fullName,
+                "Payroll Area":element.payrollArea.payrollAreaCode,
+                "Head":element.payrollHeadMaster.displayName,
+                "Group Id":element.nonRecurringTransactionGroupId,
+                "Once Every":element.onceEvery,
+                "Frequency":element.frequency,
+                "Amount":element.amount,
+                "From Date":element.fromDate,
+                "To Date":element.toDate,
+                "Remark":element.remark,
+                "Approval Status":'',
+                "Created By":element.createdBy,
+                "Created Date":element.createDateTime
+			}
+			this.excelData.push(obj)
+		});
 		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary');
 	}
 
 
 	AllScheduleExportAsXLSX(): void {
 		this.excelData = [];
-		this.excelData = this.AllNonRecurringTransactionScheduledData
+		this.AllNonRecurringTransactionScheduledData.forEach(element => {
+			let obj = {
+				"Emp. Code":element.employeeMasterResponseDTO.employeeCode,      
+                "Emp. Name":element.employeeMasterResponseDTO.fullName,
+                "Payroll Area":element.payrollArea.payrollAreaCode,
+                "Head":element.payrollHeadMaster.displayName,
+                "Group Id":element.nonRecurringTransactionGroupId,
+				"Schedule Id":element.nonRecurringTransactionScheduleId,
+                "Schedule Date":this.datepipe.transform(element.transactionDate,'dd-MMM-yyyy'),
+                "Schedule Amount":element.transactionAmount,
+                "Processed Amount":element.processedAmount,
+                "Balance Amount":element.transactionAmount,
+                "Processing Cycle":element.cycleName,
+				"ClawBack Date":this.datepipe.transform(element.clawbackDate,'dd-MMM-yyyy'),
+                "Created By":element.createdBy,
+                "Created Date":element.createDateTime
+			}
+			this.excelData.push(obj)
+		});
+		//this.excelData = this.AllNonRecurringTransactionScheduledData
 		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-All-Schedules');
 	}
 
 
 	ScheduleExportAsXLSX(): void {
 		this.excelData = [];
-		this.excelData = this.NonRecurringTransactionScheduleEMPdData
+		this.NonRecurringTransactionScheduleEMPdData.forEach(element => {
+			let obj = {
+				"Emp. Code":this.selectedEmpData[this.index].employeeMasterResponseDTO.employeeCode,      
+                "Emp. Name":this.selectedEmpData[this.index].employeeMasterResponseDTO.fullName,
+                "Payroll Area":this.selectedEmpData[this.index].payrollArea.payrollAreaCode,
+                "Head":this.selectedEmpData[this.index].payrollHeadMaster.displayName,
+                "Group Id":element.nonRecurringTransactionGroupId,
+				"Schedule Id":element.nonRecurringTransactionScheduleId,
+                "Schedule Date":this.datepipe.transform(element.transactionDate,'dd-MMM-yyyy'),
+                "Schedule Amount":element.transactionAmount,
+                "Processed Amount":element.processedAmount,
+                "Balance Amount":element.transactionAmount,
+                "Processing Cycle":element.cycleName,
+				"ClawBack Date":this.datepipe.transform(element.clawbackDate,'dd-MMM-yyyy'),
+                "Created By":element.createdBy,
+                "Created Date":element.createDateTime
+			}
+			this.excelData.push(obj)
+		});
+		//this.excelData = this.NonRecurringTransactionScheduleEMPdData
 		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
 
