@@ -112,7 +112,7 @@ export class GarnishmentService {
 
      // get api for GET ALL FrequecyDetails.
      getALLFrequecyDetails() : Observable<any> {
-      return this._HTTP.get(this.apiUrl2 + 'frequency-master')
+      return this._HTTP.get(this.apiUrl2 + 'frequency-master/getAllActive')
       .pipe(map((res: any) => {
         return res;
       }
