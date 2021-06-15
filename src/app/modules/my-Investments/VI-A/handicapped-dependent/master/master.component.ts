@@ -303,6 +303,7 @@ export class MasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.submitted = false;
       this.urlArray = [];
+      this.documentRemark = [];
 
       this.showUpdateButton = false;
     }
@@ -395,6 +396,9 @@ export class MasterComponent implements OnInit {
     this.paymentDetailGridData = [];
     this.isClear = false;
     this.showUpdateButton = false;
+    this.urlArray = [];
+    this.masterfilesArray = [];
+    this.documentRemark = [];
   }
 
   // On Master Edit functionality
@@ -432,8 +436,12 @@ export class MasterComponent implements OnInit {
   onRadioChange(checked) {
     console.log(checked)
     this.isSaveVisible = true;
+   
     if(checked) {
       this.isSaveVisible = false;
+      this.alertService.sweetalertError(
+        'You Not Applicable for Benefits 80-U.'
+      );
     }
   }
 

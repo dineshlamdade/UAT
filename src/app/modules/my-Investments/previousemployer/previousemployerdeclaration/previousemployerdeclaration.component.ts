@@ -1,5 +1,10 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+
+import jspdf from 'jspdf';
+import * as _html2canvas from "html2canvas";
+const html2canvas: any = _html2canvas;
+
 import {
   Component,
   EventEmitter,
@@ -178,6 +183,9 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   public testnumber1: number = 5000;
   public testnumber2: number = 5000;
+
+  imgFile: any = '';
+  imageFile: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -388,7 +396,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmountPerMonth);
-    } else {
+    } else 
+    {
       formatedActualAmount = Number(
         this.transactionDetail[j].previousEmployerTransactionDetailList[
           i
@@ -430,7 +439,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log(this.uploadGridData.length);
   }
 
-  // --------------- ON change of declared Amount Main Page-------------
+  //--------------- ON change of declared Amount Main Page-------------
   onDeclaredAmountChange(
     summary: {
       /*   previousEmployerName: any; */
@@ -440,8 +449,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       /*    dueDate: Date; */
     },
     i: number,
-    j: number
-  ) {
+    j: number ) 
+  {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmountPerMonth);
 
@@ -1020,7 +1029,19 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.globalSelectedAmount = '0.00';
   }
 
+  openForm12BModal(template4: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template4,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
+  openFormSign(template2: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template2,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
 
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
@@ -1142,6 +1163,15 @@ export class PreviousemployerdeclarationComponent implements OnInit {
             if (innerElement.paymentDate !== null) {
               innerElement.paymentDate = new Date(innerElement.paymentDate);
             }
+
+            /*     if (innerElement.isECS === 0) {
+            this.glbalECS == 0;
+          } else if (innerElement.isECS === 1) {
+            this.glbalECS == 1;
+          } else {
+            this.glbalECS == 0;
+          } */
+
             innerElement.declaredAmountPerMonth = this.numberFormat.transform(
               innerElement.declaredAmountPerMonth
             );
@@ -1417,6 +1447,46 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     );
   }
 
+  /* =================pdf======================== */
+  download() {
+    console.log('hi');
+
+    let data = document.getElementById('htmlData');
+    html2canvas(data).then(canvas => {
+      console.log(canvas)
+      // Few necessary setting options
+      const imgWidth = 193;
+     const pageHeight = 0;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+     // const heightLeft = imgHeight;
+
+      const contentDataURL = canvas.toDataURL('image/png')
+      // A4 size page of PDF
+      const pdf = new jspdf('p', 'mm', 'a4');
+      const position = -120;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+      // Generated PDF
+      pdf.save('FORM.12B.pdf');
+    });
+  }
+
+  onImageChange(e) {
+    const reader = new FileReader();
+    
+    if(e.target.files && e.target.files.length) {
+      const [file] = e.target.files;
+      reader.readAsDataURL(file);
+    
+      reader.onload = () => {
+        this.imgFile = reader.result as string;
+        
+   
+      };
+    }
+  }
+  getImageFile(imagefile : any){
+    this.imageFile = imagefile;
+}
 
 }
 
