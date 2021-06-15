@@ -31,6 +31,7 @@ export class headDetail {
   encapsulation: ViewEncapsulation.None
 } )
 export class PayrollHeadGroupCreationComponent implements OnInit {
+  public codeInvalid : boolean = false;
   applicableList = [{ id: 'true', itemName: 'Yes' }, { id: 'false', itemName: 'No' }];
   selectedSummarySourceProducts = [];
   clickedOnSave: boolean = false;
@@ -137,7 +138,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.payrollHeadGroupCreationForm = this.formBuilder.group( {
       attributeGroupDefinitionId: new FormControl( null, ),
       headGroupDefinitionName: new FormControl( '', Validators.required ),
-      description: new FormControl( 'desc', Validators.required ),
+      description: new FormControl( '', Validators.required ),
       attributeNature: new FormControl( '', Validators.required ),
       copyTo: new FormControl( '' ),
     } );
@@ -241,6 +242,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   }
 
   GetPHGByIdDisable( headGroupDefinitionId ): void {
+    window.scrollTo( 0, 0 );
     this.savedHeadNameList = [];
     this.notSavedHeadList = [];
     this.notOrigianlSavedHeadList = [];
@@ -248,6 +250,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.hideCopyFrom = true;
     this.NewTargetArray = [];
     console.log( 'GetPHGByIdDisable', headGroupDefinitionId );
+    this.viewCancelButton = true;
     this.viewupdateButton = true;
     this.headGroupDefinitionId = headGroupDefinitionId;
     this.targetProducts = [];  //added new
@@ -463,7 +466,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
     }, ( error ) => {
       if ( error.status == 404 ) {
-
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
         this.getAllAttributeListByAttGroup( headGroupIds );
         this.viewSaveButton = true;
       } else {
@@ -521,6 +524,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       this.viewSaveButton = false;
     }, ( error ) => {
       if ( error.status == 404 ) {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
         this.getAllAttributeListByAttGroup( u.headGroupIds );
         this.viewSaveButton = true;
       } else {
@@ -582,6 +586,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       }
     }, ( error ) => {
       if ( error.status == 404 ) {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
         this.getAllAttributeListByAttGroup( headGroupIds );
         this.viewSaveButton = true;
       } else {
@@ -733,6 +738,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
       //    this.AttGroupList = res.data.results[0].attributeMasters;
       res.data.results[0].attributeMasters.forEach( ( element, index ) => {
+        console.log( 'check obj', res.data.results[0].attributeMasters );
         element.attributeGroupIds = res.data.results[0].attributeGroupIds[index];
         console.log( 'cccccccccccc', res.data.results[0].attributeGroupIds[index].code )
         console.log( element );
@@ -1353,8 +1359,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
     }
     let newIndex = ( i + count ) - 1;
-    // 
-    if ( this.form.get( 'pfFormArray' )['controls'][newIndex - 1].controls['value4'].value.length > 0 && this.sortedFrequencyList.length > newIndex) {
+    //
+    if ( this.form.get( 'pfFormArray' )['controls'][newIndex - 1].controls['value4'].value.length > 0 && this.sortedFrequencyList.length > newIndex ) {
 
       console.log( 'attributeMasterId', attributeMasterId );
       var setsFormArray = this.form.get( 'pfFormArray' ) as FormArray;
@@ -1393,6 +1399,93 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     ( <FormArray>this.form.get( 'pfFormArray' ) ).removeAt( this.rowNumberToDelete );
   }
 
+  firstSave() {
+    console.log( 'view update button', this.viewupdateButton );
+    if ( this.viewupdateButton == true && this.multiSelectDropDownData.length != 0 ) {
+      console.log( 'firstSave() in if 1' );
+      this.clickedOnSave = true;
+      console.log( this.multiSelectDropDownData );
+
+      let multipleSaveObj = [];
+      for ( let i = 0; i < this.multiSelectDropDownData.length; i++ ) {
+
+        console.log( JSON.stringify( this.f.pfFormArray.value ) );
+        const addData: SaveAttributeAssignmentNewAssignment = Object.assign( {} );
+        console.log( JSON.stringify( addData ) );
+        let data: SaveAttributeAssignmentNewAssignment;
+        let attributeMasterId = 0;
+        let fromDate1;
+        let toDate1;
+
+        this.f.pfFormArray.value.forEach( element => {
+          console.log( element.Applicability );
+          if ( element.attributeMasterId1 == attributeMasterId ) {
+            data.payrollHeadGroupAttributeValueMapping.push( {
+              fromDate: fromDate1,
+              toDate: toDate1,
+              value1: element.value1,
+              value2: element.value2,
+              value3: element.value3,
+              value4: element.value4,
+            } );
+
+          } else {
+            data = Object.assign( {} );
+            data.payrollHeadGroupAttributeValueMapping = [];
+            attributeMasterId = element.attributeMasterId1;
+            data.applicable = element.Applicability;
+            data.fromDate = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
+            data.toDate = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
+            data.globalAttributeGroupId = element.attributeGroupIds;
+            data.globalHeadGroupId = this.multiSelectDropDownData[i].headGroupIds;
+            data.value = element.value;
+
+            if ( element.attributeNature == 'Range Value Per Period' || element.attributeNature == 'Range Value No Of Instances Per Period' || element.attributeNature == 'Range Value Per Instance' ) {
+              data.value = 'Range';
+              data.payrollHeadGroupAttributeValueMapping.push( {
+
+                fromDate: this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' ),
+                toDate: this.datePipe.transform( element.toDate, 'yyyy-MM-dd' ),
+                value1: element.value1,
+                value2: element.value2,
+                value3: element.value3,
+                value4: element.value4,
+              } );
+              fromDate1 = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
+              toDate1 = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
+            }
+            multipleSaveObj.push( data );
+            // data = Object.assign( {} );
+
+          }
+
+
+        } );
+
+
+      }
+      console.log( JSON.stringify( multipleSaveObj ) );
+      this.companySettingsService.postPayrollHeadAttributeMappingAddGlobal( multipleSaveObj ).subscribe( ( res: any ) => {
+
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        this.GetPHGByIdDisable( this.headGroupDefinitionId );
+        this.globalHeadGroupId = 0;
+        this.multiSelectDropDownData = [];
+
+      }, ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      }, () => {
+        console.log( 'ss1' )
+        this.Test();
+      } );
+    } else {
+      console.log( 'ss2' )
+      this.Test();
+    }
+
+
+  }
+
   Test() {
 
     this.clickedOnSave = true;
@@ -1400,12 +1493,13 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       console.log( 'globalHeadGroupId', this.globalHeadGroupId )
       let multipleSaveObj = [];
       if ( this.multiSelectDropDownData.length > 0 || this.globalHeadGroupId > 0 ) {
-        console.log( 'in if 1' );
+        console.log( 'Test() in if 1' );
 
         this.multiSelectDropDownData.push( { headGroupIds: this.selectedHeadGroupIds, standardName: 'dummy Name' } );
         //this.multiSelectDropDownData.push( this.notSavedHeadList[s].headGroupIds, this.notSavedHeadList[s].standardName );
         console.log( this.multiSelectDropDownData );
 
+        let m = [];
         for ( let i = 0; i < this.multiSelectDropDownData.length; i++ ) {
 
           console.log( JSON.stringify( this.f.pfFormArray.value ) );
@@ -1456,9 +1550,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
                 fromDate1 = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
                 toDate1 = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
               }
+              multipleSaveObj.push( data );
             }
           } );
-          multipleSaveObj.push( data );
+          //  multipleSaveObj.push( data );
         }
         console.log( 'check this', JSON.stringify( multipleSaveObj ) );
         this.companySettingsService.postPayrollHeadAttributeMappingAddGlobal( multipleSaveObj ).subscribe( ( res: any ) => {
@@ -1472,7 +1567,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
           this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
       } else {
-        console.log( 'in else 1' );
+        console.log( ' Test() in else 1' );
         this.disabled1 = true;
         let saveObj = [];
         console.log( JSON.stringify( this.f.pfFormArray.value ) );
@@ -1536,7 +1631,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       }
     }
     else if ( this.viewSaveButton == false && this.multiSelectDropDownData.length == 0 ) {
-      console.log( 'in if  333' );
+      console.log( 'Test() in if  333' );
       let saveObj = [];
       console.log( JSON.stringify( this.f.pfFormArray.value ) );
       const addData: SaveAttributeAssignmentNewAssignment = Object.assign( {} );
@@ -1592,9 +1687,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
             fromDate1 = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
             toDate1 = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
           }
+          saveObj.push( data );
         }
 
-        saveObj.push( data );
+        // saveObj.push( data );
 
       } );
 
@@ -1963,87 +2059,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.onSelectAttributeAssignmentWithMultipleParameter( this.selectedHeadGroupIds );
     this.GetPHGByIdDisable( this.headGroupDefinitionId );
   }
-  firstSave() {
-    console.log( 'view update button', this.viewupdateButton );
-    if ( this.viewupdateButton == true && this.multiSelectDropDownData.length != 0 ) {
-      this.clickedOnSave = true;
-      console.log( this.multiSelectDropDownData );
-
-      let multipleSaveObj = [];
-      for ( let i = 0; i < this.multiSelectDropDownData.length; i++ ) {
-
-        console.log( JSON.stringify( this.f.pfFormArray.value ) );
-        const addData: SaveAttributeAssignmentNewAssignment = Object.assign( {} );
-        console.log( JSON.stringify( addData ) );
-        let data: SaveAttributeAssignmentNewAssignment;
-        let attributeMasterId = 0;
-        let fromDate1;
-        let toDate1;
-
-        this.f.pfFormArray.value.forEach( element => {
-          console.log( element.Applicability );
-          if ( element.attributeMasterId1 == attributeMasterId ) {
-            data.payrollHeadGroupAttributeValueMapping.push( {
-              fromDate: fromDate1,
-              toDate: toDate1,
-              value1: element.value1,
-              value2: element.value2,
-              value3: element.value3,
-              value4: element.value4,
-            } );
-
-          } else {
-            data = Object.assign( {} );
-            data.payrollHeadGroupAttributeValueMapping = [];
-            attributeMasterId = element.attributeMasterId1;
-            data.applicable = element.Applicability;
-            data.fromDate = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
-            data.toDate = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
-            data.globalAttributeGroupId = element.attributeGroupIds;
-            data.globalHeadGroupId = this.multiSelectDropDownData[i].headGroupIds;
-            data.value = element.value;
-
-            if ( element.attributeNature == 'Range Value Per Period' || element.attributeNature == 'Range Value No Of Instances Per Period' || element.attributeNature == 'Range Value Per Instance' ) {
-              data.value = 'Range';
-              data.payrollHeadGroupAttributeValueMapping.push( {
-
-                fromDate: this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' ),
-                toDate: this.datePipe.transform( element.toDate, 'yyyy-MM-dd' ),
-                value1: element.value1,
-                value2: element.value2,
-                value3: element.value3,
-                value4: element.value4,
-              } );
-              fromDate1 = this.datePipe.transform( element.fromDate, 'yyyy-MM-dd' );
-              toDate1 = this.datePipe.transform( element.toDate, 'yyyy-MM-dd' );
-            }
-
-          }
-          multipleSaveObj.push( data );
-        } );
-
-      }
-      console.log( JSON.stringify( multipleSaveObj ) );
-      this.companySettingsService.postPayrollHeadAttributeMappingAddGlobal( multipleSaveObj ).subscribe( ( res: any ) => {
-
-        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
-        this.GetPHGByIdDisable( this.headGroupDefinitionId );
-        this.globalHeadGroupId = 0;
-        this.multiSelectDropDownData = [];
-
-      }, ( error: any ) => {
-        this.alertService.sweetalertError( error["error"]["status"]["message"] );
-      }, () => {
-        console.log( 'ss1' )
-        this.Test();
-      } );
-    } else {
-      console.log( 'ss2' )
-      this.Test();
-    }
 
 
-  }
 
 
   viewPreviousButton( selectedHeadGroupIds ) {
@@ -2112,19 +2129,36 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // }
   }
 
-  CancelAttributeCreation() {
+  // CancelAttributeCreation() {
+
+
+  //   this.viewCancelButton = false;
+  //   this.globalHeadGroupId = 0;
+  //   this.selectedCopyToList = [];
+  //   this.multiSelectDropDownData = [];
+  //   this.hideCopyFrom = false;
+
+  //   if ( this.pfArray.controls.length !== 0 ) {
+  //     for ( let i = 0; i < this.pfArray.length; i++ ) {
+  //       this.pfArray.removeAt( i );
+  //     }
+  //   }
+
+  // }
+
+  CancelAttributeCreation(): void {
     this.globalHeadGroupId = 0;
-    this.selectedCopyToList = [];
-    this.multiSelectDropDownData = [];
     this.hideCopyFrom = false;
-
-    if ( this.pfArray.controls.length !== 0 ) {
-      for ( let i = 0; i < this.pfArray.length; i++ ) {
-        this.pfArray.removeAt( i );
-      }
-    }
-
+    this.headGroupDefinitionId = 0;
+    this.form.setControl( 'pfFormArray', new FormArray( [] ) );
+    this.payrollHeadGroupCreationForm.reset();
+    this.viewCancelButton = false;
+    this.viewupdateButton = false;
+    this.targetProducts = [];
+    this.getAllHeadCreation();
+    this.payrollHeadGroupCreationForm.get( 'attributeNature' ).setValue( '' );
   }
+
   resetAttributeSelection(): void {
     this.globalHeadGroupId = 0;
     this.hideCopyFrom = false;
@@ -2445,6 +2479,29 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       console.log( ' this.sortedFrequencyList', this.sortedFrequencyList );
     } );
   }
+      //Enter only Number Special Character/Character Form control Description
+      isContainsOnlySpecialCharacterDescription() {
+        // alert("Hiii codeInvalid");
+        this.codeInvalid = false
+        console.log( 'isContainsOnlySpecialCharacterDescription' );
+        var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+        for ( var i = 0; i < this.payrollHeadGroupCreationForm.get( 'headGroupDefinitionName' ).value.length; i++ ) {
+          if ( splChars.indexOf( this.payrollHeadGroupCreationForm.get( 'headGroupDefinitionName' ).value.charAt( i ) ) != -1 ) {
+            //alert("Illegal characters detected!");
+            this.codeInvalid = true;
+          } else {
+            this.codeInvalid = false;
+            break;
+          }
+
+        }
+        if ( this.codeInvalid == true ) {
+          //this.companyGroupNameInvalid = false;
+          //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+          // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+        }
+      }
 
 }
 

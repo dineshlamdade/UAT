@@ -14,6 +14,8 @@ import { SaveHeadCreation } from '../model/business-cycle-model';
   encapsulation: ViewEncapsulation.None
 } )
 export class HeadCreationComponent implements OnInit {
+
+  public codeInvalid : boolean = false;
   NatureList = [{ label: 'Earning', value: 'Earning' }, { label: 'Deduction', value: 'Deduction' }, { label: 'Perquisite', value: 'Perquisite' }];
   categoryList = [
     { value: 'Asset', label: 'Asset' },
@@ -81,6 +83,7 @@ export class HeadCreationComponent implements OnInit {
 
   // get HeadCreation by Id
   GetHeadCreationbyIdDisable( id ): void {
+    window.scrollTo( 0, 0 );
     this.disabled = false;
     this.viewCancelButton = true;
     this.headCreationService.GetHeadCreationById( id )
@@ -159,12 +162,39 @@ export class HeadCreationComponent implements OnInit {
 
     this.HeadCreationForm.patchValue( { type: '' } );
   }
-  keyPressedSpaceNotAllow( event: any ) {
-    const pattern = /[ ]/;
-    let inputChar = String.fromCharCode( event.charCode );
-    if ( pattern.test( inputChar ) ) {
-      event.preventDefault();
+
+
+    //Enter only Number Special Character/Character Form control Description
+    isContainsOnlySpecialCharacterDescription() {
+      // alert("Hiii codeInvalid");
+      this.codeInvalid = false
+      console.log( 'isContainsOnlySpecialCharacterDescription' );
+      var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+      for ( var i = 0; i < this.HeadCreationForm.get( 'standardName' ).value.length; i++ ) {
+        if ( splChars.indexOf( this.HeadCreationForm.get( 'standardName' ).value.charAt( i ) ) != -1 ) {
+          //alert("Illegal characters detected!");
+          this.codeInvalid = true;
+        } else {
+          this.codeInvalid = false;
+          break;
+        }
+
+      }
+      if ( this.codeInvalid == true ) {
+        //this.companyGroupNameInvalid = false;
+        //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+        // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+      }
     }
-  }
+
+
+    keyPressedSpaceNotAllow( event: any ) {
+      const pattern = /[ ]/;
+      let inputChar = String.fromCharCode( event.charCode );
+      if ( pattern.test( inputChar ) ) {
+        event.preventDefault();
+      }
+    }
 
 }
