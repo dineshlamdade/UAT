@@ -358,7 +358,7 @@ export class MasterComponent implements OnInit {
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log("Edit Master",obj);
       if (obj!= 'undefined'){
-
+      this.paymentDetailGridData = obj.familyMemberName;
       this.paymentDetailGridData = obj.paymentDetails;
       this.form.patchValue(obj);
       this.Index = obj.disabilityType;
@@ -372,8 +372,11 @@ export class MasterComponent implements OnInit {
 
   }
   findBydisabilityType(disabilityType,masterGridData){
-    return masterGridData.find(x => x.disabilityType === disabilityType)
+    return masterGridData.find(
+      (x) => x.disabilityType === disabilityType);
   }
+
+ 
 
    // scrollToTop Fuctionality
    public scrollToTop() {
