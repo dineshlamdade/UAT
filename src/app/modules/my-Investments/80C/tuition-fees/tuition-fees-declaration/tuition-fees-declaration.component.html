@@ -21,17 +21,17 @@
         </option>
       </select>
     </div>
-    <div class="ml-2 pl-1 pr-0">
+    <!-- <div class="ml-2 pl-1 pr-0">
       <label class="form-label mt-2 pl-10">Account No.</label>
-    </div>
-    <div class="col-2">
+    </div> -->
+    <!-- <div class="col-2">
       <select name="policyNo" class="form-control custom-select" (change)="selectedPolicy($event.target.value)">
         <option *ngFor="let transactionPolicy of transactionPolicyList" [value]="transactionPolicy.value"
           [selected]="transactionPolicy.value == globalPolicy">
           {{ transactionPolicy.label }}
         </option>
       </select>
-    </div>
+    </div> -->
     <div class="ml-2 pl-1 pr-0">
       <label class="form-label mt-2">Status</label>
     </div>
@@ -47,12 +47,12 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Account No. :</label>
+        <label class="form-label mt-1">Institution :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip=" {{item.institutionName}}:{{ item.policyNo }}">
-          {{item.institutionName}} : {{ item.policyNo }}
+          tooltip=" {{item.institutionName}} ">
+          {{item.institutionName}} 
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
@@ -507,7 +507,7 @@
                         documentSummary.dateOfSubmission | date: "dd-MMM-yyyy"
                       }}</span>
                   </td>
-                  <td  class="padding-0"  *ngIf = "documentSummary.group2MasterList.length > 1">
+                  <!-- <td  class="padding-0"  *ngIf = "documentSummary.group2MasterList.length > 1">
                     <div class="pd-5"
                       *ngFor="let element of documentSummary.group2MasterList"
                       tooltip="{{ element.accountNumber }}"
@@ -516,15 +516,15 @@
                         {{ element.accountNumber }}
                       </div>
                     </div>
-                  </td>
-                  <td class="padding-0" *ngIf="documentSummary.group2MasterList.length == 1">
+                  </td> -->
+                  <!-- <td class="padding-0" *ngIf="documentSummary.group2MasterList.length == 1">
                     <span tooltip="{{
                       documentSummary.group2MasterList[0].accountNumber
                     }}">
                       {{ documentSummary.group2MasterList[0].accountNumber }}
                     </span>
 
-                  </td>
+                  </td> -->
                   <td class="padding-0" *ngIf="documentSummary.group2MasterList.length == 0">
                     <span tooltip= "">
 
@@ -827,10 +827,10 @@
         <div class="table-responsive Custom_Table">
           <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
             <tbody>
-              <tr>
+              <tr *ngFor="let item of editTransactionUpload; let j = index">
                 <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
                 <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
-                <td class="bg-gray font-18 font700 wd-4"></td>
+                <!-- <td class="bg-gray font-18 font700 wd-4"></td> -->
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span class="padding-right-12" placement="left" tooltip="{{
@@ -842,8 +842,8 @@
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span class="padding-right-12" placement="left"
-                    tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}">
-                    {{ grandActualTotalEditModal | number: "1.2-2" }}
+                    tooltip="{{ item.actualTotal | number: '1.2-2' }}">
+                    {{ item.actualTotal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
