@@ -308,9 +308,14 @@
 
 
 
-                    <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    <!-- <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50]">
+                      [rowsPerPageOptions]="[10,25,50]"> -->
+
+                      <p-table [value]="summaryList" [paginator]="true" [rows]="10"
+                        [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        totalRecords={{summaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
 
                       <ng-template pTemplate="header">
                         <tr>

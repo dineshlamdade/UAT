@@ -263,9 +263,16 @@
 
                   <div class="cycle-table mt-4">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
-                    <p-table [value]="summary" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    <!-- <p-table [value]="summary" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                      <p-table [value]="summary" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{summary.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
                       <ng-template pTemplate="header">
                         <tr>
                           <th rowspan="1" class="wd-6 text-center">
