@@ -1056,7 +1056,6 @@ export class DeclarationAndActualComponent implements OnInit {
 
 
     // ------------ To Check / Uncheck All  Checkboxes-------------
-  
     checkUncheckAll(item: any) {
       // console.log(this.isCheckAll);
       if (this.isCheckAll) {
@@ -1070,7 +1069,7 @@ export class DeclarationAndActualComponent implements OnInit {
         this.isCheckAll = true;
         this.enableSelectAll = true;
         this.enableCheckboxFlag2 = item.institutionName;
-        item.groupTransactionList.forEach((element) => {
+        item.group2TransactionList.forEach((element) => {
           this.uploadGridData.push(element.handicappedDependentTransactionId);
         });
         this.enableFileUpload = true;
@@ -1078,6 +1077,7 @@ export class DeclarationAndActualComponent implements OnInit {
       // console.log('enableSelectAll...',  this.enableSelectAll);
       // console.log('uploadGridData...',  this.uploadGridData);
     }
+
   // --------------- ON change of declared Amount in line-------------
   onDeclaredAmountChange(
     summary: {
@@ -1548,14 +1548,13 @@ export class DeclarationAndActualComponent implements OnInit {
 
 
     // previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
-    
+
 
     // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
-      currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentList,
-     // currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentResponseList,
-      previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
-     //  previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentResponseList,
+      currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentResponseList,
+     previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentList,
+      //  previousEmployerHandicappedDependentList : this.previousEmployerHandicappedDependentResponseList,
       transactionIds: this.uploadGridData,
       // receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
