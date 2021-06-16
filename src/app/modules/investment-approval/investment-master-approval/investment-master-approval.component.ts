@@ -33,6 +33,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   public proofSubmissionIdList: Array<any>=[];
   public proofSubmissionIdListIndex: number;
   public masterRemark: any;
+  public documentDetailList: InvestmentApprovalMasterDocumentInfo[];
 
   constructor(
     private investmentMasterApprovalService: InvestmentMasterApprovalService,
@@ -65,9 +66,9 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         console.log('res asterinfo::', res);
         if (res != null || res != undefined) {
           this.masterInfo = res;
+          this.documentDetailList = this.masterInfo.masterDetail.documentDetailList;
           this.proofSubmissionIdList = this.masterInfo.psidDetailList;
           console.log("proofSubmissionIdList::", this.proofSubmissionIdList);
-          //this.getEmployeeInfo(this.masterInfo.masterDetail.employeeMasterId);
         }
       });
   }
@@ -232,12 +233,10 @@ export class InvestmentMasterApprovalComponent implements OnInit {
           if(this.documentList.length > 1){
             this.alertService.sweetalertMasterSuccess('Documents '+ status + ' sucessfully.', '');
              }
-
+             this.documentDetailList = res.data.results[0].masterDetail.documentDetailList;
         }
         this.documentList=[];
-        //this.dt.reset();
-        //this.documentCheckBox = false;
-       // this.dtSelectedRows = [];
+
       });
 
   }

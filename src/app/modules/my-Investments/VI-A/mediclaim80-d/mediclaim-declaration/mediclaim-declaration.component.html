@@ -690,7 +690,7 @@
                       name="actualAmount{{ summary.mediclaimTransactionId }}" [disabled]="initialArrayIndex[j] > i"
                       [(ngModel)]="summary.actualAmount" (change)="ononExpenseActualAmountChangePrevi(summary, i, j)"
                       [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' "
-                      class="form-control align-right" />
+                      class="form-control align-right"  />
                   </td>
                   <td>
                     <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -805,7 +805,7 @@
                     <!-- <tr *ngIf = "expenseType == 'Mediclaim Premium'">  -->
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt
+                      <span tooltip="Premium Receipt"></span>Premium Receipt
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -838,9 +838,9 @@
                     </td>
                   </tr>
                   <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
-                    <th scope="row"><span tooltip="1">1</span></th>
+                    <th scope="row"><span tooltip="2">2</span></th>
                     <td>
-                      <span tooltip="Health Check Up Charges Receipt"></span>Health Check Up Charges Receipt
+                      <span tooltip="Health Checkup Receipt"></span>Health Checkup Receipt
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -873,9 +873,9 @@
                     </td>
                   </tr>
                   <tr *ngIf="expenseType == 'Medical Expenses for Parents' || expenseType == 'All'">
-                    <th scope="row"><span tooltip="1">1</span></th>
+                    <th scope="row"><span tooltip="3">3</span></th>
                     <td>
-                      <span tooltip="Medical Bills"></span>Medical Bills
+                      <span tooltip="Medical Expenses Bills"></span>Medical Expenses Bills
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -1287,7 +1287,7 @@
                         data-date-autoclose="true" (ngModelChange)="
                           summary.dateOfPayment = $event.toLocaleDateString();
                           setDateOfPaymentInEditCaseMediclaim(summary, i, j)"  class="form-control" bsDatepicker
-                          [disabled]="initialArrayIndex[j] > i"/>
+                          [disabled]="initialArrayIndex[j] > i" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"/>
                     </td>
                     <td>
                       <!-- <input
@@ -1302,7 +1302,7 @@
 
                     <p-inputNumber class="form-control align-right"  name="actualAmount{{ summary.mediclaimTransactionId }}" id="actualAmount{{ summary.mediclaimTransactionId }}"
                     (onBlur)="onActualAmountChangeInEditCaseMediclaim(summary, i, j)" [(ngModel)]="summary.actualAmount" [disabled]="initialArrayIndex[j] > i"
-                       mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" ></p-inputNumber>
+                       mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" [disabled]="summary.transactionStatus=='Approved' || !viewTransactionDetail" ></p-inputNumber>
                     </td>
                     <td>
                       <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -1517,11 +1517,11 @@
                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                         data-date-autoclose="true" (ngModelChange)="
                           summary.dateOfPayment = $event.toLocaleDateString();
-                          setDateOfPaymentInEditCasePreventive(summary, i)"  class="form-control" bsDatepicker
+                          setDateOfPaymentInEditCasePreventive(summary, i)" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"  class="form-control" bsDatepicker [disabled]="summary.transactionStatus=='Approved' || !viewTransactionDetail"
                           />
                     </td>
                     <td>
-                      <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}"
+                      <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                         name="actualAmount{{ summary.mediclaimTransactionId }}" [(ngModel)]="summary.actualAmount"
                         (change)="onActualAmountChangepreventive(summary, i)" class="form-control align-right"
                         />
@@ -1745,11 +1745,11 @@
                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                         data-date-autoclose="true" (ngModelChange)="
                           summary.dateOfPayment = $event.toLocaleDateString();
-                          setDateOfPaymentInEditCaseExpence(summary, j)"  class="form-control" bsDatepicker />
+                          setDateOfPaymentInEditCaseExpence(summary, j)"  class="form-control" bsDatepicker [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail" />
                     </td>
                     <td>
                       <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}"
-                        name="actualAmount{{ summary.mediclaimTransactionId }}" [disabled]="initialArrayIndex[j] > i"
+                        name="actualAmount{{ summary.mediclaimTransactionId }}" [disabled]="initialArrayIndex[j] > i" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                         [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeInEditCaseExpense(summary, i, j)"
 
                         class="form-control align-right" />

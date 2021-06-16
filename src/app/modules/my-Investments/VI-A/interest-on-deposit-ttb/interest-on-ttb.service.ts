@@ -61,7 +61,7 @@ export class InterestOnTtbService {
 
     //Account info list
     getAccountInfoList() : Observable<any>  {
-      return this._HTTP.get(this.baseUrl8085Employee + 'employee-bank-info/employeeMasterId/640')
+      return this._HTTP.get(this.baseUrl8085Employee + 'employee-bank-info/employeeMasterId/64')
       .pipe(map((res: any) => {
         return res;
       }));

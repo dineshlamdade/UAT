@@ -398,6 +398,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         if (obj != 'undefined') {
           this.paymentDetailGridData = obj.paymentDetails;
           this.form.patchValue(obj);
+          this.visibilityFlag = true;
           this.Index = obj.patientName;
           this.showUpdateButton = true;
           this.isClear = true;
@@ -454,13 +455,14 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   // ---------- On View Cancel -------------------
   public resetView() {
     this.form.reset();
+    this.masterfilesArray = [];
+    this.isCancel = false;
+    this.urlArray = [];
+    this.visibilityFlag = false;
+    this.isClear = false;
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
-    this.paymentDetailGridData = [];
-    this.masterfilesArray = [];
-    this.urlArray = [];
-    this.isCancel = false;
   }
 
   //---------- On View Cancel -------------------
@@ -480,7 +482,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
 
   OnSpecifiedDiseaseChange() {
-    this.masterfilesArray = [];
+    // this.masterfilesArray = [];
     if (this.form.value.specifiedDiseaseName !== 'Neurological diseases with disability level >=40% per cent and above') {
       this.visibilityFlag = false;
       // this.form.get('neurologicalDiseaseName').setValidators([Validators.required]);

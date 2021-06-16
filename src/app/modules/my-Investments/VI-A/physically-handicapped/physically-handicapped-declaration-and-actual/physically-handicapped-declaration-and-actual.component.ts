@@ -1,4 +1,5 @@
-import { data } from './../../../../companysetting/user-rolesand-permission/role-privilege/role-privilege.component';
+import { element } from 'protractor';
+//import { data } from './../../../../companysetting/user-rolesand-permission/role-privilege/role-privilege.component';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import {
@@ -171,7 +172,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
   public disability : string;
   public severity : string;
   public limit : any;
-  public proofSubmissionId : any;
+  public proofSubmissionId : '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -357,7 +358,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
               res.data.results[0].previousEmployerHandicappedDetailList;
 
             // this.documentDetailList = res.data.results[0].documentInformation;
-            this.documentDetailList = res.data.results[0].documentInformationList;
+            this.documentDetailList = res.data.results[0].previousEmployerHandicappedDetailList.documentInformationList;
             this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
             this.grandActualTotal = res.data.results[0].grandActualTotal;
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1090,37 +1091,73 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-  upload() {
-    // if (this.filesArray.length === 0) {
-    //   this.alertService.sweetalertError(
-    //     'Please attach Premium Receipt / Premium Statement'
-    //   );
-    //   return;
-    // }
 
-    this.transactionDetail.forEach((element) => {
+  onSelectCurrentEmp(element, event: { target: { checked: any } })
+  {
+    const checked = event.target.checked;
+    this.physicallyHandicappedDetail.physicallyHandicappedDetailId = element.physicallyHandicappedDetailId;
+    this.physicallyHandicappedDetail.declaredAmount = this.unformatAmount(element.declaredAmount);
+    this.physicallyHandicappedDetail.actualAmount = this.unformatAmount(element.actualAmount);
+    this.physicallyHandicappedDetail.transactionStatus = 'Pending';
+
+    this.physicallyHandicappedDetail.proofSubmissionId = element.proofSubmissionId;
+    this.physicallyHandicappedDetail.employeeMasterId = element.employeeMasterId;
+
+    if (checked) {
+
+      this.uploadGridData.push(element.physicallyHandicappedDetailId);
+      console.log("this.uploadGridData",this.uploadGridData)
+    } else {
+       const index = this.uploadGridData.indexOf(
+        element.physicallyHandicappedDetailId
+      );
+      this.uploadGridData.splice(index, 1);
+    }
+}
+
+unformatAmount(amount) {
+  if (amount !== null && amount != undefined) {
+    amount = amount.toString().replace(/,/g, '');
+  } else {
+    amount = 0.0;
+  }
+  return amount;
+}
+
+
+  upload() {
+    if (this.filesArray.length === 0) {
+      this.alertService.sweetalertError(
+        'Medical Certificate/Form 10-1A / Medical Certificate/Form 10-1A'
+      );
+      return;
+    }
+
+
+
+    // this.transactionDetail.forEach((element) => {
       //current emp table number format
-      console.log('physicallyHandicappedDetail::', this.physicallyHandicappedDetail);
-      element.physicallyHandicappedDetail.forEach((item) => {
-        if (item.actualAmount !== null) {
-          item.actualAmount = item.actualAmount
-            .toString()
-            .replace(/,/g, '');
-        } else {
-          item.actualAmount = 0.0;
-        }
-        if (item.declaredAmount !== null) {
-          item.declaredAmount = item.declaredAmount
-            .toString()
-            .replace(/,/g, '');
-        } else {
-          item.declaredAmount = 0.0;
-        }
-      });
+      // console.log('physicallyHandicappedDetail::', this.physicallyHandicappedDetail);
+      // this.physicallyHandicappedDetail.forEach((item) => {
+      //   if (item.actualAmount !== null) {
+      //     item.actualAmount = item.actualAmount
+      //       .toString()
+      //       .replace(/,/g, '');
+      //   } else {
+      //     item.actualAmount = 0.0;
+      //   }
+      //   if (item.declaredAmount !== null) {
+      //     item.declaredAmount = item.declaredAmount
+      //       .toString()
+      //       .replace(/,/g, '');
+      //   } else {
+      //     item.declaredAmount = 0.0;
+      //   }
+      // });
       //previous emp table number format
-      if (element.previousEmployerHandicappedDetailList !== null) {
+      if (this.previousEmployerHandicappedDetailList !== null) {
      console.log('previousEmployerHandicappedDetailList::', this.previousEmployerHandicappedDetailList);
-      element.previousEmployerHandicappedDetailList.forEach((innerElement) => {
+      this.previousEmployerHandicappedDetailList.forEach((innerElement) => {
 
         if (innerElement.actualAmount !== undefined || innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
@@ -1139,7 +1176,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
         innerElement.declaredAmount = 0.0;
       });
     }
-    });
+    // });
 
 
 
@@ -1195,18 +1232,18 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
           // this.grandActualTotal = res.data.results[0].grandActualTotal;
           // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-          // this.physicallyHandicappedDetail.forEach((element) => {
-          //   this.initialArrayIndex.push(element.previousEmployerHandicappedDetailList.length);
-          //   element.previousEmployerHandicappedDetailList.forEach((innerElement) => {
 
-          //     innerElement.declaredAmount = this.numberFormat.transform(
-          //       innerElement.declaredAmount
-          //     );
-          //     innerElement.actualAmount = this.numberFormat.transform(
-          //       innerElement.actualAmount
-          //     );
-          //   });
-          // });
+          if (this.previousEmployerHandicappedDetailList !== null) {
+            console.log('previousEmployerHandicappedDetailList::', this.previousEmployerHandicappedDetailList);
+             this.previousEmployerHandicappedDetailList.forEach((innerElement) => {
+
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+               innerElement.declaredAmount = 0.0;
+             });
+           }
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
@@ -1437,31 +1474,6 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
 
   // Common Function for filter to call API
   getTransactionFilterData(
@@ -1507,14 +1519,14 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
         //   );
         // });
 
-        // this.previousEmployerHandicappedDetailList.forEach((element) => {
-        //   element.declaredAmount = this.numberFormat.transform(
-        //     element.declaredAmount
-        //   );
-        //   element.actualAmount = this.numberFormat.transform(
-        //     element.actualAmount
-        //   );
-        // });
+        this.previousEmployerHandicappedDetailList.forEach((element) => {
+          element.declaredAmount = this.numberFormat.transform(
+            element.declaredAmount
+          );
+          element.actualAmount = this.numberFormat.transform(
+            element.actualAmount
+          );
+        });
       }
     });
   }
@@ -1554,6 +1566,37 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       this.transactionDetail[j].previousEmployerHandicappedDetailList[i].dateOfPayment
     );
   }
+
+   // ---------------- Doc Viewr Code ----------------------------
+   nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>, documentInformationResponseList: any) {
+    console.log("documentInformationResponseList::", documentInformationResponseList)
+    this.urlArray = documentInformationResponseList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
+
+
 }
 
 class DeclarationService {
@@ -1570,6 +1613,7 @@ class DeclarationService {
   public amountRejected: number;
   public amountApproved: number;
   public severity: string;
+  proofSubmissionId: any;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

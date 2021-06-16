@@ -2,7 +2,8 @@ import { CompanySettingsService } from './../company-settings.service';
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
-import { AlertServiceService } from '../../../../app/core/services/alert-service.service';
+
+import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { SaveHeadCreation } from '../model/business-cycle-model';
 
 
@@ -13,24 +14,31 @@ import { SaveHeadCreation } from '../model/business-cycle-model';
   encapsulation: ViewEncapsulation.None
 } )
 export class HeadCreationComponent implements OnInit {
-  NatureList: Array<any> = [];
+
+  public codeInvalid : boolean = false;
+  NatureList = [{ label: 'Earning', value: 'Earning' }, { label: 'Deduction', value: 'Deduction' }, { label: 'Perquisite', value: 'Perquisite' }];
+  categoryList = [
+    { value: 'Asset', label: 'Asset' },
+    { value: 'ESOP-RSU-ESPP', label: 'ESOP-RSU-ESPP' },
+    { value: 'Garnishment', label: 'Garnishment' },
+    { value: 'Loan & Advance', label: 'Loan & Advance' },
+    { value: 'Non-Recurring Quantity', label: 'Non-Recurring Quantity' },
+    { value: 'Reimbursement', label: 'Reimbursement' },
+    { value: 'Statutory', label: 'Statutory' },
+
+
+  ];
   headCreationList = [];
   TypeList: Array<any> = [];
   HeadCreationList: Array<any> = [];
   viewCancelButton: boolean = false;
   HeadCreationForm: FormGroup;
-  Name: string;
   disabled: boolean = true;
-  categoryList = [{ value: 'Reimbursement', label: 'Reimbursement' }, { value: 'Statutory', label: 'Statutory' }];
   constructor(
     private formBuilder: FormBuilder, private alertService: AlertServiceService,
     private headCreationService: CompanySettingsService,
     @Inject( DOCUMENT ) private document: Document ) {
-    this.NatureList = [
-      { label: 'Earning', value: 'Earning' },
-      { label: 'Deduction', value: 'Deduction' },
-      { label: 'Perquisite', value: 'Perquisite' },
-    ];
+
   }
 
   ngOnInit(): void {
@@ -38,66 +46,59 @@ export class HeadCreationComponent implements OnInit {
     this.HeadCreationForm = this.formBuilder.group( {
       id: new FormControl( null ),
       shortName: new FormControl( '', Validators.required ),
+      displayName: new FormControl( '', Validators.required ),
       headNature: new FormControl( '', Validators.required ),
       standardName: new FormControl( '', Validators.required ),
       description: new FormControl( '', Validators.required ),
-      category: new FormControl( '' ),
-      //  statutory: new FormControl( 'false' ),
-      type: new FormControl( '', Validators.required ),
+      category: new FormControl( '', ),
+      type: new FormControl( '', ),
     } );
     this.getAllHeadCreation();
   }
 
   // get All HeadCreation
   getAllHeadCreation(): void {
+    this.HeadCreationList = [];
+    let earning = [];
+    let deduction = [];
+    let perquisite = [];
+    let other = [];
     this.headCreationService.getAllHeadCreation().subscribe( res => {
-      let i = 1;
-      this.HeadCreationList = res.data.results;
-      res.data.results.forEach( element => {
-
-        let obj = {
-          SrNo: i++,
-          globalAttributeMasterId: element.globalAttributeMasterId,
-          code: element.code,
-          attributeNature: element.attributeNature,
-          numberOfOption: element.numberOfOption,
-          description: element.description,
-
-        };
-        // let optionList = [];
-        // if ( element.optionList.length !== undefined ) {
-        //   for ( let i = 0; i < element.optionList.length; i++ ) {
-        //     if ( i == 0 ) {
-        //       optionList.push( element.optionList[i].optionValue );
-        //     } else {
-        //       optionList.push( +',' + element.optionList[i].optionValue );
-        //     }
-        //   }
-        // }
-
-        // obj.optionList = optionList;
-        this.headCreationList.push( obj );
-      } );
+      for ( let i = 0; i < res.data.results.length; i++ ) {
+        if ( res.data.results[i].headNature == 'Earning' ) {
+          earning.push( res.data.results[i] );
+        } else if ( res.data.results[i].headNature == 'Deduction' ) {
+          deduction.push( res.data.results[i] );
+        } else if ( res.data.results[i].headNature == 'Perquisite' ) {
+          perquisite.push( res.data.results[i] )
+        } else {
+          other.push( res.data.results[i] )
+        }
+      }
+      this.HeadCreationList.push( ...earning, ...deduction, ...perquisite, ...other );
+    }, ( error ) => {
+      this.alertService.sweetalertError( error["error"]["status"]["message"] );
     } );
   }
 
   // get HeadCreation by Id
   GetHeadCreationbyIdDisable( id ): void {
-    // this.CycleupdateFlag=true;
-    // this.CycleupdateFlag1=false;
+    window.scrollTo( 0, 0 );
     this.disabled = false;
     this.viewCancelButton = true;
     this.headCreationService.GetHeadCreationById( id )
       .subscribe( response => {
-
         this.HeadCreationForm.patchValue( { id: response.data.results[0].headMasterId } );
         this.HeadCreationForm.patchValue( { standardName: response.data.results[0].standardName } );
         this.HeadCreationForm.patchValue( { description: response.data.results[0].description } );
         this.HeadCreationForm.patchValue( { shortName: response.data.results[0].shortName } );
         this.HeadCreationForm.patchValue( { headNature: response.data.results[0].headNature } );
+        this.onChangeNature( response.data.results[0].headNature );
         this.HeadCreationForm.patchValue( { type: response.data.results[0].type } );
-        //  this.HeadCreationForm.patchValue( { statutory: ( response.data.results[0].statutory ).toString() } );
         this.HeadCreationForm.patchValue( { category: response.data.results[0].category } );
+        this.HeadCreationForm.patchValue( { displayName: response.data.results[0].displayName } );
+      }, ( error ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       } );
     this.HeadCreationForm.disable();
   }
@@ -105,64 +106,95 @@ export class HeadCreationComponent implements OnInit {
   addHeadCreation(): void {
 
     const addHeadCreation: SaveHeadCreation = Object.assign( {}, this.HeadCreationForm.value );
-    if ( addHeadCreation.id == undefined || addHeadCreation.id == 0 ) {
-      // delete addHeadCreation.id;
-      // delete addHeadCreation.type;
-      console.log( JSON.stringify( addHeadCreation ) );
-      this.headCreationService.AddHeadCreation( addHeadCreation ).subscribe( ( res: any ) => {
-        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
-        this.getAllHeadCreation();
-        this.CancelHeadCreation();
-        // this.HeadCreationForm.patchValue( { statutory: '0' } );
-      },
-        ( error: any ) => {
-          this.alertService.sweetalertError( error["error"]["status"]["message"] );
-        } );
-    }
+    console.log( JSON.stringify( addHeadCreation ) );
+    this.headCreationService.AddHeadCreation( addHeadCreation ).subscribe( ( res: any ) => {
+      this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+      this.getAllHeadCreation();
+      this.CancelHeadCreation();
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
+
   }
   CancelHeadCreation(): void {
     this.HeadCreationForm.enable();
     this.disabled = true;
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;
-    // this.HeadCreationForm.patchValue( { statutory: 'false' } );
     this.HeadCreationForm.patchValue( {
       headNature: '',
       type: '',
       category: '',
     } );
+    this.TypeList = [];
   }
 
   ResetHeadCreation(): void {
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;
-    //  this.HeadCreationForm.patchValue( { statutory: 'false' } );
     this.HeadCreationForm.patchValue( {
       headNature: '',
       type: '',
       category: '',
     } );
+    this.TypeList = [];
   }
 
 
   onChangeEvent( event: any ): void {
-    this.Name = event.target.value;
-    // if ((this.id == undefined || this.id == '00000000-0000-0000-0000-000000000000')) {
-    this.HeadCreationForm.patchValue( { shortName: this.Name } );
-    // this.EventDetails.controls["RegistrationClosedDate"].setValue["EventStartDate"];
-    // this.notificationForm.patchValue({ scheduleTime: this.CurrentTime });
-    // }
-
+    this.HeadCreationForm.patchValue( { shortName: event.target.value } );
   }
   onChangeNature( evt: any ) {
-    this.TypeList = [];
-    console.log( evt );
-    this.headCreationService.getByHeadMasterByNature( evt ).subscribe( res => {
+    if ( evt == '' ) {
+      this.TypeList = [];
 
-      this.TypeList = res.data.results;
-      console.log( this.TypeList );
-    } );
+    } else {
+      this.TypeList = [];
+      this.headCreationService.getByHeadMasterByNature( evt ).subscribe( res => {
+        this.TypeList = res.data.results;
+      }, ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
+
+    }
+
+
     this.HeadCreationForm.patchValue( { type: '' } );
   }
+
+
+    //Enter only Number Special Character/Character Form control Description
+    isContainsOnlySpecialCharacterDescription() {
+      // alert("Hiii codeInvalid");
+      this.codeInvalid = false
+      console.log( 'isContainsOnlySpecialCharacterDescription' );
+      var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+      for ( var i = 0; i < this.HeadCreationForm.get( 'standardName' ).value.length; i++ ) {
+        if ( splChars.indexOf( this.HeadCreationForm.get( 'standardName' ).value.charAt( i ) ) != -1 ) {
+          //alert("Illegal characters detected!");
+          this.codeInvalid = true;
+        } else {
+          this.codeInvalid = false;
+          break;
+        }
+
+      }
+      if ( this.codeInvalid == true ) {
+        //this.companyGroupNameInvalid = false;
+        //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+        // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+      }
+    }
+
+
+    keyPressedSpaceNotAllow( event: any ) {
+      const pattern = /[ ]/;
+      let inputChar = String.fromCharCode( event.charCode );
+      if ( pattern.test( inputChar ) ) {
+        event.preventDefault();
+      }
+    }
 
 }

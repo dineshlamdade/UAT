@@ -6,7 +6,7 @@
           <thead class="thead-dark">
             <tr>
               <th scope="col" class="wd-20">Institution</th>
-              <th scope="col" class="wd-20">Account no.</th>
+              <th scope="col" class="wd-20">Certificate no.</th>
               <th scope="col" class="wd-20">Account Holder Name</th>
               <th scope="col" class="wd-15">Declared</th>
               <th scope="col" class="wd-15">Actual</th>
@@ -69,7 +69,8 @@
               <td>
               <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
               (onBlur)="keyPressedSpaceNotAllow()"
-              mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
+              mode="decimal" locale="en-IN" maxlength="33"
+              [minFractionDigits]="2" ></p-inputNumber>
             </td>
               <td></td>
               <td></td>

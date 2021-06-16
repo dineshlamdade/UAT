@@ -72,7 +72,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-3">
                             <label class="form-label">Frequency of Payment</label>
-                            <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()' formControlName="frequencyOfPayment" class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                            <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()' formControlName="frequencyOfPayment" class="form-control custom-select" #frequencyOfPayment [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
                 <option [ngValue]="null">Select</option>
                 <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
                   {{frequencyOfPayment.label}}
@@ -82,7 +82,7 @@
                                 <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency of Payment is mandatory</div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="frequencyOfPayment.value !== 'As & When'">
                             <label class="form-label">Premium Amount</label>
                             <p-inputNumber class="p-inputright" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"
                                 min="0"></p-inputNumber>
@@ -90,14 +90,14 @@
                                 <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="frequencyOfPayment.value !== 'As & When'">
                             <label class="form-label">Annual Amount</label>
                             <p-inputNumber class="p-inputright" formControlName="annualAmount" name="Annual Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
                             <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
                                 <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="frequencyOfPayment.value !== 'As & When'">
                             <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
                             <div class="custom-controls-stacked ml-15 mt-10">
                                 <label class="custom-control custom-radio custom-control-inline">
@@ -111,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4 mb-10">
+                    <div class="row mt-4 mb-10" *ngIf="frequencyOfPayment.value !== 'As & When'">
                         <div class="col-sm-6 col-md-3">
                             <label class="form-label">From Date</label>
                             <div class="form-group">
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3" *ngIf="frequencyOfPayment.value !== 'As & When'">
                             <label class="form-label">To Date</label>
                             <div class="form-group">
                                 <div class="input-group">
@@ -238,7 +238,7 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><span tooltip="1">1</span></th>
-                                            <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                                            <td><span tooltip="Front Page of Passbook / Account Statement"></span>Front Page of Passbook / Account Statement
                                             </td>
                                             <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                             class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
@@ -303,11 +303,11 @@
                                         </td>
                                         <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date
-                        :"dd-MMM-yyyy"}}</span>
+                                        <td class="wd-10"><span tooltip="{{summary.policyStartDate  | date: 'dd-MMM-yyyy'}}">
+                                            {{summary.policyStartDate | date: "dd-MMM-yyyy"}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date
-                        :"dd-MMM-yyyy"}}</span>
+                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate  | date: 'dd-MMM-yyyy'}}">
+                                            {{summary.policyEndDate  | date: "dd-MMM-yyyy"}}</span>
                                         </td>
                                         <td class="wd-10"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
                                         </td>

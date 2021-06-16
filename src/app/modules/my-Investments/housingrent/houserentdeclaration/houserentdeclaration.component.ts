@@ -138,7 +138,7 @@ export class HouserentdeclarationComponent implements OnInit {
 
   /*  public receiptNumber: number; */
   public receiptNumber: null;
-  
+
   public receiptAmount: string;
   public receiptDate: Date;
   public selectedInstitution: string;
@@ -212,7 +212,7 @@ export class HouserentdeclarationComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-     console.log('data::', this.data);
+    console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
       this.canEdit = true;
@@ -220,7 +220,7 @@ export class HouserentdeclarationComponent implements OnInit {
       const input = this.data;
       this.globalInstitution = input.propertyHouseName;
       this.getInstitutionListWithPolicyNo();
-      console.log('this.propertyHouseName::','propertyHouseName')
+      console.log('this.propertyHouseName::', 'propertyHouseName');
 
       this.getTransactionFilterData(input.propertyHouseName);
       this.isDisabled = false;
@@ -266,12 +266,12 @@ export class HouserentdeclarationComponent implements OnInit {
     } else {
       this.financialYear =
         this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
-    } 
+    }
 
-  const splitYear = this.financialYear.split('-', 2);
+    const splitYear = this.financialYear.split('-', 2);
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
-    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]); 
+    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
 
   // Update Previous Employee in Main Page
@@ -367,7 +367,7 @@ export class HouserentdeclarationComponent implements OnInit {
     };
 
     this.transactionPolicyList = [];
-    console.log('transactionPolicyList', this.transactionPolicyList = []);
+    console.log('transactionPolicyList', (this.transactionPolicyList = []));
     this.transactionPolicyList.push(data);
     // console.log('this.transactionInstitutionListWithPolicies::', this.globalSelectedAmount);
     /*  this.transactionInstitutionListWithPolicies.forEach((element) => {
@@ -492,8 +492,9 @@ export class HouserentdeclarationComponent implements OnInit {
       this.transactionDetail[j].houseRentalTransactionList[
         i
       ].actualAmountPerMonth = this.numberFormat.transform(0);
-      this.transactionDetail[j].houseRentalTransactionList[i].paymentDate = null;
-  /*  this.transactionDetail[j].houseRentalTransactionList[i]; */
+      this.transactionDetail[j].houseRentalTransactionList[i].paymentDate =
+        null;
+      /*  this.transactionDetail[j].houseRentalTransactionList[i]; */
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
@@ -522,8 +523,6 @@ export class HouserentdeclarationComponent implements OnInit {
     console.log(this.uploadGridData.length);
   }
 
-
-   
   // ------------ To Check / Uncheck All  Checkboxes-------------
   checkUncheckAll(item: any) {
     // console.log(this.isCheckAll);
@@ -777,8 +776,7 @@ export class HouserentdeclarationComponent implements OnInit {
         .actualAmountPerMonth !== Number(0) ||
       this.editTransactionUpload[j].houseRentalTransactionList[i]
         .actualAmountPerMonth !== null
-    ) 
-    {
+    ) {
       console.log(
         `in if::`,
         this.editTransactionUpload[j].houseRentalTransactionList[i]
@@ -832,7 +830,8 @@ export class HouserentdeclarationComponent implements OnInit {
     this.globalAddRowIndex -= 1;
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
-    this.declarationService.houseRentalTransactionDetailId = this.globalAddRowIndex;
+    this.declarationService.houseRentalTransactionDetailId =
+      this.globalAddRowIndex;
     this.declarationService.declaredAmountPerMonth = null;
     this.declarationService.actualAmountPerMonth = null;
     this.declarationService.actualAmountPerMonth = null;
@@ -841,12 +840,13 @@ export class HouserentdeclarationComponent implements OnInit {
     this.declarationService.paymentDate = null;
     this.declarationService.remark;
     this.declarationService.transactionStatus = 'Pending';
-  /*this.declarationService.transactionStatus = null; */
+    /*this.declarationService.transactionStatus = null; */
     this.declarationService.rejectedAmountPerMonth = 0.0;
     this.declarationService.approvedAmountPerMonth = 0.0;
-    this.declarationService.houseRentalMasterId = this.transactionDetail[
-      j
-    ].houseRentalTransactionList[0].houseRentalMasterId;
+    this.declarationService.houseRentalMasterId =
+      this.transactionDetail[
+        j
+      ].houseRentalTransactionList[0].houseRentalMasterId;
     this.transactionDetail[j].houseRentalTransactionList.push(
       this.declarationService
     );
@@ -899,9 +899,8 @@ export class HouserentdeclarationComponent implements OnInit {
       this.declarationService.actualAmountPerMonth -
       this.transactionDetail[j].houseRentalTransactionList[i]
         .actualAmountPerMonth;
-    this.transactionDetail[j].houseRentalTransactionList[
-      i
-    ] = this.declarationService;
+    this.transactionDetail[j].houseRentalTransactionList[i] =
+      this.declarationService;
     this.declarationService = new DeclarationService();
   }
 
@@ -909,14 +908,13 @@ export class HouserentdeclarationComponent implements OnInit {
     if (!this.declarationService) {
       return;
     }
-    this.transactionDetail[
-      j
-    ].declarationTotal += this.declarationService.declaredAmountPerMonth;
-    this.transactionDetail[
-      j
-    ].actualTotal += this.declarationService.actualAmountPerMonth;
+    this.transactionDetail[j].declarationTotal +=
+      this.declarationService.declaredAmountPerMonth;
+    this.transactionDetail[j].actualTotal +=
+      this.declarationService.actualAmountPerMonth;
     this.grandActualTotal += this.declarationService.actualAmountPerMonth;
-    this.grandDeclarationTotal += this.declarationService.declaredAmountPerMonth;
+    this.grandDeclarationTotal +=
+      this.declarationService.declaredAmountPerMonth;
     this.transactionDetail[j].houseRentalTransactionList.push(
       this.declarationService
     );
@@ -1007,7 +1005,10 @@ export class HouserentdeclarationComponent implements OnInit {
   removeSelectedLicTransactionDocumentInEditCase(index: number) {
     this.editrentRecieptArray.splice(index, 1);
     console.log('this.editrentRecieptArray::', this.editrentRecieptArray);
-    console.log('this.editrentRecieptArray.size::', this.editrentRecieptArray.length);
+    console.log(
+      'this.editrentRecieptArray.size::',
+      this.editrentRecieptArray.length
+    );
   }
 
   upload() {
@@ -1022,9 +1023,8 @@ export class HouserentdeclarationComponent implements OnInit {
     this.transactionDetail.forEach((element) => {
       element.houseRentalTransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmountPerMonth !== null) {
-          innerElement.declaredAmountPerMonth = innerElement.declaredAmountPerMonth
-            .toString()
-            .replace(/,/g, '');
+          innerElement.declaredAmountPerMonth =
+            innerElement.declaredAmountPerMonth.toString().replace(/,/g, '');
         } else {
           innerElement.declaredAmountPerMonth = 0.0;
         }
@@ -1070,24 +1070,25 @@ export class HouserentdeclarationComponent implements OnInit {
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
-      proofSubmissionId:'',  
-      houseRentalTransactionList: this.transactionDetail[0].houseRentalTransactionList,
+      proofSubmissionId: '',
+      houseRentalTransactionList:
+        this.transactionDetail[0].houseRentalTransactionList,
       houseRentalTransactionIds: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       receiptDate: Date,
       receiptNumber: 123,
-
     };
     console.log('data::', data);
     this.houseRentService
-    .uploadTransactionWithMultipleFiles(this.rentReciept, data)
+      .uploadTransactionWithMultipleFiles(this.rentReciept, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
           this.transactionDetail =
             res.data.results[0].houseRentalTransactionDetailList;
           this.documentDetailList = res.data.results[0].documentInformationList;
-          this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+          this.grandDeclarationTotal =
+            res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
@@ -1178,11 +1179,10 @@ export class HouserentdeclarationComponent implements OnInit {
   UploadedDocumentModal1(template1: TemplateRef<any>, documentIndex: number) {
     this.modalRef = this.modalService.show(
       template1,
-      Object.assign({}, { class: 'gray modal-md' })
+      Object.assign({}, { class: 'gray modal-xl' })
     );
-    this.proofSubmissionFileList = this.documentDetailList[
-      documentIndex
-    ].documentDetailList;
+    this.proofSubmissionFileList =
+      this.documentDetailList[documentIndex].documentDetailList;
   }
 
   /*   deactiveCopytoActualDate() {
@@ -1196,12 +1196,10 @@ export class HouserentdeclarationComponent implements OnInit {
   copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
     dueDate = new Date(dueDate);
     item.houseRentalTransactionList.paymentDate = dueDate;
-    this.transactionDetail[0].houseRentalTransactionList[
-      i
-    ].paymentDate = dueDate;
-    this.declarationService.paymentDate = this.transactionDetail[0].houseRentalTransactionList[
-      i
-    ].paymentDate;
+    this.transactionDetail[0].houseRentalTransactionList[i].paymentDate =
+      dueDate;
+    this.declarationService.paymentDate =
+      this.transactionDetail[0].houseRentalTransactionList[i].paymentDate;
     this.paymentDate = dueDate;
     alert('hiiii');
     console.log('Date OF PAyment' + this.declarationService.paymentDate);
@@ -1237,12 +1235,7 @@ export class HouserentdeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-        // console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // console.log(this.urlArray);      
         this.editTransactionUpload.forEach((element) => {
           element.houseRentalTransactionList.forEach((innerElement) => {
             innerElement.declaredAmountPerMonth = this.numberFormat.transform(
@@ -1256,22 +1249,22 @@ export class HouserentdeclarationComponent implements OnInit {
         // console.log('converted:: ', this.urlArray);
       });
   }
-
+/* 
   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
     );
-  }
+  } */
 
-  previousDocViewer() {
+/*   previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
     );
-  }
+  } */
 
-  docViewer(template3: TemplateRef<any>) {
+ /*  docViewer(template3: TemplateRef<any>) {
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
@@ -1281,11 +1274,11 @@ export class HouserentdeclarationComponent implements OnInit {
       template3,
       Object.assign({}, { class: 'gray modal-xl' })
     );
-  }
+  } */
 
   // -----------Common Function for filter to call API---------------
   getTransactionFilterData(houseName: String) {
-    console.log('this.houseName::',houseName)
+    console.log('this.houseName::', houseName);
     // this.houseRentService.getTransactionInstName(data).subscribe(res => {
     this.houseRentService
       .getTransactionFilterData(houseName)
@@ -1341,9 +1334,8 @@ export class HouserentdeclarationComponent implements OnInit {
     this.editTransactionUpload.forEach((element) => {
       element.houseRentalTransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmountPerMonth !== null) {
-          innerElement.declaredAmountPerMonth = innerElement.declaredAmountPerMonth
-            .toString()
-            .replace(/,/g, '');
+          innerElement.declaredAmountPerMonth =
+            innerElement.declaredAmountPerMonth.toString().replace(/,/g, '');
         } else {
           innerElement.declaredAmountPerMonth = 0.0;
         }
@@ -1362,14 +1354,13 @@ export class HouserentdeclarationComponent implements OnInit {
         const toDate = this.datePipe.transform(
           innerElement.toDate,
           'yyyy-MM-dd'
-        );       
+        );
 
         const paymentDate = this.datePipe.transform(
           innerElement.paymentDate,
           'yyyy-MM-dd'
         );
 
-       
         /* innerElement.receiptAmount = receiptAmount; */
         innerElement.paymentDate = paymentDate;
         innerElement.fromDate = fromDate;
@@ -1389,27 +1380,27 @@ export class HouserentdeclarationComponent implements OnInit {
       });
     });
 
-    console.log('this.receiptDate::', this.receiptDate);
-    console.log('this.receiptNumber::', this.receiptNumber);
+ /*    console.log('this.receiptDate::', this.receiptDate);
+    console.log('this.receiptNumber::', this.receiptNumber); */
+
+    console.log('editTransactionUpload::', this.editTransactionUpload);
 
     const data = {
-
       proofSubmissionId: this.editProofSubmissionId,
-      houseRentalTransactionDetailList: this.editTransactionUpload,
+      houseRentalTransactionList: this.editTransactionUpload[0].houseRentalTransactionList,
       houseRentalTransactionIds: this.uploadGridData,
-      documentRemark: this.documentRemark,
+    //  documentRemark: this.documentRemark,
       receiptAmount: this.editReceiptAmount,
       //proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
-     
-      // documentRemark: this.documentRemark,
-      
 
-    /*   proofSubmissionId: this.editProofSubmissionId, */
+      // documentRemark: this.documentRemark,
+
+      /*   proofSubmissionId: this.editProofSubmissionId, */
       //receiptAmount: this.receiptAmount,
       /* receiptDate: this.receiptDate,
       receiptNumber: this.receiptNumber, */
-       receiptDate: Date,
-       receiptNumber: 123,
+      receiptDate: Date,
+      receiptNumber: 123,
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -1424,9 +1415,10 @@ export class HouserentdeclarationComponent implements OnInit {
           );
 
           this.transactionDetail =
-          res.data.results[0].houseRentalTransactionDetailList;
+            res.data.results[0].houseRentalTransactionDetailList;
           this.documentDetailList = res.data.results[0].documentInformationList;
-          this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+          this.grandDeclarationTotal =
+            res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
@@ -1474,13 +1466,13 @@ export class HouserentdeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('edit Data:: ', res);
 
-        this.urlArray =
+   /*      this.urlArray =
           res.data.results[0].documentInformationList[0].documentDetailList;
         this.urlArray.forEach((element) => {
           element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
             element.blobURI
           );
-        });
+        }); */
         console.log(this.urlArray);
       });
   }
@@ -1551,7 +1543,7 @@ export class HouserentdeclarationComponent implements OnInit {
   }
 
   // ---- Set Date of Payment On Edit Modal----
- /*  setDateOfPaymentInEditCase(
+  /*  setDateOfPaymentInEditCase(
     summary: {
       
       declaredAmountPerMonth: number;
@@ -1581,14 +1573,44 @@ export class HouserentdeclarationComponent implements OnInit {
       dueDate: any;
     },
     i: number,
-    j: number,
+    j: number
   ) {
     this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate =
       summary.paymentDate;
     console.log(
-      this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate,
+      this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate
     );
   }
+  // ---------------- Doc Viewr Code ----------------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template1: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template1,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
+
+
 }
 
 class DeclarationService {

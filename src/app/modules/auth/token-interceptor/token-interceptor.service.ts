@@ -48,7 +48,9 @@ export class TokenInterceptorService implements HttpInterceptor {
           break;
         }
         case 404: {
-          this.alertService.sweetalertError('Data not found !!',);
+          // Commented by komal
+          // this.alertService.sweetalertError('Data not found !!',);
+          console.log('404 Data not found !!');
           break;
         }
         case 500: {
@@ -64,8 +66,8 @@ export class TokenInterceptorService implements HttpInterceptor {
     //console.log('My token ',token);
     return request.clone({
       setHeaders: {
-       // 'Content-Type': 'application/json',
-       // 'Accept': 'application/json, text/plain, */*',
+        // 'Content-Type': 'application/json',
+        // 'Accept': 'application/json, text/plain, */*',
         'X-Authorization': token,
         'Access-Control-Max-Age': '600',
       },

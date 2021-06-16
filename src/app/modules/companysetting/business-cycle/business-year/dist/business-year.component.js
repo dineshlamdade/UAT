@@ -16,6 +16,12 @@ var BusinessYearComponent = /** @class */ (function () {
         this.formBuilder = formBuilder;
         this.alertService = alertService;
         this.modalService = modalService;
+        this.users1 = [
+            { srno: '1', headtype: 'Earning', headcode: 'AAA', headdesc: 'AAA Desc', openingval: '0.00', chngamount: '0.00', chngper: '2', closingamt: '0.00', unitofmeasure: 'PM', remark: 'Remark1' },
+            { srno: '2', headtype: 'Earning', headcode: 'AAA', headdesc: 'AAA Desc', openingval: '0.00', chngamount: '0.00', chngper: '2', closingamt: '0.00', unitofmeasure: 'MM', remark: 'Remark1' },
+            { srno: '3', headtype: 'Earning', headcode: 'AAA', headdesc: 'AAA Desc', openingval: '0.00', chngamount: '0.00', chngper: '2', closingamt: '0.00', unitofmeasure: 'PM', remark: 'Remark1' },
+            { srno: '4', headtype: 'Earning', headcode: 'AAA', headdesc: 'AAA Desc', openingval: '0.00', chngamount: '0.00', chngper: '2', closingamt: '0.00', unitofmeasure: 'PA', remark: 'Remark1' },
+        ];
         this.editedRecordIndexId = 0;
         this.BusinessYear = [
             { label: '2010', value: '2010' },
@@ -92,16 +98,6 @@ var BusinessYearComponent = /** @class */ (function () {
             });
         }
     };
-    // "businessYearDefinitionId": 28,
-    //   "fromDate": "01-Mar",
-    //     "toDate": "12-Mar",
-    //       "description": "e",
-    //         "createdBy": "PaysquareDefault",
-    //           "lastModifiedBy": "PaysquareDefault",
-    //             "yearDefinition": "01-Mar - 12-Mar",
-    //               "createDateTime": "17-Mar-2021",
-    //                 "active": true,
-    //                   "used": false
     //get all Businessyear
     BusinessYearComponent.prototype.getAllBusinessyear = function () {
         var _this = this;
@@ -109,6 +105,8 @@ var BusinessYearComponent = /** @class */ (function () {
         this.companySetttingService.getAllBusinessYear().subscribe(function (res) {
             _this.BusinessyearList = res.data.results;
             console.log('Business year list', _this.BusinessyearList);
+        }, function (error) {
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
     };
     BusinessYearComponent.prototype.DeleteBussinessyearById = function (id) {
@@ -120,6 +118,8 @@ var BusinessYearComponent = /** @class */ (function () {
             _this.alertService.sweetalertMasterSuccess(response.status.message, '');
             _this.getAllBusinessyear();
             _this.BusinessYearform.reset();
+        }, function (error) {
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
     };
     BusinessYearComponent.prototype.ResetBusiness = function () {
@@ -145,6 +145,8 @@ var BusinessYearComponent = /** @class */ (function () {
             _this.BusinessYearform.patchValue({ fromDate: response.data.results[0].fromDate });
             _this.BusinessYearform.patchValue({ toDate: response.data.results[0].toDate });
             _this.BusinessYearform.patchValue({ businessYear: response.data.results[0].businessYear });
+        }, function (error) {
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
         this.BusinessYearform.get('description').disable();
     };

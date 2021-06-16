@@ -176,7 +176,7 @@
               <div class="col-12">
                 <div class="table-responsive Custom_Table">
                   <table class="table table-striped table-hover table-bordered m-b-0"
-                    *ngIf="previousEmployeeList.length">
+                    *ngIf="previousEmployeeList?.length">
                     <thead class="thead-dark">
                       <tr>
                         <th rowspan="2" class="wd-4">
@@ -527,7 +527,7 @@
                     <tr>
                       <th scope="row"><span tooltip="1">1</span></th>
                       <td>
-                        <span tooltip="Bank Certificate"></span>Bank Certificate
+                        <span tooltip="Bank Provisional Certificate"></span>Bank Provisional Certificate
                       </td>
                       <td>
                         <span *ngFor="let item of bankCertificate; let j = index" class="text-orange"
@@ -549,8 +549,7 @@
                     <tr *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
                       <th scope="row"><span tooltip="2">2</span></th>
                       <td>
-                        <span tooltip="Rental Income Receipt"></span>Rental
-                        Income Receipt
+                        <span tooltip="Rent Receipt / Bank Statement"></span>Rent Receipt / Bank Statement
                       </td>
                       <td>
                         <span *ngFor="let item of rentalIncomeReceipt; let j = index" class="text-orange"
@@ -573,7 +572,7 @@
                     <tr *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
                       <th scope="row"><span tooltip="3">3</span></th>
                       <td>
-                        <span tooltip="Bank Certificate"></span>Municipal Tax
+                        <span tooltip="Municipal Tax Receipt"></span>Municipal Tax Receipt
                         Receipt
                       </td>
                       <td>
@@ -1059,7 +1058,7 @@
                             </span>
                           </td>
                           <td>
-                            <span *ngIf="summary.transactionStatus == 'Submitted'" tooltip="{{ summary.proofSubmissionId }}">
+                            <span tooltip="{{ summary.proofSubmissionId }}">
                               <i class="fa fa-clipboard"></i>
                             </span>
                           </td>

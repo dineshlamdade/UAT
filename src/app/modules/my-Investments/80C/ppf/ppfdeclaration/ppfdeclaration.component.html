@@ -67,23 +67,36 @@
   </div>
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
-      <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Account No. :</label>
+      <div class="ml-1 pl-1 pr-0">
+        <label class="form-label mt-1">Institution :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label
           class="font-12 text-ellipsis mt-1"
           placement="left"
           [adaptivePosition]="false"
-          tooltip=" {{item.institutionName}}:{{ item.policyNo }}"
+          tooltip=" {{item.institutionName}}"
         >
-         {{item.institutionName}} : {{ item.policyNo }}
+         {{item.institutionName}}
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1">Account No. :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-1">
+        <label
+          class="font-12 text-ellipsis mt-1"
+          placement="left"
+          [adaptivePosition]="false"
+          tooltip=" {{ item.policyNo }}"
+        >
+         {{ item.policyNo }}
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1 pl-10">Account Holder Name :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label
           class="font-12 text-ellipsis mt-1"
           placement="left"
@@ -96,12 +109,12 @@
       <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1">Frequency :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label
           class="font-12 text-ellipsis mt-1"
           placement="left"
           [adaptivePosition]="false"
-          tooltip="{{ item.frequency }}"
+          tooltip=""
         >
           {{ item.frequency }}
         </label>
@@ -113,19 +126,21 @@
           <table class="table table-striped table-hover table-bordered m-b-0">
             <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
               <tr>
-                <th rowspan="2" class="wd-4">
+                <th rowspan="2" class="wd-6">
                   <label
                     class="custom-control custom-checkbox checkbox-center"
+                    placement="bottom" [adaptivePosition]="false"
+                    
                     tooltip="Select All"
                   >
                     <input
                       type="checkbox"
                       class="custom-control-input"
                       [ngModel]="isCheckAll"
-                      [disabled]="canEdit && isDisabled"
+                      [disabled]="isDisabled"
                       name="select"
                       value="isCheckAll{{ j }}"
-                      (change)="checkUncheckAll(item, j)"
+                      (change)="checkUncheckAll(item,$event)"
                     />
                     <span class="custom-control-label"></span>
                   </label>
@@ -153,16 +168,18 @@
             </thead>
             <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
               <tr>
-                <th rowspan="2" class="wd-4">
+                <th rowspan="2" class="wd-6">
                   <label
                     class="custom-control custom-checkbox checkbox-center"
+                    placement="bottom" [adaptivePosition]="false"
                     tooltip="Select All"
                   >
                     <input
                       type="checkbox"
                       class="custom-control-input"
-                      name="select"
-                    />
+                      [ngModel]="isCheckAll"
+                      [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
+                      (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
@@ -191,7 +208,7 @@
                 "
               >
                 <td scope="row">
-                  <label
+                  <!-- <label
                     class="custom-control custom-checkbox checkbox-center"
                     *ngIf="isDisabled"
                     tooltip="Select institution for proof submission"
@@ -225,7 +242,24 @@
                       value="option{{ summary.investmentGroup1TransactionId }}"
                     />
                     <span class="custom-control-label"></span>
-                  </label>
+                  </label> -->
+                  <label
+                  *ngIf="summary.transactionStatus=='Pending'"
+                  class="custom-control custom-checkbox checkbox-center"
+                >
+                  <input
+                    type="checkbox"
+                    [ngModel]="enableSelectAll"
+                    [disabled]="isDisabled"
+                    (change)="
+                      onSelectCheckBox(summary, $event, i, j, item.frequency);
+                      enableCheckboxFlag = j
+                    "
+                    class="custom-control-input"
+                    value="option{{ summary.investmentGroup1TransactionId }}"
+                  />
+                  <span class="custom-control-label"></span>
+                </label> 
                 </td>
                 <td *ngIf="previousEmployeeList?.length">
                   <select
@@ -280,7 +314,7 @@
                 <td>
                   <div class="custom_icon_badge">
                     <input
-                    *ngIf = "item.frequency !=='As & When'"
+                    
                       type="text"
                       id="declaredAmount{{ summary.investmentGroup1TransactionId }}"  
                       onkeypress="return /[0-9 ]/i.test(event.key)"
@@ -290,13 +324,13 @@
                       (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i"
                        />
-                      <input
+                      <!-- <input
                      *ngIf = "item.frequency ==='As & When'"
                       type="text"
                       class="form-control"
-                     placeholder="NA"
+                  
                      disabled
-                    />
+                    /> -->
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
@@ -591,8 +625,8 @@
                   <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Premium Receipt/ Premium Statement"></span
-                      >Premium Receipt/ Premium Statement
+                      <span tooltip="Account Statement / PPF Passbook"></span
+                      >Account Statement / PPF Passbook
                     </td>
                     <td>
                       <span
@@ -685,7 +719,7 @@
                   <th scope="col" class="font700 wd-15">Proof Submission ID</th>
                   <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Policy No.</th>
+                  <th scope="col" class="font700 wd-15">Account No.</th>
                   <!-- <th scope="col" class="font700 wd-10">Receipt No.</th>
                    <th scope="col" class="font700 wd-10">Receipt Date</th> -->
                   <th scope="col" class="font700 wd-10">Receipt Amount</th>
@@ -805,7 +839,7 @@
                     ></i>
                   </td> -->
                   <td>
-                  <i *ngIf="canEdit" class="fa fa-eye font-16 text-blue cursor-pointer" 
+                  <i class="fa fa-eye font-16 text-blue cursor-pointer" 
                   (click)="
                   declarationEditUpload(
                       template2,
@@ -1201,10 +1235,10 @@
                 <tr>
                   <td colspan="1" class="bg-lightgray font-18 font700">Total</td>
                   <td
-                    *ngIf="previousEmployeeList?.length"
+                    *ngIf="previousEmployeeList?.jlength"
                     class="bg-lightgray font-18 font700 align-right"
                   ></td>
-               
+                  <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
                       {{ item.declarationTotal | number: "1.2-2" }}
@@ -1249,10 +1283,11 @@
             *ngIf="previousEmployeeList?.length"
           >
             <tbody>
-              <tr>
+              <tr *ngFor="let item of editTransactionUpload; let j = index">
                 <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
+                <td class="bg-gray font-18 font700 align-right wd-9"></td>
                 <!-- <td class="bg-gray font-18 font700 align-right wd-2"></td> -->
-                <td class="bg-gray font-18 font700 align-right wd-11"></td>
+                <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span class="padding-right-12" placement="left" tooltip="{{
                     grandDeclarationTotalEditModal | number: '1.2-2'
@@ -1262,22 +1297,22 @@
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span class="padding-right-12" tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}">
-                    {{ grandActualTotalEditModal | number: "1.2-2" }}
+                  <span class="padding-right-12" tooltip="{{ item.actualTotal | number: '1.2-2' }}">
+                    {{ item.actualTotal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span class="padding-right-12" placement="left" tooltip=" {{
                     grandRejectedTotalEditModal | number: '1.2-2'
                   }}">
-                    {{ grandRejectedTotalEditModal | number: "1.2-2" }}
+                    {{grandRejectedTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span class="padding-right-12" placement="left" tooltip="{{
                     grandApprovedTotalEditModal | number: '1.2-2'
                   }}">
-                    {{ grandApprovedTotalEditModal | number: "1.2-2" }}
+                    {{grandApprovedTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 wd-7"></td>
@@ -1291,7 +1326,7 @@
             *ngIf="!previousEmployeeList?.length"
           >
             <tbody>
-              <tr>
+              <tr >
                 <td class="bg-gray font-18 font700 wd-8">Grand Total</td>
                 <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
                 <td class="bg-gray font-18 font700 align-right wd-7"></td>
@@ -1305,8 +1340,8 @@
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd_9">
                   <span class="padding-right-12" placement="left"
-                    tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}">
-                    {{ grandActualTotalEditModal | number: "1.2-2" }}
+                    tooltip="{{ actualTotal | number: '1.2-2' }}">
+                    {{ actualTotal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd_8">

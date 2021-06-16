@@ -171,6 +171,7 @@
         </div>
       </div>
     </div>
+    <div *ngIf="previousEmployeeList.length > 0">
     <h3 class="mt-3 font-14 text-purple font-bold">Previous Employer</h3>
     <div class="row mt-15">
       <div class="col-12">
@@ -296,6 +297,7 @@
         </div>
       </div>
     </div>
+    </div>
     <hr />
   </div>
 
@@ -325,16 +327,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngIf="visibilityFlag">
+                  <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Proof for Amount Spent"></span>Proof for Amount Spent
+                      <span tooltip="Proof for Expenses Incurred (Medical / hospital / Consultation bills)"></span> Proof for Expenses Incurred (Medical / hospital / Consultation bills)
                     </td>
                     <td>
-                      <span *ngFor="let item of proofForAmountSpent; let j = index" class="text-orange"
+                      <span *ngFor="let item of filesArray; let j = index" class="text-orange"
                         tooltip="{{ item.name }}">
                         <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;
                         {{ item.name }},
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmountPreventive"
+                          [disabled]="true" />
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormatPreventive()"
+                          [(ngModel)]="receiptAmount" />
                       </span>
                     </td>
                     <td>
@@ -345,6 +359,42 @@
                               )
                             : UploadModal(template4)
                         "></i>&nbsp;&nbsp;
+                      <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
+                    </td>
+                  </tr>
+                  <tr *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
+                    <th scope="row"><span tooltip="2">2</span></th>
+                    <td>
+                      <span tooltip=" Proof of Amount paid by Insurance Company"></span> Proof of Amount paid by Insurance Company
+                    </td>
+                    <td>
+                      <span *ngFor="let item of filesArray; let j = index" class="text-orange"
+                        tooltip="{{ item.name }}">
+                        <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;
+                        {{ item.name }},
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmountPreventive"
+                          [disabled]="true" />
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormatPreventive()"
+                          [(ngModel)]="receiptAmount" />
+                      </span>
+                    </td>
+                    <td>
+                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+                          !enableFileUpload
+                            ? sweetalertWarning(
+                                'Please select transaction to Upload Document'
+                              )
+                            : UploadModal(template4)
+                        "></i>&nbsp;&nbsp;
+                      <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
                     </td>
                   </tr>
                   <tr *ngIf="visibilityFlagForRecovery">
@@ -406,7 +456,7 @@
                   <th scope="col" class="font700 wd-15">Proof Submission ID</th>
                   <th scope="col" class="font700 wd-20">Patient Name - Disease -Age Bracket</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Receipt Amount</th>
+                  <!-- <th scope="col" class="font700 wd-15">Receipt Amount</th> -->
                   <th scope="col" class="font700 wd-15">Document Name</th>
                   <th scope="col" class="font700 wd-10">Action</th>
 
@@ -436,11 +486,11 @@
                       }}</span>
                   </td>
 
-                  <td>
+                  <!-- <td>
                     <span tooltip="{{ documentSummary.receiptAmount | number: '1.2-2' }}">
                       {{ documentSummary.receiptAmount | number: '1.2-2' }}
                     </span>
-                  </td>
+                  </td> -->
                   <!-- <td>
                     <span
                       tooltip="{{
@@ -634,10 +684,10 @@
                         disabled />
                     </div>
                   </td>
-                  <td *ngIf='!viewTransactionDetail'>
-                    <input type="text" id="actualAmount{{ summary.specifiedDiseaseTransactionId }}"
+                  <td>
+                    <input type="text" id="actualAmount{{ summary.specifiedDiseaseTransactionId }}" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                       name="actualAmount{{ summary.specifiedDiseaseTransactionId }}" [(ngModel)]="summary.actualAmount"
-                      (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)" class="form-control align-right" />
+                      (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)" class="form-control align-right" [disabled]="summary.transactionStatus=='Approved' || !viewTransactionDetail" />
                   </td>
                   <!-- <td *ngIf='!viewTransactionDetail'>
                     <input type="text" id="actualAmount{{ summary.specifiedDiseaseTransactionId }}"
@@ -731,12 +781,12 @@
                   </select>
                   </td>
 
-                  <td *ngIf="!viewTransactionDetail">
+                  <td>
                     <div class="custom_icon_badge">
                       <input type="text" id="actualAmount{{ summary.specifiedDiseaseTransactionId }}"
                         name="actualAmount{{ summary.specifiedDiseaseTransactionId }}"
                         [(ngModel)]="summary.actualAmount" class="form-control align-right"
-                        (change)="onActualAmountChangeInEditCase(summary, i, j)"   />
+                        (change)="onActualAmountChangeInEditCase(summary, i, j)" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"/>
                     </div>
                   </td>
                   <!-- <td *ngIf="!viewTransactionDetail">

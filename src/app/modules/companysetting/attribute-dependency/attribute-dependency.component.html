@@ -1,0 +1,462 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <form class="card" role="form" [formGroup]="AttDepForm" (ngSubmit)="addAttributeDependency()"
+                method="post" #formDirective="ngForm" novalidate>
+                <div class="row">
+                  <div class="col-md-6">
+
+
+                    <fieldset class="height-350">
+                      <legend>Base Head & Attribute</legend>
+                      <div class="col-md-12">
+                        <div class="row">
+
+                          <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Head Nature</label>
+                            <select (change)="onChangeHeadNature($event, $event.target.value)" name="headNature"
+                              id="headNature" class="form-control  " formControlName="headNature">
+                              <option selected value=null>Select </option>
+                              <option *ngFor="let natureList of headNatureList" [value]="natureList.headNature">
+                                {{natureList.headNature}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Attribute Group</label>
+                            <select (change)="onChangeAttributeGroup($event.target.value);"
+                              name="attributeGroupDefinitionId" id="attributeGroupDefinitionId" class="form-control"
+                              formControlName="attributeGroupDefinitionId">
+                              <option selected value=null>Select </option>
+                              <option *ngFor="let by of AttributeSelectionList" [value]="by.id">
+                                {{by.name}}
+                              </option>
+                            </select>
+                          </div>
+
+                        </div>
+
+                        <div class="row mt-15">
+
+
+                          <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Base Attribute 1</label>
+                            <select (change)="onChangeBaseAttribute1($event, $event.target.value)" name="attribute1"
+                              id="attribute1" class="form-control  " formControlName="attribute1">
+                              <option selected value=null>Select </option>
+                              <option *ngFor="let natureList of attribute1List"
+                                [value]="natureList.attributeMasters.code">
+                                {{natureList.attributeMasters.code}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Base Attribute Value 1</label>
+                            <select (change)="onChangeBaseAttributeValue1($event,$event.target.value)" name="value1"
+                              id="value1" class="form-control  " formControlName="value1">
+                              <option selected value=null>Select </option>
+                              <option *ngFor="let natureList of baseAttributeValue1List" [value]="natureList">
+                                {{natureList}}
+                              </option>
+                            </select>
+                          </div>
+
+
+                        </div>
+                        <div class="row mt-15">
+
+
+                          <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Base Attribute 2</label>
+                            <select (change)="onChangeBaseAttribute2($event, $event.target.value)" name="attribute2"
+                              id="attribute2" class="form-control  " formControlName="attribute2">
+                              <option selected value=null>Select </option>
+                              <option *ngFor="let natureList of attribute2List"
+                                [value]="natureList.attributeMasters.code">
+                                {{natureList.attributeMasters.code}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Base Attribute Value 2</label>
+                            <select (change)="onChangeBaseAttributeValue2($event,$event.target.value)" name="value2"
+                              id="value2" class="form-control  " formControlName="value2">
+                              <option selected value=null>Select </option>
+                              <option *ngFor="let natureList of baseAttributeValue2List" [value]="natureList">
+                                {{natureList}}
+                              </option>
+                            </select>
+                          </div>
+
+
+                        </div>
+                        <div class="row mt-15">
+
+
+                          <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Base Attribute 3</label>
+                            <select (change)="onChangeBaseAttribute3($event, $event.target.value)" name="attribute3"
+                              id="attribute3" class="form-control  " formControlName="attribute3">
+                              <option selected value=null>Select </option>
+                              <option *ngFor="let natureList of attribute3List"
+                                [value]="natureList.attributeMasters.code">
+                                {{natureList.attributeMasters.code}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Base Attribute Value 3</label>
+                            <select (change)="onChangeBaseAttributeValue3($event,$event.target.value)" name="value3"
+                              id="value3" class="form-control  " formControlName="value3">
+                              <option selected value=null>Select </option>
+                              <option *ngFor="let natureList of baseAttributeValue3List" [value]="natureList">
+                                {{natureList}}
+                              </option>
+                            </select>
+                          </div>
+
+
+                        </div>
+                      </div>
+
+                    </fieldset>
+
+
+                    <div class="row mt-15">
+                      <div class="col-md-6 mt-20">
+                        <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                          <input formControlName="activeStatus" type="checkbox" class="custom-control-input"
+                            name="example-inline-checkbox1" value="option1" checked (change)="deactiveActiveCheckBox()">
+                          <span class="custom-control-label">Active </span>
+                        </label>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Remark</label>
+                        <textarea formControlName="remark" class="form-control" rows="3"
+                          [ngClass]="{'is-invalid' : AttDepForm.get('remark').status == 'INVALID'}"
+                          placeholder="Enter Remark"></textarea>
+
+
+
+                      </div>
+
+
+
+
+                    </div><!-- end of row -->
+
+
+
+
+                  </div>
+                  <div class="col-md-6">
+                    <fieldset class="height-350">
+                      <legend>Dependent Attribute & Value</legend>
+
+                      <div class="row">
+
+
+                        <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                          <label class="form-label">Dependent Attribute</label>
+                          <select (change)="onChangeDependentAttribute($event,$event.target.value)"
+                            name="derivedAttribute" id="derivedAttribute" class="form-control  "
+                            formControlName="derivedAttribute"
+                            [ngClass]="{'is-invalid' : AttDepForm.get('derivedAttribute').status == 'INVALID'}">
+                            <option selected value=null>Select </option>
+                            <option *ngFor="let natureList of dependentAttributeList"
+                              [value]="natureList.attributeMasters.code">
+                              {{natureList.attributeMasters.code}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                          <label class="form-label">Dependent Attribute Value</label>
+                          <select (change)="onChangeDerivedAttributeValue($event.target.value)"
+                            name="derivedAttributeValue" id="derivedAttributeValue" class="form-control  "
+                            formControlName="derivedAttributeValue">
+                            <option selected value=null>Select </option>
+                            <option *ngFor="let natureList of dependentAttributeValueList" [value]="natureList">
+                              {{natureList}}
+                            </option>
+                          </select>
+                        </div>
+
+
+                      </div>
+
+
+
+                      <div class="row mt-15">
+                        <!-- <div class="col-md-12"> -->
+                        <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                          <label class="form-label">Treatment</label>
+                          <select (change)="onChangeTreatment($event,$event.target.value)" name="action" id="action"
+                            [ngClass]="{'is-invalid' : AttDepForm.get('action').status == 'INVALID'}"
+                            class="form-control  " formControlName="action">
+                            <option selected value=null>Select </option>
+                            <option *ngFor="let natureList of treatmentList" [value]="natureList">
+                              {{natureList}}
+                            </option>
+                          </select>
+                        </div>
+
+
+                      </div>
+                    </fieldset>
+
+                  </div>
+                </div>
+
+
+
+
+                <div class="row mt-15">
+                  <div class="col-12">
+                    <div class="float-right mb-15">
+                      <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttDepForm.invalid"
+                        [ngClass]="{'disabled-btn-bg-green' : AttDepForm.invalid,'btn-bg-green': !AttDepForm.invalid}"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
+                            class="fa fa-floppy-o"></i></b>
+                        Save</button>
+
+                      <button type="submit" *ngIf="viewUpdateButton"
+                        [ngClass]="AttDepForm.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                        [disabled]="AttDepForm.invalid">
+                        <b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                      <button type="button" (click)="CancelHeadCreation()" *ngIf="viewCancelButton"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                        tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                        Cancel</button>
+
+                      <button type="button" (click)="ResetHeadCreation()" *ngIf="!viewCancelButton"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                        tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                        Reset</button>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
+
+
+
+
+
+              <div class="row">
+                <div class="col-md-12">
+
+
+                  <div class="cycle-table mt-4">
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                    <!-- <p-table [value]="summary" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                      <p-table [value]="summary" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{summary.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th rowspan="1" class="wd-6 text-center">
+                            Sr.No.
+                          </th>
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Head Nature
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="headNature" pSortableColumn="headNature"></p-sortIcon>
+                                <p-columnFilter field="headNature" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Attribute Group
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="attributeGroup" pSortableColumn="attributeGroup"></p-sortIcon>
+                                <p-columnFilter field="attributeGroup" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Base 1 Attribute
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="attribute1" pSortableColumn="attribute1"></p-sortIcon>
+                                <p-columnFilter field="attribute1" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Base 1 Value
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="value1" pSortableColumn="value1"></p-sortIcon>
+                                <p-columnFilter field="value1" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Base 2 Attribute
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="attribute2" pSortableColumn="attribute2"></p-sortIcon>
+                                <p-columnFilter field="attribute2" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+
+                            </div>
+                          </th>
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Base 2 value
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="value2" pSortableColumn="value2"></p-sortIcon>
+                                <p-columnFilter field="value2" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+
+                            </div>
+                          </th>
+
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Base 3 Attribute
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="attribute3" pSortableColumn="attribute3"></p-sortIcon>
+                                <p-columnFilter field="attribute3" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+
+                            </div>
+                          </th>
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Base 3 Value
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="value3" pSortableColumn="value3"></p-sortIcon>
+                                <p-columnFilter field="value3" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+
+                            </div>
+                          </th>
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Dependency Attribute
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="derivedAttribute" pSortableColumn="derivedAttribute"></p-sortIcon>
+                                <p-columnFilter field="derivedAttribute" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+
+                            </div>
+                          </th>
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Dependency Value
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="derivedAttributeValue" pSortableColumn="derivedAttributeValue">
+                                </p-sortIcon>
+                                <p-columnFilter field="derivedAttributeValue" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                              </div>
+
+                            </div>
+                          </th>
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Treatment
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="action" pSortableColumn="action"></p-sortIcon>
+                                <p-columnFilter field="action" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+
+                            </div>
+                          </th>
+
+                          <th class="wd-13 text-center">
+                            Action
+                          </th>
+                        </tr>
+
+                      </ng-template>
+
+
+
+                      <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                        <tr class="p-selectable-row">
+                          <td class="bg-color-light_gray text-center"><label
+                              class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headNature}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label
+                              class="form-lable mb-0">{{user1.attributeGroupName}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.attribute1}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.value1}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.attribute2}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.value2}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.attribute3}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.value3}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label
+                              class="form-lable mb-0">{{user1.derivedAttribute}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label
+                              class="form-lable mb-0">{{user1.derivedAttributeValue}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.action}}</label>
+                          </td>
+
+                          <td class="d-flex">
+
+                            <i class="fa fa-eye text-blue font-16" tooltip="View"
+                              (click)="view(user1.payrollHeadGroupAttributeDependencyId,rowIndex)"></i> &nbsp; &nbsp;
+
+                            <i class="fa fa-edit text-blue font-16" tooltip="Edit"
+                              (click)="edit(user1.payrollHeadGroupAttributeDependencyId,rowIndex,user1.attributeGroupName)"
+                              *ngIf="user1.activeStatus==true"></i>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                              Available</span></td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

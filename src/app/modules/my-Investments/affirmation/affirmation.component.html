@@ -291,7 +291,7 @@
                                                    <td>
                                                       <i class="fa fa-files-o  font-16 text-dark-green cursor-pointer"
                                                          tooltip="File Generate"
-                                                         (click)="download()" ></i>&nbsp;&nbsp;&nbsp;
+                                                         (click)="openForm12BModal(template1)" ></i>&nbsp;&nbsp;&nbsp;
                                                       <i class="fa fa-check-circle-o 
                                             font-16 text-dark-green cursor-pointer" tooltip="Sign"
                                                          (click)="openFormSign(template2)"></i>&nbsp;&nbsp;&nbsp;
@@ -839,27 +839,269 @@
                            </div>
                         </ng-template>
 
-                      <!--   <ng-template #declarationEditUpload>
+                        <ng-template #template1>
                            <div class="modal-header">
-                              <h5 class="modal-title" id="jasdjgh">
-                                 Document Details
-                              </h5>
+                              <div class="col-md-2">
+                                 <h3 class="font-14 text-purple font-bold">Form 12BB</h3>
+                             </div>
                               <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
                                  aria-label="Close">
                                  <span aria-hidden="true">×</span>
                               </button>
-                           </div>                           
+                           </div> 
+                           <div class="section-body mt-3">
+                              <div class="container-fluid" id="htmlData" #htmlData>
+                                  <div class="row clearfix">
+                                      <div class="col-12">
+                                          <div class="card">
+                                              <div class="card-body">
+                                                  <div class="row border-bottom-gray">
+                                                     <!--  <div class="col-md-2">
+                                                          <h3 class="font-14 text-purple font-bold">Form 12BB</h3>
+                                                      </div> -->
+                                                      <div class="col-md-10 mb-10">
+                                                          <div class="float-right">
+                                                             <!--  <button type="button" tooltip="Sign & Upload Form 12B" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-upload"></i></b> Sign & Upload Form 12B </button>
+                                                              <button type="button" tooltip="Print" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-print"></i></b> Print </button> -->
+                                                              <button type="button" tooltip="Download PDF" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="download()"><b><i class="fa fa-file-pdf-o"></i></b> Download PDF </button>
+                                                             <!--  <button type="button" tooltip="Close Window" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-window-close-o"></i></b> Close Window </button> -->
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mt-20">
+                                                      <div class="col-md-12">
+                                                          <h4 class="text-center font-16">Income-Tax Rules 1962</h4>
+                                                          <h5 class="text-center mb-0 mt-20 font-14">Form No. 12 BB</h5>
+                                                          <label class="text-center form-label mb-0 mt-0">(See rule 26C)</label>
+                                                      </div>
+                                                  </div>
+                                                  <div class="row">
+                                                      <div class="col-md-12">
+                                                          <div class="text-center"><label class=" text-center font500 mt-10 mb-10 ">Statement Showing particulars of claims by an employee for deduction of tax under section 192</label></div>
+                          
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mt-20">
+                                                      <div class="col-md-4">
+                                                          <label class="mt-10 mb-0 form-label">Company Name:</label>
+                                                      </div>
+                                                      <div class="col-md-8">
+                                                          <span class="font-14 font700 text-purple ">Paysquare Consultancy LTD.</span>
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mt-10">
+                                                      <div class="col-md-4">
+                                                          <label class="mt-10 mb-0 form-label">Name and Address of the employee:</label>
+                                                      </div>
+                                                      <div class="col-md-8">
+                                                          <span class="font-14 font700 text-purple">------------------------</span>
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mt-10">
+                                                      <div class="col-md-4">
+                                                          <label class="mt-10 mb-0 form-label">Permanent Account Number or Aadhaar Number of Employee:</label>
+                                                      </div>
+                                                      <div class="col-md-8">
+                                                          <span class="font-14 font700 text-purple">DGPPM2345E</span>
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mt-10">
+                                                      <div class="col-md-4">
+                                                          <label class="mt-10 mb-0 form-label">Financial Year:</label>
+                                                      </div>
+                                                      <div class="col-md-8">
+                                                          <span class="font-14 font700 text-purple">2020-2021</span>
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mt-20">
+                                                      <div class="col-md-12">
+                                                          <div class="table-responsive Custom_Table">
+                                                              <table class="table table-bordered m-b-0">
+                                                                  <thead class="thead-light">
+                                                                      <tr>
+                                                                          <th colspan="4" class="text-center text-bold">Details of Claims and Evidance thereOf</th>
+                                                                      </tr>
+                                                                      <tr>
+                                                                          <th class="wd-10 text-bold">Sr. No.</th>
+                                                                          <th class="wd-40 text-bold">Nature of Claim</th>
+                                                                          <th class="wd-20 text-bold">Amount (Rs.)</th>
+                                                                          <th class="wd-30 text-bold">Evidance/Particular </th>
+                                                                      </tr>
+                                                                      <tr>
+                                                                          <th class="wd-10 text-bold text-center">(1)</th>
+                                                                          <th class="wd-40 text-bold text-center">(2)</th>
+                                                                          <th class="wd-20 text-bold text-center">(3)</th>
+                                                                          <th class="wd-30 text-bold  text-center">(4) </th>
+                                                                      </tr>
+                          
+                                                                  </thead>
+                                                                  <tbody>
+                                                                      <tr>
+                                                                          <td class="wd-10 align-left">1</td>
+                                                                          <td class="wd-40 align-left">House Rent Allowance
+                                                                           <div class="ml-10">
+                                                                              <span class="text-bold">(i)</span>&nbsp;Rent paid to the landlord
+                                                                          </div>
+                                                                          <div class="ml-10">
+                                                                           <span class="text-bold">(ii)</span>&nbsp;Name of the landlord
+                                                                       </div>
+                                                                       <div class="ml-10">
+                                                                        <span class="text-bold">(iii)</span>&nbsp;Address of the landlord
+                                                                           </div>
+                                                                           <div class="ml-10">
+                                                                              <span class="text-bold">(iv)</span>&nbsp; [Permanent Account Number or
+                                                                              AadhaarNumber] of the landlord
+                                                                                 </div>
+                                                                              <div class="ml-10">
+                                                                                  <span class="text-bold">Note</span> Permanent Account Number or Aadhaar Number or Adhaar shall be furnish <br>  if the aggregate rent paid during previous year exceed one lakh rupees
+                                                                              </div>
+                                                                          </td>
+                                                                          <td class="wd-20 align-right">0.00</td>
+                                                                          <td class="wd-30 align-left"></td>
+                                                                      </tr>
+                                                                      <tr>
+                                                                          <td class="wd-10 align-left">2</td>
+                                                                          <td class="wd-40 align-left">Leave travel concession or assitance
+                          
+                                                                          </td>
+                                                                          <td class="wd-20 align-right">0.00</td>
+                                                                          <td class="wd-30 align-left"></td>
+                                                                      </tr>
+                                                                      <tr>
+                                                                          <td class="wd-10 align-left">3</td>
+                                                                          <td class="wd-40 align-left">Deduction of interest on barrowing
+                                                                              <div class="ml-10">
+                                                                                  <span class="text-bold">(i)</span>&nbsp;Interest payable/paid to the lender
+                                                                              </div>
+                                                                              <div class="ml-10">
+                                                                                 <span class="text-bold">(ii)</span>&nbsp;Name of the lender
+                                                                             </div>
+                                                                             <div class="ml-10">
+                                                                              <span class="text-bold">(iii)</span>&nbsp;Address of the lender
+                                                                          </div>
+                                                                              <div class="ml-10">
+                                                                                  <span class="text-bold"> (iv) &nbsp;</span>[Permanent Account Number or Aadhaar
+                                                                                  Number] of the lender
+                                                                              </div>
+                                                                              <div class="ml-20">
+                                                                                  <span class="text-bold"> (a)  &nbsp;</span>Financial Institutions (if available)
+                                                                              </div>
+                                                                              <div class="ml-20">
+                                                                                 <span class="text-bold"> (b)  &nbsp;</span>Employer (if available)
+
+                                                                             </div>
+                                                                             <div class="ml-20">
+                                                                              <span class="text-bold"> (c)  &nbsp;</span>Others
+
+                                                                          </div>
+                                                                          </td>
+                                                                          <td class="wd-20 align-right">0.00</td>
+                                                                          <td class="wd-30 align-left"></td>
+                                                                      </tr>
+                                                                      <tr>
+                                                                          <td class="wd-10 align-left">4</td>
+                                                                          <td class="wd-40 align-left">Deduction under Chapter VI-A
+                                                                              <div class="ml-10">
+                                                                                  <span class="text-bold">(A) &nbsp;</span> Sections 80C, 80CCC and 80CCD
+                                                                              </div>
+                                                                              <div class="ml-20">
+                                                                                  <span class="text-bold"> (i) &nbsp;</span>Section 80C
+                                                                              </div>
+                                                                              <div class="ml-20">
+                                                                                 <span class="text-bold"> (ii) &nbsp;</span>Section 80C
+                                                                             </div>
+                                                                              <div class="ml-10">
+                                                                                  <span class="text-bold">(B) &nbsp;</span>Other sections (e.g. 80E, 80G, 80TTA, etc.)
+                                                                                  under Chapter VI-A
+                                                                              </div>
+                                                                              <div class="ml-20">
+                                                                                  <span class="text-bold">(i) &nbsp; </span>section.............................
+                                                                              </div>
+                                                                              <div class="ml-20">
+                                                                                 <span class="text-bold">(ii) &nbsp; </span>section.............................
+                                                                             </div>
+                                                                             <div class="ml-20">
+                                                                              <span class="text-bold">(iii) &nbsp; </span>section.............................
+                                                                          </div>
+                                                                          <div class="ml-20">
+                                                                           <span class="text-bold">(iv) &nbsp; </span>section.............................
+                                                                       </div>
+                                                                          </td>
+                                                                          <td class="wd-20 align-right">0.00</td>
+                                                                          <td class="wd-30 align-left"></td>
+                                                                      </tr>
+                                                                <!--    <tr>
+                                                                          <td class="wd-10 align-left">2</td>
+                                                                          <td class="wd-40 align-left">Income from Let out House Property
+                          
+                                                                          </td>
+                                                                          <td class="wd-20 align-right">0.00</td>
+                                                                          <td class="wd-30 align-left"></td>
+                                                                      </tr> -->
+                                                                      <tr>
+                                                                          <td colspan="4" class="text-center text-bold">Verification</td>
+                                                                      </tr>
+                                                                      <tr>
+                                                                          <td colspan="4" class="align-left">
+                                                                              I, <span class="text-bold">------------------</span>,Daugher of <span class="text-bold">---------------</span> do hereby certify that information given above is complete and correct
+                                                                          </td>
+                                                                      </tr>
+                                                                      <tr>
+                                                                          <td colspan="2" class="align-left">
+                                                                              <div>Place:</div>
+                                                                              <div class="mt-2">Date: <span class="text-bold">12/05/2021</span></div>
+                                                                              <div class="mt-2">Designation: <span class="text-bold">Software Designer</span></div>
+                                                                          </td>
+                                                                          <td colspan="2" class="align-right">
+                                                                           <div class="">
+                                                                           <div class="preview" *ngIf="imageFile">
+                                                                              <img [src]="imageFile" style="width:200px; height:38px;float:right">
+                                                                          </div>
+                                                                          <div class="preview" *ngIf="imgFile">
+                                                                              <img [src]="imgFile" style="width:200px; height:38px;float: right;">
+                                                                          </div>
+                                                                        </div>
+                                                                              <div style="margin-top: 45px;">Signature</div>
+                                                                              <div class="mt-2">Full Name: <span class="text-bold">..............................</span></div>
+                                                                          </td>
+                                                                      </tr>
+                                                                  </tbody>
+                                                              </table>
+                                                          </div>
+                          
+                                                      </div>
+                                                  </div>
+                                                  <div class="row mt-20">
+                                                      <div class="col-md-12">
+                                                          <div class="float-right">
+                                                             <!--  <button type="button" tooltip="Sign & Upload Form 12B" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-upload"></i></b>  Upload Form 12B </button>
+                                                              <button type="button" tooltip="Print" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-print"></i></b> Print </button>
+                                                              <button type="button" tooltip="Close" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-times"></i></b>Close </button> -->
+                                                              <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel"(click)="modalRef.hide()"><b>
+                                                                 <i class="fa fa-close"></i></b> Cancel
+                                                           </button>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                          
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                                                    
                            <div class="col-12">
-                              <div class="float-right mb-15">
+                          <!--     <div class="float-right mb-15">
                                  <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel "
                                     (click)="modalRef.hide()"><b>
                                        <i class="fa fa-close"></i></b> Cancel
                                  </button>
-                              </div>
+                              </div> -->
                            </div>
                            <div class="modal-footer">
                            </div>
-                        </ng-template> -->
+                        </ng-template>
 
                      </div>
 

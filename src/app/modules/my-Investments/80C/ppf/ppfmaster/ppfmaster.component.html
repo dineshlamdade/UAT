@@ -60,7 +60,11 @@
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                         <!-- [maxDate]="today" -->
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPolicyEndDate()" placeholder="Account Start Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }">
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                        formControlName="policyStartDate" 
+                        [maxDate]="today"
+                        data-provide="datepicker" 
+                        data-date-autoclose="true" class="form-control" (bsValueChange)="setPolicyEndDate()" placeholder="Account Start Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }">
                         <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
                             <div *ngIf="masterForm.policyStartDate.errors.required">Account Start Date is mandatory</div>
                         </div>
@@ -261,7 +265,7 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><span tooltip="1">1</span></th>
-                                            <td><span tooltip="Premium Receipt/ Premium Statement"></span>PPF Receipt/Statement</td>
+                                            <td><span tooltip="Front Page of Passbook / Account Statement"></span>Front Page of Passbook / Account Statement</td>
                                             <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                             class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                                                 <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">

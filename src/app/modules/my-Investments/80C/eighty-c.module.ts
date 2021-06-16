@@ -70,6 +70,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SummaryComponent } from './summary/summary.component';
 import { EmployeeContributionToProvidentFundPFComponent } from './employee-contribution-to-provident-fund-pf/employee-contribution-to-provident-fund-pf.component';
 import { EmployeeContributionToVPFComponent } from './employee-contribution-to-vpf/employee-contribution-to-vpf.component';
+import { TuitionFeesMasterComponent } from './tuition-fees/tuition-fees-master/tuition-fees-master.component';
+import { EmployeesNPS80CCD1Component } from './employees-nps80-ccd1/employees-nps80-ccd1.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +125,8 @@ import { EmployeeContributionToVPFComponent } from './employee-contribution-to-v
     SummaryComponent,
     EmployeeContributionToProvidentFundPFComponent,
     EmployeeContributionToVPFComponent,
+    TuitionFeesMasterComponent,
+    EmployeesNPS80CCD1Component,
 
      ],
   imports: [

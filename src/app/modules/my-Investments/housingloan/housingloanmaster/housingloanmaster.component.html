@@ -1,502 +1,547 @@
-<form class="card" role="housingLoanForm" (ngSubmit)="addMaster(housingLoanForm,formDirective)" [formGroup]="housingLoanForm" #formDirective="ngForm" method="post" novalidate>
-    <!-- <div class="tabview-contents"> -->
-    <br>
-    <fieldset>
-        <legend>Property Details</legend>
-        <div class="row">
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Property Name</label>
-                <input type="text" formControlName="propertyName" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Property Name" [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyName.errors }">
-                <div *ngIf="submitted && houseLoanF.propertyName.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.propertyName.errors.required">Property Name is mandatory</div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Possession Date</label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="possessionDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Possession Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && houseLoanF.possessionDate.errors }"
-                            [maxDate]="today">
-                        <div *ngIf="submitted && houseLoanF.possessionDate.errors" class="invalid-feedback">
-                            <div *ngIf="houseLoanF.possessionDate.errors.required">Possession Date is mandatory</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label"><b> Address</b> (Copy From)</label>
-                <select name="Address_Copy_From" id="copyFrom" placeholder="Copy Address" (change)='onSelectAddressType()' formControlName="copyFrom" class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && houseLoanF.copyFrom.errors }" #CopyFrom>
-           <option [ngValue]="null">Select</option>
-            <option *ngFor="let addressType of employeeAddressType" [value]="addressType.value">
-              {{addressType.label}}
-            </option>
-          </select>
-            </div>
-
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Address 1</label>
-                <input type="text" formControlName="address1" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Property Name" [ngClass]="{ 'is-invalid': submitted && houseLoanF.address1.errors }">
-                <div *ngIf="submitted && houseLoanF.address1.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.address1.errors.required">Address 1 Name is mandatory</div>
-                </div>
-            </div>
+<form class="card" role="housingLoanForm" (ngSubmit)="addMaster(housingLoanForm,formDirective)"
+  [formGroup]="housingLoanForm" #formDirective="ngForm" method="post" novalidate>
+  <!-- <div class="tabview-contents"> -->
+  <br>
+  <fieldset>
+    <legend>Property Details</legend>
+    <div class="row">
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Property Name</label>
+        <input type="text" formControlName="propertyName" class="form-control"
+          onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Property Name"
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyName.errors }">
+        <div *ngIf="submitted && houseLoanF.propertyName.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.propertyName.errors.required">Property Name is mandatory</div>
         </div>
-
-
-        <div class="row mt-20">
-
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Address 2</label>
-                <input type="text" formControlName="address2" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Property Name" [ngClass]="{ 'is-invalid': submitted && houseLoanF.address2.errors }">
-                <div *ngIf="submitted && houseLoanF.address2.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.address2.errors.required">Address 2 Name is mandatory</div>
-                </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Possession Date</label>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Address 3</label>
-                <input type="text" formControlName="address3" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Property Name" [ngClass]="{ 'is-invalid': submitted && houseLoanF.address3.errors }">
-                <div *ngIf="submitted && houseLoanF.address3.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.address3.errors.required">Address 3 Name is mandatory</div>
-                </div>
+            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="possessionDate"
+              (bsValueChange)="OnPossessionDateChange()" data-provide="datepicker" data-date-autoclose="true"
+              class="form-control" placeholder="Possession Date" bsDatepicker
+              [ngClass]="{ 'is-invalid': submitted && houseLoanF.possessionDate.errors }" [maxDate]="today">
+            <div *ngIf="submitted && houseLoanF.possessionDate.errors" class="invalid-feedback">
+              <div *ngIf="houseLoanF.possessionDate.errors.required">Possession Date is mandatory</div>
             </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Country</label>
-                <select name="Address_Copy_From" id="country" placeholder="Copy Address" formControlName="country" class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && houseLoanF.country.errors }" #country>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label"><b> Address</b> (Copy From)</label>
+        <select name="Address_Copy_From" id="copyFrom" placeholder="Copy Address" (change)='onSelectAddressType()'
+          formControlName="copyFrom" class="form-control custom-select"
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.copyFrom.errors }" #CopyFrom>
+          <option [ngValue]="null">Select</option>
+          <option *ngFor="let addressType of employeeAddressType" [value]="addressType.value">
+            {{addressType.label}}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Address 1</label>
+        <input type="text" formControlName="address1" class="form-control"
+          onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Property Name"
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.address1.errors }">
+        <div *ngIf="submitted && houseLoanF.address1.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.address1.errors.required">Address 1 Name is mandatory</div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row mt-20">
+
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Address 2</label>
+        <input type="text" formControlName="address2" class="form-control"
+          onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Property Name"
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.address2.errors }">
+        <div *ngIf="submitted && houseLoanF.address2.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.address2.errors.required">Address 2 Name is mandatory</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Address 3</label>
+        <input type="text" formControlName="address3" class="form-control"
+          onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Property Name"
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.address3.errors }">
+        <div *ngIf="submitted && houseLoanF.address3.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.address3.errors.required">Address 3 Name is mandatory</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Country</label>
+        <select name="Address_Copy_From" id="country" placeholder="Copy Address" formControlName="country"
+          class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && houseLoanF.country.errors }"
+          #country>
 
           <option *ngFor="let country of countriesList" [value]="country">
             {{country}}
           </option>
         </select>
-                <div *ngIf="submitted && houseLoanF.country.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.country.errors.required">country mandatory</div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">PIN</label>
-                <input name="pinCode" id="pinCode" placeholder="PIN" (change)='getPermanentAddressFromPIN()' formControlName="pinCode" minlength="6" maxlength="6" class="form-control custom-select" pattern="[0-9]{6}" [ngClass]="{ 'is-invalid': submitted && houseLoanF.pinCode.errors }"
-                    #pinCode>
-                <div *ngIf="submitted && houseLoanF.pinCode.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.pinCode.errors.required">PIN is mandatory</div>
-                </div>
-            </div>
+        <div *ngIf="submitted && houseLoanF.country.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.country.errors.required">country mandatory</div>
         </div>
-        <div class="row mt-20">
-
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">State</label>
-                <input type="text" formControlName="state" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && houseLoanF.state.errors }">
-                <div *ngIf="submitted && houseLoanF.state.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.state.errors.required">State is mandatory</div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">City</label>
-                <input type="text" formControlName="city" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && houseLoanF.city.errors }" disabled>
-                <div *ngIf="submitted && houseLoanF.city.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.city.errors.required">City Name is mandatory</div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Town</label>
-                <input type="text" formControlName="town" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && houseLoanF.town.errors }" disabled>
-                <div *ngIf="submitted && houseLoanF.town.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.town.errors.required">Town Name is mandatory</div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Village</label>
-                <input type="text" formControlName="village" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && houseLoanF.village.errors }" disabled>
-                <div *ngIf="submitted && houseLoanF.village.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.village.errors.required">Village Name is mandatory</div>
-                </div>
-            </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">PIN</label>
+        <input name="pinCode" id="pinCode" placeholder="PIN" (change)='getPermanentAddressFromPIN()'
+          formControlName="pinCode" minlength="6" maxlength="6" class="form-control custom-select" pattern="[0-9]{6}"
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.pinCode.errors }" #pinCode>
+        <div *ngIf="submitted && houseLoanF.pinCode.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.pinCode.errors.required">PIN is mandatory</div>
         </div>
-        <div class="row mt-20">
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Stamp Duty & Registration Payment Date</label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="stampDutyRegistrationDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="checkRegistrationDateValid()" [ngClass]="{ 'is-invalid': (submitted   && houseLoanF.stampDutyRegistrationDate.errors) || stampDutyDateValid }"
-                            [maxDate]="today" placeholder="Registration Date" bsDatepicker>
-                        <div *ngIf="(submitted && houseLoanF.stampDutyRegistrationDate.errors) ||  stampDutyDateValid" class="invalid-feedback">
-                            <div *ngIf="(houseLoanF.stampDutyRegistrationDate.errors.required) || stampDutyDateValid ">Stamp Duty & Registration Date is mandatory</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Stamp Duty & Registration Amount</label>
-                <!-- <input type="text" formControlName="stampDutyRegistrationAmount" class="form-control"
-       placeholder="Enter Property Name"
-       [ngClass]="{ 'is-invalid': submitted && houseLoanF.stampDutyRegistrationAmount.errors }"  > -->
-                <p-inputNumber class="p-inputright" formControlName="stampDutyRegistrationAmount" placeholder="Enter Stamp Duty & Registration Amount" [ngClass]="{ 'is-invalid': submitted && houseLoanF.stampDutyRegistrationAmount.errors }" (onBlur)="checkPaymentDate()"
-                    mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
-                <div *ngIf="submitted && houseLoanF.stampDutyRegistrationAmount.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.stampDutyRegistrationAmount.errors.required">Stamp Duty & Registration Amount is mandatory
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Property Registration Amount</label>
-                <!-- <input type="text" formControlName="propertyRegistrationValue" class="form-control"
-     placeholder="Enter Property Name"
-     [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }"  > -->
+      </div>
+    </div>
+    <div class="row mt-20">
 
-                <p-inputNumber class="p-inputright" formControlName="propertyRegistrationValue" placeholder="Enter Property Registration Amount" [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
-
-                <div *ngIf="submitted && houseLoanF.propertyRegistrationValue.errors" class="invalid-feedback">
-                    <div *ngIf="houseLoanF.propertyRegistrationValue.errors.required">Property Registration Amount is mandatory
-                    </div>
-                </div>
-            </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">State</label>
+        <input type="text" formControlName="state" class="form-control" placeholder=""
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.state.errors }">
+        <div *ngIf="submitted && houseLoanF.state.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.state.errors.required">State is mandatory</div>
         </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">City</label>
+        <input type="text" formControlName="city" class="form-control" placeholder=""
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.city.errors }" disabled>
+        <div *ngIf="submitted && houseLoanF.city.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.city.errors.required">City Name is mandatory</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Town</label>
+        <input type="text" formControlName="town" class="form-control" placeholder=""
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.town.errors }" disabled>
+        <div *ngIf="submitted && houseLoanF.town.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.town.errors.required">Town Name is mandatory</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Village</label>
+        <input type="text" formControlName="village" class="form-control" placeholder=""
+          [ngClass]="{ 'is-invalid': submitted && houseLoanF.village.errors }" disabled>
+        <div *ngIf="submitted && houseLoanF.village.errors" class="invalid-feedback">
+          <div *ngIf="houseLoanF.village.errors.required">Village Name is mandatory</div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
 
-
-        <div class="row">
-            <div class="col-md-12">
-                <fieldset>
-                    <!--
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset>
+          <!--
           <div class="col-12" formArrayName="HPOwnerDetailForm" *ngFor="let item of housingLoanForm.get('HPOwnerDetailForm')['controls']; index as i;
         last as l; first as f"> -->
 
-                    <div [formGroup]="HPOwnerDetailForm" #formDirective_="ngForm">
-                        <div class="row">
+          <div [formGroup]="HPOwnerDetailForm" #formDirective_="ngForm">
+            <div class="row">
+              <!-- <div class="col-sm-3 col-md-3">
+                <label class="form-label">Name of Family</label>
+                <ng-multiselect-dropdown [placeholder]="'None Selected'" defaultLabel="Select a Name"  appendTo="body" #multiSelect
+                style="font-size: small;" [settings]="dropdownSettings" (change)='OnSelectionfamilyMemberGroup($event.target.value)'
+                [data]="dropdownList"
+                (onSelect)="onItemSelect($event)" (onDeSelectAll)="onDeselectAll($event)"
+                (onSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)"
+                [(ngModel)]="selectedEstablishmentMasterId"
+                [ngClass]="{ 'is-invalid': houseLoanOwnerDetailSubmitted && HPOwnerDetailF.familyMemberInfoId.errors }"
+                formControlName="familyMemberInfoId">
+              </ng-multiselect-dropdown>
+             </div> -->
+              <div class="col-sm-3 col-md-3">
+                <label class="form-label">Name of Owner</label>
+                <select class="form-control custom-select"
+                  formControlName="ownerName" (change)='OnSelectionfamilyMemberGroup()'
+                  [ngClass]="{ 'is-invalid': houseLoanOwnerDetailSubmitted &&  HPOwnerDetailF.ownerName.errors }">
+                  <option [ngValue]="null">Select</option>
+                  <option *ngFor="let familyMember of familyMemberName" [value]="familyMember.value">
+                    {{familyMember.label}}
+                  </option>
+                  <option [value]="'other'">Other</option>
+                </select>
+                <div *ngIf="houseLoanOwnerDetailSubmitted &&  HPOwnerDetailF.ownerName.errors" class="invalid-feedback">
+                  <div *ngIf=" HPOwnerDetailF.ownerName.errors.required">Policy Holder Name is mandatory</div>
+                </div>
+              </div>
+              <div class="col-sm-3 col-md-3" *ngIf="relationFlag">
+                <label class="form-label">Relationship</label>
+                <input type="text" formControlName="relationship" class="form-control" disabled
+                  [ngClass]="{ 'is-invalid':  houseLoanOwnerDetailSubmitted && HPOwnerDetailF.relationship.errors }">
+                <div *ngIf="houseLoanOwnerDetailSubmitted && HPOwnerDetailF.relationship.errors" class="invalid-feedback">
+                  <div *ngIf="HPOwnerDetailF.relationship.errors.required">Relationship is mandatory</div>
+                </div>
+              </div>
 
-                            <div class="col-sm-4 col-md-3">
-                                <label class="form-label">Name of Owner</label>
-                                <input type="text" formControlName="ownerName" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Owner Name" [ngClass]="{ 'is-invalid': houseLoanOwnerDetailSubmitted && HPOwnerDetailF.ownerName.errors }">
+              <div class="col-sm-3 col-md-3" *ngIf="visibilityFlagFamily">
+                <label class="form-label">Name of Owner</label>
+                <input type="text" formControlName="ownerName" class="form-control"
+                  onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Owner Name"
+                  [ngClass]="{ 'is-invalid': houseLoanOwnerDetailSubmitted && HPOwnerDetailF.ownerName.errors }">
 
-                                <div *ngIf="houseLoanOwnerDetailSubmitted && HPOwnerDetailF.ownerName.errors" class="invalid-feedback">
-                                    <div *ngIf="HPOwnerDetailF.ownerName.errors.required">Owner Name is mandatory</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 col-md-3">
-                                <label class="form-label ml-15" tooltip="1st Time Home Buyer" placement="left">1<sup>st</sup> Time Home
+                <div *ngIf="houseLoanOwnerDetailSubmitted && HPOwnerDetailF.ownerName.errors" class="invalid-feedback">
+                  <div *ngIf="HPOwnerDetailF.ownerName.errors.required">Owner Name is mandatory</div>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3">
+                <label class="form-label ml-15" tooltip="1st Time Home Buyer" placement="left">1<sup>st</sup> Time Home
                   Buyer</label>
-                                <div class="custom-controls-stacked ml-15 mt-10">
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <label class="custom-control custom-radio custom-control-inline">
+                <div class="custom-controls-stacked ml-15 mt-10">
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <label class="custom-control custom-radio custom-control-inline">
                       <input type="radio" class="custom-control-input" formControlName="firstTimeHomeBuyer"
                         [value]="true" checked>
                       <span class="custom-control-label">Yes</span>
                     </label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <label class="custom-control custom-radio custom-control-inline">
+                  </div>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <label class="custom-control custom-radio custom-control-inline">
                       <input type="radio" class="custom-control-input" formControlName="firstTimeHomeBuyer"
                         [value]="false">
                       <span class="custom-control-label">No</span>
                     </label>
-                                    </div>
-                                </div>
-                            </div>
+                  </div>
+                </div>
+              </div>
 
-                            <div class="custom-controls-stacked ml-15 mt-20">
-                                <!-- <div class="float-right mb-15"> -->
-                                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add" (click)="addOwnerType()"><b>
-                    <i class="fa fa-plus"></i></b> Add</button>
-                                <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left" (click)="cancelOwnerType()"><b><i class="fa fa-times"></i></b> Cancel</button>
-                                <!--
-                  <button type="button" class="btn btn-primary btn-sm " tooltip="Add " (click)="addOwnerType()"><b>
-                      <i class="fa fa-plus"></i></b> Add
-                  </button>&nbsp;&nbsp;&nbsp;
-                  <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel " (click)="cancelOwnerType()"><b>
+              <div class="custom-controls-stacked ml-15 mt-20">
+                <!-- <div class="float-right mb-15"> -->
+                <button type="button"
+                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add "
+                  (click)="addOwnerType()"><b>
+                    <i class="fa fa-plus"></i></b> Add
+                </button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
+                  tooltip="Cancel " (click)="cancelOwnerType()"><b>
                     <i class="fa fa-plus"></i></b> Cancel
-                  </button> -->
-                                <!-- </div> -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-30">
-                        <div class="col-12 col-md-12 col-sm-12">
-                            <div class="table-responsive Custom_Table ">
-                                <table class="table table-striped table-bordered table-hover m-b-0">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col" class="wd-13">Name of Owner</th>
-                                            <th scope="col" class="wd-9">1st Time Home Buyer</th>
-                                            <th scope="col" class="wd-14">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!--   <tr *ngFor="let loanDetail of loanDetailGridData ;  let i = index"> -->
-                                        <tr *ngFor="let loanDetail of houseLoanOwnerTypeList  ;  let i = index">
-                                            <td>
-                                                <span>
+                </button>
+                <!-- </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="row mt-30">
+            <div class="col-12 col-md-12 col-sm-12">
+              <div class="table-responsive Custom_Table ">
+                <table class="table table-striped table-bordered table-hover m-b-0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" class="wd-13">Name of Owner</th>
+                      <!-- <th scope="col" class="wd-13">Relationship</th> -->
+                      <th scope="col" class="wd-13">1st Time Home Buyer</th>
+                      <th scope="col" class="wd-14">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!--   <tr *ngFor="let loanDetail of loanDetailGridData ;  let i = index"> -->
+                    <tr *ngFor="let loanDetail of houseLoanOwnerTypeList  ;  let i = index">
+                      <td>
+                        <span>
                           {{loanDetail.ownerName}}
                         </span>
-                                            </td>
-                                            <td>
-                                                <span>
+                      </td>
+                      <!-- <td>
+                        <span>
+                          {{loanDetail.relationship}}
+                        </span>
+                      </td> -->
+                      <td>
+                        <span>
                           <!-- {{loanDetail.firstTimeHomeBuyer}} -->
                           <!-- ecs==1?'Yes':'No'}}" -->
                           {{loanDetail.firstTimeHomeBuyer==1?'Yes':'No'}}
                         </span>
-                                            </td>
-                                            <td>
-                                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editLoanOwnerDetail(i)" tooltip="Edit"></i>&nbsp;&nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="!houseLoanOwnerTypeList?.length">
-                                            <td colspan="4">
-                                                <span class="font-14 font500 align-center text-red">No
+                      </td>
+                      <td>
+                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editLoanOwnerDetail(i)"
+                          tooltip="Edit"></i>&nbsp;&nbsp;
+                      </td>
+                    </tr>
+                    <tr *ngIf="!houseLoanOwnerTypeList?.length">
+                      <td colspan="4">
+                        <span class="font-14 font500 align-center text-red">No
                           Data Available</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-        </div>
-        <div class="row  mt-20">
-            <div class="col-md-12">
-                <fieldset>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row  mt-20">
+      <div class="col-md-12">
+        <fieldset>
 
-                    <!-- <div class="col-12" formArrayName="HPUsageDetailForm"
+          <!-- <div class="col-12" formArrayName="HPUsageDetailForm"
             *ngFor="let item of HPUsageDetailForm.controls; index as i ; last as l; first as f"> -->
-                    <div [formGroup]="HPUsageDetailForm" #formDirective_="ngForm">
-                        <div class="row">
-                            <div class="col-sm-6 col-md-3">
-                                <label class="form-label">Usage Type</label>
-                                <select name="usageType" placeholder="" formControlName="usageType" class="form-control custom-select" #UsageType [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">
+          <div [formGroup]="HPUsageDetailForm" #formDirective_="ngForm">
+            <div class="row">
+              <div class="col-sm-6 col-md-3">
+                <label class="form-label">Usage Type</label>
+                <select name="usageType" placeholder="" formControlName="usageType" class="form-control custom-select"
+                  #UsageType [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">
                   <option [ngValue]="null">Select</option>
                   <option *ngFor="let usageType of usageTypeList" [value]="usageType.value">
                     {{usageType.label}}
                   </option>
                 </select>
-                                <div *ngIf="houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors" class="invalid-feedback">
-                                    <div *ngIf="HPUsageDetailF.fromDate.errors.required">Usage Type is mandatory</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <label class="form-label">From Date</label>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                        </div>
-                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker
-                                            [maxDate]="today" [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">
-                                        <div *ngIf="houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors" class="invalid-feedback">
-                                            <div *ngIf="HPUsageDetailF.fromDate.errors.required">From Date is mandatory</div>
-                                        </div>
-                                        <!-- <div *ngIf="submitted && HPUsageDetailF.fromDate.errors" class="invalid-feedback">
+                <div *ngIf="houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors" class="invalid-feedback">
+                  <div *ngIf="HPUsageDetailF.fromDate.errors.required">Usage Type is mandatory</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label class="form-label">From Date</label>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate" data-provide="datepicker"
+                      data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker
+
+                      [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">
+                    <div *ngIf="houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors" class="invalid-feedback">
+                      <div *ngIf="HPUsageDetailF.fromDate.errors.required">From Date is mandatory</div>
+                    </div>
+                    <!-- <div *ngIf="submitted && HPUsageDetailF.fromDate.errors" class="invalid-feedback">
                    <div *ngIf="HPUsageDetailF.fromDate.errors.required">From Date is mandatory</div>
                 </div> -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <label class="form-label">To Date</label>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                        </div>
-                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate" [(ngModel)]="startDateModel" [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                            placeholder="To Date" bsDatepicker [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
+                      data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date"
+                      bsDatepicker
+                      [ngClass]="{ 'is-invalid': houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors }">
 
-                                        <!-- <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                    <!-- <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
                       [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate" data-provide="datepicker"
                       data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker
                       [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }"> -->
 
 
 
-                                        <div *ngIf="houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors" class="invalid-feedback">
-                                            <div *ngIf="HPUsageDetailF.fromDate.errors.required">To Date is mandatory</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="custom-controls-stacked ml-15 mt-20">
-                                <!-- <div class="float-right mb-15"> -->
-
-                                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add" (click)="addUsageType()"><b>
-                                    <i class="fa fa-plus"></i></b> Add</button>
-                                <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left" (click)="cancelUsageType()"><b><i class="fa fa-times"></i></b> Cancel</button>
-                                <!-- <button type="button" class="btn btn-primary btn-sm " tooltip="Add " (click)="addUsageType()"><b>
-                      <i class="fa fa-plus"></i></b> Add
-                  </button>&nbsp;&nbsp;&nbsp;
-                                <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel " (click)="cancelUsageType()"><b>
-                    <i class="fa fa-plus"></i></b> Cancel
-                  </button> -->
-                                <!-- </div> -->
-                            </div>
-                        </div>
+                    <div *ngIf="houseLoanDetailSubmitted && HPUsageDetailF.fromDate.errors" class="invalid-feedback">
+                      <div *ngIf="HPUsageDetailF.fromDate.errors.required">To Date is mandatory</div>
                     </div>
-                    <div class="row mt-30">
-                        <div class="col-12 col-md-12 col-sm-12">
-                            <div class="table-responsive Custom_Table ">
-                                <table class="table table-striped table-bordered table-hover m-b-0">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col" class="wd-13">Usage Type</th>
-                                            <th scope="col" class="wd-9">Form Date</th>
-                                            <th scope="col" class="wd-14">To Date</th>
-                                            <th scope="col" class="wd-14">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!--   <tr *ngFor="let loanDetail of loanDetailGridData ;  let i = index"> -->
-                                        <tr *ngFor="let loanDetail of houseLoanUsageTypeList  ;  let i = index">
-                                            <td>
-                                                <span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="custom-controls-stacked ml-15 mt-20">
+                <!-- <div class="float-right mb-15"> -->
+                <button type="button"
+                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add "
+                  (click)="addUsageType()"><b>
+                    <i class="fa fa-plus"></i></b> Add
+                </button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
+                  tooltip="Cancel " (click)="cancelUsageType()"><b>
+                    <i class="fa fa-plus"></i></b> Cancel
+                </button>
+                <!-- </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="row mt-30">
+            <div class="col-12 col-md-12 col-sm-12">
+              <div class="table-responsive Custom_Table ">
+                <table class="table table-striped table-bordered table-hover m-b-0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" class="wd-13">Usage Type</th>
+                      <th scope="col" class="wd-9">Form Date</th>
+                      <th scope="col" class="wd-14">To Date</th>
+                      <th scope="col" class="wd-14">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!--   <tr *ngFor="let loanDetail of loanDetailGridData ;  let i = index"> -->
+                    <tr *ngFor="let loanDetail of houseLoanUsageTypeList  ;  let i = index">
+                      <td>
+                        <span>
                           {{loanDetail.usageType}}
                         </span>
-                                            </td>
-                                            <td>
-                                                <span tooltip="{{loanDetail.fromDate | date :'dd-MMM-yyyy'}}">
+                      </td>
+                      <td>
+                        <span tooltip="{{loanDetail.fromDate | date :'dd-MMM-yyyy'}}">
                           {{loanDetail.fromDate | date :"dd-MMM-yyyy"}}
                         </span>
-                                            </td>
-                                            <td class="align-right">
-                                                <span tooltip="{{loanDetail.toDate | date :'dd-MMM-yyyy'}}">
+                      </td>
+                      <td class="align-right">
+                        <span tooltip="{{loanDetail.toDate | date :'dd-MMM-yyyy'}}">
                           {{loanDetail.toDate | date :"dd-MMM-yyyy"}}
                         </span>
-                                            </td>
+                      </td>
 
-                                            <td>
-                                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editLoanUsageDetails(loanDetail)" tooltip="Edit"></i>&nbsp;&nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="!houseLoanUsageTypeList?.length">
-                                            <td colspan="4">
-                                                <span class="font-14 font500 align-center text-red">No
+                      <td>
+                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                          (click)="editLoanUsageDetails(loanDetail)" tooltip="Edit"></i>&nbsp;&nbsp;
+                      </td>
+                    </tr>
+                    <tr *ngIf="!houseLoanUsageTypeList?.length">
+                      <td colspan="4">
+                        <span class="font-14 font500 align-center text-red">No
                           Data Available</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-        </div>
-        <div class="row mt-20">
-            <div class="col-sm-6 col-md-3">
-                <label class="form-label">Have you taken loan against this property ?</label>
-            </div>
-            <div class="col-sm-3 col-md-3">
-                <div class="custom-controls-stacked">
-                    <label class="custom-control custom-radio custom-control-inline">
-            <input type="radio" (change)="onCheckboxSelect($event.target.value)"
-              class="custom-control-input" name="loanTaken" [value]="true" checked>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Have you taken loan against this property ?</label>
+      </div>
+      <div class="col-sm-3 col-md-3">
+        <div class="custom-controls-stacked">
+          <label class="custom-control custom-radio custom-control-inline">
+            <input type="radio" (change)="onCheckboxSelect($event.target.value)" class="custom-control-input"
+              name="loanTaken" [value]="true" checked>
             <span class="custom-control-label">Yes</span>
           </label>
-                    <label class="custom-control custom-radio custom-control-inline">
-            <input  type="radio" (change)="onCheckboxSelect($event.target.value)"
-              class="custom-control-input" name="loanTaken" [value]="false">
+          <label class="custom-control custom-radio custom-control-inline">
+            <input type="radio" (change)="onCheckboxSelect($event.target.value)" class="custom-control-input"
+              name="loanTaken" [value]="false">
             <span class="custom-control-label">No</span>
           </label>
-                </div>
-            </div>
         </div>
-    </fieldset>
-    <div class="row mt-25" *ngIf="loanTaken">
-        <div class="col-12">
-            <fieldset>
-                <legend>Loan Details</legend>
-                <div [formGroup]="housePropertyLoanDetailList" #formDirective_="ngForm">
-                    <div class="row">
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Purpose Of Loan</label>
-                            <select placeholder="Select" formControlName="purposeOfLoan" class="form-control custom-select" [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.lenderName.errors }" #purposeOfLoan>
+      </div>
+    </div>
+  </fieldset>
+  <div class="row mt-25" *ngIf="loanTaken">
+    <div class="col-12">
+      <fieldset>
+        <legend>Loan Details</legend>
+        <div [formGroup]="housePropertyLoanDetailList" #formDirective_="ngForm">
+          <div class="row">
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Purpose Of Loan</label>
+              <select placeholder="Select" formControlName="purposeOfLoan" class="form-control custom-select"
+                [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.lenderName.errors }" #purposeOfLoan>
                 <option [ngValue]="null">Select</option>
                 <option *ngFor="let purpose of purposeOfLoanList" [value]="purpose.value">
                   {{purpose.label}}
                 </option>
 
               </select>
-                            <div *ngIf="loansubmitted && housePropertyLoanList.purposeOfLoan.errors" class="invalid-feedback">
-                                <div *ngIf="housePropertyLoanList.purposeOfLoan.errors.required">purpose Of Loan is mandatory</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Lender Name</label>
-                            <input type="text" formControlName="lenderName" placeholder="Lender Name" class="form-control" onkeypress="return /[0-9a-zA-Z' ]/i.test(event.key)" name="Premium Amount" [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.lenderName.errors }">
-                            <div *ngIf="loansubmitted && housePropertyLoanList.lenderName.errors" class="invalid-feedback">
-                                <div *ngIf="housePropertyLoanList.lenderName.errors.required">Lender Name is mandatory</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Lender Type</label>
-                            <select id="lenderType" placeholder="Select Lender" formControlName="lenderType" class="form-control custom-select" [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.lenderType.errors }" #lenderType>
+              <div *ngIf="loansubmitted && housePropertyLoanList.purposeOfLoan.errors" class="invalid-feedback">
+                <div *ngIf="housePropertyLoanList.purposeOfLoan.errors.required">purpose Of Loan is mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Lender Name</label>
+              <input type="text" formControlName="lenderName" placeholder="Lender Name" class="form-control"
+                onkeypress="return /[0-9a-zA-Z' ]/i.test(event.key)" name="Premium Amount"
+                [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.lenderName.errors }">
+              <div *ngIf="loansubmitted && housePropertyLoanList.lenderName.errors" class="invalid-feedback">
+                <div *ngIf="housePropertyLoanList.lenderName.errors.required">Lender Name is mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Lender Type</label>
+              <select id="lenderType" placeholder="Select Lender" formControlName="lenderType"
+                class="form-control custom-select"
+                [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.lenderType.errors }" #lenderType>
                 <option [ngValue]="null">Select</option>
                 <option *ngFor="let lender of lenderTypeList" [value]="lender.value">
                   {{lender.label}}
                 </option>
               </select>
-                            <div *ngIf="loansubmitted && housePropertyLoanList.lenderType.errors" class="invalid-feedback">
-                                <div *ngIf="housePropertyLoanList.lenderType.errors.required">Lender Type is mandatory</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <label class="custom-switch">
+              <div *ngIf="loansubmitted && housePropertyLoanList.lenderType.errors" class="invalid-feedback">
+                <div *ngIf="housePropertyLoanList.lenderType.errors.required">Lender Type is mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="custom-switch">
                 <!-- <input type="checkbox" name="custom-switch-checkbox" (change)="panAndAadhar()"
                   class="custom-switch-input">
                 <span class="custom-switch-indicator"></span>&nbsp;
                 <span class="form-label">PAN Or Aadhaar</span> -->
 
                 <div class="form-label">PAN
-                <input type="checkbox" name="custom-switch-checkbox" (change)="panAndAadhar()"
-                class="custom-switch-input">
+                  <input type="checkbox" name="custom-switch-checkbox" (change)="panAndAadhar()"
+                    class="custom-switch-input">
 
-              <span class="custom-switch-indicator"></span> Aadhaar </div>
-              <!-- <span class="form-label">PAN Or Aadhaar</span>    "^[A-Za-z]{5}[0-9]{4}[A-Za-z]$"-->
-             </label>
-                            <input type="text" maxlength="12" minlength="10" formControlName="lenderPANOrAadhar" placeholder="Enter PAN Number" class="form-control" pattern="([A-Z]){5}([0-9]){4}([A-Z]){1}$" name="PAN" [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.lenderPANOrAadhar.errors }">
-                            <div *ngIf="loansubmitted && housePropertyLoanList.lenderPANOrAadhar.errors" class="invalid-feedback">
-                                <div *ngIf="housePropertyLoanList.lenderPANOrAadhar.errors.required">PAN Number is Mandatory</div>
-                                <div *ngIf="housePropertyLoanList.lenderPANOrAadhar.errors?.pattern">Enter valid PAN Number</div>
-                            </div>
-                        </div>
+                  <span class="custom-switch-indicator"></span> Aadhaar
+                </div>
+                <!-- <span class="form-label">PAN Or Aadhaar</span>    "^[A-Za-z]{5}[0-9]{4}[A-Za-z]$"-->
+              </label>
+              <input type="text" maxlength="12" minlength="10" formControlName="lenderPANOrAadhar"
+                placeholder="Enter PAN Number" class="form-control" pattern="([A-Z]){5}([0-9]){4}([A-Z]){1}$" name="PAN"
+                [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.lenderPANOrAadhar.errors }">
+              <div *ngIf="loansubmitted && housePropertyLoanList.lenderPANOrAadhar.errors" class="invalid-feedback">
+                <div *ngIf="housePropertyLoanList.lenderPANOrAadhar.errors.required">PAN Number is Mandatory</div>
+                <div *ngIf="housePropertyLoanList.lenderPANOrAadhar.errors?.pattern">Enter valid PAN Number</div>
+              </div>
+            </div>
 
-                    </div>
-                    <div class="row mt-4 mb-10">
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label"> Loan Account No</label>
-                            <input type="text" formControlName="loanAccountNumber" placeholder="Enter Loan Account No" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.loanAccountNumber.errors }">
-                            <div *ngIf="loansubmitted && housePropertyLoanList.loanAccountNumber.errors" class="invalid-feedback">
-                                <div *ngIf="housePropertyLoanList.loanAccountNumber.errors.required">Account No. is mandatory</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Loan Amount</label>
-                            <!-- <input type="text" formControlName="loanAmount"
+          </div>
+          <div class="row mt-4 mb-10">
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label"> Loan Account No</label>
+              <input type="text" formControlName="loanAccountNumber" placeholder="Enter Loan Account No"
+                class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+                [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.loanAccountNumber.errors }">
+              <div *ngIf="loansubmitted && housePropertyLoanList.loanAccountNumber.errors" class="invalid-feedback">
+                <div *ngIf="housePropertyLoanList.loanAccountNumber.errors.required">Account No. is mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Loan Amount</label>
+              <!-- <input type="text" formControlName="loanAmount"
                 class="form-control align-right"
                   [ngClass]="{ 'is-invalid': submitted && houseLoanF.loanAmount.errors }"> -->
 
-                            <p-inputNumber class="p-inputright" formControlName="loanAmount" placeholder="Enter Loan Amount" mode="decimal" locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.loanAmount.errors }">
-                            </p-inputNumber>
-                            <div *ngIf="loansubmitted && housePropertyLoanList.loanAmount.errors" class="invalid-feedback">
-                                <div *ngIf="housePropertyLoanList.loanAmount.errors.required">Loan Amount is mandatory</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Pre EMI Interest Paid</label>
-                            <!-- <input type="number" formControlName="preEMIInterestPaid" class="form-control align-right"
+              <p-inputNumber class="p-inputright" formControlName="loanAmount" placeholder="Enter Loan Amount"
+                mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.loanAmount.errors }">
+              </p-inputNumber>
+              <div *ngIf="loansubmitted && housePropertyLoanList.loanAmount.errors" class="invalid-feedback">
+                <div *ngIf="housePropertyLoanList.loanAmount.errors.required">Loan Amount is mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Pre EMI Interest Paid</label>
+              <!-- <input type="number" formControlName="preEMIInterestPaid" class="form-control align-right"
                 [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.preEMIInterestPaid.errors }"> -->
-                            <p-inputNumber class="p-inputright" formControlName="preEMIInterestPaid" mode="decimal" locale="en-IN" placeholder="Enter Pre EMI Interest Paid" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.preEMIInterestPaid.errors }">
-                            </p-inputNumber>
-                            <div *ngIf="loansubmitted && housePropertyLoanList.preEMIInterestPaid.errors" class="invalid-feedback">
-                                <div *ngIf="housePropertyLoanList.preEMIInterestPaid.errors.required">Pre EMI Interest is mandatory</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <!-- <label class="form-label">% Claimed By Employee</label>
+              <p-inputNumber class="p-inputright" formControlName="preEMIInterestPaid" mode="decimal" locale="en-IN"
+                placeholder="Enter Pre EMI Interest Paid" [minFractionDigits]="2"
+                [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.preEMIInterestPaid.errors }">
+              </p-inputNumber>
+              <div *ngIf="loansubmitted && housePropertyLoanList.preEMIInterestPaid.errors" class="invalid-feedback">
+                <div *ngIf="housePropertyLoanList.preEMIInterestPaid.errors.required">Pre EMI Interest is mandatory
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <!-- <label class="form-label">% Claimed By Employee</label>
               <input type="number" formControlName="percentageClaimedByEmployee" min="0" max="100" class="form-control "
                 [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.percentageClaimedByEmployee.errors }">
               <div *ngIf="loansubmitted && housePropertyLoanList.percentageClaimedByEmployee.errors" class="invalid-feedback">
@@ -505,160 +550,230 @@
               </div> -->
 
 
-                            <label class="form-label">% Claimed By Employee</label>
-                            <input type="number" formControlName="percentageClaimedByEmployee" placeholder="Enter % Claimed By Employee" min="0" max="100" class="form-control " [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.percentageClaimedByEmployee.errors }">
-                            <div *ngIf="loansubmitted && housePropertyLoanList.percentageClaimedByEmployee.errors" class="invalid-feedback">
-                                <div *ngIf="housePropertyLoanList.percentageClaimedByEmployee.errors.required">Percent Claim is mandatory</div>
-                                <div *ngIf="housePropertyLoanList.percentageClaimedByEmployee.errors?.max">Max 100 is allowed</div>
-                            </div>
-                        </div>
+              <label class="form-label">% Claimed By Employee</label>
+              <input type="number" formControlName="percentageClaimedByEmployee"
+                placeholder="Enter % Claimed By Employee" min="0" max="100" class="form-control "
+                [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.percentageClaimedByEmployee.errors }">
+              <div *ngIf="loansubmitted && housePropertyLoanList.percentageClaimedByEmployee.errors"
+                class="invalid-feedback">
+                <div *ngIf="housePropertyLoanList.percentageClaimedByEmployee.errors.required">Percent Claim is
+                  mandatory</div>
+                <div *ngIf="housePropertyLoanList.percentageClaimedByEmployee.errors?.max">Max 100 is allowed</div>
+              </div>
+            </div>
 
 
-                        <!-- </div> -->
-                    </div>
-                    <div class="row mt-4 mb-10">
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Loan Sanction Date</label>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                    </div>
-                                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="loanSanctionedDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" [minDate]="minFormDate" [maxDate]="maxFromDate" placeholder="Sanction Date" bsDatepicker
-                                        [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.loanSanctionedDate.errors }">
-                                    <div *ngIf="loansubmitted && housePropertyLoanList.loanSanctionedDate.errors" class="invalid-feedback">
-                                        <div *ngIf="housePropertyLoanList.loanSanctionedDate.errors.required">Loan Sanction date is mandatory</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- </div> -->
+          </div>
+          <div class="row mt-4 mb-10">
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Loan Sanction Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="loanSanctionedDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" [minDate]="minFormDate"
+                    [maxDate]="maxFromDate" placeholder="Sanction Date" bsDatepicker
+                    [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.loanSanctionedDate.errors }">
+                  <div *ngIf="loansubmitted && housePropertyLoanList.loanSanctionedDate.errors"
+                    class="invalid-feedback">
+                    <div *ngIf="housePropertyLoanList.loanSanctionedDate.errors.required">Loan Sanction date is
+                      mandatory</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                        <div class="col-sm-6 col-md-3">
-                            <label class="form-label">Loan End Date</label>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                    </div>
-                                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="loanEndDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" [minDate]="minFormDate" [maxDate]="maxFromDate" placeholder="End Date" bsDatepicker [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.loanEndDate.errors }">
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Loan End Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="loanEndDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" [minDate]="minFormDate"
+                    [maxDate]="maxFromDate" placeholder="End Date" bsDatepicker
+                    [ngClass]="{ 'is-invalid': loansubmitted && housePropertyLoanList.loanEndDate.errors }">
 
-                                    <!-- (bsValueChange)="setPaymentDetailToDate()"  (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()" <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                  <!-- (bsValueChange)="setPaymentDetailToDate()"  (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()" <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
                     [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate" data-provide="datepicker"
                     data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker
                     [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }"> -->
 
 
-                                    <div *ngIf="loansubmitted && housePropertyLoanList.loanEndDate.errors" class="invalid-feedback">
-                                        <div *ngIf="housePropertyLoanList.loanEndDate.errors.required">Loan End Date is mandatory</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-15">
+                  <div *ngIf="loansubmitted && housePropertyLoanList.loanEndDate.errors" class="invalid-feedback">
+                    <div *ngIf="housePropertyLoanList.loanEndDate.errors.required">Loan End Date is mandatory</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-15">
 
-                        <div class="col-12">
-                            <div class="float-right mb-15">
-
-                                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add" (click)="addLoanDetails()"><b>
-                                <i class="fa fa-plus"></i></b> Add New Loan</button>
-                                <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left" (click)="cancelLoanDetails()"><b><i class="fa fa-times"></i></b> Cancel</button>
-                                <!-- <button type="button" class="btn btn-primary btn-sm " tooltip="Add " (click)="addLoanDetails()"><b>
-                    <i class="fa fa-plus"></i></b> Add New Loan
-                </button>&nbsp;&nbsp;&nbsp;
-                                <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel " (click)="cancelLoanDetails()"><b>
+            <div class="col-12">
+              <div class="float-right mb-15">
+                <button type="button"
+                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add"
+                  (click)="addLoanDetails()"><b>
+                    <i class="fa fa-plus"></i></b> Add New Loan</button>&nbsp;&nbsp;&nbsp;
+                <!-- <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"  tooltip="Cancel " (click)="cancelLoanDetails()"><b>
                   <i class="fa fa-plus"></i></b> Cancel
                 </button> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-30">
-                    <div class="col-12 col-md-12 col-sm-12">
-                        <div class="table-responsive Custom_Table ">
-                            <table class="table table-striped table-bordered table-hover m-b-0">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th scope="col" class="wd-9">Sr. No</th>
-                                        <th scope="col" class="wd-14">Lender Name</th>
-                                        <th scope="col" class="wd-14">Loan Amount</th>
-                                        <th scope="col" class="wd-20">Loan Sanction Date</th>
-                                        <th scope="col" class="wd-19">Loan End Date</th>
-                                        <th scope="col" class="wd-14">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let loanDetails of loanDetailGridData ;  let i = index">
-                                        <td class="wd-9">
-                                            <span tooltip="{{i+1}}">
+                <button type="button" tooltip="Cancel"
+                  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
+                  (click)="cancelLoanDetails()"><b><i class="fa fa-times"></i></b> Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row mt-30">
+          <div class="col-12 col-md-12 col-sm-12">
+            <div class="table-responsive Custom_Table ">
+              <table class="table table-striped table-bordered table-hover m-b-0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="wd-9">Sr. No</th>
+                    <th scope="col" class="wd-14">Lender Name</th>
+                    <th scope="col" class="wd-14">Loan Amount</th>
+                    <th scope="col" class="wd-20">Loan Sanction Date</th>
+                    <th scope="col" class="wd-19">Loan End Date</th>
+                    <th scope="col" class="wd-14">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let loanDetails of loanDetailGridData ;  let i = index">
+                    <td class="wd-9">
+                      <span tooltip="{{i+1}}">
                         {{i+1}}
                       </span>
-                                        </td>
-                                        <td class="wd-14">
-                                            <span tooltip="{{loanDetails.lenderName}}">
+                    </td>
+                    <td class="wd-14">
+                      <span tooltip="{{loanDetails.lenderName}}">
                         {{loanDetails.lenderName}}
                       </span>
-                                        </td>
-                                        <td class="wd-14">
-                                            <span tooltip="{{loanDetails.loanAmount| number:'1.2-2'}}">
+                    </td>
+                    <td class="wd-14">
+                      <span tooltip="{{loanDetails.loanAmount| number:'1.2-2'}}">
                         {{loanDetails.loanAmount | number:'1.2-2'}}
                       </span>
-                                        </td>
-                                        <td class="wd-20">
-                                            <span tooltip="{{loanDetails.loanSanctionedDate| date :'dd-MMM-yyyy'}}">
+                    </td>
+                    <td class="wd-20">
+                      <span tooltip="{{loanDetails.loanSanctionedDate| date :'dd-MMM-yyyy'}}">
                         {{loanDetails.loanSanctionedDate| date :"dd-MMM-yyyy"}}
                       </span>
-                                        </td>
-                                        <td class="wd-19 align-right">
-                                            <span tooltip="{{loanDetails.loanEndDate| date :'dd-MMM-yyyy'}}">
+                    </td>
+                    <td class="wd-19 align-right">
+                      <span tooltip="{{loanDetails.loanEndDate| date :'dd-MMM-yyyy'}}">
                         {{loanDetails.loanEndDate| date :"dd-MMM-yyyy"}}
                       </span>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editLoanDetails(loanDetails)" tooltip="Edit"></i> &nbsp;&nbsp;
+                    </td>
+                    <td>
+                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                        (click)="editLoanDetails(loanDetails)" tooltip="Edit"></i> &nbsp;&nbsp;
 
-                                        </td>
+                    </td>
 
-                                    </tr>
-                                    <tr *ngIf="!loanDetailGridData?.length">
-                                        <td colspan="7">
-                                            <span class="font-14 font500 align-center text-red">No
+                  </tr>
+                  <tr *ngIf="!loanDetailGridData?.length">
+                    <td colspan="7">
+                      <span class="font-14 font500 align-center text-red">No
                         Data Available</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
+      </fieldset>
     </div>
-    <div class="row mt-30">
-        <div class="col-12">
-            <div class="card">
-                <div class="mb-0 row">
-                    <div class="col-md-6">
-                        <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
-                    </div>
-                    <div class="col-md-6">
-                        <span class="font-bold text-link float-right"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="table-responsive Custom_Table">
-                            <table class="table table-striped table-hover table-bordered m-b-0">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th scope="col" class="font700 wd-8">Sr. No</th>
-                                        <th scope="col" class="font700 wd-40">Document Name</th>
-                                        <th scope="col" class="font700 wd-40">Attachment</th>
-                                        <th scope="col" class="font700 wd-12">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- <tr>
+  </div>
+
+
+  <div class="row mt-20">
+    <div class="col-sm-6 col-md-4" *ngIf="visibilityFlag">
+      <label class="form-label">Stamp Duty & Registration Payment Date</label>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+          </div>
+          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="stampDutyRegistrationDate"
+            data-provide="datepicker" data-date-autoclose="true" class="form-control"
+            (bsValueChange)="checkRegistrationDateValid()"
+            [ngClass]="{ 'is-invalid': (submitted   && houseLoanF.stampDutyRegistrationDate.errors) || stampDutyDateValid }"
+            [maxDate]="today" placeholder="Registration Date" bsDatepicker>
+          <div *ngIf="(submitted && houseLoanF.stampDutyRegistrationDate.errors) ||  stampDutyDateValid"
+            class="invalid-feedback">
+            <div *ngIf="(houseLoanF.stampDutyRegistrationDate.errors.required) || stampDutyDateValid ">Stamp Duty &
+              Registration Date is mandatory</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3" *ngIf="visibilityFlagStamp">
+      <label class="form-label">Stamp Duty and Registration Charges</label>
+      <!-- <input type="text" formControlName="stampDutyRegistrationAmount" class="form-control"
+     placeholder="Enter Property Name" onkeypress="return /[0-9]/i.test(event.key)"
+     [ngClass]="{ 'is-invalid': submitted && houseLoanF.stampDutyRegistrationAmount.errors }"  >
+     -->
+     <p-inputNumber class="p-inputright" formControlName="stampDutyRegistrationAmount"
+        placeholder="Enter Stamp Duty & Registration Amount" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+        [ngClass]="{ 'is-invalid': submitted && houseLoanF.stampDutyRegistrationAmount.errors }"
+        (onBlur)="checkPaymentDate()" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+      <div *ngIf="submitted && houseLoanF.stampDutyRegistrationAmount.errors" class="invalid-feedback">
+        <div *ngIf="houseLoanF.stampDutyRegistrationAmount.errors.required">Stamp Duty & Registration Amount is
+          mandatory</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3" *ngIf="visibilityFlagProperty">
+   <label class="form-label">Property Registration Amount</label>
+              <!--  <input type="text" formControlName="propertyRegistrationValue" class="form-control"
+        placeholder="Enter Property Name" onkeypress="return /[0-9]/i.test(event.key)"
+        [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }"  > -->
+
+      <p-inputNumber class="p-inputright" formControlName="propertyRegistrationValue"
+        placeholder="Enter Property Registration Amount"
+        [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }" mode="decimal"
+        locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+
+      <div *ngIf="submitted && houseLoanF.propertyRegistrationValue.errors" class="invalid-feedback">
+        <div *ngIf="houseLoanF.propertyRegistrationValue.errors.required">Property Registration Amount is mandatory
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-30">
+    <div class="col-12">
+      <div class="card">
+        <div class="mb-10 row">
+          <div class="col-md-6">
+            <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
+          </div>
+          <div class="col-md-6">
+            <span class="font-bold text-link float-right"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9">
+            <div class="table-responsive Custom_Table">
+              <table class="table table-striped table-hover table-bordered m-b-0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="font700 wd-8">Sr. No</th>
+                    <th scope="col" class="font700 wd-40">Document Name</th>
+                    <th scope="col" class="font700 wd-40">Attachment</th>
+                    <th scope="col" class="font700 wd-12">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td><span tooltip="Premium Receipt/ Premium Statement"></span>Property (Index 2)</td>
                     <td><span *ngFor="let item of propertyIndex" class="text-orange" tooltip="{{item.name}},"><i
@@ -669,23 +784,26 @@
                         data-target="#UploadModal"></i>&nbsp;&nbsp;
                     </td>
                   </tr> -->
-                                    <tr>
-                                        <th scope="row"><span tooltip="1">1</span></th>
-                                        <td><span tooltip="Property (Index 2)"></span>Property (Index 2)
-                                        </td>
-                                        <td><span *ngFor="let item of propertyIndex" class="text-orange" tooltip="{{item.name}},"><i
+                  <tr>
+                    <th scope="row"><span tooltip="1">1</span></th>
+                    <td><span tooltip="Property (Index 2)"></span>Property (Index 2)
+                    </td>
+                    <td><span *ngFor="let item of propertyIndex" class="text-orange" tooltip="{{item.name}},"><i
                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                                            <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
-                                                <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
-                                                    <i class="fa fa-paperclip text-orange" (click)="docViewer(template1,i)"></i> &nbsp; {{ doc.fileName }}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(tempPropertyIndex)" data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                                        </td>
-                                    </tr>
-                                    <!--
+                      <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
+                        <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                          <i class="fa fa-paperclip text-orange" (click)="docViewer(template1,i)"></i> &nbsp;
+                          {{ doc.fileName }}
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                        (click)="UploadModal(tempPropertyIndex)" data-toggle="modal"
+                        data-target="#UploadModal"></i>&nbsp;&nbsp;
+                    </td>
+                  </tr>
+                  <!--
                   <tr>
                     <th scope="row"><span tooltip="2">2</span></th>
                     <td><span tooltip="Premium Receipt/ Premium Statement"></span>Stamp Duty & Registration Charges
@@ -699,24 +817,27 @@
                     </td>
                   </tr> -->
 
-                                    <tr>
-                                        <th scope="row"><span tooltip="2">2</span></th>
-                                        <td><span tooltip="Stamp Duty & Registration Charges"></span>Stamp Duty & Registration Charges
-                                        </td>
-                                        <td><span *ngFor="let item of stampDutyRegistration" class="text-orange" tooltip="{{item.name}},"><i
+                  <tr>
+                    <th scope="row"><span tooltip="2">2</span></th>
+                    <td><span tooltip="Receipt for Stamp Duty & Registration Charges"></span>Receipt for Stamp Duty & Registration Charges
+                    </td>
+                    <td><span *ngFor="let item of stampDutyRegistration" class="text-orange" tooltip="{{item.name}},"><i
                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                                            <div class="col-md-12" *ngFor="let doc of stampDutyUrlArray; let i = index">
-                                                <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
-                                                    <i class="fa fa-paperclip text-orange" (click)="docViewer2(template2,i)"></i> &nbsp; {{ doc.fileName }}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(tempStampDuty)" data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                                        </td>
-                                    </tr>
+                      <div class="col-md-12" *ngFor="let doc of stampDutyUrlArray; let i = index">
+                        <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                          <i class="fa fa-paperclip text-orange" (click)="docViewer2(template2,i)"></i> &nbsp;
+                          {{ doc.fileName }}
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                        (click)="UploadModal(tempStampDuty)" data-toggle="modal"
+                        data-target="#UploadModal"></i>&nbsp;&nbsp;
+                    </td>
+                  </tr>
 
-                                    <!-- <tr>
+                  <!-- <tr>
                     <th scope="row"><span tooltip="3">3</span></th>
                     <td><span tooltip="Premium Receipt/ Premium Statement"></span>Loan Sanction Letter</td>
                     <td><span *ngFor="let item of loanSanctionLetter" class="text-orange" tooltip="{{item.name}},"><i
@@ -728,24 +849,27 @@
                     </td>
                   </tr> -->
 
-                                    <tr>
-                                        <th scope="row"><span tooltip="3">3</span></th>
-                                        <td><span tooltip="Loan Sanction Letter"></span>Loan Sanction Letter
-                                        </td>
-                                        <td><span *ngFor="let item of loanSanctionLetter" class="text-orange" tooltip="{{item.name}},"><i
+                  <tr>
+                    <th scope="row"><span tooltip="3">3</span></th>
+                    <td><span tooltip="Loan Sanction Letter"></span>Loan Sanction Letter
+                    </td>
+                    <td><span *ngFor="let item of loanSanctionLetter" class="text-orange" tooltip="{{item.name}},"><i
                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                                            <div class="col-md-12" *ngFor="let doc of loanSanctionUrlArray; let i = index">
-                                                <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
-                                                    <i class="fa fa-paperclip text-orange" (click)="docViewer3(template3,i)"></i> &nbsp; {{ doc.fileName }}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(tempLoanLetter)" data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                                        </td>
-                                    </tr>
+                      <div class="col-md-12" *ngFor="let doc of loanSanctionUrlArray; let i = index">
+                        <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                          <i class="fa fa-paperclip text-orange" (click)="docViewer3(template3,i)"></i> &nbsp;
+                          {{ doc.fileName }}
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                        (click)="UploadModal(tempLoanLetter)" data-toggle="modal"
+                        data-target="#UploadModal"></i>&nbsp;&nbsp;
+                    </td>
+                  </tr>
 
-                                    <!-- <tr>
+                  <!-- <tr>
                     <th scope="row"><span tooltip="4">4</span></th>
                     <td><span tooltip="Premium Receipt/ Premium Statement"></span>Possession Letter</td>
                     <td><span *ngFor="let item of possessionLetter" class="text-orange" tooltip="{{item.name}},"><i
@@ -757,33 +881,36 @@
                     </td>
                   </tr> -->
 
-                                    <tr>
-                                        <th scope="row"><span tooltip="4">4</span></th>
-                                        <td><span tooltip="Possession Letter"></span>Possession Letter
-                                        </td>
-                                        <td><span *ngFor="let item of possessionLetter" class="text-orange" tooltip="{{item.name}},"><i
+                  <tr>
+                    <th scope="row"><span tooltip="4">4</span></th>
+                    <td><span tooltip="Possession Letter"></span>Possession Letter
+                    </td>
+                    <td><span *ngFor="let item of possessionLetter" class="text-orange" tooltip="{{item.name}},"><i
                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                                            <div class="col-md-12" *ngFor="let doc of possessionUrlArray; let i = index">
-                                                <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
-                                                    <i class="fa fa-paperclip text-orange" (click)="docViewer4(template4,i)"></i> &nbsp; {{ doc.fileName }}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(tempPossessionLetter)" data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                                        </td>
-                                    </tr>
-
-
-                                </tbody>
-                            </table>
+                      <div class="col-md-12" *ngFor="let doc of possessionUrlArray; let i = index">
+                        <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                          <i class="fa fa-paperclip text-orange" (click)="docViewer4(template4,i)"></i> &nbsp;
+                          {{ doc.fileName }}
                         </div>
-                    </div>
-                </div>
+                      </div>
+                    </td>
+                    <td>
+                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                        (click)="UploadModal(tempPossessionLetter)" data-toggle="modal"
+                        data-target="#UploadModal"></i>&nbsp;&nbsp;
+                    </td>
+                  </tr>
+
+
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- <div class="row mt-25">
+  </div>
+  <!-- <div class="row mt-25">
         <div class="col-md-3">
            <label class="custom-control custom-checkbox custom-control-inline pl-45">
            <input formControlName="active" type="checkbox" class="custom-control-input"
@@ -797,81 +924,88 @@
            <textarea formControlName="remark" [ngClass]="{'form-submitted': formDirective.submitted}" class="form-control ml-10" rows="1"></textarea>
         </div>
      </div> -->
-    <div class="row mt-15">
-        <div class="col-12">
-            <div class="float-right mb-15">
-                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+  <div class="row mt-15">
+    <div class="col-12">
+      <div class="float-right mb-15">
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+          tooltip="Save"><b>
             <i class="fa fa-floppy-o"></i></b> Save</button> &nbsp;
-                <button type="button" (click)="resetView()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
-            <i class="fa fa-refresh"></i></b> Reset</button>
-            </div>
-        </div>
+        <button type="button" (click)="resetView()"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+            <i class="fa fa-floppy-o"></i></b> Reset</button>
+      </div>
     </div>
-    <div class="row mt-20">
-        <div class="col-12">
-            <div class="card">
-                <div class="mb-0">
-                    <h3 class="font-14 text-purple font-bold">Summary</h3>
-                </div>
-                <div class="">
-                    <div class="table-responsive Custom_Table">
-                        <table class="table table-striped table-hover table-bordered m-b-0">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col" class="font700 wd-8">Sr. No</th>
-                                    <th scope="col" class="wd-15">Property Name</th>
-                                    <th scope="col" class="wd-10">Possession Date</th>
-                                    <th scope="col" class="wd-10">Action</th>
+  </div>
+  <div class="row mt-20">
+    <div class="col-12">
+      <div class="card">
+        <div class="mb-0">
+          <h3 class="font-14 text-purple font-bold">Summary</h3>
+        </div>
+        <div class="">
+          <div class="table-responsive Custom_Table">
+            <table class="table table-striped table-hover table-bordered m-b-0">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="font700 wd-8">Sr. No</th>
+                  <th scope="col" class="wd-15">Property Name</th>
+                  <th scope="col" class="wd-10">Possession Date</th>
+                  <th scope="col" class="wd-10">Action</th>
 
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let summary of masterGridData; let i = index">
-                                    <td class="wd-2">
-                                        <span tooltip="{{i+1}}">
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let summary of masterGridData; let i = index">
+                  <td class="wd-2">
+                    <span tooltip="{{i+1}}">
                       {{i+1}}
                     </span>
-                                    </td>
-                                    <td class="fa fa-paperclip" aria-hidden="true" class="align-center wd-12"><span tooltip="{{summary.propertyName}}">{{summary.propertyName}}</span>
-                                    </td>
-                                    <td class="wd-10"><span tooltip="{{summary.possessionDate | date : 'dd-MMM-yyyy'}}">{{summary.possessionDate | date :
+                  </td>
+                  <td class="fa fa-paperclip" aria-hidden="true" class="align-center wd-12"><span
+                      tooltip="{{summary.propertyName}}">{{summary.propertyName}}</span>
+                  </td>
+                  <td class="wd-10"><span
+                      tooltip="{{summary.possessionDate | date : 'dd-MMM-yyyy'}}">{{summary.possessionDate | date :
                       'dd-MMM-yyyy'}}</span>
-                                    </td>
+                  </td>
 
-                                    <td class="wd-5">
-                                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.housePropertyMasterId)" tooltip="Edit"></i> &nbsp;&nbsp;
-                                    </td>
-                                </tr>
-                                <tr *ngIf="!masterGridData?.length">
-                                    <td colspan="10">
-                                        <span class="font-14 font500 align-center text-red">No Data
+                  <td class="wd-5">
+                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                      (click)="editMaster(summary.housePropertyMasterId)" tooltip="Edit"></i> &nbsp;&nbsp;
+                  </td>
+                </tr>
+                <tr *ngIf="!masterGridData?.length">
+                  <td colspan="10">
+                    <span class="font-14 font500 align-center text-red">No Data
                       Available</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- </div> -->
+
+
+  <!-- </div> -->
 </form>
 <ng-template #tempPropertyIndex>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
         aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-        <div class="card">
-            <div class="card-body">
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="fileuploadbox bg-color-lightgray">
-                            <label class="filelabel">
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+          <div class="col-md-12">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
                 <i class="fa fa-upload">
                 </i>
                 <span class="title">
@@ -880,10 +1014,10 @@
                 <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event,'propertyIndex');"
                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
-                        </div>
-                        <div *ngIf="propertyIndex.length > 0 " class="fileuploadbox">
-                            Selected files
-                            <label *ngFor="let item of propertyIndex;  let index = index;" class="filelabeldisplay">
+            </div>
+            <div *ngIf="propertyIndex.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of propertyIndex;  let index = index;" class="filelabeldisplay">
                 <div class="text-ellipsis"><i class="fa fa-paperclip">
                   </i>
                   <span class="title">
@@ -895,75 +1029,77 @@
                     (click)="removeSelectedLicMasterDocument(index , 'propertyIndex')"></i>
                 </div>
               </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-10">
-                        <label class="form-label">Remark</label>
-                    </div>
-                    <div class="col-md-12">
-                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-                    </div>
-                </div>
             </div>
+          </div>
+          <div class="col-md-12 mt-10">
+            <label class="form-label">Remark</label>
+          </div>
+          <div class="col-md-12">
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
 </ng-template>
 
 <!-- For Doc Viewer  -->
 <ng-template #template1>
-    <div class="modal-header">
-        <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
-    </div>
-    <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
+  </div>
+  <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
 <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document" (click)="previousDocViewerPropertyIndex()" [disabled]="urlIndex == 0">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+          (click)="previousDocViewerPropertyIndex()" [disabled]="urlIndex == 0">
           <i class="fa fa-angle-left text-white font-30 p-10"></i>
         </button>
-            </div>
-            <div class="col-md-10">
-                <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
-                <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewerPropertyIndex()" [disabled]="urlIndex == urlArray.length - 1">
+      </div>
+      <div class="col-md-10">
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document"
+          (click)="nextDocViewerPropertyIndex()" [disabled]="urlIndex == urlArray.length - 1">
           <i class="fa fa-angle-right text-white font-30 p-10"></i>
         </button>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary">Save</button>  -->
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
       Ok
     </button>
-    </div>
+  </div>
 </ng-template>
 
 <ng-template #tempStampDuty>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
         aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-        <div class="card">
-            <div class="card-body">
-                <div class="row clearfix">
-                    <!-- <div class="col-md-12">
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+          <!-- <div class="col-md-12">
                  <label class="form-label">Upload File here :</label>
               </div> -->
-                    <div class="col-md-12">
-                        <div class="fileuploadbox bg-color-lightgray">
-                            <label class="filelabel">
+          <div class="col-md-12">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
                 <i class="fa fa-upload">
                 </i>
                 <span class="title">
@@ -972,10 +1108,10 @@
                 <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event,'stampDutyRegistration');"
                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
-                        </div>
-                        <div *ngIf="stampDutyRegistration.length > 0 " class="fileuploadbox">
-                            Selected files
-                            <label *ngFor="let item of stampDutyRegistration;  let index = index;" class="filelabeldisplay">
+            </div>
+            <div *ngIf="stampDutyRegistration.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of stampDutyRegistration;  let index = index;" class="filelabeldisplay">
                 <div class="text-ellipsis"><i class="fa fa-paperclip">
                   </i>
                   <span class="title">
@@ -987,71 +1123,73 @@
                     (click)="removeSelectedLicMasterDocument(index , 'stampDutyRegistration')"></i>
                 </div>
               </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-10">
-                        <label class="form-label">Remark</label>
-                    </div>
-                    <div class="col-md-12">
-                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-                    </div>
-                </div>
             </div>
+          </div>
+          <div class="col-md-12 mt-10">
+            <label class="form-label">Remark</label>
+          </div>
+          <div class="col-md-12">
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
 </ng-template>
 
 <!-- For Doc Viewer  -->
 <ng-template #template2>
-    <div class="modal-header">
-        <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document" (click)="previousDocViewerStampDuty()" [disabled]="urlIndex == 0">
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+          (click)="previousDocViewerStampDuty()" [disabled]="urlIndex == 0">
           <i class="fa fa-angle-left text-white font-30 p-10"></i>
         </button>
-            </div>
-            <div class="col-md-10">
-                <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+      </div>
+      <div class="col-md-10">
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
 
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewerStampDuty()" [disabled]="urlIndex == stampDutyUrlArray.length - 1">
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document"
+          (click)="nextDocViewerStampDuty()" [disabled]="urlIndex == stampDutyUrlArray.length - 1">
           <i class="fa fa-angle-right text-white font-30 p-10"></i>
         </button>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
       Ok
     </button>
-    </div>
+  </div>
 </ng-template>
 <ng-template #tempLoanLetter>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
         aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-        <div class="card">
-            <div class="card-body">
-                <div class="row clearfix">
-                    <!-- <div class="col-md-12">
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+          <!-- <div class="col-md-12">
                  <label class="form-label">Upload File here :</label>
               </div> -->
-                    <div class="col-md-12">
-                        <div class="fileuploadbox bg-color-lightgray">
-                            <label class="filelabel">
+          <div class="col-md-12">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
                 <i class="fa fa-upload">
                 </i>
                 <span class="title">
@@ -1060,10 +1198,10 @@
                 <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event,'loanSanctionLetter');"
                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
-                        </div>
-                        <div *ngIf="loanSanctionLetter.length > 0 " class="fileuploadbox">
-                            Selected files
-                            <label *ngFor="let item of loanSanctionLetter;  let index = index;" class="filelabeldisplay">
+            </div>
+            <div *ngIf="loanSanctionLetter.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of loanSanctionLetter;  let index = index;" class="filelabeldisplay">
                 <div class="text-ellipsis"><i class="fa fa-paperclip">
                   </i>
                   <span class="title">
@@ -1075,73 +1213,75 @@
                     (click)="removeSelectedLicMasterDocument(index , 'loanSanctionLetter')"></i>
                 </div>
               </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-10">
-                        <label class="form-label">Remark</label>
-                    </div>
-                    <div class="col-md-12">
-                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-                    </div>
-                </div>
             </div>
+          </div>
+          <div class="col-md-12 mt-10">
+            <label class="form-label">Remark</label>
+          </div>
+          <div class="col-md-12">
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
 </ng-template>
 <!-- For Doc Viewer  -->
 <ng-template #template3>
-    <div class="modal-header">
-        <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
-    </div>
-    <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
+  </div>
+  <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
 <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document" (click)="previousDocViewerLoanSanction()" [disabled]="urlIndex == 0">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+          (click)="previousDocViewerLoanSanction()" [disabled]="urlIndex == 0">
           <i class="fa fa-angle-left text-white font-30 p-10"></i>
         </button>
-            </div>
-            <div class="col-md-10">
-                <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
-                <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewerLoanSanction()" [disabled]="urlIndex == loanSanctionUrlArray.length - 1">
+      </div>
+      <div class="col-md-10">
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document"
+          (click)="nextDocViewerLoanSanction()" [disabled]="urlIndex == loanSanctionUrlArray.length - 1">
           <i class="fa fa-angle-right text-white font-30 p-10"></i>
         </button>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary">Save</button>  -->
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
       Ok
     </button>
-    </div>
+  </div>
 </ng-template>
 <ng-template #tempPossessionLetter>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
         aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-        <div class="card">
-            <div class="card-body">
-                <div class="row clearfix">
-                    <!-- <div class="col-md-12">
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+          <!-- <div class="col-md-12">
                  <label class="form-label">Upload File here :</label>
               </div> -->
-                    <div class="col-md-12">
-                        <div class="fileuploadbox bg-color-lightgray">
-                            <label class="filelabel">
+          <div class="col-md-12">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
                 <i class="fa fa-upload">
                 </i>
                 <span class="title">
@@ -1150,10 +1290,10 @@
                 <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event,'possessionLetter');"
                   accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
-                        </div>
-                        <div *ngIf="possessionLetter.length > 0 " class="fileuploadbox">
-                            Selected files
-                            <label *ngFor="let item of possessionLetter;  let index = index;" class="filelabeldisplay">
+            </div>
+            <div *ngIf="possessionLetter.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of possessionLetter;  let index = index;" class="filelabeldisplay">
                 <div class="text-ellipsis"><i class="fa fa-paperclip">
                   </i>
                   <span class="title">
@@ -1165,55 +1305,57 @@
                     (click)="removeSelectedLicMasterDocument(index , 'possessionLetter')"></i>
                 </div>
               </label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-10">
-                        <label class="form-label">Remark</label>
-                    </div>
-                    <div class="col-md-12">
-                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-                    </div>
-                </div>
             </div>
+          </div>
+          <div class="col-md-12 mt-10">
+            <label class="form-label">Remark</label>
+          </div>
+          <div class="col-md-12">
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
 </ng-template>
 
 <!-- For Doc Viewer  -->
 <ng-template #template4>
-    <div class="modal-header">
-        <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
-    </div>
-    <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
+  </div>
+  <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
 <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document" (click)="previousDocViewerPossession()" [disabled]="urlIndex == 0">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+          (click)="previousDocViewerPossession()" [disabled]="urlIndex == 0">
           <i class="fa fa-angle-left text-white font-30 p-10"></i>
         </button>
-            </div>
-            <div class="col-md-10">
-                <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
-                <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewerLoanPossession()" [disabled]="urlIndex == possessionUrlArray.length - 1">
+      </div>
+      <div class="col-md-10">
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document"
+          (click)="nextDocViewerLoanPossession()" [disabled]="urlIndex == possessionUrlArray.length - 1">
           <i class="fa fa-angle-right text-white font-30 p-10"></i>
         </button>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary">Save</button>  -->
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
       Ok
     </button>
-    </div>
+  </div>
 </ng-template>
