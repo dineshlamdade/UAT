@@ -260,7 +260,7 @@
                     [ngModel]="enableSelectAll"
                     [disabled]="isDisabled"
                     (change)="
-                      onSelectCheckBox($event, i);
+                      onSelectCheckBox($event, i, addRowSummary);
                       enableCheckboxFlag = i
                     "
                     class="custom-control-input"
@@ -277,7 +277,7 @@
                     [ngModel]="enableSelectAll"
                     [disabled]="isDisabled "
                     (change)="
-                      onSelectCheckBox($event, i);
+                      onSelectCheckBox($event, i, addRowSummary);
                       enableCheckboxFlag = i
                      
                     "

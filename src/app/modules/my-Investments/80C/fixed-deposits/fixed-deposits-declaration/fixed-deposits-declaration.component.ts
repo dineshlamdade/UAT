@@ -263,7 +263,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     console.log('event::', event);
     const declaredAmountFormatted = event.target.value;
     console.log('declaredAmountFormatted::', declaredAmountFormatted);
-debugger
+
     if (
       declaredAmountFormatted !== null ||
       declaredAmountFormatted !== undefined
@@ -727,7 +727,14 @@ debugger
   public onSelectCheckBox(
    
     event: { target: { checked: any } },
-    i: number,
+    i: number, summary: {
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;      
+      declaredAmount: number;
+      actualAmount: number;
+      dateOfPayment: Date;
+    },
   
   ) {
     
@@ -771,7 +778,7 @@ debugger
     let formatedSelectedAmount: string;
    
     if (checked) {
-     /*  if (this.transactionDetail[j].isECS === 1) {
+  /*  if (this.transactionDetail[j].isECS === 1) {
         this.transactionDetail[j].actualAmount =
           data.declaredAmount;
         this.transactionDetail[j].dateOfPayment = new Date(data.dueDate);
@@ -846,20 +853,22 @@ debugger
       this.enableFileUpload = true;
     }*/
     console.log(this.uploadGridData);
-    this.actualTotal = 0;
-    this.transactionDetail.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualTotal.toString().replace(/,/g, '')
-      );
-      // console.log("Actual Total")(this.actualTotal);
-     console.log("Actual Total::" , this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.onActualAmountChange(summary, i);
+    // this.actualTotal = 0;
+    // this.transactionDetail.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualTotal.toString().replace(/,/g, '')
+    //   );
+    //   // console.log("Actual Total")(this.actualTotal);
+    //  console.log("Actual Total::" , this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
 
     this.grandActualTotal = this.actualTotal;
     console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
+   
   }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
@@ -992,7 +1001,7 @@ debugger
     },
     i: number
   ) {
-   debugger
+   
     console.log("summary::",summary)
     this.declarationService = new DeclarationService(summary);
     console.log("declarationService::",this.declarationService)
@@ -1050,7 +1059,7 @@ debugger
     },
     i: number
   ) {
-   debugger
+ 
     console.log("summary::",summary)
     this.declarationService = new DeclarationService(summary);
     console.log("declarationService::",this.declarationService)
@@ -1382,6 +1391,7 @@ debugger
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.globalSelectedAmounts = '0.00';
     this.investmentGroup3TransactionDetailList = [];
   }
 
@@ -1394,11 +1404,11 @@ debugger
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
-    if (receiptAmount_ < globalSelectedAmount_) {
+    if (receiptAmount_ < this.globalSelectedAmounts) {
     this.alertService.sweetalertError(
       'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
-  } else if (receiptAmount_ > globalSelectedAmount_) {
+  } else if (receiptAmount_ > this.globalSelectedAmounts) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(

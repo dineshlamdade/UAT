@@ -313,8 +313,8 @@
                     <!-- <th scope="col" class="wd-10">Policy No</th> -->
                     <th scope="col" class="wd-10">Child Name</th>
                     <th scope="col" class="wd-10">Relationship</th>
-                    <th scope="col" class="wd-10">Policy Start Date</th>
-                    <th scope="col" class="wd-10">Policy End Date</th>
+                    <th scope="col" class="wd-10">From Date</th>
+                    <th scope="col" class="wd-10">To Date</th>
                     <th scope="col" class="wd-10">Frequency</th>
                     <th scope="col" class="wd-10">Premium Amount</th>
                     <th scope="col" class="wd-10">Status</th>
@@ -331,10 +331,10 @@
                     </td>
                     <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
                     </td>
-                    <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date
-                        :"dd-MMM-yyyy"}}</span>
+                    <td class="wd-10"><span tooltip="{{summary.fromDate  | date : 'dd-MMM-yyyy'}}">{{summary.fromDate | date
+                      :"dd-MMM-yyyy"}}</span>
                     </td>
-                    <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date
+                    <td class="wd-10"><span tooltip="{{summary.toDate | date : 'dd-MMM-yyyy'}}">{{summary.toDate | date
                         :"dd-MMM-yyyy"}}</span>
                     </td>
                     <td class="wd-10"><span

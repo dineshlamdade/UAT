@@ -168,7 +168,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   public globalSelectedAmount: string;
   dateOfJoining: Date;
   public selectrow : any;
-  totalSelectedAmount: any = '0.00'
+  globalSelectedAmounts: any = '0.00'
 
   constructor(
     private formBuilder: FormBuilder,
@@ -713,7 +713,17 @@ export class TaxSavingNabardActualComponent implements OnInit {
   }
 
   // -------- ON select to check input boxex--------
-  public onSelectCheckBox(event: { target: { checked: any } }, i: number) {
+  public onSelectCheckBox(event: { target: { checked: any } }, 
+    
+    i: number, summary: {
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;      
+      declaredAmount: number;
+      actualAmount: number;
+      dateOfPayment: Date;
+    },
+  ) {
 
 
     if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
@@ -746,7 +756,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
     if (checked) {
 
       this.investmentGroup3TransactionDetailList[i].actualAmount = this.investmentGroup3TransactionDetailList[i].declaredAmount;
-      this.totalSelectedAmount = this.investmentGroup3TransactionDetailList[i].declaredAmount;
+      this.globalSelectedAmounts = this.investmentGroup3TransactionDetailList[i].declaredAmount;
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
@@ -788,16 +798,17 @@ export class TaxSavingNabardActualComponent implements OnInit {
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     console.log(this.uploadGridData);
-    this.actualTotal = 0;
-    this.transactionDetail.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualTotal.toString().replace(/,/g, '')
-      );
-      // console.log("Actual Total")(this.actualTotal);
-     console.log("Actual Total::" , this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.onActualAmountChange(summary, i);
+    // this.actualTotal = 0;
+    // this.transactionDetail.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualTotal.toString().replace(/,/g, '')
+    //   );
+    //   // console.log("Actual Total")(this.actualTotal);
+    //  console.log("Actual Total::" , this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
 
     this.grandActualTotal = this.actualTotal;
     console.log(this.grandActualTotal);
@@ -956,7 +967,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
     },
     i: number
   ) {
-   debugger
+
     console.log("summary::",summary)
     this.declarationService = new DeclarationService(summary);
     console.log("declarationService::",this.declarationService)
@@ -1244,9 +1255,10 @@ export class TaxSavingNabardActualComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
-    // this.receiptAmount = '0.00';
-    // this.filesArray = [];
-    // this.globalSelectedAmount = '0.00';
+    this.receiptAmount = '0.00';
+    this.filesArray = [];
+    this.globalSelectedAmount = '0.00';
+    this.globalSelectedAmounts = '0.00';
     this.getIntillizeEdData();
     this.getData();
   }
@@ -1262,11 +1274,11 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
-    if (receiptAmount_ < globalSelectedAmount_) {
+    if (receiptAmount_ < this.globalSelectedAmounts) {
       this.alertService.sweetalertError(
         'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
       );
-    } else if (receiptAmount_ > globalSelectedAmount_) {
+    } else if (receiptAmount_ > this.globalSelectedAmounts) {
       console.log(receiptAmount_);
       console.log(globalSelectedAmount_);
       this.alertService.sweetalertWarning(
