@@ -1,0 +1,863 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+  <app-header></app-header>
+  <!-- <button [routerLink]="['/approved-investmentsecond']" class="btn btn-primary">ok</button>
+    <a [routerLink]="['/approved-investmentsecond']">ok</a>
+    <router-outlet></router-outlet> -->
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="form-label">Group</label>
+                        <p-multiSelect
+                          [options]="group"
+
+                          optionLabel="name"
+                        ></p-multiSelect>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">IT Section</label>
+                        <p-multiSelect
+                          [options]="cities"
+
+                          optionLabel="name"
+                        ></p-multiSelect>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="row mt-10 float-right">
+                      <div class="col-md-4">
+                        <i class="fa fa-filter text-purple fa-2x"></i>
+                      </div>
+                      <div class="col-md-8">
+                        <button
+                          type="button"
+                          tooltip="Button"
+                          class="
+                            custom_button custom_btn
+                            btn-bg-green btn-labeled btn-labeled-left
+                            mr-15
+                          "
+                          tooltip=" Display Popup"
+                          [routerLink]="['/approved-investmentsecond']"
+                        >
+                          <b><i class="fa fa-check"></i></b> Approval
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-15">
+                  <div class="col-md-12">
+                    <h6
+                      _ngcontent-emo-c439=""
+                      class="font-14 text-purple font-bold mb-3"
+                    >
+                      Master
+                    </h6>
+                  </div>
+                </div>
+                <div class="row mt-15">
+                  <div class="col-md-2">
+                    <div
+                      class="
+                        card
+                        flex-row
+                        align-items-center align-items-stretch
+                        border-0
+                        text-number-card
+                      "
+                    >
+                      <div
+                        class="
+                          col-4
+                          d-flex
+                          align-items-center
+                          bg-primary-dark
+                          justify-content-center
+                          rounded-left
+                          text-number-card-icon
+                        "
+                      >
+                        <em class="fa fa-check-square-o font-30"></em>
+                      </div>
+                      <div
+                        class="
+                          col-8
+                          py-3
+                          bg-primary
+                          rounded-right
+                          text-number-card-text
+                        "
+                      >
+                        <div class="h2 mt-0">{{dashboardEmployeeInfo.masterStatusCount.submitted}}</div>
+                        <div class="text-uppercase font-12 font900">
+                          Submitted
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div
+                      class="
+                        card
+                        flex-row
+                        align-items-center align-items-stretch
+                        border-0
+                        text-number-card
+                      "
+                    >
+                      <div
+                        class="
+                          col-4
+                          d-flex
+                          align-items-center
+                          bg-primary-dark
+                          justify-content-center
+                          rounded-left
+                          text-number-card-icon
+                        "
+                      >
+                        <em class="fa fa-reply-all font-30"></em>
+                      </div>
+                      <div
+                        class="
+                          col-8
+                          py-3
+                          bg-primary
+                          rounded-right
+                          text-number-card-text
+                        "
+                      >
+                        <div class="h2 mt-0">{{dashboardEmployeeInfo.masterStatusCount.sendBack}}</div>
+                        <div class="text-uppercase font-12 font900">
+                          Send Back
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div
+                      class="
+                        card
+                        flex-row
+                        align-items-center align-items-stretch
+                        border-0
+                        text-number-card
+                      "
+                    >
+                      <div
+                        class="
+                          col-4
+                          d-flex
+                          align-items-center
+                          bg-primary-dark
+                          justify-content-center
+                          rounded-left
+                          text-number-card-icon
+                        "
+                      >
+                        <em class="fa fa-thumbs-o-up font-30"></em>
+                      </div>
+                      <div
+                        class="
+                          col-8
+                          py-3
+                          bg-primary
+                          rounded-right
+                          text-number-card-text
+                        "
+                      >
+                        <div class="h2 mt-0">{{dashboardEmployeeInfo.masterStatusCount.approved}}</div>
+                        <div class="text-uppercase font-12 font900">
+                          Approved
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div
+                      class="
+                        card
+                        flex-row
+                        align-items-center align-items-stretch
+                        border-0
+                        text-number-card
+                      "
+                    >
+                      <div
+                        class="
+                          col-4
+                          d-flex
+                          align-items-center
+                          bg-primary-dark
+                          justify-content-center
+                          rounded-left
+                          text-number-card-icon
+                        "
+                      >
+                        <em class="fa fa-google-wallet font-30"></em>
+                      </div>
+                      <div
+                        class="
+                          col-8
+                          py-3
+                          bg-primary
+                          rounded-right
+                          text-number-card-text
+                        "
+                      >
+                        <div class="h2 mt-0">{{dashboardEmployeeInfo.masterStatusCount.total}}</div>
+                        <div class="text-uppercase font-12 font900">Total</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-25">
+                  <div class="col-md-12">
+                    <h6
+                      _ngcontent-emo-c439=""
+                      class="font-14 text-purple font-bold mb-3"
+                    >
+                      Transaction
+                    </h6>
+                  </div>
+                </div>
+                <div class="row mt-15">
+                  <div class="col-md-2">
+                    <div
+                      class="
+                        card
+                        flex-row
+                        align-items-center align-items-stretch
+                        border-0
+                        text-number-card
+                      "
+                    >
+                      <div
+                        class="
+                          col-4
+                          d-flex
+                          align-items-center
+                          bg-primary-dark
+                          justify-content-center
+                          rounded-left
+                          text-number-card-icon
+                        "
+                      >
+                        <em class="fa fa-check-square-o font-30"></em>
+                      </div>
+                      <div
+                        class="
+                          col-8
+                          py-3
+                          bg-primary
+                          rounded-right
+                          text-number-card-text
+                        "
+                      >
+                        <div class="h2 mt-0">{{dashboardEmployeeInfo.transactionCount.submitted}}</div>
+                        <div class="text-uppercase font-12 font900">
+                          Submitted
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div
+                      class="
+                        card
+                        flex-row
+                        align-items-center align-items-stretch
+                        border-0
+                        text-number-card
+                      "
+                    >
+                      <div
+                        class="
+                          col-4
+                          d-flex
+                          align-items-center
+                          bg-primary-dark
+                          justify-content-center
+                          rounded-left
+                          text-number-card-icon
+                        "
+                      >
+                        <em class="fa fa-reply-all font-30"></em>
+                      </div>
+                      <div
+                        class="
+                          col-8
+                          py-3
+                          bg-primary
+                          rounded-right
+                          text-number-card-text
+                        "
+                      >
+                        <div class="h2 mt-0">{{dashboardEmployeeInfo.transactionCount.sendBack}}</div>
+                        <div class="text-uppercase font-12 font900">
+                          Send Back
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div
+                      class="
+                        card
+                        flex-row
+                        align-items-center align-items-stretch
+                        border-0
+                        text-number-card
+                      "
+                    >
+                      <div
+                        class="
+                          col-4
+                          d-flex
+                          align-items-center
+                          bg-primary-dark
+                          justify-content-center
+                          rounded-left
+                          text-number-card-icon
+                        "
+                      >
+                        <em class="fa fa-thumbs-o-up font-30"></em>
+                      </div>
+                      <div
+                        class="
+                          col-8
+                          py-3
+                          bg-primary
+                          rounded-right
+                          text-number-card-text
+                        "
+                      >
+                        <div class="h2 mt-0">{{dashboardEmployeeInfo.transactionCount.approved}}</div>
+                        <div class="text-uppercase font-12 font900">
+                          Approved
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div
+                      class="
+                        card
+                        flex-row
+                        align-items-center align-items-stretch
+                        border-0
+                        text-number-card
+                      "
+                    >
+                      <div
+                        class="
+                          col-4
+                          d-flex
+                          align-items-center
+                          bg-primary-dark
+                          justify-content-center
+                          rounded-left
+                          text-number-card-icon
+                        "
+                      >
+                        <em class="fa fa-google-wallet font-30"></em>
+                      </div>
+                      <div
+                        class="
+                          col-8
+                          py-3
+                          bg-primary
+                          rounded-right
+                          text-number-card-text
+                        "
+                      >
+                        <div class="h2 mt-0">{{dashboardEmployeeInfo.transactionCount.total}}</div>
+                        <div class="text-uppercase font-12 font900">Total</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-25">
+                  <div class="col-md-12">
+                    <p-table
+                      #dt1
+                      [value]="employeeList"
+                      [paginator]="true"
+                      [rows]="10"
+                      [showCurrentPageReport]="true"
+                      (sortFunction)="customSort($event)"
+                      [customSort]="true"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [rowsPerPageOptions]="[10, 25, 50]"
+                      [globalFilterFields]="[
+                        'empcode',
+                        'empName',
+                        'Group',
+                        'Frequency',
+                        'Type',
+                        'proofsubmissionId',
+                        'PSIdDetails',
+                        'dateOfSubmission',
+                        'Status'
+                      ]"
+                    >
+                      <ng-template pTemplate="caption">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="float-right">
+                              <div class="d-flex">
+                                <button
+                                  type="button"
+                                  tooltip="Button"
+                                  class="
+                                    custom_button custom_btn
+                                    btn-bg-green btn-labeled btn-labeled-left
+                                    ml-2
+                                    mr-2
+                                  "
+                                  (click)="UploadModal2(template2)"
+                                >
+                                  <b><i class="fa fa-file"></i></b> Section wise
+                                  status
+                                </button>
+                                <button
+                                  type="button"
+                                  tooltip="Button"
+                                  class="
+                                    custom_button custom_btn
+                                    btn-bg-green btn-labeled btn-labeled-left
+                                    mr-2
+                                  "
+                                  [routerLink]="['/approved-investmentsecond']"
+                                >
+                                  <b><i class="fa fa-check"></i></b> Approval
+                                </button>
+                                <i class="fa fa-file-excel-o fa-2x mr-2"></i>
+
+                                <span class="p-input-icon-left p-ml-auto">
+                                  <i
+                                    class="pi pi-search"
+                                    style="top: 9px !important"
+                                  ></i>
+                                  <input
+                                    pInputText
+                                    type="text"
+                                    (input)="
+                                      dt1.filterGlobal(
+                                        $event.target.value,
+                                        'contains'
+                                      )
+                                    "
+                                    placeholder="Search keyword"
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                          </th>
+
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Emp. Code
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="empcode"
+                                  pSortableColumn="empcode"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  field="empcode"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Emp. Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="empName"
+                                  pSortableColumn="empName"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  type="text"
+                                  field="empName"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Group
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="Group"
+                                  pSortableColumn="Group"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  type="text"
+                                  field="Group"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              IT Section
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="ItSection"
+                                  pSortableColumn="ItSection"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  type="text"
+                                  field="ItSection"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Nature
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="Type"
+                                  pSortableColumn="Type"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  type="text"
+                                  field="Type"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              PS ID
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="proofSubmissionId"
+                                  pSortableColumn="proofSubmissionId"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  type="text"
+                                  field="proofSubmissionId"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              PS ID Details
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="PSIdDetails"
+                                  pSortableColumn="PSIdDetails"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  type="text"
+                                  field="PSIdDetails"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Submission Date
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="dateOfSubmission"
+                                  pSortableColumn="dateOfSubmission"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  type="text"
+                                  field="dateOfSubmission"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Status
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon
+                                  field="Status"
+                                  pSortableColumn="Status"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  type="text"
+                                  field="Status"
+                                  display="menu"
+                                  class="p-ml-auto"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+                          <th>Action</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-employee>
+                        <tr class="p-selectable-row">
+                          <td>
+                            <p-tableCheckbox
+                              [value]="employee"
+                            ></p-tableCheckbox>
+                          </td>
+                          <td>{{ employee.employeeCode }}</td>
+                          <td>{{ employee.employeeName }}</td>
+                          <td>{{ employee.itGroup }}</td>
+                          <td>{{ employee.itSection }}</td>
+                          <td>{{ employee.type }}</td>
+                          <td>{{ employee.proofSubmissionId }}</td>
+                          <td>{{ employee.proofSubmissionIdDetail }}</td>
+                          <td>{{ employee.dateOfSubmission | date:'dd-MMM-yyyy' }}</td>
+                          <td>{{ employee.status }}</td>
+                          <td><i class="fa fa-eye fa2"></i></td>
+                        </tr>
+                      </ng-template>
+                      <!-- <ng-template pTemplate="paginatorleft">
+                        <p-button
+                          type="button"
+                          icon="pi pi-plus"
+                          styleClass="p-button-text"
+                        >
+                        </p-button>
+                      </ng-template>
+                      <ng-template pTemplate="paginatorright">
+                        <p-button
+                          type="button"
+                          icon="pi pi-cloud"
+                          styleClass="p-button-text"
+                        >
+                        </p-button>
+                      </ng-template> -->
+                    </p-table>
+                  </div>
+                </div>
+
+
+              <ng-template #template>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="UploadModalLabel">
+                    Employee details
+                  </h5>
+                  <button
+                    type="button"
+                    (click)="modalRef.hide()"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="bg-color-light_gray pt-10 pl-10 pr-10">
+                        <div class="row">
+                          <div class="col-md-3 col-xs-12">
+                            <h6 class="font-12 mb-3 font-normal">
+                              <strong>Emp Code: </strong>1-A
+                            </h6>
+                          </div>
+                          <div class="col-md-3 col-xs-12">
+                            <h6 class="font-12 mb-3 font-normal">
+                              <strong>Emp Name : </strong>Sujata
+                            </h6>
+                          </div>
+                          <div class="col-md-3 col-xs-12">
+                            <h6 class="font-12 mb-3 font-normal">
+                              <strong>DOJ: </strong>123
+                            </h6>
+                          </div>
+                          <div class="col-md-3 col-xs-12">
+                            <h6 class="font-12 mb-3 font-normal">
+                              <strong>Establishment : </strong>master
+                            </h6>
+                          </div>
+                          <div class="col-md-3 col-xs-12">
+                            <h6 class="font-12 mb-3 font-normal">
+                              <strong>Emp type : </strong>1/2/2021
+                            </h6>
+                          </div>
+                          <div class="col-md-3 col-xs-12">
+                            <h6 class="font-12 mb-3 font-normal">
+                              <strong>Grade : </strong>122
+                            </h6>
+                          </div>
+                          <div class="col-md-3 col-xs-12">
+                            <h6 class="font-12 mb-3 font-normal">
+                              <strong>Designation : </strong>Worker
+                            </h6>
+                          </div>
+                          <div class="col-md-3 col-xs-12">
+                            <h6 class="font-12 mb-3 font-normal">
+                              <strong>Status : </strong>122
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="modalRef.hide()"
+                  >
+                    Ok
+                  </button>
+                </div>
+              </ng-template>
+
+              <ng-template #template2>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="UploadModalLabel">
+                    Sectionwise Status
+                  </h5>
+                  <button
+                    type="button"
+                    (click)="modalRef.hide()"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="card">
+                    <div class="card-body">
+                      <p-table [value]="users1">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th
+                              rowspan="2"
+                              class="primeng-table-header-center wd-20"
+                            >
+                              Group
+                            </th>
+                            <th
+                              rowspan="2"
+                              class="primeng-table-header-center wd-10"
+                            >
+                              IT Section
+                            </th>
+                            <th
+                              colspan="3"
+                              class="primeng-table-header-center wd-10"
+                            >
+                              No.Of Employees
+                            </th>
+                            <th
+                              colspan="3"
+                              class="primeng-table-header-center wd-10"
+                            >
+                              No.of PS ID
+                            </th>
+                          </tr>
+                          <tr>
+                            <th class="primeng-table-header-center wd-10">
+                              Proof Submitted
+                            </th>
+                            <th class="primeng-table-header-center wd-20">
+                              Actioned
+                            </th>
+                            <th class="primeng-table-header-center wd-10">
+                              Yet to Actioned
+                            </th>
+                            <th class="primeng-table-header-center wd-10">
+                              Submitted
+                            </th>
+                            <th class="primeng-table-header-center wd-10">
+                              Send Back
+                            </th>
+                            <th class="primeng-table-header-center wd-10">
+                              Approved
+                            </th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-user1>
+                          <tr>
+                            <td>{{ user1.Group }}</td>
+                            <td>{{ user1.ITSection }}</td>
+                            <td>{{ user1.noemployees }}</td>
+                            <!-- <td>{{ user1.nopsid }} </td>
+                        <td>{{ user1.proofsubmitted }} </td> -->
+                            <td>{{ user1.actioned }}</td>
+                            <td>{{ user1.yettoactioned }}</td>
+                            <td>{{ user1.submitted }}</td>
+                            <td>{{ user1.sendback }}</td>
+                            <td>{{ user1.approved }}</td>
+                          </tr>
+                          <tr>
+                            <!-- <td colspan="8">
+                            <span class="font-14 font500 align-center text-red">No
+      Data Available</span>
+                        </td> -->
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="modalRef.hide()"
+                  >
+                    Ok
+                  </button>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
