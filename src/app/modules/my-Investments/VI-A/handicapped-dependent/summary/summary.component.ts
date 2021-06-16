@@ -48,12 +48,14 @@ export class SummaryComponent implements OnInit {
       familyMemberName : familyMemberName,
       disabilityType : disabilityType,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+      canEdit: mode == 'edit' ? true : false,
+      canView: mode == 'view' ? true : false,
+    };
+     // canEdit: (mode == 'edit' ? true : false)};
     this.familyMemberName = familyMemberName;
     this.disabilityType = disabilityType;
     this.myEvent.emit(data);
   }
-
   jumpToMasterPage(disabilityType: string) {
     this.tabIndex = 1;
     const disabilityTypeName = {
