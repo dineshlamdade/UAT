@@ -210,7 +210,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       } );
   }
 
-
+// Get  Formula API
   getAllFormulaList(): void {
     this.companySettingsService.getFromulaForFormulaMaster().subscribe( res => {
       this.FormulaArray = res.data.results;

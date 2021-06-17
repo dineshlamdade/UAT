@@ -14,6 +14,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./business-year.component.scss']
 } )
 export class BusinessYearComponent implements OnInit {
+  public hideUpdate : boolean = false;
   users1 = [
     { srno: '1', headtype: 'Earning', headcode: 'AAA', headdesc: 'AAA Desc', openingval: '0.00', chngamount: '0.00', chngper: '2', closingamt: '0.00', unitofmeasure: 'PM', remark: 'Remark1' },
     { srno: '2', headtype: 'Earning', headcode: 'AAA', headdesc: 'AAA Desc', openingval: '0.00', chngamount: '0.00', chngper: '2', closingamt: '0.00', unitofmeasure: 'MM', remark: 'Remark1' },
@@ -152,12 +153,23 @@ export class BusinessYearComponent implements OnInit {
     this.BusinessYearform.get( 'description' ).enable();
     this.BusinessYearform.get( 'businessYear' ).setValue( '' );
   }
+  //Edit and view
   // http://localhost:8086/hrms/v1/business-year/27
-  GetBussinessyearById( id: number ): void {
+  GetBussinessyearById( id: number, isView:boolean ): void {
+    console.log(isView);
+    if(isView == true){
+    this.updateFlag = true;
+    this.hideUpdate = false;
+    this.BusinessYearform.enable();
+  }else{
+      this.BusinessYearform.disable();
+      this.updateFlag = true;
+      this.hideUpdate = true;
+    }
+    window.scrollTo( 0, 0 );
     console.log( 'gettt' );
     this.editedRecordIndexId = id;
     console.log( id, this.BusinessyearList );
-    this.updateFlag = true;
 
     this.companySetttingService.GetBusinessYearById( id )
       .subscribe( response => { //: saveBusinessYear[]
@@ -174,6 +186,23 @@ export class BusinessYearComponent implements OnInit {
         } );
     this.BusinessYearform.get( 'description' ).disable();
   }
+
+  // viewMaster(i: number) {
+  //   window.scrollTo(0, 0);
+  //   this.viewMode = true;
+  //   this.isEditMode = true;
+  //   console.log(this.bankMasterDetailsResponse[i]);
+  //   this.BusinessYearform.patchValue({ id: response.data.results[0].businessYearDefinitionId } );
+  //   this.ifscCodeList.push(this.bankMasterDetailsResponse[i].ifscCode);
+  //   this.BusinessYearform.patchValue({
+  //     branchName: this.summaryHtmlDataList[i].branchName,
+  //     branchAddress: this.summaryHtmlDataList[i].branchAddress,
+  //     bankName: this.summaryHtmlDataList[i].bankName,
+  //   });
+  //   this.BusinessYearform.disable();
+  // }
+
+
   UploadModal1( template: TemplateRef<any> ) {
     this.modalRef = this.modalService.show(
       template,
