@@ -180,6 +180,7 @@ export class MasterComponent implements OnInit {
       familyMemberName: new FormControl(null, Validators.required),
       relationship: new FormControl({value: null, disabled: true },Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
+      handicappedDependentDetailMasterId:new FormControl()
     });
   }
 
@@ -348,8 +349,13 @@ export class MasterComponent implements OnInit {
   editMaster(disabilityType) {
     this.scrollToTop();
     this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
+
       console.log('masterGridData::', res);
+
       this.masterGridData = res.data.results;
+
+      console.log('masterGridData::', res);
+
       this.disability = res.data.results[0].disability;
       this.severity = res.data.results[0].severity;
       console.log(disabilityType)
@@ -443,8 +449,7 @@ export class MasterComponent implements OnInit {
     if(checked) {
       this.isSaveVisible = false;
       this.alertService.sweetalertError(
-        'You Not Applicable for Benefits 80-U.'
-      );
+        'Benefit of 80DD is not Applicable for selected family member, if family member is already claiming benefit under 80U.'  );
     }
   }
 
