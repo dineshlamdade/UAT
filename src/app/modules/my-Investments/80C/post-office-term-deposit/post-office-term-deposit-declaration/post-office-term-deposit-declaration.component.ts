@@ -722,7 +722,14 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
   public onSelectCheckBox(
    
     event: { target: { checked: any } },
-    i: number
+    i: number, summary: {
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;      
+      declaredAmount: number;
+      actualAmount: number;
+      dateOfPayment: Date;
+    },
   ) {
 
     if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
@@ -832,16 +839,17 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     }*/
     
     console.log(this.uploadGridData);
-    this.actualTotal = 0;
-    this.transactionDetail.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualTotal.toString().replace(/,/g, '')
-      );
-      // console.log("Actual Total")(this.actualTotal);
-     console.log("Actual Total::" , this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.onActualAmountChange(summary, i);
+    // this.actualTotal = 0;
+    // this.transactionDetail.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualTotal.toString().replace(/,/g, '')
+    //   );
+    //   // console.log("Actual Total")(this.actualTotal);
+    //  console.log("Actual Total::" , this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
 
     this.grandActualTotal = this.actualTotal;
     console.log(this.grandActualTotal);
@@ -997,7 +1005,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     },
     i: number
   ) {
-   debugger
+   
     console.log("summary::",summary)
     this.declarationService = new DeclarationService(summary);
     console.log("declarationService::",this.declarationService)
@@ -1379,6 +1387,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.globalSelectedAmounts = '0.00';
     this.investmentGroup3TransactionDetailList = [];
   }
 
@@ -1391,11 +1400,11 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
-    if (receiptAmount_ < globalSelectedAmount_) {
+    if (receiptAmount_ < this.globalSelectedAmounts) {
     this.alertService.sweetalertError(
       'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
-  } else if (receiptAmount_ > globalSelectedAmount_) {
+  } else if (receiptAmount_ > this.globalSelectedAmounts) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(

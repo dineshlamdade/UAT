@@ -103,13 +103,19 @@
               <tr *ngFor="
                    let summary of item.previousEmployerTransactionDetailList;
                    let i = index;
-                   count as c ">               
-                <td>
+                   count as c ">    
+                   <td>
+                    <input type="text" id="actualAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
+                      name="actualAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
+                      [(ngModel)]="summary.actualAmountPerMonth"
+                      (change)="onActualAmountChange(summary, i, j)" class="form-control align-right" />
+                  </td>           
+             <!--    <td>
                   <input type="text" id="actualAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
                     name="actualAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
                     [disabled]="initialArrayIndex[j] > i" [(ngModel)]="summary.actualAmountPerMonth"
                     (change)="onActualAmountChange(summary, i, j)" class="form-control align-right" />
-                </td>
+                </td> -->
                 <td>
                   <input type="text" [ngModel]="summary.rejectedAmountPerMonth | number: '1.2-2'"
                     class="form-control align-right" disabled />
@@ -249,15 +255,20 @@
                         {{ item.name }},
                       </span>
                     </td>                 
-                    <td>
+                 <!--    <td>
                       <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
                            !enableFileUpload
                              ? sweetalertWarning(
                                  'Please select transaction to Upload Document')
                              : UploadModal(template4)
                          "></i>&nbsp;&nbsp;
-                      <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
-                    </td>
+                      <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i>
+                    </td> -->
+                    <td>
+                      <i class="fa fa-files-o  font-16 text-dark-green cursor-pointer"tooltip="File Download"(click)="openForm12BModal(template4)" ></i>&nbsp;&nbsp;&nbsp;
+                      <i class="fa fa-upload  font-16 text-dark-green cursor-pointer"tooltip="File Generate"(click)=" UploadModal(previousEmployerDetailsIndex)" ></i>&nbsp;&nbsp;&nbsp;
+                      
+                      </td>
                   </tr>
                 </tbody>
               </table>
@@ -737,6 +748,200 @@
 </ng-template>
 
 <ng-template #template4>
+  <div class="row mt-20">
+      <div class="col-md-12">
+          <div class="float-right">
+              <button type="button" tooltip="Sign & Upload Form 12B" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="openFormSign(template5)"><b><i class="fa fa-upload"></i></b>Sign & Upload Form 12B</button>
+              <button type="submit" tooltip="download" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="download()"><b><i class="fa fa-download"></i></b> Download </button>
+              <button type="button" tooltip="Close" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="modalRef.hide()"><b><i class="fa fa-times"></i></b>Close </button>
+          </div>
+      </div>
+  </div>
+  <div class="section-body mt-3">
+      <div class="container-fluid" id="htmlData" #htmlData>
+          <div class="row clearfix">
+              <div class="col-12">
+                  <div class="card">
+                      <!--
+                      <table  #htmlData> -->
+                      <div class="card-body">
+                          <div class="row mt-20">
+                              <div class="col-md-12">
+                                  <h5 class="text-center mb-0 mt-20 font-14">Form No. 12 B</h5>
+                                  <label class="text-center form-label mb-0 mt-0">(See rule 26A)</label>
+                              </div>
+                          </div>
+
+
+                          <div class="row mt-10">
+                              <div class="col-md-8">
+                                  <label class="mt-10 mb-0 form-label">Name and Address of the employee:.......................</label>
+                              </div>
+                              <div class="col-md-9">
+                                  <span class="font-14 font700 text-purple">
+                                
+                                   </span>
+                              </div>
+                          </div>
+                          <div class="row mt-10">
+                              <div class="col-md-8">
+                                  <label class="mt-10 mb-0 form-label">Permanent Account Number:........................</label>
+                              </div>
+                              <div class="col-md-9">
+                                  <span class="font-14 font700 text-purple">
+
+                                   </span>
+                              </div>
+                          </div>
+                          <div class="row mt-10">
+                              <div class="col-md-8">
+                                  <label class="mt-10 mb-0 form-label">Residential Status....................</label>
+                              </div>
+                              <div class="col-md-9">
+                                  <span class="font-14 font700 text-purple"></span>
+                              </div>
+                          </div>
+                          <div class="row mt-20">
+                              <div class="col-md-12">
+                                  <div class="table-responsive Custom_Table">
+                                      <table class="table table-bordered m-b-0">
+                                          <thead class="thead-light">
+                                              <tr>
+                                                  <th rowspan="2" class="wd-5 text-bold">Sr. No.</th>
+                                                  <th rowspan="2" class="text-bold">Name and address of employer(s)</th>
+                                                  <th rowspan="2" class="text-bold">TAN of the employer(s) as alloted by the ITO</th>
+                                                  <th rowspan="2" class="text-bold">Permanent Account Number of the employer(s)</th>
+                                                  <th rowspan="2" class="text-bold">Period of employment</th>
+                                                  <th colspan="3" class="text-bold">Particulars of salary as defined in section 17, paid or due to be paid to the employee during the year</th>
+                                                  <th rowspan="2" class="text-bold">Total of columns 6,7 and 8</th>
+                                                  <th rowspan="2" class="text-bold">Amount deducted in respect of life insurance premium, provident fund contribution, etc., to which section 80c applies (Give details)</th>
+                                                  <th rowspan="2" class="text-bold">Total amount of tax deducted during the year (enclose certificate issued under section 203)</th>
+                                                  <th rowspan="2" class="text-bold">Remarks</th>
+                                              </tr>
+                                              <tr>
+                                                  <th class="text-bold">Total amount of salary excluding amounts required to be shown in columns 7 and 8</th>
+                                                  <th class="text-bold">Total amount of house rent allowance, conveyance allowance and other allowances to the extent chargeable to tax [See section 10(13A) read with rule 2A and section 10(14)]</th>
+                                                  <th class="text-bold">Value of perquisites and amount of accretion to employee's provident fund account (give details in the Annexure)</th>
+                                              </tr>
+                                              <tr>
+                                                  <th class="text-bold text-center">(1)</th>
+                                                  <th class="text-bold text-center">(2)</th>
+                                                  <th class="text-bold text-center">(3)</th>
+                                                  <th class="text-bold text-center">(4)</th>
+                                                  <th class="text-bold text-center">(5)</th>
+                                                  <th class="text-bold text-center">(6)</th>
+                                                  <th class="text-bold text-center">(7)</th>
+                                                  <th class="text-bold text-center">(8)</th>
+                                                  <th class="text-bold text-center">(9)</th>
+                                                  <th class="text-bold text-center">(10)</th>
+                                                  <th class="text-bold text-center">(11)</th>
+                                                  <th class="text-bold text-center">(12)</th>
+
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              <tr *ngFor="let summary of masterSummaryGridData; let i = index">
+                                                  <td>
+                                                      <span tooltip="{{i+1}}">
+                                                       {{i+1}}
+                                                    </span>
+                                                  </td>
+                                                  <td>
+                                                      {{summary.name}} {{summary.address}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.tan}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.pan}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.dateOfJoining | date :'dd-MMM-yyyy'}} <b>To</b> {{summary.dateOfLeaving | date :'dd-MMM-yyyy' }}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.fullyTaxableHeadsIncome}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.headsWithExemptionIncome}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.headsWithExemptionIncome}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.taxableIncome}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.benefitGivenUnder80C}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.taxDeductedAtSource}}
+                                                  </td>
+                                                  <td>
+                                                      {{summary.typeOfRegime}}
+                                                  </td>
+                                              </tr>
+                                              <tr>
+                                                  <td colspan="12" class="text-center text-bold">Verification</td>
+                                              </tr>
+                                              <tr>
+                                                  <td colspan="12" class="align-left">
+                                                      I, <span class="text-bold">  .................</span>,do hereby declare that what is stated above is true to the best of my knowledge and belief.
+                                                  </td>
+                                              </tr>
+                                              <tr>
+                                                  <td colspan="12" class="align-left">
+                                                      <div>Place:</div>
+
+                                                  </td>
+                                              </tr>
+                                              <tr>
+                                                  <td colspan="12" class="align-right">
+                                                      <div>Signature of the employee:</div>
+                                                      <div class="preview" *ngIf="  ">
+                                                          <img [src]="imageFile" style="width:200px; height:38px;float:right">
+                                                      </div>
+                                                      <div class="preview" *ngIf="imgFile">
+                                                          <img [src]="imgFile" style="width:200px; height:38px;float: right;">
+                                                      </div>
+                                                  </td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+
+                              </div>
+                          </div>
+                          <!--     <div class="row mt-20">
+                               <div class="col-md-12">
+                                   <div class="float-right">
+                                       <button type="button" tooltip="Sign & Upload Form 12B" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-upload"></i></b>  Upload Form 12B </button>
+                                       <button type="button" tooltip="Print" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-print"></i></b> Print </button>
+                                       <button type="button" tooltip="Close" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-times"></i></b>Close </button>
+                                   </div>
+                               </div>
+                           </div> -->
+
+                      </div>
+                      <!--
+                      </table> -->
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- <div class="preview" *ngIf="imageFile">
+          <img [src]="imageFile" style="width:200px; height:200px;float:right">
+        </div> -->
+  </div>
+
+  <!--  <div class="preview" *ngIf="imgFile">
+    <img [src]="imgFile" style="width:200px; height:200px;float: right;">
+  </div> -->
+
+
+  <!-- </div> -->
+</ng-template>
+
+<ng-template #previousEmployerDetailsIndex>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
@@ -785,5 +990,45 @@
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
       Ok
     </button>
+  </div>
+</ng-template>
+
+<ng-template #template5>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+  </div>
+  <div class="row ml-4">
+      <section class=" col col-8">
+          <label class="input input-file">
+             <span class="button">
+                 <input id="file1" type="file" name="file1" accept="image/*" file-actual="emp.empImagePath"
+                 allowed-format="jpg,jpeg,png" (change)="onImageChange($event)">
+              </span>
+           </label>
+      </section>
+  </div>
+  OR
+  <div class="row ml-4">
+      <span><h6>Your Signature Please</h6></span>
+  </div>
+  <div class="row ml-4">
+
+
+      <!-- <signature-pad #signatureCanvas [options] ="signaturePadOptions" id ="signatureCanvas" (onBeginEvent) ="drawStart()"
+    (onEndEvent) ="drawComplete()"> </signature-pad> -->
+
+      <app-signature-pad [imagefile]=imagefile (imageFile)="getImageFile($event)"></app-signature-pad>
+
+      <!-- <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad>' -->
+
+      <!-- <div class="preview" *ngIf="imgFile">
+       <img [src]="imgFile" style="width:400px; height:250px">
+     </div> -->
+
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
   </div>
 </ng-template>

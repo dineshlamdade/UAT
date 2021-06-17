@@ -196,14 +196,14 @@
                   <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
                     tooltip="Select institution for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll" [disabled]="isDisabled" (change)="
-                      onSelectCheckBox($event, i);
+                      onSelectCheckBox($event, i,addRowSummary);
                       enableCheckboxFlag = i
                     " class="custom-control-input" value="option" />
                     <span class="custom-control-label"></span>
                   </label>
                   <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll" [disabled]="isDisabled " (change)="
-                      onSelectCheckBox($event, i);
+                      onSelectCheckBox($event, i,addRowSummary);
                       enableCheckboxFlag = i
 
                     " class="custom-control-input" value="option" />
@@ -423,7 +423,7 @@
                     <td>
                       <span>
                         <input type="text" class="form-control align-right" 
-                        [(ngModel)]="totalSelectedAmount"
+                        [(ngModel)]="globalSelectedAmounts"
                           [disabled]="true" />
                       </span>
                     </td>

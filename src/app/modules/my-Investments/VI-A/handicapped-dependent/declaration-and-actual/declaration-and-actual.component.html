@@ -108,8 +108,12 @@
                   </span>
                 </td> -->
                 <td>
-                  <span tooltip="{{ element.proofSubmissionId }}">
+                  <!-- <span tooltip="{{ element.proofSubmissionId }}">
                     {{ element.proofSubmissionId }}
+                  </span> -->
+                  <span tooltip="{{ element.proofSubmissionId }}" *ngIf="element.transactionStatus === 'Submitted'">
+                    <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                    <!-- {{ summary.proofSubmissionId }} -->
                   </span>
                   <!-- <span tooltip="{{ physicallyHandicappedDetail.proofSubmissionId }}"
                     *ngIf="physicallyHandicappedDetail.transactionStatus === 'Submitted'">
