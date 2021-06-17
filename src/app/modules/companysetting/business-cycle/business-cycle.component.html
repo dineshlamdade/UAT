@@ -9,6 +9,66 @@
           <div class="card">
             <div class="card-body">
               <div class="tabview">
+                <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
+                  [checked]="tabIndex == 0" />
+                <div class="tabs about-page">
+                  <app-business-year *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"
+                  (accountNo)="redirectToMaster($event)"
+                  ></app-business-year>
+                </div>
+                <label class="nav" for="summary">
+                  <span> Business Year Definition </span>
+                </label>
+
+                <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
+                  [checked]="tabIndex == 1" />
+                <div class="tabs about-page">
+                  <app-cycle-definition *ngIf="tabIndex == 1"
+                  [accountNo]="accountNo" > </app-cycle-definition>
+                </div>
+                <label class="nav" for="Master">
+                  <span> Business Cycle Definition </span>
+                </label>
+
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
+                  [checked]="tabIndex == 2" />
+                <div class="tabs about-page">
+                  <app-cycle-creation [data]="data" *ngIf="tabIndex == 2"></app-cycle-creation>
+                </div>
+
+                <label class="nav" for="Declaration">
+                  <span> Cycle Creation </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
+            <i class="fa fa-angle-double-up text-white font-18"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+
+
+
+<!-- <app-leftmenu></app-leftmenu>
+
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="tabview">
 
                 <input name="nav" type="radio" class="nav home-radio" id="businessYearId" [checked]="tabIndex==0" />
                 <div class="tabs home-page">
@@ -62,4 +122,4 @@
     </div>
 
     <app-footer></app-footer>
-  </div>
+  </div> -->
