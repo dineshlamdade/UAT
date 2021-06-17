@@ -33,9 +33,17 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label">Payroll Area</label>
-                                            <p-multiSelect [options]="parollArea" [(ngModel)]="selectedPayrollArea"
+                                            <!-- <p-multiSelect [options]="parollArea" [(ngModel)]="selectedPayrollArea"
+                                            (onSelect)="onPayrollSelect($event)"
                                                 optionLabel="name" placeholder="Select All">
-                                            </p-multiSelect>
+                                            </p-multiSelect> -->
+                                            <select name="payrollarea" class="form-control input-icon"
+                                                (change)="onPayrollSelect($event.target.value)">
+                                                <option value=""> Select </option>
+                                                <option *ngFor="let payroll of parollArea">
+                                                    {{payroll.name}}
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                             
@@ -81,8 +89,7 @@
                                                                             <option value="Quarterly">Quarter </option>
                                                                             <option value="HalfYearly">HalfYear</option>
                                                                             <option value="Yearly">Year </option>
-                                                                            <option value="SemiMonthly">SemiMonth
-                                                                            </option>
+                                                                            <option value="SemiMonthly">SemiMonth</option>
                                                                             <option value="Weekly">Week </option>
                                                                             <option value="BiWeekly">BiWeek </option>
                                                                         </select>
@@ -100,6 +107,8 @@
                                                                             <input data-provide="datepicker"
                                                                                 data-date-autoclose="true"
                                                                                 class="form-control" placeholder="Date"
+                                                                                [minDate]="effectiveFromDate"
+                                                                                [maxDate]="effectiveToDate"
                                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                                 (bsValueChange)="getFromDate($event)"
                                                                                 bsDatepicker>
@@ -143,6 +152,8 @@
                                                                                 data-date-autoclose="true"
                                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                                 class="form-control" placeholder="Date"
+                                                                                [minDate]="setMinToDate"
+                                                                                [maxDate]="effectiveToDate"
                                                                                 bsDatepicker
                                                                                 (bsValueChange)="getToDate($event)"
                                                                                 [disabled]="selectedTransactionType != 'Defined Date'">
@@ -329,14 +340,13 @@
                                                     <tr class="p-selectable-row">
                                                         <td class="text-center">{{rowIndex+1}}</td>
                                                         <td>
-                                                            <input type="text" class="form-control">
+                                                            <input type="text" class="form-control"  (focusout)="getEmployeeName($event.target.value)">
                                                         </td>
-                                                        <td></td>
+                                                        <td>{{employeeName}}</td>
                                                         <td>
-                                                            <select name="payrollarea" class="form-control wd-100">
+                                                            <select name="payrollarea" class="form-control wd-100" (change)="getSelectedSavePayroll($event.target.value)">
                                                                 <option value=""> Select</option>
-                                                                <option *ngFor="let payroll of parollArea"
-                                                                    [selected]="">{{payroll.name}} </option>
+                                                                <option *ngFor="let payroll of parollArea">{{payroll.name}} </option>
                                                             </select>
                                                         </td>
                                                         <td>
@@ -345,16 +355,18 @@
                                                                         class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
                                                                 <div class="form-group mb-0  mt-1 SMDatepickerWidth">
                                                                     <div class="input-group">
-                                                                        <div class="input-group-prepend">
+                                                                        <!-- <div class="input-group-prepend">
                                                                             <span class="input-group-text">
                                                                                 <i class="fa fa-calendar"></i>
                                                                             </span>
-                                                                        </div>
+                                                                        </div> -->
                                                                         <input data-provide="datepicker"
                                                                             [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                                            data-date-autoclose="true "
-                                                                            value="{{data.fromDate}}"
-                                                                            (bsValueChange)="getFromDate($event)"
+                                                                            data-date-autoclose="true"
+                                                                            [minDate]="effectiveFromDate"
+                                                                            [maxDate]="effectiveToDate"
+                                                                            value="{{data.fromDate | date:'dd-MMM-yyyy'}}"
+                                                                            (bsValueChange)="getSaveFromDate($event)"
                                                                             class="form-control wd-120" placeholder="Date"
                                                                             bsDatepicker>
                                                                     </div>
@@ -363,7 +375,7 @@
                                                         </td>
                                                         <td>
                                                             <select name="revision type"
-                                                                class="form-control custom-select wd-120">
+                                                                class="form-control custom-select wd-120" (change)="getsaveTransactionType($event.target.value)">
                                                                 <option value=""
                                                                     [selected]="data.transactionsType == null || data.transactionsType == ''">
                                                                     Select</option>
@@ -382,40 +394,45 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input class="form-control wd-100"
-                                                                value="{{data.numberOfTransactions}}">
+                                                            <input class="form-control wd-100" value="{{data.numberOfTransactions}}" 
+                                                            (focusout)="getsaveNumberTransaction($event.target.value)"
+                                                            [disabled]="saveTransactionType != 'NoOfTransaction'">
                                                         </td>
 
                                                         <td>
                                                             <div class="p-d-inline-flex">
-                                                                <span (click)="copyDateFromTableRow()"><i
-                                                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                                                                <!-- <span (click)="copyDateFromTableRow()"><i
+                                                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span> -->
                                                                 <div class="form-group mb-0  mt-1 SMDatepickerWidth">
                                                                     <div class="input-group">
-                                                                        <div class="input-group-prepend">
+                                                                        <!-- <div class="input-group-prepend">
                                                                             <span class="input-group-text">
                                                                                 <i class="fa fa-calendar"></i>
                                                                             </span>
-                                                                        </div>
+                                                                        </div> -->
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
+                                                                            [minDate]="setMinToDate"
+                                                                            [maxDate]="effectiveToDate"
                                                                             [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                             placeholder="Date" bsDatepicker
-                                                                            value="{{data.toDate }}"
+                                                                            value="{{data.toDate | date : 'dd-MMM-yyyy}}"
+                                                                            (bsValueChange)="getSaveToDate($event)"
                                                                             class="form-control wd-120"
+                                                                            [disabled]="saveTransactionType != 'Defined Date'"
                                                                         >
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control wd-100" value="{{data.clawBack}}">
+                                                            <input type="text" class="form-control wd-100" value="{{data.clawBack}}" (focusout)="saveClawBack($event.target.value)">
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control wd-100" value="{{data.amount}}">
+                                                            <input type="text" class="form-control wd-100" value="{{data.amount}}" (focusout)="saveAmounts($event.target.value)">
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control wd-100" value="{{data.remark}}">
+                                                            <input type="text" class="form-control wd-100" value="{{data.remark}}" (focusout)="saveRemarks($event.target.value)">
                                                         </td>
                                                         <td>
                                                             <i class="fa fa-deviantart text-blue font-18 cursor-pointer"
@@ -423,9 +440,44 @@
                                                         </td>
                                                         <td>
                                                             <i class="fa fa-times  font-18 text-red cursor-pointer"
-                                                                aria-hidden="true"></i>&nbsp;
+                                                                aria-hidden="true" (click)="removeDataFromSave(rowIndex)"></i>&nbsp;
                                                             <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
-                                                                aria-hidden="true"></i>&nbsp;
+                                                                aria-hidden="true" (click)="addDataToSave()"></i>&nbsp;
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr class="p-selectable-row"  *ngFor="let data of tempTableData; let index = index;">
+                                                        <td class="text-center">{{index+1}}</td>
+                                                        <td>{{data.employeeCode}}</td>
+                                                        <td>{{data.employeeName}}</td>
+                                                        <td>
+                                                            {{data.payrollAreaCode}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.fromDate}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.transactionsType}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.numberOfTransactions}}
+                                                        </td>
+
+                                                        <td>
+                                                            {{data.toDate}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.clawbackApplicableAt}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.amount}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.remark}}
+                                                        </td>
+                                                        <td>
+                                                            <i class="fa fa-times  font-18 text-red cursor-pointer"
+                                                                aria-hidden="true" (click)="removeTempDataFromSave(index)"></i>&nbsp;
                                                         </td>
                                                     </tr>
                                                 </ng-template>
@@ -440,6 +492,9 @@
                                                 </ng-template>
 
                                             </p-table>
+
+
+                                           
                                         </div>
                                     </div>
 
@@ -449,7 +504,7 @@
                                             <div class="float-right mb-15">
                                                 <button type="submit"
                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                    tooltip="Save"><b>
+                                                    tooltip="Save" (click)="saveFastEntries()"><b>
                                                         <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
                                                 <button type="submit"
                                                     class="custom_button custom_btn  btn-bg-green btn-labeled btn-labeled-left ripple"

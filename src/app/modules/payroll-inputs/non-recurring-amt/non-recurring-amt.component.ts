@@ -114,6 +114,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			//console.log("this.payrollListEmpData: " + JSON.stringify(this.payrollListEmpData))
 			this.getAllEmployeeDetails();
 			this.selectedPayrollArea = 'PA-Staff'
+			this.PayrollAreaByPayrollAreaCode(this.selectedPayrollArea)
 			this.getSelectedEmployeeCode(this.payrollListEmpData[0].employeeMasterId)
 
 		}
@@ -1309,7 +1310,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	/** On change frequency */
 	getSelectedFrequency(value, data) {
 		this.updatefrequency = value
-		console.log(this.updatefrequency)
+		//console.log(this.updatefrequency)
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
