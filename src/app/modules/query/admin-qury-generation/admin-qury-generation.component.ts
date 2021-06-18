@@ -33,11 +33,13 @@ export class AdminQuryGenerationComponent implements OnInit {
   documentIndex: any;
   selectedDoc: any;
   public modalRef: BsModalRef;
-  public masterfilesArray: File[] = [];
+  // public masterfilesArray: File[] = [];
   public urlArray: Array<any> = [];
   public urlIndex: number;
   public urlSafe: SafeResourceUrl;
   documentList: any = [];
+
+  // public Index: number;
 
   perticularEmpDetails: any;
   employeeMasterIdData: any;
@@ -60,6 +62,9 @@ export class AdminQuryGenerationComponent implements OnInit {
   viewFlag :boolean = false;
   queryDocs: any;
   fileName:any;
+  editQueryTypeMasterId: any = '';
+  hideEditTime:boolean= true;
+
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
     private modalService: BsModalService, )
@@ -132,57 +137,66 @@ this.queryService.getAllQueryList().subscribe(res =>
   })
 }
 
-getById(queryGenerationEmpId){ //used for the edit
-  this.queryService.getById(queryGenerationEmpId).subscribe(res =>
-    {
-      this.getByIdData = res.data.results[0];
-      // this.getByIdData.forEach(element => {
-        this.listDoc =  this.getByIdData.listDoc;
+getById(queryGenerationEmpId) { //used for the edit
 
-      // });
-  this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
-  this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
-  this.queryGenerationForm.controls['priority'].setValue(this.getByIdData.priority);
-  this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(this.getByIdData.subQueTypeMasterId);
-    })
+  this.queryService.getById(queryGenerationEmpId).subscribe(res => {
+
+    this.getByIdData = res.data.results[0];
+    console.log(JSON.stringify(this.getByIdData))
+    this.querySubQueryTypeQA(this.getByIdData.applicationModuleId);
+    this.listDoc = this.getByIdData.listDoc;
+    this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
+    this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
+    this.queryGenerationForm.controls['priority'].setValue(this.getByIdData.priority);
+    this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(this.getByIdData.subQueTypeMasterId);
+    this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
+    this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
+  })
 }
 querySubQueryTypeQA(applicationModuleId)  //for all dropdown
-{
-  this.queryService.querySubQueryTypeQA(applicationModuleId).subscribe(res =>
-    {
+  {
+    this.queryService.querySubQueryTypeQA(applicationModuleId).subscribe(res => {
       this.querySubQueryTypeQAData = res.data.results;
       this.querySubQueryTypeQAData.forEach(element => {
-        if(element.subQuery == false){
-        this.listQAData = element.listQA;
+        if (element.subQuery == false) {
+          this.listQAData = element.listQA;
         }
-        else{
-        element.listSubQueryTypeData.forEach(element => {
-        this.listQAData = element.listSubQA;
-
-      });
+        else {
+          element.listSubQueryTypeData.forEach(element => {
+            this.listQAData = element.listSubQA;
+          });
+        }
+        if (this.editflag) {
+          this.getSubQueryListData(this.getByIdData.queryTypeMasterId);
+          this.editQueryTypeMasterId = this.getByIdData.queryTypeMasterId
+          this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
         }
       });
 
-      if(this.editflag){
-      this.getSubQueryListData(this.getByIdData.queryTypeMasterId);
-      console.log("@@@@@@@@@@@@@",this.getByIdData.queryTypeMasterId)
-      }
+
     })
-}
-getSubQueryListData(value)
-{
-  this.querySubQueryTypeQAData.forEach(element => {
-    if(element.queryTypeMasterId == parseInt(value) ){
-    this.subQueryData = element.listSubQueryTypeData;
-    this.priorityData = element.listPriority;
-    if(element.subQuery == false){
-    this.listQAData = element.listQA; // if subquery is false then
-    }else{
-    this.listQAData = element.listSubQA; // if subquery is true then
-    }
   }
+
+  getSubQueryListData(value) {
+    this.querySubQueryTypeQAData.forEach(element => {
+      if (element.queryTypeMasterId == parseInt(value)) {
+        this.subQueryData = element.listSubQueryTypeData;
+        this.priorityData = element.listPriority;
+        if (element.subQuery == false) {
+          this.listQAData = element.listQA; // if subquery is false then
+        } else {
+          this.listQAData = element.listSubQA; // if subquery is true then
+        }
+        if (this.editflag) {
+          this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
+          // console.log("@@@@@@@@@@@@@",this.getByIdData.queryTypeMasterId)
+        }
+
+      }
     });
-}
+
+
+  }
 moduleChange(value) // when module is changed then template also changed.
 {
   this.selectedModuleId = value;
@@ -327,8 +341,9 @@ getEmpMasterDetails(employeeMasterIdData)// temp id is used
       this.perticularEmpDetails = res.data.results[0][0];
     })
 }
-editQuery(queryGenerationSummary)
-{
+editQuery(queryGenerationSummary) {
+  this.querySubQueryTypeQAData = null
+  this.listQAData = []
   this.editflag = true;
   this.queryGenerationForm.enable();
   this.queryGenerationForm.patchValue(queryGenerationSummary);
@@ -339,8 +354,11 @@ editQuery(queryGenerationSummary)
   this.getById(queryGenerationSummary.queryGenerationEmpId);
   this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
   this.editQuerySummaery = queryGenerationSummary;
-  this.querySubQueryTypeQA(queryGenerationSummary.applicationModuleId);
+
   this.queryGenerationForm.controls['queryNumber'].disable();
+  this.urlArray = queryGenerationSummary.listDoc;
+  this.hideEditTime = false;
+
 }
 viewQuery(queryGenerationSummary)
 {
@@ -384,6 +402,8 @@ reset(){
   this.querySubQueryTypeQAData = [];
   this.getByIdData = [];
   this.listDoc = []; //reset the upload document
+  this.hideEditTime = true;
+
 }
 cancel()
 {
@@ -393,7 +413,7 @@ this.isSave = true;
 this.isReset = true;
 this.isUpdate = false;
 this.isCancle = false;
-
+this.hideEditTime = true;
 }
 // ........................upload Document..............................................................
 
@@ -444,15 +464,26 @@ public removeSelectedLicMasterDocument(index: number, docType: string) {
       this.listDoc.splice(index, 1);
 }
 
-public docViewer(template1: TemplateRef<any>, index: any) {
-  console.log('---in doc viewer--');
-  this.urlIndex = index;
-
-  console.log('listDoc::', this.listDoc);
+public docViewer(template1: TemplateRef<any>,index: any) {
+  // console.log('---in doc viewer--');
+  // this.urlIndex = 0;
+  // console.log('listDoc::', this.listDoc);
   // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
   //   this.listDoc[this.urlIndex].blobURI
   // );
 
+  // console.log('urlSafe::', this.urlSafe);
+  // this.modalRef = this.modalService.show(
+  //   template1,
+  //   Object.assign({}, { class: 'gray modal-xl' })
+  // );
+  console.log('---in doc viewer--');
+  this.urlIndex = index;
+
+  console.log('urlArray::', this.urlArray);
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArray[this.urlIndex].blobURI
+  );
   console.log('urlSafe::', this.urlSafe);
   this.modalRef = this.modalService.show(
     template1,

@@ -85,6 +85,8 @@
                       <div class="col-md-3">
                         <label class="form-label">Query Type</label>
                         <!-- (change)="queryTypeChange($event.target.value)" -->
+                        <!-- <pre>{{querySubQueryTypeQAData | json}}</pre> -->
+                        <!-- <pre *ngIf="getByIdData">{{getByIdData.queryTypeMasterId}}</pre> -->
                         <select
                           formControlName="queryTypeMasterId"
                           class="form-control custom-select" (change)="getSubQueryListData($event.target.value)"
@@ -141,11 +143,12 @@
                       </div>
                       <div class="col-md-3"  [disabled]="viewFlag">
                         <label class="form-label">Query Template</label>
+                        <!-- <pre>{{listQAData | json}}</pre> -->
+                        <!-- <pre *ngIf="getByIdData">{{getByIdData.queAnsMasterId}}</pre> -->
                         <select
-                          name="Gender"
                           class="form-control custom-select" formControlName="queAnsMasterId"
                           [ngClass]="{'is-invalid': queryGenerationForm.get('queAnsMasterId').status == 'INVALID'}">
-                          <option [ngValue]="null" selected >Select</option>
+                          <option value='null' selected >Select</option>
                           <option *ngFor="let module of listQAData " value="{{module.queAnsMasterId}}">{{module.description}}</option>
                         </select>
                       </div>
@@ -164,12 +167,6 @@
                         <ckeditor formControlName = "queryDescription"  > </ckeditor>
                       </div>
                     </div>
-
-
-
-
-
-
                     <div class="row mt-25" >
                       <div class="col-md-6">
                         <div class="table-responsive Custom_Table">
@@ -179,7 +176,7 @@
                                         <th scope="col" class="font700 wd-8">Sr No.</th>
                                         <!-- <th scope="col" class="font700 wd-40">Document Name</th> -->
                                         <th scope="col" class="font700 wd-40">Attachment</th>
-                                        <th scope="col" class="font700 wd-12" >Action</th>
+                                        <th scope="col" class="font700 wd-12"  *ngIf="hideEditTime" >Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -188,18 +185,18 @@
 
                                         <!-- <td><span tooltip="Premium Receipt/ Premium Statement"></span>Rent Agreement</td> -->
 
-                                        <td  [disabled]="viewFlag">
-                                          <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
-                                          class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                        <td  >
+                                          <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}}">
+                                            <i aria-hidden="true"  class="fa fa-paperclip"></i>&nbsp;{{item.name}}</span>
                                                               <div class="col-md-12" *ngFor="let doc of listDoc; let i = index">
-                                                                  <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
-                                                                      <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
+                                                                  <div  placement="top" tooltip="{{ doc.fileName }}">
+                                                                      &nbsp;
                                                                       {{ doc.fileName }}
                                                                   </div>
                                                               </div>
                                         </td>
 
-                                        <td >
+                                        <td *ngIf="hideEditTime">
                                             <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal" >
                                  </i>&nbsp;&nbsp;
                                         </td>
@@ -644,10 +641,10 @@
                                 }}</label>
                               </td>
                               <td>
-                                <span class="ml-1 mt-2">
-                                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit" aria-hidden="true" (click)="editQuery(queryGenerationSummary)" ></i>
-                                    <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(queryGenerationSummary)"></i>
-                                    <i class="fa fa-trash font-16 text-red cursor-pointer ml-3" tooltip="Edit" aria-hidden="true" (click)="getDeleteById(queryGenerationSummary)" ></i ></span>
+                                <span >
+                                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(queryGenerationSummary)" ></i>
+                                    <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(queryGenerationSummary)"></i>
+                                    <i class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="getDeleteById(queryGenerationSummary)" ></i ></span>
                                       <!--  -->
                               </td>
                             </tr>

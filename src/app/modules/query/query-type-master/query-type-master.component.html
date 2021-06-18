@@ -84,7 +84,7 @@
 
                       <div class="col-md-3 form-group" *ngIf="ishidden">
                         <label class="form-label">Assign Q & A Template</label>
-                        <ng-multiselect-dropdown
+                        <!-- <ng-multiselect-dropdown
                           [placeholder]="'Select Template'"
                           [settings]="dropdownSettings"
                           [data]="queryListData"
@@ -93,18 +93,13 @@
                           (onSelect)="onItemSelect($event)"
                           (onSelectAll)="onSelectAll($event)"
                           [disabled]="viewFlag" [multiple]="true">
-                        </ng-multiselect-dropdown>
+                        </ng-multiselect-dropdown> -->
 
-                        <!-- <select
-                        formControlName="assignQATemplate1"
-                        class="form-control custom-select" >
-                        <option [ngValue]="null" selected >Select</option>
-                        <option  *ngFor="let module of queryListData" value="{{module.queAnsMasterId}}">
-                          {{module.queryTypeDescription}}
-                        </option>
-                      </select> -->
-                        <!-- <p-multiSelect [options]="queryListData"  formControlName="assignQATemplate1" ngDefaultControl defaultLabel="Select a City" optionLabel="name">
-                        </p-multiSelect> -->
+                        <p-multiSelect [options]="queryListData" class="multiselect-custom"
+                        [disabled]="viewFlag" [virtualScroll]="true"
+                        formControlName="assignQATemplate1" [filterPlaceHolder]="'Select'" [placeholder]="'Select Template'"
+                        ngDefaultControl>
+                        </p-multiSelect>
                       </div>
                     </div>
                   </fieldset>
@@ -135,7 +130,7 @@
 
                       <div class="col-md-3 form-group">
                         <label class="form-label">Assign Q & A Template</label>
-                        <ng-multiselect-dropdown
+                        <!-- <ng-multiselect-dropdown
                           [placeholder]="'Select Template'"
                           [settings]="dropdownSettings"
                           [loading] = "loading"
@@ -143,8 +138,16 @@
                           formControlName="assignQATemplate2"
                           (onSelect)="onItemSubQuerySelect($event)"
                           (onSelectAll)="onSelectAllSubQuery($event)"  [disabled]="viewFlag" [multiple]="true" >
-                        <!-- [ngClass]="{'is-invalid' : querytypeForm.get('assignQATemplate2').status == 'INVALID'}"> -->
-                        </ng-multiselect-dropdown>
+                        [ngClass]="{'is-invalid' : querytypeForm.get('assignQATemplate2').status == 'INVALID'}">
+                        </ng-multiselect-dropdown> -->
+                        <p-multiSelect  [options]="queryListData" class="multiselect-custom"
+                        [showHeader]="true" [disabled]="viewFlag"
+                        (onChange)="onItemSubQuerySelect($event)"
+                        (onSelectAll)="onSelectAllSubQuery($event)"
+                        [disabled]="viewFlag" [virtualScroll]="true"
+                        formControlName="assignQATemplate2" [filterPlaceHolder]="'Select'" [placeholder]="'Select Template'"
+                        ngDefaultControl >
+                        </p-multiSelect>
                       </div>
                     </div>
 
@@ -413,9 +416,10 @@
                                       <td>
                                         <label class="form-lable mb-0" ><label class="custom-control custom-checkbox checkbox-center">
                                           <!-- (change)="onChange($event)" [disabled]="isChecked && (isCheckedName!= priorityData)"  -->
-                                          <input type="checkbox"  [disabled]="viewFlag" class="custom-control-input" [checked]="prio.defaultPriority == true" value="select" name="select"/>
+                                          <input type="checkbox"   [disabled]="viewFlag" class="custom-control-input" (click)="priorityRequiredevent(1,prio,$event.target)"
+                                           [checked]="prio.defaultPriority == true" value="select" name="select"/>
                                            <span class="custom-control-label"
-                                          (click)="priorityRequiredevent(1,prio,$event.target)"></span>
+                                          ></span>
                                      </label></label>
                                       </td>
                                     </tr>
@@ -438,12 +442,10 @@
                       </div>
                       <div
                         class="col-md-6 form-group"
-                        *ngIf="priorityRequiredFlag"
-                      >
-
+                        *ngIf="priorityRequiredFlag">
                           <div class="row mt-20">
                             <div class="col-12 col-md-12 col-sm-12">
-                              <div class="table-responsive Custom_Table">
+                              <div class="table-responsive Custom_Table table-bordered">
                                 <table
                                   class="table  m-b-0 table-bordered" >
                                   <thead class="thead-dark">

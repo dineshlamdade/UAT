@@ -54,8 +54,12 @@ export class QueryDashboardComponent implements OnInit {
   queryDashboardForm:FormGroup;
   getAllQueryGenerationData: any;
 
-  constructor(public formBuilder : FormBuilder,public queryService :QueryService ,private alertService: AlertServiceService)
+  constructor(public formBuilder : FormBuilder,public queryService :QueryService
+    ,private alertService: AlertServiceService)
    {
+
+    localStorage.removeItem('dashboardSummary');
+
     this.data = {
         labels: ['Urgent','High','Medium','Low'],
         datasets: [
@@ -137,6 +141,10 @@ this.queryService.getAllQueryList().subscribe(res =>
   {
     this.getAllQueryGenerationData = res.data.results;
   })
+}
+nevigateToCommunication(summary)
+{
+localStorage.setItem('dashboardSummary',JSON.stringify(summary));
 }
 
 }

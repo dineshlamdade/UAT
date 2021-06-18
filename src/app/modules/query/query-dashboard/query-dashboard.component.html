@@ -266,7 +266,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="table-responsive Custom_Table mt-25">
+                                            <div class="table-responsive Custom_Table table-striped table-hover table-bordered mt-25">
                                                 <p-table [value]="getAllQueryGenerationData" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
                                                 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                                                     <ng-template pTemplate="header">
@@ -449,7 +449,7 @@
                                                             <td class="text-center">{{rowIndex + 1}}</td>
                                                             <td>
                                                                 <label
-                                                                    class="form-lable mb-0"><a class="text-link"
+                                                                    class="form-lable mb-0"><a class="text-link" (click)="nevigateToCommunication(summary)"
                                                                     [routerLink]="['/Query-Communication/',summary.queryGenerationEmpId]">
                                                                     {{summary.queryNumber}}</a></label>
                                                             </td>
@@ -496,13 +496,20 @@
                                                             <td><label class="form-lable mb-0 ">{{summary.status}}</label>
 
                                                             </td>
-                                                            <td><span class="ml-1 mt-2">
+                                                            <!-- <td><span class="ml-1 mt-2">
                                                                     <i class="fa fa-eye font-16 text-blue cursor-pointer "
                                                                         aria-hidden="true"></i>&nbsp;
                                                                     <i class="fa fa-times font-16 text-blue cursor-pointer"
                                                                         aria-hidden="true"></i>&nbsp;
                                                                     <i class="fa fa-pencil font-16 text-blue cursor-pointer "
-                                                                        aria-hidden="true"></i></span></td>
+                                                                        aria-hidden="true"></i></span></td> -->
+                                                                        <td>
+                                                                          <span >
+                                                                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(queryGenerationSummary)" ></i>
+                                                                              <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(queryGenerationSummary)"></i>
+                                                                              <i class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="getDeleteById(queryGenerationSummary)" ></i ></span>
+                                                                                <!--  -->
+                                                                        </td>
                                                         </tr>
                                                     </ng-template>
                                                     <ng-template pTemplate="emptymessage">

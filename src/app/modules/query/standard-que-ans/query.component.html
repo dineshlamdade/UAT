@@ -105,7 +105,7 @@
                             <br>
                             <label class="form-label">Description</label>
 
-                            <ckeditor [config]="editorConfig"  formControlName="questionDescription" >
+                            <ckeditor [config]="editorConfig" formControlName="questionDescription" >
                             </ckeditor>
                           </div>
                           <br><br>
@@ -181,7 +181,7 @@
                             <tr class="textcenter">
                               <th class="wd-5">Sr.No.</th>
                               <th class="wd-15">
-                                <div class="p-d-flex p-jc-between p-ai-center">
+                                <div class="p-d-flex p-jc-between p-ai-center ">
                                   Module Name
                                   <div class="Sort_Filter_Position">
                                     <p-sortIcon field="applicationModuleName" pSortableColumn="applicationModuleName"></p-sortIcon>
@@ -228,7 +228,7 @@
 
                               <th class="wd-15">
                                 <div
-                                  class="p-d-flex p-ai-center justify-content-center"
+                                  class="p-d-flex p-ai-center "
                                 >
                                   Status
                                   <div class="Sort_Filter_Position">
@@ -247,7 +247,7 @@
 
                           <ng-template pTemplate="body" let-query let-rowIndex="rowIndex" >
                             <tr class="p-selectable-row textcenter" >
-                              <td class="text-center">{{ rowIndex + 1}}</td>
+                              <td>{{ rowIndex + 1}}</td>
                               <td>
                                 <label class="form-lable mb-0">{{getModuleNamefortable(query.moduleId)}} </label>
                               </td>

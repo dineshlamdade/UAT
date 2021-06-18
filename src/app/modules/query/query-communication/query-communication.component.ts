@@ -73,14 +73,36 @@ queryCommunicationForm: FormGroup;
   getReplayDataByIdData: any;
   attachementData: any;
   addressedTodropdownData: any;
+  forwardWorkflowId: any;
+  approverEmpRoleName: any;
+  rating: any;
+  ListOfDocuments: any;
+  ratingName: any ='';
+  descriptionData: any;
+  queryNumber: any;
+  status: any;
+  // hideClosebtn :boolean = true;
 
 constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,
   public sanitizer: DomSanitizer,private alertService: AlertServiceService, private route:ActivatedRoute ){
 
     this.route.params.subscribe(value =>{
-      this.queryGenerationEmpId = value.id
+      this.queryGenerationEmpId = value.id;
+
     })
 
+    if( localStorage.getItem('dashboardSummary') != null)
+    {
+      let summaryData = JSON.parse(localStorage.getItem('dashboardSummary'))
+      this.forwardWorkflowId = summaryData.forwardWorkflowId;
+      this.queryNumber = summaryData.queryNumber;
+      // alert( this.queryNumber)
+      this.status = summaryData.status;
+    }
+// if(action = 'close')
+// {
+
+// }
     this.queryCommunicationForm = this.formBuilder.group(
       {
 
@@ -146,40 +168,75 @@ this.addressedTodropdown();
     this.isforwardDiv = true;
   }
 
-  changeemoji1(){
-    this.emoji1=true;
+  changeemoji1(value,rating){
+    this.rating = value;
+    this.emoji2 = false;
+    this.emoji3 = false;
+    this.emoji4 = false;
+    this.emoji5 = false;
+    this.emoji1 =!this.emoji1;
+    this.ratingName = rating;
   }
 
-  changeemoji2(){
-    this.emoji2=true;
+  changeemoji2(value,rating){
+    this.rating = value;
+    this.emoji1 = false;
+    this.emoji3 = false;
+    this.emoji4 = false;
+    this.emoji5 = false;
+    this.emoji2= !this.emoji2;
+    this.ratingName = rating;
+
   }
 
-  changeemoji3(){
-    this.emoji3=true;
+  changeemoji3(value,rating){
+    this.rating = value;
+    this.emoji2 = false;
+    this.emoji1 = false;
+    this.emoji4 = false;
+    this.emoji5 = false;
+    this.emoji3= !this.emoji3;
+    this.ratingName = rating;
+
   }
 
-  changeemoji4(){
-    this.emoji4=true;
+  changeemoji4(value,rating){
+    this.rating = value;
+    this.emoji2 = false;
+    this.emoji3 = false;
+    this.emoji1 = false;
+    this.emoji5 = false;
+    this.emoji4=!this.emoji4;
+    this.ratingName = rating;
+
   }
 
-  changeemoji5(){
-    this.emoji5=true;
+  changeemoji5(value,rating){
+    this.rating = value;
+    this.emoji2 = false;
+    this.emoji3 = false;
+    this.emoji1 = false;
+    this.emoji4 = false;
+    this.emoji5=!this.emoji5;
+    this.ratingName = rating;
+
   }
 
   queryCommunicationFormSubmit(value)
   {
-    if(value == 'Save'){
-     this.queryCommunicationForm.controls['status'].setValue('Save');
-    }else{
-    this.queryCommunicationForm.controls['status'].setValue('Draft');
-    }
+    // if(value == 'Save'){
+    //  this.queryCommunicationForm.controls['status'].setValue('Save');
+    // }else{
+    // this.queryCommunicationForm.controls['status'].setValue('Draft');
+    // }
 
-    if(!this.editflag){
-      this.addQueryIteration();
-    }else{
-      this.updateQueryIteration();
 
-    }
+    // if(!this.editflag){
+    //   this.addQueryIteration();
+    // }else{
+    //   this.updateQueryIteration();
+
+    // }
 
   if (this.queryCommunicationForm.invalid) {
     return;
@@ -199,7 +256,14 @@ getAllQueryListSummary() //left side card data....
 {
 this.queryService.getAllQueryList().subscribe(res =>
   {
-    this.getAllQueryGenerationData = res.data.results[0];
+    // this.getAllQueryGenerationData = res.data.results[0];
+    res.data.results.forEach(element => {
+      if(element.queryNumber == this.queryNumber)
+      {
+        this.getAllQueryGenerationData = element;
+      }
+    });
+    console.log("getAllQueryGenerationData",this.getAllQueryGenerationData);
 
   })
 }
@@ -208,8 +272,10 @@ getIterationdetailsbyQueryID(queryGenerationEmpId) //Get Iteration details by Qu
   this.queryService.getIterationdetailsbyQueryID(this.queryGenerationEmpId).subscribe(res =>
     {
       this.GetIterationdetailsbyQueryIDData = res.data.results[0];
+      console.log(" this.GetIterationdetailsbyQueryIDData", this.GetIterationdetailsbyQueryIDData);
       this.attachementData = res.data.results;
       this.documents = this.GetIterationdetailsbyQueryIDData.documents[0];
+      console.log(" this.documents ", this.documents )
     })
 }
 getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list by QueryGenerationEmpId
@@ -220,6 +286,20 @@ getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list 
       this.getQueAnstemplistByIdData = res.data.results;
     })
 }
+answerTempChange(value)
+{
+  console.log("this.getQueAnstemplistByIdData: "+ JSON.stringify(this.getQueAnstemplistByIdData))
+
+    this.getQueAnstemplistByIdData.forEach(element => {
+      if(element.queAnsMasterId == value)
+    {
+         this.descriptionData = element.answerDescription;
+         this.queryCommunicationForm.controls['queryDescription'].setValue(this.descriptionData);
+    }
+    // this.descriptionData = element.answerDescription;
+
+  });
+}
 getRootCasuelist()
 {
   this.queryService.getRootCasuelist().subscribe(res =>
@@ -228,12 +308,20 @@ getRootCasuelist()
     })
 }
 
-addQueryIteration(){ // post api for save data
+addQueryIteration(value){ // post api for save data
+
+
     this.queryCommunicationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryCommunicationForm.controls['queAnsMasterId'].value));
     this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
     this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
     this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
     this.queryCommunicationForm.controls['action'].setValue('reply');
+
+    if(value == 'Save'){
+      this.queryCommunicationForm.controls['status'].setValue('Save');
+     }else{
+     this.queryCommunicationForm.controls['status'].setValue('Draft');
+     }
 
     console.log(JSON.stringify(this.queryGenerationEmpId));
     const formData  = new FormData();
@@ -246,82 +334,178 @@ addQueryIteration(){ // post api for save data
     });
     this.queryService.addQueryIteration(formData).subscribe(res =>
     {
-      this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Saved Successfully.', '' );
+      this.alertService.sweetalertMasterSuccess('Query Iteration Replay Saved Successfully.', '' );
 
     })
     this.reset();
 }
-updateQueryIteration() // update api for save data
+addForwordScreen(value)
 {
-     this.queryCommunicationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryCommunicationForm.controls['queAnsMasterId'].value));
-    this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
-    this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
-    this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
-    this.queryCommunicationForm.controls['action'].setValue('reply');
 
-    console.log(JSON.stringify(this.queryGenerationEmpId));
-    const formData  = new FormData();
-    formData.append('queryIterationData', JSON.stringify(this.queryCommunicationForm.value));
-    for (const queryDoc of this.listDoc) {
-      formData.append('queryDocs', queryDoc,queryDoc.name);
-    }
-    formData.forEach((value, key) => {
-      console.log(key,' ', value);
-    });
-  this.queryService.updateQueryIteration(formData).subscribe(res =>
-    {
-      this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Updated Successfully.', '' );
+  this.queryCommunicationForm.controls['queAnsMasterId'].setValue(null);
+  this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
+  // this.queryCommunicationForm.controls['addressedToEmpId'].setValue(parseInt(this.addressedToEmpId));
 
-    })
-    this.reset();
+  this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
+  this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
+  this.queryCommunicationForm.controls['action'].setValue('forward');
+
+  if(value == 'Save'){
+    this.queryCommunicationForm.controls['status'].setValue('Save');
+   }else{
+   this.queryCommunicationForm.controls['status'].setValue('Draft');
+   }
+
+  console.log(JSON.stringify(this.queryGenerationEmpId));
+  const formData  = new FormData();
+  formData.append('queryIterationData', JSON.stringify(this.queryCommunicationForm.value));
+  for (const queryDoc of this.listDoc) {
+    formData.append('queryDocs', queryDoc,queryDoc.name);
+  }
+  formData.forEach((value, key) => {
+    console.log(key,' ', value);
+  });
+
+  this.queryService.addQueryIteration(formData).subscribe(res =>
+  {
+    this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Saved Successfully.', '' );
+
+  })
+  this.reset();
 }
+closeScreen()
+{
+  this.queryCommunicationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryCommunicationForm.controls['queAnsMasterId'].value));
+  this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
+  this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
+  this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
+  this.queryCommunicationForm.controls['action'].setValue('close');
+  // this.queryCommunicationForm.controls['action'].setValue(this.hideClosebtn);
+
+  this.queryCommunicationForm.controls['status'].setValue('Save');
+  this.queryCommunicationForm.controls['rating'].setValue(this.rating);
+
+  // this.queryCommunicationForm.controls['remark'].setValue(this.queryCommunicationForm.value);
+
+  console.log(JSON.stringify(this.queryGenerationEmpId));
+  const formData  = new FormData();
+  formData.append('queryIterationData', JSON.stringify(this.queryCommunicationForm.value));
+  for (const queryDoc of this.listDoc) {
+    formData.append('queryDocs', queryDoc,queryDoc.name);
+  }
+  formData.forEach((value, key) => {
+    console.log(key,' ', value);
+  });
+  this.queryService.addQueryIteration(formData).subscribe(res =>
+  {
+    this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Closed Successfully.', '' );
+    this.status = 'Closed';
+
+
+  })
+  this.reset();
+}
+skipScreen()
+{
+  this.queryCommunicationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryCommunicationForm.controls['queAnsMasterId'].value));
+  this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
+  this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
+  this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
+  this.queryCommunicationForm.controls['action'].setValue('close');
+  this.queryCommunicationForm.controls['status'].setValue('Save');
+  this.queryCommunicationForm.controls['rating'].setValue(null);
+  this.queryCommunicationForm.controls['remark'].setValue(null);
+
+
+  // this.queryCommunicationForm.controls['remark'].setValue(this.queryCommunicationForm.value);
+
+  console.log(JSON.stringify(this.queryGenerationEmpId));
+  const formData  = new FormData();
+  formData.append('queryIterationData', JSON.stringify(this.queryCommunicationForm.value));
+  for (const queryDoc of this.listDoc) {
+    formData.append('queryDocs', queryDoc,queryDoc.name);
+  }
+  formData.forEach((value, key) => {
+    console.log(key,' ', value);
+  });
+  this.queryService.addQueryIteration(formData).subscribe(res =>
+  {
+    this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Closed Successfully.', '' );
+    this.status = 'Closed';
+
+  })
+  this.reset();
+}
+// updateQueryIteration() // update api for save data
+// {
+//      this.queryCommunicationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryCommunicationForm.controls['queAnsMasterId'].value));
+//     this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
+//     this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
+//     this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
+//     this.queryCommunicationForm.controls['action'].setValue('reply');
+
+//     console.log(JSON.stringify(this.queryGenerationEmpId));
+//     const formData  = new FormData();
+//     formData.append('queryIterationData', JSON.stringify(this.queryCommunicationForm.value));
+//     for (const queryDoc of this.listDoc) {
+//       formData.append('queryDocs', queryDoc,queryDoc.name);
+//     }
+//     formData.forEach((value, key) => {
+//       console.log(key,' ', value);
+//     });
+//   this.queryService.updateQueryIteration(formData).subscribe(res =>
+//     {
+//       this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Updated Successfully.', '' );
+
+//     })
+//     this.reset();
+// }
 getReplayDataById(queryGenerationEmpId) //Replay button data Api
 {
 this.queryService.getReplayDataById(this.queryGenerationEmpId).subscribe(res =>
   {
     this.getReplayDataByIdData = res.data.results[0];
     console.log("getReplayDataByIdData!!!!!!!!!!!!!!", this.getReplayDataByIdData);
+    // this.queryCommunicationForm.controls['addressedToEmpId'].setValue(value);
+
     this.reset();
   })
 }
-addressedTodropdown()
+addressedTodropdown() //forword screen addressed to dropdown
 {
   let data =
   {
     "employeeMasterId":1,
     "flag":"ApproversInfo",
-    "workflowMasterHeaderId":31
+    "workflowMasterHeaderId":this.forwardWorkflowId
   }
   this.queryService.addressedTodropdown(data).subscribe(res =>
     {
-      this.addressedTodropdownData = res.data.results;
-      console.log(JSON.stringify( this.addressedTodropdownData ));
+      this.addressedTodropdownData = res.data.results[0];
     })
 }
+roleChange(value)
+{
+  this.addressedTodropdownData.forEach(element => {
+    if(element.approverId == value)
+    {
+      this.approverEmpRoleName = element.approverEmpRole;
+      this.queryCommunicationForm.controls['addressedToEmpId'].setValue(value);
+    }
+  });
+}
+
 reset()
 {
   this.queryCommunicationForm.reset();
   this.queryCommunicationForm.enable();
   this.listDoc = []; //reset the upload document
+  // this.addressedTodropdownData =[]; //reset the forword to dropdown in forword screen
   this.queryCommunicationForm.controls['queryRootCause'].reset();
 }
 // ........................upload Document..............................................................
 
-  // Previous Doc Viewer
-  public previousDocViewer() { //not yet used
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
 
-  // Next Doc Viewer
-public nextDocViewer() { //not yet used
-  this.urlIndex = this.urlIndex + 1;
-  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.urlArray[this.urlIndex].blobURI
-  );
-}
 
 public UploadModal(template: TemplateRef<any>) {
   this.modalRef = this.modalService.show(
@@ -354,20 +538,37 @@ public removeSelectedLicMasterDocument(index: number, docType: string) {
       this.listDoc.splice(index, 1);
 }
 
-public docViewer(template1: TemplateRef<any>, index: any) {
-  console.log('---in doc viewer--');
-  this.urlIndex = index;
+public docViewer(template1: TemplateRef<any>, document: any) {
+  //console.log('---in doc viewer--');
+  this.ListOfDocuments = document;
+  this.urlIndex = 0;
+  //document.documents.forEach(element => {
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      document.documents[this.urlIndex].queryBlobURI
+    );
 
-  console.log('listDoc::', this.listDoc);
-  // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-  //   this.listDoc[this.urlIndex].blobURI
-  // );
+  //});
 
   console.log('urlSafe::', this.urlSafe);
   this.modalRef = this.modalService.show(
     template1,
     Object.assign({}, { class: 'gray modal-xl' })
   );
+}
+// Previous Doc Viewer
+public previousDocViewer() { //not yet used
+  this.urlIndex = this.urlIndex - 1;
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
+  );
+}
+
+// Next Doc Viewer
+public nextDocViewer() { //not yet used
+this.urlIndex = this.urlIndex + 1;
+this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+ this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
+);
 }
 
 };

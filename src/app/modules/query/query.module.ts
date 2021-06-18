@@ -20,7 +20,8 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import {TreeModule} from 'primeng/tree';
 import { QueryCOmmunicationComponent } from './query-communication/query-communication.component';
-
+import {MultiSelectModule} from 'primeng/multiselect';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 // import { ChartComponent } from "ng-apexcharts";
 @NgModule({
@@ -47,7 +48,8 @@ import { QueryCOmmunicationComponent } from './query-communication/query-communi
     SidebarModule,
     ScrollPanelModule,
     NgMultiSelectDropDownModule.forRoot(),
-
+    MultiSelectModule,
+    TooltipModule,
 
     // ChartComponent
   ],

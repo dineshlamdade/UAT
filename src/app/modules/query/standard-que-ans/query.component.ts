@@ -55,9 +55,11 @@ export class QueryComponent implements OnInit {
 
     this.keyword.forEach(element => {
     this.mappingData.push(
-      [element.dbFieldName.toString(), '[' + element.displayName + ']']
+      [element.dbFieldName.toString(), '[' + '<<'+ element.displayName + '<<' +']']
     )
     })
+    console.log("keyword",this.keyword)
+
     this.fieldMap = new Map<string, string>(this.mappingData);
 
   }
@@ -173,6 +175,8 @@ drag(ev): void {
 }
 drop(ev): void {
   ev.preventDefault();
+  alert('text')
+
   const data = ev.dataTransfer.getData('text');
   const dataValue = this.fieldMap.get(data);
 

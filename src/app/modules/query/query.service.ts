@@ -139,7 +139,7 @@ public getIterationdetailsbyQueryID(id)
   return this.http.get<any>(this.apiUrl + 'QueryIteration/reply/' +id);
   }
   public addressedTodropdown(data)
-{
-  return this.http.post<any>(this.apiUrl + 'workflowMaster-report/approverDetails' , data);
-}
+  {
+  return this.http.post<any>(this.apiUrl2 + 'workflowMaster-report/approverDetails' , data);
+  }
 }
