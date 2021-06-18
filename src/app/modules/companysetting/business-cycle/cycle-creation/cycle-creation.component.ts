@@ -116,7 +116,7 @@ export class CycleCreationComponent implements OnInit {
   CycleDefinitionByid: Array<any> = [];
   previewCycleList: Array<any> = [];
 
-  serviceName = [];
+  // serviceName = [];
 
   minDate: Date = new Date();
 
@@ -208,6 +208,7 @@ export class CycleCreationComponent implements OnInit {
   }
 
   GetCycleCreationById( businessCycleDefinitionId, BusinessYear ) {
+    window.scrollTo( 0, 0 );
     this.todisabletodate = true;
     this.updateFlag = false;
     this.CycleDefinitionByid = [];
@@ -272,7 +273,7 @@ export class CycleCreationComponent implements OnInit {
 
   }
 
-
+//Post document
   addCycleCreation(): void {
 
     this.previewCycleList = [];

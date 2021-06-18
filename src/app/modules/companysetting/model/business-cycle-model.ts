@@ -7,15 +7,14 @@ export class SaveBusinessYear {
   id?: number;
 }
 export class ServiceDetails {
-  serviceName: string;
+  // serviceName: string;
 }
 // serviceName: any[];
 export class SaveCycleDefinition {
   businessCycleDefinitionId?: number;
   businessYearDefinitionId: number;
-  frequencyMasterId: number;
-
-  cycleName: string;
+  // frequencyMasterId: number;
+  // cycleName: string;
   addDays: number;
 
   id?: number;

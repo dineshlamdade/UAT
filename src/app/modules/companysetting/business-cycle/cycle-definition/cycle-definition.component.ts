@@ -19,7 +19,7 @@ export class CycleDefinitionComponent implements OnInit {
   cycleDefinitionForm: FormGroup;
   ServicesList = [];
   CycleDefinitionList = [];
-  serviceName = [];
+  // serviceName = [];
   activeFrequencyList: Array<any> = [];
   disabled = true;
   BusinessyearList: Array<any> = [];
@@ -31,7 +31,12 @@ export class CycleDefinitionComponent implements OnInit {
   sortedFrequencyList = [];
 
   constructor( private companySettings: CompanySettingsService, private formBuilder: FormBuilder,
-    private alertService: AlertServiceService, private modalService: BsModalService ) { }
+    private alertService: AlertServiceService, private modalService: BsModalService ) {
+      this.getAllCycleDefinition();
+      this.getActiveFrequency();
+      this.getAllBusinessYear();
+
+     }
 
   ngOnInit(): void {
 
@@ -42,9 +47,9 @@ export class CycleDefinitionComponent implements OnInit {
       frequencyMasterId: new FormControl( '', Validators.required ),
       addDays: new FormControl( '' ),
       // serviceName: new FormControl( '', Validators.required ),
-      services: new FormControl( '' ),
+      // services: new FormControl( '' ),
       yearDefinition: new FormControl( { value: '', disabled: true } ), // this. is from date to date autopopulated field..
-      multiselectServices: new FormControl( '', Validators.required ),
+      // multiselectServices: new FormControl( '', Validators.required ),
       // serviceName:this.formBuilder.array([])s
 
       // serviceName:[this.ServicesList,[Validators.required]],
@@ -55,31 +60,32 @@ export class CycleDefinitionComponent implements OnInit {
       // serviceName:(this.ServicesList,Validators.required),
       // serviceName: new FormControl([this.serviceNameDropDownList[0],this.serviceNameDropDownList[2]], Validators.required)
     } );
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'serviceMasterId',
-      textField: 'serviceName',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
-    this.getAllCycleDefinition();
-    this.getActiveFrequency();
-    this.getAllBusinessYear();
-    this.getAllServiceName();
+    // this.dropdownSettings = {
+    //   singleSelection: false,
+    //   idField: 'serviceMasterId',
+    //   // textField: 'serviceName',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   itemsShowLimit: 2,
+    //   allowSearchFilter: true
+    // };
+
+    //omment by komal   this.getAllServiceName();
   }
 
-  getAllServiceName() {
-    this.serviceNameDropDownList = [];
-    this.companySettings.getAllServicesName().subscribe( res => {
-      this.serviceNameDropDownList = res.data.results;
-    } );
-  }
+  // omment by komal  getAllServiceName() {
+  //   this.serviceNameDropDownList = [];
+  //   this.companySettings.getAllServicesName().subscribe( res => {
+  //     this.serviceNameDropDownList = res.data.results;
+  //   } );
+  // }
   getAllBusinessYear() {
     this.BusinessyearList = [];
+
     this.companySettings.getAllBusinessYear().subscribe( res => {
+      console.log("BusinessyearList", res);
       this.BusinessyearList = res.data.results;
+      console.log("BusinessyearList", this.BusinessyearList);
     } );
 
   }
@@ -179,18 +185,18 @@ export class CycleDefinitionComponent implements OnInit {
           this.alertService.sweetalertError( error['error']['status']['message'] );
         } );
       this.ServicesList = [];
-      this.serviceName = [];
+      // this.serviceName = [];
       this.cycleDefinitionForm.reset();
     }
     else {
       addCycleDefinition.businessCycleDefinitionId = addCycleDefinition.id;
 
-      this.serviceName = [];
+      // this.serviceName = [];
       //  this.serviceName.push(addCycleDefinition.services)
       //  addCycleDefinition.serviceName = this.serviceName;
       //  delete addCycleDefinition.serviceName;
       // addCycleDefinition.serviceName = this.cycleDefinitionForm.get( 'services' ).value;
-      this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
+      // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
       // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
       // addCycleDefinition.serviceName = this.serviceName;
       console.log( 'json', JSON.stringify( addCycleDefinition ) );
@@ -249,13 +255,14 @@ export class CycleDefinitionComponent implements OnInit {
       businessYearDefinitionId: '',
       frequencyMasterId: '',
       addDays: '',
-      services: ''
+      // services: ''
     } );
-    this.cycleDefinitionForm.controls.multiselectServices.setValidators( Validators.required );
-    this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
+    // this.cycleDefinitionForm.controls.multiselectServices.setValidators( Validators.required );
+    // this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
   }
 
   GetCycleDefinitionbyIdDisable( id: number ): void {
+    window.scrollTo( 0, 0 );
     this.CycleupdateFlag = true;
     this.CycleupdateFlag1 = false;
     this.disabled = false;
@@ -266,15 +273,15 @@ export class CycleDefinitionComponent implements OnInit {
         this.cycleDefinitionForm.patchValue( { cycleName: response.data.results[0].cycleName.split( '_' )[0] } );
         this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
         this.cycleDefinitionForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
-        this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
+        // this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
         this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
 
         const index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId );
         this.cycleDefinitionForm.patchValue( {
           yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate,
         } );
-        this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
-        this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
+        // this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
+        // this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
         this.cycleDefinitionForm.disable();
       } );
 
@@ -284,7 +291,7 @@ export class CycleDefinitionComponent implements OnInit {
   }
 
   GetCycleDefinitionbyId( id ): void {
-
+    window.scrollTo( 0, 0 );
     // here remove validation
 
 
@@ -300,13 +307,13 @@ export class CycleDefinitionComponent implements OnInit {
         this.cycleDefinitionForm.patchValue( { cycleName: response.data.results[0].cycleName.split( '_' )[0] } );
         this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
         this.cycleDefinitionForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
-        this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
+        // this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
         this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
         this.cycleDefinitionForm.patchValue( {
           yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate,
         } );
-        this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
-        this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
+        // this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
+        // this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
 
       } );
   }
@@ -320,36 +327,36 @@ export class CycleDefinitionComponent implements OnInit {
 
 
 
-  onItemSelect( item: any ) {
-    console.log( item );
+  // onItemSelect( item: any ) {
+  //   console.log( item );
 
-    this.Multiselectflag = true;
+  //   this.Multiselectflag = true;
 
-    this.ServicesList.push( item.serviceName );
-    console.log( item );
-  }
-  onItemDeSelect( item: any ) {
-    let index = this.ServicesList.indexOf( item.serviceName );
-    if ( index != -1 ) {
-      this.ServicesList.splice( index, 1 );
-    }
-  }
+  //   this.ServicesList.push( item.serviceName );
+  //   console.log( item );
+  // }
+  // onItemDeSelect( item: any ) {
+  //   let index = this.ServicesList.indexOf( item.serviceName );
+  //   if ( index != -1 ) {
+  //     this.ServicesList.splice( index, 1 );
+  //   }
+  // }
 
 
-  onSelectAll( item: any ) {
-    this.ServicesList = [];
+  // onSelectAll( item: any ) {
+  //   this.ServicesList = [];
 
-    // this.serviceNameDropDownList.forEach( function ( f ) {
-    //   console.log( 'f', f );
-    //   //  this.ServiceList.push( f );
-    // } );
+  //   // this.serviceNameDropDownList.forEach( function ( f ) {
+  //   //   console.log( 'f', f );
+  //   //   //  this.ServiceList.push( f );
+  //   // } );
 
-    item.forEach( element => {
-      this.ServicesList.push( element.serviceName );
-    } );
+  //   item.forEach( element => {
+  //     this.ServicesList.push( element.serviceName );
+  //   } );
 
-    console.log( item );
-  }
+  //   console.log( item );
+  // }
 
   DeleteCycleDefinitionById( id ): void {
     console.log( 'deleted id is', id );
