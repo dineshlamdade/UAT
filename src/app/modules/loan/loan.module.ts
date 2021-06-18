@@ -11,9 +11,14 @@ import { EmiCalculatorComponent } from './loan/emi-calculator/emi-calculator.com
 import { ChartsModule } from 'ng2-charts';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {TableModule} from 'primeng/table';
+import { DisbursementComponent } from './disbursement/disbursement.component';
+import { AdhocComponent } from './adhoc/adhoc.component';
+import { RescheduleComponent } from './reschedule/reschedule.component';
+import { SettlementComponent } from './settlement/settlement.component';
 
 @NgModule({
-  declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent],
+  declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent, SettlementComponent],
   imports: [
     CommonModule,
     LoanRoutingModule,
@@ -23,7 +28,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ChartsModule,
     NgxSliderModule,
     FormsModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    TableModule
 
   ],
   providers: [ExcelService],

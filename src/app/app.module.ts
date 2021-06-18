@@ -82,8 +82,6 @@ import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
 
 
-
-
 @NgModule( {
   declarations: [
     AppComponent,
@@ -117,6 +115,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
