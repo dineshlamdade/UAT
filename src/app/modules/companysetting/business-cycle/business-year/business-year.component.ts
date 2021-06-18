@@ -163,6 +163,7 @@ export class BusinessYearComponent implements OnInit {
     this.BusinessYearform.enable();
   }else{
       this.BusinessYearform.disable();
+      // this.BusinessYearform.controls.(discription {disabled: true})
       this.updateFlag = true;
       this.hideUpdate = true;
     }
