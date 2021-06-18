@@ -272,6 +272,8 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+
+    this.visibilityFlag = false;
     //  this.addOwner(0);
     // this.startDateModel = '31-dec-9999';
     this.housingLoanForm.get('country').setValue('India');
