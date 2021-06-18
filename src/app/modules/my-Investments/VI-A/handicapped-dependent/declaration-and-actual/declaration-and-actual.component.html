@@ -7,7 +7,7 @@
             <thead class="thead-dark">
               <tr>
                 <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" tooltip="Select All">
+                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" (change)="checkUncheckAll()" />
                     <span class="custom-control-label"></span>
@@ -111,7 +111,6 @@
                   <!-- <span tooltip="{{ element.proofSubmissionId }}">
                     {{ element.proofSubmissionId }}
                   </span> -->
-
                   <span tooltip="{{ element.proofSubmissionId }}" *ngIf="element.transactionStatus === 'Submitted'">
                     <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
                     <!-- {{ summary.proofSubmissionId }} -->
@@ -249,7 +248,7 @@
             <thead class="thead-dark">
               <tr>
                 <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" tooltip="Select All">
+                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" (change)="checkUncheckAll()" />
                     <span class="custom-control-label"></span>

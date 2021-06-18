@@ -180,6 +180,7 @@ export class MasterComponent implements OnInit {
       familyMemberName: new FormControl(null, Validators.required),
       relationship: new FormControl({value: null, disabled: true },Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
+      handicappedDependentDetailMasterId:new FormControl()
     });
   }
 
@@ -348,8 +349,13 @@ export class MasterComponent implements OnInit {
   editMaster(disabilityType) {
     this.scrollToTop();
     this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
+
       console.log('masterGridData::', res);
+
       this.masterGridData = res.data.results;
+
+      console.log('masterGridData::', res);
+
       this.disability = res.data.results[0].disability;
       this.severity = res.data.results[0].severity;
       console.log(disabilityType)
@@ -358,7 +364,7 @@ export class MasterComponent implements OnInit {
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log("Edit Master",obj);
       if (obj!= 'undefined'){
-
+      this.paymentDetailGridData = obj.familyMemberName;
       this.paymentDetailGridData = obj.paymentDetails;
       this.form.patchValue(obj);
       this.Index = obj.disabilityType;
@@ -372,8 +378,11 @@ export class MasterComponent implements OnInit {
 
   }
   findBydisabilityType(disabilityType,masterGridData){
-    return masterGridData.find(x => x.disabilityType === disabilityType)
+    return masterGridData.find(
+      (x) => x.disabilityType === disabilityType);
   }
+
+ 
 
    // scrollToTop Fuctionality
    public scrollToTop() {
@@ -440,8 +449,7 @@ export class MasterComponent implements OnInit {
     if(checked) {
       this.isSaveVisible = false;
       this.alertService.sweetalertError(
-        'You Not Applicable for Benefits 80-U.'
-      );
+        'Benefit of 80DD is not Applicable for selected family member, if family member is already claiming benefit under 80U.'  );
     }
   }
 

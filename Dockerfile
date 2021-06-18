@@ -39,7 +39,6 @@ ENV NODE_OPTIONS="--max-old-space-size=5120"
 
 #RUN npm i @angular-devkit/build-angular@0.901.9
 
-#RUN npm run build --pro
 RUN npm run build --prod --aot --outputHashing=all
 
 #Stage 2
