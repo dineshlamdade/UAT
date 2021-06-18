@@ -9,7 +9,7 @@
           <legend>Disabled Family Member Details</legend>
           <div class="row">
 
-            <div class="col-sm-6 col-md-3" *ngIf="isSaveVisible">
+            <div class="col-sm-6 col-md-3">
               <label class="form-label">Famliy Member Name</label>
               <select name="family_Member_Name" id="familyMemberName" formControlName="familyMemberName"
                 (change)='OnSelectionfamilyMemberGroup()' class="form-control custom-select"
@@ -24,7 +24,7 @@
               </div>
             </div>
 
-            <div class="col-sm-6 col-md-3" *ngIf="isSaveVisible">
+            <div class="col-sm-6 col-md-3" >
               <label class="form-label">Relationship</label>
               <input type="text" formControlName="relationship" class="form-control"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
@@ -145,6 +145,9 @@
           <div class="mb-10 row">
             <div class="col-md-6">
               <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
+              <div class="float-left" *ngIf="submitted && masterfilesArray.length == 0">
+                <label class="text-red mb-0">Please upload document</label>
+            </div>
             </div>
             <div class="col-md-6">
               <span class="font-bold text-link float-right"></span>
