@@ -12,14 +12,14 @@ import { PayrollInputsService } from '../payroll-inputs.service';
 
 export class FastentryNRAmtComponent implements OnInit {
 
-  selectedPayrollArea: any;
+  selectedPayrollArea: any = '';
   headData: any[];
   parollArea: any[];
   selectedOnceEvery:any = 1;
   selectedFrequency:any = 'Monthly';
   selectedTransactionType:any = 'NoOfTransaction';
   selectedNoOfTransaction:any = 1;
-  headMasterId: any;
+  headMasterId: any = null;
   tableData: any[];
   selectedClawBack:any;
   selectedAmount:any;
@@ -27,13 +27,13 @@ export class FastentryNRAmtComponent implements OnInit {
   selectedFromDate: any;
   selectedToDate: any = '';
   setMinToDate: any;
-  effectiveFromDate: Date;
-  effectiveToDate: Date;
+  effectiveFromDate: any;
+  effectiveToDate: any;
   headGroupDefinitionId: any;
   frequencyDataByPayroll: any;
   saveTransactionData: any = [];
-  saveTransactionType: any;
-  saveNumberTransaction: string;
+  saveTransactionType: any = 'NoOfTransaction';
+  saveNumberTransaction: any = 1;
   saveToDate: any = '';
   saveFromDate: any;
   saveClawback: any = '';
@@ -111,9 +111,16 @@ export class FastentryNRAmtComponent implements OnInit {
      if (this.selectedTransactionType == 'NoOfTransaction') {
       this.selectedToDate = ''
       this.saveToDate = ''
+      this.selectedNoOfTransaction =1
+      this.saveNumberTransaction = 1
     } else if (this.selectedTransactionType == 'Perpetual') {
       this.selectedToDate = '9999-12-31 00:00:00'
       this.saveToDate = '9999-12-31 00:00:00'
+      this.selectedNoOfTransaction = 0
+      this.saveNumberTransaction = 0
+    }else{
+      this.selectedNoOfTransaction = 0
+      this.saveNumberTransaction = 0
     }
   }
 
@@ -144,7 +151,7 @@ export class FastentryNRAmtComponent implements OnInit {
     this.saveRemark = this.selectedRemark
     this.tableData = []
    this.tableData.push({
-     'payrollArea':this.selectedPayrollArea.toString(),
+     'payrollArea':this.selectedPayrollArea,
      'fromDate': this.selectedFromDate,
      'transactionsType':this.selectedTransactionType,
      'numberOfTransactions':this.selectedNoOfTransaction, 
@@ -258,18 +265,95 @@ export class FastentryNRAmtComponent implements OnInit {
   }
 
   removeTempDataFromSave(index){
+    this.saveTransactionData.splice(index,1)
     this.tempTableData.splice(index,1)
   }
 
   saveFastEntries(){
-    console.log(JSON.stringify(this.saveTransactionData))
-		this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
+    this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
 			res => {
 				this.toaster.success("", "Transaction Saved Successfully")
 				this.saveTransactionData = [];
         this.tempTableData = []
 			}
 		)
+  }
+
+  saveAndClearFastEntries(){
+    this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
+			res => {
+				this.toaster.success("", "Transaction Saved Successfully")
+				this.saveTransactionData = [];
+        this.tempTableData = [];
+        this.selectedOnceEvery = 1;
+        this.selectedFrequency = 'Monthly';
+        this.selectedTransactionType = 'NoOfTransaction';
+        this.selectedNoOfTransaction = 1;
+        this.headMasterId = null
+        this.tableData = [];
+        this.selectedClawBack = ''
+        this.selectedAmount = ''
+        this.selectedRemark = ''
+        this.selectedFromDate = ''
+        this.selectedToDate = ''
+        this.setMinToDate = ''
+        this.effectiveFromDate = ''
+        this.effectiveToDate = ''
+        this.headGroupDefinitionId = ''
+        this.frequencyDataByPayroll = ''
+        this.saveTransactionType = ''
+        this.saveNumberTransaction = 1;
+        this.saveToDate = ''
+        this.saveFromDate = ''
+        this.saveClawback = ''
+        this.saveAmount = ''
+        this.saveRemark = ''
+        this.headDescription = ''
+        this.employeeData = ''
+        this.employeeName = ''
+        this.employeeMasterId = ''
+        this.employeeCode = ''
+			}
+		)
+  }
+
+  reset(){
+    this.saveTransactionData = [];
+        this.tempTableData = [];
+        this.selectedOnceEvery = 1;
+        this.selectedFrequency = 'Monthly';
+        this.selectedTransactionType = 'NoOfTransaction';
+        this.selectedNoOfTransaction = 1;
+        this.headMasterId = null
+        this.tableData = [];
+        this.selectedClawBack = ''
+        this.selectedAmount = ''
+        this.selectedRemark = ''
+        this.selectedFromDate = ''
+        this.selectedToDate = ''
+        this.setMinToDate = ''
+        this.effectiveFromDate = ''
+        this.effectiveToDate = ''
+        this.headGroupDefinitionId = ''
+        this.frequencyDataByPayroll = ''
+        this.saveTransactionType = ''
+        this.saveNumberTransaction = 1;
+        this.saveToDate = ''
+        this.saveFromDate = ''
+        this.saveClawback = ''
+        this.saveAmount = ''
+        this.saveRemark = ''
+        this.headDescription = ''
+        this.employeeData = ''
+        this.employeeName = ''
+        this.employeeMasterId = ''
+        this.employeeCode = ''
+        this.selectedPayrollArea = ''
+  }
+
+  resetTableData(){
+    this.saveTransactionData = [];
+    this.tempTableData = []
   }
 
 }

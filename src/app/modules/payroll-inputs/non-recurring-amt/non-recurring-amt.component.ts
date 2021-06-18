@@ -1,11 +1,10 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { PayrollInputsService } from '../payroll-inputs.service';
-import { ExcelserviceService } from '../../loan/excelservice.service';
+import { ExcelserviceService } from '../../../core/services/excelservice.service';
 
 @Component({
 	selector: 'app-non-recurring-amt',
