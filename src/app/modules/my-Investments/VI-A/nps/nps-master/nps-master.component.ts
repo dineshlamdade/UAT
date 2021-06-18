@@ -117,6 +117,26 @@ export class NpsMasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+    // this.frequencyOfPaymentList = [
+    //   { label: 'Monthly', value: 'Monthly' },
+    //   { label: 'Quarterly', value: 'Quarterly' },
+    //   { label: 'Half-Yearly', value: 'Halfyearly' },
+    //   { label: 'Yearly', value: 'Yearly' },
+    //    { label: 'As & When', value: 'As & When' },
+    // ];
+    // this.masterPage();
+    // this.addNewRowId = 0;
+    // this.hideRemarkDiv = false;
+    // this.hideRemoveRow = false;
+    // this.isClear = false;
+    // this.isCancel = false;
+    // this.receiptAmount = this.numberFormat.transform(0);
+    // this.globalAddRowIndex = 0;
+    // this.globalSelectedAmount = this.numberFormat.transform(0);
+    this.setMasterForm();
+  }
+  setMasterForm(){
+
     this.frequencyOfPaymentList = [
       { label: 'Monthly', value: 'Monthly' },
       { label: 'Quarterly', value: 'Quarterly' },
@@ -136,6 +156,35 @@ export class NpsMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    // this.initiateMasterForm();
+    // this.getFinacialYear();
+    // this.getMasterFamilyInfo();
+    // this.getNpsIdentityInformation();
+    // this.getInstitutesFromGlobal();
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+    // this.deactivateRemark();
+    // this.getPreviousEmployer();
+    // if (this.today.getMonth() + 1 <= 3) {
+    //   this.financialYear =
+    //     this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+    // } else {
+    //   this.financialYear =
+    //     this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+    // }
+    // const splitYear = this.financialYear.split('-', 2);
+    // this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
+    // this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    // if (this.accountNo != undefined || this.accountNo != null) {
+    //   const input = this.accountNo;
+    //   this.editMaster(input.accountNumber);
+    //   console.log('editMaster accountNumber', input.accountNumber);
+    // }
+    // this.startDateModel =  '31-dec-9999';
+    this.getData();
+  }
+
+  getData() {
     this.initiateMasterForm();
     this.getFinacialYear();
     this.getMasterFamilyInfo();
@@ -464,13 +513,16 @@ export class NpsMasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
+      this.form.get('ecs').setValue('0');
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
       this.documentRemark = '';
+      this.getData();
+      this.setMasterForm();
+     
     }
     this.form.patchValue({
       accountType: 'Tier_1',
@@ -607,7 +659,7 @@ export class NpsMasterComponent implements OnInit {
   resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];

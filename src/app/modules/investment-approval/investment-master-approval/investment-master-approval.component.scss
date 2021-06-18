@@ -1,0 +1,16 @@
+.cursor{ cursor:pointer;}
+.text-gray{
+    color: gray
+}
+.disablegraybutton{
+    cursor:not-allowed;
+    background-color: grayscale($color: #e7e6e6);
+}
+.disableredbutton{
+    cursor:not-allowed;
+    background-color: grayscale($color: #f38989);
+}
+.disablegreenbutton{
+    cursor:not-allowed;
+    background-color: grayscale($color: #598684);
+}

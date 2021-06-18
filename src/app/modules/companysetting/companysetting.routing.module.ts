@@ -22,6 +22,7 @@ import { ClaimFormComponent } from './claim-form/claim-form.component';
 import { DeclarationFormComponent } from './declaration-form/declaration-form.component';
 import { AttributeGlobalComponent } from './attribute-global/attribute-global.component';
 import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
+import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
 
 const routes: Routes = [
 
@@ -42,7 +43,7 @@ const routes: Routes = [
     data: { title: ':: Epic :: Company Settings' }
   },
   {
-    path: 'attribute-group',
+    path: 'attribute-global',
     component: AttributeGlobalComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
@@ -107,6 +108,11 @@ const routes: Routes = [
   {
     path: 'attribute-dependency',
     component: AttributeDependencyComponent,
+    data: { title: ':: Epic :: Company Setting' }
+  },
+  {
+    path: 'pay-roll-structure',
+    component: PayRollStructureComponent,
     data: { title: ':: Epic :: Company Setting' }
   },
 

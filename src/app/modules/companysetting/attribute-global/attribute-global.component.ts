@@ -1,4 +1,4 @@
-import { CompanySettingsService } from './../company-settings.service';
+import { CompanySettingsService } from '../company-settings.service';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { NgForm } from '@angular/forms';
@@ -24,6 +24,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
         }` ]
 } )
 export class AttributeGlobalComponent implements OnInit {
+  public codeInvalid : boolean = false;
   selectedSummarySourceProducts = [];
   userHasSelectedMandatoryFieldOnly = false;
   summaryList = [];
@@ -297,7 +298,7 @@ export class AttributeGlobalComponent implements OnInit {
   // }
 
   GetAttributeSelectionByIdDisable( id ): void {
-
+    window.scrollTo( 0, 0 );
     this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe( res => {
       console.log( 'check source res ', res );
       this.originalSourceProductList = res.data.results;
@@ -306,8 +307,9 @@ export class AttributeGlobalComponent implements OnInit {
       this.alertService.sweetalertError( error["error"]["status"]["message"] );
     }, () => {
       this.disabled = false;
-      this.viewupdateButton = false;
+      this.viewupdateButton = true;
       this.viewCancelButton = true;
+
 
       this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
         .subscribe( response => {
@@ -326,6 +328,7 @@ export class AttributeGlobalComponent implements OnInit {
     } );
   }
   GetAttributeSelectionById( id, isUsed: boolean ): void {
+    window.scrollTo( 0, 0 );
     this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe( res => {
       console.log( 'check source res ', res );
       this.originalSourceProductList = res.data.results;
@@ -336,7 +339,7 @@ export class AttributeGlobalComponent implements OnInit {
     }, () => {
       this.originalTargetList = [];
       this.disabled = true;
-      this.viewupdateButton = true;
+      this.viewupdateButton = false;
       this.viewCancelButton = true;
       this.attributeGroupId = id;
       this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
@@ -440,4 +443,29 @@ export class AttributeGlobalComponent implements OnInit {
       Object.assign( {}, { class: 'gray modal-md' } )
     );
   }
+
+    //Enter only Number Special Character/Character Form control Description
+    isContainsOnlySpecialCharacterDescription() {
+      // alert("Hiii codeInvalid");
+      this.codeInvalid = false
+      console.log( 'isContainsOnlySpecialCharacterDescription' );
+      var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+      for ( var i = 0; i < this.AttributeGlobalForm.get( 'name' ).value.length; i++ ) {
+        if ( splChars.indexOf( this.AttributeGlobalForm.get( 'name' ).value.charAt( i ) ) != -1 ) {
+          //alert("Illegal characters detected!");
+          this.codeInvalid = true;
+        } else {
+          this.codeInvalid = false;
+          break;
+        }
+
+      }
+      if ( this.codeInvalid == true ) {
+        //this.companyGroupNameInvalid = false;
+        //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+        // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+      }
+    }
+
 }
