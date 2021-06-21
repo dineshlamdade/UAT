@@ -790,7 +790,11 @@
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
                                                                                             <label
-                                                                                                class="form-lable mb-0">{{data.payrollHeadMaster.description}}</label>
+                                                                                                class="form-lable mb-0">{{data.payrollHeadMaster.description}}</label> &nbsp;&nbsp;&nbsp;
+                                                                                                <i class="fa fa-external-link font-16 text-blue cursor-pointer"
+                                                                                                aria-hidden="true" *ngIf="data.payrollHeadMaster.description == 'RefererBonus'"
+                                                                                                (click)="openReferalPopup(referalPopup,data)">
+                                                                                            </i>
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="text"
@@ -1174,6 +1178,11 @@
                                                                                         <td class="bg-color-light_gray">
                                                                                             <label
                                                                                                 class="form-lable mb-0">{{data.headDescription}}</label>
+                                                                                                 &nbsp;&nbsp;&nbsp;  
+                                                                                                <i class="fa fa-external-link font-16 text-blue cursor-pointer"
+                                                                                                aria-hidden="true" *ngIf="data.headDescription == 'RefererBonus'"
+                                                                                                (click)="openReferalPopup(referalPopup,data)">
+                                                                                            </i>
                                                                                         </td>
 
                                                                                         <td>
@@ -3113,6 +3122,55 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="saveClawBack();modalRef.hide()">
+            &nbsp;save</button>
+    </div>
+</ng-template>
+
+<!-- Refere Bonus-->
+<ng-template #referalPopup>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Refere Information</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body p-0 m-0">
+                <div class="row">
+                    <div class="col-md-12 pl-0 pr-0">
+                        <div class="border-dark-card radius-10 p-2 mt-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="form-lable mb-0">Employee Code</label>
+                                    <select class="form-control wd-200"
+                                       (change)="getEmployeeCode($event.target.value)">
+                                        <option value="">Select</option>
+                                        <option *ngFor="let emp of employeeData">{{emp.employeeCode}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-lable mb-0">Employee Name</label>
+                                    <input class="form-control wd-200" value="{{refemployeeName}}" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-lable mb-0">Payroll Area</label>
+                                    <select class="form-control wd-200" (change)="getEmployeePayrollArea($event.target.value)">
+                                        <option>Select</option>
+                                        <option *ngFor="let payroll of refralPayrollListData">{{payroll.payrollAreaCode}}</option>
+                                    </select>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
             &nbsp;save</button>
     </div>
 </ng-template>

@@ -94,6 +94,14 @@ export class NonRecurringAmtComponent implements OnInit {
 	copyFlag: boolean = false;
 	showDropdownDisabled: boolean = false;
 	parollListIndex: number = 0;
+	executeSDM: any;
+	employeeCode: any;
+	employeeName: any;
+	refralemployeeMasterId: any = 0;
+	refralPayrollListData: any;
+	refemployeeCode: any ;
+	refemployeeName: any;
+	refPayrolArea: any = '';
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -209,10 +217,10 @@ export class NonRecurringAmtComponent implements OnInit {
 
 				this.NonRecurringTransactionScheduleEMPdData = res.data.results;
 				this.NonRecurringTransactionScheduleEMPdData.forEach(element => {
-					if(element.processedAmount != null || element.processedAmount != ''){
+					if (element.processedAmount != null || element.processedAmount != '') {
 						element.isDisabledFlag = true;
 					}
-					if(element.processedAmount == null || element.processedAmount == ''){
+					if (element.processedAmount == null || element.processedAmount == '') {
 						element.isDisabledFlag = false;
 					}
 				});
@@ -375,6 +383,13 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.clawbackperiod = transactionData.clawbackPeriod
 				this.clawbackFrequency = transactionData.clawbackUnit
 				this.updatefrequency = transactionData.frequency
+
+				if (transactionData.executeSDM == null) {
+					this.executeSDM = "NO"
+				} else {
+					this.executeSDM = transactionData.executeSDM
+				}
+
 				if (transactionData.clawbackDate == null) {
 					this.clawbackDate = ""
 				} else {
@@ -417,11 +432,11 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/**Get selected Transaction Type */
-	getTransactionType(transactiontype, index,data) {
+	getTransactionType(transactiontype, index, data) {
 		this.selectedTransactionIndex = index;
 		this.selectedTransactionType = transactiontype
-		if(this.selectedTransactionType == 'Perpetual' || this.selectedTransactionType == 'Defined Date'){
-        this.NonRecurringTransactionGroupAPIbyIdData[index].numberOfTransactions = 0
+		if (this.selectedTransactionType == 'Perpetual' || this.selectedTransactionType == 'Defined Date') {
+			this.NonRecurringTransactionGroupAPIbyIdData[index].numberOfTransactions = 0
 		}
 	}
 
@@ -491,7 +506,12 @@ export class NonRecurringAmtComponent implements OnInit {
 			"clawbackInputType": this.selectedClawbackInputType,
 			"clawbackPeriod": this.clawbackperiod,
 			"clawbackUnit": this.clawbackFrequency,
-			"clawbackDate": this.clawbackDate
+			"clawbackDate": this.clawbackDate,
+			"executeSDM": this.executeSDM,
+			"refferedEmpId": this.refralemployeeMasterId,
+			"refferedpayrollAreaCode": this.refPayrolArea,
+			"approveStatus": "Pending"
+
 		}]
 
 		console.log("Data is: " + JSON.stringify(data))
@@ -543,7 +563,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.NonRecurringTransactionGroupAPIbyId(this.index)
 	}
 
-	prevEmpPayrollData(){
+	prevEmpPayrollData() {
 		this.showDropdownDisabled = true
 		this.parollListIndex = this.parollListIndex - 1
 		this.getAllEmployeeDetails();
@@ -559,7 +579,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	}
 
-	nextEmpPayrollData(){
+	nextEmpPayrollData() {
 		this.showDropdownDisabled = true
 		this.parollListIndex = this.parollListIndex + 1
 		this.getAllEmployeeDetails();
@@ -718,6 +738,7 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	/** On change Once Every */
 	getOnceEveryChangeForSave(value, data) {
+		console.log("json: "+ JSON.stringify(data))
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -752,7 +773,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -777,7 +802,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -802,7 +831,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 
@@ -847,7 +880,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+					    "refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -872,7 +909,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -897,7 +938,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,				
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("fromDate: " + JSON.stringify(this.saveTransactionData))
@@ -926,7 +971,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	getTransactionTypeForSave(value, rowindex, data) {
 		this.selectedTransactionIndex = rowindex;
 		this.selectedTransactionType = value
-		if(this.selectedTransactionType == 'Perpetual' || this.selectedTransactionType == 'Defined Date'){
+		if (this.selectedTransactionType == 'Perpetual' || this.selectedTransactionType == 'Defined Date') {
 			this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].numberOfTransactions = 0
 		}
 		this.NonRecurringTransactionGroupAPIEmpwiseData.forEach((element, index) => {
@@ -934,7 +979,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				element.transactionsType = value
 			}
 		});
-		
+
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -971,7 +1016,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -996,7 +1045,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1021,7 +1074,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("transaction type: " + JSON.stringify(this.saveTransactionData))
@@ -1064,7 +1121,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1089,7 +1150,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1114,7 +1179,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("todate: " + JSON.stringify(this.saveTransactionData))
@@ -1156,7 +1225,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1181,7 +1254,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1206,7 +1283,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("remark: " + JSON.stringify(this.saveTransactionData))
@@ -1249,7 +1330,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1274,7 +1359,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1299,7 +1388,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("Amount: " + JSON.stringify(this.saveTransactionData))
@@ -1345,7 +1438,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					length = this.saveTransactionData.length - 1;
@@ -1371,7 +1468,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1396,7 +1497,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("frequency: " + JSON.stringify(this.saveTransactionData))
@@ -1440,7 +1545,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1465,7 +1574,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1490,7 +1603,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("No Of transaction: " + JSON.stringify(this.saveTransactionData))
@@ -1561,7 +1678,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1586,7 +1707,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1611,7 +1736,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("Applicable at: " + JSON.stringify(this.saveTransactionData))
@@ -1657,7 +1786,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": value,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": this.clawbackDate
+						"clawbackDate": this.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1682,7 +1815,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": value,
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1707,7 +1844,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": value,
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("input type: " + JSON.stringify(this.saveTransactionData))
@@ -1750,7 +1891,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": parseInt(value),
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1775,7 +1920,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": parseInt(value),
 							"clawbackUnit": "",
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1799,7 +1948,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": parseInt(value),
 				"clawbackUnit": "",
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("clawback period: " + JSON.stringify(this.saveTransactionData))
@@ -1842,7 +1995,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": value,
-						"clawbackDate": element.clawbackDate
+						"clawbackDate": element.clawbackDate,
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1867,7 +2024,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": value,
-							"clawbackDate": ""
+							"clawbackDate": "",
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1892,7 +2053,11 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": value,
-				"clawbackDate": ""
+				"clawbackDate": "",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
 		console.log("clawback frequency: " + JSON.stringify(this.saveTransactionData))
@@ -1935,7 +2100,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"clawbackInputType": element.clawbackInputType,
 						"clawbackPeriod": element.clawbackPeriod,
 						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
+						"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00',
+						"executeSDM": element.executeSDM,
+						"refferedEmpId": element.refferedEmpId,
+						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+						"approveStatus": "Pending"
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1960,7 +2129,11 @@ export class NonRecurringAmtComponent implements OnInit {
 							"clawbackInputType": "",
 							"clawbackPeriod": 0,
 							"clawbackUnit": "",
-							"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
+							"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00',
+							"executeSDM": data.executeSDM,
+							"refferedEmpId": this.refralemployeeMasterId,
+							"refferedpayrollAreaCode": this.refPayrolArea,
+							"approveStatus": "Pending"
 						})
 					}
 				}
@@ -1985,9 +2158,45 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackInputType": "",
 				"clawbackPeriod": 0,
 				"clawbackUnit": "",
-				"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00'
+				"clawbackDate": this.datepipe.transform(new Date(value), 'yyyy-MM-dd') + ' 00:00:00',
+				"executeSDM": data.executeSDM,
+				"refferedEmpId": this.refralemployeeMasterId,
+				"refferedpayrollAreaCode": this.refPayrolArea,
+				"approveStatus": "Pending"
 			})
 		}
+	}
+
+	/** Open referal popup */
+	openReferalPopup(referalPopup: TemplateRef<any>, data){
+		this.modalRef = this.modalService.show(
+			referalPopup,
+			Object.assign({}, {
+				class: 'gray modal-lg'
+			})
+		);
+		this.getAllEmployeeDetails();
+	}
+
+	/** referal employee code */
+	getEmployeeCode(empcode){
+		this.employeeData.forEach(element => {
+			// console.log(element.employeeCode)
+			 if(element.employeeCode == empcode){
+			   this.refemployeeCode = element.employeeCode
+			   this.refemployeeName = element.fullName
+			   this.refralemployeeMasterId = element.employeeMasterId
+			   
+			   this.nonRecService.getEmployeeWisePayrollList(this.refralemployeeMasterId).subscribe(
+				res => {
+					this.refralPayrollListData = res.data.results[0];
+				})
+			 }
+		   });
+	}
+
+	getEmployeePayrollArea(value){
+		this.refPayrolArea = value
 	}
 
 	/** save transaction data */
@@ -2058,10 +2267,10 @@ export class NonRecurringAmtComponent implements OnInit {
 				});
 			});
 			this.AllNonRecurringTransactionScheduledData.forEach(element => {
-				if(element.processedAmount != null || element.processedAmount != ''){
+				if (element.processedAmount != null || element.processedAmount != '') {
 					element.isDisabledFlag = true;
 				}
-				if(element.processedAmount == null || element.processedAmount == ''){
+				if (element.processedAmount == null || element.processedAmount == '') {
 					element.isDisabledFlag = false;
 				}
 			});
@@ -2340,20 +2549,20 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.excelData = [];
 		this.summeryData.forEach(element => {
 			let obj = {
-				"Emp. Code":element.employeeMasterResponseDTO.employeeCode,      
-                "Emp. Name":element.employeeMasterResponseDTO.fullName,
-                "Payroll Area":element.payrollArea.payrollAreaCode,
-                "Head":element.payrollHeadMaster.displayName,
-                "Group Id":element.nonRecurringTransactionGroupId,
-                "Once Every":element.onceEvery,
-                "Frequency":element.frequency,
-                "Amount":element.amount,
-                "From Date":element.fromDate,
-                "To Date":element.toDate,
-                "Remark":element.remark,
-                "Approval Status":'',
-                "Created By":element.createdBy,
-                "Created Date":element.createDateTime
+				"Emp. Code": element.employeeMasterResponseDTO.employeeCode,
+				"Emp. Name": element.employeeMasterResponseDTO.fullName,
+				"Payroll Area": element.payrollArea.payrollAreaCode,
+				"Head": element.payrollHeadMaster.displayName,
+				"Group Id": element.nonRecurringTransactionGroupId,
+				"Once Every": element.onceEvery,
+				"Frequency": element.frequency,
+				"Amount": element.amount,
+				"From Date": element.fromDate,
+				"To Date": element.toDate,
+				"Remark": element.remark,
+				"Approval Status": '',
+				"Created By": element.createdBy,
+				"Created Date": element.createDateTime
 			}
 			this.excelData.push(obj)
 		});
@@ -2365,20 +2574,20 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.excelData = [];
 		this.AllNonRecurringTransactionScheduledData.forEach(element => {
 			let obj = {
-				"Emp. Code":element.employeeMasterResponseDTO.employeeCode,      
-                "Emp. Name":element.employeeMasterResponseDTO.fullName,
-                "Payroll Area":element.payrollArea.payrollAreaCode,
-                "Head":element.payrollHeadMaster.displayName,
-                "Group Id":element.nonRecurringTransactionGroupId,
-				"Schedule Id":element.nonRecurringTransactionScheduleId,
-                "Schedule Date":this.datepipe.transform(element.transactionDate,'dd-MMM-yyyy'),
-                "Schedule Amount":element.transactionAmount,
-                "Processed Amount":element.processedAmount,
-                "Balance Amount":element.transactionAmount,
-                "Processing Cycle":element.cycleName,
-				"ClawBack Date":this.datepipe.transform(element.clawbackDate,'dd-MMM-yyyy'),
-                "Created By":element.createdBy,
-                "Created Date":element.createDateTime
+				"Emp. Code": element.employeeMasterResponseDTO.employeeCode,
+				"Emp. Name": element.employeeMasterResponseDTO.fullName,
+				"Payroll Area": element.payrollArea.payrollAreaCode,
+				"Head": element.payrollHeadMaster.displayName,
+				"Group Id": element.nonRecurringTransactionGroupId,
+				"Schedule Id": element.nonRecurringTransactionScheduleId,
+				"Schedule Date": this.datepipe.transform(element.transactionDate, 'dd-MMM-yyyy'),
+				"Schedule Amount": element.transactionAmount,
+				"Processed Amount": element.processedAmount,
+				"Balance Amount": element.transactionAmount,
+				"Processing Cycle": element.cycleName,
+				"ClawBack Date": this.datepipe.transform(element.clawbackDate, 'dd-MMM-yyyy'),
+				"Created By": element.createdBy,
+				"Created Date": element.createDateTime
 			}
 			this.excelData.push(obj)
 		});
@@ -2391,25 +2600,26 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.excelData = [];
 		this.NonRecurringTransactionScheduleEMPdData.forEach(element => {
 			let obj = {
-				"Emp. Code":this.selectedEmpData[this.index].employeeMasterResponseDTO.employeeCode,      
-                "Emp. Name":this.selectedEmpData[this.index].employeeMasterResponseDTO.fullName,
-                "Payroll Area":this.selectedEmpData[this.index].payrollArea.payrollAreaCode,
-                "Head":this.selectedEmpData[this.index].payrollHeadMaster.displayName,
-                "Group Id":element.nonRecurringTransactionGroupId,
-				"Schedule Id":element.nonRecurringTransactionScheduleId,
-                "Schedule Date":this.datepipe.transform(element.transactionDate,'dd-MMM-yyyy'),
-                "Schedule Amount":element.transactionAmount,
-                "Processed Amount":element.processedAmount,
-                "Balance Amount":element.transactionAmount,
-                "Processing Cycle":element.cycleName,
-				"ClawBack Date":this.datepipe.transform(element.clawbackDate,'dd-MMM-yyyy'),
-                "Created By":element.createdBy,
-                "Created Date":element.createDateTime
+				"Emp. Code": this.selectedEmpData[this.index].employeeMasterResponseDTO.employeeCode,
+				"Emp. Name": this.selectedEmpData[this.index].employeeMasterResponseDTO.fullName,
+				"Payroll Area": this.selectedEmpData[this.index].payrollArea.payrollAreaCode,
+				"Head": this.selectedEmpData[this.index].payrollHeadMaster.displayName,
+				"Group Id": element.nonRecurringTransactionGroupId,
+				"Schedule Id": element.nonRecurringTransactionScheduleId,
+				"Schedule Date": this.datepipe.transform(element.transactionDate, 'dd-MMM-yyyy'),
+				"Schedule Amount": element.transactionAmount,
+				"Processed Amount": element.processedAmount,
+				"Balance Amount": element.transactionAmount,
+				"Processing Cycle": element.cycleName,
+				"ClawBack Date": this.datepipe.transform(element.clawbackDate, 'dd-MMM-yyyy'),
+				"Created By": element.createdBy,
+				"Created Date": element.createDateTime
 			}
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.NonRecurringTransactionScheduleEMPdData
 		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
+	
 
 }
