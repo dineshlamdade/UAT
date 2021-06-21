@@ -201,8 +201,10 @@
                     <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                     maxlength="22"
-                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
-                      class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
+                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" 
+                      [(ngModel)]="summary.declaredAmount"
+                      class="form-control align-right" 
+                      (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
@@ -221,11 +223,14 @@
                     " class="form-control" bsDatepicker />
                 </td>
                 <td>
-                  <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
+                  <input type="text" 
+                  id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
                   maxlength="22"
-                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                    [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
+                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" 
+                    [disabled]="initialArrayIndex[j] > i"
+                    [(ngModel)]="summary.actualAmount" 
+                    (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
                 </td>
                 <td>

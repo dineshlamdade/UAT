@@ -169,6 +169,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   dateOfJoining: Date;
   public selectrow : any;
+  globalSelectedAmounts: any = '0.00'
 
 
   constructor(
@@ -699,22 +700,31 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   public onSelectCheckBox(
    
     event: { target: { checked: any } },
-    i: number
+    i: number, summary: {
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;      
+      declaredAmount: number;
+      actualAmount: number;
+      dateOfPayment: Date;
+    },
   ) {
 
-    if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null || this.investmentGroup3TransactionDetailList[i].actualAmount == "0" ) {
+    if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
       this.requiredField = true;
       event.target.checked = false;
-     if(this.investmentGroup3TransactionDetailList[i].actualAmount == "0") {
+      if(this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
        this.alertService.sweetalertError(
-         'Please Enter Actual Amount'
+        'Please Enter Decleared Amount'
        );
+       return;
      } else {
        this.alertService.sweetalertError(
          'Please Fill Required Field.'
        );
+       return;
      }
-      return;
+     
     } else {
       this.requiredField = false;
     }
@@ -747,13 +757,15 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
           data.declaredAmount;
       }
  */
+      this.investmentGroup3TransactionDetailList[i].actualAmount = this.investmentGroup3TransactionDetailList[i].declaredAmount;
+      this.globalSelectedAmounts = this.investmentGroup3TransactionDetailList[i].declaredAmount;
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
           .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue + formatedActualAmount
+        formatedGlobalSelectedValue
       );
       if(formatedActualAmount == null || formatedActualAmount <= 0){
         this.alertService.sweetalertError(
@@ -768,6 +780,8 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
+
+      this.investmentGroup3TransactionDetailList[i].actualAmount = this.investmentGroup3TransactionDetailList[i].declaredAmount;
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
@@ -802,16 +816,17 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     }*/
 
     console.log(this.uploadGridData);
-    this.actualTotal = 0;
-    this.transactionDetail.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualTotal.toString().replace(/,/g, '')
-      );
-      // console.log("Actual Total")(this.actualTotal);
-     console.log("Actual Total::" , this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.onActualAmountChange(summary, i);
+    // this.actualTotal = 0;
+    // this.transactionDetail.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualTotal.toString().replace(/,/g, '')
+    //   );
+    //   // console.log("Actual Total")(this.actualTotal);
+    //  console.log("Actual Total::" , this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
 
     this.grandActualTotal = this.actualTotal;
     console.log(this.grandActualTotal);
@@ -954,6 +969,64 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
   }
+
+// ------------Decleared Amount change-----------
+onDeclearedAmountChange(
+  summary: {
+    previousEmployerId:number;
+    institution: 0;
+    accountNumber: number;      
+    declaredAmount: number;
+    actualAmount: number;
+    dateOfPayment: Date;
+  },
+  i: number
+) {
+
+  console.log("summary::",summary)
+  this.declarationService = new DeclarationService(summary);
+  console.log("declarationService::",this.declarationService)
+  this.investmentGroup3TransactionDetailList[i].declaredAmount = this.declarationService.declaredAmount;
+  console.log("investmentGroup3TransactionDetailList[i].actualAmount::",this.investmentGroup3TransactionDetailList[i])
+  const formatedActualAmount = this.numberFormat.transform(
+    this.investmentGroup3TransactionDetailList[i].declaredAmount
+  );
+  this.investmentGroup3TransactionDetailList[i].declaredAmount = formatedActualAmount;
+
+  this.declarationTotal = 0;
+  this.declaredAmount = 0;
+  this.investmentGroup3TransactionDetailList.forEach((element) => {
+    this.declarationTotal += Number(
+      element.declaredAmount.toString().replace(/,/g, '')
+    );
+    this.declaredAmount += Number(element.declaredAmount.toString().replace(',', ""));
+  });
+
+  this.transactionDetail.forEach((element) => {
+    this.declarationTotal += Number(
+      element.declaredAmount.toString().replace(/,/g, '')
+    );
+    this.declaredAmount += Number(element.declaredAmount.toString().replace(',', ""));
+  });
+
+  this.grandDeclarationTotal = this.declarationTotal;
+  this.declarationTotal = 0;
+  this.transactionDetail.forEach((element) => {
+    // console.log(element.actualAmount.toString().replace(',', ""));
+    this.declarationTotal += Number(
+      element.declarationTotal.toString().replace(/,/g, '')
+    );
+    // console.log("Actual Total")(this.actualTotal);
+   console.log("Declaration Total::" , this.actualTotal);
+    // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+  });
+
+  this.grandDeclarationTotal = this.declarationTotal;
+  console.log(this.grandDeclarationTotal);
+  // this.transactionDetail[j].actualAmount = this.actualAmount;
+  // console.log(this.transactionDetail[j]);
+  // console.log(this.actualTotal);
+}
 
   // --------Add New ROw Function---------
    addRowInList(
@@ -1210,6 +1283,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.globalSelectedAmounts = '0.00';
     this.investmentGroup3TransactionDetailList = [];
   }
 
@@ -1222,11 +1296,11 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
-    if (receiptAmount_ < globalSelectedAmount_) {
+    if (receiptAmount_ < this.globalSelectedAmounts) {
     this.alertService.sweetalertError(
       'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
-  } else if (receiptAmount_ > globalSelectedAmount_) {
+  } else if (receiptAmount_ > this.globalSelectedAmounts) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(

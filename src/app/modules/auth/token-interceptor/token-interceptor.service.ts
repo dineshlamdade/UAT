@@ -48,7 +48,9 @@ export class TokenInterceptorService implements HttpInterceptor {
           break;
         }
         case 404: {
-          this.alertService.sweetalertError('Data not found !!',);
+          // Commented by komal
+          // this.alertService.sweetalertError('Data not found !!',);
+          console.log('404 Data not found !!');
           break;
         }
         case 500: {

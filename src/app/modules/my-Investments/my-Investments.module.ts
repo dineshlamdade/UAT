@@ -61,6 +61,7 @@ import { SignatureaffirmationPadComponent } from './affirmation/signatureaffirma
 import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatSelectModule } from '@angular/material/select';
+import { PreviousemployerdeclarationComponent } from './previousemployer/previousemployerdeclaration/previousemployerdeclaration.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { MatSelectModule } from '@angular/material/select';
     PreviousemployerComponent,
     PreviousemployersummaryComponent,
     PreviousemployermasterComponent,
+    PreviousemployerdeclarationComponent,
     NationalSavingCertificateNSCComponent,
     HousePropertyComponent,
     // PrincipalRepaymentOnHousingLoanComponent,
