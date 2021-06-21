@@ -64,7 +64,7 @@ import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structu
     UserGroupComponent,
     RolePrivilegeComponent,
      UserDashboardComponent,
-     PaymentTrackingMasterComponent
+     PaymentTrackingMasterComponent,
      PayRollStructureComponent,
   ],
   imports: [

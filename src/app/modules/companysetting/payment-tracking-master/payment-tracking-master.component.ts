@@ -1,26 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-interface City {
-  name: string,
-  code: string
-}
-interface User1 {
-  srno;
-  head;
-  logic;
-  formula;
-  value;
- 
-}
-interface User2 {
-  srno;
-  ifsc;
-  bankname;
-  address;
-  accountno;
-  default;
- 
-}
+import { FormBuilder, FormControl } from '@angular/forms';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
+import { PaymenttrackingMasterService } from './paymenttracking-master.service';
 
 @Component({
   selector: 'app-payment-tracking-master',
@@ -28,35 +9,170 @@ interface User2 {
   styleUrls: ['./payment-tracking-master.component.scss']
 })
 export class PaymentTrackingMasterComponent implements OnInit {
-  cities: City[];
-  users1: User1[];
-  users2: User2[];
-  selectedCities: City[];
-  constructor() { }
+  paymenttrackingForm: any;
+  applicationModuleNameList: any;
+  complianceHeadList: any;
+  complianceMasterList: any;
+  garnishmentMasterList: any;
+  jobMasterList: any;
+  jobMasterMappingList: any;
+  workFlowList: any;
+  users1:  [];
+  users2: [];
+  bankDetails: any;
+  summary: any;
+  editFlag: any;
+  jobMasterMapping: any;
+  garnishmentDetailsList: any;
+  
+ 
+  constructor( private formBuilder: FormBuilder, private service:PaymenttrackingMasterService,
+    private alertService: AlertServiceService,) { }
 
   ngOnInit(): void {
-    this.cities = [
-      {name: 'G1', code: 'NY'},
-      {name: 'G2', code: 'RM'},
-      {name: 'G3', code: 'LDN'},
-      {name: 'G6', code: 'IST'},
-  
-  ];
+    this.getApplicaationModuleName()
+    this.getComplianceMasterHeads()
+    this.getComplianceMaster()
+    this.getGarnishmentMasterDes()
+    this.getJobMaster()
+    this.getJobMasterMapping()
+    this.getWorkFlowApproval()
+    this.getSummary()
 
+    this.paymenttrackingForm = this.formBuilder.group({
+      paymentTrackMastId: new FormControl(''),
+      code: new FormControl(''),
+      description: new FormControl(''),
+      groupCompanyId : new FormControl(''),
+      nature : new FormControl(''),
+      moduleId : new FormControl(''),
+      paymentMode : new FormControl(''),
+      complianceHead : new FormControl(''),
+      complianceMaster : new FormControl(''),
+      payeeName : new FormControl(''),
+      autoCreaPayVouch : new FormControl(''),
+      payMoreOneProcCyOneGo : new FormControl(''),
+      payMoreOnePertainCyOneGo : new FormControl(''),
+      partPay : new FormControl(''),
+      workflowMasterHeaderId : new FormControl(''),
+      defaultModePayment : new FormControl(''),
+      approvalSDMId : new FormControl(''),
+      remark : new FormControl(''),
+      applicationModuleName :new FormControl(''),
+      complianceName : new FormControl(''),
+      complianceHeadName : new FormControl(''),
+      contactPerson : new FormControl(''),
+      jobMasterType : new FormControl(''),
+      workflowCode : new FormControl(''),
+      masterCode : new FormControl(''),
+      
+      
+
+    })
+//     this.users1 = [
+//       { srno: '1', head: 'Earning',logic:'AAA',formula: 'bbb',value:'AAA Desc' },
+
+  
+//  ];
+//  this.users2 = [
+//   { srno: '1', ifsc:'hii',bankname:'AAA',address:'AAA Desc' ,accountno:'5646' ,default:'' },
+
+
+// ];
+   
+ }
  
 
-//add this code in onInit method
- this.users1 = [
-      { srno: '1', head: 'Earning',logic:'AAA',formula: 'bbb',value:'AAA Desc' },
+ getApplicaationModuleName(){
+  this.service.getModuleName().subscribe((res) => {
+
+    this.applicationModuleNameList = res.data.results;
+    
+ });
+ }
+
+ getComplianceMasterHeads(){
+   this.service.getComplianceHead().subscribe(res =>{
+     this.complianceHeadList = res.data.results;
+   });
+ }
+getComplianceMaster(){
+  this.service.getComplianceMaster().subscribe(res =>{
+    this.complianceMasterList = res.data.results;
+  })
+}
+
+getGarnishmentMasterDes(){
+  this.service.getGarnishmentMaster().subscribe(res =>{
+    this.garnishmentDetailsList = res.data.results;
+  })
+}
+
+getJobMaster(){
+  this.service.getJobMaster().subscribe(res =>{
+    this.jobMasterList = res.data.results;
+  })
+}
+
+getJobMasterMapping(){
+  this.service.getJobMasterMapping().subscribe(res =>{
+    this.jobMasterMappingList = res.data.results;
+  })
+}
+ getWorkFlowApproval(){
+   this.service.getWorkflowMaster().subscribe(res =>{
+     this.workFlowList = res.data.results
+   })
+ }
+
+ getBankdetails(){
+   this.service.getBankMasterDetails().subscribe(res =>{
+     this.bankDetails = res.data.results;
+   })
+ }
+
+ getJobMappingValue(){
+   this.service.getJobMasterMapping().subscribe(res =>{
+     this.jobMasterMapping = res.data.results;
+   })
+ }
+
+ getSummary(){
+   this.service.getSummay().subscribe(res =>{
+     this.summary = res.data.reslts;
+   })
+ }
+
+
+ paymentTrackingFormSubmit(){
+
+  if(!this.editFlag){
+this.service.addPayment(this.paymenttrackingForm).subscribe(res =>{
+  this.alertService.sweetalertMasterSuccess("Role Privilege data saved successfully", "");
+})
+  }
 
   
- ];
- this.users2 = [
-  { srno: '1', ifsc:'hii',bankname:'AAA',address:'AAA Desc' ,accountno:'5646' ,default:'' },
+ }
 
+ onSelectComplianceMaster(complianceHeadId){
+if(complianceHeadId){
+  this.service.getComplianceMaster().subscribe(res =>{
+    this.complianceMasterList = res.data.results;
+  })
+  
+}
+console.log("complianceMasterList::::::",this.complianceMasterList)
+ }
 
-];
+ onSelectJobFieldValue(jobMasterId){
+   if(jobMasterId){
+  this.service.getJobMasterMapping().subscribe(res =>{
+    this.jobMasterMappingList = res.data.results;
+  })
+   }
+   console.log("jobMasterMappingList::::::",this.jobMasterMappingList)
+ }
 
-  }
 
 }
