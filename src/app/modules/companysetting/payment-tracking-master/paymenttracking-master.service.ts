@@ -10,6 +10,8 @@ export class PaymenttrackingMasterService {
 
   public apiUrl = environment.baseUrl8092;
   public apiUrl1 = environment.baseUrl8083;
+  public apiUrl2 = environment.baseUrl8088;
+  public apiUrl3 = environment.baseUrl8084;
   constructor(private http : HttpClient) { }
 
   public getAll(){
@@ -44,4 +46,30 @@ export class PaymenttrackingMasterService {
   public getJobMasterMapping(){
     return this.http.get<any>(this.apiUrl1 + 'job-master-mapping/master/jobMasterId')
   }
+
+  public getModuleName()
+{
+  return this.http.get<any>(this.apiUrl1 + 'application-module/');
+}
+
+
+public getComplianceHead(){
+  return this.http.get<any>(this.apiUrl1 + 'compliance-head/details');
+}
+
+public getComplianceMaster(){
+  return this.http.get<any>(this.apiUrl1 + 'compliance-master/');
+}
+
+public getBankMasterDetails(){
+  return this.http.get<any>(this.apiUrl1 + 'company-bankmaster-mapping/details');
+}
+
+public getWorkflowMaster(){
+  return this.http.get<any>(this.apiUrl2 + 'workflowmaster-header/getAllWorkflowMasters');
+}
+
+public getGarnishmentMaster(){
+  return this.http.get<any>(this.apiUrl3 + 'garnishment-master');
+}
 }
