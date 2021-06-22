@@ -4,6 +4,7 @@
   <div class="section-body mt-3">
     <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
       <div class="tabview-contents">
+        
         <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
           <div class="row">
             <div class="col-12">
@@ -175,8 +176,9 @@
                       </td>
 
                       <td>
+                        {{item.levelOfRM}}
                         <select [(ngModel)]="item.levelOfRM" [ngClass]="{'is-invalid' : (item.levelOfRM === null)}"
-                          [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select">
+                          [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select" (change)="selectedLevelOfRM($event.target.value)">
                           <option *ngFor="let data of levelOfRM">
                             {{data}}
                           </option>
@@ -208,7 +210,7 @@
                           class="fa fa-plus-circle font-16 text-blue cursor-pointer ml-3" tooltip="Add Reassign Method"
                           (click)="reassignedValidation(template, item)"></i>
                         <i *ngIf="c !=1" class="fa fa-trash font-16 text-red cursor-pointer ml-3" tooltip="Delete"
-                          (click)="deleteApprover(i)"></i>
+                          (click)="deleteApprover(i,item)"></i>
                       </td>
                     </tr>
                   </tbody>
@@ -246,6 +248,14 @@
 
       </div>
       <div class="row">
+        <div class="col-md-12">
+          <a tooltip="Download" style="cursor: pointer;float: right;" (click)="exportAsXLSX()"><i
+            class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a>
+        </div>
+      </div>
+     
+      <div class="row">
+       
         <div class="col-12">
           <div class="card">
             <div class="mb-0">
@@ -253,8 +263,7 @@
             </div>
 
 
-            <a tooltip="Download" style="cursor: pointer" (click)="exportAsXLSX()"><i
-                class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a>
+           
             <div class="col-md-12">
               <p-table [value]="summary" styleClass="sticky-table" 
               class="mt-10" [paginator]="true" [rows]="10"
@@ -431,7 +440,7 @@
                     <th scope="col" class="wd-20">Method of Approval</th>
                     <th scope="col" class="wd-5">Level of Reporting Manager</th>
                     <th scope="col" class="wd-15">SDM</th>
-                    <th scope="col" class="wd-5">Action</th>
+                    <th scope="col" class="wd-5">Re-assign</th>
                   </tr>
                 </thead>
                 <tbody>

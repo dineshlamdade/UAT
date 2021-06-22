@@ -38,6 +38,8 @@ export class WorkflowMasterComponent implements OnInit {
   sdmApplicabilityArray: Array<any> = [];
   excelData: any[];
   workflowMasterHeaderResponseDTO: any = [];
+  selectedLevelManager: any;
+  
 
   constructor(private formBuilder: FormBuilder,
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -328,6 +330,12 @@ export class WorkflowMasterComponent implements OnInit {
 
 
   addAprrover() {
+    this.levelOfRM.forEach((element,index) =>{
+      if(element == this.selectedLevelManager){
+        let ind = index;
+        this.levelOfRM.splice(ind,1)
+      }
+    })
     this.sequence.push(this.arrayApproverMaster.length + 1)
     this.arrayApproverMaster.push({
       approverMethod: null,
@@ -341,9 +349,11 @@ export class WorkflowMasterComponent implements OnInit {
     })
   }
 
-  deleteApprover(i) {
+  deleteApprover(i,data) {
+    console.log(JSON.stringify(data))
     this.arrayApproverMaster.splice(i, 1);
     this.sequence.splice(i,1)
+    this.levelOfRM.push(data.levelOfRM)
   }
 
   gettreatmentUnActionedPlan(plan,data){
@@ -388,6 +398,13 @@ export class WorkflowMasterComponent implements OnInit {
 
   public reassignedValidation(template: TemplateRef<any>, item): void {
     this.approverSequence = item.sequence;
+
+    this.levelOfRM.forEach((element,index) =>{
+      if(element == this.selectedLevelManager){
+        let ind = index;
+        this.levelOfRM.splice(ind,1)
+      }
+    })
    // console.log(this.reassignedSequenceArray);
     this.reassignedSequenceArrayPopUp = this.reassignedSequenceArray.filter((o) => o.sequence === item.sequence);
    // console.log(this.reassignedSequenceArrayPopUp);
@@ -475,4 +492,7 @@ export class WorkflowMasterComponent implements OnInit {
 
   deleteRow() { }
 
+  selectedLevelOfRM(data){
+    this.selectedLevelManager = data
+  }
 }
