@@ -10,7 +10,9 @@
           <div class="card">
             <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
               <form [formGroup]="AddLoanForm" (ngSubmit)="addloanFormSubmit()">
-                <div class="row">
+                <fieldset>
+                  <legend>Employee Details</legend>
+                <!-- <div class="row"> -->
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2 mt-3">
                       <div class="row">
@@ -52,7 +54,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </fieldset>
+                <!-- </div> -->
 
                 <!-- <div class="col-md-12 pl-0 pr-0">
                   <div class="border-dark-card radius-10 p-2 mt-3">
@@ -84,8 +87,8 @@
                 <!-- </fieldset> -->
                 <br>
                 
-                <!-- <fieldset>
-                  <legend>Disbursement Details</legend> -->
+                <fieldset>
+                  <legend>Loan Details</legend>
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2">
                   <div class="row">
@@ -115,37 +118,55 @@
                       <label class="form-label">Repayment Type</label>
                       <input type="text" class="form-control" formControlName="repaymentType" disabled />
                     </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Loan Balance</label>
+                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                    </div>
                     
                   </div>
                   <br />
                 </div>
               </div>
-                <!-- </fieldset> -->
+                </fieldset>
 <br>
-                <!-- <fieldset>
-                  <legend>Bank Details</legend> -->
+                <fieldset>
+                  <legend>Rescheduling Details</legend>
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2 ">
                   <div class="row">
                    
                     <div class="col-md-3">
                       <label class="form-label mt-1 mb-0">Rescheduling Type</label>
-                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                      <select class="form-control"
+                        placeholder="Select" >
+                        <option [ngValue]="null" selected>Select</option>
+                        <option  [selected]="loanType == loan.loanCode">
+                          No. Of Installments</option>
+                          <option  [selected]="loanType == loan.loanCode">
+                            Till Loan Ends</option>
+                      </select>
                     </div>
                     <div class="col-md-3">
-                      <label class="form-label mt-1 mb-0">Installments to Reschedule</label>
-                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                      <label class="form-label mt-1 mb-0">No. Of Installments to Reschedule</label>
+                      <input type="text" class="form-control" formControlName="repaymentType"  />
                     </div>
                     <div class="col-md-3">
-                      <label class="form-label mt-1 mb-0">Reason</label>
-                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                      <label class="form-label">Effective From</label>
+                      <select class="form-control"
+                        placeholder="Select" >
+                        <option [ngValue]="null" selected>Select</option>
+                        <option  [selected]="loanType == loan.loanCode">
+                          1</option>
+                          <option  [selected]="loanType == loan.loanCode">
+                            2</option>
+                      </select>
                     </div>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                       <label class="form-label mt-1 mb-0">Balance</label>
                       <input type="text" class="form-control" formControlName="underlineAssestValue"
                         [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
                         disabled />
-                    </div>
+                    </div> -->
 
 
                   </div>
@@ -178,7 +199,7 @@
                               </tr>
 
                               <tr >
-                                <td>12-Apr-2021</td>
+                                <td>2-June-2021</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -187,7 +208,7 @@
                               </tr>
 
                               <tr >
-                                <td>12-Apr-2021</td>
+                                <td>1-May-2021</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -207,7 +228,7 @@
                 </div>
               </div>
 
-                <!-- </fieldset> -->
+                </fieldset>
 
                 <br><br>
 
@@ -216,7 +237,7 @@
                     <div class="card">
                       <div class="mb-0 row">
                         <div class="col-md-6">
-                          <h3 class="font-14 text-purple font-bold">Approver Details</h3>
+                          <h3 class="font-14 text-purple font-bold">Approval Details</h3>
 
                         </div>
                         <div class="col-md-6 ">
@@ -264,22 +285,15 @@
                 <ng-container class="float-right">
                  
                   <div class="row float-right" style="margin: 10px">
-                    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                      tooltip="Save">
-                      <b> <i class="fa fa-check-square-o
-                       
-                        " aria-hidden="true"></i></b>Approved</button>&nbsp;
-                   
-                    <button type="button" tooltip="Reset"
-                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="reset()">
-                      <b><i class="fa  fa-reply 
-                        "></i></b>Send Back</button>&nbsp;
-
-                    <!-- *ngIf="isVisiblee" -->
-                    <button type="button" tooltip="Cancel"
-                      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
-                      [routerLink]="['/loan/application']">
-                      <b> <i class="fa fa-times-circle" aria-hidden="true"></i></b>Close</button>
+                    <button type="submit" tooltip="Save"
+                    class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left ml-10"
+                    (click)="reset()" >
+                    <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
+                                  
+                <button type="button" tooltip="Reset"
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                    (click)="reset()" >
+                    <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>&nbsp;
 
                   </div>
                 </ng-container>

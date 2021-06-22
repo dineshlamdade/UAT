@@ -10,35 +10,35 @@
           <div class="card">
             <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
               <form [formGroup]="AddLoanForm" (ngSubmit)="addloanFormSubmit()">
-                <div class="row pt-2 bg-color-light_gray">
-                  <div class="col-md-3">
-                    <h6 class="font-12 mb-3 font-normal">
-                      <strong>Emp.Code :
-                      </strong>0001
-                    </h6>
+                <fieldset>
+                  <legend>Employee Details</legend>
+                  <div class="col-md-12 pl-0 pr-0">
+                    <div class="border-dark-card radius-10 p-2">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="form-label mt-1 mb-0" >Emp. Code</label >
+                            <label class="font-12 text-ellipsis mt-1 mb-0">
+                              0001</label>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label mt-1 mb-0">Emp. Name</label >
+                          <label class="font-12 text-ellipsis mt-1 mb-0">ABC</label>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label mt-1 mb-0">Loan No.</label  >
+                            <label class="font-12 text-ellipsis mt-1 mb-0">1111</label  >
+                         
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label mt-1 mb-0">Application Date</label>
+                          <label class="font-12 text-ellipsis mt-1 mb-0">11-Jan-2021</label  >
+                          <!-- <input type="text" class="form-control" value="Worker"  disabled /> -->
+                        </div>
+                        
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-md-3">
-                    <h6 class="font-12 mb-3 font-normal">
-                      <strong>Emp.Name:
-                      </strong>AAA
-                    </h6>
-                  </div>
-                  <div class="col-md-3">
-                    <h6 class="font-12 mb-3 font-normal">
-                      <strong>Loan No.:
-                      </strong>111
-                    </h6>
-                  </div>
-                  <div class="col-md-3">
-                    <h6 class="font-12 mb-3 font-normal">
-                      <strong>Application Date :
-                      </strong>11-Jan-2021
-                    </h6>
-                  </div>
-                </div>
-
-
-              <!-- </fieldset> -->
+              </fieldset>
               <br>
                 <fieldset>
                   <legend>Loan Details</legend>
@@ -192,7 +192,7 @@
                                 <td>500,000.00</td>
                                 <td>100,000.00</td>
                                 <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
-                                <td>ABC</td>
+                                <td style="background-color: #fff;">ABC</td>
                                 <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
                               </tr>
 
@@ -203,7 +203,7 @@
                                 <td>12</td>
                                 <td>13</td>
                                 <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
-                                <td>BBB</td>
+                                <td style="background-color: #fff;">BBB</td>
                                 <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
                               </tr>
 
@@ -214,7 +214,7 @@
                                 <td>4.00%</td>
                                 <td>0</td>
                                 <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
-                                <td>CCC</td>
+                                <td style="background-color: #fff;">CCC</td>
                                 <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
                               </tr>
     
@@ -453,7 +453,7 @@
                       <div class="card">
                         <div class="mb-0 row">
                           <div class="col-md-6">
-                            <h3 class="font-14 text-purple font-bold">Approver Details</h3>
+                            <h3 class="font-14 text-purple font-bold">Approval Details</h3>
 
                           </div>
                           <div class="col-md-6 ">
@@ -487,7 +487,7 @@
                                   <td>8-Jun-2021 &nbsp;  10.00 AM</td>
                                   <!-- <td>10.00 AM</td> -->
                                   <td>Pending</td>
-                                  <td>Pending with Approver 2</td>
+                                  <td><input type="text" /></td>
                                 </tbody>
                               </table>
                             </div>
@@ -508,7 +508,7 @@
                         >
                         <b> <i class="fa fa-check-square-o
                          
-                          " aria-hidden="true"></i></b>Approved</button>&nbsp;
+                          " aria-hidden="true"></i></b>Approve</button>&nbsp;
 
                       <button type="submit" tooltip="Update"
                         class="custom_button custom_btn btn-labeled btn-labeled-left" [disabled]="!AddLoanForm.valid"

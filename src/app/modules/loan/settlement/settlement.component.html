@@ -10,11 +10,11 @@
           <div class="card">
             <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
               <form [formGroup]="AddLoanForm" (ngSubmit)="addloanFormSubmit()">
-                <!-- <fieldset> -->
+                <fieldset>
                 <legend>Employee Details</legend>
                 <!-- <div class="row"> -->
                   <div class="col-md-12 pl-0 pr-0">
-                    <div class="border-dark-card radius-10 p-2 mt-3">
+                    <div class="border-dark-card radius-10 p-2 mt-1">
                       <div class="row">
                         <div class="col-md-2">
                           <label class="form-label mt-1 mb-0" >Employee No. & Name </label >
@@ -55,7 +55,7 @@
                     </div>
                   </div>
                 <!-- </div> -->
-              <!-- </fieldset> -->
+              </fieldset>
 
              
                 <br>
@@ -94,10 +94,10 @@
                       <label class="form-label">Repayment Type</label>
                       <input type="text" class="form-control" formControlName="repaymentType" disabled />
                     </div>
-                    
-
                   </div>
                   <br />
+
+                  
                 </div>
               </div>
                 </fieldset>
@@ -107,40 +107,47 @@
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2 ">
                   <div class="row mt-1 mb-0">
-                    <div class="col-md-3" >
-                      <label class="form-label">Settlement Date</label>
-                      <input type="text" class="form-control" formControlName="noOfInstallment" />
-                    </div>
                     <div class="col-md-3">
-                      <label class="form-label">Principal</label>
-                      <input type="text" class="form-control" formControlName="underlineAssestValue"
-                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
-                        disabled />
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Interest</label>
-                      <input type="text" class="form-control" formControlName="loanAmount"
-                        value="{{loanAmount | number:'1.2-2'}}" disabled/>
-                    </div>
-                  
-                    <div class="col-md-3">
-                      <label class="form-label">Total</label>
-                      <input type="text" class="form-control" formControlName="loanAmount"
-                        value="{{loanAmount | number:'1.2-2'}}" disabled/>
-                    </div>
+                      <label class="form-label">
+                          Settlement Date
+                      </label>
+                      <div class="form-group">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <span class="input-group-text">
+                                      <i class="fa fa-calendar"></i>
+                                  </span>
+                              </div>
+                              <input data-provide="datepicker" data-date-autoclose="true"
+                                  class="form-control" placeholder="Date" [ngModel]="isCheckAll" bsDatepicker>
+                          </div>
+                      </div>
+
+                  </div>
+                  <!-- <div class="col-md-3">
+                    <label class="form-label">Principal</label>
+                    <input type="text" class="form-control" formControlName="underlineAssestValue"
+                      [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                      disabled />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Interest</label>
+                    <input type="text" class="form-control" formControlName="loanAmount"
+                      value="{{loanAmount | number:'1.2-2'}}" disabled/>
+                  </div>
+                
+                  <div class="col-md-3">
+                    <label class="form-label">Total</label>
+                    <input type="text" class="form-control" formControlName="loanAmount"
+                      value="{{loanAmount | number:'1.2-2'}}" disabled/>
+                  </div> -->
+                  <div class="col-md-3">
+                    <label class="form-label">Remark</label>
+                    <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                  </div> 
                     
                   </div>
                 
-                  <br>
-                  <div class="row">
-                    
-                    <div class="col-md-3">
-                      <label class="form-label">Remark</label>
-                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
-                    </div>
-
-
-                  </div>
                   <br />
                 </div>
               </div>
@@ -149,12 +156,111 @@
 
                 <br><br>
 
+                <fieldset>
+                  <legend>For office use</legend>
+                  <div class="col-md-12 pl-0 pr-0">
+                    <div class="border-dark-card radius-10 p-2 ">
+                 
+                    <!-- <div class="col-md-3">
+                      <label class="form-label">
+                          Settlement Date
+                      </label>
+                      <div class="form-group">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <span class="input-group-text">
+                                      <i class="fa fa-calendar"></i>
+                                  </span>
+                              </div>
+                              <input data-provide="datepicker" data-date-autoclose="true"
+                                  class="form-control" placeholder="Date" [ngModel]="isCheckAll" bsDatepicker>
+                          </div>
+                      </div>
+
+                  </div> -->
+                  <!-- <div class="col-md-3">
+                    <label class="form-label">Principal</label>
+                    <input type="text" class="form-control" formControlName="underlineAssestValue"
+                      [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                      disabled />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Interest</label>
+                    <input type="text" class="form-control" formControlName="loanAmount"
+                      value="{{loanAmount | number:'1.2-2'}}" disabled/>
+                  </div>
+                
+                  <div class="col-md-3">
+                    <label class="form-label">Total</label>
+                    <input type="text" class="form-control" formControlName="loanAmount"
+                      value="{{loanAmount | number:'1.2-2'}}" disabled/>
+                  </div> -->
+                  <!-- <div class="col-md-3">
+                    <label class="form-label">Remark</label>
+                    <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                  </div>  -->
+                    
+                
+                  <div class="row mt-1 mb-0">
+                    <div class="col-md-3">
+                      <label class="form-label">Mode of payment</label>
+                      <select class="form-control"
+                        placeholder="Select" >
+                        <option [ngValue]="null" selected>Select</option>
+                        <option  [selected]="loanType == loan.loanCode">
+                          Cheque</option>
+                          <option  [selected]="loanType == loan.loanCode">
+                            Online</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Cheque/ UTR no</label>
+                      <input type="text" class="form-control" formControlName="underlineAssestValue"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                        disabled />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Bank Name</label>
+                      <input type="text" class="form-control" formControlName="underlineAssestValue"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                        disabled />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Date of Payment</label>
+                      <input type="text" class="form-control" formControlName="underlineAssestValue"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                        disabled />
+                    </div>
+
+                  </div>
+
+                  <div class="row mt-1 mb-0">
+                    <div class="col-md-3">
+                      <label class="form-label">Amount</label>
+                      <input type="text" class="form-control" formControlName="underlineAssestValue"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                         />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Remark</label>
+                      <input type="text" class="form-control" formControlName="underlineAssestValue"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                         />
+                    </div>
+                  </div>
+                
+                  <br />
+                </div>
+              </div>
+
+                </fieldset>
+
                 <div class="row mt-30">
                   <div class="col-12">
                     <div class="card">
                       <div class="mb-0 row">
                         <div class="col-md-6">
-                          <h3 class="font-14 text-purple font-bold">Approver Details</h3>
+                          <h3 class="font-14 text-purple font-bold">Approval Details</h3>
 
                         </div>
                         <div class="col-md-6 ">
@@ -202,22 +308,21 @@
                 <ng-container class="float-right">
                  
                   <div class="row float-right" style="margin: 10px">
-                    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                      tooltip="Save">
-                      <b> <i class="fa fa-check-square-o
-                       
-                        " aria-hidden="true"></i></b>Approved</button>&nbsp;
-                   
+                    <button type="submit" tooltip="Save"
+                        class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left ml-10"
+                        (click)="reset()" >
+                        <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
+                                      
                     <button type="button" tooltip="Reset"
-                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="reset()">
-                      <b><i class="fa  fa-reply 
-                        "></i></b>Send Back</button>&nbsp;
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                        (click)="reset()" >
+                        <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>&nbsp;
 
                     <!-- *ngIf="isVisiblee" -->
-                    <button type="button" tooltip="Cancel"
+                    <!-- <button type="button" tooltip="Cancel"
                       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
                       [routerLink]="['/loan/application']">
-                      <b> <i class="fa fa-times-circle" aria-hidden="true"></i></b>Close</button>
+                      <b> <i class="fa fa-times-circle" aria-hidden="true"></i></b>Close</button> -->
 
                   </div>
                 </ng-container>
