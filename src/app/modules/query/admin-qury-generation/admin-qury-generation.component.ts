@@ -8,6 +8,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
+import Swal from 'sweetalert2/src/sweetalert2.js'
 
 @Component({
   selector: 'app-admin-qury-generation',
@@ -28,7 +29,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   getByIdData: any;
   addQueryGenerationData: any;
   updateQueryGenerationData: any;
-  queryGenerationEmpId:number = 0;
+  queryGenerationEmpId:number=0;
 
   documentIndex: any;
   selectedDoc: any;
@@ -64,6 +65,15 @@ export class AdminQuryGenerationComponent implements OnInit {
   fileName:any;
   editQueryTypeMasterId: any = '';
   hideEditTime:boolean= true;
+  ListOfDocuments: any;
+  documents: any;
+// ...........for single query btns.........................................
+  isPrevious:boolean=false;
+  isSaveDraftNext:boolean=false;
+  isSaveNext:boolean=false;
+  isnext:boolean=false;
+  getQueAnstemplistByIdData: any;
+  descriptionData: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
@@ -91,6 +101,8 @@ export class AdminQuryGenerationComponent implements OnInit {
   ngOnInit(): void {
     this.getModuleName();
     this.getAllQueryListSummary();
+    this.getQueAnstemplistById(this.queryGenerationEmpId);
+
 
   }
 
@@ -149,8 +161,7 @@ getById(queryGenerationEmpId) { //used for the edit
     this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
     this.queryGenerationForm.controls['priority'].setValue(this.getByIdData.priority);
     this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(this.getByIdData.subQueTypeMasterId);
-    this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
-    this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
+
   })
 }
 querySubQueryTypeQA(applicationModuleId)  //for all dropdown
@@ -182,11 +193,17 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
       if (element.queryTypeMasterId == parseInt(value)) {
         this.subQueryData = element.listSubQueryTypeData;
         this.priorityData = element.listPriority;
+        console.log("priorityData",this.priorityData);
+        this.queryGenerationForm.controls['priority'].setValue(this.priorityData);
         if (element.subQuery == false) {
           this.listQAData = element.listQA; // if subquery is false then
         } else {
           this.listQAData = element.listSubQA; // if subquery is true then
         }
+        // if(element.subQuery == true){
+        //   this.listQAData = element.listSubQueryTypeData.listSubQA[0];
+        //   console.log("listQAData",this.listQAData)
+        // }
         if (this.editflag) {
           this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
           // console.log("@@@@@@@@@@@@@",this.getByIdData.queryTypeMasterId)
@@ -223,7 +240,7 @@ addQueryGeneration(){ //post api for saving data
     // console.log("Without Doc**********",queryGenerationEmployeeData)
 
       this.getAllQueryListSummary();
-      this.alertService.sweetalertMasterSuccess('Query Generation Employee Details saved Successfully.', '' );
+      this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
 
       this.reset();
     })
@@ -239,7 +256,8 @@ updateQueryGeneration() //put api for update data
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-  this.queryGenerationForm.controls['status'].setValue('Save');
+  // this.queryGenerationForm.controls['status'].setValue('Save');
+
 
   let data = []
   data.push(this.queryGenerationForm.value)
@@ -254,7 +272,7 @@ updateQueryGeneration() //put api for update data
     console.log("Without Doc**********",queryGenerationEmployeeData)
 
       this.getAllQueryListSummary();
-      this.alertService.sweetalertMasterSuccess('Query Generation Employee Details updated Successfully.', '' );
+      this.alertService.sweetalertMasterSuccess('Query Updated Successfully', '' );
 
       this.editflag =false;
       this.reset();
@@ -294,7 +312,7 @@ addQuerywithDocs() //not yet used
         this.addQueryGenerationData = res.data.results;
         // console.log(JSON.stringify(this.addQueryGenerationData));
 
-        this.alertService.sweetalertMasterSuccess('Query Generation Employee Details saved Successfully.', '' );
+        this.alertService.sweetalertMasterSuccess('Query Generated Successfully', '' );
         this.getAllQueryListSummary();
         this.reset();
       })
@@ -305,7 +323,8 @@ updateQuerywithDoc()
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-  this.queryGenerationForm.controls['status'].setValue('Save');
+  // this.queryGenerationForm.controls['status'].setValue('Save');
+
 
   let data = []
   data.push(this.queryGenerationForm.value)
@@ -328,7 +347,7 @@ updateQuerywithDoc()
       {
         this.addQueryGenerationData = res.data.results;
         console.log("update with documents",this.addQueryGenerationData);
-        this.alertService.sweetalertMasterSuccess('Query Generation Employee Details updated Successfully.', '' );
+        this.alertService.sweetalertMasterSuccess('Query Updated Successfully', '' );
         this.getAllQueryListSummary();
         this.reset();
       })
@@ -341,6 +360,29 @@ getEmpMasterDetails(employeeMasterIdData)// temp id is used
       this.perticularEmpDetails = res.data.results[0][0];
     })
 }
+
+getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list by QueryGenerationEmpId
+                                        //for Query Iteration reply screen dropdown.
+{
+  this.queryService.getQueAnstemplistById(this.queryGenerationEmpId).subscribe(res =>
+    {
+      this.getQueAnstemplistByIdData = res.data.results;
+    })
+}
+answerTempChange(value)
+{
+  console.log("this.getQueAnstemplistByIdData: "+ JSON.stringify(this.getQueAnstemplistByIdData))
+
+    this.getQueAnstemplistByIdData.forEach(element => {
+      if(element.queAnsMasterId == value)
+    {
+         this.descriptionData = element.answerDescription;
+         this.queryGenerationForm.controls['queryDescription'].setValue(this.descriptionData);
+    }
+    // this.descriptionData = element.answerDescription;
+
+  });
+}
 editQuery(queryGenerationSummary) {
   this.querySubQueryTypeQAData = null
   this.listQAData = []
@@ -348,7 +390,7 @@ editQuery(queryGenerationSummary) {
   this.queryGenerationForm.enable();
   this.queryGenerationForm.patchValue(queryGenerationSummary);
   this.isUpdate = true;
-  this.isSave = false;
+  this.isSave = true;
   this.isReset = false;
   this.isCancle = true;
   this.getById(queryGenerationSummary.queryGenerationEmpId);
@@ -382,16 +424,36 @@ getDeleteById(queryGenerationEmpId) // delete the record from summary
 {
   this.queryService.getDeleteById(queryGenerationEmpId.queryGenerationEmpId).subscribe(res =>
     {
-      this.alertService.sweetalertMasterSuccess('Query Generation Employee Details Deleted Successfully.', '' );
-
+      this.alertService.sweetalertMasterSuccess('Query Deleted Successfully', '' );
       this.getAllQueryListSummary();
     },error => {
       if(error.error.status.code == '4001'){
-        this.alertService.sweetalertWarning( 'You can not delete this query because the query status is Closed.' );
+        this.alertService.sweetalertWarning( 'Query With Closed Status cant be deleted' );
 
       }
     });
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }
+
+    ).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
 }
+
 
 reset(){
   this.queryGenerationForm.enable();
@@ -416,23 +478,6 @@ this.isCancle = false;
 this.hideEditTime = true;
 }
 // ........................upload Document..............................................................
-
-  // Previous Doc Viewer
-  public previousDocViewer() { //not yet used
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  // Next Doc Viewer
-public nextDocViewer() { //not yet used
-  this.urlIndex = this.urlIndex + 1;
-  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.urlArray[this.urlIndex].blobURI
-  );
-}
-
 public UploadModal(template: TemplateRef<any>) {
   this.modalRef = this.modalService.show(
     template,
@@ -465,32 +510,35 @@ public removeSelectedLicMasterDocument(index: number, docType: string) {
 }
 
 public docViewer(template1: TemplateRef<any>,index: any) {
-  // console.log('---in doc viewer--');
-  // this.urlIndex = 0;
-  // console.log('listDoc::', this.listDoc);
-  // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-  //   this.listDoc[this.urlIndex].blobURI
-  // );
+ this.ListOfDocuments = document;
+ this.urlIndex = 0;
+  //  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+  //    document.documents[this.urlIndex].queryBlobURI
+  //  );   working half
 
-  // console.log('urlSafe::', this.urlSafe);
-  // this.modalRef = this.modalService.show(
-  //   template1,
-  //   Object.assign({}, { class: 'gray modal-xl' })
-  // );
-  console.log('---in doc viewer--');
-  this.urlIndex = index;
+ //});
 
-  console.log('urlArray::', this.urlArray);
+ console.log('urlSafe::', this.urlSafe);
+ this.modalRef = this.modalService.show(
+   template1,
+   Object.assign({}, { class: 'gray modal-xl' })
+ );
+}
+// Previous Doc Viewer
+public previousDocViewer() { //not yet used
+  this.urlIndex = this.urlIndex - 1;
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.urlArray[this.urlIndex].blobURI
-  );
-  console.log('urlSafe::', this.urlSafe);
-  this.modalRef = this.modalService.show(
-    template1,
-    Object.assign({}, { class: 'gray modal-xl' })
+    this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
   );
 }
 
+// Next Doc Viewer
+public nextDocViewer() { //not yet used
+this.urlIndex = this.urlIndex + 1;
+this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+ this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
+);
+}
 
 }
 

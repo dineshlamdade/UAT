@@ -52,6 +52,7 @@
                           type="text"
                           class="form-control"
                           formControlName="queryTypedescription"
+                          [ngClass]="{'is-invalid' : querytypeForm.get('queryTypedescription').status == 'INVALID'}"
                           placeholder="Enter Description"
                         />
                       </div>
@@ -76,7 +77,7 @@
                               value="0"
                               (change)="radioButtonChanged($event)"
                               class="custom-control-input"
-                              name="query" [checked]="ishidden"/>
+                              name="query" [checked]="ishidden || true"/>
                             <span class="custom-control-label">No</span>
                           </label>
                         </div>
@@ -124,6 +125,7 @@
                           class="form-control"
                           placeholder="Enter Description"
                           formControlName="subqueryTypedescription"
+                          [ngClass]="{'is-invalid' : querytypeForm.get('subqueryTypedescription').status == 'INVALID'}"
 
                         >
                       </div>
@@ -198,7 +200,7 @@
                         <p-table  [value]="querySubQuerySummary">
                             <ng-template pTemplate="header">
                               <tr class="textcenter">
-                                <th class="wd-10">Sr.No.</th>
+                                <th class="wd-10">Sr. No.</th>
                                 <th class="wd-20">
                                   <div class="p-d-flex p-jc-between p-ai-center">
                                     Module Name
@@ -338,7 +340,7 @@
                                 <p-table [value]="priorityData" >
                                   <ng-template pTemplate="header">
                                     <tr class="textcenter">
-                                      <th class="wd-14">Sr.No.</th>
+                                      <th class="wd-14">Sr. No.</th>
                                       <th class="wd-15">
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                           Priority Type
@@ -451,7 +453,7 @@
                                   <thead class="thead-dark">
                                     <tr class="textcenter">
                                       <th scope="col" class="wd-14">
-                                       Sr.No
+                                       Sr. No.
                                       </th>
                                       <th scope="col" class="wd-14">
                                         Resolution Time (Hours)
@@ -592,7 +594,7 @@
                          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
                               <ng-template pTemplate="header">
                                 <tr class="textcenter">
-                                  <th class="wd-10">Sr.No.</th>
+                                  <th class="wd-10">Sr. No.</th>
                                   <th class="wd-15">
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                       Module Name

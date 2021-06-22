@@ -22,7 +22,6 @@ import {TreeModule} from 'primeng/tree';
 import { QueryCOmmunicationComponent } from './query-communication/query-communication.component';
 import {MultiSelectModule} from 'primeng/multiselect';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-
 // import { ChartComponent } from "ng-apexcharts";
 @NgModule({
   declarations:
@@ -50,6 +49,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     NgMultiSelectDropDownModule.forRoot(),
     MultiSelectModule,
     TooltipModule,
+
 
     // ChartComponent
   ],

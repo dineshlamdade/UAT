@@ -78,7 +78,7 @@ export class QueryComponent implements OnInit {
       this.queryService.addQuery(this.queryForm.value).subscribe(res =>
         {
 
-      this.alertService.sweetalertMasterSuccess('Q&A Template Added Successfully.', '' );
+      this.alertService.sweetalertMasterSuccess('Q&A Template Added Successfully', '' );
 
           this.queryForm.controls['active'].setValue(true);
           this.getAllData();
@@ -104,7 +104,7 @@ export class QueryComponent implements OnInit {
   {
     this.queryService.updateQuery(this.queryForm.value).subscribe(res =>
       {
-    this.alertService.sweetalertMasterSuccess('Q&A Template Updated Successfully.', '' );
+    this.alertService.sweetalertMasterSuccess('Q&A Template Updated Successfully', '' );
 
     this.getAllData();
       }

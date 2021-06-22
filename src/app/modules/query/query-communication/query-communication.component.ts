@@ -77,10 +77,12 @@ queryCommunicationForm: FormGroup;
   approverEmpRoleName: any;
   rating: any;
   ListOfDocuments: any;
+
   ratingName: any ='';
   descriptionData: any;
   queryNumber: any;
   status: any;
+  addressedToEmpId: number;
   // hideClosebtn :boolean = true;
 
 constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,
@@ -108,7 +110,7 @@ constructor(private modalService: BsModalService ,public formBuilder : FormBuild
 
          "queryIterationId":new FormControl(0),
          "queryGenerationEmpId":new FormControl(0),
-         "addressedToEmpId":new FormControl(0),
+         "addressedToEmpId":new FormControl(0,[Validators.required]),
          "queAnsMasterId":new FormControl(null,[Validators.required]),
          "queryDescription":new FormControl(''),
          "queryRootCause":new FormControl(null),
@@ -310,13 +312,14 @@ getRootCasuelist()
 
 addQueryIteration(value){ // post api for save data
 
-
     this.queryCommunicationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryCommunicationForm.controls['queAnsMasterId'].value));
     this.queryCommunicationForm.controls['queryGenerationEmpId'].setValue(parseInt(this.queryGenerationEmpId));
     this.queryCommunicationForm.controls['queryIterationId'].setValue(0);
     this.queryCommunicationForm.controls['queryRootCause'].setValue(null);
     this.queryCommunicationForm.controls['action'].setValue('reply');
+    this.queryCommunicationForm.controls['addressedToEmpId'].setValue(this.addressedToEmpId);
 
+    console.log("addressedToEmpId",this.addressedToEmpId)//undefined
     if(value == 'Save'){
       this.queryCommunicationForm.controls['status'].setValue('Save');
      }else{
@@ -334,7 +337,7 @@ addQueryIteration(value){ // post api for save data
     });
     this.queryService.addQueryIteration(formData).subscribe(res =>
     {
-      this.alertService.sweetalertMasterSuccess('Query Iteration Replay Saved Successfully.', '' );
+      this.alertService.sweetalertMasterSuccess('Query Replied Successfully', '' );
 
     })
     this.reset();
@@ -368,7 +371,7 @@ addForwordScreen(value)
 
   this.queryService.addQueryIteration(formData).subscribe(res =>
   {
-    this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Saved Successfully.', '' );
+    this.alertService.sweetalertMasterSuccess('Query Forwarded Successfully', '' );
 
   })
   this.reset();
@@ -398,7 +401,7 @@ closeScreen()
   });
   this.queryService.addQueryIteration(formData).subscribe(res =>
   {
-    this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Closed Successfully.', '' );
+    this.alertService.sweetalertMasterSuccess('Query Closed Successfully', '' );
     this.status = 'Closed';
 
 
@@ -430,7 +433,7 @@ skipScreen()
   });
   this.queryService.addQueryIteration(formData).subscribe(res =>
   {
-    this.alertService.sweetalertMasterSuccess('Query Iteration Employee Details Closed Successfully.', '' );
+    this.alertService.sweetalertMasterSuccess('Query Skipped Successfully', '' );
     this.status = 'Closed';
 
   })
@@ -491,6 +494,7 @@ roleChange(value)
     {
       this.approverEmpRoleName = element.approverEmpRole;
       this.queryCommunicationForm.controls['addressedToEmpId'].setValue(value);
+      // console.log("addressedTodropdownData",this.addressedTodropdownData)
     }
   });
 }

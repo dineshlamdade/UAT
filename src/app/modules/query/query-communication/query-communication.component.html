@@ -34,7 +34,7 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                          {{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}
+                                                                          {{perticularEmpDetails.joiningDate | date:'dd-MMM-yyyy hh:mm a'}}
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-6">
@@ -56,7 +56,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row mt-10" >
+                                                                <div class="row mt-10 mt-0">
                                                                     <div class="col-md-6">
                                                                         <label
                                                                             class="form-label mt-1 mb-0">Grade</label>
@@ -77,7 +77,7 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label
-                                                                            class="form-label mt-1 mb-0">Status</label>
+                                                                            class="form-label mt-1 mb-0">Emp. Status</label>
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                         <label class="font-12 text-ellipsis mt-1 mb-0">
@@ -119,15 +119,11 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">
-                                                                                <i class="fa fa-calendar"></i>
-                                                                            </span>
-                                                                        </div>
+
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
                                                                             class="form-control" placeholder="Date"
-                                                                            bsDatepicker disabled value="{{getAllQueryGenerationData.submissionDate| date:'dd-MMM-yyyy'}}">
+                                                                            bsDatepicker disabled value="{{getAllQueryGenerationData.submissionDate | date:'dd-MMM-yyyy hh:mm a'}}">
                                                                     </div>
                                                                 </div>
 
@@ -181,15 +177,11 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">
-                                                                                <i class="fa fa-calendar"></i>
-                                                                            </span>
-                                                                        </div>
+
                                                                         <input data-provide="datepicker"
                                                                             data-date-autoclose="true"
                                                                             class="form-control" placeholder="Date"
-                                                                            bsDatepicker  disabled value="{{getAllQueryGenerationData.updatedDateTime | date:'dd-MMM-yyyy'}}"/>
+                                                                            bsDatepicker  disabled value="{{getAllQueryGenerationData.updatedDateTime | date:'dd-MMM-yyyy hh:mm a'}}"/>
                                                                     </div>
                                                                 </div>
 
@@ -215,16 +207,16 @@
                                                                 <div class="tabset">
                                                                     <input type="radio" name="tabset" id="Communication"
                                                                         aria-controls="Communication" checked="">
-                                                                    <label for="Communication">Communication</label>
+                                                                    <label class="backcolor" for="Communication">Communication</label>
                                                                     <input type="radio" name="tabset" id="Attachment"
                                                                         ria-controls="Attachment">
-                                                                    <label for="Attachment">Attachment</label>
+                                                                    <label class="backcolor" for="Attachment" *ngIf="documents > 0">Attachment</label>
                                                                     <input type="radio" name="tabset" id="Status"
                                                                         aria-controls="Status">
-                                                                    <label for="Status">Status Log</label>
+                                                                    <label class="backcolor" for="Status">Status Log</label>
                                                                     <input type="radio" name="tabset" id="Contact"
                                                                         aria-controls="Contact">
-                                                                    <label for="Contact">Contact</label>
+                                                                    <label class="backcolor" for="Contact">Contact</label>
                                                                     <div class="tab-panels">
                                                                         <section id="Communication" class="tab-panel">
                                                                             <div class="" id="com" [hidden]="isShowDiv">
@@ -254,8 +246,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="card2 mt-25" *ngFor="let GetIterationdetailsbyQueryIDData of attachementData ">
-                                                                                  <!-- | orderBy: 'refNumber': 'desc'
-                                                                                   -->
+
                                                                                     <div class="row">
                                                                                         <div class="col-md-2">
                                                                                             <div _ngcontent-kmp-c585=""
@@ -264,8 +255,8 @@
                                                                                                 <span class="Label_badge" style="text-align: center;"   (click)="docViewer(template1,GetIterationdetailsbyQueryIDData)">{{GetIterationdetailsbyQueryIDData.numberOfDocuments}}</span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="col-md-10">
-                                                                                            <textarea
+                                                                                        <div class="col-md-10 input-sizer stacked" >
+                                                                                            <textarea oninput="this.parentNode.dataset.value = this.value" rows="4"
                                                                                                 class="form-control"
                                                                                                 disabled>{{GetIterationdetailsbyQueryIDData.queryDescription}}</textarea>
                                                                                         </div>
@@ -273,36 +264,29 @@
                                                                                     <div class="row mt-10">
                                                                                         <div class="col-md-2">
                                                                                             <span
-                                                                                                class="tag tag-orange">Ref {{GetIterationdetailsbyQueryIDData.refNumber}}</span>
+                                                                                                class="tag tag-purpul">Ref {{GetIterationdetailsbyQueryIDData.refNumber}}</span>
                                                                                         </div>
                                                                                         <div class="col-md-4">
                                                                                             <span
-                                                                                                class="tag tag-primary">Updated By : {{GetIterationdetailsbyQueryIDData.refUpdatedByName}}</span>
+                                                                                                class="tag tag-success">Updated By : {{GetIterationdetailsbyQueryIDData.refUpdatedByName}}</span>
                                                                                         </div>
-                                                                                        <div class="col-md-4">
+                                                                                        <div class="col-md-3">
                                                                                             <div class="form-group">
                                                                                                 <div
                                                                                                     class="input-group">
-                                                                                                    <div
-                                                                                                        class="input-group-prepend">
-                                                                                                        <span
-                                                                                                            class="input-group-text">
-                                                                                                            <i  class="fa fa-calendar"></i>
-                                                                                                        </span>
-                                                                                                    </div>
+
                                                                                                     <input
                                                                                                         data-provide="datepicker"
                                                                                                         data-date-autoclose="true"
                                                                                                         class="form-control"
                                                                                                         placeholder="Date"
-                                                                                                        bsDatepicker disabled value="{{GetIterationdetailsbyQueryIDData.updatedDateTime | date:'dd-MMM-yyyy'}}">
+                                                                                                        bsDatepicker disabled value="{{GetIterationdetailsbyQueryIDData.updatedDateTime | date:'dd-MMM-yyyy hh:mm a'}}">
                                                                                                 </div>
                                                                                             </div>
 
                                                                                         </div>
-                                                                                        <div class="col-md-2">
-                                                                                            <span
-                                                                                                class="tag tag-success">{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                        <div class="col-md-3">
+                                                                                            <span  class="tag tag-gray">Status :&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -325,7 +309,6 @@
                                                                                       </div>
                                                                                       <div class="col-md-10">
                                                                                         <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
-                                                                                        <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
                                                                                       </div>
                                                                                       <div class="col-md-1">
                                                                                         <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
@@ -336,7 +319,6 @@
                                                                                     </div>
                                                                                   </div>
                                                                                   <div class="modal-footer">
-                                                                                    <!-- <button type="button" class="btn btn-primary">Save</button>  -->
                                                                                     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
                                                                                       Ok
                                                                                     </button>
@@ -348,8 +330,7 @@
                                                                                     <div class="row">
                                                                                         <div class="col-md-3">
                                                                                             <label
-                                                                                                class="form-label">Ref.
-                                                                                                No.</label>
+                                                                                                class="form-label">Ref. No.</label>
                                                                                             <input class="form-control"
                                                                                                 disabled>
                                                                                         </div>
@@ -376,14 +357,7 @@
                                                                                             <div class="form-group">
                                                                                                 <div
                                                                                                     class="input-group">
-                                                                                                    <div
-                                                                                                        class="input-group-prepend">
-                                                                                                        <span
-                                                                                                            class="input-group-text">
-                                                                                                            <i
-                                                                                                                class="fa fa-calendar"></i>
-                                                                                                        </span>
-                                                                                                    </div>
+
                                                                                                     <input
                                                                                                         data-provide="datepicker"
                                                                                                         data-date-autoclose="true"
@@ -596,7 +570,7 @@
                                                                                                 <button type="button"
                                                                                                     tooltip="Save"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                                                                                                    [disabled]="!queryCommunicationForm.valid" [ngClass]="{'disabled-btn-bg-green' : queryCommunicationForm.invalid,'btn-bg-green': !queryCommunicationForm.invalid}"
+
                                                                                                    (click)="addQueryIteration('Save');toggleReplyDiv()"><b><i
                                                                                                     class="fa fa-floppy-o"></i></b>
                                                                                                     Save </button>
@@ -623,8 +597,7 @@
                                                                                     <div class="row" *ngIf="GetIterationdetailsbyQueryIDData">
                                                                                         <div class="col-md-3">
                                                                                             <label
-                                                                                                class="form-label">Ref.
-                                                                                                No.</label>
+                                                                                                class="form-label">Ref. No.</label>
                                                                                             <input class="form-control"
                                                                                             disabled>
                                                                                         </div>
@@ -632,7 +605,9 @@
                                                                                             <label
                                                                                                 class="form-label">Forward
                                                                                                 To</label>
-                                                                                                <select  class="form-control custom-select" (change)="roleChange($event.target.value)" >
+                                                                                                <select  class="form-control custom-select" (change)="roleChange($event.target.value)" formControlName="addressedToEmpId"
+                                                                                                [ngClass]="{'is-invalid':queryCommunicationForm.get('addressedToEmpId').status == 'INVALID'}">
+                                                                                                 >
                                                                                                   <option [ngValue]="null" selected >Select</option>
                                                                                                   <option value="{{module.approverId}}" *ngFor="let module of addressedTodropdownData">
                                                                                                     {{module.approverName}}</option>
@@ -697,7 +672,9 @@
                                                                                             <label
                                                                                                 class="form-label">Description</label>
 
-                                                                                            <ckeditor formControlName="queryDescription">
+                                                                                            <ckeditor formControlName="queryDescription"
+                                                                                            [ngClass]="{'is-invalid':queryCommunicationForm.get('queryDescription').status == 'INVALID'}" >
+                                                                                            >
                                                                                             </ckeditor>
                                                                                         </div>
                                                                                     </div>
@@ -708,13 +685,17 @@
                                                                                                 <button type="button"
                                                                                                     tooltip=" Save Draft"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addForwordScreen('Draft')"
-                                                                                                   ><b><i
+                                                                                                    [disabled]="!queryCommunicationForm.valid" [ngClass]="{'disabled-btn-bg-green' : queryCommunicationForm.invalid,'btn-bg-green': !queryCommunicationForm.invalid}"
+
+                                                                                                    ><b><i
                                                                                                       class="fa fa-floppy-o"></i></b>
                                                                                                     Save Draft </button>
                                                                                                 <button type="button"
                                                                                                     tooltip="Save"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                                                                                                    (click)="addForwordScreen('Save');toggleforwardDiv()" ><b><i
+                                                                                                    (click)="addForwordScreen('Save');toggleforwardDiv()"
+                                                                                                    [disabled]="!queryCommunicationForm.valid" [ngClass]="{'disabled-btn-bg-green' : queryCommunicationForm.invalid,'btn-bg-green': !queryCommunicationForm.invalid}"
+                                                                                                    ><b><i
                                                                                                       class="fa fa-floppy-o"></i></b>
                                                                                                     Save </button>
                                                                                                 <!-- <button type="button"
@@ -730,7 +711,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </section>
-                                                                        <section id="Attachment" class="tab-panel">
+                                                                        <section id="Attachment" class="tab-panel" *ngIf="documents > 0">
                                                                             <div class="row">
                                                                                 <div class="col-md-12">
                                                                                     <fieldset>
@@ -754,7 +735,7 @@
                                                                                                                     class="wd-15">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center">
-                                                                                                                        Ref.No
+                                                                                                                        Ref. No.
                                                                                                                         <div
                                                                                                                             class="Sort_Filter_Position">
                                                                                                                             <p-sortIcon pSortableColumn="refNumber"
@@ -789,7 +770,7 @@
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </th>
-                                                                                                                <th rowspan="2"
+                                                                                                                <!-- <th rowspan="2"
                                                                                                                     class="wd-24">
                                                                                                                     <div
                                                                                                                         class="p-d-flex justify-content-center p-ai-center">
@@ -806,12 +787,12 @@
                                                                                                                             </p-columnFilter>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </th>
+                                                                                                                </th> -->
                                                                                                                 <th colspan="2"
                                                                                                                     class="wd-15">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center">
-                                                                                                                        Created
+                                                                                                                        Created/Updated
 
                                                                                                                     </div>
                                                                                                                 </th>
@@ -870,18 +851,20 @@
                                                                                                                 </td>
                                                                                                                 <td >
                                                                                                                     <label *ngIf="documents"
-                                                                                                                        class="form-lable mb-0 ">{{documents.fileName}}</label>
+                                                                                                                        class="form-lable mb-0 ">{{documents.fileName}}
+                                                                                                                        <span class="Label_badge" style="text-align: center;"   (click)="docViewer(template1,documents)">
+                                                                                                                        {{documents}}</span></label>
                                                                                                                 </td>
 
-                                                                                                                <td> <label
+                                                                                                                <!-- <td> <label
                                                                                                                         class="form-lable mb-0 ">{{documentlist.queryDescription}}</label>
-
-                                                                                                                <td > <label  *ngIf="documents"
-                                                                                                                        class="form-lable mb-0 ">{{documents.createdBy}}</label>
+                                                                                                                </td> -->
+                                                                                                                <td > <label
+                                                                                                                        class="form-lable mb-0 ">{{documents.refUpdatedByName}}</label>
 
                                                                                                                 </td>
-                                                                                                                <td  > <label *ngIf="documents"
-                                                                                                                        class="form-lable mb-0 ">{{documents.createdDateTime | date :"dd-MMM-yyyy" }}</label>
+                                                                                                                <td  > <label
+                                                                                                                        class="form-lable mb-0 ">{{documents.updatedDateTime | date :"dd-MMM-yyyy" }}</label>
                                                                                                                 </td>
 
 
@@ -930,7 +913,7 @@
                                                                                                                     class="wd-15">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center">
-                                                                                                                        Ref.No
+                                                                                                                        Ref. No.
                                                                                                                         <div
                                                                                                                             class="Sort_Filter_Position">
                                                                                                                             <p-sortIcon
@@ -951,7 +934,7 @@
                                                                                                                     class="wd-15">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center">
-                                                                                                                        Created/Upload
+                                                                                                                        Created/Updated
 
                                                                                                                     </div>
                                                                                                                 </th>
@@ -1030,11 +1013,11 @@
                                                                                                                         class="form-lable mb-0 ">{{status.refNumber}}</label>
                                                                                                                 </td>
                                                                                                                 <td> <label
-                                                                                                                        class="form-lable mb-0 ">{{status.createdBy}}</label>
+                                                                                                                        class="form-lable mb-0 ">{{status.refUpdatedByName}}</label>
 
                                                                                                                 </td>
                                                                                                                 <td> <label
-                                                                                                                        class="form-lable mb-0 ">{{status.createdDateTime |date:"dd-MMM-YYYY"}}</label>
+                                                                                                                        class="form-lable mb-0 ">{{status.updatedDateTime | date:'dd-MMM-yyyy hh:mm a'}}</label>
                                                                                                                 </td>
                                                                                                                 <td> <label
                                                                                                                         class="form-lable mb-0 ">{{status.status}}</label>

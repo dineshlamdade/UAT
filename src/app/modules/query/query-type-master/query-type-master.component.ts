@@ -18,7 +18,7 @@ export class QueryTypeMasterComponent implements OnInit {
   p: number = 1;
   isVisible:boolean=false;
   isShown: boolean= true;
-  ishidden:boolean=false;
+  ishidden:boolean=true;
   priorityRequiredFlag:boolean=false;
   public addSubQueryList: FormArray;
   hideRemarkDiv1:boolean = false;
@@ -33,7 +33,7 @@ export class QueryTypeMasterComponent implements OnInit {
   selectedItems = [];
   dropdownSettings = {};
   allWorkflowMasterdata: any;
-  subquerview:boolean=true;
+  subquerview:boolean=false;
   isVisiblee:boolean=false;
 
   public rows: Array<{applicationModuleName: string,
@@ -80,7 +80,7 @@ export class QueryTypeMasterComponent implements OnInit {
         "queryTypeMasterId": new FormControl(0),
         "applicationModuleId": new FormControl(null,[Validators.required]),
         "queryTypeCode": new FormControl(''),
-        "queryTypedescription": new FormControl(''),
+        "queryTypedescription": new FormControl('',[Validators.required]),
         "subQuery": new FormControl(0),
         "priorityRequired": new FormControl("1"),
         "replyWorkflowId": new FormControl(null),
@@ -199,12 +199,12 @@ radioButtonChanged(event){
    if(radioValue == 0){
      this.ishidden = true;
      this.subquerview = false;
-    //  this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
+     this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
 
    }else{
      this.ishidden = false;
      this.subquerview = true;
-    //  this.querytypeForm.controls['subqueryTypedescription'].setValidators([Validators.required]);
+     this.querytypeForm.controls['subqueryTypedescription'].setValidators(Validators.required);
 
    }
 }
@@ -484,7 +484,7 @@ addQueryType() // main post api to save all form data .
   {
     this.addQueryTypeData = res.data.results;
     this.getAllSummaryData();
-    this.alertService.sweetalertMasterSuccess('Query Type Added Successfully.', '' );
+    this.alertService.sweetalertMasterSuccess('Query Type Added Successfully', '' );
     this.listQueryPriorityRequestDTO=[];
     this.querySubQuerySummary = [];
     this.getPriorityData();
@@ -526,7 +526,7 @@ updateQueryType()   //update all form
   {
     this.updateQueryTypeData = res.data.results[0];
    this.getAllSummaryData();
-    this.alertService.sweetalertMasterSuccess('Query Type Updated Successfully.', '' );
+    this.alertService.sweetalertMasterSuccess('Query Type Updated Successfully', '' );
     // this.querySubQuerySummary = [];
     this.listQueryPriorityRequestDTO =[];
     // this.subQueryRequestDTO = [];
