@@ -72,7 +72,7 @@
                                                                 [showCurrentPageReport]="true"
                                                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                                                 [rowsPerPageOptions]="[10,25,50,100,200]">
-                                                                
+
                                                                 <ng-template pTemplate="header">
                                                                     <tr>
                                                                         <th class="wd-5">
@@ -790,9 +790,11 @@
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
                                                                                             <label
-                                                                                                class="form-lable mb-0">{{data.payrollHeadMaster.description}}</label> &nbsp;&nbsp;&nbsp;
-                                                                                                <i class="fa fa-external-link font-16 text-blue cursor-pointer"
-                                                                                                aria-hidden="true" *ngIf="data.payrollHeadMaster.description == 'RefererBonus'"
+                                                                                                class="form-lable mb-0">{{data.payrollHeadMaster.description}}</label>
+                                                                                            &nbsp;&nbsp;&nbsp;
+                                                                                            <i class="fa fa-external-link font-16 text-blue cursor-pointer"
+                                                                                                aria-hidden="true"
+                                                                                                *ngIf="data.payrollHeadMaster.description == 'RefererBonus'"
                                                                                                 (click)="openReferalPopup(referalPopup,data)">
                                                                                             </i>
                                                                                         </td>
@@ -1178,9 +1180,10 @@
                                                                                         <td class="bg-color-light_gray">
                                                                                             <label
                                                                                                 class="form-lable mb-0">{{data.headDescription}}</label>
-                                                                                                 &nbsp;&nbsp;&nbsp;  
-                                                                                                <i class="fa fa-external-link font-16 text-blue cursor-pointer"
-                                                                                                aria-hidden="true" *ngIf="data.headDescription == 'RefererBonus'"
+                                                                                            &nbsp;&nbsp;&nbsp;
+                                                                                            <i class="fa fa-external-link font-16 text-blue cursor-pointer"
+                                                                                                aria-hidden="true"
+                                                                                                *ngIf="data.headDescription == 'RefererBonus'"
                                                                                                 (click)="openReferalPopup(referalPopup,data)">
                                                                                             </i>
                                                                                         </td>
@@ -1524,6 +1527,7 @@
                                                                 </div>
                                                             </div>
                                                             <br>
+
                                                             <div class="row mb-10">
 
                                                                 <div class="col-md-12">
@@ -1535,6 +1539,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                             <!-- Edit schedule data-->
                                                             <a tooltip="Download" style="cursor: pointer;float:right;"
                                                                 (click)="ScheduleExportAsXLSX()"
@@ -1543,6 +1548,7 @@
                                                                     aria-hidden="true">
                                                                 </i>
                                                             </a>
+
                                                             <p-table [value]="NonRecurringTransactionScheduleEMPdData"
                                                                 class="mt-10" [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
@@ -1807,8 +1813,7 @@
 
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
-                                                                            <label
-                                                                                class="form-lable mb-0">
+                                                                            <label class="form-lable mb-0">
                                                                                 {{ScheduleData.nonRecurringTransactionScheduleId}}
                                                                             </label>
                                                                             <span></span>
@@ -1832,7 +1837,8 @@
                                                                             <!-- amount -->
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{ScheduleData.processedAmount | number: '1.2-2'}}
+                                                                                class="form-lable mb-0">{{ScheduleData.processedAmount
+                                                                                | number: '1.2-2'}}
                                                                             </label>
 
                                                                         </td>
@@ -1867,7 +1873,7 @@
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <!-- <label class="form-lable mb-0"> -->
-                                                                                <!-- {{ScheduleData.isDisabledFlag}} -->
+                                                                            <!-- {{ScheduleData.isDisabledFlag}} -->
                                                                             <label
                                                                                 class="custom-control custom-checkbox checkbox-center">
                                                                                 <input type="checkbox"
@@ -1924,6 +1930,7 @@
                                                                     aria-hidden="true">
                                                                 </i>
                                                             </a>
+
                                                             <p-table [value]="AllNonRecurringTransactionScheduledData"
                                                                 class="mt-10" [paginator]="true" [rows]="10"
                                                                 [showCurrentPageReport]="true"
@@ -3129,48 +3136,87 @@
 <!-- Refere Bonus-->
 <ng-template #referalPopup>
     <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">Refere Information</h5>
+        <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Employee Referral</h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
                 aria-hidden="true">×</span></button>
     </div>
     <div class="modal-body">
-        <div class="card">
-            <div class="card-body p-0 m-0">
+        
+        <div class="section-body mt-3">
+            <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12 pl-0 pr-0">
-                        <div class="border-dark-card radius-10 p-2 mt-3">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label class="form-lable mb-0">Employee Code</label>
-                                    <select class="form-control wd-200"
-                                       (change)="getEmployeeCode($event.target.value)">
-                                        <option value="">Select</option>
-                                        <option *ngFor="let emp of employeeData">{{emp.employeeCode}}</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-lable mb-0">Employee Name</label>
-                                    <input class="form-control wd-200" value="{{refemployeeName}}" disabled>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-lable mb-0">Payroll Area</label>
-                                    <select class="form-control wd-200" (change)="getEmployeePayrollArea($event.target.value)">
-                                        <option>Select</option>
-                                        <option *ngFor="let payroll of refralPayrollListData">{{payroll.payrollAreaCode}}</option>
-                                    </select>
-                                </div>
-                                <br>
-                                <br>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form>
+                                    <!-- <div class="mb-0">
+                                        <h3 class="font-14 text-purple font-bold">
+                                            Employee Referral
+                                        </h3>&nbsp;
+
+                                    </div> -->
+                                    <fieldset>
+                                        <div class="row mb-10">
+                                            <div class="col-sm-6 col-md-3">
+                                                <label class="form-label">Emp. Code</label>
+                                                <select class="form-control" (change)="getEmployeeCode($event.target.value)">
+                                                    <option>Select</option>
+                                                    <option *ngFor="let emp of employeeData">{{emp.employeeCode}}</option>
+                                                </select>
+                                            </div>
+                                            <div class=" col-sm-6 col-md-3">
+                                                <label class="form-label">Emp. Name</label>
+                                                <input type="text" class="form-control" value="{{refemployeeName}}" disabled />
+                                            </div>
+                                            <div class="col-sm-6 col-md-3">
+                                                <label class="form-label">Payroll Area</label>
+                                                <select class="form-control" (change)="getEmployeePayrollArea($event.target.value)">
+                                                    <option>Select</option>
+                                                    <option *ngFor="let payroll of refralPayrollListData">
+                                                        {{payroll.payrollAreaCode}}</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </fieldset>
+
+
+
+                                    <!-- <div class="row mt-15 float-right">
+
+                                        <div class="float-right ">
+
+                                            <button type="submit"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                tooltip="Save"><b>
+                                                    <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
+
+                                            <button type="submit"
+                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                                tooltip="Reset"><b>
+                                                    <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+
+                                        </div>
+
+
+                                    </div> -->
+
+
+
+
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
-            &nbsp;save</button>
-    </div>
+     </div>   
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+                &nbsp;save</button>
+        </div>
 </ng-template>
