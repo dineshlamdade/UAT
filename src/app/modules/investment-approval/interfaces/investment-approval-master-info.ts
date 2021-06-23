@@ -11,6 +11,7 @@ export interface InvestmentApprovalMasterInfo {
     psid: string;
     dateOfSubmission: Date;
     proofSubmissionStatus: string;
+    lastModifiedDateTime: Date;
   };
   masterDetail: {
     masterId: number;
