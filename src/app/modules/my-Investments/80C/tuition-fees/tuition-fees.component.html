@@ -37,7 +37,7 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-tuition-fees-master *ngIf="tabIndex == 1"
+                  <app-tuition-fees-master *ngIf="tabIndex == 1" [data] =  "data"
                   [accountNo]="accountNo"> </app-tuition-fees-master>
                 </div>
                 <label class="nav" for="Master">

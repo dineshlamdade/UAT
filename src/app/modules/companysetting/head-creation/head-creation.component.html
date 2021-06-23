@@ -16,9 +16,9 @@
                     <label class="form-label">Code</label>
                     <div class="input-group">
                       <!-- (keypress)="keyPressedSpaceNotAllow($event)" -->
-                      <input type="text" [readonly]="!disabled"  onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" (change)="onChangeEvent($event); isContainsOnlySpecialCharacterDescription();"
-                      formControlName="standardName"  [maxlength]="25" class="form-control"
-                        placeholder="Enter Code"
+                      <input type="text" [readonly]="!disabled" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)"
+                        (change)="onChangeEvent($event); isContainsOnlySpecialCharacterDescription();"
+                        formControlName="standardName" [maxlength]="25" class="form-control" placeholder="Enter Code"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('standardName').status == 'INVALID' || codeInvalid == true}">
                     </div>
                   </div>
@@ -26,7 +26,8 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Description</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="description" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" class="form-control"
+                      <input type="text" [readonly]="!disabled" formControlName="description"
+                        onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" class="form-control"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('description').status == 'INVALID'}"
                         placeholder="Enter Description">
                     </div>
@@ -35,7 +36,8 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Short Name</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="shortName" onkeypress="return /[0-9a-zA-Z_- ]/i.test(event.key)" class="form-control" [maxlength]="25"
+                      <input type="text" [readonly]="!disabled" formControlName="shortName"
+                        onkeypress="return /[0-9a-zA-Z_- ]/i.test(event.key)" class="form-control" [maxlength]="25"
                         placeholder="Enter Short Name"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('shortName').status == 'INVALID'}">
                     </div>
@@ -44,7 +46,8 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Display Name</label>
                     <div class="input-group">
-                      <input type="text" formControlName="displayName" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)"  [maxlength]="50" class="form-control"
+                      <input type="text" formControlName="displayName"
+                        onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" class="form-control"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('displayName').status == 'INVALID'}"
                         placeholder="Enter Display Name">
                     </div>
@@ -160,11 +163,18 @@
                     <!-- <p-table [value]="HeadCreationList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                       [rowsPerPageOptions]="[10,25,50,100,200]"> -->
-
+                    <!--
                       <p-table dt1  [value]="HeadCreationList" [paginator]="true" [rows]="10" styleClass="p-datatable-customers p-datatable-gridlines"
                       [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{HeadCreationList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                    <p-table [value]="HeadCreationList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      [pageLinks]="5" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                       totalRecords={{HeadCreationList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
+
 
                       <ng-template pTemplate="header">
                         <tr>
