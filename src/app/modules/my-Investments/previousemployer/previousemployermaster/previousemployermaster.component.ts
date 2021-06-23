@@ -355,24 +355,36 @@ export class PreviousemployermasterComponent implements OnInit {
   //* * ---- */
   //------------- On Master Edit functionality --------------------
   editMaster(i: number) {
-    //this.scrollToTop();
+    this.scrollToTop();
     let abc;
     abc = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
     console.log('abc::', abc);
 
-    console.log("dateOfJoining::", this.masterSummaryGridData[i].dateOfJoining)
+    //console.log("dateOfJoining::", this.masterSummaryGridData[i].dateOfJoining)
 
-    this.previousEmployerDetailsform.patchValue(this.masterSummaryGridData[i]);
-    console.log(this.previousEmployerDetailsform.getRawValue());
+    
+    this.previousEmployerDetailsform.patchValue(this.masterGridData[i]);
+    console.log(":::::",this.previousEmployerDetailsform.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
-    this.previousEmployerDetailsform
-      .get('proofSubmissionId')
-      .setValue(this.masterSummaryGridData[i].proofSubmissionId);
+    this.previousEmployerDetailsform.get('proofSubmissionId')
+      .setValue(this.masterGridData[i].proofSubmissionId);
     this.isClear = true;
-    this.masterfilesArray = this.masterSummaryGridData[i].documentInformationList;
+    this.masterfilesArray = this.masterGridData[i].documentInformationList;
   }
  
+
+    // scrollToTop Fuctionality
+    public scrollToTop() {
+      (function smoothscroll() {
+        var currentScroll =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentScroll > 0) {
+          window.requestAnimationFrame(smoothscroll);
+          window.scrollTo(0, currentScroll - currentScroll / 8);
+        }
+      })();
+    }
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.previousEmployerDetailsform.reset();
