@@ -10,6 +10,8 @@ export class TuitionFeesComponent implements OnInit {
   public tabIndex = 0;
   public windowScrolled: boolean;
   public data: any;
+  public selecteddata: any;
+  public accountNo: any;
 
   constructor() {}
 
@@ -19,6 +21,10 @@ export class TuitionFeesComponent implements OnInit {
     this.tabIndex = event.tabIndex;
     this.data = event;
     console.log('data::', this.data);
+  }
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.accountNo = event;
   }
 
   changeTabIndex(index: number) {
