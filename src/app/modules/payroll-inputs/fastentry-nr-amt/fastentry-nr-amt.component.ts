@@ -45,6 +45,8 @@ export class FastentryNRAmtComponent implements OnInit {
   employeeMasterId: any;
   employeeCode: any;
   tempTableData: any = [];
+  selectedEmployeeData: any = [];
+  payrollEmployeeData: any;
 
   constructor(private datepipe: DatePipe,
      private nonRecService: NonRecurringAmtService,
@@ -68,8 +70,12 @@ export class FastentryNRAmtComponent implements OnInit {
   }
 
   getEmployeeList(){
+    this.payrollEmployeeData = []
     this.payrollservice.getAllEmployeeDetails().subscribe((res) => {
 			this.employeeData = res.data.results[0];
+      for(let i=0; i <= 5; i++){
+        this.payrollEmployeeData.push(this.employeeData[i])
+      }
 		});
   }
 
@@ -144,22 +150,33 @@ export class FastentryNRAmtComponent implements OnInit {
     this.saveToDate = this.datepipe.transform(new Date(todate), 'yyyy-MM-dd') + ' 00:00:00' 
   }
 
+  getSelectedEmployee(empdata){
+    console.log("emp data: "+ JSON.stringify(empdata))
+    this.selectedEmployeeData.push(empdata)
+  }
+
   /** Table data push */
   getAllSelectedData(){
     this.saveNumberTransaction = this.selectedNoOfTransaction
     this.saveAmount = this.selectedAmount
     this.saveRemark = this.selectedRemark
     this.tableData = []
-   this.tableData.push({
-     'payrollArea':this.selectedPayrollArea,
-     'fromDate': this.selectedFromDate,
-     'transactionsType':this.selectedTransactionType,
-     'numberOfTransactions':this.selectedNoOfTransaction, 
-     'toDate':this.selectedToDate,
-     'clawBack':this.selectedClawBack,
-     'amount':this.selectedAmount,
-     'remark':this.selectedRemark
-   })
+    this.selectedEmployeeData.forEach(element => {
+      this.tableData.push({
+        'employeeMasterId':element.employeeMasterId,
+        "employeeCode": element.employeeCode,
+        "employeeName" : element.fullName,
+        'payrollArea':this.selectedPayrollArea,
+        'fromDate': this.selectedFromDate,
+        'transactionsType':this.selectedTransactionType,
+        'numberOfTransactions':this.selectedNoOfTransaction, 
+        'toDate':this.selectedToDate,
+        'clawBack':this.selectedClawBack,
+        'amount':this.selectedAmount,
+        'remark':this.selectedRemark
+      })
+    });
+   
   }
 
 
@@ -208,11 +225,12 @@ export class FastentryNRAmtComponent implements OnInit {
    });
   }
 
-  addDataToSave(){
+  addDataToSave(data){
+    
     this.tempTableData.push({
-        "employeeMasterId": this.employeeMasterId,
-        "employeeCode": this.employeeCode,
-        "employeeName" : this.employeeName,
+        "employeeMasterId": data.employeeMasterId,
+        "employeeCode": data.employeeCode,
+        "employeeName" : data.employeeName,
         "headMasterId": this.headMasterId,
         "standardName": this.headDescription,
         "payrollAreaId": "1",
@@ -235,7 +253,7 @@ export class FastentryNRAmtComponent implements OnInit {
 
 
     this.saveTransactionData.push({
-      "employeeMasterId": this.employeeMasterId,
+      "employeeMasterId": data.employeeMasterId,
       "headMasterId": this.headMasterId,
       "standardName": this.headDescription,
       "payrollAreaId": "1",
@@ -257,6 +275,8 @@ export class FastentryNRAmtComponent implements OnInit {
     })
 
    console.log(JSON.stringify(this.saveTransactionData))
+   this.employeeName = ''
+   this.employeeCode = ''
   }
 
   removeDataFromSave(index){

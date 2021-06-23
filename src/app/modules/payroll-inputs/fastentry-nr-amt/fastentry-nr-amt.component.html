@@ -49,6 +49,79 @@
                                     </div>
                             
                                     <br>
+
+                                    <div class="row">
+                                    <div class="col-md-12" *ngIf="selectedPayrollArea">
+                                        <p-table [value]="payrollEmployeeData" [rows]="10" [paginator]="true"
+                                            [rowsPerPageOptions]="[5,10,25,50,100,200]">
+    
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th rowspan="2"></th>
+                                                    <th rowspan="2">
+                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                            Employee Code
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="name"></p-sortIcon>
+                                                                <p-columnFilter type="text" field="name" display="menu"
+                                                                    class="p-ml-auto"></p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                            Employee Name
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="date"></p-sortIcon>
+                                                                <p-columnFilter type="date" field="date" display="menu"
+                                                                    class="p-ml-auto"></p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th rowspan="2">
+                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                            Payroll Area
+                                                            <div class="Sort_Filter_Position">
+                                                                <p-sortIcon field="date"></p-sortIcon>
+                                                                <p-columnFilter type="date" field="date" display="menu"
+                                                                    class="p-ml-auto"></p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </ng-template>
+    
+                                            <ng-template pTemplate="body" let-user1>
+                                                <tr class="p-selectable-row">
+                                                    <td style="width: 3rem">
+                                                        <input type="checkbox"
+                                                        
+                                                        (change)="getSelectedEmployee(user1)">
+                                                    </td>
+                                                    <td class="bg-color-light_gray">
+                                                        <label class="form-lable mb-0">{{user1.employeeCode}}</label>
+                                                    </td>
+                                                    <td class="bg-color-light_gray"><label
+                                                            class="form-lable mb-0">{{user1.fullName}}</label></td>
+                                                    <td class="bg-color-light_gray">
+                                                        <label class="form-lable mb-0"> </label>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+    
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No
+                                                            Data
+                                                            Available</span></td>
+                                                </tr>
+                                            </ng-template>
+    
+                                        </p-table>
+                                    </div>
+                                    </div>
+                                    <br>
+
                                     <div class="row">
                                         <div class="col-md-12">
 
@@ -346,9 +419,9 @@
                                                     <tr class="p-selectable-row">
                                                         <td class="text-center">{{rowIndex+1}}</td>
                                                         <td>
-                                                            <input type="text" class="form-control"  (focusout)="getEmployeeName($event.target.value)">
+                                                            <input type="text" class="form-control" [value]="data.employeeCode"  (focusout)="getEmployeeName($event.target.value)">
                                                         </td>
-                                                        <td>{{employeeName}}</td>
+                                                        <td>{{data.employeeName}}</td>
                                                         <td>
                                                             <select name="payrollarea" class="form-control wd-100" (change)="getSelectedSavePayroll($event.target.value)">
                                                                 <option value=""> Select</option>
@@ -449,12 +522,188 @@
                                                             <i class="fa fa-times  font-18 text-red cursor-pointer"
                                                                 aria-hidden="true" (click)="removeDataFromSave(rowIndex)"></i>&nbsp;
                                                             <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
-                                                                aria-hidden="true" (click)="addDataToSave()"></i>&nbsp;
+                                                                aria-hidden="true" (click)="addDataToSave(data)"></i>&nbsp;
                                                         </td>
                                                     </tr>
 
-                                                    <tr class="p-selectable-row"  *ngFor="let data of tempTableData; let index = index;">
+                                                    <!-- <tr class="p-selectable-row"  *ngFor="let data of tempTableData; let index = index;">
                                                         <td class="text-center">{{index+1}}</td>
+                                                        <td>{{data.employeeCode}}</td>
+                                                        <td>{{data.employeeName}}</td>
+                                                        <td>
+                                                            {{data.payrollAreaCode}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.fromDate}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.transactionsType}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.numberOfTransactions}}
+                                                        </td>
+
+                                                        <td>
+                                                            {{data.toDate}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.clawbackApplicableAt}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.amount}}
+                                                        </td>
+                                                        <td>
+                                                            {{data.remark}}
+                                                        </td>
+                                                        <td></td>
+                                                        <td>
+                                                            <i class="fa fa-times  font-18 text-red cursor-pointer"
+                                                                aria-hidden="true" (click)="removeTempDataFromSave(index)"></i>&nbsp;
+                                                        </td>
+                                                    </tr> -->
+                                                </ng-template>
+
+                                                <ng-template pTemplate="emptymessage">
+                                                    <tr>
+                                                        <td colspan="15" class="font-14 font500 text-center text-red">
+                                                            <span>No Data
+                                                                Available</span>
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+
+                                            </p-table>
+                                            <br>
+                                            <p-table [value]="tempTableData" *ngIf="tempTableData.length > 0">
+
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <th rowspan="2" class="wd-2 text-center">Sr. No.</th>
+                                                        <th rowspan="2" class="wd-4 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center">Emp. Code
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="PayrollArea"
+                                                                        pSortableColumn="PayrollArea"></p-sortIcon>
+                                                                    <p-columnFilter type="text" field="name"
+                                                                        display="menu" class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-4 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center"> Emp. Name
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="Description"
+                                                                        pSortableColumn="Description"></p-sortIcon>
+                                                                    <p-columnFilter type="text" field="Desc"
+                                                                        display="menu" class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-10 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center"
+                                                                style="margin-left:25px;"> Payroll Area
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="Type" pSortableColumn="Type">
+                                                                    </p-sortIcon>
+                                                                    <p-columnFilter type="date" field="date"
+                                                                        display="menu" class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-8 text-center">
+                                                            <div class="p-d-flex justify-content-center p-ai-center">
+                                                                From Date
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="FromDate"
+                                                                        pSortableColumn="FromDate"></p-sortIcon>
+                                                                    <p-columnFilter field="activity" display="menu"
+                                                                        class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-10 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center"
+                                                                style="margin-left:58px;">Type
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                                    </p-sortIcon>
+                                                                    <p-columnFilter field="activity" display="menu"
+                                                                        class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-10 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center"
+                                                                style="margin-left:25px;">No. of Trans.
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                                    </p-sortIcon>
+                                                                    <p-columnFilter field="activity" display="menu"
+                                                                        class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-8 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center">To Date
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                                    </p-sortIcon>
+                                                                    <p-columnFilter field="activity" display="menu"
+                                                                        class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-6 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center">Clawback
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                                    </p-sortIcon>
+                                                                    <p-columnFilter field="activity" display="menu"
+                                                                        class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-4 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center"> Amount
+
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="PrimaryArea"
+                                                                        pSortableColumn="PrimaryArea"></p-sortIcon>
+                                                                    <p-columnFilter field="status" matchMode="equals"
+                                                                        display="menu" class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-4 text-center">
+                                                            <div class="p-d-flex p-jc-between p-ai-center"> Remark
+
+                                                                <div class="Sort_Filter_Position">
+                                                                    <p-sortIcon field="PrimaryArea"
+                                                                        pSortableColumn="PrimaryArea"></p-sortIcon>
+                                                                    <p-columnFilter field="status" matchMode="equals"
+                                                                        display="menu" class="p-ml-auto">
+                                                                    </p-columnFilter>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th rowspan="2" class="wd-2 text-center"></th>
+                                                        <th rowspan="2" class="wd-3 text-center"> Action </th>
+                                                    </tr>
+
+                                                </ng-template>
+
+                                                <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
+                                                    <tr class="p-selectable-row" >
+                                                        <td class="text-center">{{rowIndex+1}}</td>
                                                         <td>{{data.employeeCode}}</td>
                                                         <td>{{data.employeeName}}</td>
                                                         <td>
@@ -500,6 +749,7 @@
                                                 </ng-template>
 
                                             </p-table>
+
 
 
                                            
