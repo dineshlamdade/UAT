@@ -4,7 +4,7 @@
   <div class="section-body mt-3">
     <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
       <div class="tabview-contents">
-        
+
         <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
           <div class="row">
             <div class="col-12">
@@ -178,7 +178,8 @@
                       <td>
                         {{item.levelOfRM}}
                         <select [(ngModel)]="item.levelOfRM" [ngClass]="{'is-invalid' : (item.levelOfRM === null)}"
-                          [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select" (change)="selectedLevelOfRM($event.target.value)">
+                          [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select"
+                          (change)="selectedLevelOfRM($event.target.value)">
                           <option *ngFor="let data of levelOfRM">
                             {{data}}
                           </option>
@@ -195,7 +196,8 @@
                       <td>
                         <select [(ngModel)]="item.treatmentUnActionedPlan"
                           [ngClass]="{'is-invalid' : (item.treatmentUnActionedPlan === null)}"
-                          class="form-control custom-select" (change)="gettreatmentUnActionedPlan($event.target.value,item)">
+                          class="form-control custom-select"
+                          (change)="gettreatmentUnActionedPlan($event.target.value,item)">
                           <option *ngFor="let data of treatmentUnActionedPlanArray">
                             {{data}}
                           </option>
@@ -250,12 +252,12 @@
       <div class="row">
         <div class="col-md-12">
           <a tooltip="Download" style="cursor: pointer;float: right;" (click)="exportAsXLSX()"><i
-            class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a>
+              class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a>
         </div>
       </div>
-     
+
       <div class="row">
-       
+
         <div class="col-12">
           <div class="card">
             <div class="mb-0">
@@ -263,20 +265,32 @@
             </div>
 
 
-           
+
             <div class="col-md-12">
-              <p-table [value]="summary" styleClass="sticky-table" 
-              class="mt-10" [paginator]="true" [rows]="10"
-                                                                [showCurrentPageReport]="true"
-                                                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                                                [rowsPerPageOptions]="[10,25,50,100,200]">
+              <p-table
+              [globalFilterFields]="['workflowMasterHeaderResponseDTO.workflowCode',
+                                     'workflowMasterHeaderResponseDTO.description',
+                                     'workflowMasterHeaderResponseDTO.numberOfApprover',
+                                     'workflowMasterHeaderResponseDTO.autoApproval'
+                                    ]"
+               #dt [value]="summary" styleClass="sticky-table" class="mt-10" [paginator]="true" [rows]="10"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10,25,50,100,200]">
                 <!-- [scrollable]="true" scrollHeight="800px" -->
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th class="wd-10">
-                      <div class="p-d-flex p-jc-center p-ai-center">
-                        Sr No. &nbsp;&nbsp;
-                        <!-- <div class="Sort_Filter_Position">
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <input type="text" pInputText size="50" placeholder="Search"
+                      (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                  </div>
+                 </ng-template> 
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th class="wd-10">
+                        <div class="p-d-flex p-jc-center p-ai-center">
+                          Sr No. &nbsp;&nbsp;
+                          <!-- <div class="Sort_Filter_Position">
                                       <p-sortIcon field="date" pSortableColumn="date">
                                       </p-sortIcon>
                                       <p-columnFilter field="date"
@@ -284,61 +298,61 @@
                                           class="p-ml-auto">
                                       </p-columnFilter>
                                   </div> -->
-                      </div>
-                    </th>
+                        </div>
+                      </th>
 
 
-                    <th class="wd-10">
-                      <div class="p-d-flex p-jc-center p-ai-center">
-                        Code &nbsp;&nbsp;
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="date" pSortableColumn="date">
-                          </p-sortIcon>
-                          <p-columnFilter field="date" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
+                      <th class="wd-10">
+                        <div class="p-d-flex p-jc-center p-ai-center">
+                          Code &nbsp;&nbsp;
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="workflowCode" pSortableColumn="workflowCode">
+                            </p-sortIcon>
+                            <p-columnFilter field="workflowCode" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
                         </div>
-                      </div>
-                    </th>
-                    <th class="wd-20">
-                      <div class="p-d-flex p-jc-center p-ai-center">
-                        Description &nbsp;&nbsp;
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode">
-                          </p-sortIcon>
-                          <p-columnFilter field="payrollAreaCode" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
+                      </th>
+                      <th class="wd-20">
+                        <div class="p-d-flex p-jc-center p-ai-center">
+                          Description &nbsp;&nbsp;
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="description" pSortableColumn="description">
+                            </p-sortIcon>
+                            <p-columnFilter field="description" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
                         </div>
-                      </div>
-                    </th>
-                    <th class="wd-8">
-                      <div class="p-d-flex p-jc-center p-ai-center">
-                        <span tooltip="Weekly Off" placement="bottom">No. of Approvers</span> &nbsp;&nbsp;
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="weeklyOff" pSortableColumn="weeklyOff">
-                          </p-sortIcon>
-                          <p-columnFilter field="weeklyOff" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
+                      </th>
+                      <th class="wd-8">
+                        <div class="p-d-flex p-jc-center p-ai-center">
+                          <span tooltip="No. of Approvers" placement="bottom">No. of Approvers</span> &nbsp;&nbsp;
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="numberOfApprover" pSortableColumn="numberOfApprover">
+                            </p-sortIcon>
+                            <p-columnFilter field="numberOfApprover" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
                         </div>
-                      </div>
-                    </th>
-                    <th class="wd-8">
-                      <div class="p-d-flex p-jc-center p-ai-center">
-                        <span tooltip="Holiday" placement="bottom">
-                          Auto Approval</span>
-                        &nbsp;&nbsp;
-                        <div class="Sort_Filter_Position">
-                          <p-sortIcon field="holiday" pSortableColumn="holiday">
-                          </p-sortIcon>
-                          <p-columnFilter field="holiday" display="menu" class="p-ml-auto">
-                          </p-columnFilter>
+                      </th>
+                      <th class="wd-8">
+                        <div class="p-d-flex p-jc-center p-ai-center">
+                          <span tooltip="Auto Approval" placement="bottom">
+                            Auto Approval</span>
+                          &nbsp;&nbsp;
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="autoApproval" pSortableColumn="autoApproval">
+                            </p-sortIcon>
+                            <p-columnFilter field="autoApproval" display="menu" class="p-ml-auto">
+                            </p-columnFilter>
+                          </div>
                         </div>
-                      </div>
-                    </th>
-                    <th class="wd-8">
-                      <div class="p-d-flex p-jc-center p-ai-center">
-                        <span tooltip="Paid Leave" placement="bottom">Action</span>
-                        &nbsp;&nbsp;
-                        <!-- <div class="Sort_Filter_Position">
+                      </th>
+                      <th class="wd-8">
+                        <div class="p-d-flex p-jc-center p-ai-center">
+                          <span tooltip="Action" placement="bottom">Action</span>
+                          &nbsp;&nbsp;
+                          <!-- <div class="Sort_Filter_Position">
                                       <p-sortIcon field="paidLeaves" pSortableColumn="paidLeaves">
                                       </p-sortIcon>
                                       <p-columnFilter field="paidLeaves"
@@ -346,63 +360,63 @@
                                           class="p-ml-auto">
                                       </p-columnFilter>
                                   </div> -->
-                      </div>
-                    </th>
-
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex" class="tablebodyscroll">
-                  <tr class="p-selectable-row">
-                    <td class="bg-color-light_gray">
-                      <div class="form-group mb-0">
-                        <div class="input-group">
-                          <label class="form-lable mb-0">{{rowIndex+1}}</label>
                         </div>
-                      </div>
-                    </td>
-                    <td class="bg-color-light_gray"><label
-                        class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.workflowCode}}</label>
-                    </td>
-                    <td class="bg-color-light_gray"><label
-                        class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.description}}</label>
-                    </td>
-                    <td class="bg-color-light_gray"><label
-                        class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprover}}</label>
-                    </td>
-                    <td class="bg-color-light_gray" [ngStyle]="{
+                      </th>
+
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-item let-rowIndex="rowIndex" class="tablebodyscroll">
+                    <tr class="p-selectable-row">
+                      <td class="bg-color-light_gray">
+                        <div class="form-group mb-0">
+                          <div class="input-group">
+                            <label class="form-lable mb-0">{{rowIndex+1}}</label>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="bg-color-light_gray"><label
+                          class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.workflowCode}}</label>
+                      </td>
+                      <td class="bg-color-light_gray"><label
+                          class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.description}}</label>
+                      </td>
+                      <td class="bg-color-light_gray"><label
+                          class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprover}}</label>
+                      </td>
+                      <td class="bg-color-light_gray" [ngStyle]="{
                             color: item.workflowMasterHeaderResponseDTO.autoApproval
                               ? 'hsl(141, 53%, 53%)'
                               : 'hsl(348, 100%, 61%)'
                           }"><label class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.autoApproval |
-                        yesNo}}</label>
-                    </td>
+                          yesNo}}</label>
+                      </td>
 
-                    <td class="bg-color-light_gray"><label class="form-lable mb-0"><i
-                          class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="edit(item)"
-                          tooltip="Edit"></i>
-                        <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="view(item)"
-                          tooltip="View"></i>
-                        <i class="fa fa-trash font-16 text-red cursor-pointer ml-3"
-                          *ngIf="(!item.assigned) || (item.assigned === 0)" tooltip="Delete"
-                          (click)="deleteRow(item)"></i></label>
-                    </td>
-
-
+                      <td class="bg-color-light_gray"><label class="form-lable mb-0"><i
+                            class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="edit(item)"
+                            tooltip="Edit"></i>
+                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="view(item)"
+                            tooltip="View"></i>
+                          <i class="fa fa-trash font-16 text-red cursor-pointer ml-3"
+                            *ngIf="(!item.assigned) || (item.assigned === 0)" tooltip="Delete"
+                            (click)="deleteRow(item)"></i></label>
+                      </td>
 
 
 
 
-                  </tr>
-                </ng-template>
 
-                <ng-template pTemplate="emptymessage">
-                  <tr *ngIf="!summary.length">
-                    <td colspan="15" class="font-14 font500 text-center text-red">
-                      <span>No Data
-                        Available</span>
-                    </td>
-                  </tr>
-                </ng-template>
+
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="emptymessage">
+                    <tr *ngIf="!summary.length">
+                      <td colspan="15" class="font-14 font500 text-center text-red">
+                        <span>No Data
+                          Available</span>
+                      </td>
+                    </tr>
+                  </ng-template>
 
 
 
@@ -483,6 +497,7 @@
                       <select
                         [attr.disabled]="(reassignedSequenceArrayForm.get('approverMethod').value == 'Manager through SDM')? '' : null"
                         formControlName="levelOfRM" class="form-control custom-select"
+                        (change)="getAssignedLeveOfRM($event.target.value)"
                         [ngClass]="{'is-invalid' : reassignedSequenceArrayForm.get('levelOfRM').status == 'INVALID'}">
                         <option [ngValue]="null">Select</option>
                         <option *ngFor="let data of levelOfRM" [value]=data>

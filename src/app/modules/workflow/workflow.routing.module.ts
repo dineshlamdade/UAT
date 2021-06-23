@@ -12,18 +12,18 @@ const routes: Routes = [
       {
         path:   'master',
         component:  WorkflowMasterComponent,
-        data: { title: ':: DelziaHR :: Leave' },
+        data: { title: ':: DelziaHR :: Workflow' },
         },
         {
           path:   'practicePrimeNG',
           component:  PtimeNGPracticeComponent,
-          data: { title: ':: DelziaHR :: Leave' },
+          data: { title: ':: DelziaHR :: Workflow' },
           },
           
         {
           path:   'practiceAngular',
           component:  AngularMaterialComponent,
-          data: { title: ':: DelziaHR :: Leave' },
+          data: { title: ':: DelziaHR :: Workflow' },
           },
 
     ],

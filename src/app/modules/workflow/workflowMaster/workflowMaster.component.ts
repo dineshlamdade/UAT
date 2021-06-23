@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { element } from 'protractor';
 import { of } from 'rxjs/internal/observable/of';
 import { ExcelserviceService } from '../../excel_service/excelservice.service';
+
 import { AlertServiceService } from './../../../core/services/alert-service.service';
 import { workflowService } from './../workflow.service';
 
@@ -39,6 +41,7 @@ export class WorkflowMasterComponent implements OnInit {
   excelData: any[];
   workflowMasterHeaderResponseDTO: any = [];
   selectedLevelManager: any;
+  selectedLevelManagerRM: any;
   
 
   constructor(private formBuilder: FormBuilder,
@@ -328,15 +331,47 @@ export class WorkflowMasterComponent implements OnInit {
       this.arrayApproverMaster[index].sdm = null : this.arrayApproverMaster[index].levelOfRM = null;
   }
 
+  getAssignedLeveOfRM(value){
+    this.selectedLevelManagerRM = value
+  }
 
   addAprrover() {
+    let temparr = []
     this.levelOfRM.forEach((element,index) =>{
-      if(element == this.selectedLevelManager){
+      if(element <= parseInt(this.selectedLevelManager)){
+        //  console.log("selected data: " +element)
+        // temparr.push(element)
+        // console.log("push data: " +temparr)
+        // for (var i = 0 ; i< temparr.length -1; i++){
+        // this.levelOfRM.splice(temparr[i], 1);
+        // }          
+        // let ind = index;
+        // console.log("if: "+ind)
+        // this.levelOfRM.splice(ind,ind)
+      }
+      if(element == parseInt(this.selectedLevelManager)){
+        //console.log(element)
         let ind = index;
+        //console.log("if1: "+ind)
         this.levelOfRM.splice(ind,1)
       }
     })
-    this.sequence.push(this.arrayApproverMaster.length + 1)
+   // console.log(this.sequence)
+  // debugger
+    this.sequence.forEach((ele,index) =>{
+      if(ele == this.arrayApproverMaster.length+1){
+        let ind = index
+        this.sequence.splice(ind,1,this.arrayApproverMaster.length+1)
+      }else{
+        let len = this.arrayApproverMaster.length -1
+        if(ele == len){
+          return;
+        }else{
+          this.sequence.push(this.arrayApproverMaster.length + 1)
+        }
+      }
+    })
+    
     this.arrayApproverMaster.push({
       approverMethod: null,
       levelOfRM: null,
@@ -354,6 +389,15 @@ export class WorkflowMasterComponent implements OnInit {
     this.arrayApproverMaster.splice(i, 1);
     this.sequence.splice(i,1)
     this.levelOfRM.push(data.levelOfRM)
+      // this.sequence.forEach((element,index) =>{
+        // if(element == data.sequence) {
+          // let ind = index;
+          this.sequence.push(data.sequence)
+        // }
+      // })
+    // this.sequence.push(this.arrayApproverMaster.length + 1)
+    this.levelOfRM = this.levelOfRM.sort()
+    this.sequence = this.sequence.sort()
   }
 
   gettreatmentUnActionedPlan(plan,data){
@@ -400,8 +444,9 @@ export class WorkflowMasterComponent implements OnInit {
     this.approverSequence = item.sequence;
 
     this.levelOfRM.forEach((element,index) =>{
-      if(element == this.selectedLevelManager){
+      if(element <= this.selectedLevelManager){
         let ind = index;
+        console.log(this.levelOfRM[ind])
         this.levelOfRM.splice(ind,1)
       }
     })
@@ -419,6 +464,12 @@ export class WorkflowMasterComponent implements OnInit {
   }
 
   public submitReassigned(): void {
+    this.levelOfRM.forEach((element,index) =>{
+      if(element == parseInt(this.selectedLevelManagerRM)){
+        let ind = index;
+        this.levelOfRM.splice(ind,1)
+      }
+    })
     console.log(this.reassignedSequenceArrayForm.value);
     const temp = this.reassignedSequenceArrayForm.get('sequence').value;
     const id = this.reassignedSequenceArrayForm.get('workflowMasterHeaderId').value;
