@@ -429,7 +429,7 @@ public selectPolicyName = '';
 
   // ------- On Transaction Status selection show all transactions list accordingly all policies------
   selectedTransactionStatus(transactionStatus: any) {
-    debugger
+    
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,

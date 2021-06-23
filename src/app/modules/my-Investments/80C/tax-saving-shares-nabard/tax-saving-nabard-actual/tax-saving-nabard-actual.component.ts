@@ -103,6 +103,10 @@ export class TaxSavingNabardActualComponent implements OnInit {
   public grandRejectedTotalEditModal: number;
   public grandApprovedTotalEditModal: number;
   public requiredField: boolean = false;
+  public requiredInstitution: boolean = false;
+  public requiredaccountNumber: boolean = false;
+  public requireddateOfPayment: boolean = false;
+  public requireddeclaredAmount: boolean = false;
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
   public isDisabled: boolean = true;
@@ -168,7 +172,9 @@ export class TaxSavingNabardActualComponent implements OnInit {
   public globalSelectedAmount: string;
   dateOfJoining: Date;
   public selectrow : any;
-  globalSelectedAmounts: any = '0.00'
+  globalSelectedAmounts: any = '0.00';
+  public addNewRow: boolean = true;
+  public showDeleteButton: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -215,6 +221,39 @@ export class TaxSavingNabardActualComponent implements OnInit {
     // this.globalAddRowIndex = 0;
     // this.globalSelectedAmount = this.numberFormat.transform(0);
   }
+  getIntillizeEdData() {
+    
+    // Tax Saving Nabard Form
+    this.taxSavingNabardForm = this.formBuilder.group({
+      institution: new FormControl(null, Validators.required),
+      accountNumber: new FormControl(null, Validators.required),
+      dateOfPayment: new FormControl(null, Validators.required),
+      // investedAmount :new FormControl(null,Validators.required),
+      active: new FormControl(true, Validators.required),
+      remark: new FormControl(null),
+      declaredAmount: new FormControl(null, Validators.required),
+      actualAmount: new FormControl(null, Validators.required),
+      investmentGroup3TransactionId: new FormControl(0),
+      previousEmployerId: new FormControl(0),
+    });
+
+    // ---------------- Transaction status List -----------------
+    this.refreshTransactionStatustList();
+    this.addNewRow = true;
+    this.grandTabStatus = false;
+    this.isCheckAll = false;
+    this.isDisabled = true;
+    this.enableSelectAll = false;
+    this.enableFileUpload = false;
+    this.addNewRowId = 0;
+    this.hideRemarkDiv = false;
+    this.hideRemoveRow = false;
+    this.isClear = false;
+    this.isCancel = false;
+    this.receiptAmount = this.numberFormat.transform(0);
+    this.globalAddRowIndex = 0;
+    this.globalSelectedAmount = this.numberFormat.transform(0);
+  }
 
   public ngOnInit(): void {
     // this.getTransactionFilterData();
@@ -249,40 +288,9 @@ export class TaxSavingNabardActualComponent implements OnInit {
     // this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
     this.getData();
   }
-  getIntillizeEdData() {
-    // Tax Saving Nabard Form
-    this.taxSavingNabardForm = this.formBuilder.group({
-      institution: new FormControl(null, Validators.required),
-      accountNumber: new FormControl(null, Validators.required),
-      dateOfPayment: new FormControl(null, Validators.required),
-      // investedAmount :new FormControl(null,Validators.required),
-      active: new FormControl(true, Validators.required),
-      remark: new FormControl(null),
-      declaredAmount: new FormControl(null, Validators.required),
-      actualAmount: new FormControl(null, Validators.required),
-      investmentGroup3TransactionId: new FormControl(0),
-      previousEmployerId: new FormControl(0),
-    });
-
-    // ---------------- Transaction status List -----------------
-    this.refreshTransactionStatustList();
-
-    this.grandTabStatus = false;
-    this.isCheckAll = false;
-    this.isDisabled = true;
-    this.enableSelectAll = false;
-    this.enableFileUpload = false;
-    this.addNewRowId = 0;
-    this.hideRemarkDiv = false;
-    this.hideRemoveRow = false;
-    this.isClear = false;
-    this.isCancel = false;
-    this.receiptAmount = this.numberFormat.transform(0);
-    this.globalAddRowIndex = 0;
-    this.globalSelectedAmount = this.numberFormat.transform(0);
-  }
 
  getData() {
+   
   this.getTransactionFilterData();
   if (this.data) {
     this.selectrow = this.data.accountNumber;
@@ -449,25 +457,25 @@ export class TaxSavingNabardActualComponent implements OnInit {
     this.globalSelectedAmount = '0.00';
     //}
   }
-  addTable() {
-    const obj = {
-      id: '',
-      name: '',
-      email: '',
-      a: '',
-      b: '',
-      c: '',
-      d: '',
-      e: '',
-      f: '',
-      g: '',
-      h: '',
-    };
-    this.row.push(obj);
-  }
-  deleteRows(j) {
-    this.row.splice(j, 1);
-  }
+  // addTable() {
+  //   const obj = {
+  //     id: '',
+  //     name: '',
+  //     email: '',
+  //     a: '',
+  //     b: '',
+  //     c: '',
+  //     d: '',
+  //     e: '',
+  //     f: '',
+  //     g: '',
+  //     h: '',
+  //   };
+  //   this.row.push(obj);
+  // }
+  // deleteRows(j) {
+  //   this.row.splice(j, 1);
+  // }
 
   //------------- When Edit of Document Details -----------------------
   editViewTransaction(template2: TemplateRef<any>, proofSubmissionId: string) {
@@ -726,22 +734,74 @@ export class TaxSavingNabardActualComponent implements OnInit {
   ) {
 
 
+    // if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+    //   this.requiredField = true;
+    //   event.target.checked = false;
+    //   if(this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
+    //    this.alertService.sweetalertError(
+    //     'Please Enter Decleared Amount'
+    //    );
+    //  } else {
+    //    this.alertService.sweetalertError(
+    //      'Please Fill Required Field.'
+    //    );
+    //  }
+    //   return;
+    // } else {
+    //   this.requiredField = false;
+    // }
+
     if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
-      this.requiredField = true;
-      event.target.checked = false;
-      if(this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
-       this.alertService.sweetalertError(
-        'Please Enter Decleared Amount'
-       );
-     } else {
-       this.alertService.sweetalertError(
-         'Please Fill Required Field.'
-       );
-     }
+      if (this.investmentGroup3TransactionDetailList[i].institution == null) {
+        this.requiredInstitution = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredInstitution = false;
+      }
+
+
+      if (this.investmentGroup3TransactionDetailList[i].accountNumber == null) {
+        this.requiredaccountNumber = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredaccountNumber = false;
+      }
+
+      if (this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+        this.requireddateOfPayment = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+
+      } else {
+        this.requireddateOfPayment = false;
+      }
+      if (this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
+        this.requireddeclaredAmount = true;
+        event.target.checked = false;
+           this.alertService.sweetalertError(
+             'Please Enter Decleared Amount'
+           );
+        return;
+
+      } else {
+        this.requireddeclaredAmount = false;
+      }
       return;
     } else {
-      this.requiredField = false;
-    }
+
+      this.requireddeclaredAmount = false;
+
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
@@ -814,6 +874,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
     console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
   }
+}
   
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
@@ -850,6 +911,11 @@ export class TaxSavingNabardActualComponent implements OnInit {
     this.investmentGroup3TransactionDetailList[
       i
     ].institution = this.declarationService.institution;
+    if (this.investmentGroup3TransactionDetailList[i].institution == null) {
+      this.requiredInstitution = true;
+    } else {
+      this.requiredInstitution = false;
+    }
   }
 
   // --------------- ON change of Accoun No in line-------------
@@ -870,6 +936,12 @@ export class TaxSavingNabardActualComponent implements OnInit {
     this.investmentGroup3TransactionDetailList[
       i
     ].accountNumber = this.declarationService.accountNumber;
+    if (this.investmentGroup3TransactionDetailList[i].accountNumber == null) {
+      this.requiredaccountNumber = true;
+
+    } else {
+      this.requiredaccountNumber = false;
+    }
   }
   // --------------- ON change of DateOfPayment in line-------------
 
@@ -888,6 +960,11 @@ export class TaxSavingNabardActualComponent implements OnInit {
     // this.declarationService = new DeclarationService(summary);
     this.investmentGroup3TransactionDetailList[i].dateOfPayment =
       summary.dateOfPayment;
+      if (this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+        this.requireddateOfPayment = true;
+      } else {
+        this.requireddateOfPayment = false;
+      }
   }
 
   // ------------Actual Amount change-----------
@@ -978,6 +1055,14 @@ export class TaxSavingNabardActualComponent implements OnInit {
     );
     this.investmentGroup3TransactionDetailList[i].declaredAmount = formatedActualAmount;
 
+    if (this.investmentGroup3TransactionDetailList[i].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[i].declaredAmount == "0.00") {
+      this.requireddeclaredAmount = true;
+      
+
+    } else {
+      this.requireddeclaredAmount = false;
+    }
+
     this.declarationTotal = 0;
     this.declaredAmount = 0;
     this.investmentGroup3TransactionDetailList.forEach((element) => {
@@ -1011,11 +1096,19 @@ export class TaxSavingNabardActualComponent implements OnInit {
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
+    if (this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
+      this.requireddeclaredAmount = true;
+
+    } else {
+      this.requireddeclaredAmount = false;
+    }
   }
 
 
   // --------Add New ROw Function---------
   addRowInList() {
+
+    if (this.addNewRow) {
     this.declarationService = new DeclarationService();
     console.log('declarationService::', this.declarationService);
     this.globalAddRowIndex -= 1;
@@ -1034,6 +1127,9 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
     this.investmentGroup3TransactionDetailList.push(this.declarationService);
     console.log('addRow::', this.investmentGroup3TransactionDetailList);
+    this.addNewRow = false;
+    this.showDeleteButton = true;
+  }
   }
 
   sweetalertWarning(msg: string) {
@@ -1046,13 +1142,16 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].length - 1;
-    if (this.transactionDetail[j].length == 1) {
-      return false;
-    } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].splice(rowCount, 1);
-      return true;
-    }
+    // const rowCount = this.transactionDetail[j].length - 1;
+    // if (this.transactionDetail[j].length == 1) {
+    //   return false;
+    // } else if (this.initialArrayIndex[j] <= rowCount) {
+    //   this.transactionDetail[j].splice(rowCount, 1);
+    //   return true;
+    // }
+    this.investmentGroup3TransactionDetailList.splice(0, 1);
+    this.addNewRow = true;
+    this.showDeleteButton = false;
   }
 
   editDeclrationRow(
@@ -1174,6 +1273,55 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
   upload() {
 
+
+    if (this.investmentGroup3TransactionDetailList[0].institution == null || this.investmentGroup3TransactionDetailList[0].accountNumber == null || this.investmentGroup3TransactionDetailList[0].dateOfPayment == null || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0.00") {
+      if (this.investmentGroup3TransactionDetailList[0].institution == null) {
+        this.requiredInstitution = true;
+     
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredInstitution = false;
+      }
+
+
+      if (this.investmentGroup3TransactionDetailList[0].accountNumber == null) {
+        this.requiredaccountNumber = true;
+  
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredaccountNumber = false;
+      }
+
+      if (this.investmentGroup3TransactionDetailList[0].dateOfPayment == null ) {
+        this.requireddateOfPayment = true;
+   
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+
+      } else {
+        this.requireddateOfPayment = false;
+      }
+      if (this.investmentGroup3TransactionDetailList[0].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0.00") {
+        this.requireddeclaredAmount = true;
+           this.alertService.sweetalertError(
+             'Please Enter Decleared Amount'
+           );
+        return;
+
+      } else {
+        this.requireddeclaredAmount = false;
+      }
+      return;
+    }
+
     if (this.investmentGroup3TransactionDetailList[0].accountNumber == null && this.investmentGroup3TransactionDetailList[0].actualAmount == '0' && this.investmentGroup3TransactionDetailList[0].institution == null && this.investmentGroup3TransactionDetailList[0].dateOfPayment == null){
       this.alertService.sweetalertError(
         'Please Fill Required Field'
@@ -1222,45 +1370,52 @@ export class TaxSavingNabardActualComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.transactionDetail =
-            res.data.results[0].investmentGroup3TransactionDetail;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-          this.transactionDetail.forEach((element) => {
-            element.forEach((innerElement) => {
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
-              if (this.employeeJoiningDate < innerElement.dueDate) {
-                innerElement.active = false;
-              }
+          this.getIntillizeEdData();
+          this.getData();
+          // this.transactionDetail =
+          //   res.data.results[0].investmentGroup3TransactionDetail;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+      
+          // this.transactionDetail.forEach((element) => {
+          //   element.forEach((innerElement) => {
+          //     if (innerElement.dateOfPayment !== null) {
+          //       innerElement.dateOfPayment = new Date(
+          //         innerElement.dateOfPayment
+          //       );
+          //     }
+          //     if (this.employeeJoiningDate < innerElement.dueDate) {
+          //       innerElement.active = false;
+          //     }
 
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
-              );
-              // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
-            });
-          });
+          //     innerElement.actualAmount = this.numberFormat.transform(
+          //       innerElement.actualAmount
+          //     );
+          //     // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
+          //   });
+          // });
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
           );
+          this.addNewRow = true;
+          this.showDeleteButton = false;
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    this.investmentGroup3TransactionDetailList = [];
+    this.initialArrayIndex = [];
     this.globalSelectedAmount = '0.00';
     this.globalSelectedAmounts = '0.00';
-    this.getIntillizeEdData();
-    this.getData();
+    
+  
   }
 
   changeReceiptAmountFormat() {
@@ -1278,6 +1433,8 @@ export class TaxSavingNabardActualComponent implements OnInit {
       this.alertService.sweetalertError(
         'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
       );
+      this.receiptAmount = '0.00';
+      return false;
     } else if (receiptAmount_ > this.globalSelectedAmounts) {
       console.log(receiptAmount_);
       console.log(globalSelectedAmount_);
