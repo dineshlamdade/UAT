@@ -55,13 +55,13 @@
                           {{ employeeInfo.grade }}
                         </label>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">Designation</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{ employeeInfo.designation }}
                         </label>
                       </div>
-                      <div class="col-md-1">
+                      <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Emp.Status</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{ employeeInfo.establishment }}
@@ -100,7 +100,7 @@
                         </label>
                       </div>
 
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                         <label class="form-label mt-1 mb-0"
                           >Date Of Submission</label
                         >
@@ -111,10 +111,20 @@
                           }}
                         </label>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">PS ID Status</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{ masterInfo.psidDetail.proofSubmissionStatus }}
+                        </label>
+                      </div>
+
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Date & Time</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{
+                            masterInfo.psidDetail.lastModifiedDateTime
+                              | date: "dd-MMM-yyyy HH:mm"
+                          }}
                         </label>
                       </div>
                     </div>
@@ -313,7 +323,7 @@
                               >
                                 <ng-template pTemplate="header">
                                   <tr>
-                                    <th>Sr.No.</th>
+                                    <th>Sr. No.</th>
                                     <th>From Date</th>
                                     <th>To Date</th>
                                     <th>Frequency</th>
@@ -377,46 +387,75 @@
                             </div>
                           </div>
                         </div>
-                              <div class="row mt-10">
-                                <div class="col-md-12 mt-10 mb-15">
-                           
-                                  <div class="row ">
-                                           
-                                    <div class="col-md-6">
-                                      <div class="d-flex">
-                                      <Label class="form-label mr-2"> Remark</Label>
-                                    
-                                  
-                                        <input type="text" class="form-control " [(ngModel)]="masterRemark">
-                                      </div>
-                                      </div>
+                        <div class="row mt-10">
+                          <div class="col-md-12 mt-10 mb-15">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="d-flex">
+                                  <Label class="form-label mr-2"> Remark</Label>
 
-                                      <div class="col-md-2">
-                                        <div _ngcontent-ykc-c443="" class="custom_Label_badge">
-                                          <b>
-                                            <i  (click)="
-                                            masterRemarkModal(
-                                              template3,
-                                              masterInfo.masterDetail
-                                                .masterRemarkDetailList
-                                            )" class="fa fa-commenting  text-dark-green fa-2x">
-          
-          
-                                          </i></b> 
-                                          <span _ngcontent-ykc-c443="" class="Label_badge">1</span>
-                                        </div>
-                                     
-                                    
-                                      </div>
-                                  </div>
-      
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    [(ngModel)]="masterRemark"
+                                    [disabled]="
+                                      masterInfo.masterDetail.masterStatus ==
+                                        '' ||
+                                      masterInfo.masterDetail.masterStatus ==
+                                        'Approved'
+                                    "
+                                  />
+
                                 </div>
                               </div>
+
+                              <div class="col-md-2">
+                                <div
+                                  _ngcontent-ykc-c443=""
+                                  class="custom_Label_badge"
+                                >
+                                  <b>
+                                    <i
+                                      (click)="
+                                        masterRemarkModal(
+                                          template3,
+                                          masterInfo.masterDetail
+                                            .masterRemarkDetailList
+                                        )
+                                      "
+                                      class="
+                                        fa fa-commenting
+                                        text-dark-green
+                                        fa-2x
+                                      "
+                                    >
+                                    </i
+                                  ></b>
+                                  <span
+                                    _ngcontent-ykc-c443=""
+                                    class="Label_badge"
+                                    >{{
+                                      masterInfo.masterDetail
+                                        .masterRemarkDetailList.length
+                                    }}</span
+                                  >
+                                </div>
+                              </div>
+
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                              <div *ngIf="remarkValidation" class="invalidRemark">
+                                <div *ngIf="remarkValidation">Remark is mandatory for Send Back</div>
+                              </div>
+                            </div>
+                            </div>
+
+                          </div>
+                        </div>
                         <div class="row mt-10 mb-15">
-                        
                           <div class="col-md-12">
                             <div class="float-right">
-
                               <!-- <button
                                 type="button"
                                 tooltip="Button"
@@ -437,7 +476,23 @@
                                 Remark
                               </button> -->
 
-
+                              <button
+                                *ngIf="
+                                  masterInfo.masterDetail.masterStatus ==
+                                  'Approved'
+                                "
+                                type="button"
+                                tooltip="Edit Approval"
+                                class="
+                                  custom_button custom_btn
+                                  btn-bg-green btn-labeled
+                                  ripple
+                                  mr-2
+                                "
+                                (click)="changeStatus(masterInfo, 'Re-open')"
+                              >
+                                Edit Approval
+                              </button>
                               <button
                                 type="button"
                                 tooltip="Send Back"
@@ -446,6 +501,16 @@
                                   bg-btn-red
                                   btn-labeled btn-labeled-left
                                   mr-2
+                                "
+                                [class.disableredbutton]="
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
+                                [disabled]="
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
                                 "
                                 (click)="changeStatus(masterInfo, 'SendBack')"
                               >
@@ -461,6 +526,16 @@
                                   ripple
                                   mr-2
                                 "
+                                [disabled]="
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
+                                [class.disablegreenbutton]="
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
                               >
                                 <b> <i class="fa fa-share"></i></b> Forward
                               </button>
@@ -471,6 +546,16 @@
                                   btn-bg-green btn-labeled btn-labeled-left
                                   ripple
                                   mr-2
+                                "
+                                [class.disablegreenbutton]="
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
+                                [disabled]="
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
                                 "
                                 (click)="changeStatus(masterInfo, 'Approved')"
                                 tooltip="Approve"
@@ -487,10 +572,9 @@
                                   btn-labeled btn-labeled-left
                                   mr-2
                                 "
-                                [disabled]="
-                                proofSubmissionIdListIndex == 0
-                              "
-                              (click)="changePSID(globalPSID, 'Previous')"
+                                [class.disablegraybutton]="previousDisabled"
+                                [disabled]="previousDisabled"
+                                (click)="changePSID(globalPSID, 'Previous')"
                               >
                                 <b
                                   ><i
@@ -509,10 +593,14 @@
                                   btn-labeled btn-labeled-left
                                   mr-2
                                 "
+                                [class.disablegraybutton]="
+                                  nextDisabled ||
+                                  masterInfo.masterDetail.masterStatus == ''
+                                "
                                 [disabled]="
-                                proofSubmissionIdListIndex ==
-                                proofSubmissionIdList.length - 1
-                              "
+                                  nextDisabled ||
+                                  masterInfo.masterDetail.masterStatus == ''
+                                "
                                 (click)="changePSID(globalPSID, 'Next')"
                               >
                                 <b><i class="fa fa-angle-double-right"></i></b
@@ -528,6 +616,17 @@
                                   btn-labeled btn-labeled-left
                                   mr-2
                                 "
+                                [class.disableredbutton]="
+                                  nextDisabled ||
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
+                                [disabled]="
+                                  nextDisabled ||
+                                  masterInfo.masterDetail.masterStatus == ''
+                                "
+                                (click)="changeStatusWithNextPrevious(masterInfo, 'SendBack',globalPSID, 'Next')"
                               >
                                 <b><i class="fa fa-reply-all"></i></b>
                                 SendBack &
@@ -542,6 +641,18 @@
                                   btn-bg-green btn-labeled btn-labeled-left
                                   mr-2
                                 "
+                                [class.disablegreenbutton]="
+                                  nextDisabled ||
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
+                                [disabled]="
+                                  nextDisabled ||
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
                               >
                                 <b><i class="fa fa-share"></i></b> Forward &
                                 <i class="fa fa-angle-double-right"></i>
@@ -555,6 +666,19 @@
                                   ripple
                                   mr-2
                                 "
+                                [class.disablegreenbutton]="
+                                  nextDisabled ||
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
+                                [disabled]="
+                                  nextDisabled ||
+                                  masterInfo.masterDetail.masterStatus == '' ||
+                                  masterInfo.masterDetail.masterStatus ==
+                                    'Approved'
+                                "
+                                (click)="changeStatusWithNextPrevious(masterInfo, 'Approved',globalPSID, 'Next')"
                               >
                                 <b> <i class="fa fa-floppy-o"></i></b> Approve &
                                 <i class="fa fa-angle-double-right"></i>
@@ -584,7 +708,7 @@
                                           masterInfo.masterDetail
                                             .documentDetailList
                                         "
-                                        [(selection)]="dtSelectedRows"
+                                        [selection]="documentList"
                                         [paginator]="true"
                                         [rows]="10"
                                         [showCurrentPageReport]="true"
@@ -604,19 +728,21 @@
                                           'Status'
                                         ]"
                                       >
+                                        <!-- P-Table ng-template header with filter, sort is started -->
                                         <ng-template pTemplate="header">
                                           <tr>
                                             <th style="width: 3rem">
-                                              <p-tableHeaderCheckbox
+                                              <!-- <p-tableHeaderCheckbox
                                                 (click)="
-                                                  selectRow(
+                                                  selectDocumentForApprovalOrDiscard(
                                                     e.checked,
                                                     '',
                                                     masterInfo
                                                   )
                                                 "
                                                 #e
-                                              ></p-tableHeaderCheckbox>
+                                              ></p-tableHeaderCheckbox> -->
+                                              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                                             </th>
 
                                             <th>
@@ -819,8 +945,12 @@
                                                 </div>
                                               </div>
                                             </th>
+                                            <th>Action</th>
                                           </tr>
                                         </ng-template>
+                                        <!-- P-Table ng-template header with filter, sort is ended -->
+
+                                        <!-- P-Table ng-template body is started -->
                                         <ng-template
                                           pTemplate="body"
                                           let-documentDetail
@@ -831,27 +961,34 @@
                                             [pSelectableRow]="documentDetail"
                                           >
                                             <td>
-                                              <span
-                                                *ngIf="
-                                                  documentDetail.documentStatus !=
-                                                    'Approved' ||
-                                                  documentDetail.documentStatus !=
-                                                    'Discard'
-                                                "
-                                              >
+
                                                 <p-tableCheckbox
                                                   [value]="documentDetail"
                                                   (click)="
-                                                    selectRow(
+                                                    selectDocumentForApprovalOrDiscard(
                                                       e.checked,
                                                       documentDetail,
                                                       masterInfo
                                                     )
                                                   "
                                                   #e
+                                                  [class.disableCheckbox]="
+                                                  documentDetail.documentStatus ==
+                                                  'Approved' ||
+                                                documentDetail.documentStatus ==
+                                                  'Discarded' ||
+                                                documentDetail.documentStatus ==
+                                                  'Discard'"
+                                                  [disabled]="
+                                                  documentDetail.documentStatus ==
+                                                  'Approved' ||
+                                                documentDetail.documentStatus ==
+                                                  'Discarded' ||
+                                                documentDetail.documentStatus ==
+                                                  'Discard'"
                                                 >
                                                 </p-tableCheckbox
-                                              ></span>
+                                              >
                                             </td>
                                             <td>
                                               {{
@@ -885,7 +1022,49 @@
                                             </td>
                                             <td>
                                               <div class="custom_Label_badge">
-                                                <button
+                                                <input
+                                                  type="text"
+                                                  class="form-control"
+                                                  (change)="onChangeDocumentRemark(documentDetail, $event)"
+                                                  [disabled]=" documentDetail.documentStatus ==
+                                                  'Approved' ||
+                                                documentDetail.documentStatus ==
+                                                  'Discarded' ||
+                                                documentDetail.documentStatus ==
+                                                  'Discard'"
+                                                />
+                                                <div
+                                                  _ngcontent-ykc-c443=""
+                                                  class="custom_Label_badge"
+                                                >
+                                                  <b>
+                                                    <i
+                                                      (click)="
+                                                        docRemarkModal(
+                                                          template3,
+                                                          documentDetailIndex,
+                                                          documentDetail.documentRemarkDetailList
+                                                        )
+                                                      "
+                                                      class="
+                                                        fa fa-commenting
+                                                        text-dark-green
+                                                        fa-2x
+                                                      "
+                                                    >
+                                                    </i
+                                                  ></b>
+                                                  <span
+                                                    _ngcontent-ykc-c443=""
+                                                    class="Label_badge"
+                                                    >{{
+                                                      documentDetail
+                                                        .documentRemarkDetailList
+                                                        .length
+                                                    }}</span
+                                                  >
+                                                </div>
+                                                <!-- <button
                                                   class="
                                                     btn btn-bg-green
                                                     text-white
@@ -899,12 +1078,12 @@
                                                   "
                                                 >
                                                   PSEmp
-                                                </button>
-                                                <span class="Label_badge">{{
+                                                </button> -->
+                                                <!-- <span class="Label_badge">{{
                                                   documentDetail
                                                     .documentRemarkDetailList
                                                     .length
-                                                }}</span>
+                                                }}</span> -->
                                               </div>
                                             </td>
                                             <td>
@@ -923,8 +1102,28 @@
                                                   | date: "dd-MMM-yyyy HH:mm"
                                               }}
                                             </td>
+                                            <td>
+                                              <i
+                                                *ngIf="
+                                                documentDetail.documentStatus ==
+                                                  'Approved' ||
+                                                documentDetail.documentStatus ==
+                                                  'Discarded' ||
+                                                documentDetail.documentStatus ==
+                                                  'Discard'"
+                                                class="
+                                                  fa fa-edit
+                                                  font-16
+                                                  text-blue
+                                                  cursor-pointer
+                                                "
+                                                tooltip="Edit"
+                                                (click)="editDocument(documentDetail)"
+                                              ></i>
+                                            </td>
                                           </tr>
                                         </ng-template>
+                                        <!-- P-Table ng-template body is started -->
                                       </p-table>
                                     </div>
                                   </div>
@@ -961,8 +1160,8 @@
                                             mr-2
                                           "
                                           (click)="
-                                          changeDocumentStatus('Discarded')
-                                        "
+                                            changeDocumentStatus('Discarded')
+                                          "
                                         >
                                           <b><i class="fa fa-times"></i></b>
                                           Discard

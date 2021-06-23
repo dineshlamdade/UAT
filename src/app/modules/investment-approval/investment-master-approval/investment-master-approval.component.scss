@@ -4,13 +4,20 @@
 }
 .disablegraybutton{
     cursor:not-allowed;
-    background-color: grayscale($color: #e7e6e6);
+    background-color: grayscale($color: #e7e6e6) !important;
 }
 .disableredbutton{
     cursor:not-allowed;
-    background-color: grayscale($color: #f38989);
+    background-color: grayscale($color: #f38989) !important;
 }
 .disablegreenbutton{
     cursor:not-allowed;
-    background-color: grayscale($color: #598684);
+    background-color: grayscale($color: #c7cece) !important;
+}
+.disableCheckbox {
+  display: none;
+}
+.invalidRemark {
+  color: #dc3545;
+  font-size: small;
 }

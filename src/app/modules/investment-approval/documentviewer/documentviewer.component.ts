@@ -15,6 +15,7 @@ export class DocumentviewerComponent implements OnInit {
   public documentSafeURL: SafeResourceUrl;
   public modalRef: BsModalRef;
   public documentURLIndex: number;
+  public documentType: string='';
   public masterInfo: InvestmentApprovalMasterInfo;
   public documentList: InvestmentApprovalMasterDocumentInfo [];
   public documentInformationId: any;
@@ -44,9 +45,10 @@ export class DocumentviewerComponent implements OnInit {
     this.documentList = this.masterInfo.masterDetail.documentDetailList;
 
    this.documentURLIndex = this.documentList.findIndex(doc=> doc.documentInformationId ==documentInformationId);
-   this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].blobURI
-  );
+
+   this.documentType =
+    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+
   }
   public docViewer(documentViewerTemplate: TemplateRef<any>, index: any) {
 
@@ -55,6 +57,9 @@ export class DocumentviewerComponent implements OnInit {
     this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].blobURI
     );
+    this.documentType =
+    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+
     this.modalRef = this.modalService.show(
       documentViewerTemplate,
       Object.assign({}, { class: 'gray modal-xl' })
@@ -66,6 +71,8 @@ export class DocumentviewerComponent implements OnInit {
     this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].blobURI
     );
+    this.documentType =
+    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
   }
 
   public previousDocViewer() {
@@ -73,5 +80,7 @@ export class DocumentviewerComponent implements OnInit {
     this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].blobURI
     );
+    this.documentType =
+    this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
   }
 }
