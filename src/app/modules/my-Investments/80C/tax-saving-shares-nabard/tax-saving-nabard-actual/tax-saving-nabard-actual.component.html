@@ -225,14 +225,14 @@
                 <td>
                   <input type="text" [(ngModel)]="addRowSummary.institution" class="form-control"
                     placeholder="Institution" (change)="onInstitutionChange(addRowSummary, i)"
-                    [ngClass]="{ 'is-invalid': this.requiredField }"  />
+                    [ngClass]="{ 'is-invalid': this.requiredInstitution }"  />
                 </td>
                 <td>
                   <div class="custom_icon_badge">
                     <input type="text" [(ngModel)]="addRowSummary.accountNumber" class="form-control"
                       onkeypress="return /[0-9 ]/i.test(event.key)" placeholder="Account No."
                       (change)="onAccountNoChange(addRowSummary, i)"
-                      [ngClass]="{ 'is-invalid': this.requiredField }"  />
+                      [ngClass]="{ 'is-invalid': this.requiredaccountNumber }"  />
 
                   </div>
                 </td>
@@ -245,7 +245,7 @@
                       class="form-control align-right"
                       placeholder="Declared"
                       (change)="onDeclearedAmountChange(addRowSummary, i)"
-                      [ngClass]="{ 'is-invalid': this.requiredField }"
+                      [ngClass]="{ 'is-invalid': this.requireddeclaredAmount }"
                       
 
 
@@ -259,7 +259,7 @@
                     addRowSummary.dateOfPayment = $event.toLocaleDateString();
                     onChangeDateOfPayment(addRowSummary, i)
                     " class="form-control" bsDatepicker 
-                    [ngClass]="{ 'is-invalid': this.requiredField }" />
+                    [ngClass]="{ 'is-invalid': this.requireddateOfPayment }" />
                 </td>
                 <td>
                   <input type="text" [(ngModel)]="addRowSummary.actualAmount"
@@ -290,6 +290,7 @@
                   <!-- <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
                     </span> -->
+                    {{addRowSummary.transactionStatus}}
                 </td>
                 <!-- </form> -->
               </tr>
@@ -313,8 +314,8 @@
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
                   <i
                     class="fa fa-times font-16 text-red cursor-pointer"
-                    *ngIf="hideRemoveRow"
-                    tooltip="Cancel"
+                    *ngIf="showDeleteButton"
+                    tooltip="Delete Row"
                     (click)="deleteRow()"
                   ></i>
                 </td>
