@@ -31,7 +31,7 @@
                          
                         </div>
                         <div class="col-md-2">
-                          <label class="form-label mt-1 mb-0">Employee Type</label>
+                          <label class="form-label mt-1 mb-0">Department</label>
                           <label class="font-12 text-ellipsis mt-1 mb-0">Worker</label  >
                           <!-- <input type="text" class="form-control" value="Worker"  disabled /> -->
                         </div>
@@ -97,10 +97,27 @@
                       <input type="text" class="form-control" value="{{perticularEmpDetails.employeeType}}"  disabled />
                     </div>
                     <div class="col-md-3">
-                      <label class="form-label mt-1 mb-0">Application Date</label >
+                      <label class="form-label">
+                        Application Date 
+                      </label>
+                      <div class="form-group">
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <span class="input-group-text">
+                                      <i class="fa fa-calendar"></i>
+                                  </span>
+                              </div>
+                              <input data-provide="datepicker" data-date-autoclose="true"
+                                  class="form-control" placeholder="Date" [ngModel]="isCheckAll" bsDatepicker>
+                          </div>
+                      </div>
+  
+                  </div>
+                    <!-- <div class="col-md-3">
+                      <label class="form-label mt-1 mb-0"></label >
                       <input type="text" class="form-control" value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
                        disabled />
-                    </div>
+                    </div> -->
                     <div class="col-md-3">
                       <label class="form-label">Loan Type</label>
                       <input type="text" class="form-control" formControlName="repaymentType" disabled />
@@ -143,12 +160,6 @@
               <div class="border-dark-card radius-10 p-2 ">
                 <div class="row mt-1 mb-0">
                   <div class="col-md-3">
-                    <label class="form-label">Amount</label>
-                    <input type="text" class="form-control" formControlName="underlineAssestValue"
-                      [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
-                       />
-                  </div>
-                  <div class="col-md-3">
                     <label class="form-label">Mode of Payment</label>
                     <select class="form-control"
                       placeholder="Select" >
@@ -156,36 +167,86 @@
                       <option  [selected]="loanType == loan.loanCode">
                         Cheque</option>
                         <option  [selected]="loanType == loan.loanCode">
-                          Online</option>
+                          Bank Transfer</option>
                     </select>
                   </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Bank Details</label>
+                    <select class="form-control"
+                      placeholder="Select" >
+                      <option [ngValue]="null" selected>Select</option>
+                      <!-- <option  [selected]="loanType == loan.loanCode">
+                        Cheque</option>
+                        <option  [selected]="loanType == loan.loanCode">
+                          Online</option> -->
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">IFSC</label>
+                    <input type="text" class="form-control" formControlName="underlineAssestValue"
+                      [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                       />
+                  </div>
+
                   <div class="col-md-3">
                     <label class="form-label">Bank Name</label>
                     <input type="text" class="form-control" formControlName="repaymentType"  />
                   </div>
                 </div>
-
+<br>
                 <div class="row mt-1 mb-0">
                   <div class="col-md-3">
-                    <label class="form-label">Cheque/ UTR no</label>
+                    <label class="form-label">Branch Name</label>
+                    <input type="text" class="form-control" formControlName="loanAmount"
+                      value="{{loanAmount | number:'1.2-2'}}" />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Cheque/ UTR No.</label>
                     <input type="text" class="form-control" formControlName="underlineAssestValue"
                       [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
                        />
                   </div>
                  
                   <div class="col-md-3">
-                    <label class="form-label">Date Of Payment </label>
-                    <input type="text" class="form-control" formControlName="loanAmount"
-                      value="{{loanAmount | number:'1.2-2'}}" />
-                  </div>
-
-                  <div class="col-md-2">
-                    <label class="form-label">Remark</label>
-                    <input type="text" class="form-control" formControlName="repaymentType"  />
-                  </div>
-
+                    <label class="form-label">
+                      Date Of Payment 
+                    </label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="Date" [ngModel]="isCheckAll" bsDatepicker>
+                        </div>
+                    </div>
 
                 </div>
+                  <!-- <div class="col-md-3">
+                    <label class="form-label"></label>
+                    <input type="text" class="form-control" formControlName="loanAmount"
+                      value="{{loanAmount | number:'1.2-2'}}" />
+                  </div> -->
+                  <div class="col-md-3">
+                    <label class="form-label">Amount</label>
+                    <input type="text" class="form-control" formControlName="underlineAssestValue"
+                      [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                       />
+                  </div>
+                  <!-- <div class="col-md-2">
+                    <label class="form-label">Remark</label>
+                    <input type="text" class="form-control" formControlName="repaymentType"  />
+                  </div> -->
+                </div>
+                <br>
+                <!-- <div class="row mt-1 mb-0">
+                  <div class="col-md-3">
+                    <label class="form-label">Loan Balance</label>
+                    <input type="text" class="form-control" formControlName="repaymentType"  />
+                  </div>
+                </div> -->
           
           </div>
         </div>
@@ -196,24 +257,61 @@
                   <legend>For Office Use</legend>
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2 ">
-                  <div class="row">
-                    
-                   <div class="col-md-3">
-                      <label class="form-label">Date of Receipt</label>
-                      <input type="text" class="form-control" formControlName="loanAmount"
-                        value="{{loanAmount | number:'1.2-2'}}" disabled/>
-                    </div>
-                   
-                    <div class="col-md-3">
-                      <label class="form-label">Amount</label>
-                      <input type="text" class="form-control" formControlName="repaymentType"  />
-                    </div>
-                   
-                    
-                    
-                   
-                  </div>
-                
+
+                      <div class="row mt-1 mb-0">
+                        
+                        <div class="col-md-3">
+                          <label class="form-label">Bank Details</label>
+                          <select class="form-control"
+                            placeholder="Select" >
+                            <option [ngValue]="null" selected>Select</option>
+                            <option  [selected]="loanType == loan.loanCode">
+                              Cheque</option>
+                              <option  [selected]="loanType == loan.loanCode">
+                                Online</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">IFSC</label>
+                          <input type="text" class="form-control" formControlName="underlineAssestValue"
+                            [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                             />
+                        </div>
+      
+                        <div class="col-md-3">
+                          <label class="form-label">Bank Name</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Branch Name</label>
+                          <input type="text" class="form-control" formControlName="loanAmount"
+                            value="{{loanAmount | number:'1.2-2'}}" />
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row mt-1 mb-0">
+                        <div class="col-md-3">
+                          <label class="form-label">Date of Receipt</label>
+                          <input type="text" class="form-control" formControlName="loanAmount"
+                            value="{{loanAmount | number:'1.2-2'}}" disabled/>
+                        </div>
+                      
+                        <div class="col-md-3">
+                          <label class="form-label">Amount Received</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Loan Balance</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Remark</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        </div>
+                        
+                      </div>
+
+                      
                 </div>
               </div>
 

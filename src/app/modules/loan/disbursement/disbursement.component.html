@@ -31,7 +31,7 @@
                          
                         </div>
                         <div class="col-md-2">
-                          <label class="form-label mt-1 mb-0">Employee Type</label>
+                          <label class="form-label mt-1 mb-0">Department</label>
                           <label class="font-12 text-ellipsis mt-1 mb-0">Worker</label  >
                           <!-- <input type="text" class="form-control" value="Worker"  disabled /> -->
                         </div>
@@ -130,7 +130,7 @@
                         disabled />
                     </div>
                     <div class="col-md-3">
-                      <label class="form-label">Balance Disbursement Amt.</label>
+                      <label class="form-label">Disburse Amt.</label>
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" disabled/>
                     </div>
@@ -149,10 +149,16 @@
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2 ">
                   <div class="row mt-1 mb-0">
-                    <div class="col-md-3" >
+                    <div class="col-md-3">
                       <label class="form-label">Payee Type</label>
-                      <input type="text" class="form-control" formControlName="noOfInstallment" />
-
+                      <select class="form-control"
+                        placeholder="Select" >
+                        <option [ngValue]="null" selected>Select</option>
+                        <option  [selected]="loanType == loan.loanCode">
+                          Self</option>
+                          <option  [selected]="loanType == loan.loanCode">
+                            Other</option>
+                      </select>
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Payee Name</label>
@@ -191,6 +197,11 @@
                          />
                     </div>
                     <div class="col-md-3">
+                      <label class="form-label">Bank Name</label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" />
+                    </div>
+                    <div class="col-md-3">
                       <label class="form-label">Branch Name</label>
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" />
@@ -200,22 +211,28 @@
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" />
                     </div>
+                    
+
+                  </div>
+                
+                  <br>
+                  <div class="row mt-1 mb-0">
                     <div class="col-md-3">
                       <label class="form-label">Account No.</label>
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" />
                     </div>
-
-                  </div>
-                
-                  <br>
-                  <div class="row">
+                    <div class="col-md-3">
+                      <label class="form-label">Verify Account No.</label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" />
+                    </div>
                     <div class="col-md-3">
                       <label class="form-label">Expected Payment Date </label>
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" />
                     </div>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                       <label class="form-label">Amount</label>
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" />
@@ -223,7 +240,7 @@
                     <div class="col-md-3">
                       <label class="form-label">Remark</label>
                       <input type="text" class="form-control" formControlName="repaymentType"  />
-                    </div>
+                    </div> -->
                    
 
                   </div>
@@ -245,10 +262,6 @@
                             value="{{loanAmount | number:'1.2-2'}}" disabled/>
                         </div>
                         <div class="col-md-3">
-                          <label class="form-label">Amount</label>
-                          <input type="text" class="form-control" formControlName="repaymentType"  />
-                        </div>
-                        <div class="col-md-3">
                           <label class="form-label">Mode of Payment</label>
                           <select class="form-control"
                             placeholder="Select" >
@@ -257,22 +270,50 @@
                               Cheque</option>
                               <option  [selected]="loanType == loan.loanCode">
                                 Online</option>
+                                <option  [selected]="loanType == loan.loanCode">
+                                  Salary</option>
                           </select>
                         </div>
+                        
                         <div class="col-md-3">
-                          <label class="form-label">Bank Name</label>
+                          <label class="form-label">Bank Details</label>
                           <input type="text" class="form-control" formControlName="repaymentType"  />
                         </div>
-                      </div>
-
-                      <div class="row mt-1 mb-0">
                         <div class="col-md-3">
-                          <label class="form-label">Cheque/ UTR No.</label>
+                          <label class="form-label">IFSC</label>
                           <input type="text" class="form-control" formControlName="underlineAssestValue"
                             [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
                              />
                         </div>
+                        
+                        
+                      </div>
+
+                      <div class="row mt-1 mb-0">
+                        <div class="col-md-3">
+                          <label class="form-label">Bank Name</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
                         </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Branch Name</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Account No.</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Amount</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        </div>
+                        </div>
+
+                        <!-- <div class="row mt-1 mb-0">
+                          <div class="col-md-3">
+                            <label class="form-label">Amount</label>
+                            <input type="text" class="form-control" formControlName="repaymentType"  />
+                          </div>
+                          </div> -->
                     </div>
                   </div>
                 </fieldset>

@@ -18,7 +18,7 @@ const html2canvas: any = _html2canvas;
   styleUrls: ['./settlement.component.scss']
 })
 export class SettlementComponent implements OnInit {
-
+  optionValue: any;
   AddLoanForm: FormGroup;
   public modalRef: BsModalRef;
   loanData: any;
@@ -1398,4 +1398,6 @@ export class SettlementComponent implements OnInit {
 
     })
   }
+
+  
 }
