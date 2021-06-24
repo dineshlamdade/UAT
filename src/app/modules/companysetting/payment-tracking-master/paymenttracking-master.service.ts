@@ -44,7 +44,7 @@ export class PaymenttrackingMasterService {
   }
    
   public getJobMasterMapping(){
-    return this.http.get<any>(this.apiUrl1 + 'job-master-mapping/master/jobMasterId')
+    return this.http.get<any>(this.apiUrl1 + 'job-master-mapping/master/1')
   }
 
   public getModuleName()

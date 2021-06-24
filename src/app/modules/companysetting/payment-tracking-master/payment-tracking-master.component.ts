@@ -15,7 +15,8 @@ export class PaymentTrackingMasterComponent implements OnInit {
   complianceMasterList: any;
   garnishmentMasterList: any;
   jobMasterList: any;
-  jobMasterMappingList: any;
+  jobMasterMappingList: [];
+  masterCode : [];
   workFlowList: any;
   users1:  [];
   users2: [];
@@ -32,6 +33,11 @@ export class PaymentTrackingMasterComponent implements OnInit {
   row: any=[];
   rowV: any=[];
   bankDetailssummary: any;
+  ifscCodeList: any;
+  payHead: any;
+  logicMethod: any;
+  formulaMasterId: any;
+  products: any=[];
   
  
   constructor( private formBuilder: FormBuilder, private service:PaymenttrackingMasterService,
@@ -74,7 +80,11 @@ export class PaymentTrackingMasterComponent implements OnInit {
       jobMasterType : new FormControl(''),
       workflowCode : new FormControl(''),
       masterCode : new FormControl(''),
-      
+      accountNumber : new FormControl(''),
+      isActive :new FormControl(''),
+      formulaMasterId :new FormControl(''),
+      logicMethod : new FormControl(''),
+      payHead : new FormControl('')
       
 
     })
@@ -140,10 +150,23 @@ getJobMasterMapping(){
    })
  }
 
+ getBankDetailsPopUp(){
+   this.service.getBankMasterDetails().subscribe(res =>{
+     this.products = res.data.results;
+   })
+ }
+
  getJobMappingValue(){
    this.service.getJobMasterMapping().subscribe(res =>{
      this.jobMasterMapping = res.data.results;
    })
+ }
+
+ getIFSCBankCode(){
+   this.service.getBankMasterDetails().subscribe(res =>{
+     this.ifscCodeList = res.data.results;
+   })
+   console.log
  }
 
  getSummary(){
@@ -205,21 +228,24 @@ deleteRows(x) {
 }
 addTableVoucher(){
   const obj = {
-    ifscCode: this.ifscCode,
-    bankName: this.bankName,
+    payHead: this.payHead,
+    logicMethod: this.logicMethod,
     branchName: this.branchName,
-    accountNumber: this.accountNumber,
+    formulaMasterId: this.formulaMasterId,
     isActive: this.isActive,
-  
+   };
 
-  };
-
-
-  this.rowV.push(obj);
+ this.rowV.push(obj);
  
 }
 deleteRowsV(x) {
-  this.row.splice(x, 1);
+  this.rowV.splice(x, 1);
    
 }
+
+onSelectBankDetails(){
+ 
+}
+
+
 }

@@ -44,6 +44,7 @@ import { RolePrivilegeComponent } from './user-rolesand-permission/role-privileg
 import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
 import { PaymentTrackingMasterComponent } from './payment-tracking-master/payment-tracking-master.component';
 import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 
@@ -70,6 +71,7 @@ import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structu
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    OverlayPanelModule,
     FormsModule,
     MatSliderModule,
     TooltipModule.forRoot(),
@@ -98,7 +100,8 @@ import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structu
     ToastModule,
     InputTextModule,
     ProgressBarModule,
-    MultiSelectModule
+    MultiSelectModule,
+   
   ],
 
   providers: [DatePipe, NumberFormatPipe],
