@@ -30,7 +30,8 @@ export class ProjectDetailComponent implements OnInit {
   payrollAreaCode: any;
   companyName: any;
   joiningDate: any;
-
+companyId:any;
+payrollAreaId:any;
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
     private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private router: Router,
@@ -354,7 +355,7 @@ export class ProjectDetailComponent implements OnInit {
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
 
-    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+    this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
         // this.payrollAreaList.push(item.payrollAreaCode);
@@ -376,7 +377,7 @@ export class ProjectDetailComponent implements OnInit {
         //set default company
         let result = res.data.results[0];
         //this.companyName = result[0].payrollAreaId.companyId.companyName;
-        this.companyName = result[0].payrollAreaAndCompany;
+        this.companyName = result[0].companyname;
         localStorage.setItem('jobInformationCompanyName', this.companyName);
       }
       else {
@@ -416,13 +417,16 @@ export class ProjectDetailComponent implements OnInit {
       (c) => c.payrollAreaCode === this.payrollAreaCode
     );
     //this.companyName = toSelect.payrollAreaId.companyId.companyName;
-    this.companyName = toSelect.payrollAreaAndCompany;
+    this.companyName = toSelect.companyname;
+    localStorage.setItem('jobInformationCompanyName', this.payrollAreaId);
+    this.companyId= toSelect.companyId;
     localStorage.setItem('jobInformationCompanyName', this.companyName);
-
+ 
     this.resetProjectForm();
     this.getProjectFormForm();
   }
 
+ 
   resetProjectForm() {
 
     this.projectForm.reset();

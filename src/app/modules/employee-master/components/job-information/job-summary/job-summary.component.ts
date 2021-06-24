@@ -1,11 +1,12 @@
 
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JobInformationService } from '../job-information.service';
 import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
+
 
 @Component({
   selector: 'app-job-summary',
@@ -14,24 +15,32 @@ import { PayrollAreaInformationService } from '../../payroll-area-information/pa
 })
 export class JobSummaryComponent implements OnInit {
 
+
   hiddenSummary: boolean = true;
   employeeMasterId: number;
   summaryGridData: Array<any> = [];
   payrollAreaCode: any;
   companyName:any;
+  companyId:any;
+  period:any;
   joiningDate: any;
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
+  payrollAreaFromDate: any;
+  payrollAreaToDate:any
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private router: Router, private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService,) { }
-
+   
 
   ngOnInit(): void {
+
+  
     this.hiddenSummary = true;
 
     this.payrollAreaCode = '';
     this.companyName='';
+    
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
@@ -47,7 +56,9 @@ export class JobSummaryComponent implements OnInit {
    }
 
     //get payroll area aasigned to that employee
-    this.getPayrollAreaInformation()
+  
+
+    this.getPayrollAreaInformation();
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
@@ -61,54 +72,63 @@ export class JobSummaryComponent implements OnInit {
     //  this.payrollAreaCode = this.payrollAreaList[0];
     this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
     localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+    
     }
     else {
       this.payrollAreaCode = this.payrollAreaCode;
+  
     }
     this.JobInformationService.getSummaryDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
 
       if (res.data.results[0]) {
 
         this.summaryGridData = res.data.results[0];
+
       }
     }, (error: any) => {
 
       this.resetSummary();
 
-    })
+    }
+    )
     if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
+      this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
     }
     else {
       //get payroll area code from local storage
       const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
       this.payrollAreaCode = new String(payrollAreaCode);
     }
+    ;
   }
 
 
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
 
-    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+    this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
       
       res.data.results[0].forEach(item => {
 
         // this.payrollAreaList.push(item.payrollAreaCode);
         // this.filteredPayrollAreaList.push(item.payrollAreaCode);
-
+        
         this.payrollAreaList.push(item);
         this.filteredPayrollAreaList.push(item);
 
       });
       if (this.payrollAreaList.length == 1) {
-        // this.payrollAreaCode = this.payrollAreaList[0];
-        // localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
-
+     
         //set default payroll area
         this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+        this.period=this.payrollAreaList[0].payrollAreaFromDate + "-" + this.payrollAreaList[0].payrollAreaFromDate;
+        this.companyId=this.payrollAreaList[0].companyId;
         localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
-
+        localStorage.setItem('companyId',this.companyId);
+        this.payrollAreaFromDate=this.datepipe.transform(this.payrollAreaList[0].payrollAreaFromDate, "dd-MMM-yyyy");
+    this.payrollAreaToDate=this.datepipe.transform(this.payrollAreaList[0].payrollAreaToDate, "dd-MMM-yyyy");
+    this.period=this.payrollAreaFromDate + " To " +  this.payrollAreaToDate;
+  
         //set default company
         let result=res.data.results[0];
       //  this.companyName = result[0].payrollAreaId.companyId.companyName;
@@ -117,7 +137,7 @@ export class JobSummaryComponent implements OnInit {
       }
       else {
         //get payroll area code from local storage
-        // const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
         // this.payrollAreaCode = new String(payrollAreaCode);
 
          //get company from local storage
@@ -125,6 +145,11 @@ export class JobSummaryComponent implements OnInit {
          if(companyName!=null){
            this.companyName = new String(companyName);
          }
+
+        const periodDate = this.payrollAreaList.find((c)=>c.payrollAreaCode===payrollAreaCode)
+      this.payrollAreaFromDate=this.datepipe.transform(periodDate.payrollAreaFromDate, "dd-MMM-yyyy");
+      this.payrollAreaToDate=this.datepipe.transform(periodDate.payrollAreaToDate, "dd-MMM-yyyy");
+      this.period=this.payrollAreaFromDate + " To " +  this.payrollAreaToDate;  
       }
     })
   }
@@ -152,8 +177,15 @@ export class JobSummaryComponent implements OnInit {
       (c) => c.payrollAreaCode ===  this.payrollAreaCode
     );
     //this.companyName = toSelect.payrollAreaId.companyId.companyName;
-    this.companyName = toSelect.payrollAreaAndCompany;
+    this.companyName = toSelect.companyname;
+    this.companyId=toSelect.companyId;
     localStorage.setItem('jobInformationCompanyName',  this.companyName);
+    localStorage.setItem('companyId',this.companyId);
+    
+    this.payrollAreaFromDate=this.datepipe.transform(toSelect.payrollAreaFromDate, "dd-MMM-yyyy");
+    this.payrollAreaToDate=this.datepipe.transform(toSelect.payrollAreaToDate, "dd-MMM-yyyy");
+    this.period=this.payrollAreaFromDate + " To " +  this.payrollAreaToDate;
+  
 
     this.getGridSummary()
   }
@@ -174,6 +206,10 @@ export class JobSummaryComponent implements OnInit {
       this.router.navigate(['/employee-master/job-information/project-details']);
     }
   }
+
+
+
+
   //reset summary grid
   resetSummary() {
     this.summaryGridData = [];

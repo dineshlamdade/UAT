@@ -28,7 +28,11 @@ export class JobInformationComponent implements OnInit {
   deputationTab: boolean = false;
   public tabIndex = 0;
   tabSubscription: Subscription;
-
+  companyId:any;
+  companyname:any;
+  payrollAreaFromDate: any;
+  payrollAreaToDate:any
+  period:any;
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private router: Router, private PayrollAreaService: PayrollAreaInformationService,
@@ -121,24 +125,37 @@ export class JobInformationComponent implements OnInit {
   getPayrollAreaInformation() {
 
 
-    this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+    this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
+      this.companyId=res.data.results[0][0].companyId;
+      this.payrollAreaCode=res.data.results[0][0].payrollAreaCode
+      localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
+      localStorage.setItem('companyId',this.companyId);
+
+      // this.payrollAreaFromDate=this.datepipe.transform(res.data.results[0][0].payrollAreaFromDate, "dd-MMM-yyyy");
+      // this.payrollAreaToDate=this.datepipe.transform(res.data.results[0][0].payrollAreaToDate, "dd-MMM-yyyy");
+      // this.period=this.payrollAreaFromDate + " To " +  this.payrollAreaToDate;  
 
       res.data.results[0].forEach(item => {
 
         this.payrollAreaList.push(item.payrollAreaCode);
         this.filteredPayrollAreaList.push(item.payrollAreaCode);
+        
 
       });
     })
 
-    if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
-    }
-    else {
-      //get payroll area code from local storage
-      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-      this.payrollAreaCode = new String(payrollAreaCode);
-    }
+    // this.companyId=this.payrollAreaList[0].companyId;
+    // localStorage.setItem('companyId',this.companyId);
+    // if (this.payrollAreaList.length == 1) {
+    //   this.payrollAreaCode = this.payrollAreaList[0];
+    //   this.companyId= this.payrollAreaList[0].companyId;
+    //   localStorage.setItem('copmanyId',this.companyId);
+    // }
+    // else {
+    //   //get payroll area code from local storage
+    //   const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+    //   this.payrollAreaCode = new String(payrollAreaCode);
+    // }
 
   }
 

@@ -488,7 +488,7 @@ export class MinimumWagesDetailComponent implements OnInit {
 
   //get payroll area assigned to that employee
   getPayrollAreaInformation() {
-    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+    this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
         // this.payrollAreaList.push(item.payrollAreaCode);
@@ -548,7 +548,7 @@ export class MinimumWagesDetailComponent implements OnInit {
       (c) => c.payrollAreaCode === this.payrollAreaCode
     );
     // this.companyName = toSelect.payrollAreaId.companyId.companyName;
-    this.companyName = toSelect.payrollAreaAndCompany;
+    this.companyName = toSelect.companyname;
     localStorage.setItem('jobInformationCompanyName', this.companyName);
 
     this.resetMinimumWagesForm();

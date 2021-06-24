@@ -33,13 +33,34 @@ export class JobInformationService {
 
 
   
-  getOtherMasterDetails(){
-    return this.httpClient.get(environment.baseUrl8083 + 'job-master/' , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  getOtherMasterDetails(copmanyId){
+    return this.httpClient.get(environment.baseUrl8083 + 'job-master-mapping/company/'+copmanyId ,{headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
 
+  getJobMasterDetails(){
+    return this.httpClient.get(environment.baseUrl8083 + 'job-master/' , {headers:{'X-TenantId': 'PaysquareDefault'}})
+    .pipe(map((res:any)=>{
+      return res;
+    }))
+  }
+//check mapping available or not for copy from option
+
+getAvailableJobMappingId(employeeMasterId){
+  return this.httpClient.get(environment.baseUrl8082+'employee-organization/isAvailable/'+employeeMasterId,{headers:{'X-TenantId':'PaysquareDefault'}})
+  .pipe(map((res:any)=>{
+    return res;
+  }))
+}
+
+getAvailablePositionMappingId(employeeMasterId){
+  return this.httpClient.get(environment.baseUrl8082+'position-details/isAvailable/'+employeeMasterId,{headers:{'X-TenantId':'PaysquareDefault'}})
+  .pipe(map((res:any)=>{
+    return res;
+  }))
+}
   //Get position dropdown values API call
   getPositionDD(){
 
@@ -89,7 +110,7 @@ export class JobInformationService {
     const params = new HttpParams()
     .set('payrollAreaCode', payrollAreaCode);
 
-    return this.httpClient.get(environment.baseUrl8082 + '/position-details/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
+    return this.httpClient.get(environment.baseUrl8082 + 'position-details/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -141,9 +162,9 @@ export class JobInformationService {
   }
 
   //get All Employees From database
-  getAllEmployees() {
+  getAllEmployees(companyId) {
 
-    return this.httpClient.get(environment.baseUrl8082 + '/employee-master/all/active', {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 + '/employee-master/approver/'+companyId , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
