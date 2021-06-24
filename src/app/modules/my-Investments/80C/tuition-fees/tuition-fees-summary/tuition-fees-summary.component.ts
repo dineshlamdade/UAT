@@ -15,6 +15,9 @@ export class TuitionFeesSummaryComponent implements OnInit {
   @Input() institution: string;
   @Input() childName: string;
   @Output() myEvent = new EventEmitter<any>();
+  @Output() childNAME = new EventEmitter<any>();
+  @Output() selectedInstitutionName = new EventEmitter<any>();
+    @Output() accountNo = new EventEmitter<any>();
 
   onEditSummary(institution: string, childName: string) {
     this.tabIndex = 2;
@@ -90,30 +93,60 @@ export class TuitionFeesSummaryComponent implements OnInit {
   }
 
 
+  redirectToDeclarationActual(institution: string, childName: string, mode: string) {
+    this.tabIndex = 2;
+    const data = {
+      institution : institution,
+      childName : childName,
+      tabIndex : this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
+    };
+    this.institution = institution;
+    this.childName = childName;
+    this.myEvent.emit(data);
+  }
 
+  // jumpToMasterPage(institution: string, accountHolderName: string) {
+    
+  //   this.tabIndex = 1;
+  //   const test = {
+  //     institution: institution,
+  //     accountHolderName: accountHolderName,
+  //     tabIndex: this.tabIndex,
+  //   };
+  //   this.institution = institution;
+  //   this.childName = accountHolderName;
 
-  jumpToMasterPage(n: number) {
-    //console.log(n);
+  //   this.accountNo.emit(test);
+  // }
+  jumpToMasterPage(institution: string, accountHolderName: string) {
+    
     this.tabIndex = 1;
-    //this.editMaster(3);
+    const accountNo = {
+          institution: institution,
+          accountHolderName: accountHolderName,
+          tabIndex: this.tabIndex,
+    };
+    this.accountNo.emit(accountNo);
   }
 
-  // On onEditSummary
-  onEditSummary1(institution: string, childName: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.childName = childName;
-    console.log('institution::', institution);
-    console.log('childName::', childName);
-  }
-   // On onEditSummary
-   onViewSummary1(institution: string, childName: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.childName = childName;
-    console.log('institution::', institution);
-    console.log('childName::', childName);
-  }
+  // // On onEditSummary
+  // onEditSummary1(institution: string, childName: string) {
+  //   this.tabIndex = 2;
+  //   this.institution = institution;
+  //   this.childName = childName;
+  //   console.log('institution::', institution);
+  //   console.log('childName::', childName);
+  // }
+  //  // On onEditSummary
+  //  onViewSummary1(institution: string, childName: string) {
+  //   this.tabIndex = 2;
+  //   this.institution = institution;
+  //   this.childName = childName;
+  //   console.log('institution::', institution);
+  //   console.log('childName::', childName);
+  // }
 
     // Post New Future Policy Data API call
     public addFuturePolicy(): void {

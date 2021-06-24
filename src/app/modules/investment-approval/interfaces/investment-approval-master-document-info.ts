@@ -12,5 +12,6 @@ export interface InvestmentApprovalMasterDocumentInfo {
   proofSubmissionId: string;
   lastModifiedDateTime: Date;
   documentStatus: string;
+  statusRemark: string;
   documentRemarkDetailList: InvestmentApprovalDocumentRemarkInfo[];
 }

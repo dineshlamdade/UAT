@@ -314,7 +314,7 @@
                     class="form-control"
                     placeholder="Institution"
                     (change)="onInstitutionChange(addRowSummary, i)"
-                    [ngClass]="{ 'is-invalid': this.requiredField }"
+                    [ngClass]="{ 'is-invalid': this.requiredInstitution }"
                   />
                 </td>
                 <td>
@@ -325,7 +325,7 @@
                       class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)"
                       placeholder="Account No."
                       (change)="onAccountNoChange(addRowSummary, i)"
-                      [ngClass]="{ 'is-invalid': this.requiredField }"
+                      [ngClass]="{ 'is-invalid': this.requiredaccountNumber }"
                       />
 
                   </div>
@@ -339,7 +339,7 @@
                       class="form-control align-right"
                       placeholder="Declared"
                       (change)="onDeclearedAmountChange(addRowSummary, i)"
-                      [ngClass]="{ 'is-invalid': this.requiredField }"
+                      [ngClass]="{ 'is-invalid': this.requireddeclaredAmount }"
                     
 
 
@@ -360,7 +360,7 @@
                     "
                     class="form-control"
                     bsDatepicker
-                    [ngClass]="{ 'is-invalid': this.requiredField }"
+                    [ngClass]="{ 'is-invalid': this.requireddateOfPayment }"
                   />
                 </td>
                 <td>
@@ -396,6 +396,7 @@
                   <!-- <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
                     </span> -->
+                    {{addRowSummary.transactionStatus}}
                 </td>
                 <!-- </form> -->
               </tr>
@@ -417,8 +418,8 @@
                   ></i>
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;<i
                     class="fa fa-times font-16 text-red cursor-pointer"
-                    *ngIf="hideRemoveRow"
-                    tooltip="Cancel"
+                    *ngIf="showDeleteButton"
+                    tooltip="Delete Row"
                     (click)="deleteRow()"
                   ></i>
                 </td>

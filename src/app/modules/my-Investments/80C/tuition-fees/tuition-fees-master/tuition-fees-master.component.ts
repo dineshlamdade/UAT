@@ -36,6 +36,8 @@ import { TuitionFeesService } from '../tuition-fees.service';
 export class TuitionFeesMasterComponent implements OnInit {
 
   @Input() public accountNo: any;
+  @Input() public data: any;
+  @Input() public selecteddata: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -129,7 +131,55 @@ export class TuitionFeesMasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
-    this.form = this.formBuilder.group({
+    // this.form = this.formBuilder.group({
+    //   institution: new FormControl(null, Validators.required),
+    //   accountNumber: new FormControl(null),
+    //   accountHolderName: new FormControl(null, Validators.required),
+    //   relationship: new FormControl(
+    //     { value: null, disabled: true },
+    //     Validators.required
+    //   ),
+    //   policyStartDate: new FormControl(null),
+    //   policyEndDate: new FormControl(null),
+    //   familyMemberInfoId: new FormControl(null, Validators.required),
+    //   active: new FormControl(true, Validators.required),
+    //   remark: new FormControl(null),
+    //   frequencyOfPayment: new FormControl(null, Validators.required),
+    //   premiumAmount: new FormControl(null, Validators.required),
+    //   annualAmount: new FormControl(
+    //     { value: null, disabled: true },
+    //     Validators.required
+    //   ),
+    //   fromDate: new FormControl(null, Validators.required),
+    //   toDate: new FormControl(null, Validators.required),
+    //   ecs: new FormControl('0'),
+    //   investmentGroup2MasterPaymentDetailId: new FormControl(0),
+    //   investmentGroup2MasterId: new FormControl(0),
+    //   // investmentGroup2MasterPaymentDetailId: new FormControl(0),
+    //   depositType: new FormControl('recurring'),
+    //   // proofSubmissionId: new FormControl(''),
+    // });
+
+    // this.frequencyOfPaymentList = [
+    //   { label: 'Monthly', value: 'Monthly' },
+    //   { label: 'Quarterly', value: 'Quarterly' },
+    //   { label: 'Half-Yearly', value: 'Halfyearly' },
+    //   { label: 'Yearly', value: 'Yearly' },
+    // ];
+    // this.masterPage();
+    // this.addNewRowId = 0;
+    // this.hideRemarkDiv = false;
+    // this.hideRemoveRow = false;
+    // this.isClear = false;
+    // this.isCancel = false;
+    // this.receiptAmount = this.numberFormat.transform(0);
+    // this.globalAddRowIndex = 0;
+    // this.globalSelectedAmount = this.numberFormat.transform(0);
+    this.getInitialData();
+  }
+  getInitialData() {
+
+     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null),
       accountHolderName: new FormControl(null, Validators.required),
@@ -155,7 +205,7 @@ export class TuitionFeesMasterComponent implements OnInit {
       investmentGroup2MasterId: new FormControl(0),
       // investmentGroup2MasterPaymentDetailId: new FormControl(0),
       depositType: new FormControl('recurring'),
-      proofSubmissionId: new FormControl(''),
+      // proofSubmissionId: new FormControl(''),
     });
 
     this.frequencyOfPaymentList = [
@@ -173,10 +223,101 @@ export class TuitionFeesMasterComponent implements OnInit {
     this.receiptAmount = this.numberFormat.transform(0);
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
+
   }
 
   public ngOnInit(): void {
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+   
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+
+    // // Business Financial Year API Call
+    // this.Service.getBusinessFinancialYear().subscribe((res) => {
+    //   this.financialYearStart = res.data.results[0].policyStartDate;
+    // });
+
+    // // Family Member List API call
+    // // this.Service.getFamilyInfo().subscribe((res) => {
+    // //   console.log('getFamilyInfo', res);
+    // //   this.familyMemberGroup = res.data.results;
+    // //   res.data.results.forEach((element) => {
+    // //     const obj = {
+    // //       label: element.familyMemberName,
+    // //       value: element.familyMemberName,
+    // //     };
+    // //     if (element.relation === 'Self') {
+    // //       this.familyMemberName.push(obj);
+    // //     }
+    // //   });
+    // //   this.form.patchValue({
+    // //     familyMemberInfoId: this.familyMemberGroup[0].familyMemberInfoId,
+    // //     accountHolderName: this.familyMemberGroup[0].familyMemberName,
+    // //     relationship: this.familyMemberGroup[0].relation,
+    // //   });
+    // // });
+
+    //     // Family Member List API call
+    //     this.Service.getFamilyInfo().subscribe((res) => {
+    //       console.log('getFamilyInfo', res);
+    //       this.familyMemberGroup = res.data.results;
+    //       res.data.results.forEach((element) => {
+    //         const obj = {
+    //           label: element.familyMemberName,
+    //           value: element.familyMemberName,
+    //         };
+    //         if(element.relation ==='Daughter' || element.relation === 'Son') {
+    //           this.familyMemberName.push(obj);
+    //         }
+    //       });
+    //     });
+
+    // this.deactivateRemark();
+
+    // // Get All Institutes From Global Table
+    // this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
+    //   // console.log(res);
+    //   res.data.results.forEach((element: { insurerName: any }) => {
+    //     const obj = {
+    //       label: element.insurerName,
+    //       value: element.insurerName,
+    //     };
+    //     this.institutionNameList.push(obj);
+    //   });
+    // });
+
+    // // Get All Previous Employer
+    // this.Service.getAllPreviousEmployer().subscribe((res) => {
+    //   console.log(res.data.results);
+    //   if (res.data.results.length > 0) {
+    //     this.employeeJoiningDate = res.data.results[0].joiningDate;
+    //     // console.log('employeeJoiningDate::',this.employeeJoiningDate);
+    //   }
+    // });
+
+    // if (this.today.getMonth() + 1 <= 3) {
+    //   this.financialYear =
+    //     this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+    // } else {
+    //   this.financialYear =
+    //     this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+    // }
+
+    // const splitYear = this.financialYear.split('-', 2);
+
+    // this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
+    // this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    // if (this.data != undefined || this.data != null) {
+    //   const input = this.data;
+    //   this.editMaster(input.accountHolderName);
+    //   console.log('editMaster accountNumber', input.accountHolderName);
+    // }
+    this.getDetails();
+  }
+
+  getDetails(){
+    
+    console.log(this.selecteddata);
+     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
@@ -256,9 +397,10 @@ export class TuitionFeesMasterComponent implements OnInit {
 
     if (this.accountNo != undefined || this.accountNo != null) {
       const input = this.accountNo;
-      this.editMaster(input.accountNumber);
-      console.log('editMaster accountNumber', input.accountNumber);
+      this.editMaster(input.accountHolderName, input.institution);
+      console.log('editMaster accountNumber', input.accountHolderName);
     }
+
   }
 
   // convenience getter for easy access to form fields
@@ -444,10 +586,13 @@ export class TuitionFeesMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
+      data.policyStartDate = from;
+      data.policyEndDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('Post Office Data::', data);
@@ -492,6 +637,8 @@ export class TuitionFeesMasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
+      this.getInitialData();
+      this.getDetails();
     }
   }
 
@@ -568,7 +715,7 @@ export class TuitionFeesMasterComponent implements OnInit {
   }
 
   //  On Master  from summary page as well as edit master page summary table Edit functionality --------------------
-  editMaster(accountNumber) {
+  editMaster(accountHolderName, institution) {
     this.scrollToTop();
     this.tuitionFeesService.geMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -579,8 +726,8 @@ export class TuitionFeesMasterComponent implements OnInit {
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
       });
-      console.log(accountNumber);
-      const obj = this.findByPolicyNo(accountNumber, this.masterGridData);
+      console.log(accountHolderName , institution);
+      const obj = this.findByPolicyNo(accountHolderName, institution, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
       console.log('Edit Master', obj);
@@ -597,8 +744,8 @@ export class TuitionFeesMasterComponent implements OnInit {
   }
 
   // findByPolicyNo Fuctionality
-  findByPolicyNo(accountNumber, masterGridData) {
-    return masterGridData.find((x) => x.accountNumber === accountNumber);
+  findByPolicyNo(accountHolderName, institution, masterGridData) {
+    return masterGridData.find((x) => x.accountHolderName === accountHolderName && x.institution===institution);
   }
 
   // scrollToTop Fuctionality

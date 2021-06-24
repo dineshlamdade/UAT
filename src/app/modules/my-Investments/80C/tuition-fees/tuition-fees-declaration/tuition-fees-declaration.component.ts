@@ -207,7 +207,7 @@ public ngOnInit(): void {
     this.globalInstitution = input.institution;
     this.globalPolicy = input.accountNumber;
     this.getInstitutionListWithPolicyNo();
-    this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+    this.getTransactionFilterData(input.institution, 'null', 'null');
     if (input.canView === true){
       this.isDisabled = true;
     } else{

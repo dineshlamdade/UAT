@@ -838,9 +838,23 @@
           <i class="fa fa-money" aria-hidden="true"></i>
           <span>Loan Master</span>
       </a>
-  </li>
+    </li> -->
 
-
+      <li
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a
+          [routerLink]="['/investment-approval/dashboard']"
+          (click)="isCollapsed = !isCollapsed"
+          [attr.aria-expanded]="!isCollapsed"
+          aria-controls="collapseBasic"
+          class="has-arrow arrow-c"
+          aria-expanded="true"
+        >
+          <i class="icon-rocket"></i><span>Approved Investment</span>
+        </a>
+      </li>
     </ul>
   </nav>
 </div>
