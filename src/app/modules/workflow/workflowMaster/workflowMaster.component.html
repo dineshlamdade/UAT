@@ -67,7 +67,7 @@
                       </select> -->
                     </div>
                     <div class="col-sm-2" *ngIf="form.get('defined').value === true && !form.get('autoApproval').value">
-                      <label class="form-label">Approval template</label>
+                      <label class="form-label">Approval Template</label>
                       <select formControlName="definedTemplateId" class="form-control custom-select"
                         [ngClass]="{'is-invalid' : form.get('definedTemplateId').status == 'INVALID'}">
                         <option [ngValue]="null">Select</option>
@@ -153,18 +153,14 @@
                   <tbody *ngFor="let item of arrayApproverMaster; let i = index; let c =count">
 
                     <tr>
-
-                      <td> {{i+1}}
-                      </td>
-
+                      <td> {{i+1}}</td>
                       <td>
-                        <select [(ngModel)]="item.sequence" class="form-control custom-select">
+                        <select [(ngModel)]="item.sequence" class="form-control custom-select" (change)="getSelectedSequence($event.target.value)">
                           <option *ngFor="let data of sequence" [value]=data>
                             {{data}}
                           </option>
                         </select>
                       </td>
-
                       <td>
                         <select [(ngModel)]="item.approverMethod"
                           [ngClass]="{'is-invalid' : item.approverMethod === null}"
@@ -174,9 +170,8 @@
                           </option>
                         </select>
                       </td>
-
                       <td>
-                        {{item.levelOfRM}}
+                        <label>{{item.levelOfRM}}</label>
                         <select [(ngModel)]="item.levelOfRM" [ngClass]="{'is-invalid' : (item.levelOfRM === null)}"
                           [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select"
                           (change)="selectedLevelOfRM($event.target.value)">
@@ -519,8 +514,8 @@
                     <td>
                       <div [attr.disabled]="reassignedSequenceArrayForm.get('sdm').value != null">
                         <i *ngIf="addReassignedButtonPopup"
-                          class="fa fa-plus-circle font-16 text-blue cursor-pointer ml-3"
-                          (click)="submitReassigned()">Add</i>
+                          class="fa fa-plus-circle font-16 text-green cursor-pointer ml-3"
+                          (click)="submitReassigned()" style="color: #4CAF50 !important;"></i>
                         <i *ngIf="!addReassignedButtonPopup" class="fa fa-pencil font-16 text-blue cursor-pointer ml-3"
                           (click)="updateReassignMethodDetails()">Update</i>
                       </div>
@@ -538,6 +533,14 @@
 
   </form>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="resetAssignedData();">Reset</button> -->
+
+    <button (click)="modalRef.hide()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+      <b><i class="fa fa-close"></i></b>Close</button>
+   
+    <button (click)="resetAssignedData();" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+    <b><i class="fa fa-refresh"></i></b> Reset</button>
+    
   </div>
 </ng-template>

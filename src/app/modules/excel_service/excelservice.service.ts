@@ -12,10 +12,13 @@ export class ExcelserviceService {
 
   constructor() { }
 
-  public exportAsExcelFile(json: any[], excelFileName: string): void {
+  public exportAsExcelFile(json: any[], excelFileName: string, sheetname: string): void {
 
     const myworksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    const myworkbook: XLSX.WorkBook = { Sheets: { 'data': myworksheet }, SheetNames: ['data'] };
+    const myworkbook: XLSX.WorkBook = { Sheets: { sheetname : myworksheet }, SheetNames: [sheetname] };
+    // myworksheet['A1'].s = { fill: { fgColor: { rgb: "#d6c227" } } };
+    // console.log({ Sheets: { 'Workflow-Master' : myworksheet }, SheetNames: [sheetname] })
+    console.log(myworkbook)
     const excelBuffer: any = XLSX.write(myworkbook, { bookType: 'xlsx', type: 'array' });
     this.saveAsExcelFile(excelBuffer, excelFileName);
   }

@@ -209,7 +209,7 @@ export class AttendanceComponent implements OnInit {
   exportAsXLSX(): void {
     this.excelData = [];
     this.excelData = this.attendanceData
-    this.excelservice.exportAsExcelFile(this.excelData, 'Attandence');
+    this.excelservice.exportAsExcelFile(this.excelData, 'Attandence','Attendance');
   }
 
   AttendanceSummaryDatewiseRecordsUI() {

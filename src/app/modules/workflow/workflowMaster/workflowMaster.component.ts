@@ -326,6 +326,22 @@ export class WorkflowMasterComponent implements OnInit {
     this.reassignedSequenceArray = [];
   }
 
+  getSelectedSequence(sequence){
+    console.log(this.arrayApproverMaster)
+    this.arrayApproverMaster.forEach(ele =>{
+      if(ele.sequence == sequence){
+        if(ele.treatmentUnActionedPlan == null){
+          ele.treatmentUnActionedPlan = this.arrayApproverMaster[0].treatmentUnActionedPlan
+          ele.numberOfDays = this.arrayApproverMaster[0].numberOfDays
+        }
+      }
+    })
+  }
+
+  resetAssignedData(){
+    this.reassignedSequenceArrayPopUp = []
+  }
+
   approverMethodValidation(index) {
     this.arrayApproverMaster[index].approverMethod === 'Reporting Manager' ?
       this.arrayApproverMaster[index].sdm = null : this.arrayApproverMaster[index].levelOfRM = null;
@@ -338,40 +354,33 @@ export class WorkflowMasterComponent implements OnInit {
   addAprrover() {
     let temparr = []
     this.levelOfRM.forEach((element,index) =>{
-      if(element <= parseInt(this.selectedLevelManager)){
-        //  console.log("selected data: " +element)
-        // temparr.push(element)
-        // console.log("push data: " +temparr)
-        // for (var i = 0 ; i< temparr.length -1; i++){
-        // this.levelOfRM.splice(temparr[i], 1);
-        // }          
-        // let ind = index;
-        // console.log("if: "+ind)
-        // this.levelOfRM.splice(ind,ind)
-      }
       if(element == parseInt(this.selectedLevelManager)){
-        //console.log(element)
+
         let ind = index;
-        //console.log("if1: "+ind)
-        this.levelOfRM.splice(ind,1)
-      }
-    })
-   // console.log(this.sequence)
-  // debugger
-    this.sequence.forEach((ele,index) =>{
-      if(ele == this.arrayApproverMaster.length+1){
-        let ind = index
-        this.sequence.splice(ind,1,this.arrayApproverMaster.length+1)
-      }else{
-        let len = this.arrayApproverMaster.length -1
-        if(ele == len){
-          return;
+        if(ind == 0){
+          this.levelOfRM.splice(0,1)
         }else{
-          this.sequence.push(this.arrayApproverMaster.length + 1)
+          let val = ind + 1;
+          this.levelOfRM.splice(0,val)
         }
       }
+      // if(element == parseInt(this.selectedLevelManager)){
+      //   //console.log(element)
+      //   let ind = index;
+      //   //console.log("if1: "+ind)
+      //   this.levelOfRM.splice(ind,1)
+      // }
     })
     
+  this.sequence.push(this.arrayApproverMaster.length + 1)
+    var flags = [], output = [], l = this.sequence.length, i;
+    for( i=0; i<l; i++) {
+        if( flags[this.sequence[i]]) continue;
+        flags[this.sequence[i]] = true;
+        output.push(this.sequence[i]);
+    }
+    this.sequence = output
+
     this.arrayApproverMaster.push({
       approverMethod: null,
       levelOfRM: null,
@@ -389,13 +398,23 @@ export class WorkflowMasterComponent implements OnInit {
     this.arrayApproverMaster.splice(i, 1);
     this.sequence.splice(i,1)
     this.levelOfRM.push(data.levelOfRM)
-      // this.sequence.forEach((element,index) =>{
-        // if(element == data.sequence) {
-          // let ind = index;
-          this.sequence.push(data.sequence)
-        // }
-      // })
-    // this.sequence.push(this.arrayApproverMaster.length + 1)
+    this.levelOfRM.push(data.levelOfRM - 1)
+    // console.log(data.levelOfRM.length)
+    // for(let i= data.levelOfRM.length; i > data.levelOfRM.length; i--){
+    //   console.log(data.levelOfRM[i])
+    //   this.levelOfRM.push(data.levelOfRM[i])
+    // }
+    
+    var flags = [], output = [], l = this.levelOfRM.length, i;
+    for( i=0; i<l; i++) {
+        if( flags[this.levelOfRM[i]]) continue;
+        flags[this.levelOfRM[i]] = true;
+        output.push(this.levelOfRM[i]);
+    }
+    this.levelOfRM = output
+    console.log(this.levelOfRM)
+ 
+    this.sequence.push(data.sequence)
     this.levelOfRM = this.levelOfRM.sort()
     this.sequence = this.sequence.sort()
   }
@@ -538,7 +557,7 @@ export class WorkflowMasterComponent implements OnInit {
 			}
 			this.excelData.push(obj)
 		});
-    this.excelservice.exportAsExcelFile(this.excelData, 'Workflow-Summary');
+    this.excelservice.exportAsExcelFile(this.excelData, 'Workflow-Summary','Workflow-Master');
   }
 
   deleteRow() { }
