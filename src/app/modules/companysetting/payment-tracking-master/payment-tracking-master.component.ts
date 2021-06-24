@@ -24,6 +24,14 @@ export class PaymentTrackingMasterComponent implements OnInit {
   editFlag: any;
   jobMasterMapping: any;
   garnishmentDetailsList: any;
+  ifscCode: any;
+  bankName: any;
+  branchName: any;
+  accountNumber: any;
+  isActive: any;
+  row: any=[];
+  rowV: any=[];
+  bankDetailssummary: any;
   
  
   constructor( private formBuilder: FormBuilder, private service:PaymenttrackingMasterService,
@@ -38,6 +46,7 @@ export class PaymentTrackingMasterComponent implements OnInit {
     this.getJobMasterMapping()
     this.getWorkFlowApproval()
     this.getSummary()
+    this.getBankdetails()
 
     this.paymenttrackingForm = this.formBuilder.group({
       paymentTrackMastId: new FormControl(''),
@@ -127,7 +136,7 @@ getJobMasterMapping(){
 
  getBankdetails(){
    this.service.getBankMasterDetails().subscribe(res =>{
-     this.bankDetails = res.data.results;
+     this.bankDetailssummary = res.data.results;
    })
  }
 
@@ -138,7 +147,7 @@ getJobMasterMapping(){
  }
 
  getSummary(){
-   this.service.getSummay().subscribe(res =>{
+   this.service.getAll().subscribe(res =>{
      this.summary = res.data.reslts;
    })
  }
@@ -175,4 +184,42 @@ console.log("complianceMasterList::::::",this.complianceMasterList)
  }
 
 
+ addTable() {
+  const obj = {
+    ifscCode: this.ifscCode,
+    bankName: this.bankName,
+    branchName: this.branchName,
+    accountNumber: this.accountNumber,
+    isActive: this.isActive,
+  
+
+  };
+
+
+  this.row.push(obj);
+ 
+}
+deleteRows(x) {
+  this.row.splice(x, 1);
+  
+}
+addTableVoucher(){
+  const obj = {
+    ifscCode: this.ifscCode,
+    bankName: this.bankName,
+    branchName: this.branchName,
+    accountNumber: this.accountNumber,
+    isActive: this.isActive,
+  
+
+  };
+
+
+  this.rowV.push(obj);
+ 
+}
+deleteRowsV(x) {
+  this.row.splice(x, 1);
+   
+}
 }

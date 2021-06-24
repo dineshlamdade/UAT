@@ -98,6 +98,7 @@ import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structu
     ToastModule,
     InputTextModule,
     ProgressBarModule,
+    MultiSelectModule
   ],
 
   providers: [DatePipe, NumberFormatPipe],
