@@ -16,7 +16,7 @@
                   <div class="col-sm-6 col-md-4">
                     <label class="form-label">Attribute Group Name</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="name" class="form-control"
+                      <input type="text" [readonly]="!disabled" formControlName="name" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" [maxlength]="25" class="form-control"
                         placeholder="Enter Attribute Group Name" (keypress)="keyPressedSpaceNotAllow($event)"
                         [ngClass]="{'is-invalid' : AttributeGlobalForm.get('name').status == 'INVALID'}">
                     </div>
@@ -25,7 +25,7 @@
                     <label class="form-label">Description</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
-                        placeholder="Enter Description"
+                        placeholder="Enter Description" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50"
                         [ngClass]="{'is-invalid' : AttributeGlobalForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
@@ -41,10 +41,6 @@
                       </option>
                     </select>
                   </div>
-                  <br><br><br>
-
-
-
                 </div>
 
 
@@ -187,9 +183,16 @@
                           Selected Attributes:
                           <span class="font-14 text-dark-green">
                             ({{selectedUser.length}}) </span></span></h3> -->
-                      <p-table [value]="sourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      <!-- <p-table [value]="sourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                         selectionMode="multiple" [(selection)]="selectedSummarySourceProducts"
-                        [rowsPerPageOptions]="[10,25,50,100,200]">
+                        [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                      <p-table [value]="sourceProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        [pageLinks]="5" (onPage)="paginate($event)"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        totalRecords={{sourceProducts.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
                         <ng-template pTemplate="header">
                           <tr>
 
@@ -253,7 +256,7 @@
                   </div>
 
 
-                  <div class="col-1">
+                  <div class="col-1"  *ngIf="!viewupdateButton">
                     <div class="row mt-150">
                       <div class="col-md-12 mt-10 text-center">
                         <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusg()"><i
@@ -293,8 +296,14 @@
                           Attributes: &nbsp;<span class="font-14 text-dark-green">({{selectedUser2.length}})</span>
 
                         </span></h3> -->
+                      <!-- <p-table [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        selectionMode="multiple" [rowsPerPageOptions]="[10,20,50,100,200]"> -->
+
                       <p-table [value]="targetProducts" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                        selectionMode="multiple" [rowsPerPageOptions]="[10,20,50,100,200]">
+                        [pageLinks]="5" (onPage)="paginate($event)"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        totalRecords={{targetProducts.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
                         <ng-template pTemplate="header">
                           <tr>
 
@@ -336,7 +345,7 @@
                           <tr (click)="RowSelectedtargetProducts(user1, rowIndex);"
                             (dblclick)="doubleClickOnRightTable(user1)"
                             [ngClass]="{'outofstock':user1.isHighlightright == true}"
-                            [ngClass]="{'disable':user1.disabled == true}">
+                            [ngClass]="{'disable1':user1.disabled == true}">
 
                             <td>{{user1.code}}</td>
                             <td>{{user1.description}}
@@ -429,9 +438,13 @@
                 <div class="col-md-10">
                   <div class="cycle-table mt-4">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
-                    <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    <!-- <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+                    <p-table [value]="summaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      [pageLinks]="5" (onPage)="paginate($event)"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{summaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
                       <ng-template pTemplate="header">
                         <tr>
                           <th rowspan="1" class="wd-8 text-center">
@@ -470,7 +483,7 @@
 
 
 
-                          <th rowspan="1" class="wd-12 text-center">
+                          <th rowspan="1" class="wd-10 text-center">
                             <div class="p-d-flex p-jc-center p-ai-center">
                               Action
                             </div>
@@ -493,14 +506,14 @@
                           <td class="wd-10 align-left">
 
                             <button type="button" class="btn btn-icon text-blue" tooltip="Edit"
-                              (click)="GetAttributeSelectionById(user1.id)">
+                              (click)="GetAttributeSelectionById(user1.id,user1.used)">
                               <i class="fa fa-edit"></i></button>
 
                             <button type="button" class="btn btn-icon text-blue" tooltip="View"
                               (click)="GetAttributeSelectionByIdDisable(user1.id)">
                               <i class="fa fa-eye"></i></button>
 
-                            <button type="button" *ngIf="!user1.used" (click)="UploadModal1(template12,user1.id);"
+                            <button type="button" *ngIf="user1.used==false" (click)="UploadModal1(template12,user1.id);"
                               class="btn btn-icon js-sweetalert text-blue" tooltip="Delete" data-type="confirm"><i
                                 class="fa fa-trash-o"></i></button>
                           </td>

@@ -35,8 +35,14 @@ import { BusinessCycleComponent } from './business-cycle/business-cycle.componen
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { AttributeSelectionComponent } from './attribute-selection/attribute-selection.component';
 import { HeadCreationComponent } from './head-creation/head-creation.component';
-import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
 import { AttributeGlobalComponent } from './attribute-global/attribute-global.component';
+import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
+import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
+import { UserRoleComponent } from './user-rolesand-permission/user-role/user-role.component';
+import { UserGroupComponent } from './user-rolesand-permission/user-group/user-group.component';
+import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
+import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
+import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
 
 
 
@@ -52,6 +58,12 @@ import { AttributeGlobalComponent } from './attribute-global/attribute-global.co
     CycleCreationComponent,
     AttributeGlobalComponent,
     AttributeDependencyComponent,
+    UserRolesandPermissionComponent,
+    UserRoleComponent,
+    UserGroupComponent,
+    RolePrivilegeComponent,
+     UserDashboardComponent,
+     PayRollStructureComponent,
   ],
   imports: [
     CommonModule,

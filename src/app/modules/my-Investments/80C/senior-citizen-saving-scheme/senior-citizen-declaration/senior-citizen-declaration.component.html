@@ -7,9 +7,10 @@
             <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
               <tr>
                 
-                <th rowspan="2" class="wd-4">
+                <th rowspan="2" class="wd-6">
                   <label
                     class="custom-control custom-checkbox checkbox-center"
+                    placement="bottom" [adaptivePosition]="false"
                     tooltip="Select All"
                   >
                     <input
@@ -37,7 +38,8 @@
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
                 <th rowspan="2" class="wd-7">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                <th rowspan="2" class="wd-10 font700">Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -46,8 +48,9 @@
             </thead>
             <thead class="thead-dark" *ngIf="!previousEmployeeList.length">
               <tr>
-                <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                <th rowspan="2" class="wd-6">
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false"
+                  tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" name="select" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -63,7 +66,8 @@
                 <th rowspan="2" class="wd-10 font700">Remark</th>
        <!--          <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
                 <th rowspan="2" class="wd-7">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                <th rowspan="2" class="wd-10 font700">Status</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -76,7 +80,7 @@
                   let summary of transactionDetail;
                   let i = index;
                   count as c
-                "
+                "  [ngClass]="{ 'highlight': this.selectrow == summary.accountNumber }"
               >
               <td scope="row">
                 <label
@@ -201,6 +205,7 @@
                       summary.investmentGroup3TransactionId
                     }}"
                     [(ngModel)]="summary.actualAmount"
+                    maxlength="22"
                     [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
                     class="form-control align-right"
                   />
@@ -255,7 +260,7 @@
                     [ngModel]="enableSelectAll"
                     [disabled]="isDisabled"
                     (change)="
-                      onSelectCheckBox($event, i);
+                      onSelectCheckBox($event, i, addRowSummary);
                       enableCheckboxFlag = i
                     "
                     class="custom-control-input"
@@ -272,7 +277,7 @@
                     [ngModel]="enableSelectAll"
                     [disabled]="isDisabled "
                     (change)="
-                      onSelectCheckBox($event, i);
+                      onSelectCheckBox($event, i, addRowSummary);
                       enableCheckboxFlag = i
                      
                     "
@@ -305,6 +310,7 @@
                     class="form-control"
                     placeholder="Institution"
                     (change)="onInstitutionChange(addRowSummary, i)"
+                    [ngClass]="{ 'is-invalid': this.requiredInstitution }"
                   />
                 </td>
                 <td>
@@ -315,6 +321,7 @@
                       class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)"
                       placeholder="Account No."
                       (change)="onAccountNoChange(addRowSummary, i)"
+                      [ngClass]="{ 'is-invalid': this.requiredaccountNumber }"
                       />
 
                   </div>
@@ -327,8 +334,9 @@
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       class="form-control align-right"
                       placeholder="Declared"
-                      (change)="setActualAmout($event)"
-                      disabled
+                      (change)="onDeclearedAmountChange(addRowSummary, i)"
+                      [ngClass]="{ 'is-invalid': this.requireddeclaredAmount }"
+                      
 
 
                     />
@@ -348,6 +356,7 @@
                     "
                     class="form-control"
                     bsDatepicker
+                    [ngClass]="{ 'is-invalid': this.requireddateOfPayment }"
                   />
                 </td>
                 <td>
@@ -357,6 +366,8 @@
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                     class="form-control align-right"
                     (change)="onActualAmountChange(addRowSummary, i)"
+                    maxlength="22"
+                    
                   />
                 </td>
                 <td>
@@ -381,6 +392,7 @@
                   <!-- <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
                     </span> -->
+                    {{addRowSummary.transactionStatus}}
                 </td>
                 <!-- </form> -->
               </tr>
@@ -404,8 +416,8 @@
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
                   <i
                     class="fa fa-times font-16 text-red cursor-pointer"
-                    *ngIf="hideRemoveRow"
-                    tooltip="Cancel"
+                    *ngIf="showDeleteButton"
+                    tooltip="Delete Row"
                     (click)="deleteRow()"
                   ></i>
                 </td>
@@ -440,12 +452,14 @@
                 >Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ grandDeclarationTotal | number: "1.2-2" }}
                   </span>
                 </td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right-12">
@@ -507,8 +521,8 @@
                   <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Receipt / Certificate"></span>
-                      Receipt / Certificate
+                      <span tooltip="Scheme Certificate "></span>
+                      Scheme Certificate 
                     </td>
                     <td>
                       <span
@@ -524,7 +538,7 @@
                         <input
                           type="text"
                           class="form-control align-right"
-                          [(ngModel)]="globalSelectedAmount"
+                          [(ngModel)]="globalSelectedAmounts"
                           [disabled]="true"
                         />
                       </span>
@@ -570,7 +584,7 @@
             :upload()
           "
           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-          tooltip="Save"
+          tooltip="Save" [disabled]="this.requiredField"
         >
           <b> <i class="fa fa-floppy-o"></i></b> Save
         </button>
@@ -591,7 +605,7 @@
                   <th scope="col" class="font700 wd-15">PS ID</th>
                   <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Policy No.</th>
+                  <th scope="col" class="font700 wd-15">Account No.</th>
                   <th scope="col" class="font700 wd-10">Receipt Amount</th>
                   <th scope="col" class="font700 wd-15">Document Name</th>
                   <th scope="col" class="font700 wd-10">Action</th>
@@ -794,7 +808,8 @@
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
                   <th rowspan="2" class="wd-8">PS ID</th>
-                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                  <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                  <th rowspan="2" class="wd-10 font700">Status</th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -813,7 +828,8 @@
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
                   <th rowspan="2" class="wd-10">PS ID</th>
-                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                  <!-- <th rowspan="2" class="wd-10 font700">Transaction Status</th> -->
+                  <th rowspan="2" class="wd-10 font700">Status</th>
                 </tr>
                 <tr>
                   <th>Rejected</th>
@@ -930,7 +946,7 @@
                         isDisabled || summary.transactionStatus === 'Submitted'
                       "
                       />
-                      <!-- [disabled]=" summary.transactionStatus === 'Submitted'" -->
+                     
                     </div>
                   </td>
                   <td>

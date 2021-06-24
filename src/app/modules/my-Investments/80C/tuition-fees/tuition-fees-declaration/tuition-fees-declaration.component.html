@@ -1,590 +1,369 @@
 <div class="tabview-contents">
-  <div>
+  <div class="row mb-15" *ngIf="isDisabled">
+    <div class="col-md-12">
+      <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span> Select institution for proof
+        submission
+      </label>
+    </div>
+  </div>
+  <div class="row d-flex">
+    <!-- <div class="col-12 mr-0 pr-0" *ngIf="isDisabled">
+      </div> -->
+    <div class="ml-2 pl-1 pr-0">
+      <label class="form-label mt-2">Institution <span class="text-red"></span></label>
+    </div>
+    <div class="col-md-3 pr-0">
+      <select name="Institution" class="form-control custom-select"
+        (change)="selectedTransactionInstName($event.target.value)">
+        <option *ngFor="let InstitutionName of transactionInstitutionNames" [value]="InstitutionName.value"
+          [selected]="InstitutionName.value == globalInstitution">
+          {{ InstitutionName.label }}
+        </option>
+      </select>
+    </div>
+    <!-- <div class="ml-2 pl-1 pr-0">
+      <label class="form-label mt-2 pl-10">Account No.</label>
+    </div> -->
+    <!-- <div class="col-2">
+      <select name="policyNo" class="form-control custom-select" (change)="selectedPolicy($event.target.value)">
+        <option *ngFor="let transactionPolicy of transactionPolicyList" [value]="transactionPolicy.value"
+          [selected]="transactionPolicy.value == globalPolicy">
+          {{ transactionPolicy.label }}
+        </option>
+      </select>
+    </div> -->
+    <div class="ml-2 pl-1 pr-0">
+      <label class="form-label mt-2">Status</label>
+    </div>
+    <div class="col-2">
+      <select name="transactionStatus" class="form-control custom-select"
+        (change)="selectedTransactionStatus($event.target.value)">
+        <option *ngFor="let transactionStatus of transactionStatustList" [value]="transactionStatus.value">
+          {{ transactionStatus.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div *ngFor="let item of transactionDetail; let j = index">
+    <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1">Institution :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-2">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+          tooltip=" {{item.institutionName}} ">
+          {{item.institutionName}} 
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1 pl-10">Account Holder Name :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-2">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+          tooltip="{{ item.policyholdername }}">
+          {{ item.policyholdername }}
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1">Frequency :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-2">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+          tooltip="{{ item.frequency }}">
+          {{ item.frequency }}
+        </label>
+      </div>
+    </div>
     <div class="row mt-15">
       <div class="col-12">
         <div class="table-responsive Custom_Table">
           <table class="table table-striped table-hover table-bordered m-b-0">
-            <thead class="thead-dark" *ngIf="previousEmployeeList?.length" >
-            <tr>
-              <th rowspan="2" class="wd-4">
-                <label
-                  class="custom-control custom-checkbox checkbox-center"
-                  tooltip="Select All"
-                >
-                  <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    [ngModel]="isCheckAll"
-                    [disabled]="isDisabled"
-                    name="select"
-                    (change)="checkUncheckAll()"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-              </th>
-              <!-- <th rowspan="2" class="wd-4">
-                <label
-                  class="custom-control custom-checkbox checkbox-center"
-                  tooltip="Select All"
-                >
-                  <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    [ngModel]="isCheckAll"
-                    [disabled]="canEdit && isDisabled"
-                    name="select"
-                    value="isCheckAll{{ j }}"
-                    (change)="checkUncheckAll(item, j)"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-              </th> -->
-
-              <th rowspan="2" class="wd-10 font700">
-                Previous Employer Name
-              </th>
-              <th rowspan="2" class="wd-10 font700">
-                  <span tooltip="School/Collage Name"
-                  >School & Collage Name</span
-                  >
-              </th>
-              <th rowspan="2" class="wd-11 font700">Child Name</th>
-              <th rowspan="2" class="wd-9 font700">Declared</th>
-              <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-              <th rowspan="2" class="wd-9 font700">Actual</th>
-              <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-              <th rowspan="2" class="wd-7 font700">Remark</th>
-              <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
-              <th rowspan="2" class="wd-7">PS ID</th>
-              <th rowspan="2" class="wd-10 font700">Transaction Status</th>
-            </tr>
-            <tr>
-              <th>Rejected</th>
-              <th>Approved</th>
-            </tr>
+            <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
+              <tr>
+                <th rowspan="2" class="wd-4">
+                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
+                      name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                </th>
+                <th rowspan="2" class="wd-10 font700">
+                  Previous Employer Name
+                </th>
+                <!-- <th rowspan="2" class="wd-4 font700">
+                  <span tooltip="Electronic Clearing Service">ECS</span>
+                </th> -->
+                <th rowspan="2" class="wd-11 font700">Due Date</th>
+                <th rowspan="2" class="wd-9 font700">Declared</th>
+                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                <th rowspan="2" class="wd-9 font700">Actual</th>
+                <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                <th rowspan="2" class="wd-7 font700">Remark</th>
+                <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
+                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+              </tr>
+              <tr>
+                <th>Rejected</th>
+                <th>Approved</th>
+              </tr>
             </thead>
-            <thead class="thead-dark" *ngIf="!previousEmployeeList.length">
-            <tr>
-              <th rowspan="2" class="wd-4">
-                <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                  <input type="checkbox" class="custom-control-input" name="select" />
-                  <span class="custom-control-label"></span>
-                </label>
-              </th>
-              <!-- <th rowspan="2" class="wd-4">
-                <label
-                  class="custom-control custom-checkbox checkbox-center"
-                  tooltip="Select All"
-                >
-                  <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    name="select"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-              </th> -->
-              <th rowspan="2" class="wd-10 font700">
-                <span>School & Collage Name</span>
-              </th>
-              <th rowspan="2" class="wd-11 font700">Child Name</th>
-              <th rowspan="2" class="wd-9 font700">Declared</th>
-              <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-              <th rowspan="2" class="wd-9 font700">Actual</th>
-              <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-              <th rowspan="2" class="wd-10 font700">Remark</th>
-              <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
-              <th rowspan="2" class="wd-7">PS ID</th>
-              <th rowspan="2" class="wd-15 font700">Transaction Status</th>
-            </tr>
-            <tr>
-              <th>Rejected</th>
-              <th>Approved</th>
-            </tr>
+            <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+              <tr>
+                <th rowspan="2" class="wd-4">
+                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                    <input type="checkbox" class="custom-control-input" name="select" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                </th>
+                <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
+                <th rowspan="2" class="wd-11 font700">Due Date</th>
+                <th rowspan="2" class="wd-9 font700">Declared</th>
+                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                <th rowspan="2" class="wd-9 font700">Actual</th>
+                <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                <th rowspan="2" class="wd-10 font700">Remark</th>
+                <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
+                <th rowspan="2" class="wd-15 font700">Transaction Status</th>
+              </tr>
+              <tr>
+                <th>Rejected</th>
+                <th>Approved</th>
+              </tr>
             </thead>
             <tbody>
-            <tr
-              *ngFor="
-                  let summary of transactionDetail;
+              <tr *ngFor="
+                  let summary of item.group2TransactionList;
                   let i = index;
                   count as c
-                "
-            >
-              <td scope="row">
-                <label
-                  class="custom-control custom-checkbox checkbox-center"
-                  *ngIf="isDisabled"
-                  tooltip="Select institution for proof submission"
-                >
-                  <input
-                    type="checkbox"
-                    [ngModel]="enableSelectAll"
-                    [disabled]="isDisabled || summary.proofSubmissionId"
-                    (change)="
-                      onSelectCheckBox(summary, $event, i);
-                      enableCheckboxFlag = i
-                    "
-                    class="custom-control-input"
-
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-                <label
-                  *ngIf="!isDisabled"
-                  class="custom-control custom-checkbox checkbox-center"
-                >
-                  <input
-                    type="checkbox"
-                    [ngModel]="enableSelectAll"
-                    [disabled]="isDisabled || summary.proofSubmissionId"
-                    (change)="
-                      onSelectCheckBox(summary, $event, i);
-                      enableCheckboxFlag = i
-                    "
-                    class="custom-control-input"
-
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-              </td>
-              <!-- <td scope="row">
-                <label
-                  class="custom-control custom-checkbox checkbox-center"
-                  *ngIf="isDisabled"
-                  tooltip="Select institution for proof submission"
-                >
-                  <input
-                    type="checkbox"
-                    [ngModel]="enableSelectAll"
-                    [disabled]="isDisabled || summary.proofSubmissionId"
-                    (change)="
-                      onSelectCheckBox( summary, $event,   i, j);
-                      enableCheckboxFlag = j
-                    "
-                    class="custom-control-input"
-                    value="option{{ summary.licTransactionId }}"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-                <label
-                  *ngIf="!isDisabled"
-                  class="custom-control custom-checkbox checkbox-center"
-                >
-                  <input
-                    type="checkbox"
-                    [ngModel]="enableSelectAll"
-                    [disabled]="isDisabled || summary.proofSubmissionId"
-                    (change)="
-                      onSelectCheckBox(summary, $event, i, j);
-                      enableCheckboxFlag = j
-                    "
-                    class="custom-control-input"
-                    value="option{{ summary.licTransactionId }}"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-              </td> -->
-              <td *ngIf="previousEmployeeList?.length">
-                <select
-                  name="Previous Employer Name"
-                  class="form-control custom-select"
-                  (change)="updatePreviousEmpId($event, i)"
-                  [disabled]="
+                ">
+                <td scope="row">
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                    tooltip="Select institution for proof submission">
+                    <input type="checkbox" [ngModel]="enableSelectAll"
+                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                        onSelectCheckBox(summary, $event, i, j);
+                        enableCheckboxFlag = j
+                      " class="custom-control-input" value="option{{ summary.investmentGroup2TransactionId }}" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                  <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                    <input type="checkbox" [ngModel]="enableSelectAll"
+                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                        onSelectCheckBox(summary, $event, i, j);
+                        enableCheckboxFlag = j
+                      " class="custom-control-input" value="option{{ summary.investmentGroup2TransactionId }}" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                </td>
+                <td *ngIf="previousEmployeeList?.length">
+                  <select name="Previous Employer Name" class="form-control custom-select"
+                    (change)="updatePreviousEmpId($event, i, j)" [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
                       ">
-                  <option [ngValue]="0">Select</option>
-                  <option
-                    *ngFor="let previousEmployee of previousEmployeeList"
-                    [value]="previousEmployee.value"
-                    [selected]="
+                    <option [ngValue]="0">Select Previous Emp.</option>
+                    <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
+                      [selected]="
                         previousEmployee.value == summary.previousEmployerId
-                      "
-                  >
-                    {{ previousEmployee.label }}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  class="form-control"
-                  [ngModel]="summary.institution"
-                  [disabled]="summary.institution"
-                />
-              </td>
-              <td>
-                <select name="Child Name" class="form-control custom-select" [disabled]="summary.childName"
-                        [ngModel]="summary.childName">
-                  <option [ngValue]="0">Select</option>
-                  <option *ngFor="let childNames of childNameList" [value]="childNames.value" [selected]="summary.childName">
-                    {{ childNames.label }}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <div class="custom_icon_badge">
-                  <input
-                    type="text"
-                    id="declaredAmount{{
-                        summary.tuitionFeesTransactionId
-                      }}"
+                      ">
+                      {{ previousEmployee.label }}
+                    </option>
+                  </select>
+                </td>
+                <!-- <td>
+                  <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
+                </td> -->
+                <td>
+                  <div class="custom_icon_badge">
+                    <input type="text" class="form-control" [minDate]="financialYearStartDate"
+                      [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
+                        initialArrayIndex[j] > i || summary.isECS === 1
+                      " (ngModelChange)="
+                        summary.dueDate = $event.toLocaleDateString();
+                        onDueDateChange(summary, i, j)
+                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker />
+                  </div>
+                </td>
+                <td>
+                  <div class="custom_icon_badge">
+                    <input type="text" id="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="declaredAmount{{
-                        summary.tuitionFeesTransactionId
-                      }}"
-                    [(ngModel)]="summary.declaredAmount"
-                    [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
-                    class="form-control align-right"
-                  />
-                </div>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                      name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
+                      [(ngModel)]="summary.declaredAmount" class="form-control align-right"
+                      (change)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" />
+                    <!-- <span class="clone_Icon" tooltip="Copy to Actual"
+                              (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
+                              class=" fa fa-files-o cursor-pointer"></i> </span> -->
+                  </div>
+                </td>
+                <td>
+                  <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                   [maxDate]="today"
-                  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                  data-provide="datepicker"
-                  data-date-autoclose="true"
-                  (ngModelChange)="
+                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true"
+                    (ngModelChange)="
                       summary.dateOfPayment = $event.toLocaleDateString();
-                      onChangeDateOfPayment(summary, i, 1)
-                    "
-                  [disabled]="
+                      setDateOfPayment(summary, i, j)
+                    " [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
-                    "
-                  class="form-control"
-                  bsDatepicker
-                />
-              </td>
-
-              <td>
-                <input
-                  type="text"
-                  id="actualAmount{{ summary.tuitionFeesTransactionId }}"
+                    " class="form-control" bsDatepicker />
+                </td>
+                <td>
+                  <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
-                  name="actualAmount{{
-                      summary.tuitionFeesTransactionId
-                    }}"
-                  [(ngModel)]="summary.actualAmount"
-                  [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
-                  class="form-control align-right"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [ngModel]="summary.amountRejected | number: '1.2-2'"
-                  class="form-control align-right"
-                  disabled
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [ngModel]="summary.amountApproved | number: '1.2-2'"
-                  class="form-control align-right"
-                  disabled
-                />
-              </td>
-              <td>
+                    name="actualAmount{{ summary.investmentGroup2TransactionId }}" [disabled]="initialArrayIndex[j] > i"
+                    [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
+                    class="form-control align-right" />
+                </td>
+                <td>
+                  <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
+                    class="form-control align-right" disabled />
+                </td>
+                <td>
+                  <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
+                    class="form-control align-right" disabled />
+                </td>
+                <td>
                   <span tooltip="{{ summary.remark }}">
                     {{ summary.remark }}
                   </span>
-              </td>
-              <td>
-                <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
-                  <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
-                  <!-- {{ summary.proofSubmissionId }} -->
-                </span>
-              </td>
-              <td class="text-orange font700">
+                </td>
+                <td>
+                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                    <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                    <!-- {{ summary.proofSubmissionId }} -->
+                  </span>
+                </td>
+                <td class="text-orange font700">
                   <span tooltip="{{ summary.transactionStatus }}">
                     {{ summary.transactionStatus }}
                   </span>
-              </td>
-            </tr>
-
-            <!-- <tr [formGroup]="tuitionFeesFormForm"> -->
-            <tr
-              *ngFor="let addRowSummary of tuitionFeesTransactionDetailList;
-              let i = index;
-              count as c
-              ">
-              <td scope="row">
-                <label
-                  class="custom-control custom-checkbox checkbox-center"
-                  *ngIf="isDisabled"
-                  tooltip="Select institution for proof submission"
-                >
-                  <input
-                    type="checkbox"
-                    [ngModel]="enableSelectAll"
-                    [disabled]="isDisabled"
-                    (change)="
-                      onSelectCheckBox($event, i);
-                      enableCheckboxFlag = i
-                    "
-                    class="custom-control-input"
-                    value="option"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-                <label
-                  *ngIf="!isDisabled"
-                  class="custom-control custom-checkbox checkbox-center"
-                >
-                  <input
-                    type="checkbox"
-                    [ngModel]="enableSelectAll"
-                    [disabled]="isDisabled "
-                    (change)="
-                      onSelectCheckBox($event, i);
-                      enableCheckboxFlag = i
-
-                    "
-                    class="custom-control-input"
-                    value="option"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-              </td>
-              <!-- <
-                td>
-                <label
-                  class="custom-control custom-checkbox checkbox-center"
-                  *ngIf="isDisabled"
-                  tooltip="Select institution for proof submission"
-                >
-                  <input
-                    type="checkbox"
-                    [ngModel]="enableSelectAll"
-                    [disabled]="isDisabled || summary?.proofSubmissionId"
-                    (change)="
-                      onSelectCheckBox( summary, $event,   i, j);
-                      enableCheckboxFlag = j
-                    "
-                    class="custom-control-input"
-                    value="option{{ summary?.licTransactionId }}"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-                <label
-                  *ngIf="!isDisabled"
-                  class="custom-control custom-checkbox checkbox-center"
-                >
-                  <input
-                    type="checkbox"
-                    [ngModel]="enableSelectAll"
-                    [disabled]="isDisabled || summary?.proofSubmissionId"
-                    (change)="
-                      onSelectCheckBox(summary, $event, i, j);
-                      enableCheckboxFlag = j
-                    "
-                    class="custom-control-input"
-                    value="option{{ summary?.licTransactionId }}"
-                  />
-                  <span class="custom-control-label"></span>
-                </label>
-              </td> -->
-              <td *ngIf="previousEmployeeList?.length">
-                <select
-                  name="Previous Employer Name"
-                  class="form-control align-right custom-select"
-                  (change)="updatePreviousEmpId($event, i)"
-                  [disabled]="isDisabled || addRowSummary.transactionStatus === 'Submitted'" >
-                  <option [ngValue]="0">Select Previous Emp.</option>
-                  <option
-                    *ngFor="let previousEmployee of previousEmployeeList"
-                    [value]="previousEmployee.value"
-                    [selected]="
-                       previousEmployee.value == addRowSummary.previousEmployerId">
-                    {{ previousEmployee.label }}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [(ngModel)]="addRowSummary.institution"
-                  class="form-control align-right"
-                  placeholder="Enter School Name"
-                  (change)="onInstitutionChange(addRowSummary, i)"
-                />
-              </td>
-              <!-- <td>
-                <div class="custom_icon_badge">
-                  <input
-                    type="text"
-                    [(ngModel)]="addRowSummary.accountNumber"
-                    class="form-control align-right" onkeypress="return /[0-9 ]/i.test(event.key)"
-                    placeholder="Account No."
-                    (change)="onAccountNoChange(addRowSummary, i)"
-                    />
-
-                </div>
-              </td> -->
-              <td>
-                <select  class="form-control align-right custom-select"
-                         [(ngModel)]="addRowSummary.childName"
-                         (change)='OnSelectionfamilyMemberGroup(addRowSummary, i)'>
-                  <option [ngValue]="null">Select</option>
-                  <option
-                    *ngFor="let childNames of childNameList"
-                    [value]="childNames.value">
-                    {{ childNames.label }}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <div class="custom_icon_badge">
-                  <input
-                    type="text"
-                    [(ngModel)]="addRowSummary.declaredAmount"
-                    onkeypress="return /[0-9 ]/i.test(event.key)"
-                    class="form-control align-right"
-                    placeholder="Enter Declared Amount"
-                    (change)="setActualAmout($event)"
-                    disabled
-                  />
-                </div>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [ngModel]="addRowSummary.dateOfPayment | date: 'dd-MMM-yyyy'"
-
-                  [maxDate]="today"
-                  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                  data-provide="datepicker"
-                  data-date-autoclose="true"
-                  (ngModelChange)="
-                    addRowSummary.dateOfPayment = $event.toLocaleDateString();
-                    onChangeDateOfPayment(addRowSummary, i)
-                    "
-                  class="form-control"
-                  bsDatepicker
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [(ngModel)]="addRowSummary.actualAmount"
-                  class="form-control align-right"
-                  onkeypress="return /[0-9 ]/i.test(event.key)"
-                  (change)="onActualAmountChange(addRowSummary, i)"
-                />
-              </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="text-orange font700">
-              </td>
-            </tr>
-            <!-- <tr>
-              <td
-                colspan="12"
-                class="align-right font700 font-16 text-light-green cursor-pointer"
-              >
-                <i
-                  class="fa fa-plus-circle font-20"
-                  tooltip="Add"
-                  (click)="addTable()"
-                ></i>
-                <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                <i
-                  class="fa fa-times font-16 text-red cursor-pointer"
-                  tooltip="Cancel"
-                  (click)="deleteRow(i)"
-                ></i>
-              </td>
-              <td
-                *ngIf="!previousEmployeeList?.length"
-                colspan="11"
-                class="align-right font700 font-16 text-light-green cursor-pointer"
-              >
-                <i
-                  class="fa fa-plus-circle font-20"
-                  tooltip="Add"
-                  (click)="addTable()"
-                ></i>
-                <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                 <i
-                  class="fa fa-times font-16 text-red cursor-pointer"
-                  tooltip="Cancel"
-                  (click)="deleteRows(i)"
-                ></i> -->
-            <!-- </td>
-          </tr> -->
-            <tr>
-              <td
-                colspan="12"
-                class="align-right font700 font-16 text-light-green cursor-pointer"
-              >
-                <i
-                  class="fa fa-plus-circle font-20"
-                  tooltip="Add"
-                  (click)="addRowInList()"
-                ></i>
-                <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                <i
-                  class="fa fa-times font-16 text-red cursor-pointer"
-                  *ngIf="hideRemoveRow"
-                  tooltip="Cancel"
-                  (click)="deleteRow()"
-                ></i>
-              </td>
-
-            </tr>
-
-            <tr>
-              <!-- <td *ngIf="previousEmployeeList?.length"
-                 class="bg-lightgray font-18 font700 align-center"></td> -->
-              <td
-                *ngIf="previousEmployeeList?.length"
-                class="bg-lightgray font-18 font700 align-right"
-              >Total</td>
-              <td
-                *ngIf="!previousEmployeeList?.length"
-                class="bg-lightgray font-18 font700 align-right"
-              >Total</td>
-              <!-- <td *ngIf="!previousEmployeeList?.length"
-                class="bg-lightgray font-18 font700 align-center">Total</td> -->
-              <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
-              <td class="bg-lightgray font-18 font700 align-right"></td>
-              <td class="bg-lightgray font-18 font700 align-right"></td>
-              <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ grandDeclarationTotal | number: "1.2-2" }}
+                </td>
+              </tr>
+              <tr *ngIf="!isDisabled && canEdit">
+                <td *ngIf="previousEmployeeList?.length" colspan="12"
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow(j)"></i>
+                </td>
+                <td *ngIf="!previousEmployeeList?.length" colspan="11"
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow(j)"></i>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
+                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
+                <td class="bg-lightgray font-18 font700 align-right">
+                  <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.declarationTotal | number: "1.2-2" }}
                   </span>
-              </td>
-              <td class="bg-lightgray font-18 font700 align-right"></td>
-              <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ grandActualTotal | number: "1.2-2" }}
+                </td>
+                <td class="bg-lightgray font-18 font700 align-right"></td>
+                <td class="bg-lightgray font-18 font700 align-right">
+                  <span tooltip="{{ item.actualTotal | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.actualTotal | number: "1.2-2" }}
                   </span>
-              </td>
-              <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ grandRejectedTotal | number: "1.2-2" }}
+                </td>
+                <td class="bg-lightgray font-18 font700 align-right">
+                  <span tooltip=" {{ item.totalRejectedAmount | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.totalRejectedAmount | number: "1.2-2" }}
                   </span>
-              </td>
-              <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip="{{ grandApprovedTotal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ grandApprovedTotal | number: "1.2-2" }}
+                </td>
+                <td class="bg-lightgray font-18 font700 align-right">
+                  <span tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.totalApprovedAmount | number: "1.2-2" }}
                   </span>
-              </td>
-              <td class="bg-lightgray font-18 font700"></td>
-              <td class="bg-lightgray font-18 font700"></td>
-              <td class="bg-lightgray font-18 font700"></td>
-            </tr>
+                </td>
+                <td class="bg-lightgray font-18 font700"></td>
+                <td class="bg-lightgray font-18 font700"></td>
+                <td class="bg-lightgray font-18 font700"></td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
     <hr />
+  </div>
+
+  <div class="row mt-15" *ngIf="transactionDetail?.length">
+    <div class="col-12">
+      <div class="table-responsive Custom_Table">
+        <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
+          <tbody>
+            <tr>
+              <td class="bg-gray font-18 font700 wd-14">Grand Total</td>
+              <td class="bg-gray font-18 font700 align-right wd-4"></td>
+              <td class="bg-gray font-18 font700 align-right wd-11"></td>
+              <td class="bg-gray font-18 font700 align-right wd-9">
+                <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
+                  {{ grandDeclarationTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-gray font-18 font700 align-right wd-11"></td>
+              <td class="bg-gray font-18 font700 align-right wd-9">
+                <span class="padding-right-12" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+                  {{ grandActualTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-gray font-18 font700 align-right wd-9">
+                <span class="padding-right-12" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
+                  {{ grandRejectedTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-gray font-18 font700 align-right wd-9">
+                <span class="padding-right-12" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-gray font-18 font700 wd-7"></td>
+              <td class="bg-gray font-18 font700 wd-7"></td>
+              <td class="bg-gray font-18 font700 wd-10"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
+          <tbody>
+            <tr>
+              <td class="bg-gray font-18 font700 wd-8">Grand Total</td>
+              <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
+              <td class="bg-gray font-18 font700 align-right wd-11"></td>
+              <td class="bg-gray font-18 font700 align-right wd-9">
+                <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
+                  {{ grandDeclarationTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-gray font-18 font700 align-right wd-11"></td>
+              <td class="bg-gray font-18 font700 align-right wd_9">
+                <span class="padding-right-12" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+                  {{ grandActualTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-gray font-18 font700 align-right wd_8">
+                <span class="padding-right-12" tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}">
+                  {{ grandRejectedTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-gray font-18 font700 align-right wd_8">
+                <span class="padding-right-12" tooltip="{{ grandApprovedTotal | number: '1.2-2' }}">
+                  {{ grandApprovedTotal | number: "1.2-2" }}
+                </span>
+              </td>
+              <td class="bg-gray font-18 font700 wd-10"></td>
+              <td class="bg-gray font-18 font700 wd-10"></td>
+              <td class="bg-gray font-18 font700 wd-15"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
   <div class="row mt-30">
     <div class="col-12">
@@ -600,79 +379,57 @@
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive Custom_Table">
-              <table
-                class="table table-striped table-hover table-bordered m-b-0"
-              >
+              <table class="table table-striped table-hover table-bordered m-b-0">
                 <thead class="thead-dark">
-                <tr>
-                  <th scope="col" class="font700 wd-8">Sr No.</th>
-                  <th scope="col" class="font700 wd-40">Document Name</th>
-                  <th scope="col" class="font700 wd-20">Attachment</th>
-                  <th scope="col" class="font700 wd-16">
-                    Total Selected Amount
-                  </th>
-                  <th scope="col" class="font700 wd-16">Receipt Amount</th>
-                  <th scope="col" class="font700 wd-12">Action</th>
-                </tr>
+                  <tr>
+                    <th scope="col" class="font700 wd-8">Sr No.</th>
+                    <th scope="col" class="font700 wd-40">Document Name</th>
+                    <th scope="col" class="font700 wd-20">Attachment</th>
+                    <th scope="col" class="font700 wd-16">
+                      Total Selected Amount
+                    </th>
+                    <th scope="col" class="font700 wd-16">Receipt Amount</th>
+                    <th scope="col" class="font700 wd-12">Action</th>
+                  </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <th scope="row"><span tooltip="1">1</span></th>
-                  <td>
-                    <span tooltip="Premium Receipt/ Premium Statement"></span>
-                    Receipt / Statement
-                  </td>
-                  <!-- <td>
-                    <span
-                      *ngFor="let item of masterfilesArray"
-                      class="text-orange"
-                      tooltip="{{ item.name }},"
-                      ><i class="fa fa-paperclip" aria-hidden="true"></i
-                      >&nbsp;{{ item.name }},</span
-                    >
-                  </td> -->
-                  <td>
-                      <span
-                        *ngFor="let item of filesArray; let j = index"
-                        class="text-orange"
-                        tooltip="{{ item.name }}"
-                      >
+                  <tr>
+                    <th scope="row"><span tooltip="1">1</span></th>
+                    <td>
+                      <span tooltip="Premium Receipt/ Premium Statement"></span>Fees/Payment Receipt
+                    </td>
+                    <td>
+                      <span *ngFor="let item of filesArray; let j = index" class="text-orange"
+                        tooltip="{{ item.name }}">
                         <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;
                         {{ item.name }},
                       </span>
-                  </td>
-                  <td>
-                    <span>
-                      <input
-                        type="text"
-                        class="form-control align-right"
-                        [(ngModel)]="globalSelectedAmount"
-                        [disabled]="true"
-                      />
-                    </span>
-                  </td>
-                  <td>
-                    <span>
-                      <input
-                        type="text"
-                        class="form-control align-right"
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmount"
+                          [disabled]="true" />
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <input type="text"
                         onkeypress="return /[0-9]/i.test(event.key)"
-                        (change)="changeReceiptAmountFormat()"
-                        [(ngModel)]="receiptAmount"
-                      />
-                    </span>
-                  </td>
-                  <td>
-                    <i
-                      class="fa fa-upload font-16 text-blue cursor-pointer"
-                      tooltip="Upload"
-                      (click)="uploadModal(template4)"
-                      data-toggle="modal"
-                      data-target="#uploadModal"
-                    ></i
-                    >&nbsp;&nbsp;
-                  </td>
-                </tr>
+                        class="form-control align-right" (change)="changeReceiptAmountFormat()"
+                          [(ngModel)]="receiptAmount" />
+                      </span>
+                    </td>
+                    <td>
+                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+                          !enableFileUpload
+                            ? sweetalertWarning(
+                                'Please select transaction to Upload Document'
+                              )
+                            : UploadModal(template4)
+                        "></i>&nbsp;&nbsp;
+                      <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -681,29 +438,27 @@
       </div>
     </div>
   </div>
-
-  <div class="row mt-15">
+  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
       <div class="float-right mb-15">
-        <button
-          type="button"
-          (click)="
+        <button type="button" (click)="
             receiptAmount < globalSelectedAmount
               ? sweetalertError(
                   'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
                 )
-                :upload()
-          "
-          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-          tooltip="Save"
-        >
-
-          <b> <i class="fa fa-floppy-o"></i></b> Save
+              : upload()
+          " class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
+          <b><i class="fa fa-floppy-o"></i></b> Save
         </button>
       </div>
     </div>
   </div>
-  <div class="row mt-30">
+  <!-- <div class="row mt-10">
+   <div class="col-12">
+      <p-messages [(value)]="msgs2" [enableService]="false" width=100></p-messages>
+   </div>
+   </div> -->
+   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
         <div class="mb-10">
@@ -713,88 +468,116 @@
           <div class="table-responsive Custom_Table">
             <table class="table table-striped table-hover table-bordered m-b-0">
               <thead class="thead-dark">
-              <tr>
-                <th scope="col" class="font700 wd-15">PS ID</th>
-                <th scope="col" class="font700 wd-20">School/College Name</th>
-                <th scope="col" class="font700 wd-15">Date of Submission</th>
-                <th scope="col" class="font700 wd-10">Receipt Amount</th>
-                <th scope="col" class="font700 wd-15">Document Name</th>
-                <th scope="col" class="font700 wd-10">Action</th>
-              </tr>
+                <tr>
+                  <th scope="col" class="font700 wd-15">Proof Submission ID</th>
+                  <th scope="col" class="font700 wd-20">Institution</th>
+                  <th scope="col" class="font700 wd-15">Date of Submission</th>
+                  <th scope="col" class="font700 wd-10">Receipt Amount</th>
+                  <th scope="col" class="font700 wd-15">Document Name</th>
+                  <th scope="col" class="font700 wd-10">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr
-                *ngFor="
-                  let documentSummary of documentDetailList;
-                  let documentIndex = index
-                "
-              >
-                <td>
-                  <span tooltip="{{ documentSummary.proofSubmissionId }}">
-                    {{ documentSummary.proofSubmissionId }}
-                  </span>
-                </td>
-                <td>
-                  <span tooltip="{{ documentSummary.institutionName }}"></span>
-                  {{ documentSummary.institutionName }}
-                </td>
-                <td>
-                  <span
-                    tooltip="{{
-                      documentSummary.dateOfSubmission | date: 'dd-MMM-yyyy'
-                    }}"
-                  >
-                    {{
-                    documentSummary.dateOfSubmission | date: "dd-MMM-yyyy"
-                    }}</span
-                  >
-                </td>
-                <td>
-                  <span
-                    tooltip="{{
-                      documentSummary.receiptAmount | number: '1.2-2'
-                    }}"
-                  >
-                    {{ documentSummary.receiptAmount | number: "1.2-2" }}
-                  </span>
-                </td>
-                <td>
-                  <div class="custom_Label_badge">
-                    <button
-                      class="btn btn-bg-green text-white"
-                      (click)="docViewer(template3, documentSummary.documentDetailList)"
-                    >
-                      Documents
-                    </button>
-                    <span class="Label_badge">{{
-                      documentSummary.documentDetailList.length
+                <!-- <ng-container *ngFor="
+            let documentSummary of documentDetailList;
+            let documentIndex = index
+          "> -->
+                <tr *ngFor="let documentSummary of documentDetailList;
+                    let documentIndex = index">
+                  <td>
+                    <span tooltip="{{ documentSummary.proofSubmissionId }}">
+                      {{ documentSummary.proofSubmissionId }}
+                    </span>
+                  </td>
+                  <td  *ngIf="documentSummary.group2MasterList.length > 0">
+                    {{ documentSummary.group2MasterList[0].institution }}
+                  </td>
+                  <td  *ngIf="documentSummary.group2MasterList.length == 0">
+                    <span tooltip= "">
+
+                    </span>
+
+                  </td>
+                  <td>
+                    <span tooltip="{{
+                        documentSummary.dateOfSubmission | date: 'dd-MMM-yyyy'
+                      }}">
+                      {{
+                        documentSummary.dateOfSubmission | date: "dd-MMM-yyyy"
                       }}</span>
-                  </div>
-                </td>
-                <td>
-                  <i
+                  </td>
+                  <!-- <td  class="padding-0"  *ngIf = "documentSummary.group2MasterList.length > 1">
+                    <div class="pd-5"
+                      *ngFor="let element of documentSummary.group2MasterList"
+                      tooltip="{{ element.accountNumber }}"
+                    >
+                      <div colspan="1">
+                        {{ element.accountNumber }}
+                      </div>
+                    </div>
+                  </td> -->
+                  <!-- <td class="padding-0" *ngIf="documentSummary.group2MasterList.length == 1">
+                    <span tooltip="{{
+                      documentSummary.group2MasterList[0].accountNumber
+                    }}">
+                      {{ documentSummary.group2MasterList[0].accountNumber }}
+                    </span>
+
+                  </td> -->
+                  <td class="padding-0" *ngIf="documentSummary.group2MasterList.length == 0">
+                    <span tooltip= "">
+
+                    </span>
+
+                  </td>
+                  <td>
+                    <span tooltip="{{
+                        documentSummary.receiptAmount | number: '1.2-2'
+                      }}">
+                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="custom_Label_badge">
+                      <button class="btn btn-bg-green text-white"
+                      (click)="docViewer(template3, documentSummary.documentDetailList)"
+                      >
+                        Documents
+                      </button>
+                      <span class="Label_badge">{{
+                        documentSummary.documentDetailList.length
+                      }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <i
                     class="fa fa-eye font-16 text-blue cursor-pointer"
-                    (click)="
-                    declarationEditUpload(
-                      template2,
-                      documentSummary.proofSubmissionId
-                    );
-                    viewDocumentDetail = false
-                  "
-                    tooltip="View"></i>&nbsp;&nbsp;
-                  <i
-                    class="fa fa-edit font-16 text-dark-green cursor-pointer"
                     (click)="
                       declarationEditUpload(
                         template2,
                         documentSummary.proofSubmissionId
                       );
-                      viewDocumentDetail = true
+                      viewDocumentDetail = false
                     "
-                    tooltip="Edit"
-                  ></i>
-                </td>
-              </tr>
+                    tooltip="View">
+                  </i>&nbsp;&nbsp;
+                    <!-- <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"></i> -->
+
+                    <i *ngIf="canEdit"
+                    class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
+                        declarationEditUpload(
+                          template2,
+                          documentSummary.proofSubmissionId
+                        );
+                        viewDocumentDetail = true
+                      " tooltip="Edit"></i>
+                  </td>
+                </tr>
+                <!-- <tr *ngFor="let policyNo of documentSummary.group2MasterList">
+              <td>{{ policyNo.policyNo }}</td>
+              <td>{{ documentSummary.receiptAmount | number: "1.2-2" }}</td>
+            </tr> -->
+                <!-- </ng-container> -->
               </tbody>
             </table>
           </div>
@@ -802,30 +585,21 @@
       </div>
     </div>
   </div>
-</div>
 
+</div>
 <ng-template #template1>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadedDocumentModalLabel">
       Uploaded Document Details
     </h5>
-    <button
-      type="button"
-      (click)="modalRef.hide()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="card">
       <div class="card-body pb-0 mt-0 mb-0">
-        <div
-          class="row clearfix"
-          *ngFor="let proofSubmissionFile of proofSubmissionFileList"
-        >
+        <div class="row clearfix" *ngFor="let proofSubmissionFile of proofSubmissionFileList">
           <div class="col-md-11">
             <div class="labelbox" tooltip="Document 1">
               <i class="fa fa-paperclip text-orange"></i> &nbsp;
@@ -833,10 +607,7 @@
             </div>
           </div>
           <div class="col-md-1">
-            <i
-              class="fa fa-eye font-16 text-blue font-900 mt-2"
-              tooltip="View Document"
-            ></i>
+            <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document"></i>
           </div>
         </div>
       </div>
@@ -848,7 +619,6 @@
     </button>
   </div>
 </ng-template>
-
 <ng-template #template2>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh" *ngIf="viewDocumentDetail">
@@ -857,303 +627,193 @@
     <h5 class="modal-title" id="jasdjgh" *ngIf="!viewDocumentDetail">
       View Document Details
     </h5>
-    <button
-      type="button"
-      (click)="modalRef.hide()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <div class="card-body Box-Spacing">
-    <div  *ngFor="
-    let summary of editTransactionUpload;
-    let i = index;
-    count as c
-  ">
+    <div *ngFor="let item of editTransactionUpload; let j = index">
+      <div class="row mt-25 d-flex">
+        <div class="ml-2 pl-1 pr-0">
+          <label class="form-label mt-1">Institution</label>
+        </div>
+        <div class="ml-2 pl-1 pr-0">
+          <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.policyNo }}">
+            {{ item.policyNo }}</label>
+        </div>
+        <div class="ml-2 pl-1 pr-0">
+          <label class="form-label mt-1 pl-10">Policy Holder Name</label>
+        </div>
+        <div class="ml-2 pl-1 pr-0">
+          <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.policyholdername }}">
+            {{ item.policyholdername }}</label>
+        </div>
+        <div class="ml-2 pl-1 pr-0">
+          <label class="form-label mt-1">Frequency</label>
+        </div>
+        <div class="ml-2 pl-1 pr-0">
+          <label class="font-12 text-ellipsis mt-1" tooltip="{{ item.frequency }}">
+            {{ item.frequency }}</label>
+        </div>
+      </div>
       <div class="row mt-15">
         <div class="col-12">
           <div class="table-responsive Custom_Table">
             <table class="table table-striped table-hover table-bordered m-b-0">
               <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
-              <tr>
-
-                <!-- <th rowspan="2" class="wd-4">
-                  <label
-                    class="custom-control custom-checkbox checkbox-center"
-                    tooltip="Select All"
-                  >
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      [ngModel]="isCheckAll"
-                      [disabled]="isDisabled"
-                      name="select"
-                      (change)="checkUncheckAll()"
-                    />
-                    <span class="custom-control-label"></span>
-                  </label>
-                </th> -->
-
-                <th rowspan="2" class="wd-10 font700">
-                  Previous Employer Name
-                </th>
-                <th rowspan="2" class="wd-10 font700">
-                  <span tooltip="School/Collage Name">School/Collage Name</span>
-                </th>
-                <th rowspan="2" class="wd-11 font700">Child Name</th>
-                <th rowspan="2" class="wd-9 font700">Declared</th>
-                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-                <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
-              </tr>
-              <tr>
-                <th>Rejected</th>
-                <th>Approved</th>
-              </tr>
+                <tr>
+                  <th rowspan="2" class="wd-10 font700">
+                    Previous Employer Name
+                  </th>
+                  <!-- <th rowspan="2" class="wd-4 font700">
+                    <span tooltip="Electronic Clearing Service">ECS</span>
+                  </th> -->
+                  <th rowspan="2" class="wd-11 font700">Due Date</th>
+                  <th rowspan="2" class="wd-9 font700">Declared</th>
+                  <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                  <th rowspan="2" class="wd-9 font700">Actual</th>
+                  <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                  <th rowspan="2" class="wd-7 font700">Remark</th>
+                  <th rowspan="2" class="wd-8">PS ID</th>
+                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                </tr>
+                <tr>
+                  <th>Rejected</th>
+                  <th>Approved</th>
+                </tr>
               </thead>
-              <thead class="thead-dark" *ngIf="!previousEmployeeList.length">
-              <tr>
-                <th rowspan="2" class="wd-15 font700">
-                  <span>School/Collage Name</span>
-                </th>
-                <th rowspan="2" class="wd-11 font700">Child Name</th>
-                <th rowspan="2" class="wd-9 font700">Declared</th>
-                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                <th rowspan="2" class="wd-9 font700">Actual</th>
-                <th colspan="2" class="wd-17 font700">Receipt Amount</th>
-                <th rowspan="2" class="wd-10 font700">Remark</th>
-                <th rowspan="2" class="wd-10">PS ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
-              </tr>
-              <tr>
-                <th>Rejected</th>
-                <th>Approved</th>
-              </tr>
+              <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+                <tr>
+                  <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
+                  <th rowspan="2" class="wd-11 font700">Due Date</th>
+                  <th rowspan="2" class="wd-9 font700">Declared</th>
+                  <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                  <th rowspan="2" class="wd-9 font700">Actual</th>
+                  <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                  <th rowspan="2" class="wd-10 font700">Remark</th>
+                  <th rowspan="2" class="wd-10">PS ID</th>
+                  <th rowspan="2" class="wd-15 font700">Transaction Status</th>
+                </tr>
+                <tr>
+                  <th>Rejected</th>
+                  <th>Approved</th>
+                </tr>
               </thead>
               <tbody>
-              <tr
-                *ngFor="
-                    let summary of editTransactionUpload;
+                <tr *ngFor="
+                    let summary of item.group2TransactionList;
                     let i = index;
                     count as c
-                  "
-              >
-                <!-- <td scope="row">
-                  <label
-                    class="custom-control custom-checkbox checkbox-center"
-                    *ngIf="isDisabled"
-                    tooltip="Select institution for proof submission"
-                  >
-                    <input
-                      type="checkbox"
-                      [ngModel]="enableSelectAll"
-                      [disabled]="isDisabled || summary.proofSubmissionId"
-                      (change)="
-                        onSelectCheckBox(summary, $event, i);
-                        enableCheckboxFlag = i
-                      "
-                      class="custom-control-input"
-
-                    />
-                    <span class="custom-control-label"></span>
-                  </label>
-                  <label
-                    *ngIf="!isDisabled"
-                    class="custom-control custom-checkbox checkbox-center"
-                  >
-                    <input
-                      type="checkbox"
-                      [ngModel]="enableSelectAll"
-                      [disabled]="isDisabled || summary.proofSubmissionId"
-                      (change)="
-                        onSelectCheckBox(summary, $event, i);
-                        enableCheckboxFlag = i
-                      "
-                      class="custom-control-input"
-
-                    />
-                    <span class="custom-control-label"></span>
-                  </label>
-                </td> -->
-                <td *ngIf="previousEmployeeList?.length">
-                  <select
-                    name="Previous Employer Name"
-                    class="form-control custom-select"
-                    (change)="updatePreviousEmpId($event, i)"
-                    [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    "
-                  >
-                    <option [ngValue]="0">Select Previous Emp.</option>
-                    <option
-                      *ngFor="let previousEmployee of previousEmployeeList"
-                      [value]="previousEmployee.value"
-                      [selected]="
-                        previousEmployee.value == summary.previousEmployerId
-                      "
-                    >
-                      {{ previousEmployee.label }}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [ngModel]="summary.institution"
-                    [disabled]="summary.institution"
-
-                  />
-                  <!-- [disabled]="summary.institution" -->
-                </td>
-                <td>
-                  <div class="custom_icon_badge">
-                    <input
-                      type="text"
-                      class="form-control"
+                  ">
+                  <td *ngIf="previousEmployeeList?.length">
+                    <select name="Previous Employer Name" class="form-control custom-select"
+                      (change)="updatePreviousEmpIdInEditCase($event, i, j)"
+                      [disabled]="summary.transactionStatus === 'Submitted'">
+                      <option [ngValue]="0">Select Previous Emp.</option>
+                      <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
+                        [selected]="previousEmployee.value == summary.previousEmployerId">
+                        {{ previousEmployee.label }}
+                      </option>
+                    </select>
+                  </td>
+                  <!-- <td>
+                    <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
+                  </td> -->
+                  <td>
+                    <div class="custom_icon_badge">
+                      <input type="text" class="form-control" [minDate]="financialYearStartDate"
+                        [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
+                        [disabled]="!summary.additionalPayment" (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
+                          onDueDateChangeInEditCase(summary, i, j)" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                        data-provide="datepicker" bsDatepicker />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="custom_icon_badge">
+                      <input type="text" id="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                       onkeypress="return /[0-9 ]/i.test(event.key)"
-                      [ngModel]="summary.childName"
-                      [disabled]="summary.childName"
-
-                    />
-                    <!-- [disabled]="summary.accountNumber" -->
-                  </div>
-                </td>
-                <td>
-                  <div class="custom_icon_badge">
-                    <input
-                      type="text"
-                      id="declaredAmount{{
-                          summary.tuitionFeesTransactionId
-                        }}"
-                      onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="declaredAmount{{
-                          summary.tuitionFeesTransactionId
-                        }}"
-                      [(ngModel)]="summary.declaredAmount"
-                      (change)="setActualAmoutInEditModal($event)"
-                      class="form-control align-right"
-                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
-                    />
-                    <!-- [disabled]=" summary.transactionStatus === 'Submitted'" -->
-                  </div>
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-
+                        name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
+                        [(ngModel)]="summary.declaredAmount" class="form-control align-right"
+                        (change)="onDeclaredAmountChangeInEditCase(summary, i, j)"
+                        [disabled]="!summary.additionalPayment" />
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                     [maxDate]="today"
-                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                    data-provide="datepicker"
-                    [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
-                    data-date-autoclose="true"
-                    (ngModelChange)="
-                        summary.dateOfPayment = $event.toLocaleDateString();
-                        onChangeDateOfPayment(summary, i)
-                      "
-
-                    class="form-control"
-                    bsDatepicker
-                  />
-                </td>
-
-                <td>
-                  <input
-                    type="text"
-                    id="actualAmount{{ summary.tuitionFeesTransactionId }}"
+                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                      data-date-autoclose="true" (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
+                        setDateOfPaymentInEditCase(summary, i, j)"
+                        [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
+                      class="form-control" bsDatepicker />
+                  </td>
+                  <td>
+                    <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{
-                        summary.tuitionFeesTransactionId
-                      }}"
-                      [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
-                    [(ngModel)]="summary.actualAmount"
-                    (change)="onActualAmountChangeInEditCase(summary, i, j)"
-
-                    class="form-control align-right"
-                  />
-                  <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    [ngModel]="summary.amountRejected | number: '1.2-2'"
-                    class="form-control align-right"
-                    disabled
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    [ngModel]="summary.amountApproved | number: '1.2-2'"
-                    class="form-control align-right"
-                    disabled
-                  />
-                </td>
-                <td>
+                      name="actualAmount{{ summary.investmentGroup2TransactionId }}"
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"
+                      [(ngModel)]="summary.actualAmount"
+                      (change)="onActualAmountChangeInEditCase(summary, i, j)" class="form-control align-right" />
+                  </td>
+                  <td>
+                    <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
+                      class="form-control align-right" disabled />
+                  </td>
+                  <td>
+                    <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
+                      class="form-control align-right" disabled />
+                  </td>
+                  <td>
                     <span tooltip="{{ summary.remark }}">
                       {{ summary.remark }}
                     </span>
-                </td>
-                <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
-                    <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
-                    <!-- {{ summary.proofSubmissionId }} -->
-                  </span>
-                </td>
-                <td class="text-orange font700">
+                  </td>
+                  <td>
+                    <span tooltip="{{ summary.proofSubmissionId }}"
+                    *ngIf="summary.transactionStatus === 'Submitted'">
+  <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+   <!-- {{ summary.proofSubmissionId }} -->
+   </span>
+    </td>
+                  <td class="text-orange font700">
                     <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
                     </span>
-                </td>
-              </tr>
-
-              <tr>
-                <td
-                  *ngIf="previousEmployeeList?.length"
-                  class="bg-lightgray font-18 font700 align-right"
-                >Total</td>
-                <td
-                  *ngIf="!previousEmployeeList?.length"
-                  class="bg-lightgray font-18 font700 align-right"
-                >Total</td>
-                <!-- <td *ngIf="!previousEmployeeList?.length"
-                  class="bg-lightgray font-18 font700 align-center">Total</td> -->
-                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
-                <!-- <td class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td> -->
-                <td class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ grandDeclarationTotal | number: "1.2-2" }}
-                  </span>
-                </td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip="{{ summary?.actualAmount }}" class="padding-right-12">
-                    {{ summary?.actualAmount }}
-                  </span>
-                </td>
-                <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip=" {{ grandRejectedTotal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ grandRejectedTotal | number: "1.2-2" }}
-                  </span>
-                </td>
-                <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip="{{ grandApprovedTotal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ grandApprovedTotal | number: "1.2-2" }}
-                  </span>
-                </td>
-                <td class="bg-lightgray font-18 font700"></td>
-                <td class="bg-lightgray font-18 font700"></td>
-                <td class="bg-lightgray font-18 font700"></td>
-              </tr>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="1" class="bg-lightgray font-18 font700">
+                    Total
+                  </td>
+                  <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
+                  <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
+                  <td class="bg-lightgray font-18 font700 align-right">
+                    <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
+                      {{ item.declarationTotal | number: "1.2-2" }}
+                    </span>
+                  </td>
+                  <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <td class="bg-lightgray font-18 font700 align-right">
+                    <span tooltip="{{ item.actualTotal | number: '1.2-2' }}" class="padding-right-12">
+                      {{ item.actualTotal | number: "1.2-2" }}
+                    </span>
+                  </td>
+                  <td class="bg-lightgray font-18 font700 align-right">
+                    <span tooltip=" {{
+                        item.totalRejectedAmount | number: '1.2-2'
+                      }}" class="padding-right-12">
+                      {{ item.totalRejectedAmount | number: "1.2-2" }}
+                    </span>
+                  </td>
+                  <td class="bg-lightgray font-18 font700 align-right">
+                    <span tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}" class="padding-right-12">
+                      {{ item.totalApprovedAmount | number: "1.2-2" }}
+                    </span>
+                  </td>
+                  <td class="bg-lightgray font-18 font700"></td>
+                  <td class="bg-lightgray font-18 font700"></td>
+                  <td class="bg-lightgray font-18 font700"></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -1161,7 +821,93 @@
       </div>
       <hr />
     </div>
-
+    <div class="row mt-15" *ngIf="transactionDetail?.length">
+      <div class="col-12">
+        <div class="table-responsive Custom_Table">
+          <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
+            <tbody>
+              <tr *ngFor="let item of editTransactionUpload; let j = index">
+                <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
+                <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
+                <!-- <td class="bg-gray font-18 font700 wd-4"></td> -->
+                <td class="bg-gray font-18 font700 align-right wd-11"></td>
+                <td class="bg-gray font-18 font700 align-right wd-9">
+                  <span class="padding-right-12" placement="left" tooltip="{{
+                      grandDeclarationTotalEditModal | number: '1.2-2'
+                    }}">
+                    {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
+                  </span>
+                </td>
+                <td class="bg-gray font-18 font700 align-right wd-11"></td>
+                <td class="bg-gray font-18 font700 align-right wd-9">
+                  <span class="padding-right-12" placement="left"
+                    tooltip="{{ item.actualTotal | number: '1.2-2' }}">
+                    {{ item.actualTotal | number: "1.2-2" }}
+                  </span>
+                </td>
+                <td class="bg-gray font-18 font700 align-right wd-9">
+                  <span class="padding-right-12" placement="left" tooltip=" {{
+                      grandRejectedTotalEditModal | number: '1.2-2'
+                    }}">
+                    {{ grandRejectedTotalEditModal | number: "1.2-2" }}
+                  </span>
+                </td>
+                <td class="bg-gray font-18 font700 align-right wd-9">
+                  <span class="padding-right-12" placement="left" tooltip="{{
+                      grandApprovedTotalEditModal | number: '1.2-2'
+                    }}">
+                    {{ grandApprovedTotalEditModal | number: "1.2-2" }}
+                  </span>
+                </td>
+                <td class="bg-gray font-18 font700 wd-7"></td>
+                <td class="bg-gray font-18 font700 wd-7"></td>
+                <td class="bg-gray font-18 font700 wd-10"></td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="!previousEmployeeList?.length">
+            <tbody>
+              <tr>
+                <td class="bg-gray font-18 font700 wd-8">Grand Total</td>
+                <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
+                <td class="bg-gray font-18 font700 align-right wd-7"></td>
+                <td class="bg-gray font-18 font700 align-right wd-9">
+                  <span class="padding-right-12" placement="left" tooltip="{{
+                      grandDeclarationTotalEditModal | number: '1.2-2'
+                    }}">
+                    {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
+                  </span>
+                </td>
+                <td class="bg-gray font-18 font700 align-right wd-11"></td>
+                <td class="bg-gray font-18 font700 align-right wd_9">
+                  <span class="padding-right-12" placement="left"
+                    tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}">
+                    {{ grandActualTotalEditModal | number: "1.2-2" }}
+                  </span>
+                </td>
+                <td class="bg-gray font-18 font700 align-right wd_8">
+                  <span class="padding-right-12" placement="left" tooltip=" {{
+                      grandRejectedTotalEditModal | number: '1.2-2'
+                    }}">
+                    {{ grandRejectedTotalEditModal | number: "1.2-2" }}
+                  </span>
+                </td>
+                <td class="bg-gray font-18 font700 align-right wd_8">
+                  <span class="padding-right-12" placement="left" tooltip="{{
+                      grandApprovedTotalEditModal | number: '1.2-2'
+                    }}">
+                    {{ grandApprovedTotalEditModal | number: "1.2-2" }}
+                  </span>
+                </td>
+                <td class="bg-gray font-18 font700 wd-10"></td>
+                <td class="bg-gray font-18 font700 wd-10"></td>
+                <td class="bg-gray font-18 font700 wd-15"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     <hr />
     <div class="row" *ngIf="viewDocumentDetail">
       <div class="col-12">
@@ -1178,24 +924,14 @@
               <label class="filelabel">
                 <i class="fa fa-upload"> </i>
                 <span class="title"> Choose file </span>
-                <input
-                  class="FileUpload1"
-                  class="dropify"
-                  (change)="onUploadInEditCase($event)"
-                  accept=".jpg , .jpeg, .pdf , .png"
-                  id="FileInput"
-                  type="file"
-                  multiple
-                />
+                <input class="FileUpload1" class="dropify" (change)="onUploadInEditCase($event)"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
             </div>
 
             <div *ngIf="editfilesArray.length > 0" class="fileuploadbox">
               Selected Files
-              <label
-                *ngFor="let item of editfilesArray; let index = index"
-                class="filelabeldisplay"
-              >
+              <label *ngFor="let item of editfilesArray; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
                   <i class="fa fa-paperclip"> </i>
                   <span class="title">
@@ -1203,10 +939,8 @@
                   </span>
                 </div>
                 <div>
-                  <i
-                    class="fa fa-times text-red font-18"
-                    (click)="removeSelectedTransactionDocumentInEditCase(index)"
-                  ></i>
+                  <i class="fa fa-times text-red font-18"
+                    (click)="removeSelectedULIPTransactionDocumentInEditCase(index)"></i>
                 </div>
               </label>
             </div>
@@ -1215,11 +949,7 @@
             <label class="form-label">Remark</label>
           </div>
           <div class="col-md-6">
-            <textarea
-              class="form-control"
-              [(ngModel)]="documentRemark"
-              rows="2"
-            ></textarea>
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
           </div>
         </div>
       </div>
@@ -1243,42 +973,27 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      tooltip="View Document"
-      (click)="modalRef.hide(); docViewer(template3,urlArray)"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-    >
+    <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)"
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-eye"></i></b> View
     </button>
     &nbsp;&nbsp;
-    <button
-      *ngIf="viewDocumentDetail"
-      type="button"
-      tooltip="Save Document"
+    <button *ngIf="viewDocumentDetail" type="button" tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-    >
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
     </button>
   </div>
 </ng-template>
-
-
 <ng-template #template3>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-    <button
-      type="button"
-      (click)="modalRef.hide()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -1287,31 +1002,17 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-1">
-        <button
-          type="button"
-          class="btn active Next_Previous_Btn"
-          tooltip="Previous Document"
-          (click)="previousDocViewer()"
-          [disabled]="urlIndex == 0"
-        >
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+          (click)="previousDocViewer()" [disabled]="urlIndex == 0">
           <i class="fa fa-angle-left text-white font-30 p-10"></i>
         </button>
       </div>
       <div class="col-md-10">
-        <iframe
-          style="height: 100vh; width: 100%; display: block"
-          [src]="urlSafe"
-          provider="google"
-        ></iframe>
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
       </div>
       <div class="col-md-1">
-        <button
-          type="button"
-          class="btn active Next_Previous_Btn"
-          tooltip="Next Document"
-          (click)="nextDocViewer()"
-          [disabled]="urlIndex == urlArray.length - 1"
-        >
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
+          [disabled]="urlIndex == urlArray.length - 1">
           <i class="fa fa-angle-right text-white font-30 p-10"></i>
         </button>
       </div>
@@ -1324,17 +1025,10 @@
     </button>
   </div>
 </ng-template>
-
 <ng-template #template4>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-    <button
-      type="button"
-      (click)="modalRef.hide()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -1347,23 +1041,13 @@
               <label class="filelabel">
                 <i class="fa fa-upload"> </i>
                 <span class="title"> Choose file </span>
-                <input
-                  class="FileUpload1"
-                  class="dropify"
-                  (change)="onUpload($event)"
-                  accept=".jpg , .jpeg, .pdf , .png"
-                  id="FileInput"
-                  type="file"
-                  multiple
-                />
+                <input class="FileUpload1" class="dropify" (change)="onUpload($event)"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
             </div>
             <div *ngIf="filesArray.length > 0" class="fileuploadbox">
               Selected Files
-              <label
-                *ngFor="let item of filesArray; let index = index"
-                class="filelabeldisplay"
-              >
+              <label *ngFor="let item of filesArray; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
                   <i class="fa fa-paperclip"> </i>
                   <span class="title">
@@ -1371,10 +1055,8 @@
                   </span>
                 </div>
                 <div>
-                  <i
-                    class="fa fa-times text-red font-18"
-                    (click)="removeSelectedTransactionDocument(index)"
-                  ></i>
+                  <i class="fa fa-times text-red font-18"
+                    (click)="removeSelectedULIPTransactionDocument(index)"></i>
                 </div>
               </label>
             </div>
@@ -1383,11 +1065,7 @@
             <label class="form-label">Remark</label>
           </div>
           <div class="col-md-12">
-            <textarea
-              class="form-control"
-              [(ngModel)]="documentRemark"
-              rows="2"
-            ></textarea>
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
           </div>
         </div>
       </div>

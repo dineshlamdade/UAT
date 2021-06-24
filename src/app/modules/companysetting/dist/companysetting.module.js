@@ -44,8 +44,8 @@ var business_cycle_component_1 = require("./business-cycle/business-cycle.compon
 var sharedlayout_module_1 = require("../sharedlayout/sharedlayout.module");
 var attribute_selection_component_1 = require("./attribute-selection/attribute-selection.component");
 var head_creation_component_1 = require("./head-creation/head-creation.component");
-var payroll_head_group_creation_component_1 = require("./payroll-head-group-creation/payroll-head-group-creation.component");
 var attribute_global_component_1 = require("./attribute-global/attribute-global.component");
+var payroll_head_group_creation_component_1 = require("./payroll-head-group-creation/payroll-head-group-creation.component");
 var CompanySettingModule = /** @class */ (function () {
     function CompanySettingModule() {
     }
@@ -53,6 +53,7 @@ var CompanySettingModule = /** @class */ (function () {
         core_1.NgModule({
             declarations: [
                 head_creation_component_1.HeadCreationComponent,
+                //   PayrollHeadGroupCreationComponent,
                 payroll_head_group_creation_component_1.PayrollHeadGroupCreationComponent,
                 business_cycle_component_1.BusinessCycleComponent,
                 attribute_selection_component_1.AttributeSelectionComponent,

@@ -38,7 +38,8 @@ export class LicdeclarationComponent implements OnInit {
   @Input() public institution: string;
   @Input() public policyNo: string;
   @Input() public data: any;
-
+public testPolicy = ''; 
+public selectPolicyName = '';
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -412,6 +413,8 @@ export class LicdeclarationComponent implements OnInit {
     }
 
     this.resetAll();
+    this.enableSelectAll=false;
+    this.isCheckAll=false;
   }
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
@@ -426,6 +429,7 @@ export class LicdeclarationComponent implements OnInit {
 
   // ------- On Transaction Status selection show all transactions list accordingly all policies------
   selectedTransactionStatus(transactionStatus: any) {
+    
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,
@@ -440,6 +444,7 @@ export class LicdeclarationComponent implements OnInit {
     i: number,
     j: number,
   ) {
+   
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
         'Please Enter Declared Amount'
@@ -513,6 +518,7 @@ export class LicdeclarationComponent implements OnInit {
       // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(data.licTransactionId);
       this.uploadGridData.splice(index, 1);
+      this.isCheckAll=false;
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
@@ -547,21 +553,30 @@ export class LicdeclarationComponent implements OnInit {
     this.grandActualTotal = this.actualTotal;
     console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
+    this.testPolicy = '';
+    this.selectPolicyName = '';
   }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
-  checkUncheckAll(item: any) {
-    // console.log(this.isCheckAll);
-    if (this.isCheckAll) {
-      // console.log('CHECK ALL IS FALSE ');
+  checkUncheckAll(item: any,event: { target: { checked: any } } , j: any) {
+
+      console.log(event.target.checked);
+      this.isCheckAll=event.target.checked;
+    console.log(this.isCheckAll);
+    if (!this.isCheckAll) {
+      console.log('CHECK ALL IS FALSE ');
       this.isCheckAll = false;
       this.enableSelectAll = false;
       this.enableCheckboxFlag2 = null;
+      this.testPolicy = '';
+      this.selectPolicyName = ''
       this.uploadGridData = [];
     } else {
-      // console.log('CHECK ALL IS TRUE ');
+      console.log('CHECK ALL IS TRUE ');
       this.isCheckAll = true;
       this.enableSelectAll = true;
+      this.testPolicy = item.policyNo;
+      this.selectPolicyName = item.policyholdername;
       this.enableCheckboxFlag2 = item.institutionName;
       item.lictransactionList.forEach((element) => {
         this.uploadGridData.push(element.licTransactionId);
@@ -570,6 +585,7 @@ export class LicdeclarationComponent implements OnInit {
     }
     // console.log('enableSelectAll...',  this.enableSelectAll);
     // console.log('uploadGridData...',  this.uploadGridData);
+
   }
 
   // --------------- ON change of declared Amount Main Page-------------
@@ -1261,6 +1277,7 @@ export class LicdeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string,
   ) {
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1271,6 +1288,7 @@ export class LicdeclarationComponent implements OnInit {
     this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].licTransactionDetail;
@@ -1312,6 +1330,7 @@ export class LicdeclarationComponent implements OnInit {
     policyNo: String,
     transactionStatus: String,
   ) {
+    
     // this.Service.getTransactionInstName(data).subscribe(res => {
     this.Service.getTransactionFilterData(institution,policyNo,transactionStatus,)
     .subscribe((res) => {
@@ -1409,7 +1428,7 @@ export class LicdeclarationComponent implements OnInit {
     const data = {
       licTransactionDetail: this.editTransactionUpload,
       licTransactionIDs: this.uploadGridData,
-      // documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
     };
@@ -1420,7 +1439,7 @@ export class LicdeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
-
+      
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             '',

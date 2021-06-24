@@ -15,17 +15,19 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Code</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" (change)="onChangeEvent($event)"
-                        (keypress)="keyPressedSpaceNotAllow($event)" formControlName="standardName" class="form-control"
-                        placeholder="Enter Code"
-                        [ngClass]="{'is-invalid' : HeadCreationForm.get('standardName').status == 'INVALID'}">
+                      <!-- (keypress)="keyPressedSpaceNotAllow($event)" -->
+                      <input type="text" [readonly]="!disabled" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)"
+                        (change)="onChangeEvent($event); isContainsOnlySpecialCharacterDescription();"
+                        formControlName="standardName" [maxlength]="25" class="form-control" placeholder="Enter Code"
+                        [ngClass]="{'is-invalid' : HeadCreationForm.get('standardName').status == 'INVALID' || codeInvalid == true}">
                     </div>
                   </div>
 
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Description</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
+                      <input type="text" [readonly]="!disabled" formControlName="description"
+                        onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" class="form-control"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('description').status == 'INVALID'}"
                         placeholder="Enter Description">
                     </div>
@@ -34,7 +36,8 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Short Name</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="shortName" class="form-control"
+                      <input type="text" [readonly]="!disabled" formControlName="shortName"
+                        onkeypress="return /[0-9a-zA-Z_- ]/i.test(event.key)" class="form-control" [maxlength]="25"
                         placeholder="Enter Short Name"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('shortName').status == 'INVALID'}">
                     </div>
@@ -43,7 +46,8 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Display Name</label>
                     <div class="input-group">
-                      <input type="text" formControlName="displayName" class="form-control"
+                      <input type="text" formControlName="displayName"
+                        onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50" class="form-control"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('displayName').status == 'INVALID'}"
                         placeholder="Enter Display Name">
                     </div>
@@ -150,22 +154,34 @@
 
 
               <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-11">
 
 
                   <div class="cycle-table mt-4">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
 
-                    <p-table [value]="HeadCreationList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    <!-- <p-table [value]="HeadCreationList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+                    <!--
+                      <p-table dt1  [value]="HeadCreationList" [paginator]="true" [rows]="10" styleClass="p-datatable-customers p-datatable-gridlines"
+                      [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{HeadCreationList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                    <p-table [value]="HeadCreationList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                      [pageLinks]="5" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{HeadCreationList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
+
 
                       <ng-template pTemplate="header">
                         <tr>
                           <th rowspan="1" class="wd-8 text-center">
                             Sr. No.
                           </th>
-                          <th rowspan="2">
+                          <th rowspan="2" class="wd-12">
                             <div class="p-d-flex p-jc-between p-ai-center">
                               Code
                               <div class="Sort_Filter_Position">
@@ -175,7 +191,7 @@
                             </div>
                           </th>
 
-                          <th rowspan="2">
+                          <th rowspan="2" class="wd-12">
                             <div class="p-d-flex p-jc-between p-ai-center">
                               Description
                               <div class="Sort_Filter_Position">
@@ -222,7 +238,7 @@
 
                             </div>
                           </th>
-                          <th rowspan="2" class="wd-8">
+                          <th rowspan="2" class="wd-6">
                             <div class="p-d-flex p-jc-between p-ai-center">
                               Category
                               <div class="Sort_Filter_Position">
@@ -232,7 +248,7 @@
 
                             </div>
                           </th>
-                          <th rowspan="2" class="wd-8 text-center">
+                          <th rowspan="2" class="wd-6 text-center">
                             <div class="p-d-flex p-jc-center p-ai-center">
                               Action
                             </div>
@@ -260,8 +276,8 @@
                           </td>
                           <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.type}}</label></td>
                           <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.category}}</label></td>
-                          <td class="wd-10 text-center">
-                            <button type="button" class="btn btn-icon" title="View"
+                          <td class="wd-6 text-center">
+                            <button type="button" class="btn btn-icon" tooltip="View"
                               (click)="GetHeadCreationbyIdDisable(user1.headMasterId)">
                               <i class="fa fa-eye"></i></button>
                           </td>

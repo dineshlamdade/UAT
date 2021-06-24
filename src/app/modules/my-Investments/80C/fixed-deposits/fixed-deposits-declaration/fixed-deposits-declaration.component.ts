@@ -94,6 +94,11 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
   public grandDeclarationTotal: number;
+  public requiredField: boolean = false;
+  public requiredInstitution: boolean = false;
+  public requiredaccountNumber: boolean = false;
+  public requireddateOfPayment: boolean = false;
+  public requireddeclaredAmount: boolean = false;
   public grandActualTotal: number;
   public grandRejectedTotal: number;
   public grandApprovedTotal: number;
@@ -164,7 +169,11 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   dateOfJoining: Date;
-
+  public selectrow : any;
+  globalSelectedAmounts: any = '0.00';
+  public addNewRow: boolean = true;
+  public showDeleteButton: boolean = false;
+  
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -210,6 +219,11 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getTransactionFilterData();
+    if (this.data) {
+    this.selectrow = this.data.accountNumber;
+    } else {
+      this.selectrow = "any";
+    }
     // console.log('data::', this.data);
     // if (this.data === undefined || this.data === null) {
     //   this.declarationPage();
@@ -410,6 +424,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -422,6 +437,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       .subscribe((res) => {
 
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
@@ -492,6 +508,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
       groupTransactionIDs:this.uploadGridData,
+      
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -716,10 +733,89 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public onSelectCheckBox(
    
     event: { target: { checked: any } },
-    i: number,
+    i: number, summary: {
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;      
+      declaredAmount: number;
+      actualAmount: number;
+      dateOfPayment: Date;
+    },
   
   ) {
     
+    
+    // if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+    //   this.requiredField = true;
+    //   event.target.checked = false;
+    //  if(this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
+    //    this.alertService.sweetalertError(
+    //      'Please Enter Decleared Amount'
+    //    );
+    //    return;
+    //  } else {
+    //    this.alertService.sweetalertError(
+    //      'Please Fill Required Field.'
+    //    );
+    //    return;
+    //  }
+
+    // } else {
+    //   this.requiredField = false;
+
+    // }
+    
+
+    if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null || this.investmentGroup3TransactionDetailList[i].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[i].declaredAmount == "0.00") {
+      if (this.investmentGroup3TransactionDetailList[i].institution == null) {
+        this.requiredInstitution = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredInstitution = false;
+      }
+
+
+      if (this.investmentGroup3TransactionDetailList[i].accountNumber == null) {
+        this.requiredaccountNumber = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredaccountNumber = false;
+      }
+
+      if (this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+        this.requireddateOfPayment = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+
+      } else {
+        this.requireddateOfPayment = false;
+      }
+      if (this.investmentGroup3TransactionDetailList[i].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[i].declaredAmount == "0.00") {
+        this.requireddeclaredAmount = true;
+        event.target.checked = false;
+           this.alertService.sweetalertError(
+             'Please Enter Decleared Amount'
+           );
+        return;
+
+      } else {
+        this.requireddeclaredAmount = false;
+      }
+      return;
+    } else {
+
+      this.requireddeclaredAmount = false;
     // if(data.declaredAmount == null || data.declaredAmount <= 0){
     //   this.alertService.sweetalertError(
     //     'Please Enter Declared Amount'
@@ -739,7 +835,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     let formatedSelectedAmount: string;
    
     if (checked) {
-     /*  if (this.transactionDetail[j].isECS === 1) {
+  /*  if (this.transactionDetail[j].isECS === 1) {
         this.transactionDetail[j].actualAmount =
           data.declaredAmount;
         this.transactionDetail[j].dateOfPayment = new Date(data.dueDate);
@@ -756,13 +852,16 @@ export class FixedDepositsDeclarationComponent implements OnInit {
           data.declaredAmount;
       }
  */
+      this.investmentGroup3TransactionDetailList[i].actualAmount = this.investmentGroup3TransactionDetailList[i].declaredAmount;
+      this.globalSelectedAmounts = this.investmentGroup3TransactionDetailList[i].declaredAmount;
+      // data.declaredAmount;
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
           .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue + formatedActualAmount
+        formatedGlobalSelectedValue
       );
        if(formatedActualAmount == null || formatedActualAmount <= 0){
       this.alertService.sweetalertError(
@@ -777,6 +876,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
+      this.investmentGroup3TransactionDetailList[i].actualAmount = this.investmentGroup3TransactionDetailList[i].declaredAmount;
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
@@ -810,20 +910,22 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       this.enableFileUpload = true;
     }*/
     console.log(this.uploadGridData);
-    this.actualTotal = 0;
-    this.transactionDetail.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualTotal.toString().replace(/,/g, '')
-      );
-      // console.log("Actual Total")(this.actualTotal);
-     console.log("Actual Total::" , this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.onActualAmountChange(summary, i);
+    // this.actualTotal = 0;
+    // this.transactionDetail.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualTotal.toString().replace(/,/g, '')
+    //   );
+    //   // console.log("Actual Total")(this.actualTotal);
+    //  console.log("Actual Total::" , this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
 
     this.grandActualTotal = this.actualTotal;
     console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
+  }
   }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
@@ -883,6 +985,11 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
     this.investmentGroup3TransactionDetailList[i].institution = this.declarationService.institution;
+    if (this.investmentGroup3TransactionDetailList[i].institution == null) {
+      this.requiredInstitution = true;
+    } else {
+      this.requiredInstitution = false;
+    }
     
   }
 
@@ -903,6 +1010,12 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
     this.investmentGroup3TransactionDetailList[i].accountNumber = this.declarationService.accountNumber;
+    if (this.investmentGroup3TransactionDetailList[i].accountNumber == null) {
+      this.requiredaccountNumber = true;
+
+    } else {
+      this.requiredaccountNumber = false;
+    }
     
   }
 
@@ -939,6 +1052,11 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     console.log("summary::",summary)
    // this.declarationService = new DeclarationService(summary);
     this.investmentGroup3TransactionDetailList[i].dateOfPayment = summary.dateOfPayment;
+    if (this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+      this.requireddateOfPayment = true;
+    } else {
+      this.requireddateOfPayment = false;
+    }
     
    
      }
@@ -956,6 +1074,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     },
     i: number
   ) {
+   
     console.log("summary::",summary)
     this.declarationService = new DeclarationService(summary);
     console.log("declarationService::",this.declarationService)
@@ -1001,6 +1120,72 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     // console.log(this.actualTotal);
   }
 
+  // ------------Decleared Amount change-----------
+  onDeclearedAmountChange(
+    summary: {
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;      
+      declaredAmount: number;
+      actualAmount: number;
+      dateOfPayment: Date;
+    },
+    i: number
+  ) {
+ 
+    
+    console.log("summary::",summary)
+    this.declarationService = new DeclarationService(summary);
+    console.log("declarationService::",this.declarationService)
+    this.investmentGroup3TransactionDetailList[i].declaredAmount = this.declarationService.declaredAmount;
+    console.log("investmentGroup3TransactionDetailList[i].actualAmount::",this.investmentGroup3TransactionDetailList[i])
+    const formatedActualAmount = this.numberFormat.transform(
+      this.investmentGroup3TransactionDetailList[i].declaredAmount
+    );
+    this.investmentGroup3TransactionDetailList[i].declaredAmount = formatedActualAmount;
+ 
+    if (this.investmentGroup3TransactionDetailList[i].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[i].declaredAmount == "0.00") {
+      this.requireddeclaredAmount = true;
+      
+
+    } else {
+      this.requireddeclaredAmount = false;
+    }
+
+    this.declarationTotal = 0;
+    this.declaredAmount = 0;
+    this.investmentGroup3TransactionDetailList.forEach((element) => {
+      this.declarationTotal += Number(
+        element.declaredAmount.toString().replace(/,/g, '')
+      );
+      this.declaredAmount += Number(element.declaredAmount.toString().replace(',', ""));
+    });
+
+    this.transactionDetail.forEach((element) => {
+      this.declarationTotal += Number(
+        element.declaredAmount.toString().replace(/,/g, '')
+      );
+      this.declaredAmount += Number(element.declaredAmount.toString().replace(',', ""));
+    });
+
+    this.grandDeclarationTotal = this.declarationTotal;
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Declaration Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+    this.grandDeclarationTotal = this.declarationTotal;
+    console.log(this.grandDeclarationTotal);
+    // this.transactionDetail[j].actualAmount = this.actualAmount;
+    // console.log(this.transactionDetail[j]);
+    // console.log(this.actualTotal);
+  }
+
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
@@ -1023,6 +1208,8 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     // } else {
     //   this.hideRemoveRow  = true;
     // }
+    
+    if (this.addNewRow) {
     this.declarationService = new DeclarationService();
     console.log('declarationService::', this.declarationService);
     this.globalAddRowIndex -= 1;
@@ -1041,6 +1228,9 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
     this.investmentGroup3TransactionDetailList.push(this.declarationService);
     console.log('addRow::', this.investmentGroup3TransactionDetailList);
+    this.addNewRow = false; 
+    this.showDeleteButton = true;
+    }
     // this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
     //   j
     // ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
@@ -1058,14 +1248,17 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].length - 1;
-    // console.log('rowcount::', rowCount);
-    if (this.transactionDetail[j].length == 1) {
-      return false;
-    } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].splice(rowCount, 1);
-      return true;
-    }
+    // const rowCount = this.transactionDetail[j].length - 1;
+    // // console.log('rowcount::', rowCount);
+    // if (this.transactionDetail[j].length == 1) {
+    //   return false;
+    // } else if (this.initialArrayIndex[j] <= rowCount) {
+    //   this.transactionDetail[j].splice(rowCount, 1);
+    //   return true;
+    // }
+    this.investmentGroup3TransactionDetailList.splice(0, 1);
+    this.addNewRow = true;
+    this.showDeleteButton = false;
   }
 
   editDeclrationRow(
@@ -1188,6 +1381,60 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   }
 
   upload() {
+    if (this.investmentGroup3TransactionDetailList[0].institution == null || this.investmentGroup3TransactionDetailList[0].accountNumber == null || this.investmentGroup3TransactionDetailList[0].dateOfPayment == null || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0.00") {
+      if (this.investmentGroup3TransactionDetailList[0].institution == null) {
+        this.requiredInstitution = true;
+     
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredInstitution = false;
+      }
+
+
+      if (this.investmentGroup3TransactionDetailList[0].accountNumber == null) {
+        this.requiredaccountNumber = true;
+  
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredaccountNumber = false;
+      }
+
+      if (this.investmentGroup3TransactionDetailList[0].dateOfPayment == null ) {
+        this.requireddateOfPayment = true;
+   
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+
+      } else {
+        this.requireddateOfPayment = false;
+      }
+      if (this.investmentGroup3TransactionDetailList[0].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0.00") {
+        this.requireddeclaredAmount = true;
+           this.alertService.sweetalertError(
+             'Please Enter Decleared Amount'
+           );
+        return;
+
+      } else {
+        this.requireddeclaredAmount = false;
+      }
+      return;
+    }
+    if (this.investmentGroup3TransactionDetailList[0].accountNumber == null && this.investmentGroup3TransactionDetailList[0].actualAmount == '0' && this.investmentGroup3TransactionDetailList[0].institution == null && this.investmentGroup3TransactionDetailList[0].dateOfPayment == null){
+      this.alertService.sweetalertError(
+        'Please Fill Required Field'
+      );
+      return;
+    }
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -1259,6 +1506,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
             // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
     
             this.initialArrayIndex = [];
+            this.showDeleteButton = false;
     
             this.transactionDetail.forEach((element) => {
               element.declaredAmount = this.numberFormat.transform(
@@ -1272,6 +1520,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
             'Transaction Saved Successfully.',
             ''
           );
+          this.addNewRow = true;
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -1279,6 +1528,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.globalSelectedAmounts = '0.00';
     this.investmentGroup3TransactionDetailList = [];
   }
 
@@ -1291,11 +1541,14 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
-    if (receiptAmount_ < globalSelectedAmount_) {
+    if (receiptAmount_ < this.globalSelectedAmounts) {
     this.alertService.sweetalertError(
       'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
-  } else if (receiptAmount_ > globalSelectedAmount_) {
+    this.receiptAmount = '0.00';
+      return false;
+  } 
+  else if (receiptAmount_ > this.globalSelectedAmounts) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
@@ -1335,6 +1588,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       this.editTransactionUpload[j].group2TransactionList[i].dueDate
     );
   }
+  
 
   // --------------- ON change of declared Amount Edit Modal-------------
   onDeclaredAmountChangeInEditCase(

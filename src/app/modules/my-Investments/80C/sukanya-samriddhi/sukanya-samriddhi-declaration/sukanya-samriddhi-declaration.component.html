@@ -47,18 +47,27 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Account No. :</label>
+        <label class="form-label mt-1">Institution :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip=" {{item.institutionName}}:{{ item.policyNo }}">
-          {{item.institutionName}} : {{ item.policyNo }}
+          tooltip=" {{item.institutionName}}">
+          {{item.institutionName}}
+        </label>
+      </div>
+      <div class="ml-2 pl-1 pr-0">
+        <label class="form-label mt-1">Account No. :</label>
+      </div>
+      <div class="ml-2 pl-1 pr-0 col-md-1">
+        <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
+          tooltip=" {{ item.policyNo }}">
+          {{ item.policyNo }}
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1 pl-10">Account Holder Name :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
           tooltip="{{ item.policyholdername }}">
           {{ item.policyholdername }}
@@ -67,9 +76,9 @@
       <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1">Frequency :</label>
       </div>
-      <div class="ml-2 pl-1 pr-0 col-md-2">
+      <div class="ml-2 pl-1 pr-0 col-md-1">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
-          tooltip="{{ item.frequency }}">
+          tooltip="">
           {{ item.frequency }}
         </label>
       </div>
@@ -80,8 +89,9 @@
           <table class="table table-striped table-hover table-bordered m-b-0">
             <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
               <tr>
-                <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                <th rowspan="2" class="wd-6">
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false"
+                  tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
@@ -110,8 +120,9 @@
             </thead>
             <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
               <tr>
-                <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                <th rowspan="2" class="wd-6">
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false"
+                  tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" name="select" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -143,7 +154,7 @@
                     tooltip="Select institution for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
-                        onSelectCheckBox(summary, $event, i, j);
+                        onSelectCheckBox(summary, $event, i, j, item.frequency);
                         enableCheckboxFlag = j
                       " class="custom-control-input" value="option{{ summary.investmentGroup1TransactionId }}" />
                     <span class="custom-control-label"></span>
@@ -151,7 +162,7 @@
                   <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
-                        onSelectCheckBox(summary, $event, i, j);
+                        onSelectCheckBox(summary, $event, i, j, item.frequency);
                         enableCheckboxFlag = j
                       " class="custom-control-input" value="option{{ summary.investmentGroup1TransactionId }}" />
                     <span class="custom-control-label"></span>
@@ -175,24 +186,64 @@
                 <!-- <td>
                   <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
                 </td> -->
-                <td>
+                <!-- <td>
                   <div class="custom_icon_badge">
                     <input type="text" class="form-control" [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
+                      [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" 
+                      [disabled]="
                         initialArrayIndex[j] > i || summary.isECS === 1
                       " (ngModelChange)="
                         summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)
                       " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker />
                   </div>
+                </td> -->
+                <td>
+                  <div class="custom_icon_badge">
+                    <input
+                    *ngIf = "item.frequency !=='As & When'"
+                      type="text"
+                      class="form-control"
+                      [minDate]="financialYearStartDate"
+                      [maxDate]="financialYearEndDate"
+                      [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
+                      [disabled]="initialArrayIndex[j] > i || summary.isECS === 1 "
+                      (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
+                        onDueDateChange(summary, i, j)"
+                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                      data-provide="datepicker"
+                      bsDatepicker
+                    />
+                    <input
+                    *ngIf = "item.frequency ==='As & When'"
+                      type="text"
+                      class="form-control"
+                     placeholder="NA"
+                     disabled
+                    />
+                  </div>
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}"
+                    <!-- <input type="text" 
+                    id="declaredAmount{{ summary.investmentGroup1TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
-                      class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" />
+                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" 
+                      [(ngModel)]="summary.declaredAmount"
+                      class="form-control align-right" 
+                      (change)="onDeclaredAmountChange(summary, i, j)"
+                      [disabled]="initialArrayIndex[j] > i" /> -->
+                      <input
+                    
+                      type="text"
+                      id="declaredAmount{{ summary.investmentGroup1TransactionId }}"  
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
+                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}"
+                      [(ngModel)]="summary.declaredAmount"
+                      class="form-control align-right"
+                      (change)="onDeclaredAmountChange(summary, i, j)"
+                      [disabled]="initialArrayIndex[j] > i"
+                       />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
@@ -210,10 +261,13 @@
                     " class="form-control" bsDatepicker />
                 </td>
                 <td>
-                  <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
+                  <input type="text" 
+                  id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                   onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                    [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
+                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" 
+                    [disabled]="initialArrayIndex[j] > i && item.frequency !=='As & When'"
+                    [(ngModel)]="summary.actualAmount" 
+                    (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
                 </td>
                 <td>
@@ -420,7 +474,7 @@
                   <tr>
                     <th scope="row"><span tooltip="1">1</span></th>
                     <td>
-                      <span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                      <span tooltip="Account Statement / Passbook"></span>Account Statement / Passbook
                     </td>
                     <td>
                       <span *ngFor="let item of filesArray; let j = index" class="text-orange"
@@ -496,7 +550,7 @@
                   <th scope="col" class="font700 wd-15">Proof Submission ID</th>
                   <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Policy No.</th>
+                  <th scope="col" class="font700 wd-15">Account No.</th>
                   <!-- <th scope="col" class="font700 wd-10">Receipt No.</th>
                    <th scope="col" class="font700 wd-10">Receipt Date</th> -->
                   <th scope="col" class="font700 wd-10">Receipt Amount</th>
@@ -938,10 +992,10 @@
             *ngIf="previousEmployeeList?.length"
           >
             <tbody>
-              <tr>
+              <tr *ngFor="let item of editTransactionUpload; let j = index">
                 <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
                 <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
-                <td class="bg-gray font-18 font700 wd-4"></td>
+                <!-- <td class="bg-gray font-18 font700 wd-4"></td> -->
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span
@@ -959,9 +1013,9 @@
                   <span
                     class="padding-right-12"
                     placement="left"
-                    tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}"
+                    tooltip="{{ item.actualTotal | number: '1.2-2' }}"
                   >
-                    {{ grandActualTotalEditModal | number: "1.2-2" }}
+                    {{ item.actualTotal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-9">

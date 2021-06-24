@@ -10,22 +10,23 @@
 
               <form class="card" role="form" [formGroup]="AttributeCreationForm" (ngSubmit)="addAttributeCreation()"
                 #formDirective="ngForm" method="post" novalidate>
-
                 <div class="row">
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Code</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="code" class="form-control"
-                        placeholder="Enter Code"
-                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('code').status == 'INVALID'}">
+                      <input type="text" [readonly]="!disabled" formControlName="code" [maxlength]="25"
+                        (keypress)="keyPressedSpaceNotAllow($event)" (change)="isContainsOnlySpecialCharacter()" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" maxlength="25"
+                        class="form-control" placeholder="Enter Code"
+                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('code').status == 'INVALID' || codeInvalid == true} ">
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Description</label>
                     <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
+                      <input type="text" [readonly]="!disabled" formControlName="description" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50"
+                        (change)="isContainsOnlySpecialCharacterDescription()" class="form-control"
                         placeholder="Enter Description"
-                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('description').status == 'INVALID'}">
+                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('description').status == 'INVALID' ||  descriptionInvalid == true} ">
                     </div>
                   </div>
 
@@ -110,11 +111,19 @@
                               <td class="wd-6"><span tooltip="{{i+1}}">{{i+1}}</span>
                               </td>
 
-                              <td class="wd-10"><span tooltip="List of values"><input type="text"
-                                    formControlName="optionList"
-                                    [ngClass]="{'is-invalid' :AttributeCreationForm.get('pfFormArray')['controls'][i].get('optionList').status == 'INVALID'}"
-                                    class="form-control" placeholder="Enter Value"></span>
-                              </td>
+                              <!-- <td class="wd-10"><span tooltip="List of values">
+                                  <input type="text" formControlName="optionList" [maxlength]="25"
+                                    (change)="isListOnlySpecialCharacter()" (keypress)="keyPressedSpaceNotAllow($event)"
+                                    class="form-control" placeholder="Enter Value"
+                                    [ngClass]="{'is-invalid' :AttributeCreationForm.get('pfFormArray')['controls'][i].get('optionList').status == 'INVALID' || listInvalid == true}"></span>
+                              </td> -->
+
+                              <td class="wd-10">
+                                <input type="text" tooltip="List of values" formControlName="optionList" [maxlength]="25"
+                                  (change)="isListOnlySpecialCharacter()"  onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" (keypress)="keyPressedSpaceNotAllow($event)"
+                                  class="form-control" placeholder="Enter Value"
+                                  [ngClass]="{'is-invalid' : AttributeCreationForm.get('pfFormArray')['controls'][i].get('optionList').status == 'INVALID' || listInvalid == true}">
+                            </td>
 
 
                               <td class="wd-4">
@@ -125,7 +134,7 @@
                                   (click)="addOptionList(AttributeCreationForm.get('optionList').value)"></i> -->
                                 <span *ngIf="i==0 &&  isView==true">
                                   <i class="fa fa-plus-circle font-16 cursor-pointer text-dark-green" tooltip="Add"
-                                    (click)="addRow(2)"></i>
+                                    (click)="addRow(0)"></i>
 
                                 </span>
 
@@ -238,33 +247,11 @@
                 <div class="col-md-10">
                   <div class="cycle-table mt-4">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
-                    <!-- 
+                    <!-- (onPage)="paginate($event)" -->
                     <p-table [value]="attributeCreationSummaryList" [paginator]="true" [rows]="10"
-                      [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                      [showCurrentPageReport]="true" [pageLinks]="5"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
-
-
-                    <p-table [value]="attributeCreationSummaryList" [paginator]="true" [rows]="10" dynamic="true"
-                      lazy="true" [showCurrentPageReport]="true"
-                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
-
-                      <!-- <p-table [value]="attributeCreationSummaryList" dynamic="true" lazy="true" [paginator]="true"
-                      [rows]="10" [pageLinks]="5" [showCurrentPageReport]="true" (onPage)="paginate($event)"
-                      currentPageReportTemplate="Showing {first} to {last} of {{attributeCreationSummaryList.length}} entries"
-                      [rowsPerPageOptions]="[10,20,30,50,100,200]"> -->
-
-                      <!-- <p-table [value]="attributeCreationSummaryList" [paginator]="true" [rows]="10"
-                      [showCurrentPageReport]="true"
-                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
-                      <!-- 
-
-                    <p-table [value]="attributeCreationSummaryList" [paginator]="true" [rows]="10" [pageLinks]="5"
-                      [showCurrentPageReport]="true" (onPage)="paginate($event)"
-                      [rowsPerPageOptions]="[10,20,30,40,50,100,200]" totalRecords=attributeCreationSummaryList.length
-                      pageLinks="5"> -->
+                      totalRecords={{attributeCreationSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
 
 
                       <ng-template pTemplate="header">

@@ -1,6 +1,6 @@
 
 import { CompanySettingsService } from './../company-settings.service';
-import { Component, OnInit, Inject, ViewEncapsulation, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation, TemplateRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
@@ -16,7 +16,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./attribute-creation.component.scss'],
   encapsulation: ViewEncapsulation.None
 } )
-export class AttributeCreationComponent implements OnInit {
+export class AttributeCreationComponent implements OnInit, OnChanges {
+
+  public codeInvalid : boolean = false;
+  public descriptionInvalid : boolean = false;
+  public listInvalid : boolean = false;
   // sort alphabetically
   totalRecords: number = 0;
   @ViewChild( 'paginator', { static: true } ) paginator: Paginator
@@ -57,6 +61,9 @@ export class AttributeCreationComponent implements OnInit {
     @Inject( DOCUMENT ) private document: Document ) {
 
   }
+  ngOnChanges( changes: SimpleChanges ): void {
+    throw new Error( 'Method not implemented.' );
+  }
 
   ngOnInit(): void {
 
@@ -95,11 +102,7 @@ export class AttributeCreationComponent implements OnInit {
           } else {
             label = '';
           }
-
         }
-
-
-
 
         let obj = {
           attributeMasterId: element.attributeMasterId,
@@ -113,11 +116,12 @@ export class AttributeCreationComponent implements OnInit {
         this.attributeCreationSummaryList.push( obj );
       } );
     } );
-    this.totalRecords = this.attributeCreationSummaryList.length;
+    // this.totalRecords = this.attributeCreationSummaryList.length;
   }
 
 
   editAttributeCreation( attributeMasterId ) {
+    window.scrollTo( 0, 0 );
     this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
     this.isView = true;
     this.viewCancelButton = true;
@@ -145,6 +149,7 @@ export class AttributeCreationComponent implements OnInit {
 
   // Get Attribute Creation ById
   GetAttributeCreationByIdDisable( id ): void {
+    window.scrollTo( 0, 0 );
     this.AttributeCreationForm.setControl( 'pfFormArray', new FormArray( [] ) );
     this.disabled = false;
     this.viewCancelButton = true;
@@ -386,7 +391,7 @@ export class AttributeCreationComponent implements OnInit {
     //if ( i !== 0 ) {
     //  console.log( 'i!==0' )
     var setsFormArray = this.AttributeCreationForm.get( 'pfFormArray' ) as FormArray;
-    this.pfArray.insert( 0, this.formBuilder.group( {
+    this.pfArray.insert( this.pfArray.length, this.formBuilder.group( {
       optionList: ['', Validators.required],
     } ) );
     // }
@@ -424,4 +429,85 @@ export class AttributeCreationComponent implements OnInit {
   paginate( evt: any ) {
     console.log( evt );
   }
+
+  //Enter only Number Special Character/Character
+    isContainsOnlySpecialCharacter() {
+    this.codeInvalid = false
+    console.log( 'isContainsOnlySpecialCharacter' );
+    var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.AttributeCreationForm.get( 'code' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.AttributeCreationForm.get( 'code' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.codeInvalid = true;
+      } else {
+        this.codeInvalid = false;
+        break;
+      }
+
+    }
+    if ( this.codeInvalid == true ) {
+      //this.companyGroupNameInvalid = false;
+      //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+      // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+    }
+  }
+
+
+    //Enter only Number Special Character/Character Form control Description
+    isContainsOnlySpecialCharacterDescription() {
+    this.descriptionInvalid = false
+    console.log( 'isContainsOnlySpecialCharacterDescription' );
+    var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.AttributeCreationForm.get( 'description' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.AttributeCreationForm.get( 'description' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.descriptionInvalid = true;
+      } else {
+        this.descriptionInvalid = false;
+        break;
+      }
+
+    }
+    if ( this.descriptionInvalid == true ) {
+      //this.companyGroupNameInvalid = false;
+      //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+      // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+    }
+  }
+
+  keyPressedSpaceNotAllow( event: any ) {
+    const pattern = /[ ]/;
+    let inputChar = String.fromCharCode( event.charCode );
+    if ( pattern.test( inputChar ) ) {
+      event.preventDefault();
+    }
+  }
+
+  isListOnlySpecialCharacter() {
+    this.listInvalid = false
+    console.log( 'isListOnlySpecialCharacter' );
+    var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.AttributeCreationForm.get( 'pfFormArray' )['controls'][i].get('optionList').value.length; i++ ) {
+      if ( splChars.indexOf( this.AttributeCreationForm.get( 'pfFormArray' )['controls'][i].get('optionList').value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.listInvalid = true;
+      } else {
+        this.listInvalid = false;
+        break;
+      }
+    }
+    // AttributeCreationForm.get('pfFormArray')['controls'][i].get('optionList')
+
+    if ( this.listInvalid == true ) {
+      //this.companyGroupNameInvalid = false;
+      //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+      // this.AttributeCreationForm.get( 'optionList' ).status = 'INVALID';
+
+    }
+  }
+
+
+
 }

@@ -2,7 +2,8 @@ import { CompanySettingsService } from './../company-settings.service';
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
-import { AlertServiceService } from '../../../../app/core/services/alert-service.service';
+
+import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { SaveHeadCreation } from '../model/business-cycle-model';
 
 
@@ -13,6 +14,8 @@ import { SaveHeadCreation } from '../model/business-cycle-model';
   encapsulation: ViewEncapsulation.None
 } )
 export class HeadCreationComponent implements OnInit {
+
+  public codeInvalid : boolean = false;
   NatureList = [{ label: 'Earning', value: 'Earning' }, { label: 'Deduction', value: 'Deduction' }, { label: 'Perquisite', value: 'Perquisite' }];
   categoryList = [
     { value: 'Asset', label: 'Asset' },
@@ -56,13 +59,31 @@ export class HeadCreationComponent implements OnInit {
   // get All HeadCreation
   getAllHeadCreation(): void {
     this.HeadCreationList = [];
+    let earning = [];
+    let deduction = [];
+    let perquisite = [];
+    let other = [];
     this.headCreationService.getAllHeadCreation().subscribe( res => {
-      this.HeadCreationList = res.data.results;
+      for ( let i = 0; i < res.data.results.length; i++ ) {
+        if ( res.data.results[i].headNature == 'Earning' ) {
+          earning.push( res.data.results[i] );
+        } else if ( res.data.results[i].headNature == 'Deduction' ) {
+          deduction.push( res.data.results[i] );
+        } else if ( res.data.results[i].headNature == 'Perquisite' ) {
+          perquisite.push( res.data.results[i] )
+        } else {
+          other.push( res.data.results[i] )
+        }
+      }
+      this.HeadCreationList.push( ...earning, ...deduction, ...perquisite, ...other );
+    }, ( error ) => {
+      this.alertService.sweetalertError( error["error"]["status"]["message"] );
     } );
   }
 
   // get HeadCreation by Id
   GetHeadCreationbyIdDisable( id ): void {
+    window.scrollTo( 0, 0 );
     this.disabled = false;
     this.viewCancelButton = true;
     this.headCreationService.GetHeadCreationById( id )
@@ -76,6 +97,8 @@ export class HeadCreationComponent implements OnInit {
         this.HeadCreationForm.patchValue( { type: response.data.results[0].type } );
         this.HeadCreationForm.patchValue( { category: response.data.results[0].category } );
         this.HeadCreationForm.patchValue( { displayName: response.data.results[0].displayName } );
+      }, ( error ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       } );
     this.HeadCreationForm.disable();
   }
@@ -104,6 +127,7 @@ export class HeadCreationComponent implements OnInit {
       type: '',
       category: '',
     } );
+    this.TypeList = [];
   }
 
   ResetHeadCreation(): void {
@@ -114,6 +138,7 @@ export class HeadCreationComponent implements OnInit {
       type: '',
       category: '',
     } );
+    this.TypeList = [];
   }
 
 
@@ -128,6 +153,8 @@ export class HeadCreationComponent implements OnInit {
       this.TypeList = [];
       this.headCreationService.getByHeadMasterByNature( evt ).subscribe( res => {
         this.TypeList = res.data.results;
+      }, ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
       } );
 
     }
@@ -135,12 +162,39 @@ export class HeadCreationComponent implements OnInit {
 
     this.HeadCreationForm.patchValue( { type: '' } );
   }
-  keyPressedSpaceNotAllow( event: any ) {
-    const pattern = /[ ]/;
-    let inputChar = String.fromCharCode( event.charCode );
-    if ( pattern.test( inputChar ) ) {
-      event.preventDefault();
+
+
+    //Enter only Number Special Character/Character Form control Description
+    isContainsOnlySpecialCharacterDescription() {
+      // alert("Hiii codeInvalid");
+      this.codeInvalid = false
+      console.log( 'isContainsOnlySpecialCharacterDescription' );
+      var splChars = "* |,\":<>[]{}^`\!';()@&$#%1234567890";
+      for ( var i = 0; i < this.HeadCreationForm.get( 'standardName' ).value.length; i++ ) {
+        if ( splChars.indexOf( this.HeadCreationForm.get( 'standardName' ).value.charAt( i ) ) != -1 ) {
+          //alert("Illegal characters detected!");
+          this.codeInvalid = true;
+        } else {
+          this.codeInvalid = false;
+          break;
+        }
+
+      }
+      if ( this.codeInvalid == true ) {
+        //this.companyGroupNameInvalid = false;
+        //   this.AttributeCreationForm.get('companyGroupName').inValid = true;
+        // this.AttributeCreationForm.get( 'code' ).status = 'INVALID';
+
+      }
     }
-  }
+
+
+    keyPressedSpaceNotAllow( event: any ) {
+      const pattern = /[ ]/;
+      let inputChar = String.fromCharCode( event.charCode );
+      if ( pattern.test( inputChar ) ) {
+        event.preventDefault();
+      }
+    }
 
 }

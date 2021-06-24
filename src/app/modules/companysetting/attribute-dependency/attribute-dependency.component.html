@@ -31,8 +31,9 @@
 
                           <div class="col-sm-6 col-md-6" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                             <label class="form-label">Attribute Group</label>
-                            <select (change)="onChangeAttributeGroup($event,$event.target.value);" name="attributeGroupDefinitionId"
-                              id="attributeGroupDefinitionId" class="form-control" formControlName="attributeGroupDefinitionId">
+                            <select (change)="onChangeAttributeGroup($event.target.value);"
+                              name="attributeGroupDefinitionId" id="attributeGroupDefinitionId" class="form-control"
+                              formControlName="attributeGroupDefinitionId">
                               <option selected value=null>Select </option>
                               <option *ngFor="let by of AttributeSelectionList" [value]="by.id">
                                 {{by.name}}
@@ -262,9 +263,16 @@
 
                   <div class="cycle-table mt-4">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
-                    <p-table [value]="summary" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    <!-- <p-table [value]="summary" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                      <p-table [value]="summary" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{summary.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
                       <ng-template pTemplate="header">
                         <tr>
                           <th rowspan="1" class="wd-6 text-center">
@@ -276,6 +284,17 @@
                               <div class="Sort_Filter_Position">
                                 <p-sortIcon field="headNature" pSortableColumn="headNature"></p-sortIcon>
                                 <p-columnFilter field="headNature" display="menu" class="p-ml-auto"></p-columnFilter>
+                              </div>
+                            </div>
+                          </th>
+
+                          <th class="">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                              Attribute Group
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="attributeGroup" pSortableColumn="attributeGroup"></p-sortIcon>
+                                <p-columnFilter field="attributeGroup" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
                             </div>
                           </th>
@@ -374,9 +393,7 @@
                           </th>
 
                           <th class="wd-13 text-center">
-
                             Action
-
                           </th>
                         </tr>
 
@@ -389,6 +406,9 @@
                           <td class="bg-color-light_gray text-center"><label
                               class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
                           <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headNature}}</label>
+                          </td>
+                          <td class="bg-color-light_gray"><label
+                              class="form-lable mb-0">{{user1.attributeGroupName}}</label>
                           </td>
                           <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.attribute1}}</label>
                           </td>
@@ -417,7 +437,7 @@
                               (click)="view(user1.payrollHeadGroupAttributeDependencyId,rowIndex)"></i> &nbsp; &nbsp;
 
                             <i class="fa fa-edit text-blue font-16" tooltip="Edit"
-                              (click)="edit(user1.payrollHeadGroupAttributeDependencyId,rowIndex)"
+                              (click)="edit(user1.payrollHeadGroupAttributeDependencyId,rowIndex,user1.attributeGroupName)"
                               *ngIf="user1.activeStatus==true"></i>
                           </td>
                         </tr>

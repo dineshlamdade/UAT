@@ -158,7 +158,7 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
 // Payment Detail To Date Validations with Current Finanacial Year
   //------------------- Date of Leaving Validations with Payment Detail ----------------
   setPaymentDetailToDate() {
-    // debugger
+    
     this.paymentDetailMinDate = this.taxAdjustmentForm.value.fromDate;
     const from = this.datePipe.transform(
       this.taxAdjustmentForm.get('fromDate').value,
@@ -175,7 +175,7 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
 
   //------------------Date of Joining  Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPaymentDetailToDate() {
-    // debugger
+    
     const Leaving = this.datePipe.transform(
       this.taxAdjustmentForm.get('fromDate').value,
       'yyyy-MM-dd'

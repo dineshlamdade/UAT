@@ -1,0 +1,106 @@
+<div class="section-body mt-3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div
+            class="card-header mb-0"
+            style="font-weight: bold; color: purple"
+          >
+            Premium payment Receipt
+            <!-- <button (click)="click()">Rotate Right</button> -->
+          </div>
+
+          <div class="card-body">
+            <div class="tabview-contents">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="bg-color-light_gray pt-10 pl-10 pr-10">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0"
+                          >Employee No. & Name</label
+                        >
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          0001 -Sujata</label
+                        >
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Group</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{masterInfo.psidDetail.groupName}}
+                        </label>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">IT-Section</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{masterInfo.psidDetail.section}}
+                        </label>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0"> Type</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{masterInfo.psidDetail.type}}
+                        </label>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Status</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{masterInfo.psidDetail.proofSubmissionStatus}}
+                        </label>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Document Type</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{documentType}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-25">
+                <div class="col-md-1">
+                  <button
+                    type="button"
+                    class="btn active Next_Previous_Btn"
+                    tooltip="Previous Document"
+                    (click)="previousDocViewer()"
+                    [disabled]="documentURLIndex == 0"
+                  >
+                    <i class="fa fa-angle-left text-white font-30 p-10"></i>
+                  </button>
+                </div>
+                <div class="col-md-10">
+                  <iframe
+                    style="
+                      height: 100vh;
+                      width: 100%;
+                      display: block;
+                      overflow-y: scroll;
+                    "
+                    [src]="documentSafeURL"
+                    provider="google"
+                  ></iframe>
+                </div>
+                <div class="col-md-1">
+                  <button
+                    type="button"
+                    class="btn active Next_Previous_Btn"
+                    tooltip="Next Document"
+                    (click)="nextDocViewer()"
+                    [disabled]="
+                      documentURLIndex == masterInfo.masterDetail.documentDetailList.length - 1
+                    "
+                  >
+                    <i class="fa fa-angle-right text-white font-30 p-10"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

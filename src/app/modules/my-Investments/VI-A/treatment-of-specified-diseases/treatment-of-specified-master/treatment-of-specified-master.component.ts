@@ -458,6 +458,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.isCancel = false;
     this.urlArray = [];
+    this.visibilityFlag = false;
     this.isClear = false;
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
@@ -481,7 +482,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   }
 
   OnSpecifiedDiseaseChange() {
-    this.masterfilesArray = [];
+    // this.masterfilesArray = [];
     if (this.form.value.specifiedDiseaseName !== 'Neurological diseases with disability level >=40% per cent and above') {
       this.visibilityFlag = false;
       // this.form.get('neurologicalDiseaseName').setValidators([Validators.required]);

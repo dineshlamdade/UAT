@@ -15,16 +15,16 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Name</label>
                     <div class="input-group">
-                      <input type="text" (change)="onChangeHeadGroupDefinitionName($event)"
+                      <input type="text" (change)="onChangeHeadGroupDefinitionName($event); isContainsOnlySpecialCharacterDescription();" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" [maxlength]="25"
                         formControlName="headGroupDefinitionName" class="form-control" placeholder="Enter Name"
-                        [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('headGroupDefinitionName').status == 'INVALID'}">
+                        [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('headGroupDefinitionName').status == 'INVALID' || codeInvalid == true}">
                     </div>
                   </div>
 
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Description</label>
                     <div class="input-group">
-                      <input type="text" formControlName="description" class="form-control"
+                      <input type="text" formControlName="description" class="form-control" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50"
                         placeholder="Enter Description"
                         [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('description').status == 'INVALID'}">
                     </div>
@@ -113,8 +113,8 @@
                               </div>
                               <div class="col-md-6">
                                 <div class="float-right">
-                                  <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp;Selected
-                                    Head: &nbsp;
+                                  <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp; Selected Head:
+                                    &nbsp;
                                     <span class="font-14 text-dark-green">({{selectedUser.length}})</span>
                                   </span>
                                 </div>
@@ -123,16 +123,24 @@
 
 
 
-                            <!-- <h3 class="font-14 text-purple font-bold"><span class="form-label"> Total Head:
+                           <!-- <h3 class="font-14 text-purple font-bold"><span class="form-label"> Total Head:
                                   <span class="font-14 text-dark-green"> ({{sourceProducts.length}})</span>
                                   &nbsp;&nbsp;&nbsp;<span class="font-14  text-purple font-bold float-right">Selected
                                     Head:
                                     ({{selectedUser.length}})</span> </span></h3> -->
-                            <p-table [value]="sourceProducts" [paginator]="true" [rows]="10"
+
+                            <!-- <p-table [value]="sourceProducts" [paginator]="true" [rows]="10"
                               [showCurrentPageReport]="true" selectionMode="multiple"
                               [(selection)]="selectedSummarySourceProducts"
                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                              [rowsPerPageOptions]="[10,25,50,100,200]">
+                              [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                              <p-table [value]="sourceProducts" [paginator]="true" [rows]="10"
+                              [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              totalRecords={{sourceProducts.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
                               <ng-template pTemplate="header">
                                 <tr>
 
@@ -228,7 +236,7 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- <h3 class="font-14 text-purple font-bold">
+                             <!-- <h3 class="font-14 text-purple font-bold">
                                   <span class="form-label">Total Head:
                                     <span class="font-14 text-dark-green">({{targetProducts.length}})</span>
                                   </span>
@@ -238,11 +246,19 @@
                                   </span>
 
                                 </h3> -->
-
+<!--
                             <p-table [value]="targetProducts" [paginator]="true" [rows]="10"
                               [showCurrentPageReport]="true" selectionMode="multiple"
                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                              [rowsPerPageOptions]="[10,20,50,100,200]">
+                              [rowsPerPageOptions]="[10,20,50,100,200]"> -->
+
+                              <p-table [value]="targetProducts" [paginator]="true" [rows]="10"
+                              [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              totalRecords={{targetProducts.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
+
                               <ng-template pTemplate="header">
                                 <tr>
 
@@ -301,17 +317,17 @@
                                   <td>{{user1.headNature}} </td>
                                   <td class="wd-10 align-center" *ngIf="hideCopyFrom">
                                     <span *ngIf="user1.red  == true"><i class="fa fa-circle-o fa-lg" aria-hidden="true"
-                                        (click)="onSelectAttributeAssignment(user1,rowIndex);UploadModal2(template12445);modalRef1.hide()"
+                                        (click)="onSelectAttributeAssignment(user1);UploadModal2(template12445);modalRef1.hide()"
                                         data-toggle="modal" data-backdrop='static' data-keyboard='false'
                                         data-target="#UploadModal"></i></span>
 
                                     <span *ngIf="user1.green == true"><i class="fa fa-circle  fa-lg" aria-hidden="true"
-                                        (click)="onSelectAttributeAssignment(user1,rowIndex);UploadModal2(template12445);modalRef1.hide()"
+                                        (click)="onSelectAttributeAssignment(user1);UploadModal2(template12445);modalRef1.hide()"
                                         data-toggle="modal" data-backdrop='static' data-keyboard='false'
                                         data-target="#UploadModal"></i></span>
 
                                     <span *ngIf="user1.blue ==true"><i class="fa fa-adjust fa-lg" aria-hidden="true"
-                                        (click)="onSelectAttributeAssignment(user1,rowIndex);UploadModal2(template12445);modalRef1.hide()"
+                                        (click)="onSelectAttributeAssignment(user1);UploadModal2(template12445);modalRef1.hide()"
                                         data-toggle="modal" data-backdrop='static' data-keyboard='false'
                                         data-target="#UploadModal"></i></span>
                                   </td>
@@ -341,8 +357,12 @@
                 <div class="modal-footer">
                   <button type="button" *ngIf="!viewupdateButton" class="btn btn-primary" onClick="this.disabled=true;"
                     (click)=" addPayrollHeadGroup()">Save</button>
-                  <button type="button" *ngIf="viewupdateButton" class="btn btn-secondary bg-btn-primary"
-                    (click)="addPayrollHeadGroup()">Update</button>
+
+                  <button type="button" *ngIf="viewupdateButton" (click)="addPayrollHeadGroup()"
+                    onClick="this.disabled=true;"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"><b><i
+                        class="fa fa-floppy-o"></i></b>
+                    Update</button>
                 </div>
               </ng-template>
 
@@ -365,8 +385,8 @@
                             <div class="row">
                               <div class="col-sm-6 col-md-4">
                                 <label class="form-label">Head Name</label>
-                                <label> <span class="form-label font500">{{HeadName}} &nbsp;
-                                    {{selectedHeadGroupIds}}</span>
+                                <label> <span class="form-label font500">{{HeadName}} &nbsp;</span>
+                                  <!-- {{selectedHeadGroupIds}} -->
                                 </label>
                               </div>
 
@@ -404,21 +424,33 @@
                             <div class="card">
                               <div class="">
                                 <div class="table-responsive Custom_Table">
-                                  <table class="table table-striped table-hover table-bordered m-b-0">
+                                  <table class="table table-striped table-hover table-bordered m-b-0"
+                                    style="width:130%">
                                     <thead class="thead-dark">
                                       <tr>
-                                        <th scope="col" class="font700 wd-15">Attribute</th>
+                                        <!-- <th scope="col" class="font700 wd-15">Attribute</th>
                                         <th scope="col" class="font700 wd-15"> Nature</th>
 
                                         <th scope="col" class="font700 wd-10">Applicable</th>
                                         <th scope="col" class="font700 wd-12">Value</th>
-                                        <th scope="col" class="font700 wd-15">From Date</th>
-                                        <th scope="col" class="font700 wd-13">To Date</th>
-                                        <th scope="col" class="font700 wd-9">Range From</th>
-                                        <th scope="col" class="font700 wd-9">Range To</th>
-                                        <th scope="col" class="font700 wd-9">Once Every</th>
-                                        <th scope="col" class="font700 wd-9">Frequency</th>
-                                        <th scope="col" class="font700 wd-6">Action</th>
+                                        <th scope="col" class="font700 wd-12">From Date</th>
+                                        <th scope="col" class="font700 wd-12">To Date</th>
+                                        <th scope="col" class="font700 wd-10">Range From</th>
+                                        <th scope="col" class="font700 wd-10">Range To</th>
+                                        <th scope="col" class="font700 wd-12">Once Every</th>
+                                        <th scope="col" class="font700 wd-10">Frequency</th>
+                                        <th scope="col" class="font700 wd-6">Action</th> -->
+                                        <th class="font700 wd-10">Attribute</th>
+                                        <th class="font700 wd-15"> Nature</th>
+                                        <th class="font700 wd-8">Applicable</th>
+                                        <th class="font700 wd-10">Value</th>
+                                        <th class="font700 wd-14">From Date</th>
+                                        <th class="font700 wd-11">To Date</th>
+                                        <th class="font700 wd-8">Range From</th>
+                                        <th class="font700 wd-8">Range To</th>
+                                        <th class="font700 wd-8">Once Every</th>
+                                        <th class="font700 wd-20">Frequency</th>
+                                        <th class="font700 wd-6">Action</th>
                                       </tr>
                                     </thead>
                                     <tbody formArrayName="pfFormArray">
@@ -429,22 +461,21 @@
                                       <tr *ngFor="let summary of pfArray.controls;let i = index; " [formGroupName]="i">
 
                                         <td class="wd-10 bg-color-light_gray align-left">
-                                          <span tooltip="{{pfArray['controls'][i].get('code').value}}">
+                                          <span tooltip="{{pfArray['controls'][i].get('attributeNature').value}}">
 
 
                                             <label class="form-lable mb-0 text-link align-left"
                                               (click)="openNewPopUpWindow(template1244511, selectedHeadGroupIds, pfArray['controls'][i].get('attributeGroupIds').value )">{{pfArray['controls'][i].get('code').value}}
                                             </label></span>
                                         </td>
-                                        <td class="wd-10 bg-color-light_gray align-left">
+
+                                        <td class="wd-10 bg-color-light_gray align-left"
+                                          tooltip="{{pfArray['controls'][i].get('attributeMasterId').value}}">
                                           {{pfArray['controls'][i].get('attributeNature').value}}
-
-
-
                                         </td>
-                                        <td class="wd-10">
-                                          <!-- ,pfArray['
-                                          controls'][i].get('attributeNature').value, pfArray['controls'][i].get('attributeMasterId1').value -->
+
+                                        <td>
+
                                           <select class="form-control" formControlName="Applicability"
                                             (change)="onChangeApplicability($event.target.value,i)">
 
@@ -455,52 +486,53 @@
                                         </td>
 
 
-                                        <td class="wd-10"
+                                        <td
                                           *ngIf="pfArray['controls'][i].get('attributeNature').value.trim()=='Formula'">
-                                          <select class="form-control" formControlName="value">
-                                            <option selected value=null>Select </option>
+                                          <select class="form-control" formControlName="value"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value').status == 'INVALID'}">
+                                            <option selected value=''>Select </option>
                                             <option *ngFor="let by of FormulaArray" [value]="by.formulaName">
                                               {{by.formulaName}}
                                             </option>
                                           </select>
                                         </td>
 
-                                        <td class="wd-10"
+                                        <td
                                           *ngIf="pfArray['controls'][i].get('attributeNature').value.trim()=='Source Destination Matrix'">
-                                          <select class="form-control " formControlName="value">
-                                            <option selected value=null>Select </option>
+                                          <select class="form-control " formControlName="value"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value').status == 'INVALID'}">
+                                            <option selected value=''>Select </option>
                                             <option *ngFor="let by of SDMArray" [value]="by.sdmSchemaName">
                                               {{by.sdmSchemaName}}
                                             </option>
                                           </select>
                                         </td>
 
-                                        <td class="wd-10"
-                                          *ngIf="pfArray['controls'][i].get('attributeNature').value.trim()=='Head'">
-                                          <select class="form-control " formControlName="value">
-                                            <option selected value=null>Select </option>
+                                        <td *ngIf="pfArray['controls'][i].get('attributeNature').value.trim()=='Head'">
+                                          <select class="form-control " formControlName="value"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value').status == 'INVALID'}">
+                                            <option selected value=''>Select </option>
                                             <option *ngFor="let by of allGlobalHeadList" [value]="by.standardName">
                                               {{by.standardName}}
                                             </option>
                                           </select>
                                         </td>
 
-                                        <td class="wd-10"
+                                        <td
                                           *ngIf="pfArray['controls'][i].get('attributeNature').value.trim()=='Per Employee Input'">
-                                          <input type="text" formControlName="value" class="form-control"
-                                            disabled="true" [readonly]="true" placeholder="Enter Value1">
+                                          <input type="text" class="form-control" disabled="true" [readonly]="true">
                                         </td>
 
-                                        <td class="wd-10"
+
+                                        <td
                                           *ngIf="pfArray['controls'][i].get('attributeNature').value.trim()=='Range Value No Of Instances Per Period' || pfArray['controls'][i].get('attributeNature').value.trim()=='Range Value Per Period' ||  pfArray['controls'][i].get('attributeNature').value.trim()=='Range Value Per Instance'">
-                                          <input type="text" formControlName="value" class="form-control" name="Range"
-                                            value="Range" disabled="true" [readonly]="true" placeholder="Enter Value1">
+                                          <input type="text" class="form-control" disabled="true" [readonly]="true">
                                         </td>
 
-                                        <td class="wd-10"
-                                          *ngIf="pfArray['controls'][i].get('attributeNature').value.trim()=='List'">
-                                          <select class="form-control  " formControlName="value">
-                                            <option selected value=null>Select </option>
+                                        <td *ngIf="pfArray['controls'][i].get('attributeNature').value.trim()=='List'">
+                                          <select class="form-control  " formControlName="value"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value').status == 'INVALID'}">
+                                            <option selected value=''>Select </option>
                                             <option *ngFor="let by of pfArray['controls'][i].get('options').value"
                                               [value]="by.attributeOptionValue">
                                               {{by.attributeOptionValue}}
@@ -511,7 +543,7 @@
                                         <td class="   p-d-inline-flex">
                                           <!-- ml-2 mr-2 mt-2  *ngIf="pfArray['controls'][i].get('code').value.length!==0"-->
                                           <span
-                                            (click)="copyDateFromTableRow(i,pfArray['controls'][i].get('fromDate').value,pfArray['controls'][i].get('toDate').value)"><i
+                                            (click)="copyDateFromTableRow(i,pfArray['controls'][i].get('fromDate').value,pfArray['controls'][i].get('toDate').value, pfArray['controls'][i].get('Applicability').value)"><i
                                               class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
 
 
@@ -520,60 +552,65 @@
                                             (bsValueChange)="onChangeFromDate($event,i)"
                                             (focusout)="onChangeFromDate($event,i)" data-date-autoclose="true"
                                             class="form-control" placement="center" placeholder="From Date"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('fromDate').status == 'INVALID'}"
                                             bsDatepicker>
                                         </td>
 
 
-                                        <td class="">
+                                        <td>
                                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                             formControlName="toDate" data-provide="datepicker"
                                             data-date-autoclose="true" class="form-control" placement="center"
                                             (bsValueChange)="onChangeToDate($event,i)"
                                             [minDate]="pfArray['controls'][i].get('minDate1').value"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('toDate').status == 'INVALID'}"
                                             placeholder="To Date" bsDatepicker>
                                         </td>
-                                        <td class="wd-10">
+                                        <td>
                                           <input type="text" formControlName="value1" class="form-control"
-                                            (focusout)="onChangeRangeFrom($event,i)"
-                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value1').status == 'INVALID'}"
-                                            placeholder="Enter Value11">
+                                            (focusout)="onChangeRangeFrom($event,i)" placeholder="From"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value1').status == 'INVALID'}">
                                         </td>
-                                        <td class="wd-10">
+                                        <td>
                                           <input type="text" formControlName="value2" class="form-control"
-                                            (focusout)="onChangeRangeTo($event,i)"
-                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value2').status == 'INVALID'}"
-                                            placeholder="Enter Value22">
+                                            (focusout)="onChangeRangeTo($event,i)" placeholder="To"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value2').status == 'INVALID'}">
                                         </td>
-                                        <td class="wd-10">
+                                        <td>
                                           <input type="text" formControlName="value3" class="form-control"
-                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value3').status == 'INVALID'}"
-                                            placeholder="Enter Value33">
+                                            placeholder="Every"
+                                            [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value3').status == 'INVALID'}">
                                         </td>
-                                        <td class="wd-10">
+                                        <td>
                                           <select class="form-control" formControlName="value4"
-                                            (change)="onChangeActiveFrequency($event.target.value,pfArray['controls'][i].get('attributeMasterId1').value)"
+                                            (change)="onChangeActiveFrequency($event.target.value,pfArray['controls'][i].get('attributeMasterId1').value,i)"
                                             [ngClass]="{'is-invalid' :pfArray['controls'][i].get('value4').status == 'INVALID'}">
-                                            <option selected value=''>Select </option>
-                                            <option *ngFor="let activeFrequency of sortedFrequencyList"
+
+                                            <option
+                                              *ngFor="let activeFrequency of pfArray['controls'][i].get('sortedFrequencyList').value"
                                               [value]="activeFrequency.name">
                                               {{activeFrequency.name}}
                                             </option>
                                           </select>
                                         </td>
-                                        <td class="wd-10">
-                                          <span *ngIf="pfArray['controls'][i].get('isPlusSignVisible').value">
-                                            <i style="font-size: 12;" class="fa fa-plus-circle font-12 cursor-pointer"
-                                              tooltip="Add Row"
-                                              (click)="addRow(i+1,pfArray['controls'][i].get('attributeMasterId1').value, pfArray['controls'][i].get('value4').value)"></i><span
-                                              tooltip="Add Row"
-                                              (click)="addRow(i+1,pfArray['controls'][i].get('attributeMasterId1').value, pfArray['controls'][i].get('value4').value)">&nbsp;Add</span>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        <td> <span
+                                            *ngIf="pfArray['controls'][i].get('attributeNature').value ==='Range Value No Of Instances Per Period' || pfArray['controls'][i].get('attributeNature').value ==='Range Value Per Period'">
+
+                                            <span
+                                              *ngIf="  pfArray['controls'][i].get('code').value.length!=0 &&  pfArray['controls'][i].get('isPlusSignVisible').value ==true">
+                                              <i style="font-size: 12;" class="fa fa-plus-circle font-12 cursor-pointer"
+                                                tooltip="Add Row"
+                                                (click)="addRow(i+1,pfArray['controls'][i].get('attributeMasterId1').value)"></i>
+                                              <i tooltip="Add Row"
+                                                (click)="addRow(i+1,pfArray['controls'][i].get('attributeMasterId1').value)">&nbsp;Add</i></span>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                            <i style="font-size: 12;"
+                                              *ngIf="pfArray['controls'][i].get('code').value.length==0"
+                                              class="fa fa-trash-o  font-12 text-red cursor-pointer"
+                                              tooltip="Delete Row"
+                                              (click)="deleteRowModal(template33,i);">&nbsp;Delete</i>
                                           </span>
-
-
-                                          <i style="font-size: 12;"
-                                            *ngIf="pfArray['controls'][i].get('code').value.length==0"
-                                            class="fa fa-trash-o  font-12 text-red cursor-pointer" tooltip="Delete Row"
-                                            (click)="deleteRowModal(template33,i);">&nbsp;Delete</i>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -585,7 +622,7 @@
                         </div>
                       </form>
 
-                      <div class="col-sm-6 col-md-4" *ngIf="viewSaveButton">
+                      <div class="col-sm-6 col-md-4">
                         <label class="form-label">Copy To</label>
                         <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect style="font-size: small;"
                           [settings]="dropdownSettings" [data]="notOrigianlSavedHeadList"
@@ -606,11 +643,10 @@
 
                 <div class="modal-footer">
 
-                  <!-- <button type="button" *ngIf="headNameIndex ==headNameSize-1"
-                    (click)="saveAtttibuteAssign1();modalRef.hide()"
-                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
+                  <!-- <button type="button" (click)="firstSave()" [disabled]="clickedOnSave"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save Test"><b><i
                         class="fa fa-floppy-o"></i></b>
-                    Save</button> -->
+                    Save Test</button> -->
 
                   <!-- <button type="button" *ngIf="!viewSaveButton" (click)="TestJsonObject1();"
                     onClick="this.disabled=true;"
@@ -618,9 +654,8 @@
                         class="fa fa-floppy-o"></i></b>
                     Update</button> -->
 
-                  <button type="button" *ngIf="!viewSaveButton" (click)="TestJsonObject1();"
-                    onClick="this.disabled=true;"
-                    [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
+                  <button type="button" *ngIf="!viewSaveButton" (click)="firstSave();" [disabled]="clickedOnSave"
+                    id="updateButton" [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                     [disabled]="form.invalid">
                     <b><i class="fa fa-floppy-o"></i></b>Update</button>
@@ -640,16 +675,19 @@
                         class="fa fa-floppy-o"></i></b>Save
                   </button> -->
 
-                  <button type="button" *ngIf="viewSaveButton" [disabled]="form.invalid" (click)="TestJsonObject1();"
-                    onClick="this.disabled=true;" class="custom_button custom_btn btn-labeled btn-labeled-left"
+                  <button type="button" *ngIf="viewSaveButton" [disabled]="form.invalid" (click)="firstSave();"
+                    [disabled]="clickedOnSave" class="custom_button custom_btn btn-labeled btn-labeled-left"
                     tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
                     <b><i class="fa fa-floppy-o"></i></b> Save</button>
 
 
                   <button type="button" *ngIf="headNameIndex !=headNameSize-1" (click)="Next(selectedHeadGroupIds);"
-                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Next"><b><i
-                        class="fa fa-floppy-o"></i></b>
-                    Next</button>
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" tooltip="Next"><b><i
+                        class="fa fa-angle-double-right"></i></b>
+                    Next </button>
+
+
+
                   <!--  -->
                   <!--
                   <button type="button" (click)="checkValidation()" checkValidation *ngIf="headNameIndex>0"
@@ -658,9 +696,12 @@
                   </button> -->
 
                   <button type="button" *ngIf="headNameIndex>0" (click)="viewPreviousButton(selectedHeadGroupIds);"
-                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Previous"><b><i
-                        class="fa fa-floppy-o"></i></b>
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                    tooltip="Previous"><b><i class="fa fa-angle-double-left"></i></b>
                     Previous</button>
+
+
+
 
 
 
@@ -736,7 +777,7 @@
               <div class="row mt-15">
                 <div class="col-12">
                   <div class="float-right mb-15">
-                    <button type="button" (click)="UploadModalYesNo(template1244);" *ngIf="!viewupdateButton"
+                    <button type="button" (click)="UploadModalYesNo(template1244);" *ngIf="!viewCancelButton && !viewupdateButton"
                       data-toggle="modal" data-target="#UploadModal" [disabled]="payrollHeadGroupCreationForm.invalid"
                       [ngClass]="{'disabled-btn-bg-green' : payrollHeadGroupCreationForm.invalid,'btn-bg-green': !payrollHeadGroupCreationForm.invalid}"
                       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
@@ -755,6 +796,9 @@
                       class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                       tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
                       Cancel</button>
+
+
+
 
                     <button type="button" (click)="resetAttributeSelection()" *ngIf="!viewCancelButton"
                       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
@@ -829,16 +873,16 @@
                                   <table class="table table-striped table-hover table-bordered m-b-0">
                                     <thead class="thead-dark">
                                       <tr>
-                                        <th scope="col" class="font700 wd-15">Attribute</th>
-                                        <th scope="col" class="font700 wd-10">Applicable</th>
-                                        <th scope="col" class="font700 wd-12">Value</th>
-                                        <th scope="col" class="font700 wd-15">From Date</th>
-                                        <th scope="col" class="font700 wd-13">To Date</th>
-                                        <th scope="col" class="font700 wd-9">Range From</th>
-                                        <th scope="col" class="font700 wd-9">Range To</th>
-                                        <th scope="col" class="font700 wd-9">Once Every</th>
-                                        <th scope="col" class="font700 wd-9">Frequency</th>
-                                        <!-- <th scope="col" class="font700 wd-6">Action</th> -->
+                                        <th class="font700 wd-20">Attribute</th>
+                                        <th class="font700 wd-20">Applicable</th>
+                                        <th class="font700 wd-15">Value</th>
+                                        <th class="font700 wd-15">From Date</th>
+                                        <th class="font700 wd-10">To Date</th>
+                                        <th class="font700 wd-20">Range From</th>
+                                        <th class="font700 wd-20">Range To</th>
+                                        <th class="font700 wd-20">Once Every</th>
+                                        <th class="font700 wd-10">Frequency</th>
+                                        <!-- <th   class="font700 wd-6">Action</th> -->
                                       </tr>
                                     </thead>
                                     <tbody formArrayName="pfFormArray1">
@@ -846,13 +890,13 @@
 
                                       <tr *ngFor="let summary of pfArray1.controls;let i = index; " [formGroupName]="i">
 
-                                        <td class="wd-10">
+                                        <td>
                                           <span
                                             tooltip="{{pfArray1['controls'][i].get('attributeNature').value.trim()}}">
                                             {{pfArray1['controls'][i].get('code').value.trim()}}
                                           </span>
                                         </td>
-                                        <td class="wd-10">
+                                        <td>
                                           <!-- ,pfArray1['
                                           controls'][i].get('attributeNature').value, pfArray1['controls'][i].get('attributeMasterId1').value -->
                                           <select class="form-control" formControlName="Applicability"
@@ -873,7 +917,7 @@
                                         <td class="wd-10"
                                           *ngIf="pfArray1['controls'][i].get('attributeNature').value.trim()=='Formula'">
                                           <select class="form-control" formControlName="value">
-                                            <option selected value=null>Select </option>
+                                            <option selected value=''>Select </option>
                                             <option *ngFor="let by of FormulaArray" [value]="by.formulaName">
                                               {{by.formulaName}}
                                             </option>
@@ -883,7 +927,7 @@
                                         <td class="wd-10"
                                           *ngIf="pfArray1['controls'][i].get('attributeNature').value.trim()=='Source Destination Matrix'">
                                           <select class="form-control " formControlName="value">
-                                            <option selected value=null>Select </option>
+                                            <option selected value=''>Select </option>
                                             <option *ngFor="let by of SDMArray" [value]="by.sdmSchemaName">
                                               {{by.sdmSchemaName}}
                                             </option>
@@ -893,7 +937,7 @@
                                         <td class="wd-10"
                                           *ngIf="pfArray1['controls'][i].get('attributeNature').value.trim()=='Head'">
                                           <select class="form-control " formControlName="value">
-                                            <option selected value=null>Select </option>
+                                            <option selected value=''>Select </option>
                                             <option *ngFor="let by of allGlobalHeadList" [value]="by.standardName">
                                               {{by.standardName}}
                                             </option>
@@ -902,14 +946,13 @@
 
                                         <td class="wd-10"
                                           *ngIf="pfArray1['controls'][i].get('attributeNature').value.trim()=='Per Employee Input'">
-                                          <input type="text" formControlName="value" class="form-control"
-                                            disabled="true" [readonly]="true" placeholder="Enter Value1">
+                                          <input type="text" class="form-control" disabled="true" [readonly]="true">
                                         </td>
 
                                         <td class="wd-10"
                                           *ngIf="pfArray1['controls'][i].get('attributeNature').value.trim()=='Range Value No Of Instances Per Period' || pfArray1['controls'][i].get('attributeNature').value.trim()=='Range Value Per Period' ||  pfArray1['controls'][i].get('attributeNature').value.trim()=='Range Value Per Instance'">
                                           <input type="text" formControlName="value" class="form-control" name="Range"
-                                            value="Range" disabled="true" [readonly]="true" placeholder="Enter Value1">
+                                            value="Range" disabled="true" [readonly]="true" placeholder="Enter Value">
                                         </td>
 
                                         <td class="wd-10"
@@ -926,12 +969,13 @@
                                         <td class="   p-d-inline-flex">
                                           <!-- ml-2 mr-2 mt-2  *ngIf="pfArray1['controls'][i].get('code').value.length!==0"-->
                                           <span
-                                            (click)="copyDateFromTableRow(i,pfArray1['controls'][i].get('fromDate').value,pfArray1['controls'][i].get('toDate').value)"><i
+                                            (click)="copyDateFromTableRow(i,pfArray1['controls'][i].get('fromDate').value,pfArray1['controls'][i].get('toDate').value, pfArray1['controls'][i].get('toDate').value)"><i
                                               class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
 
 
                                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                             formControlName="fromDate" data-provide="datepicker"
+                                            [ngClass]="{'is-invalid' :pfArray1['controls'][i].get('fromDate').status == 'INVALID'}"
                                             (bsValueChange)="onChangeFromDate($event,i)"
                                             (focusout)="onChangeFromDate($event,i)" data-date-autoclose="true"
                                             class="form-control" placement="center" placeholder="From Date"
@@ -942,6 +986,7 @@
                                         <td class="">
                                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                             formControlName="toDate" data-provide="datepicker"
+                                            [ngClass]="{'is-invalid' :pfArray1['controls'][i].get('toDate').status == 'INVALID'}"
                                             data-date-autoclose="true" class="form-control" placement="center"
                                             (bsValueChange)="onChangeToDate($event,i)"
                                             [minDate]="pfArray1['controls'][i].get('minDate1').value"
@@ -1015,10 +1060,17 @@
                 <div class="col-md-10">
                   <div class="cycle-table mt-4">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
-                    <p-table [value]="PayrollHeadGroupList" [paginator]="true" [rows]="10"
+                    <!-- <p-table [value]="originalPayrollHeadGroupList" [paginator]="true" [rows]="10"
                       [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                      <p-table [value]="originalPayrollHeadGroupList" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{originalPayrollHeadGroupList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
                       <ng-template pTemplate="header">
                         <tr>
 

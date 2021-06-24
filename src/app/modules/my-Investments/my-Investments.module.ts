@@ -33,9 +33,9 @@ import { HouserentsummaryComponent } from './housingrent/houserentsummary/houser
 import { PreviousemployerComponent } from './previousemployer/previousemployer.component';
 import { PreviousemployersummaryComponent } from './previousemployer/previousemployersummary/previousemployersummary.component';
 import { PreviousemployermasterComponent } from './previousemployer/previousemployermaster/previousemployermaster.component';
-import { NationalSavingCertificateNSCComponent } from './Other/national-saving-certificate-nsc/national-saving-certificate-nsc.component';
-import { HousePropertyComponent } from './Other/house-property/house-property.component';
-import { PrincipalRepaymentOnHousingLoanComponent } from './Other/principal-repayment-on-housing-loan/principal-repayment-on-housing-loan.component';
+import { NationalSavingCertificateNSCComponent } from './80C/national-saving-certificate-nsc/national-saving-certificate-nsc.component';
+import { HousePropertyComponent } from './80C/house-property/house-property.component';
+import { PrincipalRepaymentOnHousingLoanComponent } from './80C/principal-repayment-on-housing-loan/principal-repayment-on-housing-loan.component';
 import { TaxAdjustmentsComponent } from './Other/tax-adjustments/tax-adjustments.component';
 import { TaxAdjustmentsAmountComponent } from './Other/tax-adjustments/tax-adjustments-amount/tax-adjustments-amount.component';
 import { TaxAdjustmentsSummaryComponent } from './Other/tax-adjustments/tax-adjustments-summary/tax-adjustments-summary.component';
@@ -50,7 +50,8 @@ import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-
 import { OtherincomesummaryComponent } from './Other/Other Income/otherincome_summary/otherincomesummary/otherincomesummary.component';
 import { OtherincomedeclarationComponent } from './Other/Other Income/otherincome_declaration&actual/otherincomedeclaration/otherincomedeclaration.component';
 import { OtherincomeComponent } from './Other/Other Income/otherincome/otherincome.component';
-import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
+// import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
+import { EmployeesNPS80CCD1Component } from './80C/employees-nps80-ccd1/employees-nps80-ccd1.component';
 
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignaturePadComponent } from './previousemployer/signature-pad/signature-pad.component';
@@ -58,7 +59,9 @@ import { EmployeenationalpensionComponent } from './Other/employeenationalpensio
 import { AffirmationComponent } from './affirmation/affirmation.component';
 import { SignatureaffirmationPadComponent } from './affirmation/signatureaffirmation-pad/signatureaffirmation-pad.component';
 import {ScrollPanelModule} from 'primeng/scrollpanel';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MatSelectModule } from '@angular/material/select';
+import { PreviousemployerdeclarationComponent } from './previousemployer/previousemployerdeclaration/previousemployerdeclaration.component';
 
 @NgModule({
   declarations: [
@@ -76,9 +79,10 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
     PreviousemployerComponent,
     PreviousemployersummaryComponent,
     PreviousemployermasterComponent,
+    PreviousemployerdeclarationComponent,
     NationalSavingCertificateNSCComponent,
     HousePropertyComponent,
-    PrincipalRepaymentOnHousingLoanComponent,
+    // PrincipalRepaymentOnHousingLoanComponent,
     TaxAdjustmentsComponent,
     TaxAdjustmentsAmountComponent,
     TaxAdjustmentsSummaryComponent,
@@ -94,16 +98,19 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
     OtherincomesummaryComponent,
     OtherincomedeclarationComponent,
     OtherincomeComponent,
-    EmployeeNPS80CCDComponent,
-    AffirmationComponent
+    // EmployeeNPS80CCDComponent,
+    // EmployeesNPS80CCD1Component,
+    AffirmationComponent,
 
 
 
 
   ],
   imports: [
+    MatSelectModule,
     CommonModule,
     ReactiveFormsModule,
+    NgMultiSelectDropDownModule,
     FormsModule,
     MatSliderModule,
     TooltipModule.forRoot(),

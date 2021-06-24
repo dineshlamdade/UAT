@@ -1,3 +1,4 @@
+import { HousingloanComponent } from './../housingloan.component';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -29,6 +30,9 @@ import { NumberFormatPipe } from 'src/app/core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../file.service';
 import { MyInvestmentsService } from '../../my-Investments.service';
 import { HousingloanService } from '../housingloan.service';
+import { truncateSync } from 'node:fs';
+
+
 @Component({
   selector: 'app-housingloanmaster',
   templateUrl: './housingloanmaster.component.html',
@@ -39,7 +43,6 @@ export class HousingloanmasterComponent implements OnInit {
 
 
   public countriesList: Array<any> = [];
-
   public showOwner = false;
   public isloanTaken = true;
   public purposeOfLoanList: Array<any> = [];
@@ -130,12 +133,17 @@ export class HousingloanmasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-
+  public visibilityFlagFamily : boolean  = false;
+  public relationFlag : boolean = true;
+  public visibilityFlag : boolean  = true;
+  public visibilityFlagStamp : boolean = true;
+  public visibilityFlagProperty  : boolean = true;
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
-  public startDateModel: any = { date: null };
+  // public startDateModel: any = { date: null };
+  // [(ngModel)]="startDateModel"
   public houseLoanDetailSubmitted = false;
   public houseLoanOwnerDetailSubmitted = false;
   public globalAddRowIndex: number;
@@ -144,7 +152,20 @@ export class HousingloanmasterComponent implements OnInit {
 
   public proofSubmissionId;
 
+  public familyMemberList: any;
+
+  public dropdownSettings: any;
+  public ServicesList = [];
+  // public dropdownList = [];
+  public selectedItems = [];
+  public selectedEstablishmentMasterId = [];
+
+  public isRadioButtonDisabled:boolean = true;
+
   public abc: any[];
+  myDate: string;
+  // dropdownSettings: { singleSelection: boolean; idField: string; textField: string; itemsShowLimit: number; allowSearchFilter: boolean; };
+  // ServicesList: any;
   constructor(
     private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder,
@@ -195,8 +216,10 @@ export class HousingloanmasterComponent implements OnInit {
       })),
       (this.HPOwnerDetailForm = this.formBuilder.group({
         housePropertyOwnerDetailId: new FormControl(0),
+        familyMemberInfoId: new FormControl(0, Validators.required),
         ownerName: new FormControl('', Validators.required),
         firstTimeHomeBuyer: new FormControl('', Validators.required),
+        relationship: new FormControl({ value:'', disabled: true }),
       })),
       // this.HPUsageDetailForm.push(this.formBuilder.group({
       //   housePropertyUsageTypeId : [0],
@@ -249,16 +272,24 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    //  this.addOwner(0);
-    this.startDateModel = '31-dec-9999';
-    this.housingLoanForm.get('country').setValue('India');
-    // console.log('Purpose Of Loan' , this.housingLoanForm.get('housePropertyLoanDetailList').get('purposeOfLoan'))
-    // console.log('dropdown',this.housingLoanForm.get('housePropertyLoanDetailList').get('purposeOfLoan').setValue('construction'))
 
+    //this.visibilityFlag = true;
+    console.log("visibilityFlag", this.visibilityFlag);
+    //  this.addOwner(0);
+    // this.startDateModel = '31-dec-9999';
+    this.housingLoanForm.get('country').setValue('India');
     // Business Financial Year API Call
     // this.Service.getBusinessFinancialYear().subscribe((res) => {
     //   this.financialYearStart = res.data.results[0].fromDate;
     // });
+    // this.dropdownSettings = {
+    //   singleSelection: false,
+    //   idField: 'familyMemberInfoId',
+    //   textField: 'name',
+    //   itemsShowLimit: 2,
+    //   allowSearchFilter: true,
+    // };
+
 
     this.Service.getCountryList().subscribe((res) => {
       this.countriesList = res.data.results;
@@ -303,6 +334,59 @@ export class HousingloanmasterComponent implements OnInit {
       this.editMaster(input.housePropertyMasterId);
       console.log('editMaster policyNo', input.policyNo);
     }
+
+     // -------------- Family Member List API call ---------------------------
+     this.Service.getFamilyInfo().subscribe((res) => {
+      this.familyMemberGroup = res.data.results;
+      console.log('familyMemberName::', res);
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.familyMemberName,
+          value: element.familyMemberName,
+        };
+        this.familyMemberName.push(obj);
+      });
+    });
+
+        // // Family Member List API call
+        // this.Service.getFamilyInfo().subscribe((res) => {
+        //   let familyMember = [];
+        //   this.familyMemberList = res.data.results;
+        //    res.data.results.forEach((element) => {
+        //     const obj = {
+        //       familyMemberInfoId: element.familyMemberInfoId,
+        //       familyMemberName: element.name,
+        //       relation: element.relationship,
+        //     };
+        //       if (element.relation !== 'Brother' || element.relation !== 'Sister') {
+        //         let familyNameWithRelation =
+        //           element.familyMemberName + '(' + element.relation + ')';
+        //         familyMember.push({
+        //           familyMemberInfoId: element.familyMemberInfoId,
+        //           name: familyNameWithRelation,
+        //         });
+        //         // console.log('family List', this.dropdownList);
+        //       }
+        //       const data = {
+        //         label: 'All',
+        //         value: 'All',
+        //       };
+
+        //       this.dropdownList = [];
+        //       this.dropdownList.push(data);
+        //     });
+
+        //     const data = {
+        //       label: 'All',
+        //       value: 'All',
+        //     };
+
+        //     this.dropdownList = [];
+        //     this.dropdownList.push(data);
+
+        //     this.dropdownList = familyMember;
+        //     console.log('dropdownList::', this.dropdownList);
+        //   });
 
   }
 
@@ -363,6 +447,10 @@ export class HousingloanmasterComponent implements OnInit {
       city: new FormControl(null),
       town: new FormControl(null),
       village: new FormControl(null),
+      // stampDutyRegistrationDate: new FormControl(null),
+      // stampDutyRegistrationAmount: new FormControl(null),
+      // propertyRegistrationValue: new FormControl(null),
+
       stampDutyRegistrationDate: new FormControl(null, Validators.required),
       stampDutyRegistrationAmount: new FormControl(null, [
         Validators.required,
@@ -385,6 +473,7 @@ export class HousingloanmasterComponent implements OnInit {
     this.houseLoanOwnerDetailSubmitted = true;
     // housePropertyLoanDetailList  HPUsageDetailForm HPOwnerDetailForm
     if (this.HPOwnerDetailForm.invalid) {
+      console.log("HPOwnerDetailForm",this.HPOwnerDetailForm);
       return;
     }
 
@@ -393,10 +482,9 @@ export class HousingloanmasterComponent implements OnInit {
 
     console.log("houseLoanOwnerTypeList",this.houseLoanOwnerTypeList);
     console.log("HPOwnerDetailForm", this.HPOwnerDetailForm.value.ownerName);
-    if( this.houseLoanOwnerTypeList.find(
-      (owner) =>
-      owner.ownerName === this.HPOwnerDetailForm.value.ownerName
-    )){
+    if(this.houseLoanOwnerTypeList.find(
+      (owner) => owner.ownerName === this.HPOwnerDetailForm.value.ownerName))
+      {
     this.alertService.sweetalertWarning('Owner name is already exists');
     return;
   }
@@ -406,12 +494,14 @@ export class HousingloanmasterComponent implements OnInit {
     //   (owner) =>
     //   owner.ownerName === this.HPOwnerDetailForm.value.ownerName
     // )
+    console.log("this.HPOwnerDetailForm.value", this.HPOwnerDetailForm)
 
     if (
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === 0 ||
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === null
     ) {
       this.HPOwnerDetailForm.value.housePropertyOwnerDetailId = this.globalAddRowIndex1;
+      console.log("this.HPOwnerDetailForm.value", this.HPOwnerDetailForm.value)
       this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.value);
     } else {
       const index = this.houseLoanOwnerTypeList.findIndex(
@@ -424,12 +514,11 @@ export class HousingloanmasterComponent implements OnInit {
       //   'HPOwnerDetailForm'
       // ).value.rentAmount;
 
-      this.houseLoanOwnerTypeList[
-        index
-      ].rentAmount = this.HPOwnerDetailForm.value.rentAmount;
+
     }
     /* this.houseLoanOwnerTypeList.housePropertyOwnerDetailId  = this.globalAddRowIndex1;    */
     console.log('houseLoanOwnerTypeList', this.houseLoanOwnerTypeList);
+
     this.HPOwnerDetailForm.reset();
     this.houseLoanOwnerDetailSubmitted = false;
   }
@@ -537,9 +626,17 @@ export class HousingloanmasterComponent implements OnInit {
     this.loansubmitted = true;
 
 
+    // if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
+    //  this.alertService.sweetalertWarning('Please enter PAN details');
+    //  return;
+    // }
+
+
     if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
-     this.alertService.sweetalertWarning('Please enter PAN details');
-     return;
+      if(this.housePropertyLoanDetailList.value.lenderPANOrAadhar == undefined || this.housePropertyLoanDetailList.value.lenderPANOrAadhar == null ){
+        this.alertService.sweetalertWarning('Please enter PAN details');
+        return
+      }
     }
     console.log('this.loansubmitted', this.housePropertyLoanDetailList);
     if (this.housePropertyLoanDetailList.invalid) {
@@ -593,6 +690,45 @@ export class HousingloanmasterComponent implements OnInit {
     if (stampDutyPaymentDate_ !== null) {
       this.stampDutyDateValid = false;
     }
+    let userDate = this.datePipe.transform(
+      this.housingLoanForm.controls.stampDutyRegistrationDate.value,
+      'yyyy-MM-dd'
+    );
+    console.log("userDate", userDate);
+    // let possessionDateSet = '2016-03-31';
+    let stampDutyRegAprSixteenStartDate = '2016-04-01';
+    let stampDutyRegAprSixteenEndDate = '2017-03-31';
+    let stampDutyRegAprTwentyStartDate = '2020-04-01';
+    let stampDutyRegMarTwentyEndEndDate = '2022-03-31';
+    let stampDutyRegMarCurrentFinancialDate = '2021-04-01';
+
+    console.log("visibilityFlagProperty", this.visibilityFlagProperty);
+
+    if ((userDate >= stampDutyRegAprSixteenStartDate && userDate <= stampDutyRegAprSixteenEndDate) || (userDate >= stampDutyRegAprTwentyStartDate && userDate <= stampDutyRegMarTwentyEndEndDate)) {
+      this.visibilityFlagProperty = true;
+      // this.visibilityFlagStamp = true;
+      }
+      else{
+        this.visibilityFlagProperty = false;
+      }
+      if (userDate >= stampDutyRegMarCurrentFinancialDate && userDate <= stampDutyRegMarTwentyEndEndDate)  {
+        this.visibilityFlagStamp = true;
+        }
+        else{
+          this.visibilityFlagStamp = false;
+        }
+    //  if (userDate < stampDutyRegAprSixteenStartDate && userDate > stampDutyRegAprSixteenEndDate) {
+    //   this.visibilityFlagProperty = true;
+    //   }
+    //  if (userDate >= stampDutyRegAprTwentyStartDate && userDate <= stampDutyRegMarTwentyEndEndDate){
+    //   this.visibilityFlagProperty = false;
+    //   this.visibilityFlagStamp = false;
+    //  }
+    //   if (userDate < stampDutyRegAprTwentyStartDate && userDate > stampDutyRegMarTwentyEndEndDate){
+    //     this.visibilityFlagProperty = true;
+    //     this.visibilityFlagStamp = false;
+    //   }
+      console.log("visibilityFlagProperty", this.visibilityFlagProperty);
   }
 
   // ------------------------------------Master----------------------------
@@ -787,18 +923,6 @@ export class HousingloanmasterComponent implements OnInit {
       return;
     }
 
-
-
-    // if(
-    //   (this.propertyIndex.length === 0 ||
-    //     this.urlArray.length === 0) &&
-    //   (this.stampDutyRegistration.length === 0 ||
-    //     this.stampDutyUrlArray.length === 0) &&
-    //     (this.loanSanctionLetter.length === 0 ||
-    //       this.loanSanctionUrlArray.length === 0) &&
-    //     (this.possessionLetter.length === 0 ||
-    //       this.possessionUrlArray.length === 0)
-    // )
     if(
       (this.propertyIndex.length === 0 ||
         this.stampDutyRegistration.length === 0) &&
@@ -971,18 +1095,71 @@ export class HousingloanmasterComponent implements OnInit {
     }
   }
 
+
+
+
   // Family relationship shown on Policyholder selection
   public OnSelectionfamilyMemberGroup() {
-    const toSelect = this.familyMemberGroup.find(
-      (c) =>
-        c.familyMemberName ===
-        this.housingLoanForm.get('accountHolderName').value
-    );
-    this.housingLoanForm
-      .get('familyMemberInfoId')
-      .setValue(toSelect.familyMemberInfoId);
-    this.housingLoanForm.get('relationship').setValue(toSelect.relation);
+    this.visibilityFlagFamily = false;
+    this.relationFlag = true;
+    // if(this.HPOwnerDetailForm.value.ownerName != undefined || this.HPOwnerDetailForm.value.ownerName != null || this.HPOwnerDetailForm.value.ownerName != "other"){
+      if(this.HPOwnerDetailForm.value.ownerName != "other"){
+        this.visibilityFlagFamily = false;
+      if (this.HPOwnerDetailForm.get('ownerName').value == null) {
+        this.HPOwnerDetailForm.get('relationship').setValue(null);
+      }
+      const toSelect = this.familyMemberGroup.find(
+        (c) => c.familyMemberName === this.HPOwnerDetailForm.get('ownerName').value
+      );
+      this.HPOwnerDetailForm.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+      this.HPOwnerDetailForm.get('relationship').setValue(toSelect.relation);
+
+    }
+    if (this.HPOwnerDetailForm.value.ownerName == "other" || this.HPOwnerDetailForm.value.familyMemberInfoId < 0) {
+      this.HPOwnerDetailForm.value.relationship = "other";
+     this.HPOwnerDetailForm.value.familyMemberInfoId = -1;
+      this.relationFlag = false;
+      this.visibilityFlagFamily = true;
+
+    }
+
+    if (this.HPOwnerDetailForm.value.familyMemberInfoId !== "other") {
+
+      this.HPOwnerDetailForm.get('ownerName').clearValidators();
+      this.HPOwnerDetailForm.get('ownerName').updateValueAndValidity();
+    } else {
+
+      this.HPOwnerDetailForm.get('ownerName').setValidators([Validators.required]);
+      this.HPOwnerDetailForm.get('ownerName').updateValueAndValidity();
+    }
+
   }
+
+      // // Family relationship shown on Policyholder selection
+      // OnSelectionfamilyMemberGroup() {
+      //   if (this.HPOwnerDetailForm.get('familyMemberInfoId').value == null) {
+      //     this.HPOwnerDetailForm.get('relationship').setValue(null);
+      //   }
+      //   const toSelect = this.familyMemberGroup.find(
+      //     (c) => c.familyMemberName === this.HPOwnerDetailForm.get('familyMemberInfoId').value
+      //   );
+      //   // this.HPOwnerDetailForm.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+      //   this.HPOwnerDetailForm.get('relationship').setValue(toSelect.relation);
+      // }
+
+
+
+  // OnSelectionfamilyMemberGroup() {
+  //   if (this.form.get('policyholdername').value == null) {
+  //     this.form.get('relationship').setValue(null);
+  //   }
+  //   const toSelect = this.familyMemberGroup.find(
+  //     (c) => c.familyMemberName === this.form.get('policyholdername').value
+  //   );
+  //   this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+  //   this.form.get('relationship').setValue(toSelect.relation);
+  // }
+
 
   public onSelectAddressType() {
     const toSelectAddress = this.empoyeeAddressList.find(
@@ -1375,4 +1552,129 @@ export class HousingloanmasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
   }
+
+  onItemSelect(item: any) {
+    console.log(item);
+    this.ServicesList.push({
+      familyMemberInfoId: item.familyMemberInfoId,
+      establishmentCode: item.establishmentCode,
+    });
+    console.log(item.establishmentCode);
+  }
+
+  onItemDeSelect(item: any) {
+    let index = this.ServicesList.findIndex(
+      (o) => o.establishmentCode == item.establishmentCode
+    );
+    this.ServicesList.splice(index, 1);
+    console.log(this.ServicesList);
+  }
+
+  onSelectAll(items: any) {
+    console.log(items);
+    this.ServicesList = [];
+    this.ServicesList = items;
+  }
+  onDeselectAll(items: any) {
+    this.ServicesList = [];
+  }
+
+  // OnPossessionDateChange(){
+  //   if(this.housingLoanForm.controls.possessionDate = new Date()){}
+  //   visibilityFlag = false;
+  // }
+
+
+  // setPolicyEndDate() {
+  //   // this.policyMinDate = this.housingLoanForm.value.possessionDate;
+  //   Constants.housingLoanDates.stampDutyRegAprSixteenEndDate
+
+  //   const possessionDate = this.datePipe.transform(
+  //     this.housingLoanForm.controls.possessionDate.get('2016-03-31').value,
+  //     'yyyy-MM-dd'
+  //   );
+  //   // const policyEnd = this.datePipe.transform(
+  //   //   this.form.get('policyEndDate').value,
+  //   //   'yyyy-MM-dd'
+  //   // );
+  //   this.minFormDate = this.policyMinDate;
+  //   if (possessionDate > today) {
+  //     this.form.controls.policyEndDate.reset();
+  //   }
+  //   this.form.patchValue({
+  //     fromDate: this.policyMinDate,
+  //   });
+
+  //   this.setPaymentDetailToDate();
+  // }
+
+
+
+  OnPossessionDateChange() {
+    let userDate = this.datePipe.transform(
+      this.housingLoanForm.controls.possessionDate.value,
+      'yyyy-MM-dd'
+    );
+    let possessionDateSet = '2016-03-31';
+
+
+    // if date is before 31st March 2016 then hide the 3 fields
+    this.visibilityFlag = true;
+    this.visibilityFlagProperty = true;
+    this.visibilityFlagStamp = true;
+    if (userDate <= possessionDateSet) {
+      this.visibilityFlag = false;
+      this.visibilityFlagProperty = false;
+      this.visibilityFlagStamp = false;
+
+      this.housingLoanForm.get('stampDutyRegistrationDate').clearValidators();
+      this.housingLoanForm.get('stampDutyRegistrationDate').updateValueAndValidity();
+
+      this.housingLoanForm.get('stampDutyRegistrationAmount').clearValidators();
+      this.housingLoanForm.get('stampDutyRegistrationAmount').updateValueAndValidity();
+
+      this.housingLoanForm.get('propertyRegistrationValue').clearValidators();
+      this.housingLoanForm.get('propertyRegistrationValue').updateValueAndValidity();
+
+    }else {
+      this.housingLoanForm.get('stampDutyRegistrationDate').setValidators([Validators.required]);
+      this.housingLoanForm.get('stampDutyRegistrationDate').updateValueAndValidity();
+
+      this.housingLoanForm.get('stampDutyRegistrationAmount').setValidators([Validators.required]);
+      this.housingLoanForm.get('stampDutyRegistrationAmount').updateValueAndValidity();
+
+      this.housingLoanForm.get('propertyRegistrationValue').setValidators([Validators.required]);
+      this.housingLoanForm.get('propertyRegistrationValue').updateValueAndValidity();
+    }
+
+  }
+
+
+//  onStampDutyDateChange(){
+//   let userDate = this.datePipe.transform(
+//     this.housingLoanForm.controls.possessionDate.value,
+//     'yyyy-MM-dd'
+//   );
+//   // let possessionDateSet = '2016-03-31';
+//   let stampDutyRegAprSixteenStartDate = '2016-04-01';
+//   let stampDutyRegAprSixteenEndDate = '2017-03-31';
+//   let stampDutyRegAprTwentyStartDate = '2020-04-01';
+//   let stampDutyRegMarTwentyEndEndDate = '2022-03-31';
+
+//   if (userDate >= stampDutyRegAprSixteenStartDate && userDate <= stampDutyRegAprSixteenEndDate) {
+//     this.visibilityFlagProperty = true;
+//     // error message;
+//       // return false;
+//   } else if(userDate >= stampDutyRegAprTwentyStartDate && userDate <= stampDutyRegMarTwentyEndEndDate) {
+//     this.visibilityFlagProperty = true;
+//     this.visibilityFlag = true;
+//     this.visibilityFlagStamp = false;
+//     // error message;
+//       // return false;
+//   } else {
+
+//   }
+//  }
+
+
 }
