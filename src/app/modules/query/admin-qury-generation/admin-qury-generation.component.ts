@@ -68,13 +68,18 @@ export class AdminQuryGenerationComponent implements OnInit {
   ListOfDocuments: any;
   documents: any;
 // ...........for single query btns.........................................
+   isSaveDraft:boolean=true;
   isPrevious:boolean=false;
   isSaveDraftNext:boolean=false;
   isSaveNext:boolean=false;
   isnext:boolean=false;
   getQueAnstemplistByIdData: any;
   descriptionData: any;
-
+  listQAData1: any;
+  defaultPriority: any;
+  priorityType: any;
+  listQAData2: any;
+  isUpdateDraft:boolean=false;
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
     private modalService: BsModalService, )
@@ -91,19 +96,44 @@ export class AdminQuryGenerationComponent implements OnInit {
         "subQueTypeMasterId":new FormControl(0),
         "queAnsMasterId":new FormControl(null,[Validators.required]),
         "priority":new FormControl(null),
-        "queryDescription":new FormControl(''),
+        "queryDescription":new FormControl('',[Validators.required]),
         "subject":new FormControl(''),
         "queryRootCause":new FormControl(null),
         "status":new FormControl('save'),
     })
+
+    if(localStorage.getItem('dashboardSummary')!= null){
+
+      let formdata = JSON.parse(localStorage.getItem('dashboardSummary'))
+       this.queryGenerationForm.patchValue(formdata);
+       this.getById(formdata.queryGenerationEmpId);
+       localStorage.removeItem('dashboardSummary')
+       this.queryGenerationForm.enable();
+       if(formdata.status == 'Draft'){
+        this.isUpdateDraft = true;
+        this.isUpdate = false;
+
+       }else{
+       this.isUpdate = true;
+       this.isUpdateDraft = false;
+
+       }
+    }
+
+    if(localStorage.getItem('viewdashboardSummary')!= null){
+
+      let formdata = JSON.parse(localStorage.getItem('viewdashboardSummary'))
+       this.queryGenerationForm.patchValue(formdata);
+       this.getById(formdata.queryGenerationEmpId);
+       localStorage.removeItem('viewdashboardSummary')
+       this.queryGenerationForm.disable();
+    }
    }
 
   ngOnInit(): void {
     this.getModuleName();
     this.getAllQueryListSummary();
-    this.getQueAnstemplistById(this.queryGenerationEmpId);
-
-
+    // this.getQueAnstemplistById(this.queryGenerationEmpId);7
   }
 
   queryGenerationFormSubmit(value)
@@ -117,7 +147,7 @@ export class AdminQuryGenerationComponent implements OnInit {
     if(!this.editflag){
       this.addQueryGeneration();
     }else{
-      this.updateQueryGeneration();
+      this.updateQueryGeneration(value);
 
     }
 
@@ -175,6 +205,7 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
         else {
           element.listSubQueryTypeData.forEach(element => {
             this.listQAData = element.listSubQA;
+
           });
         }
         if (this.editflag) {
@@ -189,26 +220,34 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
   }
 
   getSubQueryListData(value) {
+    this.listQAData=[];
     this.querySubQueryTypeQAData.forEach(element => {
       if (element.queryTypeMasterId == parseInt(value)) {
         this.subQueryData = element.listSubQueryTypeData;
         this.priorityData = element.listPriority;
-        console.log("priorityData",this.priorityData);
-        this.queryGenerationForm.controls['priority'].setValue(this.priorityData);
+        this.priorityData.forEach(element => {
+          if(element.defaultPriority == true)
+          this.priorityType = element.priorityType;
+        this.queryGenerationForm.controls['priority'].setValue(this.priorityType);
+        });
         if (element.subQuery == false) {
-          this.listQAData = element.listQA; // if subquery is false then
-        } else {
-          this.listQAData = element.listSubQA; // if subquery is true then
+          this.listQAData = element.listQA;
         }
-        // if(element.subQuery == true){
-        //   this.listQAData = element.listSubQueryTypeData.listSubQA[0];
-        //   console.log("listQAData",this.listQAData)
-        // }
+      else {
+          element.listSubQueryTypeData.forEach(element => {
+            element.listSubQA.forEach(element => {
+              this.listQAData.push(element)
+            });
+
+            console.log("this.listQAData", this.listQAData);
+
+          });
+
+        }
         if (this.editflag) {
           this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
           // console.log("@@@@@@@@@@@@@",this.getByIdData.queryTypeMasterId)
         }
-
       }
     });
 
@@ -220,44 +259,64 @@ moduleChange(value) // when module is changed then template also changed.
   this.querySubQueryTypeQA( this.selectedModuleId);
 }
 addQueryGeneration(){ //post api for saving data
-  if(this.listDoc.length == 0){
-  this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
-  this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
-  this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-  this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
 
-  let data = []
-  data.push(this.queryGenerationForm.value)
-  let queryGenerationEmployeeData  = {
-    "queryRequestDTO": data
-    }
-    const formData  = new FormData();
-    formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
-    this.queryService.addQueryGeneration(formData).subscribe(res =>
-    {
-      this.addQueryGenerationData = res.data.results;
-      console.log(JSON.stringify(this.addQueryGenerationData));
-    // console.log("Without Doc**********",queryGenerationEmployeeData)
+  // Swal.fire({
+  //   title: 'Are you sure?',
+  //   text: "You won't be able to revert this!",
+  //   icon: 'warning',
+  //   showCancelButton: true,
+  //   confirmButtonColor: '#3085d6',
+  //   cancelButtonColor: '#d33',
+  //   confirmButtonText: 'Yes, Save it!'
+  // }
+  // ).then((result) => {
+  //   if (result.isConfirmed) {
+      if(this.listDoc.length == 0){
+        this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
+        this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
+        this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
+        this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
 
-      this.getAllQueryListSummary();
-      this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
+        let data = []
+        data.push(this.queryGenerationForm.value)
+        let queryGenerationEmployeeData  = {
+          "queryRequestDTO": data
+          }
+          const formData  = new FormData();
+          formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
+          this.queryService.addQueryGeneration(formData).subscribe(res =>
+          {
+            this.addQueryGenerationData = res.data.results;
+            console.log(JSON.stringify(this.addQueryGenerationData));
+          // console.log("Without Doc**********",queryGenerationEmployeeData)
 
-      this.reset();
-    })
-    }else{
-      this.addQuerywithDocs();
-    }
+            this.getAllQueryListSummary();
+
+            this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
+            this.router.navigate(['/admin-dashboard']);
+            this.reset();
+          })
+          }else{
+            this.addQuerywithDocs();
+          }
+  //   }
+  // })
+
 }
 
-updateQueryGeneration() //put api for update data
+updateQueryGeneration(value) //put api for update data
 {
   if(this.listDoc.length == 0){
   this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-  // this.queryGenerationForm.controls['status'].setValue('Save');
-
+  // this.queryGenerationForm.controls['status'].setValue('Draft');
+  if(value == 'Save'){
+    this.queryGenerationForm.controls['status'].setValue('Save');
+   }else{
+   this.queryGenerationForm.controls['status'].setValue('Draft');
+   }
 
   let data = []
   data.push(this.queryGenerationForm.value)
@@ -279,13 +338,25 @@ updateQueryGeneration() //put api for update data
     })
 
   }else{
-    this.updateQuerywithDoc();
+    this.updateQuerywithDoc(value);
   }
 
 }
 
-addQuerywithDocs() //not yet used
+addQuerywithDocs()
 {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, save it!'
+  }
+
+  ).then((result) => {
+    if (result.isConfirmed) {
   this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
@@ -316,16 +387,24 @@ addQuerywithDocs() //not yet used
         this.getAllQueryListSummary();
         this.reset();
       })
+
+    }
+  })
+
+
 }
-updateQuerywithDoc()
+updateQuerywithDoc(value)
 {
   this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-  // this.queryGenerationForm.controls['status'].setValue('Save');
-
-
+  // this.queryGenerationForm.controls['status'].setValue('Draft');
+  if(value == 'Save'){
+    this.queryGenerationForm.controls['status'].setValue('Save');
+   }else{
+   this.queryGenerationForm.controls['status'].setValue('Draft');
+   }
   let data = []
   data.push(this.queryGenerationForm.value)
   let queryGenerationEmployeeData  = {
@@ -361,28 +440,28 @@ getEmpMasterDetails(employeeMasterIdData)// temp id is used
     })
 }
 
-getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list by QueryGenerationEmpId
-                                        //for Query Iteration reply screen dropdown.
-{
-  this.queryService.getQueAnstemplistById(this.queryGenerationEmpId).subscribe(res =>
-    {
-      this.getQueAnstemplistByIdData = res.data.results;
-    })
-}
-answerTempChange(value)
-{
-  console.log("this.getQueAnstemplistByIdData: "+ JSON.stringify(this.getQueAnstemplistByIdData))
+// getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list by QueryGenerationEmpId
+//                                         //for Query Iteration reply screen dropdown.
+// {
+//   this.queryService.getQueAnstemplistById(this.queryGenerationEmpId).subscribe(res =>
+//     {
+//       this.getQueAnstemplistByIdData = res.data.results;
+//     })
+// }
+// answerTempChange(value)
+// {
+//   console.log("this.getQueAnstemplistByIdData: "+ JSON.stringify(this.getQueAnstemplistByIdData))
 
-    this.getQueAnstemplistByIdData.forEach(element => {
-      if(element.queAnsMasterId == value)
-    {
-         this.descriptionData = element.answerDescription;
-         this.queryGenerationForm.controls['queryDescription'].setValue(this.descriptionData);
-    }
-    // this.descriptionData = element.answerDescription;
+//     this.getQueAnstemplistByIdData.forEach(element => {
+//       if(element.queAnsMasterId == value)
+//     {
+//          this.descriptionData = element.answerDescription;
+//          this.queryGenerationForm.controls['queryDescription'].setValue(this.descriptionData);
+//     }
+//     // this.descriptionData = element.answerDescription;
 
-  });
-}
+//   });
+// }
 editQuery(queryGenerationSummary) {
   this.querySubQueryTypeQAData = null
   this.listQAData = []
@@ -393,6 +472,7 @@ editQuery(queryGenerationSummary) {
   this.isSave = true;
   this.isReset = false;
   this.isCancle = true;
+  this.isUpdateDraft = true;
   this.getById(queryGenerationSummary.queryGenerationEmpId);
   this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
   this.editQuerySummaery = queryGenerationSummary;
@@ -419,41 +499,6 @@ viewQuery(queryGenerationSummary)
  this.getById(queryGenerationSummary.queryGenerationEmpId);
  this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
 }
-
-getDeleteById(queryGenerationEmpId) // delete the record from summary
-{
-  this.queryService.getDeleteById(queryGenerationEmpId.queryGenerationEmpId).subscribe(res =>
-    {
-      this.alertService.sweetalertMasterSuccess('Query Deleted Successfully', '' );
-      this.getAllQueryListSummary();
-    },error => {
-      if(error.error.status.code == '4001'){
-        this.alertService.sweetalertWarning( 'Query With Closed Status cant be deleted' );
-
-      }
-    });
-
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }
-
-    ).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
-      }
-    })
-}
-
 
 reset(){
   this.queryGenerationForm.enable();
@@ -509,26 +554,30 @@ public removeSelectedLicMasterDocument(index: number, docType: string) {
       this.listDoc.splice(index, 1);
 }
 
-public docViewer(template1: TemplateRef<any>,index: any) {
- this.ListOfDocuments = document;
- this.urlIndex = 0;
-  //  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-  //    document.documents[this.urlIndex].queryBlobURI
-  //  );   working half
+public docViewer(template1: TemplateRef<any>, i: any) {
+  //console.log('---in doc viewer--');
+  this.ListOfDocuments = document;
+  console.log(JSON.stringify(document))
+  this.urlIndex = i;
+  //document.documents.forEach(element => {
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].queryBlobURI
+    );
+    // console.log("document.listDoc",document.listDoc)
 
- //});
+  //});
 
- console.log('urlSafe::', this.urlSafe);
- this.modalRef = this.modalService.show(
-   template1,
-   Object.assign({}, { class: 'gray modal-xl' })
- );
+  console.log('urlSafe::', this.urlSafe);
+  this.modalRef = this.modalService.show(
+    template1,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
 }
 // Previous Doc Viewer
 public previousDocViewer() { //not yet used
   this.urlIndex = this.urlIndex - 1;
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
+    this.ListOfDocuments.listDoc[this.urlIndex].queryBlobURI
   );
 }
 
@@ -536,7 +585,7 @@ public previousDocViewer() { //not yet used
 public nextDocViewer() { //not yet used
 this.urlIndex = this.urlIndex + 1;
 this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
- this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
+ this.ListOfDocuments.listDoc[this.urlIndex].queryBlobURI
 );
 }
 

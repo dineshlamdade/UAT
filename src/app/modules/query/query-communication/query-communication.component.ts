@@ -178,6 +178,7 @@ this.addressedTodropdown();
     this.emoji5 = false;
     this.emoji1 =!this.emoji1;
     this.ratingName = rating;
+
   }
 
   changeemoji2(value,rating){
@@ -338,8 +339,9 @@ addQueryIteration(value){ // post api for save data
     this.queryService.addQueryIteration(formData).subscribe(res =>
     {
       this.alertService.sweetalertMasterSuccess('Query Replied Successfully', '' );
-
+      this.getIterationdetailsbyQueryID(0);
     })
+
     this.reset();
 }
 addForwordScreen(value)
@@ -469,7 +471,8 @@ this.queryService.getReplayDataById(this.queryGenerationEmpId).subscribe(res =>
   {
     this.getReplayDataByIdData = res.data.results[0];
     console.log("getReplayDataByIdData!!!!!!!!!!!!!!", this.getReplayDataByIdData);
-    // this.queryCommunicationForm.controls['addressedToEmpId'].setValue(value);
+    this.addressedToEmpId = this.getReplayDataByIdData.addressedToEmpId;
+    this.queryCommunicationForm.controls['addressedToEmpId'].setValue(this.getReplayDataByIdData.addressedToEmpId);
 
     this.reset();
   })

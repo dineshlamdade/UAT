@@ -518,9 +518,9 @@
                                                                         aria-hidden="true"></i></span></td> -->
                                                                         <td>
                                                                           <span >
-                                                                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(queryGenerationSummary)" ></i>
-                                                                              <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(queryGenerationSummary)"></i>
-                                                                              <i class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="getDeleteById(queryGenerationSummary,deleteTemp)" ></i ></span>
+                                                                              <i *ngIf="summary.status != 'Closed'" class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(summary)" ></i>
+                                                                              <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(summary)"></i>
+                                                                              <i *ngIf="summary.status != 'Closed'"  class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="getDeleteById(summary)" ></i ></span>
                                                                                 <!--  -->
                                                                         </td>
                                                         </tr>

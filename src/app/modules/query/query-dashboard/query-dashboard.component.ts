@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TemplateRef} from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
  import { ChartComponent } from "ng-apexcharts";
+ import Swal from 'sweetalert2/src/sweetalert2.js'
 
  import {
  ApexNonAxisChartSeries,
@@ -17,6 +18,7 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 import jspdf from 'jspdf';
 import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
 import * as _html2canvas from "html2canvas";
+import { Router } from '@angular/router';
 const html2canvas: any = _html2canvas;
 
 export interface user2 {
@@ -60,7 +62,7 @@ export class QueryDashboardComponent implements OnInit {
   summaryLength: any[];
 
   constructor(public formBuilder : FormBuilder,public queryService :QueryService
-    ,private excelservice: ExcelService,private alertService: AlertServiceService
+    ,private excelservice: ExcelService,private alertService: AlertServiceService,private router: Router
     )
    {
 
@@ -153,6 +155,49 @@ nevigateToCommunication(summary)
 {
 localStorage.setItem('dashboardSummary',JSON.stringify(summary));
 }
+
+editQuery(summary){
+  localStorage.setItem('dashboardSummary',JSON.stringify(summary));
+  this.router.navigate(['/admin-query-generation'])
+}
+viewQuery(summary){
+
+  localStorage.setItem('viewdashboardSummary',JSON.stringify(summary));
+  this.router.navigate(['/admin-query-generation'])
+}
+
+
+getDeleteById(queryGenerationEmpId) // delete the record from summary
+{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }
+
+    ).then((result) => {
+      if (result.isConfirmed) {
+        this.queryService.getDeleteById(queryGenerationEmpId.queryGenerationEmpId).subscribe(res =>
+          {
+            this.alertService.sweetalertMasterSuccess('Query Deleted Successfully', '' );
+            this.getAllQueryListSummary();
+          },error => {
+            if(error.error.status.code == '4001'){
+              this.alertService.sweetalertWarning( 'Query With Closed Status cant be deleted' );
+
+            }
+          });
+
+      }
+    })
+}
+
+
+
  // .......................................Excel and PDF Code.................................................
  exportAsXLSX():void {
   this.excelData = [];

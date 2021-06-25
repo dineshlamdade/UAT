@@ -290,6 +290,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                <!-- .....................budge document view..........................................................  -->
                                                                                 <ng-template #template1>
                                                                                   <div class="modal-header">
                                                                                     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
@@ -325,6 +326,7 @@
                                                                                   </div>
                                                                                 </ng-template>
                                                                             </div>
+
                                                                             <div id="reply" [hidden]="isRelyDiv" *ngIf="getReplayDataByIdData">
                                                                                 <div class="card1">
                                                                                     <div class="row">
@@ -394,8 +396,9 @@
                                                                                         <div class="col-md-12">
                                                                                             <label
                                                                                                 class="form-label">Description</label>
-
-                                                                                            <ckeditor  formControlName="queryDescription" >
+                                                                                            <ckeditor  formControlName="queryDescription"
+                                                                                            [ngClass]="{'is-invalid':queryCommunicationForm.get('queryDescription').status == 'INVALID'}">
+                                                                                            >
                                                                                             </ckeditor>
                                                                                         </div>
                                                                                     </div>
@@ -422,10 +425,10 @@
                                                                                                           <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
                                                                                                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                                                                                                                               <div class="col-md-12" *ngFor="let doc of listDoc; let i = index"> {{ doc.fileName }}
-                                                                                                                                  <!-- <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
+                                                                                                                                  <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
                                                                                                                                       <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
                                                                                                                                       {{ doc.fileName }}
-                                                                                                                                  </div> -->
+                                                                                                                                  </div>
                                                                                                                               </div>
                                                                                                         </td>
 
@@ -558,27 +561,26 @@
                                                                                                 class="form-control" formControlName="rootCauseDescription" placeholder="RCA Description"> </textarea>
                                                                                         </div>
                                                                                     </div>
+                                                                                    <!-- ...................replay screen btns............................................  -->
                                                                                     <div class="row mt-25">
                                                                                         <div class="col-md-12">
                                                                                             <div class="float-right">
-                                                                                                <button type="button"
-                                                                                                    tooltip="Save Draft"
-                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Draft')"
-                                                                                                    [disabled]="!queryCommunicationForm.valid" [ngClass]="{'disabled-btn-bg-green' : queryCommunicationForm.invalid,'btn-bg-green': !queryCommunicationForm.invalid}"><b><i
-                                                                                                      class="fa fa-floppy-o"></i></b>
-                                                                                                    Save Draft </button>
-                                                                                                <button type="button"
-                                                                                                    tooltip="Save"
-                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
 
-                                                                                                   (click)="addQueryIteration('Save');toggleReplyDiv()"><b><i
-                                                                                                    class="fa fa-floppy-o"></i></b>
-                                                                                                    Save </button>
-                                                                                                <button type="button"
-                                                                                                    tooltip="Reset"
-                                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " (click)="reset()"><b><i
-                                                                                                      class="fa fa-refresh"></i></b>
-                                                                                                    Reset</button>
+                                                                                                <button type="button"  tooltip="Save Draft"
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Draft')"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green': queryCommunicationForm.queAnsMasterId.valid ||  queryCommunicationForm.queryDescription.valid,'btn-bg-green':  queryCommunicationForm.queAnsMasterId.invalid ||
+                                                                                                     queryCommunicationForm.queryDescription.invalid">
+                                                                                                    <b><i class="fa fa-floppy-o"></i></b>Save Draft </button>
+
+                                                                                                <button type="button" tooltip="Save"
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"(click)="addQueryIteration('Save');toggleReplyDiv()"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green': queryCommunicationForm.queAnsMasterId.valid ||  queryCommunicationForm.queryDescription.valid,'btn-bg-green':  queryCommunicationForm.queAnsMasterId.invalid ||
+                                                                                                     queryCommunicationForm.queryDescription.invalid">
+                                                                                                    <b><i  class="fa fa-floppy-o"></i></b> Save </button>
+
+                                                                                                <button type="button"tooltip="Reset"
+                                                                                                   class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " (click)="reset()"><b><i
+                                                                                                  class="fa fa-refresh"></i></b> Reset</button>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -678,31 +680,29 @@
                                                                                             </ckeditor>
                                                                                         </div>
                                                                                     </div>
-
+<!-- ......................................................................................forward screen btns....................................................  -->
                                                                                     <div class="row mt-25">
                                                                                         <div class="col-md-12">
                                                                                             <div class="float-right">
-                                                                                                <button type="button"
-                                                                                                    tooltip=" Save Draft"
-                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addForwordScreen('Draft')"
-                                                                                                    [disabled]="!queryCommunicationForm.valid" [ngClass]="{'disabled-btn-bg-green' : queryCommunicationForm.invalid,'btn-bg-green': !queryCommunicationForm.invalid}"
 
-                                                                                                    ><b><i
-                                                                                                      class="fa fa-floppy-o"></i></b>
-                                                                                                    Save Draft </button>
-                                                                                                <button type="button"
-                                                                                                    tooltip="Save"
+                                                                                                <button type="button" tooltip=" Save Draft"
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addForwordScreen('Draft')"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green': queryCommunicationForm.queryDescription.valid ||
+                                                                                                     queryCommunicationForm.addressedToEmpId.valid,'btn-bg-green': queryCommunicationForm.queryDescription.invalid ||  queryCommunicationForm.addressedToEmpId.invalid}"><b><i
+                                                                                                      class="fa fa-floppy-o"></i></b>  Save Draft </button>
+
+                                                                                                <button type="button" tooltip="Save"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
                                                                                                     (click)="addForwordScreen('Save');toggleforwardDiv()"
-                                                                                                    [disabled]="!queryCommunicationForm.valid" [ngClass]="{'disabled-btn-bg-green' : queryCommunicationForm.invalid,'btn-bg-green': !queryCommunicationForm.invalid}"
-                                                                                                    ><b><i
-                                                                                                      class="fa fa-floppy-o"></i></b>
-                                                                                                    Save </button>
-                                                                                                <!-- <button type="button"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green': queryCommunicationForm.queryDescription.valid ||
+                                                                                                     queryCommunicationForm.addressedToEmpId.valid,'btn-bg-green': queryCommunicationForm.queryDescription.invalid ||  queryCommunicationForm.addressedToEmpId.invalid}"><b><i
+                                                                                                      class="fa fa-floppy-o"></i></b> Save </button>
+
+                                                                                                <button type="button"
                                                                                                     tooltip="Reset"
                                                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "  (click)="reset()"><b><i
                                                                                                       class="fa fa-refresh"></i></b>
-                                                                                                    Reset</button> -->
+                                                                                                    Reset</button>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -711,7 +711,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </section>
-                                                                        <section id="Attachment" class="tab-panel" *ngIf="documents > 0">
+                                                                        <section id="Attachment" class="tab-panel">
                                                                             <div class="row">
                                                                                 <div class="col-md-12">
                                                                                     <fieldset>
@@ -859,11 +859,11 @@
                                                                                                                 <!-- <td> <label
                                                                                                                         class="form-lable mb-0 ">{{documentlist.queryDescription}}</label>
                                                                                                                 </td> -->
-                                                                                                                <td > <label
+                                                                                                                <td > <label *ngIf="documents"
                                                                                                                         class="form-lable mb-0 ">{{documents.refUpdatedByName}}</label>
 
                                                                                                                 </td>
-                                                                                                                <td  > <label
+                                                                                                                <td  > <label *ngIf="documents"
                                                                                                                         class="form-lable mb-0 ">{{documents.updatedDateTime | date :"dd-MMM-yyyy" }}</label>
                                                                                                                 </td>
 
@@ -1328,7 +1328,8 @@
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Remark</label>
 
-                                                                      <textarea class="form-control"></textarea>
+                                                                      <textarea class="form-control" [required]="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'"
+                                                                      [ngClass]="{'is-invalid':ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'}"></textarea>
                                                                     </div>
                                                                 </div>
                                                            </div>
@@ -1342,7 +1343,9 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" tooltip="Skip"  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="skipScreen()"><b><i class="fa fa-step-forward"></i></b> Skip </button>
-                                    <button type="button" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="closeScreen();modalRef.hide()"><b><i class="fa fa-floppy-o"></i></b> Save </button>
+                                    <button type="button" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="closeScreen();modalRef.hide()"
+                                    [disabled]="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'"
+                                    [ngClass]="{'disabled-btn-bg-green':ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'}"><b><i class="fa fa-floppy-o"></i></b> Save </button>
                                     <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button> -->
                                 </div>
                             </ng-template>

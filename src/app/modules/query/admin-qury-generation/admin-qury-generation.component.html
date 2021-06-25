@@ -153,26 +153,33 @@
                           class="form-control custom-select" formControlName="queAnsMasterId"
                           [ngClass]="{'is-invalid': queryGenerationForm.get('queAnsMasterId').status == 'INVALID'}">
                           <option value='null' selected >Select</option>
-                          <option *ngFor="let module of listQAData " value="{{module.queAnsMasterId}}">{{module.description}}</option>
+                          <option *ngFor="let module of listQAData " value="{{module.queAnsMasterId}}">{{module.questionDescription}}</option>
                         </select>
+                        <!-- <select *ngIf="listQAData1"
+                          class="form-control custom-select" formControlName="queAnsMasterId"
+                          [ngClass]="{'is-invalid': queryGenerationForm.get('queAnsMasterId').status == 'INVALID'}">
+                          <option value='null' selected >Select</option>
+                          <option *ngFor="let module of listQAData1 " value="{{module.queAnsMasterId}}">{{module.subQueryTypeDescription}}</option>
+                        </select> -->
                       </div>
                     </div>
                     <div class="row mt-25" >
                       <div class="col-md-12">
-                        <div class="row">
+
                           <label
-                              class="form-label">Answer
-                              Template</label>
-                          <select formControlName="queAnsMasterId"   class="form-control custom-select" (change)="answerTempChange($event.target.value)"
+                              class="form-label">Subject</label>
+                              <input type="text"  class="form-control" formControlName="subject">
+                          <!-- <select formControlName="queAnsMasterId"   class="form-control custom-select" (change)="answerTempChange($event.target.value)"
                          >
                             <option [ngValue]="null" selected >Select</option>
                             <option value="{{module.queAnsMasterId}}" *ngFor="let module of getQueAnstemplistByIdData ">
                               {{module.questionSubject}}</option>
-                          </select>
-                      </div>
+                          </select> -->
+
                         <br />
                         <label class="form-label">Description</label>
-                        <ckeditor formControlName = "queryDescription"  > </ckeditor>
+                        <ckeditor formControlName = "queryDescription"
+                        [ngClass]="{'is-invalid': queryGenerationForm.get('queryDescription').status == 'INVALID'}"> </ckeditor>
                       </div>
                     </div>
                     <div class="row mt-25" >
@@ -188,17 +195,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr >
+                                    <tr  >
                                         <th scope="row"><span tooltip="1">1</span></th>
 
                                         <!-- <td><span tooltip="Premium Receipt/ Premium Statement"></span>Rent Agreement</td> -->
 
-                                        <td  >
-                                          <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}}">
-                                            <i aria-hidden="true" ></i>&nbsp;{{item.name}}</span>
-                                                              <div class="col-md-12" *ngFor="let doc of listDoc; let i = index">
-                                                                  <div  placement="top" tooltip="{{ doc.fileName }}">
-                                                                    <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
+                                        <td>
+                                          <!-- <pre>{{listDoc | json}}</pre> -->
+                                          <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
+                                          class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                                              <div class="col-md-12" *ngFor="let doc of urlArray; let i = index"> {{ doc.fileName }}
+                                                                  <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
+                                                                      <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
                                                                       {{ doc.fileName }}
                                                                   </div>
                                                               </div>
@@ -341,6 +349,7 @@
                         <b><i class="fa fa-save"></i></b> Save & next</button>
 
                       <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" *ngIf="isSave"
+
                       tooltip="Save"[disabled]="!queryGenerationForm.valid" (click)="queryGenerationFormSubmit('Save')"
                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
@@ -350,9 +359,14 @@
                         <b><i class="fa fa-refresh"></i></b> Reset </button>
 
                       <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
-                        [disabled]="!queryGenerationForm.valid" *ngIf="isUpdate" (click)="updateQueryGeneration()"
+                        [disabled]="!queryGenerationForm.valid" *ngIf="isUpdate " (click)="updateQueryGeneration('Save')"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
-                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button >&nbsp;
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update Save</button >&nbsp;
+
+                        <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
+                        [disabled]="!queryGenerationForm.valid" *ngIf="isUpdateDraft " (click)="updateQueryGeneration('Draft')"
+                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update Draft</button >&nbsp;
 
                       <button type="button" tooltip="Cancel" (click)="cancel()" *ngIf="isCancle"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10">
@@ -366,7 +380,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tabview-contents">
+                <!-- <div class="tabview-contents">
                   <div class="row mt-20">
                     <div class="col-md-12">
                       <h3 class="font-14 text-purple font-bold">Summary</h3>
@@ -696,7 +710,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </form>
             </div>
           </div>
