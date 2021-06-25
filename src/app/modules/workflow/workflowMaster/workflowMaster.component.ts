@@ -42,6 +42,7 @@ export class WorkflowMasterComponent implements OnInit {
   workflowMasterHeaderResponseDTO: any = [];
   selectedLevelManager: any;
   selectedLevelManagerRM: any;
+  numberOfApprovalLevel: number;
   
 
   constructor(private formBuilder: FormBuilder,
@@ -59,6 +60,7 @@ export class WorkflowMasterComponent implements OnInit {
       description: new FormControl(null),
       remark: new FormControl(null),
       workflowCode: new FormControl(null, Validators.required),
+      numberOfApprovalLevel: new FormControl(),
       workflowMasterHeaderId: new FormControl(0),
     });
 
@@ -67,6 +69,7 @@ export class WorkflowMasterComponent implements OnInit {
       approverMethod: new FormControl(null),
       levelOfRM: new FormControl(null),
       sdm: new FormControl(null),
+      derivedID:new FormControl("201"),  
       sequence: new FormControl(null),
       workflowMasterHeaderId: new FormControl(null),
       workflowResequenceId: new FormControl(null),
@@ -78,6 +81,7 @@ export class WorkflowMasterComponent implements OnInit {
       levelOfRM: null,
       numberOfDays: null,
       sdm: null,
+      derivedID:null,  
       sequence: 1,
       treatmentUnActionedPlan: null,
       workflowMasterApproverId: 0,
@@ -213,7 +217,8 @@ export class WorkflowMasterComponent implements OnInit {
         this.alertService.sweetalertWarning('Please fill data in Method Of Approval');
         returnFlag = true;
         return;
-      } else {
+      } 
+      else {
         if (val.approverMethod === 'Reporting Manager') {
           if (!val.levelOfRM) {
             this.alertService.sweetalertWarning('Please fill data in Level Of Reporting Manager');
@@ -235,7 +240,8 @@ export class WorkflowMasterComponent implements OnInit {
       } else {
         if (val.treatmentUnActionedPlan === 'Reassign') {
           if ((!this.reassignedSequenceArray.find((x) => x.sequence === parseInt(val.sequence)))) {
-            this.alertService.sweetalertWarning('Please click on Add button below action button to add Reassign Application details for' + val.sequence);
+            this.alertService.sweetalertWarning('Treatment (Unactioned Application) and Post Days should be same for same sequence No.');
+            // + val.sequence
             returnFlag = true;
             return;
           }
@@ -268,7 +274,7 @@ export class WorkflowMasterComponent implements OnInit {
     if (this.form.get('workflowMasterHeaderId').value === 0) {
       this.service.postWorkFlowMaster(data).subscribe((res) => {
         console.log(res.data);
-        this.alertService.sweetalertMasterSuccess(res.status.result, res.status.messages);
+        this.alertService.sweetalertMasterSuccess(res.status.messages, "Workflow-Master Saved Successfully");
         this.reset();
 
         this.summary = res.data.results[0];
@@ -280,7 +286,7 @@ export class WorkflowMasterComponent implements OnInit {
       this.service.putWorkFlowMaster(data).subscribe((res) => {
         console.log(res);
         this.summary = res.data.results[0];
-        this.alertService.sweetalertMasterSuccess(res.status.result, res.status.messages);
+        this.alertService.sweetalertMasterSuccess(res.status.messages, "Workflow-Master Updated Successfully");
         this.reset();
       }, (error: any) => {
         console.log();
@@ -336,6 +342,14 @@ export class WorkflowMasterComponent implements OnInit {
         }
       }
     })
+    var flags = [], output = [], l = this.arrayApproverMaster.length, i;
+    for( i=0; i<l; i++) {
+        if( flags[this.arrayApproverMaster[i].sequence]) continue;
+        flags[this.arrayApproverMaster[i].sequence] = true;
+        output.push(this.arrayApproverMaster[i]);
+    }
+    this.numberOfApprovalLevel = output.length
+    this.form.controls['numberOfApprovalLevel'].setValue(this.numberOfApprovalLevel)
   }
 
   resetAssignedData(){
@@ -352,6 +366,14 @@ export class WorkflowMasterComponent implements OnInit {
   }
 
   addAprrover() {
+    var flags = [], output = [], l = this.arrayApproverMaster.length, i;
+    for( i=0; i<l; i++) {
+        if( flags[this.arrayApproverMaster[i].sequence]) continue;
+        flags[this.arrayApproverMaster[i].sequence] = true;
+        output.push(this.arrayApproverMaster[i]);
+    }
+    this.numberOfApprovalLevel = output.length
+    this.form.controls['numberOfApprovalLevel'].setValue(this.numberOfApprovalLevel)
     let temparr = []
     this.levelOfRM.forEach((element,index) =>{
       if(element == parseInt(this.selectedLevelManager)){
@@ -559,6 +581,39 @@ export class WorkflowMasterComponent implements OnInit {
 		});
     this.excelservice.exportAsExcelFile(this.excelData, 'Workflow-Summary','Workflow-Master');
   }
+
+
+  excelDownload(tableID, filename = '') {
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableID);
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    document.getElementById(tableID).style.border = "1px solid black";
+    // Specify file name
+    filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+    // Create download link element
+    downloadLink = document.createElement("a");
+
+    document.body.appendChild(downloadLink);
+
+    if (navigator.msSaveOrOpenBlob) {
+      var blob = new Blob(['\ufeff', tableHTML], {
+        type: dataType
+      });
+      navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      // Create a link to the file
+      downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+      // Setting the file name
+      downloadLink.download = filename;
+
+      //triggering the function
+      downloadLink.click();
+    }
+  }
+
 
   deleteRow() { }
 
