@@ -183,6 +183,7 @@
                                                                                 class="form-control" placeholder="Date"
                                                                                 [minDate]="effectiveFromDate"
                                                                                 [maxDate]="effectiveToDate"
+                                                                                [value]="selectedFromDate | date :'dd-MMM-yyyy'"
                                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                                                 (bsValueChange)="getFromDate($event)"
                                                                                 bsDatepicker>
@@ -228,6 +229,7 @@
                                                                                 class="form-control" placeholder="Date"
                                                                                 [minDate]="setMinToDate"
                                                                                 [maxDate]="effectiveToDate"
+                                                                                [value]="selectedToDate | date:'dd-MMM-yyyy'"
                                                                                 bsDatepicker
                                                                                 (bsValueChange)="getToDate($event)"
                                                                                 [disabled]="selectedTransactionType != 'Defined Date'">

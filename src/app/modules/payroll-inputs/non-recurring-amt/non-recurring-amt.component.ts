@@ -395,6 +395,9 @@ export class NonRecurringAmtComponent implements OnInit {
 				} else {
 					this.clawbackDate = transactionData.clawbackDate
 				}
+				this.refralemployeeMasterId = transactionData.refferedEmpId
+				this.refPayrolArea = transactionData.refferedpayrollAreaCode
+				this.executeSDM = transactionData.executeSDM
 				// console.log(this.NonRecurringTransactionGroupAPIbyIdData[0])
 			}
 		)
@@ -436,7 +439,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		this.selectedTransactionIndex = index;
 		this.selectedTransactionType = transactiontype
 		if (this.selectedTransactionType == 'Perpetual' || this.selectedTransactionType == 'Defined Date') {
-			this.NonRecurringTransactionGroupAPIbyIdData[index].numberOfTransactions = 0
+			this.NonRecurringTransactionGroupAPIbyIdData[index].numberOfTransactions = null
 		}
 	}
 

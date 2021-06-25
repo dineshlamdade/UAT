@@ -24,7 +24,7 @@ export class FastentryNRAmtComponent implements OnInit {
   selectedClawBack:any;
   selectedAmount:any;
   selectedRemark:any;
-  selectedFromDate: any;
+  selectedFromDate: any = '';
   selectedToDate: any = '';
   setMinToDate: any;
   effectiveFromDate: any;
@@ -122,11 +122,11 @@ export class FastentryNRAmtComponent implements OnInit {
     } else if (this.selectedTransactionType == 'Perpetual') {
       this.selectedToDate = '9999-12-31 00:00:00'
       this.saveToDate = '9999-12-31 00:00:00'
-      this.selectedNoOfTransaction = 0
-      this.saveNumberTransaction = 0
+      this.selectedNoOfTransaction = null
+      this.saveNumberTransaction = null
     }else{
-      this.selectedNoOfTransaction = 0
-      this.saveNumberTransaction = 0
+      this.selectedNoOfTransaction = null
+      this.saveNumberTransaction = null
     }
   }
 
@@ -290,19 +290,20 @@ export class FastentryNRAmtComponent implements OnInit {
   }
 
   saveFastEntries(){
-    this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
-			res => {
-				this.toaster.success("", "Transaction Saved Successfully")
+    // this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
+		// 	res => {
+		// 		this.toaster.success("", "Transaction Saved Successfully")
 				this.saveTransactionData = [];
         this.tempTableData = []
-			}
-		)
+        this.tableData = []
+		// 	}
+		// )
   }
 
   saveAndClearFastEntries(){
-    this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
-			res => {
-				this.toaster.success("", "Transaction Saved Successfully")
+    // this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
+		// 	res => {
+		// 		this.toaster.success("", "Transaction Saved Successfully")
 				this.saveTransactionData = [];
         this.tempTableData = [];
         this.selectedOnceEvery = 1;
@@ -333,8 +334,9 @@ export class FastentryNRAmtComponent implements OnInit {
         this.employeeName = ''
         this.employeeMasterId = ''
         this.employeeCode = ''
-			}
-		)
+        this.selectedPayrollArea = ''
+		// 	}
+		// )
   }
 
   reset(){

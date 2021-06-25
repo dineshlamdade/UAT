@@ -195,22 +195,7 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="frequency">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="frequency"
-                                                                                        display="menu"
-                                                                                        class="p-ml-auto">
-
-                                                                                    </p-columnFilter>
-                                                                                </div>
-                                                                            </div>
-                                                                        </th>
-                                                                        <th>
-                                                                            <div
-                                                                                class="p-d-flex p-jc-between p-ai-center">
-                                                                                Amount
-                                                                                <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="amount">
-                                                                                    </p-sortIcon>
-                                                                                    <p-columnFilter field="amount"
+                                                                                    <p-columnFilter  field="frequency"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -225,7 +210,7 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="fromDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="fromDate"
+                                                                                    <p-columnFilter type="date" field="fromDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -240,7 +225,7 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="toDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter field="toDate"
+                                                                                    <p-columnFilter type="date" field="toDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -249,6 +234,22 @@
                                                                             </div>
                                                                         </th>
                                                                         <th>Clawback</th>
+                                                                        <th>
+                                                                            <div
+                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                Amount
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="amount">
+                                                                                    </p-sortIcon>
+                                                                                    <p-columnFilter type="numeric" field="amount"
+                                                                                        display="menu"
+                                                                                        class="p-ml-auto">
+
+                                                                                    </p-columnFilter>
+                                                                                    <!-- <p-columnFilter type="numeric" field="balance" display="menu" currency="USD"></p-columnFilter> -->
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
                                                                         <th> Remark </th>
                                                                         <th>Approval Status </th>
 
@@ -302,12 +303,6 @@
 
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{Summarydata.amount
-                                                                                | number: '1.2-2'}}
-                                                                            </label>
-
-                                                                        </td>
-                                                                        <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0">{{Summarydata.fromDate}}
                                                                             </label>
 
@@ -323,6 +318,11 @@
                                                                                 aria-hidden="true"
                                                                                 *ngIf="Summarydata.clawbackApplicableAt != ''"></i>
                                                                         </td>
+                                                                        <td class="bg-color-light_gray"><label
+                                                                            class="form-lable mb-0">{{Summarydata.amount
+                                                                            | number: '1.2-2'}}
+                                                                        </label>
+                                                                      </td>
                                                                         <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0">{{Summarydata.remark}}
                                                                             </label>
@@ -348,6 +348,9 @@
                                                                                     (click)="ViewScheduleDetail(template2,Summarydata)"
                                                                                     aria-hidden="true">
                                                                                 </i>&nbsp;&nbsp;&nbsp;
+                                                                                <i class="fa fa-deviantart font-16 text-blue cursor-pointer"
+                                                                                    aria-hidden="true">
+                                                                                </i>
                                                                                 <!-- <i tooltip="View Transaction History"
                                                                                 (click)="viewTransaction(template1i,Summarydata)"
                                                                                     class="fa fa-eye font-16 text-dark-green cursor-pointer"
@@ -623,7 +626,7 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
-
+                                                                                        <th rowspan="2" class="wd-1"></th>
                                                                                         <th rowspan="2" class="wd-5">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
@@ -670,6 +673,7 @@
                                                                                                         field="FromDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
+                                                                                                        type="date"
                                                                                                         field="FromDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -706,6 +710,7 @@
                                                                                                         field="Nooftrans">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
+                                                                                                       type="numeric"
                                                                                                         field="Nooftrans"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -724,6 +729,7 @@
                                                                                                         field="ToDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
+                                                                                                    type="date"
                                                                                                         field="ToDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -744,6 +750,7 @@
                                                                                                         field="openingval">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
+                                                                                                    type="numeric"
                                                                                                         field="openingval"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -762,6 +769,7 @@
                                                                                                         field="closingamt">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
+                                                                                                    type="numeric"
                                                                                                         field="closingamt"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -792,7 +800,9 @@
                                                                                             <label
                                                                                                 class="form-lable mb-0">{{data.payrollHeadMaster.description}}</label>
                                                                                             &nbsp;&nbsp;&nbsp;
-                                                                                            <i class="fa fa-external-link font-16 text-blue cursor-pointer"
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <i class="fa fa-users font-16 text-blue cursor-pointer"
                                                                                                 aria-hidden="true"
                                                                                                 *ngIf="data.payrollHeadMaster.description == 'RefererBonus'"
                                                                                                 (click)="openReferalPopup(referalPopup,data)">
@@ -924,6 +934,7 @@
                                                                                             <input type="text"
                                                                                                 value="{{data.amount | number: '1.2-2'}}"
                                                                                                 class="form-control"
+                                                                                                [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'"
                                                                                                 (focusout)="getUpdateOpeningAmt($event.target.value)">
                                                                                         </td>
                                                                                         <td>
@@ -1011,7 +1022,7 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
-
+                                                                                        <th rowspan="2" class="wd-1"></th>
                                                                                         <th rowspan="2" class="wd-5">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
@@ -1161,7 +1172,7 @@
                                                                                         <th rowspan="2" class="wd-10">
                                                                                             Remark </th>
 
-                                                                                        <!-- <th rowspan="2"></th> -->
+                                                                                        <th rowspan="2"></th>
                                                                                     </tr>
                                                                                 </ng-template>
 
@@ -1181,11 +1192,14 @@
                                                                                             <label
                                                                                                 class="form-lable mb-0">{{data.headDescription}}</label>
                                                                                             &nbsp;&nbsp;&nbsp;
-                                                                                            <i class="fa fa-external-link font-16 text-blue cursor-pointer"
-                                                                                                aria-hidden="true"
-                                                                                                *ngIf="data.headDescription == 'RefererBonus'"
-                                                                                                (click)="openReferalPopup(referalPopup,data)">
-                                                                                            </i>
+                                                                                           
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <i class="fa fa-users font-16 text-blue cursor-pointer"
+                                                                                            aria-hidden="true"
+                                                                                            *ngIf="data.headDescription == 'RefererBonus'"
+                                                                                            (click)="openReferalPopup(referalPopup,data)">
+                                                                                        </i>
                                                                                         </td>
 
                                                                                         <td>
@@ -1279,7 +1293,7 @@
                                                                                                 class="form-lable mb-0">
                                                                                                 <input
                                                                                                     class="form-control"
-                                                                                                    [value]="data.transactionsType != 'NoOfTransaction' ? 0 : 1"
+                                                                                                    [value]="data.transactionsType != 'NoOfTransaction' ? '' : 1"
                                                                                                     (focusout)="saveNoOfTransaction($event.target.value,data)"
                                                                                                     [disabled]="data.transactionsType != 'NoOfTransaction'">
                                                                                             </label>
@@ -1319,6 +1333,7 @@
                                                                                             <input type="text"
                                                                                                 value="{{data.closingAmount | number: '1.2-2'}}"
                                                                                                 class="form-control"
+                                                                                                [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'"
                                                                                                 (focusout)="transactionOpeningAmount($event.target.value,data)">
                                                                                         </td>
                                                                                         <td>
@@ -1327,7 +1342,9 @@
                                                                                                 class="form-control wd-100"
                                                                                                 (focusout)="getRemarkChangeForSave($event.target.value,data)">
                                                                                         </td>
-
+                                                                                        <td><i class="fa fa-deviantart font-16 text-blue cursor-pointer"
+                                                                                            aria-hidden="true">
+                                                                                        </i></td>
                                                                                     </tr>
 
 
@@ -1666,6 +1683,7 @@
                                                                                         field="transactionAmount">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
+                                                                                    type="numeric"
                                                                                         field="transactionAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
@@ -1683,6 +1701,7 @@
                                                                                         field="transactionAmount">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
+                                                                                    type="numeric"
                                                                                         field="transactionAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
@@ -1715,6 +1734,7 @@
                                                                                     <p-sortIcon field="clawbackDate">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter field="clawbackDate"
+                                                                                    type="date"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -1732,6 +1752,7 @@
                                                                                     <p-sortIcon field="resheduleDate">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
+                                                                                    type="date"
                                                                                         field="resheduleDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
@@ -2048,6 +2069,7 @@
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
                                                                                         field="processedAmount"
+                                                                                        type="numeric"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -2065,6 +2087,7 @@
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
                                                                                         field="transactionAmount"
+                                                                                        type="numeric"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -2095,6 +2118,7 @@
                                                                                     <p-sortIcon field="clawbackDate">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter field="clawbackDate"
+                                                                                    type="date"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -2112,6 +2136,7 @@
                                                                                     <p-sortIcon field="resheduleDate">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
+                                                                                    type="date"
                                                                                         field="resheduleDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
@@ -3161,7 +3186,7 @@
                                                 <label class="form-label">Emp. Code</label>
                                                 <select class="form-control" (change)="getEmployeeCode($event.target.value)">
                                                     <option>Select</option>
-                                                    <option *ngFor="let emp of employeeData">{{emp.employeeCode}}</option>
+                                                    <option *ngFor="let emp of employeeData" [selected]="refemployeeCode == emp.employeeCode">{{emp.employeeCode}}</option>
                                                 </select>
                                             </div>
                                             <div class=" col-sm-6 col-md-3">
@@ -3170,9 +3195,9 @@
                                             </div>
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Payroll Area</label>
-                                                <select class="form-control" (change)="getEmployeePayrollArea($event.target.value)">
+                                                <select class="form-control" (change)="getEmployeePayrollArea($event.target.value)" >
                                                     <option>Select</option>
-                                                    <option *ngFor="let payroll of refralPayrollListData">
+                                                    <option *ngFor="let payroll of refralPayrollListData" [selected]="refPayrolArea == payroll.payrollAreaCode">
                                                         {{payroll.payrollAreaCode}}</option>
 
                                                 </select>
