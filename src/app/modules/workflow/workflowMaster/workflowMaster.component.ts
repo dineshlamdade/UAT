@@ -42,7 +42,7 @@ export class WorkflowMasterComponent implements OnInit {
   workflowMasterHeaderResponseDTO: any = [];
   selectedLevelManager: any;
   selectedLevelManagerRM: any;
-  numberOfApprovalLevel: number;
+  numberOfApprovalLevel: number = 1;
   
 
   constructor(private formBuilder: FormBuilder,
@@ -60,7 +60,7 @@ export class WorkflowMasterComponent implements OnInit {
       description: new FormControl(null),
       remark: new FormControl(null),
       workflowCode: new FormControl(null, Validators.required),
-      numberOfApprovalLevel: new FormControl(),
+      numberOfApprovalLevel: new FormControl(this.numberOfApprovalLevel),
       workflowMasterHeaderId: new FormControl(0),
     });
 
@@ -81,7 +81,7 @@ export class WorkflowMasterComponent implements OnInit {
       levelOfRM: null,
       numberOfDays: null,
       sdm: null,
-      derivedID:null,  
+      derivedID:'201',  
       sequence: 1,
       treatmentUnActionedPlan: null,
       workflowMasterApproverId: 0,
@@ -271,12 +271,15 @@ export class WorkflowMasterComponent implements OnInit {
     }
     data.workflowMasterHeaderRequestDTO.numberOfApprover = this.arrayApproverMaster.length
     console.log('result:', data);
+    
     if (this.form.get('workflowMasterHeaderId').value === 0) {
       this.service.postWorkFlowMaster(data).subscribe((res) => {
         console.log(res.data);
-        this.alertService.sweetalertMasterSuccess(res.status.messages, "Workflow-Master Saved Successfully");
+        this.alertService.sweetalertMasterSuccess("Workflow-Master Saved Successfully", '');
         this.reset();
-
+        this.sequence = []
+        this.levelOfRM = []
+        this.levelOfRM = [1,2,3,4,5,6,7,8,9,10]
         this.summary = res.data.results[0];
       }, (error: any) => {
         console.log();
@@ -286,7 +289,7 @@ export class WorkflowMasterComponent implements OnInit {
       this.service.putWorkFlowMaster(data).subscribe((res) => {
         console.log(res);
         this.summary = res.data.results[0];
-        this.alertService.sweetalertMasterSuccess(res.status.messages, "Workflow-Master Updated Successfully");
+        this.alertService.sweetalertMasterSuccess("Workflow-Master Updated Successfully", '');
         this.reset();
       }, (error: any) => {
         console.log();
@@ -353,6 +356,10 @@ export class WorkflowMasterComponent implements OnInit {
   }
 
   resetAssignedData(){
+    this.reassignedSequenceArrayPopUp.forEach(ele =>{
+      this.levelOfRM.push(ele.levelOfRM)
+    })
+    this.levelOfRM = this.levelOfRM.sort()
     this.reassignedSequenceArrayPopUp = []
   }
 
@@ -383,6 +390,7 @@ export class WorkflowMasterComponent implements OnInit {
           this.levelOfRM.splice(0,1)
         }else{
           let val = ind + 1;
+          // alert(val)
           this.levelOfRM.splice(0,val)
         }
       }
@@ -458,21 +466,32 @@ export class WorkflowMasterComponent implements OnInit {
   }
 
   edit(item) {
-    console.log(item);
+    this.levelOfRM = []
+    this.levelOfRM.push(1,2,3,4,5,6,7,8,9,10)
     this.scrollToTop();
     this.form.enable();
     this.arrayApproverMaster = [];
     this.form.get('workflowCode').disable();
     this.deleteApproverListsButtonShow = false;
+    item.approverMasterResponseDTO.forEach(element => {
+      element.derivedID = ''
+      element.sdm = "",
+      element.updatedBy = 'kuldeep'
+    });
     this.arrayApproverMaster = item.approverMasterResponseDTO;
     this.form.patchValue(item.workflowMasterHeaderResponseDTO);
     this.cancelButtonShow = false;
     console.log(item);
+    item.resequenceDetailsResponseDTO.forEach(element => {
+      element.derivedID = '201'
+      element.sdm = "",
+      element.updatedBy = 'kuldeep'
+    });
     this.reassignedSequenceArray = item.resequenceDetailsResponseDTO;
     this.arrayApproverMaster.forEach((element, index) => {
       this.sequence.push(index + 1);
     });
-
+    this.reassignedSequenceArrayForm.controls['derivedID'].setValue('201')
   }
 
   view(item) {
@@ -485,13 +504,20 @@ export class WorkflowMasterComponent implements OnInit {
     this.approverSequence = item.sequence;
 
     this.levelOfRM.forEach((element,index) =>{
-      if(element <= this.selectedLevelManager){
+      if(element == parseInt(this.selectedLevelManager)){
+
         let ind = index;
-        console.log(this.levelOfRM[ind])
-        this.levelOfRM.splice(ind,1)
+        if(ind == 0){
+          this.levelOfRM.splice(0,1)
+        }else{
+          let val = ind + 1;
+          // alert(val)
+          this.levelOfRM.splice(0,val)
+        }
       }
     })
-   // console.log(this.reassignedSequenceArray);
+   
+    // console.log(this.reassignedSequenceArray);
     this.reassignedSequenceArrayPopUp = this.reassignedSequenceArray.filter((o) => o.sequence === item.sequence);
    // console.log(this.reassignedSequenceArrayPopUp);
     this.workflowMasterHeaderId = item.workflowMasterHeaderId;
@@ -511,7 +537,7 @@ export class WorkflowMasterComponent implements OnInit {
         this.levelOfRM.splice(ind,1)
       }
     })
-    console.log(this.reassignedSequenceArrayForm.value);
+    //console.log(this.reassignedSequenceArrayForm.value);
     const temp = this.reassignedSequenceArrayForm.get('sequence').value;
     const id = this.reassignedSequenceArrayForm.get('workflowMasterHeaderId').value;
     this.reassignedSequenceArray.push(this.reassignedSequenceArrayForm.value);
@@ -520,6 +546,7 @@ export class WorkflowMasterComponent implements OnInit {
     this.reassignedSequenceArrayForm.get('sequence').setValue(temp);
     this.reassignedSequenceArrayForm.get('active').setValue(true);
     this.reassignedSequenceArrayForm.get('workflowMasterHeaderId').setValue(id);
+
   }
 
   public editReassignMethodDetails(item: Array<any>, index: number): void {
@@ -534,14 +561,7 @@ export class WorkflowMasterComponent implements OnInit {
     this.reassignedSequenceArrayPopUp[this.editReassignedIndex] = this.reassignedSequenceArrayForm.getRawValue();
     let length = this.reassignedSequenceArray.length;
     let seq = this.reassignedSequenceArrayForm.get('sequence').value;
-    console.log(this.reassignedSequenceArray)
-    // this.reassignedSequenceArray.filter(item => item.sequence.indexOf(seq) === -1);
-    // for (let i = 0; i <= length; i++){
-    //   if(this.reassignedSequenceArray[i].sequence === seq) {
-    //     this.reassignedSequenceArray.splice(i,1);
-    //   }
-    // }
-
+    // console.log(this.reassignedSequenceArray)
     let temp = this.reassignedSequenceArray.filter((o) => o.sequence !== seq);
     this.reassignedSequenceArrayPopUp.forEach(element => {
       temp.push(element)
@@ -572,6 +592,7 @@ export class WorkflowMasterComponent implements OnInit {
 			let obj = {
 				"Code": element.workflowCode,
 				"Description": element.description,
+        "No. of Approval Level": element.numberOfApprovalLevel,
 				"No.Of Approvers": element.numberOfApprover,
 				"Auto Approval": element.autoApproval,
 				"Created By": element.createdBy,

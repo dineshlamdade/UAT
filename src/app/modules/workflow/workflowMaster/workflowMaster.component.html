@@ -13,7 +13,7 @@
                   <div class="row">
                     <div class="col-sm-2">
                       <label class="form-label">Code</label>
-                      <input type="text" formControlName="workflowCode" class="form-control"
+                      <input maxlength="25" type="text" formControlName="workflowCode" class="form-control"
                         (ngModelChange)="workflowCodeValidation($event)"
                         [ngClass]="{'is-invalid' : (form.get('workflowCode').status == 'INVALID') || workflowCodeFLag}">
                       <small *ngIf="workflowCodeFLag" class="text-red"> This code name already exist. Please enter other
@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-sm-2">
                       <label class="form-label">Description</label>
-                      <input formControlName="description" class="form-control" />
+                      <input maxlength="50" formControlName="description" class="form-control" />
                     </div>
 
                     <div class="col-sm-2">
@@ -103,10 +103,15 @@
                   <!-- end of row -->
                   <div class="row mt-15">
 
-                    <div class="col-sm-3">
+                    <label class="main"><span class="form-label">Active</span>
+                      <input type="checkbox" checked="checked" formControlName="active">
+                      <span class="geekmark"></span>
+                    </label>
+
+                    <!-- <div class="col-sm-3">
                       <label class="form-label">Active</label>
-                      <input type="checkbox" formControlName="active">
-                    </div>
+                      <input type="checkbox" formControlName="active" style="color: #4CAF50 !important;">
+                    </div> -->
 
                     <div class="col-sm-3" *ngIf="form.get('active').value === false">
                       <label class="form-label">Remark</label>
@@ -172,10 +177,10 @@
                         </select>
                       </td>
                       <td>
-                        <label>{{item.levelOfRM}}</label>
                         <select [(ngModel)]="item.levelOfRM" [ngClass]="{'is-invalid' : (item.levelOfRM === null)}"
                           [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select"
                           (change)="selectedLevelOfRM($event.target.value)">
+                          <option *ngIf="item.levelOfRM">{{item.levelOfRM}}</option>
                           <option *ngFor="let data of levelOfRM">
                             {{data}}
                           </option>
@@ -232,7 +237,11 @@
                 <b><i class="fa fa-save"></i></b>
                 <span *ngIf="form.get('workflowMasterHeaderId').value === 0"> Save</span>
                 <span *ngIf="form.get('workflowMasterHeaderId').value !=0">Update</span>
+
               </button>
+              <button *ngIf="form.get('workflowMasterHeaderId').value !=0" (click)="reset()"
+                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10">
+                <b><i class="fa fa-close"></i></b> Cancel</button>
               <button *ngIf="(form.get('workflowMasterHeaderId').value ===0)" (click)="reset()"
                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                 <b><i class="fa fa-refresh"></i></b> Reset</button> &nbsp;
@@ -247,12 +256,9 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <!-- <a tooltip="Download" style="cursor: pointer;float: right;" (click)="exportAsXLSX()"><i
-              class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a> -->
 
-          <a tooltip="Download" style="cursor: pointer;float: right;"
-            (click)="excelDownload('tblData', 'Workflow-Master')"><i
-              class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a>
+
+
         </div>
       </div>
 
@@ -280,14 +286,23 @@
                   <div style="text-align: right">
                     <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
                     <input type="text" pInputText size="50" placeholder="Search"
-                      (input)="dt.filterGlobal($event.target.value, 'contains')" style="width: 203px;">
+                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: 203px;margin-right: 37px;">
+
+                      <!-- <a tooltip="Download" style="cursor: pointer;float: right;"
+                      (click)="exportAsXLSX()"><i
+                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a> -->
+
+                    <a tooltip="Download" style="cursor: pointer;float: right;"
+                      (click)="excelDownload('tblData', 'Workflow-Master')"><i
+                        class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a>
                   </div>
                 </ng-template>
                 <ng-template pTemplate="header">
                   <tr>
                     <th class="wd-10">
                       <div class="p-d-flex p-jc-center p-ai-center">
-                        Sr No. &nbsp;&nbsp;
+                        Sr. No. &nbsp;&nbsp;
                         <!-- <div class="Sort_Filter_Position">
                                       <p-sortIcon field="date" pSortableColumn="date">
                                       </p-sortIcon>
@@ -304,31 +319,54 @@
                       <div class="p-d-flex p-jc-center p-ai-center">
                         Code &nbsp;&nbsp;
                         <div class="Sort_Filter_Position">
-                          <p-sortIcon field="workflowCode" pSortableColumn="workflowCode">
+                          <p-sortIcon field="workflowMasterHeaderResponseDTO.workflowCode"
+                            pSortableColumn="workflowMasterHeaderResponseDTO.workflowCode">
                           </p-sortIcon>
-                          <p-columnFilter field="workflowCode" display="menu" class="p-ml-auto">
+                          <p-columnFilter field="workflowMasterHeaderResponseDTO.workflowCode" display="menu"
+                            class="p-ml-auto">
                           </p-columnFilter>
                         </div>
                       </div>
                     </th>
+
+
                     <th class="wd-20">
                       <div class="p-d-flex p-jc-center p-ai-center">
                         Description &nbsp;&nbsp;
                         <div class="Sort_Filter_Position">
-                          <p-sortIcon field="description" pSortableColumn="description">
+                          <p-sortIcon field="workflowMasterHeaderResponseDTO.description"
+                            pSortableColumn="workflowMasterHeaderResponseDTO.description">
                           </p-sortIcon>
-                          <p-columnFilter field="description" display="menu" class="p-ml-auto">
+                          <p-columnFilter field="workflowMasterHeaderResponseDTO.description" display="menu"
+                            class="p-ml-auto">
                           </p-columnFilter>
                         </div>
                       </div>
                     </th>
+
+                    <th class="wd-20">
+                      <div class="p-d-flex p-jc-center p-ai-center">
+                        No. of Approval Level &nbsp;&nbsp;
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="workflowMasterHeaderResponseDTO.numberOfApprovalLevel"
+                            pSortableColumn="workflowMasterHeaderResponseDTO.numberOfApprovalLevel">
+                          </p-sortIcon>
+                          <p-columnFilter field="workflowMasterHeaderResponseDTO.numberOfApprovalLevel" display="menu"
+                            class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+
                     <th class="wd-8">
                       <div class="p-d-flex p-jc-center p-ai-center">
                         <span tooltip="No. of Approvers" placement="bottom">No. of Approvers</span> &nbsp;&nbsp;
                         <div class="Sort_Filter_Position">
-                          <p-sortIcon field="numberOfApprover" pSortableColumn="numberOfApprover">
+                          <p-sortIcon field="workflowMasterHeaderResponseDTO.numberOfApprover"
+                            pSortableColumn="workflowMasterHeaderResponseDTO.numberOfApprover">
                           </p-sortIcon>
-                          <p-columnFilter field="numberOfApprover" display="menu" class="p-ml-auto">
+                          <p-columnFilter field="workflowMasterHeaderResponseDTO.numberOfApprover" display="menu"
+                            class="p-ml-auto">
                           </p-columnFilter>
                         </div>
                       </div>
@@ -339,9 +377,11 @@
                           Auto Approval</span>
                         &nbsp;&nbsp;
                         <div class="Sort_Filter_Position">
-                          <p-sortIcon field="autoApproval" pSortableColumn="autoApproval">
+                          <p-sortIcon field="workflowMasterHeaderResponseDTO.autoApproval"
+                            pSortableColumn="workflowMasterHeaderResponseDTO.autoApproval">
                           </p-sortIcon>
-                          <p-columnFilter field="autoApproval" display="menu" class="p-ml-auto">
+                          <p-columnFilter field="workflowMasterHeaderResponseDTO.autoApproval" display="menu"
+                            class="p-ml-auto">
                           </p-columnFilter>
                         </div>
                       </div>
@@ -377,6 +417,9 @@
                     </td>
                     <td class="bg-color-light_gray"><label
                         class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.description}}</label>
+                    </td>
+                    <td class="bg-color-light_gray"><label
+                        class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprovalLevel}}</label>
                     </td>
                     <td class="bg-color-light_gray"><label
                         class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprover}}</label>
@@ -550,14 +593,59 @@
 </ng-template>
 
 
-
 <div id="tblData" style="display: none;">
   <table>
     <thead>
       <tr>
-        <th class="wd-10" style="background-color: #606060FF!important;border: 1px solid black;">Sr No. </th>
+        <th class="wd-10" style="background-color: yellow !important;border: 1px solid black;">Sr No. </th>
+        <th class="wd-10" style="background-color: yellow !important;border: 1px solid black;">Code </th>
+        <th class="wd-20" style="background-color: yellow !important;border: 1px solid black;">Description </th>
+        <th class="wd-20" style="background-color: yellow !important;border: 1px solid black;">No. of Approval Level </th>
+        <th class="wd-8" style="background-color: yellow !important;border: 1px solid black;">No. of Approvers</th>
+        <th class="wd-8" style="background-color: yellow !important;border: 1px solid black;">Auto Approval</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of summary; let rowIndex = index;">
+        <td class="bg-color-light_gray" style="border: 1px solid black;">
+          <div class="form-group mb-0">
+            <div class="input-group">
+              <label class="form-lable mb-0">{{rowIndex+1}}</label>
+            </div>
+          </div>
+        </td>
+        <td class="bg-color-light_gray" style="border: 1px solid black;"><label
+            class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.workflowCode}}</label>
+        </td>
+        <td class="bg-color-light_gray" style="border: 1px solid black;"><label
+            class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.description}}</label>
+        </td>
+        <td class="bg-color-light_gray" style="border: 1px solid black;"><label
+          class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprovalLevel}}</label>
+      </td>
+        <td class="bg-color-light_gray" style="border: 1px solid black;"><label
+            class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprover}}</label>
+        </td>
+        <td class="bg-color-light_gray" [ngStyle]="{
+                            color: item.workflowMasterHeaderResponseDTO.autoApproval
+                              ? 'hsl(141, 53%, 53%)'
+                              : 'hsl(348, 100%, 61%)'
+                          }" style="border: 1px solid black;"><label class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.autoApproval |
+            yesNo}}</label>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- <div id="tblData" style="display: none;">
+  <table>
+    <thead>
+      <tr>
+        <th class="wd-10" style="background-color: #606060FF!important;border: 1px solid black;">Sr. No. </th>
         <th class="wd-10" style="background-color: #606060FF!important;border: 1px solid black;">Code </th>
         <th class="wd-20" style="background-color: #606060FF!important;border: 1px solid black;">Description </th>
+        <th class="wd-20" style="background-color: #606060FF!important;border: 1px solid black;">No. of Approval Level </th>
         <th class="wd-8" style="background-color: #606060FF!important;border: 1px solid black;">No. of Approvers</th>
         <th class="wd-8" style="background-color: #606060FF!important;border: 1px solid black;">Auto Approval</th>
       </tr>
@@ -578,16 +666,20 @@
             class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.description}}</label>
         </td>
         <td class="bg-color-light_gray" style="border: 1px solid black;"><label
+          class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprovalLevel}}</label>
+      </td>
+        <td class="bg-color-light_gray" style="border: 1px solid black;"><label
             class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprover}}</label>
         </td>
         <td class="bg-color-light_gray" [ngStyle]="{
                             color: item.workflowMasterHeaderResponseDTO.autoApproval
                               ? 'hsl(141, 53%, 53%)'
                               : 'hsl(348, 100%, 61%)'
-                          }" style="border: 1px solid black;"><label class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.autoApproval |
+                          }" style="border: 1px solid black;"><label
+            class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.autoApproval |
             yesNo}}</label>
         </td>
       </tr>
     </tbody>
   </table>
-</div>
+</div> -->
