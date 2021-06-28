@@ -16,8 +16,6 @@ import { DisbursementComponent } from './disbursement/disbursement.component';
 import { AdhocComponent } from './adhoc/adhoc.component';
 import { RescheduleComponent } from './reschedule/reschedule.component';
 import { SettlementComponent } from './settlement/settlement.component';
-import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent, SettlementComponent],
@@ -31,9 +29,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     NgxSliderModule,
     FormsModule,
     Ng2SearchPipeModule,
-    TableModule,
-    BsDatepickerModule,
-    TooltipModule
+    TableModule
 
   ],
   providers: [ExcelService],
