@@ -48,6 +48,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
   public familyMemberNameList: Array<any> = [];
 
+  public accountNumberlistedit: Array<any> = [];
+
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
@@ -399,6 +401,23 @@ export class InterestOnTtbMasterComponent implements OnInit {
     }
   }
 
+
+  //Duplicate account should not be acceptable
+
+  matchAccountNumber(event: any) {
+    console.log('event...', event);
+    this.masterGridData.forEach((element) => {
+      this.accountNumberlistedit = element.accountNumber;
+      if (event == element.accountNumber) {
+        this.alertService.sweetalertWarning(
+          'Duplicate Account should Not be Acceptable'
+        );
+      }
+      console.log(element.accountNumber);
+    });
+  }
+
+  
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
     if (event.target.files.length > 0) {
@@ -464,8 +483,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
   // On View Cancel
   cancelView() {
     this.form.reset();
-    this.form.get('active').setValue(true);
-    this.form.get('isClaiming80U').setValue(0);
+   // this.form.get('active').setValue(true);
+    //this.form.get('isClaiming80U').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;
