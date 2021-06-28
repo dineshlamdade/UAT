@@ -361,12 +361,12 @@
                       <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
                         [disabled]="!queryGenerationForm.valid" *ngIf="isUpdate " (click)="updateQueryGeneration('Save')"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
-                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update Save</button >&nbsp;
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button >&nbsp;
 
                         <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
                         [disabled]="!queryGenerationForm.valid" *ngIf="isUpdateDraft " (click)="updateQueryGeneration('Draft')"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
-                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update Draft</button >&nbsp;
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button >&nbsp;
 
                       <button type="button" tooltip="Cancel" (click)="cancel()" *ngIf="isCancle"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10">

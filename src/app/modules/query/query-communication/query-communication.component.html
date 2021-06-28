@@ -209,8 +209,8 @@
                                                                         aria-controls="Communication" checked="">
                                                                     <label class="backcolor" for="Communication">Communication</label>
                                                                     <input type="radio" name="tabset" id="Attachment"
-                                                                        ria-controls="Attachment">
-                                                                    <label class="backcolor" for="Attachment" *ngIf="documents > 0">Attachment</label>
+                                                                        aria-controls="Attachment" >
+                                                                    <label class="backcolor" for="Attachment">Attachment</label>
                                                                     <input type="radio" name="tabset" id="Status"
                                                                         aria-controls="Status">
                                                                     <label class="backcolor" for="Status">Status Log</label>
@@ -507,8 +507,7 @@
                                                                                             <span aria-hidden="true">×</span>
                                                                                           </button>
                                                                                         </div>
-                                                                                        <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
-                                                                                      <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
+
                                                                                         <div class="card-body">
                                                                                           <div class="row">
                                                                                             <div class="col-md-1">
@@ -519,7 +518,7 @@
                                                                                             </div>
                                                                                             <div class="col-md-10">
                                                                                               <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
-                                                                                              <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
+
                                                                                             </div>
                                                                                             <div class="col-md-1">
                                                                                               <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
@@ -530,7 +529,7 @@
                                                                                           </div>
                                                                                         </div>
                                                                                         <div class="modal-footer">
-                                                                                          <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+
                                                                                           <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
                                                                                             Ok
                                                                                           </button>
@@ -567,15 +566,18 @@
                                                                                             <div class="float-right">
 
                                                                                                 <button type="button"  tooltip="Save Draft"
-                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Draft')"
-                                                                                                    [ngClass]="{'disabled-btn-bg-green': queryCommunicationForm.queAnsMasterId.valid ||  queryCommunicationForm.queryDescription.valid,'btn-bg-green':  queryCommunicationForm.queAnsMasterId.invalid ||
-                                                                                                     queryCommunicationForm.queryDescription.invalid">
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Draft');toggleReplyDiv()"
+
+                                                                                                    >
+
                                                                                                     <b><i class="fa fa-floppy-o"></i></b>Save Draft </button>
 
                                                                                                 <button type="button" tooltip="Save"
-                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"(click)="addQueryIteration('Save');toggleReplyDiv()"
-                                                                                                    [ngClass]="{'disabled-btn-bg-green': queryCommunicationForm.queAnsMasterId.valid ||  queryCommunicationForm.queryDescription.valid,'btn-bg-green':  queryCommunicationForm.queAnsMasterId.invalid ||
-                                                                                                     queryCommunicationForm.queryDescription.invalid">
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Save');toggleReplyDiv()"
+
+                                                                                                    [disabled]="{'disabled-btn-bg-green':queryCommunicationForm.controls['queAnsMasterId' || 'queryDescription' ].invalid ,
+                                                                                                    'btn-bg-green':!queryCommunicationForm.controls['queAnsMasterId' || 'queryDescription' ].invalid}">
+
                                                                                                     <b><i  class="fa fa-floppy-o"></i></b> Save </button>
 
                                                                                                 <button type="button"tooltip="Reset"
@@ -686,17 +688,15 @@
                                                                                             <div class="float-right">
 
                                                                                                 <button type="button" tooltip=" Save Draft"
-                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addForwordScreen('Draft')"
-                                                                                                    [ngClass]="{'disabled-btn-bg-green': queryCommunicationForm.queryDescription.valid ||
-                                                                                                     queryCommunicationForm.addressedToEmpId.valid,'btn-bg-green': queryCommunicationForm.queryDescription.invalid ||  queryCommunicationForm.addressedToEmpId.invalid}"><b><i
-                                                                                                      class="fa fa-floppy-o"></i></b>  Save Draft </button>
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addForwordScreen('Draft');toggleforwardDiv()" >
+
+                                                                                                    <b><i class="fa fa-floppy-o"></i></b>  Save Draft </button>
 
                                                                                                 <button type="button" tooltip="Save"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                                                                                                    (click)="addForwordScreen('Save');toggleforwardDiv()"
-                                                                                                    [ngClass]="{'disabled-btn-bg-green': queryCommunicationForm.queryDescription.valid ||
-                                                                                                     queryCommunicationForm.addressedToEmpId.valid,'btn-bg-green': queryCommunicationForm.queryDescription.invalid ||  queryCommunicationForm.addressedToEmpId.invalid}"><b><i
-                                                                                                      class="fa fa-floppy-o"></i></b> Save </button>
+                                                                                                    (click)="addForwordScreen('Save');toggleforwardDiv()" >
+
+                                                                                                    <b><i class="fa fa-floppy-o"></i></b> Save </button>
 
                                                                                                 <button type="button"
                                                                                                     tooltip="Reset"
@@ -852,19 +852,20 @@
                                                                                                                 <td >
                                                                                                                     <label *ngIf="documents"
                                                                                                                         class="form-lable mb-0 ">{{documents.fileName}}
-                                                                                                                        <span class="Label_badge" style="text-align: center;"   (click)="docViewer(template1,documents)">
-                                                                                                                        {{documents}}</span></label>
+                                                                                                                        <!-- <span class="Label_badge" style="text-align: center;" (click)="docViewer(template1,documents)">
+                                                                                                                        {{documents}}</span> -->
+                                                                                                                      </label>
                                                                                                                 </td>
 
                                                                                                                 <!-- <td> <label
                                                                                                                         class="form-lable mb-0 ">{{documentlist.queryDescription}}</label>
                                                                                                                 </td> -->
                                                                                                                 <td > <label *ngIf="documents"
-                                                                                                                        class="form-lable mb-0 ">{{documents.refUpdatedByName}}</label>
+                                                                                                                        class="form-lable mb-0 ">{{documents.createdBy}}</label>
 
                                                                                                                 </td>
                                                                                                                 <td  > <label *ngIf="documents"
-                                                                                                                        class="form-lable mb-0 ">{{documents.updatedDateTime | date :"dd-MMM-yyyy" }}</label>
+                                                                                                                        class="form-lable mb-0 ">{{documents.createdDateTime | date :"dd-MMM-yyyy" }}</label>
                                                                                                                 </td>
 
 

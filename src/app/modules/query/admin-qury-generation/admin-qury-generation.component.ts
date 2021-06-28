@@ -107,15 +107,23 @@ export class AdminQuryGenerationComponent implements OnInit {
       let formdata = JSON.parse(localStorage.getItem('dashboardSummary'))
        this.queryGenerationForm.patchValue(formdata);
        this.getById(formdata.queryGenerationEmpId);
-       localStorage.removeItem('dashboardSummary')
+       console.log("formdata.queryGenerationEmpId",formdata.queAnsMasterId)
+       this.queryGenerationForm.controls['queAnsMasterId'].setValue(formdata.queAnsMasterId);
+       this.queryGenerationForm.controls['priority'].setValue(formdata.priority);
+       this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(formdata.subQueTypeMasterId);
+       localStorage.removeItem('dashboardSummary');
        this.queryGenerationForm.enable();
        if(formdata.status == 'Draft'){
         this.isUpdateDraft = true;
         this.isUpdate = false;
+        this.isSaveDraft = false;
+        this.isSave = true;
 
        }else{
        this.isUpdate = true;
        this.isUpdateDraft = false;
+       this.isSaveDraft = true;
+       this.isSave = false;
 
        }
     }
@@ -127,6 +135,9 @@ export class AdminQuryGenerationComponent implements OnInit {
        this.getById(formdata.queryGenerationEmpId);
        localStorage.removeItem('viewdashboardSummary')
        this.queryGenerationForm.disable();
+       this.isSaveDraft = false;
+       this.isSave = false;
+       this.isReset = false;
     }
    }
 
@@ -185,6 +196,7 @@ getById(queryGenerationEmpId) { //used for the edit
 
     this.getByIdData = res.data.results[0];
     console.log(JSON.stringify(this.getByIdData))
+
     this.querySubQueryTypeQA(this.getByIdData.applicationModuleId);
     this.listDoc = this.getByIdData.listDoc;
     this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);

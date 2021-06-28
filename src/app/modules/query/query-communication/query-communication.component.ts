@@ -112,7 +112,7 @@ constructor(private modalService: BsModalService ,public formBuilder : FormBuild
          "queryGenerationEmpId":new FormControl(0),
          "addressedToEmpId":new FormControl(0,[Validators.required]),
          "queAnsMasterId":new FormControl(null,[Validators.required]),
-         "queryDescription":new FormControl(''),
+         "queryDescription":new FormControl('',[Validators.required]),
          "queryRootCause":new FormControl(null),
          "rootCauseDescription":new FormControl(''),
          "rating":new FormControl(null),
@@ -277,6 +277,8 @@ getIterationdetailsbyQueryID(queryGenerationEmpId) //Get Iteration details by Qu
       this.GetIterationdetailsbyQueryIDData = res.data.results[0];
       console.log(" this.GetIterationdetailsbyQueryIDData", this.GetIterationdetailsbyQueryIDData);
       this.attachementData = res.data.results;
+      console.log(" attachementData ", this.attachementData )
+
       this.documents = this.GetIterationdetailsbyQueryIDData.documents[0];
       console.log(" this.documents ", this.documents )
     })
@@ -341,6 +343,17 @@ addQueryIteration(value){ // post api for save data
       this.alertService.sweetalertMasterSuccess('Query Replied Successfully', '' );
       this.getIterationdetailsbyQueryID(0);
     })
+    // results: object = new Object();
+
+    // this.results = [{
+    //   {
+    //     "queAnsMasterId": this.queryCommunicationForm.controls.queAnsMasterId.value
+    //   },
+    //   {
+    //     "queryDescription": this.queryCommunicationForm.controls.queryDescription.value
+    //   }
+
+    // }]
 
     this.reset();
 }
