@@ -56,11 +56,11 @@
                         <label class="form-label">Submission Date & Time</label>
                         <div class="form-group">
                           <div class="input-group">
-                            <div class="input-group-prepend">
+                            <!-- <div class="input-group-prepend">
                               <span class="input-group-text">
                                 <i class="fa fa-calendar"></i>
                               </span>
-                            </div>
+                            </div> -->
                             <input
                               data-provide="datepicker"
                               data-date-autoclose="true"
@@ -76,11 +76,11 @@
                         <label class="form-label">Escalation Date </label>
                         <div class="form-group">
                           <div class="input-group">
-                            <div class="input-group-prepend">
+                            <!-- <div class="input-group-prepend">
                               <span class="input-group-text">
                                 <i class="fa fa-calendar"></i>
                               </span>
-                            </div>
+                            </div> -->
                             <input
                               data-provide="datepicker"
                               data-date-autoclose="true"
@@ -114,7 +114,7 @@
                         <!-- <pre *ngIf="getByIdData">{{getByIdData.queryTypeMasterId}}</pre> -->
                         <select
                           formControlName="queryTypeMasterId"
-                          class="form-control custom-select" (change)="getSubQueryListData($event.target.value)"
+                          class="form-control" (change)="getSubQueryListData($event.target.value)"
                           [ngClass]="{'is-invalid':queryGenerationForm.get('queryTypeMasterId').status == 'INVALID'}">
                           <option [ngValue]="null" selected >Select</option>
                           <option  *ngFor="let module of querySubQueryTypeQAData" value="{{module.queryTypeMasterId}}">
@@ -126,7 +126,7 @@
                         <label class="form-label">Sub-Query Type</label>
                         <select
                           formControlName="subQueTypeMasterId"
-                          class="form-control custom-select" >
+                          class="form-control" >
                           <option [ngValue]="0" selected >Select</option>
                           <option  *ngFor="let module of subQueryData"  value="{{module.subQueTypeMasterId}}">
                             {{module.subQueryTypeDescription}}</option>
@@ -137,7 +137,7 @@
                         <label class="form-label">Priority</label>
                         <select
                           formControlName="priority"
-                          class="form-control custom-select" >
+                          class="form-control" >
                           <option [ngValue]="null
                           " selected >Select</option>
                           <option *ngFor="let module of priorityData" value="{{module.priorityType}}">{{module.priorityType}}</option>
@@ -147,20 +147,14 @@
 
                       <div class="col-md-3"  [disabled]="viewFlag">
                         <label class="form-label">Query Template</label>
-                        <!-- <pre>{{listQAData | json}}</pre> -->
-                        <!-- <pre *ngIf="getByIdData">{{getByIdData.queAnsMasterId}}</pre> -->
+
                         <select
-                          class="form-control custom-select" formControlName="queAnsMasterId"
+                          class="form-control" formControlName="queAnsMasterId" (change)="queryTempChange($event.target.value)"
                           [ngClass]="{'is-invalid': queryGenerationForm.get('queAnsMasterId').status == 'INVALID'}">
-                          <option value='null' selected >Select</option>
+                          <option [ngValue]="null" selected >Select</option>
                           <option *ngFor="let module of listQAData " value="{{module.queAnsMasterId}}">{{module.questionDescription}}</option>
                         </select>
-                        <!-- <select *ngIf="listQAData1"
-                          class="form-control custom-select" formControlName="queAnsMasterId"
-                          [ngClass]="{'is-invalid': queryGenerationForm.get('queAnsMasterId').status == 'INVALID'}">
-                          <option value='null' selected >Select</option>
-                          <option *ngFor="let module of listQAData1 " value="{{module.queAnsMasterId}}">{{module.subQueryTypeDescription}}</option>
-                        </select> -->
+
                       </div>
                     </div>
                     <div class="row mt-25" >
@@ -168,13 +162,8 @@
 
                           <label
                               class="form-label">Subject</label>
-                              <input type="text"  class="form-control" formControlName="subject">
-                          <!-- <select formControlName="queAnsMasterId"   class="form-control custom-select" (change)="answerTempChange($event.target.value)"
-                         >
-                            <option [ngValue]="null" selected >Select</option>
-                            <option value="{{module.queAnsMasterId}}" *ngFor="let module of getQueAnstemplistByIdData ">
-                              {{module.questionSubject}}</option>
-                          </select> -->
+                              <input type="text"  class="form-control" formControlName="subject" placeholder="Subject"
+                              [ngClass]="{'is-invalid': queryGenerationForm.get('subject').status == 'INVALID'}">
 
                         <br />
                         <label class="form-label">Description</label>
@@ -194,7 +183,7 @@
                                         <th scope="col" class="font700 wd-12"  *ngIf="hideEditTime" >Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody *ngIf="!editflag">
                                     <tr  >
                                         <th scope="row"><span tooltip="1">1</span></th>
 
@@ -204,7 +193,7 @@
                                           <!-- <pre>{{listDoc | json}}</pre> -->
                                           <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
                                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                                                              <div class="col-md-12" *ngFor="let doc of urlArray; let i = index"> {{ doc.fileName }}
+                                                              <div class="col-md-12" *ngFor="let doc of listDoc; let i = index"> {{ doc.fileName }}
                                                                   <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
                                                                       <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
                                                                       {{ doc.fileName }}
@@ -219,6 +208,31 @@
                                     </tr>
 
                                 </tbody>
+                                <tbody *ngIf="editflag">
+                                  <tr  *ngFor="let item of listDoc; let i = index">
+                                      <th scope="row"><span tooltip="1">{{i+1}}</span></th>
+
+                                      <!-- <td><span tooltip="Premium Receipt/ Premium Statement"></span>Rent Agreement</td> -->
+
+                                      <td>
+                                        <!-- <pre>{{listDoc | json}}</pre> -->
+                                        <span  class="text-orange" tooltip="{{item.name}}," (click)="docViewer(template1,i)"><i
+                                        class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.fileName}},</span>
+                                                            <!-- <div class="col-md-12" *ngFor="let doc of listDoc; let i = index"> {{ doc.fileName }}
+                                                                <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
+                                                                    <i class="fa fa-paperclip text-orange"  ></i> &nbsp;
+                                                                    {{ doc.fileName }}
+                                                                </div>
+                                                            </div> -->
+                                      </td>
+
+                                      <td *ngIf="hideEditTime">
+                                          <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal" >
+                               </i>&nbsp;&nbsp;
+                                      </td>
+                                  </tr>
+
+                              </tbody>
                             </table>
                         </div>
                     </div>
@@ -340,19 +354,69 @@
 
                       <button  type="submit" tooltip =" Save Draft " *ngIf="isSaveDraft"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                        (click)="queryGenerationFormSubmit('Draft')" [disabled]="!queryGenerationForm.valid"
+                        (click)="saveandDraftPopUp(saveanddraftQueryGeneration)" [disabled]="!queryGenerationForm.valid"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}" >
                         <b><i class="fa fa-file"></i></b> Save Draft </button>
+
+                        <ng-template #saveanddraftQueryGeneration>
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+                              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="modal-body mb-0 pb-0 pt-0">
+                              <div class="card mb-0">
+                                  <div class="card-body">
+                                      <div class="row clearfix">
+                                          <div class="col-md-12">
+                                              <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;Are
+                                            you sure want to
+                                            draft Query
+                                           </label>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" (click)="queryGenerationFormSubmit('Draft');modalRef.hide()">Yes</button>
+                              <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+                          </div>
+                      </ng-template>
 
                       <button type="button" tooltip=" Save & next" *ngIf="isSaveNext"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-save"></i></b> Save & next</button>
 
                       <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" *ngIf="isSave"
-
-                      tooltip="Save"[disabled]="!queryGenerationForm.valid" (click)="queryGenerationFormSubmit('Save')"
+                      tooltip="Save"[disabled]="!queryGenerationForm.valid" (click)="savePopUp(saveQueryGeneration)"
                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
+
+                       <ng-template #saveQueryGeneration>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+                            <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body mb-0 pb-0 pt-0">
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <div class="row clearfix">
+                                        <div class="col-md-12">
+                                            <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;Are
+                                          you sure want to
+                                          Save Query
+                                         </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" (click)="queryGenerationFormSubmit('Save');modalRef.hide()">Yes</button>
+                            <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+                        </div>
+                    </ng-template>
+
 
                       <button  type="button" tooltip="Reset" *ngIf="isReset" (click)="reset()"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">

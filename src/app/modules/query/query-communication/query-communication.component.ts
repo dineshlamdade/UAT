@@ -68,7 +68,7 @@ queryCommunicationForm: FormGroup;
   listDoc: File[] = [];
   queryGenerationEmpId: any;
   getAllQueryGenerationData: any;
-  documents: any;
+  documents: any =[];
   getRootCasuelistData: any;
   getReplayDataByIdData: any;
   attachementData: any;
@@ -83,6 +83,7 @@ queryCommunicationForm: FormGroup;
   queryNumber: any;
   status: any;
   addressedToEmpId: number;
+  docName: any =[];
   // hideClosebtn :boolean = true;
 
 constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,
@@ -280,6 +281,14 @@ getIterationdetailsbyQueryID(queryGenerationEmpId) //Get Iteration details by Qu
       console.log(" attachementData ", this.attachementData )
 
       this.documents = this.GetIterationdetailsbyQueryIDData.documents[0];
+      // this.docName = this.GetIterationdetailsbyQueryIDData.documents;
+      this.attachementData.forEach(element => {
+        if(element.documents.length > 0){
+          this.docName.push(element.documents)
+        }
+      });
+      console.log(" this.docName",  this.docName)
+
       console.log(" this.documents ", this.documents )
     })
 }

@@ -129,8 +129,8 @@
 
                                                             </div>
                                                         </div>
-                                                        <div class="row mt-10">
-                                                            <div class="col-md-6"> <label class="form-label">Module
+                                                        <div class="row mt-10 mt-0">
+                                                            <div class="col-md-6 "> <label class="form-label">Module
                                                                     Name</label></div>
                                                             <div class="col-md-6">
                                                                 <input type="text" class="form-control" value="{{getAllQueryGenerationData.applicationModuleName}}" disabled>
@@ -187,7 +187,7 @@
 
                                                             </div>
                                                         </div>
-                                                        <div class="row mt-10">
+                                                        <div class="row mt-10 mt-0">
                                                             <div class="col-md-6"> <label
                                                                     class="form-label">Status</label></div>
                                                             <div class="col-md-6">
@@ -197,20 +197,19 @@
                                                     </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-8">
-
+                                                <div class="col-md-8" >
 
                                                     <div class="row ">
                                                         <div class="col-md-12">
                                                             <div class="card1">
 
-                                                                <div class="tabset">
+                                                                <div class="tabset" >
                                                                     <input type="radio" name="tabset" id="Communication"
                                                                         aria-controls="Communication" checked="">
                                                                     <label class="backcolor" for="Communication">Communication</label>
-                                                                    <input type="radio" name="tabset" id="Attachment"
-                                                                        aria-controls="Attachment" >
-                                                                    <label class="backcolor" for="Attachment">Attachment</label>
+                                                                    <input type="radio" name="tabset" id="Attachment"  *ngIf="docName.length > 0"
+                                                                        aria-controls="Attachment"  >
+                                                                    <label class="backcolor" for="Attachment"   *ngIf="docName.length > 0">Attachment</label>
                                                                     <input type="radio" name="tabset" id="Status"
                                                                         aria-controls="Status">
                                                                     <label class="backcolor" for="Status">Status Log</label>
@@ -255,8 +254,9 @@
                                                                                                 <span class="Label_badge" style="text-align: center;"   (click)="docViewer(template1,GetIterationdetailsbyQueryIDData)">{{GetIterationdetailsbyQueryIDData.numberOfDocuments}}</span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="col-md-10 input-sizer stacked" >
-                                                                                            <textarea oninput="this.parentNode.dataset.value = this.value" rows="4"
+                                                                                        <!-- oninput="this.parentNode.dataset.value = this.value" rows="4" -->
+                                                                                        <div class="col-md-10" >
+                                                                                            <textarea style="overflow:hidden;"
                                                                                                 class="form-control"
                                                                                                 disabled>{{GetIterationdetailsbyQueryIDData.queryDescription}}</textarea>
                                                                                         </div>
@@ -330,12 +330,12 @@
                                                                             <div id="reply" [hidden]="isRelyDiv" *ngIf="getReplayDataByIdData">
                                                                                 <div class="card1">
                                                                                     <div class="row">
-                                                                                        <div class="col-md-3">
+                                                                                        <!-- <div class="col-md-3">
                                                                                             <label
                                                                                                 class="form-label">Ref. No.</label>
                                                                                             <input class="form-control"
                                                                                                 disabled>
-                                                                                        </div>
+                                                                                        </div> -->
                                                                                         <div class="col-md-3">
                                                                                             <label
                                                                                                 class="form-label">Addressed
@@ -352,7 +352,7 @@
                                                                                             value="{{getReplayDataByIdData.addressedToEmpRole}}" disabled>
 
                                                                                         </div>
-                                                                                        <div class="col-md-3">
+                                                                                        <!-- <div class="col-md-3">
                                                                                             <label
                                                                                                 class="form-label">Updated
                                                                                                 Date & Time</label>
@@ -370,9 +370,7 @@
                                                                                                         >
                                                                                                 </div>
                                                                                             </div>
-
-
-                                                                                        </div>
+                                                                                        </div> -->
                                                                                     </div>
                                                                                     <div class="row mt-25">
                                                                                         <div class="col-md-12">
@@ -567,17 +565,16 @@
 
                                                                                                 <button type="button"  tooltip="Save Draft"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Draft');toggleReplyDiv()"
-
+                                                                                                    [ngClass]="{'disabled-btn-bg-green':queryCommunicationForm.controls.queAnsMasterId.invalid}"
+                                                                                                    [disabled]="queryCommunicationForm.controls.queAnsMasterId.invalid"
                                                                                                     >
 
                                                                                                     <b><i class="fa fa-floppy-o"></i></b>Save Draft </button>
 
                                                                                                 <button type="button" tooltip="Save"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Save');toggleReplyDiv()"
-
-                                                                                                    [disabled]="{'disabled-btn-bg-green':queryCommunicationForm.controls['queAnsMasterId' || 'queryDescription' ].invalid ,
-                                                                                                    'btn-bg-green':!queryCommunicationForm.controls['queAnsMasterId' || 'queryDescription' ].invalid}">
-
+                                                                                                    [ngClass]="{'disabled-btn-bg-green':queryCommunicationForm.controls.queAnsMasterId.invalid}"
+                                                                                                    [disabled]="queryCommunicationForm.controls.queAnsMasterId.invalid">
                                                                                                     <b><i  class="fa fa-floppy-o"></i></b> Save </button>
 
                                                                                                 <button type="button"tooltip="Reset"
@@ -688,13 +685,17 @@
                                                                                             <div class="float-right">
 
                                                                                                 <button type="button" tooltip=" Save Draft"
-                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addForwordScreen('Draft');toggleforwardDiv()" >
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addForwordScreen('Draft');toggleforwardDiv()"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green':queryCommunicationForm.controls.queryDescription.invalid || queryCommunicationForm.controls.addressedToEmpId.invalid}"
+                                                                                                    [disabled]="queryCommunicationForm.controls.queryDescription.invalid || queryCommunicationForm.controls.addressedToEmpId.invalid">
 
                                                                                                     <b><i class="fa fa-floppy-o"></i></b>  Save Draft </button>
 
                                                                                                 <button type="button" tooltip="Save"
                                                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                                                                                                    (click)="addForwordScreen('Save');toggleforwardDiv()" >
+                                                                                                    (click)="addForwordScreen('Save');toggleforwardDiv()"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green':queryCommunicationForm.controls.queryDescription.invalid || queryCommunicationForm.controls.addressedToEmpId.invalid}"
+                                                                                                    [disabled]="queryCommunicationForm.controls.queryDescription.invalid || queryCommunicationForm.controls.addressedToEmpId.invalid">
 
                                                                                                     <b><i class="fa fa-floppy-o"></i></b> Save </button>
 
@@ -711,7 +712,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </section>
-                                                                        <section id="Attachment" class="tab-panel">
+                                                                        <section id="Attachment" class="tab-panel"  *ngIf="docName.length > 0">
                                                                             <div class="row">
                                                                                 <div class="col-md-12">
                                                                                     <fieldset>
@@ -791,7 +792,7 @@
                                                                                                                 <th colspan="2"
                                                                                                                     class="wd-15">
                                                                                                                     <div
-                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center" style="margin-left:70px;">
                                                                                                                         Created/Updated
 
                                                                                                                     </div>
@@ -850,8 +851,9 @@
                                                                                                                         class="form-lable mb-0 ">{{documentlist.refNumber}}</label>
                                                                                                                 </td>
                                                                                                                 <td >
-                                                                                                                    <label *ngIf="documents"
-                                                                                                                        class="form-lable mb-0 ">{{documents.fileName}}
+                                                                                                                    <label *ngIf="docName"
+                                                                                                                        class="form-lable mb-0 ">
+                                                                                                                        <span *ngFor="let doc of documentlist.documents">{{doc.fileName}},<br></span>
                                                                                                                         <!-- <span class="Label_badge" style="text-align: center;" (click)="docViewer(template1,documents)">
                                                                                                                         {{documents}}</span> -->
                                                                                                                       </label>
@@ -860,12 +862,12 @@
                                                                                                                 <!-- <td> <label
                                                                                                                         class="form-lable mb-0 ">{{documentlist.queryDescription}}</label>
                                                                                                                 </td> -->
-                                                                                                                <td > <label *ngIf="documents"
-                                                                                                                        class="form-lable mb-0 ">{{documents.createdBy}}</label>
+                                                                                                                <td > <label  *ngIf="documentlist.documents.length > 0"
+                                                                                                                        class="form-lable mb-0 ">{{docName[0][0].createdBy}}</label>
 
                                                                                                                 </td>
-                                                                                                                <td  > <label *ngIf="documents"
-                                                                                                                        class="form-lable mb-0 ">{{documents.createdDateTime | date :"dd-MMM-yyyy" }}</label>
+                                                                                                                <td  > <label *ngIf="documentlist.documents.length > 0"
+                                                                                                                        class="form-lable mb-0 ">{{docName[0][0].createdDateTime | date :'dd-MMM-yyyy hh:mm a' }}</label>
                                                                                                                 </td>
 
 
@@ -934,7 +936,7 @@
                                                                                                                 <th colspan="2"
                                                                                                                     class="wd-15">
                                                                                                                     <div
-                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center" style="margin-left:70px;">
                                                                                                                         Created/Updated
 
                                                                                                                     </div>

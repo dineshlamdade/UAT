@@ -80,6 +80,9 @@ export class AdminQuryGenerationComponent implements OnInit {
   priorityType: any;
   listQAData2: any;
   isUpdateDraft:boolean=false;
+  selectedQueryTemp: any;
+  querySubject: any;
+  queryDesc: any;
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
     private modalService: BsModalService, )
@@ -97,7 +100,7 @@ export class AdminQuryGenerationComponent implements OnInit {
         "queAnsMasterId":new FormControl(null,[Validators.required]),
         "priority":new FormControl(null),
         "queryDescription":new FormControl('',[Validators.required]),
-        "subject":new FormControl(''),
+        "subject":new FormControl('',[Validators.required]),
         "queryRootCause":new FormControl(null),
         "status":new FormControl('save'),
     })
@@ -106,19 +109,21 @@ export class AdminQuryGenerationComponent implements OnInit {
 
       let formdata = JSON.parse(localStorage.getItem('dashboardSummary'))
        this.queryGenerationForm.patchValue(formdata);
-       this.getById(formdata.queryGenerationEmpId);
-       console.log("formdata.queryGenerationEmpId",formdata.queAnsMasterId)
+      //  this.getById(formdata.queryGenerationEmpId);
+       console.log("formdata.queryGenerationEmpId",formdata)
+
+       localStorage.removeItem('dashboardSummary');
+       this.queryGenerationForm.enable();
+       this.editQuery(formdata);
        this.queryGenerationForm.controls['queAnsMasterId'].setValue(formdata.queAnsMasterId);
        this.queryGenerationForm.controls['priority'].setValue(formdata.priority);
        this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(formdata.subQueTypeMasterId);
-       localStorage.removeItem('dashboardSummary');
-       this.queryGenerationForm.enable();
+
        if(formdata.status == 'Draft'){
         this.isUpdateDraft = true;
         this.isUpdate = false;
         this.isSaveDraft = false;
         this.isSave = true;
-
        }else{
        this.isUpdate = true;
        this.isUpdateDraft = false;
@@ -133,6 +138,8 @@ export class AdminQuryGenerationComponent implements OnInit {
       let formdata = JSON.parse(localStorage.getItem('viewdashboardSummary'))
        this.queryGenerationForm.patchValue(formdata);
        this.getById(formdata.queryGenerationEmpId);
+       this.editQuery(formdata);
+
        localStorage.removeItem('viewdashboardSummary')
        this.queryGenerationForm.disable();
        this.isSaveDraft = false;
@@ -198,6 +205,7 @@ getById(queryGenerationEmpId) { //used for the edit
     console.log(JSON.stringify(this.getByIdData))
 
     this.querySubQueryTypeQA(this.getByIdData.applicationModuleId);
+
     this.listDoc = this.getByIdData.listDoc;
     this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
     this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
@@ -258,6 +266,7 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
         }
         if (this.editflag) {
           this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
+
           // console.log("@@@@@@@@@@@@@",this.getByIdData.queryTypeMasterId)
         }
       }
@@ -270,19 +279,21 @@ moduleChange(value) // when module is changed then template also changed.
   this.selectedModuleId = value;
   this.querySubQueryTypeQA( this.selectedModuleId);
 }
-addQueryGeneration(){ //post api for saving data
 
-  // Swal.fire({
-  //   title: 'Are you sure?',
-  //   text: "You won't be able to revert this!",
-  //   icon: 'warning',
-  //   showCancelButton: true,
-  //   confirmButtonColor: '#3085d6',
-  //   cancelButtonColor: '#d33',
-  //   confirmButtonText: 'Yes, Save it!'
-  // }
-  // ).then((result) => {
-  //   if (result.isConfirmed) {
+queryTempChange(value)
+{
+          this.listQAData.forEach(element => {
+            if(element.queAnsMasterId == value){
+          this.querySubject = element.questionSubject;
+          this.queryDesc = element.description
+          this.queryGenerationForm.controls['subject'].setValue(this.querySubject);
+          this.queryGenerationForm.controls['queryDescription'].setValue( this.queryDesc);
+        }
+          });
+          console.log("this.listQAData", this.listQAData);
+}
+
+addQueryGeneration(){ //post api for saving data
       if(this.listDoc.length == 0){
         this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
         this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
@@ -300,7 +311,6 @@ addQueryGeneration(){ //post api for saving data
           {
             this.addQueryGenerationData = res.data.results;
             console.log(JSON.stringify(this.addQueryGenerationData));
-          // console.log("Without Doc**********",queryGenerationEmployeeData)
 
             this.getAllQueryListSummary();
 
@@ -323,7 +333,6 @@ updateQueryGeneration(value) //put api for update data
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-  // this.queryGenerationForm.controls['status'].setValue('Draft');
   if(value == 'Save'){
     this.queryGenerationForm.controls['status'].setValue('Save');
    }else{
@@ -357,18 +366,7 @@ updateQueryGeneration(value) //put api for update data
 
 addQuerywithDocs()
 {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, save it!'
-  }
 
-  ).then((result) => {
-    if (result.isConfirmed) {
   this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
@@ -393,15 +391,11 @@ addQuerywithDocs()
       this.queryService.addQuerywithDocs(formData).subscribe(res =>
       {
         this.addQueryGenerationData = res.data.results;
-        // console.log(JSON.stringify(this.addQueryGenerationData));
-
         this.alertService.sweetalertMasterSuccess('Query Generated Successfully', '' );
         this.getAllQueryListSummary();
         this.reset();
       })
 
-    }
-  })
 
 
 }
@@ -476,7 +470,7 @@ getEmpMasterDetails(employeeMasterIdData)// temp id is used
 // }
 editQuery(queryGenerationSummary) {
   this.querySubQueryTypeQAData = null
-  this.listQAData = []
+  this.listQAData = [];
   this.editflag = true;
   this.queryGenerationForm.enable();
   this.queryGenerationForm.patchValue(queryGenerationSummary);
@@ -522,17 +516,21 @@ reset(){
   this.getByIdData = [];
   this.listDoc = []; //reset the upload document
   this.hideEditTime = true;
+  this.listQAData = [];
 
 }
 cancel()
 {
 this.reset();
 this.queryGenerationForm.controls['queryNumber'].disable();
+this.queryGenerationForm.controls['queryDescription'].reset();
 this.isSave = true;
 this.isReset = true;
 this.isUpdate = false;
 this.isCancle = false;
 this.hideEditTime = true;
+this.listQAData = [];
+
 }
 // ........................upload Document..............................................................
 public UploadModal(template: TemplateRef<any>) {
@@ -566,16 +564,15 @@ public removeSelectedLicMasterDocument(index: number, docType: string) {
       this.listDoc.splice(index, 1);
 }
 
-public docViewer(template1: TemplateRef<any>, i: any) {
+
+public docViewer(template1: TemplateRef<any>, document: any) {
   //console.log('---in doc viewer--');
   this.ListOfDocuments = document;
-  console.log(JSON.stringify(document))
-  this.urlIndex = i;
+  this.urlIndex = 0;
   //document.documents.forEach(element => {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].queryBlobURI
+      document.documents[this.urlIndex].queryBlobURI
     );
-    // console.log("document.listDoc",document.listDoc)
 
   //});
 
@@ -599,6 +596,18 @@ this.urlIndex = this.urlIndex + 1;
 this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
  this.ListOfDocuments.listDoc[this.urlIndex].queryBlobURI
 );
+}
+
+savePopUp(saveQueryGeneration: TemplateRef<any> ) {
+   this.modalRef = this.modalService.show(saveQueryGeneration,
+     Object.assign({}, { class: 'gray modal-md' })
+   );
+ }
+
+ saveandDraftPopUp(saveanddraftQueryGeneration: TemplateRef<any> ) {
+  this.modalRef = this.modalService.show(saveanddraftQueryGeneration,
+    Object.assign({}, { class: 'gray modal-md' })
+  );
 }
 
 }

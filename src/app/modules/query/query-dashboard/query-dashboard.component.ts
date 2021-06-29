@@ -55,15 +55,18 @@ export class QueryDashboardComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
   public modalRef: BsModalRef;
   data: any;
-  modalService: any;
+  // modalService: any;
   queryDashboardForm:FormGroup;
   getAllQueryGenerationData: any;
   excelData: any[];
   summaryLength: any[];
+  summarydescription: any;
+  summarysubject: any;
+  summarysubquerydescription: any;
 
   constructor(public formBuilder : FormBuilder,public queryService :QueryService
-    ,private excelservice: ExcelService,private alertService: AlertServiceService,private router: Router
-    )
+    ,private excelservice: ExcelService,private alertService: AlertServiceService,private router: Router,
+    private modalService: BsModalService)
    {
 
     localStorage.removeItem('dashboardSummary');
@@ -121,15 +124,34 @@ export class QueryDashboardComponent implements OnInit {
           ]
         };
 }
-  smallpopup(template: TemplateRef<any>) {
-     this.modalRef = this.modalService.show(
-       template,
+  smallpopup(queryDescription: TemplateRef<any>,summary ) {
+    this.summarydescription = summary.queryDescription;
+    // console.log("summary",summary)
+     this.modalRef = this.modalService.show(queryDescription,
        Object.assign({}, { class: 'gray modal-md' })
      );
    }
 
+   smallpopup2(querySubject: TemplateRef<any>,summary ) {
+    this.summarysubject = summary.subject;
+     this.modalRef = this.modalService.show(querySubject,
+       Object.assign({}, { class: 'gray modal-md' })
+     );
+   }
 
+   smallpopup3(subqueryDescription: TemplateRef<any>,summary ) {
+    this.summarysubquerydescription = summary.subQueryTypeCode;
+     this.modalRef = this.modalService.show(subqueryDescription,
+       Object.assign({}, { class: 'gray modal-md' })
+     );
+   }
 
+   smallpopup4(deleteTemp: TemplateRef<any> ) {
+    // this.summarysubquerydescription = summary.subQueryTypeCode;
+     this.modalRef = this.modalService.show(deleteTemp,
+       Object.assign({}, { class: 'gray modal-md' })
+     );
+   }
   ngOnInit(): void {
 this.getAllQueryListSummary();
 
@@ -169,18 +191,7 @@ viewQuery(summary){
 
 getDeleteById(queryGenerationEmpId) // delete the record from summary
 {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }
 
-    ).then((result) => {
-      if (result.isConfirmed) {
         this.queryService.getDeleteById(queryGenerationEmpId.queryGenerationEmpId).subscribe(res =>
           {
             this.alertService.sweetalertMasterSuccess('Query Deleted Successfully', '' );
@@ -192,11 +203,8 @@ getDeleteById(queryGenerationEmpId) // delete the record from summary
             }
           });
 
-      }
-    })
+
 }
-
-
 
  // .......................................Excel and PDF Code.................................................
  exportAsXLSX():void {
