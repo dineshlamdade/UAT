@@ -838,7 +838,7 @@
           <i class="fa fa-money" aria-hidden="true"></i>
           <span>Loan Master</span>
       </a>
-    </li> -->
+    </li> 
 
       <li
         [routerLinkActive]="['active']"
@@ -856,5 +856,26 @@
         </a>
       </li>
     </ul>
+
+    <h4>Dynamic menu </h4>
+ <!--  Dynamic menu Preeti 4th Jun 21-->
+ <!-- <pre>{{menuData | json}}</pre> -->
+ <ul class="metismenu">
+  <li *ngFor = "let  menu of menuData"  [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+    <!-- <pre>{{menu | json}}</pre> -->
+    <a href="javascript:void(0)" (click)="isCollapsedDynamicMenu = !isCollapsedDynamicMenu" [attr.aria-expanded]="!isCollapsedDynamicMenu"
+      aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i class="{{menu.icon}}"
+        aria-hidden="true"></i><span>{{menu.menuName}}</span></a>
+    <ul *ngFor = "let subMenu of menu.childItems" class="collapse" id="collapseBasic" [collapse]="isCollapsedDynamicMenu" [isAnimated]="true">
+     
+      <li ><a class="submenu" [routerLink]="['/{{menu.routerLink}}']"
+           href="javascript:void(0)"><span>{{subMenu.menuName}}</span></a>
+          </li>
+    </ul>
+  </li>
+
+ 
+</ul>
+
   </nav>
 </div>

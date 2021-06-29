@@ -15,12 +15,10 @@ export class PaymentTrackingMasterComponent implements OnInit {
   complianceMasterList: any;
   garnishmentMasterList: any;
   jobMasterList: any;
-  jobMasterMappingList: [];
+  jobMasterMappingList:any= [];
   masterCode : [];
   workFlowList: any;
-  users1:  [];
-  users2: [];
-  bankDetails: any;
+ bankDetails: any;
   summary: any;
   editFlag: any;
   jobMasterMapping: any;
@@ -29,7 +27,7 @@ export class PaymentTrackingMasterComponent implements OnInit {
   bankName: any;
   branchName: any;
   accountNumber: any;
-  isActive: any;
+  
   row: any=[];
   rowV: any=[];
   bankDetailssummary: any;
@@ -38,10 +36,58 @@ export class PaymentTrackingMasterComponent implements OnInit {
   logicMethod: any;
   formulaMasterId: any;
   products: any=[];
+  bankData: any;
+  sdmApproval: any;
+  selectedProduct: any=[];
+  logicValue: any;
+  formulaName: any;
+  paymentTrackingAddPayVoucherMaster: any=[];
+  paymentTrackingJobFieldMaster: any=[];
+  paymentTrackingMasterBankDetails: any = [];
+  addPaymentTracking: any;
+  updatePaymentTrackingData: any;
+  active: any;
+  isVisible: boolean = false;
+  isShown: boolean = true;
+  addPaymentTrackingForm: any;
   
  
   constructor( private formBuilder: FormBuilder, private service:PaymenttrackingMasterService,
-    private alertService: AlertServiceService,) { }
+    private alertService: AlertServiceService,) {
+      this.paymenttrackingForm = this.formBuilder.group({
+      "active": new FormControl(""),
+        "approvalSDMId": new FormControl(""),
+        "autoCreaPayVouch": new FormControl(""),
+        "code": new FormControl(""),
+         "complianceHead": new FormControl(""),
+        "complianceMaster": new FormControl(""),
+        "defaultModePayment": new FormControl(""),
+        "description": new FormControl(""),
+        "groupCompanyId": new FormControl(""),
+        "moduleId": new FormControl(""),
+        "nature": new FormControl(""),
+        "partPay": new FormControl(""),
+        "payMoreOnePertainCyOneGo": new FormControl(""),
+        "payMoreOneProcCyOneGo": new FormControl(""),
+        "payeeName": new FormControl(""),
+        "paymentMode": new FormControl(""),
+        "paymentTrackMastId": new FormControl(""),
+        "paymentTrackingAddPayVoucherMaster": new FormControl([]),
+        "paymentTrackingJobFieldMaster": new FormControl([]),
+        "paymentTrackingMasterBankDetails": new FormControl([]),
+        "remark": new FormControl(""),
+        "workflowMasterHeaderId": new FormControl(""),
+        
+      
+      //  "applicationModuleName" : new FormControl('')
+      
+
+      
+
+
+    })
+
+     }
 
   ngOnInit(): void {
     this.getApplicaationModuleName()
@@ -53,51 +99,11 @@ export class PaymentTrackingMasterComponent implements OnInit {
     this.getWorkFlowApproval()
     this.getSummary()
     this.getBankdetails()
+    this.getBankDetailsPopUp()
+    this.getSDM()
+    // this.getSummaryData()
 
-    this.paymenttrackingForm = this.formBuilder.group({
-      paymentTrackMastId: new FormControl(''),
-      code: new FormControl(''),
-      description: new FormControl(''),
-      groupCompanyId : new FormControl(''),
-      nature : new FormControl(''),
-      moduleId : new FormControl(''),
-      paymentMode : new FormControl(''),
-      complianceHead : new FormControl(''),
-      complianceMaster : new FormControl(''),
-      payeeName : new FormControl(''),
-      autoCreaPayVouch : new FormControl(''),
-      payMoreOneProcCyOneGo : new FormControl(''),
-      payMoreOnePertainCyOneGo : new FormControl(''),
-      partPay : new FormControl(''),
-      workflowMasterHeaderId : new FormControl(''),
-      defaultModePayment : new FormControl(''),
-      approvalSDMId : new FormControl(''),
-      remark : new FormControl(''),
-      applicationModuleName :new FormControl(''),
-      complianceName : new FormControl(''),
-      complianceHeadName : new FormControl(''),
-      contactPerson : new FormControl(''),
-      jobMasterType : new FormControl(''),
-      workflowCode : new FormControl(''),
-      masterCode : new FormControl(''),
-      accountNumber : new FormControl(''),
-      isActive :new FormControl(''),
-      formulaMasterId :new FormControl(''),
-      logicMethod : new FormControl(''),
-      payHead : new FormControl('')
-      
-
-    })
-//     this.users1 = [
-//       { srno: '1', head: 'Earning',logic:'AAA',formula: 'bbb',value:'AAA Desc' },
-
-  
-//  ];
-//  this.users2 = [
-//   { srno: '1', ifsc:'hii',bankname:'AAA',address:'AAA Desc' ,accountno:'5646' ,default:'' },
-
-
-// ];
+   
    
  }
  
@@ -135,7 +141,7 @@ getJobMaster(){
 
 getJobMasterMapping(){
   this.service.getJobMasterMapping().subscribe(res =>{
-    this.jobMasterMappingList = res.data.results;
+   // this.jobMasterMappingList = res.data.results;
   })
 }
  getWorkFlowApproval(){
@@ -152,13 +158,37 @@ getJobMasterMapping(){
 
  getBankDetailsPopUp(){
    this.service.getBankMasterDetails().subscribe(res =>{
-     this.products = res.data.results;
+     this.bankData = res.data.results;
    })
  }
 
+// getBankDetailsPopUp(){
+//   this.bankData =[]
+//   this.service.getBankMasterDetails().subscribe(res =>{
+//     let bankDataList = res.data.results;
+//     bankDataList.forEach(element => {
+//       this.bankData.push({
+//         'ifscCode':element.ifscCode,
+//         'bankName' : element.bankName,
+//         'branchName':element.branchName,
+//         'accountNumber' : element.mappingDetails.accountNumber
+//       })
+      
+//     });
+//   })
+// }
+
+
  getJobMappingValue(){
    this.service.getJobMasterMapping().subscribe(res =>{
-     this.jobMasterMapping = res.data.results;
+     //this.jobMasterMapping = res.data.results;
+     res.data.results.forEach(element => {
+      this.jobMasterMapping.push({
+        label : element.masterCode,
+        value: element.jobMasterMappingId
+      });
+       
+     });
    })
  }
 
@@ -166,25 +196,111 @@ getJobMasterMapping(){
    this.service.getBankMasterDetails().subscribe(res =>{
      this.ifscCodeList = res.data.results;
    })
-   console.log
+  
  }
 
- getSummary(){
-   this.service.getAll().subscribe(res =>{
-     this.summary = res.data.reslts;
+ getSDM(){
+   this.service.getSdmDetails().subscribe(res =>{
+     this.sdmApproval = res.data.results;
    })
  }
 
 
+
+// getSummaryData(){
+//   this.service.getSummay().subscribe(res =>{
+//     this.summary = res.data.results;
+//   })
+// }
+
+
+ getSummary() {
+  
+  this.summary =[];
+  this.service.getAll().subscribe((res) => {
+     let ressultdata = res.data.results[0];
+      
+        ressultdata.forEach(element => {
+           this.summary.push({
+              'code': element.code,
+              'description': element.description,
+              'nature': element.nature,
+              'remark': element.remark,
+            //  'payTrackJobFieldMasterId': element.paymentTrackingJobFieldMaster,
+            //  'jobField': element.paymentTrackingJobFieldMaster,
+            //   'payTrackJobMappId': element.paymentTrackingJobFieldValueMapping.payTrackJobMappId,
+            //   'jobFieldValue': element.paymentTrackingJobFieldValueMapping.jobFieldValue,
+            //   'paymentTrackingAddPayVoucherMasterid': element.paymentTrackingAddPayVoucherMaster.paymentTrackingAddPayVoucherMasterid,
+            //   'payHead': element.paymentTrackingAddPayVoucherMaster.payHead,
+            //   'formulaMasterId': element.formulaMasterId,
+            //   'logicMethod': element.logicMethod,
+             
+           })
+        }); 
+        console.log(JSON.stringify(this.summary))
+
+  });
+}
+
+
  paymentTrackingFormSubmit(){
 
+  this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].setValue(this.paymentTrackingAddPayVoucherMaster);
+  this.paymenttrackingForm.controls['paymentTrackingJobFieldMaster'].setValue(this.paymentTrackingJobFieldMaster);
+  this.paymenttrackingForm.controls['paymentTrackingMasterBankDetails'].setValue(this.paymentTrackingMasterBankDetails);
+
+  console.log(JSON.stringify(this.paymenttrackingForm.value));
+  
+  
   if(!this.editFlag){
-this.service.addPayment(this.paymenttrackingForm).subscribe(res =>{
-  this.alertService.sweetalertMasterSuccess("Role Privilege data saved successfully", "");
+   this.service.addPayment(this.paymenttrackingForm.value).subscribe(res =>{
+
+  this.addPaymentTracking = res.data.results;
+  this.getSummary()
+  this.isVisible = false;
+  this.isShown = true;
+  this.alertService.sweetalertMasterSuccess("Payment Tracking data saved successfully", "");
 })
+  }
+  else{
+    this.updatePaymentTracking()
   }
 
   
+ }
+
+ updatePaymentTracking(){
+  this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].setValue(this.paymentTrackingAddPayVoucherMaster);
+  this.paymenttrackingForm.controls['paymentTrackingJobFieldMaster'].setValue(this.paymentTrackingJobFieldMaster);
+  this.paymenttrackingForm.controls['paymentTrackingMasterBankDetails'].setValue(this.paymentTrackingMasterBankDetails);
+
+  console.log(JSON.stringify(this.paymenttrackingForm.value));
+  this.service.updatePayment(this.paymenttrackingForm.value).subscribe(res =>{
+    this.updatePaymentTrackingData = res.data.results; 
+    this.getSummary();
+    this.isVisible = false;
+    this.isShown = true;
+    this.alertService.sweetalertMasterSuccess("Payment Tracking data update successfully","")
+    this.reset();
+  })
+ }
+ 
+ editSummary(summary){
+  this.paymenttrackingForm.patchValue(summary)
+  this.paymenttrackingForm.enable();
+  this.isVisible = true;
+  this.isShown = false;
+
+ }
+ viewSummary(summary){
+  this.paymenttrackingForm.patchValue(summary)
+  this.paymenttrackingForm.disable();
+  this.isVisible = false;
+  this.isShown = false;
+ }
+
+ deleteSummary(){
+
  }
 
  onSelectComplianceMaster(complianceHeadId){
@@ -200,7 +316,15 @@ console.log("complianceMasterList::::::",this.complianceMasterList)
  onSelectJobFieldValue(jobMasterId){
    if(jobMasterId){
   this.service.getJobMasterMapping().subscribe(res =>{
-    this.jobMasterMappingList = res.data.results;
+   // this.jobMasterMappingList = res.data.results;
+
+   res.data.results.forEach(element => {
+    this.jobMasterMappingList.push({
+      label : element.masterCode,
+     value : element.jobMasterMappingId
+    });
+  });
+
   })
    }
    console.log("jobMasterMappingList::::::",this.jobMasterMappingList)
@@ -213,7 +337,7 @@ console.log("complianceMasterList::::::",this.complianceMasterList)
     bankName: this.bankName,
     branchName: this.branchName,
     accountNumber: this.accountNumber,
-    isActive: this.isActive,
+    active: this.active,
   
 
   };
@@ -227,16 +351,33 @@ deleteRows(x) {
   
 }
 addTableVoucher(){
-  const obj = {
-    payHead: this.payHead,
-    logicMethod: this.logicMethod,
-    branchName: this.branchName,
-    formulaMasterId: this.formulaMasterId,
-    isActive: this.isActive,
-   };
 
- this.rowV.push(obj);
+  const obj = {
+    payHead: this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster.payHead'].value,
+    logicMethod: this.logicValue,
+    formulaMasterId: this.formulaMasterId,
+    active: this.active,
+    paymentTrackingAddPayVoucherMasterid: 0
+   };
+  
+
+   this.paymentTrackingAddPayVoucherMaster.push(obj)
+
+
+   this.rowV =[];
+   this.logicMethod = ''
+   this.formulaMasterId = ''
+   this.payHead = ''
+
+ this.rowV.push({
+   'Head':this.paymenttrackingForm.controls['payHead'].value,
+   'Logic' : this.logicValue,
+   'FormulaValue': this.formulaName
+ });
  
+ 
+
+
 }
 deleteRowsV(x) {
   this.rowV.splice(x, 1);
@@ -247,5 +388,32 @@ onSelectBankDetails(){
  
 }
 
+onSelectFormula(value){
+  this.logicValue = value 
+
+  if(value=='Formula'){
+    this.service.getFormula().subscribe(res =>{
+      this.formulaName = res.data.results;
+      // this.paymenttrackingForm.controls['formulaName'].setValue(this.formulaName)
+      // this.formulaMasterId= res.data.results[0].formulaId
+    })
+  }
+}
+
+onRowSelect(event) {
+  //this.messageService.add({severity: 'info', summary: 'Product Selected', detail: event.data.name});
+}
+
+reset(){
+  this.paymenttrackingForm.enable();
+  this.paymenttrackingForm.reset();
+
+}
+cancel(){
+         this.paymenttrackingForm.enable();    
+         this.reset();
+         this.isShown = true;
+         this.isVisible = false;
+}
 
 }

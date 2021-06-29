@@ -72,4 +72,11 @@ public getWorkflowMaster(){
 public getGarnishmentMaster(){
   return this.http.get<any>(this.apiUrl3 + 'garnishment-master');
 }
+
+public getSdmDetails(){
+  return this.http.get<any>(this.apiUrl3 + 'companySDMForm');
+}
+public getFormula(){
+  return this.http.get<any>(this.apiUrl3 + 'formula-master');
+}
 }

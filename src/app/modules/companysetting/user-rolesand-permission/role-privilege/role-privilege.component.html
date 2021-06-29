@@ -105,7 +105,7 @@
                   <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" name="websitecheckWrite" [checked]="isChecked" (click)="checkUncheckallWrite()"> Write</th>
                   <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" name="websitecheckModify" [checked]="isChecked" (click)="checkUncheckallModify()">Modify</th>
                   <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" name="websitecheckDelete" [checked]="isChecked" (click)="checkUncheckallDelete()">Delete</th>
-                
+                  <th scope="col" class="font700 wd-8 text-center" style="color: white;">Feild Label</th>
               </tr>
           </thead>
           <tbody>
@@ -326,6 +326,11 @@
                         </label>
                     </a>
                 </div>
+            </td>
+            <td>
+              <button type="button"  tooltip="feild Label"  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+                </button
+              >&nbsp;
             </td>
               </tr>
           </tbody>

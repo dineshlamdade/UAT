@@ -186,19 +186,19 @@ public isCollapsedQuery = true;
         this.menuData = []
         let actualMenuData = res.data.results
         let privillegemenu 
-        this.RoleRrivilegeService.getUserPrivilegeByRoleId(5).subscribe(res =>{
+        this.RoleRrivilegeService.getUserPrivilegeByRoleId(6).subscribe(res =>{
           privillegemenu = res.data.results
           actualMenuData.forEach(actualmenu => {
             privillegemenu.forEach(privillege => {
               if(privillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
-                if(privillege.modifyAccess == 1 || privillege.readAccess || privillege.writeAccess || privillege.deleteAccess){
+                if(privillege.modifyAccess == 1 || privillege.readAccess == 1 || privillege.writeAccess == 1 || privillege.deleteAccess == 1){
                   this.menuData.push(actualmenu)
                 }
               }
               if(privillege.childItems != null){
                 privillege.childItems.forEach(childprivillege => {
                   if(childprivillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
-                    if(childprivillege.modifyAccess == 1 || childprivillege.readAccess || childprivillege.writeAccess || childprivillege.deleteAccess){
+                    if(childprivillege.modifyAccess == 1 || childprivillege.readAccess == 1 || childprivillege.writeAccess == 1 || childprivillege.deleteAccess == 1){
                       this.menuData.push(actualmenu)
                     }
                   }
