@@ -102,6 +102,11 @@ export class NonRecurringAmtComponent implements OnInit {
 	refemployeeCode: any ;
 	refemployeeName: any;
 	refPayrolArea: any = '';
+	selectedDevData: any;
+	SDMAmountValue: any;
+	deviationData: any;
+	deviationModeData: any;
+	repeatModeData: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -846,9 +851,53 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** On change From Date */
-	getFromDateForSave(event, data) {
+	getFromDateForSave(event, data,rowindex) {
 		this.setMinToDate = event;
 		this.selectedFromDateForSave = this.datepipe.transform(new Date(event), 'yyyy-MM-dd') + ' 00:00:00'
+		if(data.executeSDM == 'YES' || data.executeSDM == 'Yes' || data.executeSDM == 'yes'){
+			let inputdata = {
+				"employeeMasterId":this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"payrollAreaId":"1",
+				"executeSDM": data.executeSDM,
+				"refferedEmpId":0,
+				"refferedpayrollAreaCode":"",
+				"fromDate": this.selectedFromDateForSave
+			}
+			this.nonRecService.NonRecurringTransactionGroupGetSDMValue(inputdata).subscribe(res =>{
+				this.SDMAmountValue = res 
+				this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].openingAmount = this.SDMAmountValue
+				// let inputdata1 = {
+				// 	"employeeMasterId":this.selectedEmployeeMasterId,
+				// 	"headMasterId": data.headId,
+				// 	"payrollAreaId":"1",
+				// 	"amount": this.SDMAmountValue,
+				// 	"fromDate": this.selectedFromDateForSave
+				// }
+				let inputdata1 = {
+					"employeeMasterId":1,
+					"headMasterId":49,
+					"payrollAreaId":"1",
+					 "amount":88000,
+					 "fromDate":"2020-04-08 00:00:00"
+				}
+				this.deviationModeData = []
+				this.repeatModeData = []
+				this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata1).subscribe(res =>{
+					this.deviationData = res 
+					this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
+					this.deviationData.forEach(element => {
+						if(element.mode == 'Deviation'){
+							this.deviationModeData.push(element)
+						}else if(element.mode == 'Repeat'){
+							this.repeatModeData.push(element)
+						}
+					});
+				})
+			})
+
+			
+		}
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -952,7 +1001,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/** Copy To From Date TO All */
-	copyFromDateToAll(data) {
+	copyFromDateToAll(data,index) {
 		this.copyFlag = !this.copyFlag
 		if (!this.copyFlag) {
 			this.NonRecurringTransactionGroupAPIEmpwiseData.forEach(element => {
@@ -961,7 +1010,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				}
 			});
 
-			this.getFromDateForSave(this.selectedFromDateForSave, data)
+			this.getFromDateForSave(this.selectedFromDateForSave, data,index)
 		}
 	}
 
@@ -1298,7 +1347,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/**on change opening balance */
-	transactionOpeningAmount(value, data) {
+	transactionOpeningAmount(value, data,rowindex) {
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -1310,6 +1359,29 @@ export class NonRecurringAmtComponent implements OnInit {
 		if (this.selectedFromDate == '') {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
 		}
+
+			let inputdata = {
+				"employeeMasterId":this.selectedEmployeeMasterId,
+				"headMasterId": data.headId,
+				"payrollAreaId":"1",
+				"amount": value,
+				"fromDate": this.selectedFromDateForSave
+			}
+			    
+			this.deviationModeData = []
+				this.repeatModeData = []
+				this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
+					this.deviationData = res 
+					this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
+					this.deviationData.forEach(element => {
+						if(element.mode == 'Deviation'){
+							this.deviationModeData.push(element)
+						}else if(element.mode == 'Repeat'){
+							this.repeatModeData.push(element)
+						}
+					});
+				})
+		
 		if (this.saveTransactionData.length > 0) {
 			this.saveTransactionData.forEach((element, index) => {
 				if (element.headMasterId == data.headId) {
@@ -2215,6 +2287,19 @@ export class NonRecurringAmtComponent implements OnInit {
 
 			}
 		)
+	}
+
+	deviationPopupOpen(deviationPopup: TemplateRef<any>, data, rowindex){
+		if(data.deviationCount > 0){
+			this.modalRef = this.modalService.show(
+				deviationPopup,
+				Object.assign({}, {
+					class: 'gray modal-xl'
+				})
+			);
+			this.selectedDevData = data;
+			console.log(this.selectedDevData)
+		}
 	}
 
 

@@ -83,6 +83,13 @@ export class NonRecurringAmtService {
 
   getEmployeeWisePayrollList(employeeMasterId):Observable<any>{
     return this.HttpClient.get<any>(this.apiUrl1 + `payroll-information/payrollAssigned/`+employeeMasterId);
- 
+  }
+
+  NonRecurringTransactionGroupGetSDMValue(data){
+    return this.HttpClient.post(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupGetSDMValue` , data)
+  }
+
+  NonRecurringTransactionGrouprangeValidation(data){
+    return this.HttpClient.post(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGrouprangeValidation` , data)
   }
 }

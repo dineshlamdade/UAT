@@ -195,7 +195,7 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="frequency">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter  field="frequency"
+                                                                                    <p-columnFilter field="frequency"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
 
@@ -210,8 +210,8 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="fromDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="date" field="fromDate"
-                                                                                        display="menu"
+                                                                                    <p-columnFilter type="date"
+                                                                                        field="fromDate" display="menu"
                                                                                         class="p-ml-auto">
 
                                                                                     </p-columnFilter>
@@ -225,8 +225,8 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="toDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="date" field="toDate"
-                                                                                        display="menu"
+                                                                                    <p-columnFilter type="date"
+                                                                                        field="toDate" display="menu"
                                                                                         class="p-ml-auto">
 
                                                                                     </p-columnFilter>
@@ -241,8 +241,8 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="amount">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter type="numeric" field="amount"
-                                                                                        display="menu"
+                                                                                    <p-columnFilter type="numeric"
+                                                                                        field="amount" display="menu"
                                                                                         class="p-ml-auto">
 
                                                                                     </p-columnFilter>
@@ -268,8 +268,7 @@
                                                                                     [checked]="selectedAllFlag"
                                                                                     (change)="isSelected($event.target,Summarydata)"
                                                                                     value="{{Summarydata.employeeMasterId}}" />
-                                                                                <span
-                                                                                    class="custom-control-label"></span>
+                                                                                <span class="custom-control-label"></span>
                                                                             </label></td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label
@@ -319,10 +318,10 @@
                                                                                 *ngIf="Summarydata.clawbackApplicableAt != ''"></i>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                            class="form-lable mb-0">{{Summarydata.amount
-                                                                            | number: '1.2-2'}}
-                                                                        </label>
-                                                                      </td>
+                                                                                class="form-lable mb-0">{{Summarydata.amount
+                                                                                | number: '1.2-2'}}
+                                                                            </label>
+                                                                        </td>
                                                                         <td class="bg-color-light_gray"><label
                                                                                 class="form-lable mb-0">{{Summarydata.remark}}
                                                                             </label>
@@ -427,8 +426,8 @@
                                                                                 (change)="getSelectedPayrollArea($event.target.value)"
                                                                                 [disabled]="showDropdownDisabled">
                                                                                 <option value="">Select</option>
-                                                                                <!-- <option> PA-Staff </option>
-                                                                                <option> PA_Worker</option> -->
+                                                                                <option> PA-Staff </option>
+                                                                                <!-- <option> PA_Worker</option> -->
                                                                                 <option
                                                                                     *ngFor="let payroll of payrollListData"
                                                                                     [selected]="selectedPayrollArea == payroll.payrollAreaCode">
@@ -626,7 +625,8 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
-                                                                                        <th rowspan="2" class="wd-1"></th>
+                                                                                        <th rowspan="2" class="wd-1">
+                                                                                        </th>
                                                                                         <th rowspan="2" class="wd-5">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
@@ -710,7 +710,7 @@
                                                                                                         field="Nooftrans">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                       type="numeric"
+                                                                                                        type="numeric"
                                                                                                         field="Nooftrans"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -729,7 +729,7 @@
                                                                                                         field="ToDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                    type="date"
+                                                                                                        type="date"
                                                                                                         field="ToDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -750,7 +750,7 @@
                                                                                                         field="openingval">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                    type="numeric"
+                                                                                                        type="numeric"
                                                                                                         field="openingval"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -769,7 +769,7 @@
                                                                                                         field="closingamt">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                    type="numeric"
+                                                                                                        type="numeric"
                                                                                                         field="closingamt"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -1022,7 +1022,8 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
-                                                                                        <th rowspan="2" class="wd-1"></th>
+                                                                                        <th rowspan="2" class="wd-1">
+                                                                                        </th>
                                                                                         <th rowspan="2" class="wd-5">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
@@ -1192,14 +1193,14 @@
                                                                                             <label
                                                                                                 class="form-lable mb-0">{{data.headDescription}}</label>
                                                                                             &nbsp;&nbsp;&nbsp;
-                                                                                           
+
                                                                                         </td>
                                                                                         <td>
                                                                                             <i class="fa fa-users font-16 text-blue cursor-pointer"
-                                                                                            aria-hidden="true"
-                                                                                            *ngIf="data.headDescription == 'RefererBonus'"
-                                                                                            (click)="openReferalPopup(referalPopup,data)">
-                                                                                        </i>
+                                                                                                aria-hidden="true"
+                                                                                                *ngIf="data.headDescription == 'RefererBonus'"
+                                                                                                (click)="openReferalPopup(referalPopup,data)">
+                                                                                            </i>
                                                                                         </td>
 
                                                                                         <td>
@@ -1244,7 +1245,7 @@
                                                                                         </td>
                                                                                         <td>
                                                                                             <span
-                                                                                                (click)="copyFromDateToAll(data)"
+                                                                                                (click)="copyFromDateToAll(data,rowIndex)"
                                                                                                 style="cursor: pointer !important;">
                                                                                                 <i
                                                                                                     class="fa fa-clone text-blue font-16"></i>
@@ -1258,7 +1259,7 @@
                                                                                                 [minDate]="effectiveFromDate"
                                                                                                 [maxDate]="effectiveToDate"
                                                                                                 value="{{data.fromdate | date :'dd-MMM-yyyy'}}"
-                                                                                                (bsValueChange)="getFromDateForSave($event,data)"
+                                                                                                (bsValueChange)="getFromDateForSave($event,data,rowIndex)"
                                                                                                 class="form-control wd-100">
                                                                                         </td>
                                                                                         <td>
@@ -1334,7 +1335,7 @@
                                                                                                 value="{{data.closingAmount | number: '1.2-2'}}"
                                                                                                 class="form-control"
                                                                                                 [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'"
-                                                                                                (focusout)="transactionOpeningAmount($event.target.value,data)">
+                                                                                                (focusout)="transactionOpeningAmount($event.target.value,data,rowIndex)">
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="text"
@@ -1342,9 +1343,19 @@
                                                                                                 class="form-control wd-100"
                                                                                                 (focusout)="getRemarkChangeForSave($event.target.value,data)">
                                                                                         </td>
-                                                                                        <td><i class="fa fa-deviantart font-16 text-blue cursor-pointer"
-                                                                                            aria-hidden="true">
-                                                                                        </i></td>
+                                                                                        <td>
+                                                                                            <div class="col-md-2" *ngIf="data.deviationCount">
+                                                                                                <div class="custom_Label_badge bagde1">
+                                                                                                    <button class="btn defaultbtn" (click)="deviationPopupOpen(deviationPopup,data,rowIndex)">  <i class="fa fa-deviantart font-16 text-blue cursor-pointer"
+                                                                                                        aria-hidden="true" >
+                                                                                                    </i></button>
+                                                                                                    <span class="Label_badge" style="text-align: center;">{{data.deviationCount}}</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                           
+                                                                                            
+                                                                                            <!-- <span class="Label_badge" style="text-align: center;">{{data.deviationCount}}</span> -->
+                                                                                        </td>
                                                                                     </tr>
 
 
@@ -1682,8 +1693,7 @@
                                                                                     <p-sortIcon
                                                                                         field="transactionAmount">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter
-                                                                                    type="numeric"
+                                                                                    <p-columnFilter type="numeric"
                                                                                         field="transactionAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
@@ -1700,8 +1710,7 @@
                                                                                     <p-sortIcon
                                                                                         field="transactionAmount">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter
-                                                                                    type="numeric"
+                                                                                    <p-columnFilter type="numeric"
                                                                                         field="transactionAmount"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
@@ -1734,8 +1743,7 @@
                                                                                     <p-sortIcon field="clawbackDate">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter field="clawbackDate"
-                                                                                    type="date"
-                                                                                        display="menu"
+                                                                                        type="date" display="menu"
                                                                                         class="p-ml-auto">
 
                                                                                     </p-columnFilter>
@@ -1751,8 +1759,7 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="resheduleDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter
-                                                                                    type="date"
+                                                                                    <p-columnFilter type="date"
                                                                                         field="resheduleDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
@@ -2069,8 +2076,7 @@
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
                                                                                         field="processedAmount"
-                                                                                        type="numeric"
-                                                                                        display="menu"
+                                                                                        type="numeric" display="menu"
                                                                                         class="p-ml-auto">
 
                                                                                     </p-columnFilter>
@@ -2087,8 +2093,7 @@
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter
                                                                                         field="transactionAmount"
-                                                                                        type="numeric"
-                                                                                        display="menu"
+                                                                                        type="numeric" display="menu"
                                                                                         class="p-ml-auto">
 
                                                                                     </p-columnFilter>
@@ -2118,8 +2123,7 @@
                                                                                     <p-sortIcon field="clawbackDate">
                                                                                     </p-sortIcon>
                                                                                     <p-columnFilter field="clawbackDate"
-                                                                                    type="date"
-                                                                                        display="menu"
+                                                                                        type="date" display="menu"
                                                                                         class="p-ml-auto">
 
                                                                                     </p-columnFilter>
@@ -2135,8 +2139,7 @@
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="resheduleDate">
                                                                                     </p-sortIcon>
-                                                                                    <p-columnFilter
-                                                                                    type="date"
+                                                                                    <p-columnFilter type="date"
                                                                                         field="resheduleDate"
                                                                                         display="menu"
                                                                                         class="p-ml-auto">
@@ -3166,7 +3169,7 @@
                 aria-hidden="true">×</span></button>
     </div>
     <div class="modal-body">
-        
+
         <div class="section-body mt-3">
             <div class="container-fluid">
                 <div class="row">
@@ -3184,20 +3187,26 @@
                                         <div class="row mb-10">
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Emp. Code</label>
-                                                <select class="form-control" (change)="getEmployeeCode($event.target.value)">
+                                                <select class="form-control"
+                                                    (change)="getEmployeeCode($event.target.value)">
                                                     <option>Select</option>
-                                                    <option *ngFor="let emp of employeeData" [selected]="refemployeeCode == emp.employeeCode">{{emp.employeeCode}}</option>
+                                                    <option *ngFor="let emp of employeeData"
+                                                        [selected]="refemployeeCode == emp.employeeCode">
+                                                        {{emp.employeeCode}}</option>
                                                 </select>
                                             </div>
                                             <div class=" col-sm-6 col-md-3">
                                                 <label class="form-label">Emp. Name</label>
-                                                <input type="text" class="form-control" value="{{refemployeeName}}" disabled />
+                                                <input type="text" class="form-control" value="{{refemployeeName}}"
+                                                    disabled />
                                             </div>
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Payroll Area</label>
-                                                <select class="form-control" (change)="getEmployeePayrollArea($event.target.value)" >
+                                                <select class="form-control"
+                                                    (change)="getEmployeePayrollArea($event.target.value)">
                                                     <option>Select</option>
-                                                    <option *ngFor="let payroll of refralPayrollListData" [selected]="refPayrolArea == payroll.payrollAreaCode">
+                                                    <option *ngFor="let payroll of refralPayrollListData"
+                                                        [selected]="refPayrolArea == payroll.payrollAreaCode">
                                                         {{payroll.payrollAreaCode}}</option>
 
                                                 </select>
@@ -3239,9 +3248,607 @@
                 </div>
             </div>
         </div>
-     </div>   
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
-                &nbsp;save</button>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+            &nbsp;save</button>
+    </div>
+</ng-template>
+
+<!-- Deviation and Repeat -->
+<ng-template #deviationPopup>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Deviation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <br>
+                        <div class="tabset">
+                            <!-- Tab 1 -->
+                            <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
+                            <label for="tab1">Deviation</label>
+
+                            <!-- Tab 2 -->
+                            <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+                            <label for="tab2">Repetitive Entry</label>
+
+                            <div class="tab-panels">
+                                <section id="marzen" class="tab-panel">
+                                    <div class="row mb-10">
+                                        <div class="col-sm-6 col-md-3" *ngIf="employeeFinDetailsData">
+                                            <label class="form-label">Emp. Code</label>
+                                            <input type="text" class="form-control" value="{{employeeFinDetailsData.employeeCode}}" disabled />
+                                        </div>
+                                        <div class=" col-sm-6 col-md-3" *ngIf="employeeFinDetailsData">
+                                            <label class="form-label">Emp. Name</label>
+                                            <input type="text" class="form-control" value="{{employeeFinDetailsData.fullName}}" disabled />
+                                        </div>
+                                        <div class="col-sm-6 col-md-3" *ngIf="selectedDevData">
+                                            <label class="form-label">Head</label>
+                                            <input type="text" class="form-control" value="{{selectedDevData.headDescription}}" disabled />
+                                        </div>
+                                        <div class="col-sm-6 col-md-3">
+                                            <label class="form-label">Type</label>
+                                            <input type="text" class="form-control" value="{{selectedDevData.headType}}" disabled />
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <p-table [value]="deviationModeData" [paginator]="true" [rows]="10"
+                                        [showCurrentPageReport]="true"
+                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                        [rowsPerPageOptions]="[10,25,50,100,200]">
+
+                                        <ng-template pTemplate="header">
+                                            <tr>
+
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Attribute
+
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="text" field="name" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Nature
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="text" field="name" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Group ID
+
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="representative" matchMode="in"
+                                                                display="menu" [showMatchModes]="false"
+                                                                [showOperator]="false" [showAddButton]="false"
+                                                                class="p-ml-auto">
+                                                                <ng-template pTemplate="header">
+                                                                    <div class="p-px-3 p-pt-3 p-pb-0">
+                                                                        <span class="p-text-bold">Agent Picker</span>
+                                                                    </div>
+                                                                </ng-template>
+
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th colspan="3">
+                                                    <div class="p-d-flex p-jc-between p-ai-center ml-60">
+                                                        Deviation Nature
+
+                                                    </div>
+                                                </th>
+                                                <th colspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center ml-50">
+                                                        Values
+
+                                                    </div>
+                                                </th>
+                                                <th colspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Deviation Values
+
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Remark
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Status
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Once Every
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Frequency
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Type
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Amount Entered
+
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Limit
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    Amount
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        %
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute" pSortableColumn="Attribute">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="text" field="name" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            </tr>
+
+                                        </ng-template>
+
+                                        <ng-template pTemplate="body" let-data>
+                                            <tr class="p-selectable-row">
+
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.attributeName}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.attributeNature}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.nonRecurringTransactionGroupId}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.onceEvery}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.frequency}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.deviationType}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{selectedDevData.closingAmount}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.deviationAmountLimit}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.deviationAmount}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{data.deviationAmountperc}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <input type="" class="form-control" value="{{data.remark}}" disabled>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    {{data.status}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No
+                                                        Data
+                                                        Available</span></td>
+                                            </tr>
+                                        </ng-template>
+
+                                    </p-table>
+
+                                    <br>
+                                    <div class="float-left d-flex justify-content">
+                                        <label class="form-label mt-2">Remark</label>&nbsp;
+                                        <textarea type="text"></textarea>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <div class="row mt-15 float-right">
+
+                                        <div class="float-right ">
+
+                                            <button type="submit"
+                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                                                tooltip="Save" (click)=" extralargepopup(template)"><b>
+                                                    <i class="fa fa-reply"></i></b> Send Back Group</button>&nbsp;
+                                            <button type="submit"
+                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                                                tooltip="Save" (click)=" extralargepopup(template)"><b>
+                                                    <i class="fa fa-times"></i></b> Reject Group</button>&nbsp;
+                                            <button type="submit"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                tooltip="Save" (click)=" extralargepopup(template)"><b>
+                                                    <i class="fa fa-check-square-o "></i></b> Approve
+                                                Group</button>&nbsp;
+                                            <button type="submit"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                tooltip="Save" (click)=" extralargepopup(template)"><b>
+                                                    <i class="fa fa-check-square-o"></i></b> Approve
+                                                Deviation</button>&nbsp;
+                                            <button type="submit"
+                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                                tooltip="Reset"><b>
+                                                    <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section id="rauchbier" class="tab-panel">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="row mb-0">
+                                                    <div class="col-md-12">
+                                                        <div class="row mb-10">
+                                                            <div class="col-sm-6 col-md-3">
+                                                                <label class="form-label">Emp. Code</label>
+                                                                <input type="text" class="form-control" disabled />
+                                                            </div>
+                                                            <div class=" col-sm-6 col-md-3">
+                                                                <label class="form-label">Emp. Name</label>
+                                                                <input type="text" class="form-control" disabled />
+
+
+                                                            </div>
+                                                            <div class="col-sm-6 col-md-3">
+                                                                <label class="form-label">Head</label>
+                                                                <input type="text" class="form-control" disabled />
+                                                            </div>
+                                                            <div class="col-sm-6 col-md-3">
+                                                                <label class="form-label">Type</label>
+                                                                <input type="text" class="form-control" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+                                                        <p-table [value]="repeatModeData" [paginator]="true" [rows]="10"
+                                                            [showCurrentPageReport]="true"
+                                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                            [rowsPerPageOptions]="[10,25,50]">
+
+                                                            <ng-template pTemplate="header">
+                                                                <tr>
+
+                                                                    <th rowspan="2">
+
+                                                                    </th>
+
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Group ID
+
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text" field="name"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Once Every
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter field="representative"
+                                                                                    matchMode="in" display="menu"
+                                                                                    [showMatchModes]="false"
+                                                                                    [showOperator]="false"
+                                                                                    [showAddButton]="false"
+                                                                                    class="p-ml-auto">
+                                                                                    <ng-template pTemplate="header">
+                                                                                        <div
+                                                                                            class="p-px-3 p-pt-3 p-pb-0">
+                                                                                            <span
+                                                                                                class="p-text-bold">Agent
+                                                                                                Picker</span>
+                                                                                        </div>
+                                                                                    </ng-template>
+
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Frequency
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="date" field="date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            From Date
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="date" field="date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Type
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="date" field="date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            No. of Trans.
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="date" field="date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            To Date
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="date" field="date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Amount
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="date" field="date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th rowspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Status
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Attribute"
+                                                                                    pSortableColumn="Attribute">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="date" field="date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th colspan="2">
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Remark
+
+                                                                        </div>
+                                                                    </th>
+
+                                                                </tr>
+
+                                                            </ng-template>
+
+                                                            <ng-template pTemplate="body" let-data>
+                                                                <tr class="p-selectable-row">
+
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0">Current</label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0">{{data.nonRecurringTransactionGroupId}}</label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0">{{data.onceEvery}}</label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0">{{data.frequency}}</label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                       <label class="form-lable mb-0">{{data.fromDate | date:'dd-MMM-yyyy'}}</label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0"></label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0"></label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text">
+                                                                                    <i class="fa fa-calendar"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                            <input data-provide="datepicker"
+                                                                                data-date-autoclose="true"
+                                                                                class="form-control" placeholder="Date"
+                                                                                bsDatepicker>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0">{{data.actualAmount}}</label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <label class="form-lable mb-0">{{data.status}}</label>
+                                                                    </td>
+                                                                    <td class="bg-color-light_gray">
+                                                                        <input type="text" class="form-control" value="{{data.remark}}" disabled>
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-template>
+
+                                                            <ng-template pTemplate="emptymessage">
+                                                                <tr>
+                                                                    <td colspan="15"
+                                                                        class="font-14 font500 text-center text-red">
+                                                                        <span>No Data
+                                                                            Available</span></td>
+                                                                </tr>
+                                                            </ng-template>
+
+                                                        </p-table>
+                                                        <br>
+
+                                                        <div class="row mt-15 float-right">
+
+                                                            <div class="float-right ">
+
+                                                                <button type="submit"
+                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                                    tooltip="Save"
+                                                                    (click)=" extralargepopup(template)"><b>
+                                                                        <i class="fa fa-files-o"></i></b> Repeat
+                                                                </button>&nbsp;
+                                                                <button type="submit"
+                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                                    tooltip="Save"
+                                                                    (click)=" extralargepopup(template)"><b>
+                                                                        <i
+                                                                            class="fa fa-link "></i></b>Unique</button>&nbsp;
+                                                                <button type="submit"
+                                                                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                                                                    tooltip="Save"
+                                                                    (click)=" extralargepopup(template)"><b>
+                                                                        <i class="fa fa-times"></i></b>
+                                                                    Cancel</button>&nbsp;
+
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div> -->
 </ng-template>
