@@ -361,6 +361,14 @@ export class InterestOnTtbMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
 
       console.log('Interest On 80TTA ::', data);
+      this.masterGridData.forEach((element) => {
+        if (data.accountNumber == element.accountNumber) {
+          this.alertService.sweetalertWarning(
+            'Duplicate Account should Not be Acceptable'
+          );
+          return;
+        }
+      });      
 
       this.interestOnTtbService
         .uploadMultiple80TTBMasterFiles(this.masterfilesArray, data)
@@ -414,7 +422,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
         );
       }
       console.log(element.accountNumber);
-    });
+    });return;
   }
 
   

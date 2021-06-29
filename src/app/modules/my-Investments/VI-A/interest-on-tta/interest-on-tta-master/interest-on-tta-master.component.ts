@@ -432,7 +432,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
         );
       }
       console.log(element.accountNumber);
-    });
+    }); return;
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
