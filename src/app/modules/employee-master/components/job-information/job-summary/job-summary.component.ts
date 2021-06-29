@@ -1,7 +1,7 @@
 
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-
+import { SortEvent } from 'primeng/api';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JobInformationService } from '../job-information.service';
@@ -28,7 +28,7 @@ export class JobSummaryComponent implements OnInit {
   filteredPayrollAreaList: Array<any> = [];
   payrollAreaFromDate: any;
   payrollAreaToDate:any
-
+  totalRecords:any;
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private router: Router, private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService,) { }
    
@@ -64,6 +64,8 @@ export class JobSummaryComponent implements OnInit {
     this.joiningDate = new Date(joiningDate);
 
     this.getGridSummary()
+    
+   
   }
 
   getGridSummary() {
@@ -81,9 +83,25 @@ export class JobSummaryComponent implements OnInit {
     this.JobInformationService.getSummaryDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
 
       if (res.data.results[0]) {
+        //  res.data.results[0].forEach(element => {
+        //   let obj = {
+        //     jobDetail: element.jobDetail,
+        //     jobField: element.jobField,
+        //     value: element.value,
+        //     fromDate: element.fromDate,
+        //     toDate: element.toDate,
+          
+        //  }
+        //  this.summaryGridData.push(obj);
+        //   } );
+       
+        // }
 
-        this.summaryGridData = res.data.results[0];
 
+
+       this.summaryGridData = res.data.results[0];
+ 
+     //   this.totalRecords = this.summaryGridData.length;
       }
     }, (error: any) => {
 
@@ -165,6 +183,7 @@ export class JobSummaryComponent implements OnInit {
       }
     }
     this.filteredPayrollAreaList = filtered;
+    
   }
 
   //set PayrollArea
@@ -214,5 +233,27 @@ export class JobSummaryComponent implements OnInit {
   resetSummary() {
     this.summaryGridData = [];
   }
+
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+        let value1 = data1[event.field];
+        let value2 = data2[event.field];
+        let result = null;
+  
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
+        else if (typeof value1 === 'string' && typeof value2 === 'string')
+            result = value1.localeCompare(value2);
+        else
+            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+  
+        return (event.order * result);
+    });
+  
+}
 
 }

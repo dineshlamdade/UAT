@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, RequiredValidator } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe, LocationStrategy } from '@angular/common';
 import { empty, Subscription } from 'rxjs';
 import { JobDetailsDTO, OrganizationDetailsModel } from './../job-information-models/organization-details.model';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
@@ -12,6 +12,8 @@ import { element, promise } from 'protractor';
 import { isEmpty } from 'rxjs/operators';
 import { runInThisContext } from 'node:vm';
 import { getTreeNoValidDataSourceError } from '@angular/cdk/tree';
+import { LocalAddressInformation } from '../../contact-information/contact-information.model';
+import { ThemeService } from 'ng2-charts';
 
 @Component({
   selector: 'app-organization-detail',
@@ -28,6 +30,7 @@ export class OrganizationDetailComponent implements OnInit {
   employeeMasterId: number;
   joiningDate: any;
   payrollAreaFromDate:any;
+  payrollAreaToDate:any;
   employeeOrganizationDetailId: any;
   confirmMsg: any;
   establishmentValidate: Boolean;
@@ -253,14 +256,6 @@ dto=new JobDetailsDTO('','','','','','','');
     //start here to load the data
     this.getJobList();
 
-    this.JobInformationService.getAvailableJobMappingId(this.employeeMasterId).subscribe(res=>{
-      this.availablePayrollIds=res.data.results[0];
-      this.availablePayrollIds.filter((item)=>{
-      const k =this.filteredPayrollAreaList.find((c)=>c.payrollAreaId===item)
-      this.copyFromFilteredList.push(k);
-        })
-
-    })
   } 
   async getJobList(){
   let jobList = new Promise((resolve,reject)=>{
@@ -486,26 +481,120 @@ dto=new JobDetailsDTO('','','','','','','');
        this.organizationDetailsModel.employeeMasterId=location.employeeMasterId;
 
        if(copyFrom=='copyFrom'){
-         const c = this.payrollAreaList.find((b)=>b.payrollAreaCode===this.payrollAreaCode);
+         // Assign this payroll Area Id to current payrollArea Id 
+         let c = this.payrollAreaList.find(
+           (b)=>
+           b.payrollAreaCode==this.payrollAreaCode);
        this.organizationDetailsModel.payrollAreaId= c.payrollAreaId
-  
-      if(location.sublocationList!=null)  location.sublocationList.employeeJobMappingId='';
-      if(location.worklocationList!=null)  location.worklocationList.employeeJobMappingId='';
-      if(location.businessAreaList!=null)  location.businessAreaList.employeeJobMappingId='';
-      if(location.subAreaList!=null)  location.subAreaList.employeeJobMappingId='';
-      if(location.strategicBusinessAreaList!=null)  location.strategicBusinessAreaList.employeeJobMappingId='';
-      if(location.divisionList!=null) location.divisionList.employeeJobMappingId='';
-      if(location.departmentList!=null) location.departmentList.employeeJobMappingId='';
-      if(location.subDepartmentList!=null) location.subDepartmentList.employeeJobMappingId='';
-      if(location.subAreaList!=null)  location.subAreaList.employeeJobMappingId='';
-      if(location.costCenterList!=null)  location.costCenterList.employeeJobMappingId='';
-      if(location.subCostCenterList!=null)  location.subCostCenterList.employeeJobMappingId='';
-      if(location.profitCenterList!=null) location.profitCenterList.employeeJobMappingId='';
-      if(location.job1List!=null)  location.job1List.employeeJobMappingId='';
-      if(location.job2List!=null)  location.job2List.employeeJobMappingId='';
-      if(location.job3List!=null)  location.job3List.employeeJobMappingId='';
-      if(location.job4List!=null)  location.job4List.employeeJobMappingId='';
-      if(location.job5List!=null)  location.job5List.employeeJobMappingId='';   
+
+       // below coding is for checking current data is present or not 
+       // and updating the new data 
+      if(this.filteredSubLocationList.length>0){
+        if(location.sublocationList!=null && this.organizationDetailsModel.subLocationList.employeeJobMappingId==''){
+        if(location.sublocationList!=null){  location.sublocationList.employeeJobMappingId='';}else{
+          location.sublocationList=this.organizationDetailsModel.subLocationList }}
+        }else{location.sublocationList=null}
+      
+      if(this.filteredWorkLocationList.length>0 ){
+        if(location.worklocationList!=null && this.organizationDetailsModel.workLocationList.employeeJobMappingId!=''){
+      if(location.worklocationList!=null){  location.worklocationList.employeeJobMappingId='';
+      }else{location.workLocationList=this.organizationDetailsModel.workLocationList;}}
+    }else{location.worklocationList=null}
+
+     if(this.filteredBusinessAreaList.length>0){
+       if(location.subAreaList!=null && this.organizationDetailsModel.businessAreaList.employeeJobMappingId=='') {
+      if(location.subAreaList!=null){ location.businessAreaList.employeeJobMappingId='';
+      }else{location.workLocationList=this.organizationDetailsModel.workLocationList;  }}
+    }else{location.subAreaList=null}
+
+     if(this.filteredSubAreaList.length>0){
+       if( location.subAreaList!=null && this.organizationDetailsModel.subAreaList.employeeJobMappingId==''){
+      if(location.subAreaList!=null){  location.subAreaList.employeeJobMappingId='';
+      }else{location.subAreaList=this.organizationDetailsModel.subAreaList;}}
+    }else{location.subAreaList=null}
+
+     if(this.filteredStrategicBusinessAreaList.length>0){
+       if( location.strategicBusinessAreaList!=null && this.organizationDetailsModel.strategicBusinessAreaList.employeeJobMappingId=='' ){
+      if(location.strategicBusinessAreaList!=null) { location.strategicBusinessAreaList.employeeJobMappingId='';
+       }else{location.strategicBusinessAreaList=this.organizationDetailsModel.strategicBusinessAreaList;       }}
+      }else{location.strategicBusinessAreaList=null}
+
+      if(this.filteredDivisionList.length>0 ){
+        if(location.divisionList!=null && this.organizationDetailsModel.divisionList.employeeJobMappingId==''){
+      if(location.divisionList!=null){ location.divisionList.employeeJobMappingId='';
+      }else{location.divisionList=this.organizationDetailsModel.divisionList; }}
+    }else{location.divisionList=null}
+
+      if(this.filteredDepartmentList.length>0 ) {
+        if( location.departmentList!=null && this.organizationDetailsModel.departmentList.employeeJobMappingId=='' ){
+      if(location.departmentList!=null) {location.departmentList.employeeJobMappingId='';
+      }else{location.departmentList=this.organizationDetailsModel.departmentList;      }}
+    }
+      if(this.filteredSubDepartmentList.length>0 ){
+        if(location.subDepartmentList!=null && this.organizationDetailsModel.subDepartmentList.employeeJobMappingId==''){
+      if(location.subDepartmentList!=null) {location.subDepartmentList.employeeJobMappingId='';
+      }else{location.subDepartmentList=this.organizationDetailsModel.subDepartmentList;      }}
+    }else{location.subDepartmentList=null}
+
+      if(this.filteredSubAreaList.length>0 ){
+        if(location.subAreaList!=null  && this.organizationDetailsModel.subAreaList.employeeJobMappingId==''){
+      if(location.subAreaList!=null)  {location.subAreaList.employeeJobMappingId='';
+      }else{location.subAreaList=this.organizationDetailsModel.subAreaList;}}
+    }else{location.subAreaList=null}
+
+      if(this.filteredCostCenterList.length>0){
+        if(location.costCenterList!=null && this.organizationDetailsModel.costCenterList.employeeJobMappingId=='' ){
+      if(location.costCenterList!=null) { location.costCenterList.employeeJobMappingId='';
+      }else{location.costCenterList=this.organizationDetailsModel.costCenterList;}}
+    }else{location.costCenterList=null}
+
+      if(this.filteredSubCostCenterList.length>0 ){
+        if(location.subCostCenterList && this.organizationDetailsModel.subCostCenterList.employeeJobMappingId==''){
+      if(location.subCostCenterList!=null) { location.subCostCenterList.employeeJobMappingId='';
+      }else{ location.subCostCenterList=this.organizationDetailsModel.subCostCenterList;}}
+    }else{location.subCostCenterList=null}
+
+      if(this.filteredProfitCenterList.length>0){
+        if(location.profitCenterList!=null && this.organizationDetailsModel.profitCenterList.employeeJobMappingId==''){
+      if(location.profitCenterList!=null){ location.profitCenterList.employeeJobMappingId='';
+      }else{location.profitCenterList=this.organizationDetailsModel.profitCenterList;}}
+    }else{location.profitCenterList=null}
+
+      if(this.filteredJob1List.length>0){
+        if(location.job1List && this.organizationDetailsModel.job1List.employeeJobMappingId==''){
+      if(location.job1List!=null) { location.job1List.employeeJobMappingId='';
+      }else{ location.job1List=this.organizationDetailsModel.job1List;}}
+    }else{location.job1List=null}
+
+      if(this.filteredJob2List.length>0){
+      if( location.job2List && this.organizationDetailsModel.job2List.employeeJobMappingId=='') {
+      if(location.job2List!=null){  location.job2List.employeeJobMappingId='';
+      }else{  location.job2List=this.organizationDetailsModel.job2List;}}
+    }else{location.job2List=null}
+
+      if(this.filteredJob3List.length>0){
+        if(location.job3List && this.organizationDetailsModel.job3List.employeeJobMappingId==''){
+      if(location.job3List!=null) { location.job3List.employeeJobMappingId='';
+      }else{  location.job3List=this.organizationDetailsModel.job3List;}}
+    }else{location.job3List=null}
+
+      if(this.filteredJob4List.length>0 ){
+      if(location.job4List!=null && this.organizationDetailsModel.job4List.employeeJobMappingId==''){
+      if(location.job4List!=null) { location.job4List.employeeJobMappingId='';
+      }else{ location.job4List=this.organizationDetailsModel.job4List;}}
+    }else{location.job4List=null}
+
+       if(this.filteredJob5List.length>0 ){
+        if(location.job5List!=null && this.organizationDetailsModel.job5List.employeeJobMappingId==''){
+       if(location.job5List!=null) { location.job5List.employeeJobMappingId='';   
+       }else{ location.job5List=this.organizationDetailsModel.job5List;}}
+      }else{location.job5List=null}
+
+       if(this.filteredEstablishmentList.length>0){
+       if( location.establishmentList!=null && this.organizationDetailsModel.establishmentList.jobMasterMappingId=='') {
+       if(location.establishmentList!=null) { location.establishmentList.employeeJobMappingId='';
+        } else{ location.establishmntList=this.organizationDetailsModel.establishmentList;}}
+      }else{location.establishmentList=null}
 
       location.designation1List=null;
         location.designation2List=null;
@@ -515,7 +604,7 @@ dto=new JobDetailsDTO('','','','','','','');
         location.position3List=null;
         location.position4List=null;
         location.position5List=null;
-        
+
        }
       
       if (location) {
@@ -851,7 +940,7 @@ dto=new JobDetailsDTO('','','','','','','');
      
 
       
-    
+    // if(copyFrom!='copyFrom'){
   
     // if (this.payrollAreaList.length == 1) {
     //   this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
@@ -868,6 +957,7 @@ dto=new JobDetailsDTO('','','','','','','');
     //   if (companyName != null) {
     //     this.companyName = new String(companyName);
     //   }
+    // }
     // }
     this.OrganizationForm.markAsUntouched();
 }
@@ -1014,7 +1104,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateSubLocToDate(event) {
     if(event){
     if (this.organizationDetailsModel.subLocationList.toDate == '' || this.organizationDetailsModel.subLocationList.toDate == null) {
-      this.organizationDetailsModel.subLocationList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.subLocationList.toDate = this.payrollAreaToDate;
       const subToDate = this.OrganizationForm.get('subLocationToDateControl');
       subToDate.enable();
     }
@@ -1023,7 +1113,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateEstablishmentToDate(event){
     if(event){
     if (this.organizationDetailsModel.establishmentList.toDate == '' || this.organizationDetailsModel.establishmentList.toDate == null) {
-      this.organizationDetailsModel.establishmentList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.establishmentList.toDate = this.payrollAreaToDate;
       const subToDate = this.OrganizationForm.get('establishmentToDateControl');
       subToDate.enable();
     }
@@ -1052,7 +1142,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateWorkLocToDate(event) {
     if(event){
     if (this.organizationDetailsModel.workLocationList.description != '' || this.organizationDetailsModel.workLocationList.description != null) {
-      this.organizationDetailsModel.workLocationList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.workLocationList.toDate = this.payrollAreaToDate;
       const workToDate = this.OrganizationForm.get('workLocationToDateControl');
       workToDate.enable();
     }
@@ -1079,7 +1169,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateBusinessAreaToDate(event) {
     if(event){
     if (this.organizationDetailsModel.businessAreaList.description != '' || this.organizationDetailsModel.businessAreaList.description != null) {
-      this.organizationDetailsModel.businessAreaList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.businessAreaList.toDate = this.payrollAreaToDate;
       const baToDate = this.OrganizationForm.get('businessAreaToDateControl');
       baToDate.enable();
     }
@@ -1121,7 +1211,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateSubAreaToDate(event) {
     if(event){
     if (this.organizationDetailsModel.subAreaList.toDate == '' || this.organizationDetailsModel.subAreaList.toDate == null) {
-      this.organizationDetailsModel.subAreaList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.subAreaList.toDate = this.payrollAreaToDate;
       const subAreaToDate = this.OrganizationForm.get('subAreaToDateControl');
       subAreaToDate.enable();
     }
@@ -1148,7 +1238,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateStrategicToDate(event) {
     if(event){
     if (this.organizationDetailsModel.strategicBusinessAreaList.toDate == '' || this.organizationDetailsModel.strategicBusinessAreaList.toDate == null) {
-      this.organizationDetailsModel.strategicBusinessAreaList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.strategicBusinessAreaList.toDate = this.payrollAreaToDate;
       const sbuToDate = this.OrganizationForm.get('strategicBusinessToDateControl');
       sbuToDate.enable();
     }
@@ -1182,7 +1272,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateDivisionToDate(event) {
     if(event){
     if (this.organizationDetailsModel.divisionList.description != '' || this.organizationDetailsModel.divisionList.description != null) {
-      this.organizationDetailsModel.divisionList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.divisionList.toDate = this.payrollAreaToDate;
       const divisionToDate = this.OrganizationForm.get('divisionToDateControl');
       divisionToDate.enable();
     }
@@ -1209,7 +1299,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateDepartmentToDate(event) {
     if(event){
     if (this.organizationDetailsModel.departmentList.toDate == '' || this.organizationDetailsModel.departmentList.toDate == null) {
-      this.organizationDetailsModel.departmentList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.departmentList.toDate = this.payrollAreaToDate;
       const sbuToDate = this.OrganizationForm.get('departmentToDateControl');
       sbuToDate.enable();
     }
@@ -1236,7 +1326,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateSubDepartmentToDate(event) {
     if(event){
     if (this.organizationDetailsModel.subDepartmentList.toDate == '' || this.organizationDetailsModel.subDepartmentList.toDate == null) {
-      this.organizationDetailsModel.subDepartmentList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.subDepartmentList.toDate =this.payrollAreaToDate;
       const subDepToDate = this.OrganizationForm.get('subDepartmentToDateControl');
       subDepToDate.enable();
     }
@@ -1263,7 +1353,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateCostToDate(event) {
     if(event){
     if (this.organizationDetailsModel.costCenterList.toDate == '' || this.organizationDetailsModel.costCenterList.toDate == null) {
-      this.organizationDetailsModel.costCenterList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.costCenterList.toDate = this.payrollAreaToDate;
       const costToDate = this.OrganizationForm.get('costCentreToDateControl');
       costToDate.enable();
     }
@@ -1290,7 +1380,7 @@ dto=new JobDetailsDTO('','','','','','','');
   }
   validateSubCostToDate() {
     if (this.organizationDetailsModel.subCostCenterList.toDate == '' || this.organizationDetailsModel.subCostCenterList.toDate == null) {
-      this.organizationDetailsModel.subCostCenterList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.subCostCenterList.toDate = this.payrollAreaToDate;
       const subCostToDate = this.OrganizationForm.get('subCostCentreToDateControl');
       subCostToDate.enable();
     }
@@ -1317,7 +1407,7 @@ dto=new JobDetailsDTO('','','','','','','');
   }
   validateProfitToDate() {
     if (this.organizationDetailsModel.profitCenterList.toDate == '' || this.organizationDetailsModel.profitCenterList.toDate == null) {
-      this.organizationDetailsModel.profitCenterList.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.profitCenterList.toDate = this.payrollAreaToDate;
       const subCostToDate = this.OrganizationForm.get('profitCentreToDateControl');
       subCostToDate.enable();
     }
@@ -1799,7 +1889,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateJob1ToDate(event){
     if(event){
     if (this.organizationDetailsModel.job1List.toDate == '' || this.organizationDetailsModel.job1List.toDate == null) {
-      this.organizationDetailsModel.job1List.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.job1List.toDate = this.payrollAreaToDate;
       const job1ToDate = this.OrganizationForm.get('job1ToDateControl');
       job1ToDate.enable();
     }
@@ -1861,7 +1951,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateJob2ToDate(event){
     if(event){
     if (this.organizationDetailsModel.job2List.toDate == '' || this.organizationDetailsModel.job2List.toDate == null) {
-      this.organizationDetailsModel.job2List.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.job2List.toDate = this.payrollAreaToDate;
       const job2ToDate = this.OrganizationForm.get('job2ToDateControl');
       job2ToDate.enable();
     }
@@ -1923,7 +2013,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateJob3ToDate(event){
     if(event){
     if (this.organizationDetailsModel.job3List.toDate == '' || this.organizationDetailsModel.job3List.toDate == null) {
-      this.organizationDetailsModel.job3List.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.job3List.toDate = this.payrollAreaToDate;
       const job3ToDate = this.OrganizationForm.get('job3ToDateControl');
       job3ToDate.enable();
     }
@@ -1985,7 +2075,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateJob4ToDate(event){
     if(event){
     if (this.organizationDetailsModel.job4List.toDate == '' || this.organizationDetailsModel.job4List.toDate == null) {
-      this.organizationDetailsModel.job4List.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.job4List.toDate = this.payrollAreaToDate;
       const job4ToDate = this.OrganizationForm.get('job4ToDateControl');
       job4ToDate.enable();
     }
@@ -2047,7 +2137,7 @@ dto=new JobDetailsDTO('','','','','','','');
   validateJob5ToDate(event){
     if(event){
     if (this.organizationDetailsModel.job5List.toDate == '' || this.organizationDetailsModel.job5List.toDate == null) {
-      this.organizationDetailsModel.job5List.toDate = '31-Dec-9999';
+      this.organizationDetailsModel.job5List.toDate = this.payrollAreaToDate;
       const job5ToDate = this.OrganizationForm.get('job5ToDateControl');
       job5ToDate.enable();
     }
@@ -2102,6 +2192,7 @@ dto=new JobDetailsDTO('','','','','','','');
     this.companyName = toSelect.companyname;
     localStorage.setItem('payrollAreaId',toSelect.payrollAreaId);
     this.payrollAreaFromDate=new Date(toSelect.payrollAreaFromDate);
+    this.payrollAreaToDate=new Date(toSelect.payrollAreaToDate)
     this.companyId= toSelect.companyId;
     localStorage.setItem('companyId', this.companyId);
     this.resetList()
@@ -2140,6 +2231,7 @@ dto=new JobDetailsDTO('','','','','','','');
         this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
         localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
        this.payrollAreaFromDate=new Date(this.payrollAreaList[0].payrollAreaFromDate);
+       this.payrollAreaToDate= new Date(this.payrollAreaList[0].payrollAreaToDate)
         //set default company
         let result = res.data.results[0];
         this.companyName = result[0].companyname;
@@ -2154,13 +2246,23 @@ dto=new JobDetailsDTO('','','','','','','');
           (c) => c.payrollAreaCode === payrollAreaCode
         );
         this.payrollAreaFromDate=new Date(toSelect.payrollAreaFromDate);
+        this.payrollAreaToDate=new Date (toSelect.payrollAreaToDate)
         //get company from local storage
         const companyName = localStorage.getItem('jobInformationCompanyName')
         if (companyName != null) {
           this.companyName = new String(companyName);
         }
       }
+
+      this.JobInformationService.getAvailableJobMappingId(this.employeeMasterId).subscribe(res=>{
+        this.availablePayrollIds=res.data.results[0];
+        this.availablePayrollIds.filter((item)=>{
+        const k =this.filteredPayrollAreaList.find((c)=>c.payrollAreaId===item)
+        this.copyFromFilteredList.push(k);   }) 
+      })
+    
     })
+    
   }
 resetList(){
   
