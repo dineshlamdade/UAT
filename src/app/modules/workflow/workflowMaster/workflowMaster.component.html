@@ -149,6 +149,7 @@
                       <th scope="col" class="wd-20">Method of Approval</th>
                       <th scope="col" class="wd-5">Level of Reporting Manager</th>
                       <th scope="col" class="wd-15">SDM</th>
+                      <th scope="col" class="wd-15">Derived Name</th>
                       <th scope="col" class="wd-5">Treatment- Unactioned Application</th>
                       <th scope="col" class="wd-12">Post- No. of Days</th>
                       <th scope="col" class="wd-5">Action</th>
@@ -192,6 +193,18 @@
                           <option *ngFor="let item of sdmApplicabilityArray" [value]="item.sdmMaster.sdmMasterId">
                             {{item.sdmMaster.sdmName}}
                           </option>
+                        </select>
+                      </td>
+
+                      <td>
+                        <select [(ngModel)]="item.sdm" [ngClass]="{'is-invalid' : (item.sdm === null)}"
+                          [disabled]="item.approverMethod == 'Reporting Manager'" class="form-control custom-select">
+                          <!-- <option *ngFor="let item of sdmApplicabilityArray" [value]="item.sdmMaster.sdmMasterId">
+                            {{item.sdmMaster.sdmName}}
+                          </option> -->
+                          <option>201</option>
+                          <option>202</option>
+                          <option>203</option>
                         </select>
                       </td>
                       <td>
