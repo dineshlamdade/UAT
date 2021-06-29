@@ -130,7 +130,7 @@
                         disabled />
                     </div>
                     <div class="col-md-3">
-                      <label class="form-label">Disburse Amt.</label>
+                      <label class="form-label">Yet to Disburse Amt.</label>
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" disabled/>
                     </div>
@@ -173,19 +173,18 @@
                           Cheque</option>
                           <option  [selected]="loanType == loan.loanCode">
                             Online</option>
+                            <option  [selected]="loanType == loan.loanCode">
+                              Through Salary</option>
                       </select>
                     </div>
 
                    <div class="col-md-3">
-                      <label class="form-label">Bank Details</label>
-                      <select class="form-control"
-                        placeholder="Select" >
-                        <option [ngValue]="null" selected>Select</option>
-                        <option  [selected]="loanType == loan.loanCode">
-                          Cheque</option>
-                          <option  [selected]="loanType == loan.loanCode">
-                            Online</option>
-                      </select>
+                    <button type="button" tooltip="Button"
+                    class="custom_button custom_btn1 btn-bg-green btn-labeled1 btn-labeled-left ml-2 mr-2 mt-4"
+                    aria-hidden="true" ><b><i class="fa fa-university" aria-hidden="true"></i>
+</b>Bank Details
+
+                  </button>
                     </div>
                   </div>
                   <br>
@@ -208,8 +207,8 @@
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Branch Address</label>
-                      <input type="text" class="form-control" formControlName="loanAmount"
-                        value="{{loanAmount | number:'1.2-2'}}" />
+                      <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" ></textarea>
                     </div>
                     
 
@@ -218,29 +217,46 @@
                   <br>
                   <div class="row mt-1 mb-0">
                     <div class="col-md-3">
-                      <label class="form-label">Account No.</label>
+                      <!-- <label class="form-label">Account No.</label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" /><i class="fa fa-eye" aria-hidden="true"></i> -->
+                        <label class="form-label">Account No.</label>
+                        <div class="input-group">
+                          
+                          <input type="text" class="form-control" placeholder="">
+                          <span class="input-group-append"><button class="btn btn-primary" type="button"><span class="fa fa-eye" (click)="largepopup (template1)"><i></i></span></button></span>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                      <!-- <label class="form-label">Verify Account No.</label>
+                      <input type="text" class="form-control eyeIcon" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" /><i class="fa fa-eye" aria-hidden="true"></i> -->
+                        <label class="form-label">Verify Account No.</label>
+                        <div class="input-group">
+                          
+                          <input type="text" class="form-control" placeholder="">
+                          <span class="input-group-append"><button class="btn btn-primary" type="button"><span class="fa fa-eye" (click)="largepopup (template1)"><i></i></span></button></span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Expected Date Of Payment
+                      </label>
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" />
                     </div>
                     <div class="col-md-3">
-                      <label class="form-label">Verify Account No.</label>
-                      <input type="text" class="form-control" formControlName="loanAmount"
-                        value="{{loanAmount | number:'1.2-2'}}" />
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Expected Payment Date </label>
-                      <input type="text" class="form-control" formControlName="loanAmount"
-                        value="{{loanAmount | number:'1.2-2'}}" />
-                    </div>
-                    <!-- <div class="col-md-3">
                       <label class="form-label">Amount</label>
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" />
                     </div>
+                  </div>
+                  <div class="row mt-1 mb-0">
                     <div class="col-md-3">
                       <label class="form-label">Remark</label>
-                      <input type="text" class="form-control" formControlName="repaymentType"  />
-                    </div> -->
+                      <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" ></textarea>
+                    </div>
                    
 
                   </div>
@@ -269,15 +285,21 @@
                             <option  [selected]="loanType == loan.loanCode">
                               Cheque</option>
                               <option  [selected]="loanType == loan.loanCode">
-                                Online</option>
-                                <option  [selected]="loanType == loan.loanCode">
-                                  Salary</option>
+                                Bank Transfer</option>
+                                <!-- <option  [selected]="loanType == loan.loanCode">
+                                  Salary</option> -->
+                                  <option  [selected]="loanType == loan.loanCode">
+                                    Through Salary</option>
                           </select>
                         </div>
                         
                         <div class="col-md-3">
-                          <label class="form-label">Bank Details</label>
-                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                          <button type="button" tooltip="Button"
+                    class="custom_button custom_btn1 btn-bg-green btn-labeled1 btn-labeled-left ml-2 mr-2 mt-4"
+                    aria-hidden="true" ><b><i class="fa fa-university" aria-hidden="true"></i>
+</b>Company Bank Details
+
+                  </button>
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">IFSC</label>
@@ -288,7 +310,7 @@
                         
                         
                       </div>
-
+<br>
                       <div class="row mt-1 mb-0">
                         <div class="col-md-3">
                           <label class="form-label">Bank Name</label>
@@ -299,21 +321,33 @@
                           <input type="text" class="form-control" formControlName="repaymentType"  />
                         </div>
                         <div class="col-md-3">
+                          <label class="form-label">Branch Address</label>
+                          <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                            value="{{loanAmount | number:'1.2-2'}}" ></textarea>
+                        </div>
+                        <div class="col-md-3">
                           <label class="form-label">Account No.</label>
                           <input type="text" class="form-control" formControlName="repaymentType"  />
                         </div>
-                        <div class="col-md-3">
-                          <label class="form-label">Amount</label>
-                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        
                         </div>
-                        </div>
-
-                        <!-- <div class="row mt-1 mb-0">
+<br>
+                        <div class="row mt-1 mb-0">
                           <div class="col-md-3">
                             <label class="form-label">Amount</label>
                             <input type="text" class="form-control" formControlName="repaymentType"  />
                           </div>
-                          </div> -->
+                          <div class="col-md-3">
+                            <label class="form-label">Cycle Name
+                            </label>
+                            <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Remark</label>
+                            <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                              value="{{loanAmount | number:'1.2-2'}}" ></textarea>
+                          </div>
+                          </div>
                     </div>
                   </div>
                 </fieldset>
@@ -360,7 +394,8 @@
                                 <td>8-Jun-2021 &nbsp; 10.00 AM</td>
                                 <!-- <td>10.00 AM</td> -->
                                 <td>Pending</td>
-                                <td>Pending with Approver 2</td>
+                                <td><textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                                  value="{{loanAmount | number:'1.2-2'}}" ></textarea></td>
                               </tbody>
                             </table>
                           </div>
@@ -384,3 +419,35 @@
                         (click)="reset()" >
                         <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>&nbsp;
 e</button> -->
+
+<br><br>
+
+                  <ng-container class="float-right">
+                                  
+                    <div class="row float-right" style="margin: 10px">
+                      <button type="button" tooltip="Button"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                      aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Submit
+                    </button>
+                    <button type="button" tooltip="Button"
+                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
+                      aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Send Back
+                    </button>
+                    <button
+                          type="button"
+                          tooltip="Cancel" (click)="cancel()"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                          <b><i class="fa fa-times"></i></b> Close
+                        </button>
+                    </div>
+                  </ng-container>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

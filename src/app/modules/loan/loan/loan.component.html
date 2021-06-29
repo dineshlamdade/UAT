@@ -14,7 +14,7 @@
               <div class="d-flex">
 
                 <!-- </button> -->
-                <button type="button" tooltip="Button"
+                <!-- <button type="button" tooltip="Button"
                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
                   aria-hidden="true" [routerLink]="['/loan/disbursement']"><b><i class="fa fa-money"></i></b>
                   Disbursement
@@ -34,7 +34,7 @@
                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
                   [routerLink]="['/loan/settlementRequest']"><b><i class="fa fa-handshake-o"></i></b> Settlement
                   Request
-                </button>
+                </button> -->
                 <!-- <button type="button" tooltip="Button"
                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
                     (click)="settlementRequest(template4)"><b><i class="fa fa-handshake-o"></i></b> Settlement
@@ -46,7 +46,7 @@
               <!-- </div> -->
 
 
-              <!-- <div class="d-flex justify-content-spacearound mt-5">
+              <div class="d-flex justify-content-spacearound mt-5">
 
                 <div class="wd-150" style="height: 10px;">
                     <div class="card text-center btn-bg-green">
@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-              </div> -->
+              </div>
 
 
 
@@ -96,36 +96,7 @@
                       <div class="row">
                         <div class="col-md-12">
 
-                          <div class="float-left btn-Name" role="Name" aria-label="Basic example">
-                            <button type="button" class="btn  disabled-btn-bg-green mr-2" (click)="selectAll()">All <span
-                                class="tag tag-orange ml-4">10</span></button>
-                            <button type="button" class="btn btn-bg-green mr-2" (click)="pending()">Pending for
-                              Approval<span class="tag tag-orange ml-4">5</span></button>
-                            <button type="button" class="btn btn-bg-green mr-2" (click)="approved()">Approved<span
-                                class="tag tag-orange ml-4">10</span></button>
-                            <button type="button" class="btn btn-bg-green mr-2" (click)="sendBack()">Send Back
-                              <span class="tag tag-orange ml-4">5</span></button>
-                          </div>
-                          <!-- bg-color-lightgray -->
-
-                          <div class="float-right btn-Name" role="Name" aria-label="Basic example">
-                            <i class="fa fa-file-excel-o fa-2x mr-2 text-dark-green mt-1" (click)="exportAsXLSX()"
-                              tooltip="Export to Excel"></i>
-                            <button type="button" tooltip="Button"
-                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
-                              aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Approve
-                            </button>
-                            <button type="button" tooltip="Button"
-                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
-                              aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Send back
-                            </button>
-                            <button type="button" tooltip="Next" 
-                              class="custom_button custom_btn btn-labeled btn-labeled-left next-previous-disabled ml-2 mr-2" 
-                              aria-hidden="true"><b><i class="fa fa-angle-double-right"></i></b>Next
-                                                </button>
-
-                            
-                          </div>
+                          
                           <!-- <i class="fa fa-file-pdf-o text-dark-red fa-2x mr-2" tooltip="Export to PDF"
                               (click)="download()"></i> -->
 
@@ -138,47 +109,71 @@
 
 
                           <!-- <div class="row"> -->
+                            <div class="float-left btn-Name" role="Name" aria-label="Basic example">
+                              <!-- <button type="button" class="btn  disabled-btn-bg-green mr-2" (click)="selectAll()">All <span
+                                  class="tag tag-orange ml-4">10</span></button>
+                              <button type="button" class="btn btn-bg-green mr-2" (click)="pending()">Pending for
+                                Approval<span class="tag tag-orange ml-4">5</span></button>
+                              <button type="button" class="btn btn-bg-green mr-2" (click)="approved()">Approved<span
+                                  class="tag tag-orange ml-4">10</span></button>
+                              <button type="button" class="btn btn-bg-green mr-2" (click)="sendBack()">Send Back
+                                <span class="tag tag-orange ml-4">5</span></button> -->
+  
+                                <button type="button" tooltip="Button"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                    aria-hidden="true" [routerLink]="['/loan/disbursement']"><b><i class="fa fa-money"></i></b>
+                    Disbursement
+                    Request
+                  </button>
+                  <button type="button" tooltip="Button"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                    [routerLink]="['/loan/adhoc']"><b><i class="fa fa-credit-card"></i></b> Adhoc
+                    Repayment
+                  </button>
+                  <button type="button" tooltip="Button"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                    [routerLink]="['/loan/rescheduleRequest']"><b><i class="fa fa-calendar-check-o"></i></b> Reschedule
+                    Request
+                  </button>
+                  <button type="button" tooltip="Button"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                    [routerLink]="['/loan/settlementRequest']"><b><i class="fa fa-handshake-o"></i></b> Settlement
+                    Request
+                  </button>
+                  <button type="button" tooltip="Button"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                              aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Approve
+                            </button>
+                            <button type="button" tooltip="Button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
+                              aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Send back
+                            </button>
+                            </div>
 
-                          <!-- <div > -->
-                          <!-- <div class="custom_Label_badge mr-2">
-                                    <button  class="btn btn-bg-green text-white"> All </button>
-                                    <span class="Label_badge">2</span>
-                                  </div>
-                                  <div class="custom_Label_badge mr-2 ml-2">
-                                    <button  class="btn btn-bg-green text-white"> All </button>
-                                    <span class="Label_badge">2</span>
-                                  </div>
-                                  <div class="custom_Label_badge mr-2 ml-2">
-                                    <button  class="btn btn-bg-green text-white"> All </button>
-                                    <span class="Label_badge">2</span>
-                                  </div>
-                                  <div class="custom_Label_badge mr-2 ml-2">
-                                    <button  class="btn btn-bg-green text-white"> All </button>
-                                    <span class="Label_badge">2</span>
-                                  </div> -->
 
-                          <!-- </div> -->
-                          <!-- </div>  -->
-                          <!-- </div> -->
+                            <div class="float-right btn-Name" role="Name" aria-label="Basic example">
+                              <i class="fa fa-file-excel-o fa-2x mr-2 text-dark-green mt-1" (click)="exportAsXLSX()"
+                                tooltip="Export to Excel"></i>
+                            </div>
 
                         </div>
 
                       </div>
 
-                      <div class="row mt-10">
+                      <!-- <div class="row mt-10">
                         <div class="col-md-12">
 
-                          <!-- <i class="fa fa-check-square-o
+                          <i class="fa fa-check-square-o
                               fa-2x mr-2 font-24 text-purple
                               " aria-hidden="true"></i>
 
                           <i class="fa  fa-reply font-24 text-purple
-                                fa-2x mr-2"></i> -->
+                                fa-2x mr-2"></i>
 
 
 
                         </div>
-                      </div>
+                      </div> -->
 
                     </ng-template>
 
@@ -226,7 +221,15 @@
                             </div>
                           </div>
                         </th>
-
+                        <th rowspan="2">
+                          <div class="p-d-flex p-ai-center justify-content-center">Payroll Area
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
+                              <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
                         <th rowspan="2">
                           <div class="p-d-flex p-jc-between p-ai-center">Loan Type
                             <div class="Sort_Filter_Position">
@@ -256,6 +259,8 @@
                           </div>
                         </th>
 
+                        
+
                         <th rowspan="2">
                           <div class="p-d-flex p-jc-between p-ai-center">Remark
                             <div class="Sort_Filter_Position">
@@ -283,7 +288,7 @@
                         <th class="text-center">No. of Installments</th>
                         <th class="text-center">Rate of Interest</th> -->
                         <th class="text-center">Application</th>
-                        <th class="text-center">Overall</th>
+                        <th class="text-center">Pending With</th>
                       </tr>
 
                     </ng-template>
@@ -298,23 +303,36 @@
                         <td>{{customer.Date}}</td>
                         <td>{{ customer.empCode}}</td>
                         <td>{{ customer.empName}}</td>
+                        <td></td>
                         <td>{{ customer.loanType}}</td>
                         <td class="text-right">{{ customer.Amount}}</td>
                         <td><a class="text-link text-center" tooltip=" Display Popup"
                             (click)="largepopup (template)">{{customer.loanAmnt}}</a></td>
                         <!--<td>{{customer.noOInstallmnts}}</td>
                         <td>{{customer.interest}}</td> -->
-                        <!-- <td></td> -->
-                        <td></td>
+                       
+                        <td><input type="text" class="form-control" formControlName="repaymentType"  /></td>
                         <td style="color:darkcyan">{{customer.Status}}</td>
 
                         <td>Pending with Approver 2</td>
 
-                        <td> <span class="ml-1 mt-2">
+                        <td class="primeng-table-header-left"><span><i
+                          class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
+                          (click)="editEmployeeRow(employee)"></i>
+
+                      <i class="fa fa-eye font-16 text-blue cursor-pointer mr-10" tooltip="View"
+                          (click)="viewEmployeeRow(employee)"></i>
+
+                      <!-- <i class="fa fa-trash-o font-16 text-red cursor-pointer" tooltip="Delete"
+                          (click)="deleteEmployeeRow(employee, confirmation)"></i> -->
+                        </span>
+              </td>
+
+                        <!-- <td> <span class="ml-1 mt-2">
                             <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan"
                               (click)="viewQuery(query)"></i>&nbsp;
                             <i class="fa fa-edit" tooltip="Edit" aria-hidden="true"
-                              [routerLink]="['/loan/add-new-loan']"></i>&nbsp;</span></td>
+                              [routerLink]="['/loan/add-new-loan']"></i>&nbsp;</span></td> -->
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="paginatorleft">

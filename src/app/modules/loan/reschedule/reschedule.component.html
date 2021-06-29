@@ -122,6 +122,11 @@
                       <label class="form-label">Loan Balance</label>
                       <input type="text" class="form-control" formControlName="repaymentType" disabled />
                     </div>
+
+                    <!-- <div class="col-md-3">
+                      <label class="form-label">Remark</label>
+                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                    </div> -->
                     
                   </div>
                   <br />
@@ -152,14 +157,20 @@
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Effective From</label>
-                      <select class="form-control"
-                        placeholder="Select" >
-                        <option [ngValue]="null" selected>Select</option>
-                        <option  [selected]="loanType == loan.loanCode">
-                          1</option>
-                          <option  [selected]="loanType == loan.loanCode">
-                            2</option>
-                      </select>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+           <i class="fa fa-calendar"></i>
+           </span>
+                        </div>
+                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker>
+                    </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label class="form-label">Remark</label>
+                      <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" ></textarea>
                     </div>
                     <!-- <div class="col-md-3">
                       <label class="form-label mt-1 mb-0">Balance</label>
@@ -192,27 +203,27 @@
                               <tr >
                                 <td>12-Apr-2021</td>
                                 <td></td>
+                                <td> <input type="text" class="form-control" formControlName="repaymentType"  /></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <td> <input type="text" class="form-control" formControlName="repaymentType"  /></td>
                                 
                               </tr>
 
                               <tr >
                                 <td>2-June-2021</td>
                                 <td></td>
+                                <td> <input type="text" class="form-control" formControlName="repaymentType"  /></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <td> <input type="text" class="form-control" formControlName="repaymentType"  /></td>
                                 
                               </tr>
 
                               <tr >
                                 <td>1-May-2021</td>
                                 <td></td>
+                                <td> <input type="text" class="form-control" formControlName="repaymentType"  /></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <td> <input type="text" class="form-control" formControlName="repaymentType"  /></td>
                                 
                               </tr>
     
@@ -271,7 +282,8 @@
                                 <td>8-Jun-2021 &nbsp; 10.00 AM</td>
                                 <!-- <td>10.00 AM</td> -->
                                 <td>Pending</td>
-                                <td>Pending with Approver 2</td>
+                                <td><textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                                  value="{{loanAmount | number:'1.2-2'}}" ></textarea></td>
                               </tbody>
                             </table>
                           </div>
@@ -283,18 +295,22 @@
                 <br><br>
 
                 <ng-container class="float-right">
-                 
-                  <div class="row float-right" style="margin: 10px">
-                    <button type="submit" tooltip="Save"
-                    class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left ml-10"
-                    (click)="reset()" >
-                    <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
                                   
-                <button type="button" tooltip="Reset"
-                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
-                    (click)="reset()" >
-                    <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>&nbsp;
-
+                  <div class="row float-right" style="margin: 10px">
+                    <button type="button" tooltip="Button"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                    aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Approve
+                  </button>
+                  <button type="button" tooltip="Button"
+                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
+                    aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Send Back
+                  </button>
+                  <button
+                        type="button"
+                        tooltip="Cancel" (click)="cancel()"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                        <b><i class="fa fa-times"></i></b> Close
+                      </button>
                   </div>
                 </ng-container>
 
