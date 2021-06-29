@@ -141,8 +141,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   public editrentRecieptArray: File[] = [];
   public masterfilesArray: File[] = [];
 
-  /*  public receiptNumber: number; */
-  public receiptNumber: null;
 
   public receiptAmount: string;
   public receiptDate: Date;
@@ -734,8 +732,8 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.declarationService.remark;
     this.declarationService.transactionStatus = 'Pending';
     /*this.declarationService.transactionStatus = null; */
-    this.declarationService.rejectedAmountPerMonth = 0.0;
-    this.declarationService.approvedAmountPerMonth = 0.0;
+    this.declarationService.rejectedAmount = 0.0;
+    this.declarationService.approvedAmount = 0.0;
     this.declarationService.houseRentalMasterId =
       this.transactionDetail[
         j
@@ -911,9 +909,9 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       );
       return;
     }
-    console.log('this.transactionDetail::', this.transactionDetail);
+    console.log('this.transactionDetail::....', this.transactionDetail);
 
-    this.transactionDetail.forEach((element) => {
+  /*   this.transactionDetail.forEach((element) => {
       element.previousEmployerTransactionDetailList.forEach((innerElement) => {
         if (innerElement.declaredAmountPerMonth !== null) {
           innerElement.declaredAmountPerMonth =
@@ -944,32 +942,25 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           'yyyy-MM-dd'
         );
 
-        /*   const dueDate = this.datePipe.transform(
-          innerElement.dueDate,
-          'yyyy-MM-dd',
-        );
-
-        innerElement.paymentDate = paymentDate;
-        innerElement.dueDate = dueDate; */
         innerElement.paymentDate = paymentDate;
         innerElement.fromDate = fromDate;
         innerElement.toDate = toDate;
       });
-    });
+    }); */
 
     console.log('this.receiptDate::', this.receiptDate);
-    console.log('this.receiptNumber::', this.receiptNumber);
     console.log(this.transactionDetail[0]);
+    console.log(",,,,,,,,,,,,,,,,,,,,",this.previousEmployerTransactionDetailList)
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       proofSubmissionId: '',
+      previousEmployerMasterDetailId : '1',
       previousEmployerTransactionDetailList:
-        this.transactionDetail[0].previousEmployerTransactionDetailList,
-      houseRentalTransactionIds: this.uploadGridData,
+      this.transactionDetail[0].previousEmployerTransactionDetailList,
+      previousEmployerTransactionDetailIds: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       receiptDate: Date,
-      receiptNumber: 123,
     };
     console.log('data::', data);
     this.previousEmployerService
@@ -994,17 +985,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
             );
 
             element.previousEmployerTransactionDetailList.forEach((innerElement) => {
+              
               if (innerElement.paymentDate !== null) {
                 innerElement.paymentDate = new Date(innerElement.paymentDate);
               }
-
-              /*   if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              } */
 
               innerElement.declaredAmountPerMonth = this.numberFormat.transform(
                 innerElement.declaredAmountPerMonth
@@ -1025,7 +1009,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         }
       });
     this.receiptAmount = '0.00';
-    this.rentReciept = [];
+    this.rentReciept= [];
     this.globalSelectedAmount = '0.00';
   }
 
@@ -1066,26 +1050,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       this.documentDetailList[documentIndex].documentDetailList;
   }
 
-  /*   deactiveCopytoActualDate() {
-    if (this.isECS === false) {
-      this.hideCopytoActualDate = true;
-    } else {
-      this.hideCopytoActualDate = false;
-    }
-  } */
-
-/*   copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
-    dueDate = new Date(dueDate);
-    item.previousEmployerTransactionDetailList.paymentDate = dueDate;
-    this.transactionDetail[0].previousEmployerTransactionDetailList[i].paymentDate =
-      dueDate;
-    this.declarationService.paymentDate =
-      this.transactionDetail[0].previousEmployerTransactionDetailList[i].paymentDate;
-    this.paymentDate = dueDate;
-    alert('hiiii');
-    console.log('Date OF PAyment' + this.declarationService.paymentDate);
-  }
- */
   // When Edit of Document Details
   declarationEditUpload(
     template2: TemplateRef<any>,
@@ -1163,15 +1127,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
             if (innerElement.paymentDate !== null) {
               innerElement.paymentDate = new Date(innerElement.paymentDate);
             }
-
-            /*     if (innerElement.isECS === 0) {
-            this.glbalECS == 0;
-          } else if (innerElement.isECS === 1) {
-            this.glbalECS == 1;
-          } else {
-            this.glbalECS == 0;
-          } */
-
             innerElement.declaredAmountPerMonth = this.numberFormat.transform(
               innerElement.declaredAmountPerMonth
             );
@@ -1240,27 +1195,16 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       });
     });
 
- /*    console.log('this.receiptDate::', this.receiptDate);
-    console.log('this.receiptNumber::', this.receiptNumber); */
-
     console.log('editTransactionUpload::', this.editTransactionUpload);
 
     const data = {
       proofSubmissionId: this.editProofSubmissionId,
       previousEmployerTransactionDetailList: this.editTransactionUpload[0].previousEmployerTransactionDetailList,
-      houseRentalTransactionIds: this.uploadGridData,
+      previousEmployerTransactionDetailIds: this.uploadGridData,
     //  documentRemark: this.documentRemark,
       receiptAmount: this.editReceiptAmount,
-      //proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
-
-      // documentRemark: this.documentRemark,
-
-      /*   proofSubmissionId: this.editProofSubmissionId, */
-      //receiptAmount: this.receiptAmount,
-      /* receiptDate: this.receiptDate,
-      receiptNumber: this.receiptNumber, */
+    
       receiptDate: Date,
-      receiptNumber: 123,
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -1450,24 +1394,24 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   /* =================pdf======================== */
   download() {
     console.log('hi');
-
     let data = document.getElementById('htmlData');
     html2canvas(data).then(canvas => {
       console.log(canvas)
       // Few necessary setting options
-      const imgWidth = 193;
-     const pageHeight = 0;
+      const imgWidth = 208;
+     const pageHeight = 295
       const imgHeight = canvas.height * imgWidth / canvas.width;
-     // const heightLeft = imgHeight;
+      const heightLeft = imgHeight;
 
       const contentDataURL = canvas.toDataURL('image/png')
       // A4 size page of PDF
       const pdf = new jspdf('p', 'mm', 'a4');
-      const position = -120;
+      const position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
       // Generated PDF
       pdf.save('FORM.12B.pdf');
-    });
+    },700);
+    
   }
 
   onImageChange(e) {
@@ -1500,9 +1444,8 @@ class DeclarationService {
   public actualAmountPerMonth: number;
   public remark: string;
   public transactionStatus: 'Pending';
-  public rejectedAmountPerMonth: number;
-  public approvedAmountPerMonth: number;
-  // public receiptNumber: number;
+  public rejectedAmount: number;
+  public approvedAmount: number;
   // public receiptDate: Date;
   // public receiptAmount: number;
   constructor(obj?: any) {

@@ -2,18 +2,19 @@ import { InvestmentApprovalDashboardEmployeeInfo } from './investment-approval-d
 
 export interface InvestmentApprovalDashboardInfo {
   masterStatusCount: {
-    approved: string;
-    sendBack: string;
-    submitted: string;
-    reSubmitted: string;
-    total: string;
+    approved: number;
+    sendBack: number;
+    submitted: number;
+    reSubmitted: number;
+    total: number;
   };
   transactionCount: {
-    approved: string;
-    sendBack: string;
-    submitted: string;
-    reSubmitted: string;
-    total: string;
+    approved: number;
+    sendBack: number;
+    submitted: number;
+    reSubmitted: number;
+    total: number;
   };
   assignedProofSubmissionList: InvestmentApprovalDashboardEmployeeInfo[];
+  itGroupsSectionsList: []
 }

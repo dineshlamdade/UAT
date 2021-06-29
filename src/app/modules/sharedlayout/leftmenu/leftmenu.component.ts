@@ -52,7 +52,7 @@ export class LeftmenuComponent implements OnInit {
   employeeMasterId: number;
   ischaptersettingCollapsed = true;
   isCollapsedpayrollinput : boolean = true
-
+  public isQuery:boolean;
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService ) {
 
