@@ -423,7 +423,7 @@
                                       <td>
                                         <i
                                         *ngIf="
-                                         transactionInfo.psidDetail.proofSubmissionStatus != 'Approved' &&
+
                                          transaction.transactionStatus == 'Approved' "
                                           class="
                                             fa fa-edit
@@ -581,7 +581,7 @@
                      <div class="row mt-10 mb-15">
                       <div class="col-md-12">
                         <div class="float-right">
-                          <button
+                          <!-- <button
                             *ngIf="
                               transactionInfo.psidDetail.proofSubmissionStatus ==
                               'Approved'
@@ -597,7 +597,7 @@
                             (click)="changePSIDStatusOfTransaction('Re-Open')"
                           >
                             Edit Approval
-                          </button>
+                          </button> -->
                           <button
                             type="button"
                             tooltip="Send Back"
@@ -675,7 +675,7 @@
                             (click)="changePSIDStatusOfTransaction('Approved')"
                             tooltip="Approve"
                           >
-                            <b> <i class="fa fa-floppy-o"></i></b> Approve
+                            <b> <i class="fa fa-floppy-o"></i></b>{{transactionList.length}} Approve {{approvedDisabled}}
                           </button>
 
                           <button
@@ -791,13 +791,13 @@
                               ripple
                               mr-2
                             "
-                            [class.disablegreenbutton]="transactionList.length == 0 ||
+                            [class.disablegreenbutton]="transactionList.length == 0 || approvedDisabled ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
                               transactionInfo.psidDetail.proofSubmissionStatus == '' ||
                               transactionInfo.psidDetail.proofSubmissionStatus ==
                                 'Approved'
                             "
-                            [disabled]="transactionList.length == 0 ||
+                            [disabled]="transactionList.length == 0 || approvedDisabled ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
                               transactionInfo.psidDetail.proofSubmissionStatus == '' ||
                               transactionInfo.psidDetail.proofSubmissionStatus ==

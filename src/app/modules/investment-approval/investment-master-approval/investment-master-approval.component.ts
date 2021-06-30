@@ -435,6 +435,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         this.documentList = [];
       });
     this.remarkValidation = false;
+    this.approvedDisabled =true;
   }
 
   //-------- For selecting Document For Approval Or Discard ----------
