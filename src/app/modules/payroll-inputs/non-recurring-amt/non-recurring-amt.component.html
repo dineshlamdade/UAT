@@ -1331,10 +1331,11 @@
                                                                                                 disabled>
                                                                                         </td>
                                                                                         <td>
+                                                                                            <!-- [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'" -->
                                                                                             <input type="text"
                                                                                                 value="{{data.closingAmount | number: '1.2-2'}}"
                                                                                                 class="form-control"
-                                                                                                [disabled]="data.executeSDM == 'YES' || data.executeSDM == 'Yes'"
+                                                                                                
                                                                                                 (focusout)="transactionOpeningAmount($event.target.value,data,rowIndex)">
                                                                                         </td>
                                                                                         <td>
@@ -3491,7 +3492,7 @@
                                                     <label class="form-lable mb-0">{{data.deviationType}}</label>
                                                 </td>
                                                 <td class="bg-color-light_gray">
-                                                    <label class="form-lable mb-0">{{selectedDevData.closingAmount}}</label>
+                                                    <label class="form-lable mb-0">{{data.actualAmount}}</label>
                                                 </td>
                                                 <td class="bg-color-light_gray">
                                                     <label class="form-lable mb-0">{{data.deviationAmountLimit}}</label>
@@ -3500,10 +3501,10 @@
                                                     <label class="form-lable mb-0">{{data.deviationAmount}}</label>
                                                 </td>
                                                 <td class="bg-color-light_gray">
-                                                    <label class="form-lable mb-0">{{data.deviationAmountperc}}</label>
+                                                    <label class="form-lable mb-0">{{getDeviationPercentage(data)}}</label>
                                                 </td>
                                                 <td class="bg-color-light_gray">
-                                                    <input type="" class="form-control" value="{{data.remark}}" disabled>
+                                                    <input type="" class="form-control" value="{{data.remark}}">
                                                 </td>
                                                 <td class="bg-color-light_gray">
                                                     {{data.status}}
@@ -3789,7 +3790,7 @@
                                                                         <label class="form-lable mb-0">{{data.status}}</label>
                                                                     </td>
                                                                     <td class="bg-color-light_gray">
-                                                                        <input type="text" class="form-control" value="{{data.remark}}" disabled>
+                                                                        <input type="text" class="form-control" value="{{data.remark}}">
                                                                     </td>
                                                                 </tr>
                                                             </ng-template>
