@@ -205,21 +205,19 @@
                       <input type="text" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" />
                     </div>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                       <label class="form-label">Branch Address</label>
                       <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" ></textarea>
                     </div>
-                    
+                     -->
 
                   </div>
                 
                   <br>
                   <div class="row mt-1 mb-0">
                     <div class="col-md-3">
-                      <!-- <label class="form-label">Account No.</label>
-                      <input type="text" class="form-control" formControlName="loanAmount"
-                        value="{{loanAmount | number:'1.2-2'}}" /><i class="fa fa-eye" aria-hidden="true"></i> -->
+                     
                         <label class="form-label">Account No.</label>
                         <div class="input-group">
                           
@@ -320,28 +318,29 @@
                           <label class="form-label">Branch Name</label>
                           <input type="text" class="form-control" formControlName="repaymentType"  />
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <label class="form-label">Branch Address</label>
                           <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
                             value="{{loanAmount | number:'1.2-2'}}" ></textarea>
-                        </div>
+                        </div> -->
                         <div class="col-md-3">
                           <label class="form-label">Account No.</label>
                           <input type="text" class="form-control" formControlName="repaymentType"  />
                         </div>
-                        
+                        <div class="col-md-3">
+                          <label class="form-label">Cycle Name
+                          </label>
+                          <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                        </div>
                         </div>
 <br>
                         <div class="row mt-1 mb-0">
+                          
                           <div class="col-md-3">
                             <label class="form-label">Amount</label>
                             <input type="text" class="form-control" formControlName="repaymentType"  />
                           </div>
-                          <div class="col-md-3">
-                            <label class="form-label">Cycle Name
-                            </label>
-                            <input type="text" class="form-control" formControlName="repaymentType" disabled />
-                          </div>
+                         
                           <div class="col-md-3">
                             <label class="form-label">Remark</label>
                             <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
@@ -365,9 +364,9 @@
                         </div>
                         <div class="col-md-6 ">
                           <h6 class="font-12 mb-3 font-normal float-right">
-                            <strong>Overall Status </strong>&nbsp;&nbsp;
+                            <strong>Overall Status : </strong>&nbsp;&nbsp;
 
-                            <strong class="btn-bg-green p-2">Submit:Pending with Approver 2</strong>
+                            <strong class="btn-bg-green p-2">Submit</strong>
                           </h6>
                         </div>
 

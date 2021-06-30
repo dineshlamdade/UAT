@@ -47,39 +47,41 @@
 
 
               <div class="d-flex justify-content-spacearound mt-5">
-
+                <div class="wd-150">
+                  <div class="card text-center btn-bg-green">
+                      <div class="card-body text-light detailedcard">
+                          <h3>30</h3>
+                          <span> Submitted</span>
+                      </div>
+                  </div>
+              </div>
+              <div class="wd-150">
+                <div class="card text-center btn-bg-green">
+                    <div class="card-body text-light detailedcard">
+                        <h3>30</h3>
+                        <span>Send Back</span>
+                    </div>
+                </div>
+            </div>
+            <div class="wd-150">
+              <div class="card text-center btn-bg-green">
+                  <div class="card-body text-light detailedcard">
+                      <h3>30</h3>
+                      <span>Approved</span>
+                  </div>
+              </div>
+          </div>
                 <div class="wd-150" style="height: 10px;">
                     <div class="card text-center btn-bg-green">
                         <div class="card-body text-light detailedcard">
                             <h3>30</h3>
-                            <span>All</span>
+                            <span>Total</span>
                         </div>
                     </div>
                 </div>
-                <div class="wd-150">
-                    <div class="card text-center btn-bg-green">
-                        <div class="card-body text-light detailedcard">
-                            <h3>30</h3>
-                            <span> Pending</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="wd-150">
-                    <div class="card text-center btn-bg-green">
-                        <div class="card-body text-light detailedcard">
-                            <h3>30</h3>
-                            <span>Approved</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="wd-150">
-                    <div class="card text-center btn-bg-green">
-                        <div class="card-body text-light detailedcard">
-                            <h3>30</h3>
-                            <span>Send Back</span>
-                        </div>
-                    </div>
-                </div>
+                
+                
+                
               </div>
 
 
@@ -240,6 +242,15 @@
                           </div>
                         </th>
                         <th rowspan="2">
+                          <div class="p-d-flex p-jc-between p-ai-center">Type
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="loanType" pSortableColumn="loanType"></p-sortIcon>
+                              <p-columnFilter type="text" field="loanType" display="menu" class="p-ml-auto">
+                              </p-columnFilter>
+                            </div>
+                          </div>
+                        </th>
+                        <th rowspan="2">
                           <div class="p-d-flex p-jc-between p-ai-center">Amount
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="Amount" pSortableColumn="Amount"></p-sortIcon>
@@ -301,13 +312,22 @@
                         <!-- <td>1</td> -->
                         <td>{{ customer.applNo}}</td>
                         <td>{{customer.Date}}</td>
-                        <td>{{ customer.empCode}}</td>
+                        <td>
+                          <a class="text-link text-center" tooltip=" Display Popup"
+                            (click)="largepopup (template1)">{{ customer.empCode}}</a></td>
                         <td>{{ customer.empName}}</td>
                         <td></td>
+                        
                         <td>{{ customer.loanType}}</td>
+                        <td>{{ customer.Type}}</td>
                         <td class="text-right">{{ customer.Amount}}</td>
-                        <td><a class="text-link text-center" tooltip=" Display Popup"
-                            (click)="largepopup (template)">{{customer.loanAmnt}}</a></td>
+                        <td><i class="fa fa-deviantart font-16 text-blue cursor-pointer" aria-hidden="true" tooltip=" Deviation"
+                          (click)="largepopup (template)"></i>
+                          <span class="Label_badge" style="text-align: center;">{{customer.loanAmnt}}</span></td>
+
+                          
+                        <!-- <a class="text-link text-center" tooltip=" Display Popup"
+                            (click)="largepopup (template)">{{customer.loanAmnt}}</a> -->
                         <!--<td>{{customer.noOInstallmnts}}</td>
                         <td>{{customer.interest}}</td> -->
                        
@@ -393,9 +413,31 @@
                   <div class="modal-body">
                     <div class="card">
                       <div class="card-body">
-                        <div class="row clearfix">
-                          <div class="col-md-12">
-                            <div>
+                        <!-- <div class="row clearfix"> -->
+                          <!-- <div class="col-md-12"> -->
+                            <div class="row mb-10">
+                              <div class="col-sm-6 col-md-3" >
+                                  <label class="form-label">Emp. Code</label>
+                                  <input type="text" class="form-control"
+                                      value="{{employeeFinDetailsData.employeeCode}}" disabled />
+                              </div>
+                              <div class=" col-sm-6 col-md-3" >
+                                  <label class="form-label">Emp. Name</label>
+                                  <input type="text" class="form-control"
+                                      value="{{employeeFinDetailsData.fullName}}" disabled />
+                              </div>
+                              <div class="col-sm-6 col-md-3" >
+                                  <label class="form-label">Loan Type</label>
+                                  <input type="text" class="form-control"
+                                      value="{{selectedDevData.headDescription}}" disabled />
+                              </div>
+                              <!-- <div class="col-sm-6 col-md-3">
+                                  <label class="form-label">Type</label>
+                                  <input type="text" class="form-control" value="{{selectedDevData.headType}}"
+                                      disabled />
+                              </div> -->
+                          </div>
+                          <br>
 
                               <div class="table-responsive Custom_Table">
                                 <table class="table table-striped table-bordered table-hover m-b-0 bg-color-light_gray">
@@ -406,6 +448,7 @@
                                       <th scope="col">Limit</th>
                                       <th scope="col">Deviation Value</th>
                                       <th scope="col">Reason</th>
+                                      <th scope="col">Remark</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -418,6 +461,8 @@
                                       <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
                                       <td>ABC</td>
                                       <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
+                                      <td><textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                                        value="{{loanAmount | number:'1.2-2'}}" ></textarea></td>
                                     </tr>
 
                                     <tr>
@@ -429,6 +474,8 @@
                                       <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
                                       <td>BBB</td>
                                       <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
+                                      <td><textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                                        value="{{loanAmount | number:'1.2-2'}}" ></textarea></td>
                                     </tr>
 
                                     <tr>
@@ -440,19 +487,57 @@
                                       <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
                                       <td>CCC</td>
                                       <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
+                                      <td><textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                                        value="{{loanAmount | number:'1.2-2'}}" ></textarea></td>
                                     </tr>
 
                                   </tbody>
                                 </table>
                               </div>
-                            </div>
-                          </div>
-                        </div>
+                            <!-- </div> -->
+                            <br>
+                                    <div class="float-left d-flex justify-content">
+                                        <label class="form-label mt-2">Remark</label>&nbsp;
+                                        <textarea type="text"></textarea>
+                                    </div>
+                                   
+                          <!-- </div> -->
+                        <!-- </div> -->
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                    <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button> -->
+                    <div class="row float-right">
+
+                      <div class="float-right ">
+
+                          <button type="submit"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                              tooltip="Save" (click)=" extralargepopup(template)"><b>
+                                  <i class="fa fa-reply"></i></b> Send Back </button>&nbsp;
+                          <!-- <button type="submit"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
+                              tooltip="Save" (click)=" extralargepopup(template)"><b>
+                                  <i class="fa fa-times"></i></b> Reject Group</button>&nbsp; -->
+                          <button type="submit"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                              tooltip="Save" (click)=" extralargepopup(template)"><b>
+                                  <i class="fa fa-check-square-o "></i></b> Approve
+                              </button>&nbsp;
+                          <!-- <button type="submit"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                              tooltip="Save" (click)=" extralargepopup(template)"><b>
+                                  <i class="fa fa-check-square-o"></i></b> Approve
+                              Deviation</button>&nbsp; -->
+                          <button type="submit"
+                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                              tooltip="Reset"><b>
+                                  <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+
+                      </div>
+                  </div>
                   </div>
                 </ng-template>
 
@@ -460,7 +545,7 @@
 
                 <ng-template #template1>
                   <div class="modal-header">
-                    <h5 class="modal-title" id="UploadModalLabel">Disbursement Request Details</h5>
+                    <h5 class="modal-title font-14 text-purple font-bold" id="UploadModalLabel">Employee Details</h5>
                     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
                       aria-label="Close"><span aria-hidden="true">×</span></button>
                   </div>
@@ -473,40 +558,40 @@
                             <div class="col-md-4">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Emp. Code :
-                                </strong>0001
+                                </strong>001
                               </h6>
                             </div>
                             <div class="col-md-4">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Emp. Name:
+                                <strong>Emp. Name :
                                 </strong>AAA
                               </h6>
                             </div>
                             <div class="col-md-4">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Loan No.:
-                                </strong>111
-                              </h6>
-                            </div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Application Date :
+                                <strong>DOJ :
                                 </strong>11-Jan-2021
                               </h6>
                             </div>
+                          </div>
+
+                          <div class="row">
                             <div class="col-md-4">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Type:
-                                </strong>Car Loan
+                                <strong>Establishment :
+                                </strong>Pune
                               </h6>
                             </div>
                             <div class="col-md-4">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Description:
-                                </strong>Car Loan 1
+                                <strong>Emp. Type :
+                                </strong>Worker
+                              </h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 class="font-12 mb-3 font-normal">
+                                <strong>Grade :
+                                </strong>G1
                               </h6>
                             </div>
                           </div>
@@ -514,90 +599,15 @@
                           <div class="row">
                             <div class="col-md-4">
                               <h6 class="font-12 mb-3 font-normal">
-                                <strong>Approved :
-                                </strong>201212.00
+                                <strong>Designation :
+                                </strong>UI/UX Developer
                               </h6>
                             </div>
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Disbursed:
-                                </strong>201212.00
-                              </h6>
-                            </div>
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Repayment Type:
-                                </strong>
-                              </h6>
-                            </div>
+                           
                           </div>
-
-                          <div class="row">
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Expected Payment Date :
-                                </strong>
-                              </h6>
-                            </div>
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Amount:
-                                </strong>
-                              </h6>
-                            </div>
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Payee:
-                                </strong>
-                              </h6>
-                            </div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>IFSC Code :
-                                </strong>
-                              </h6>
-                            </div>
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Bank Name:
-                                </strong>
-                              </h6>
-                            </div>
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Branch Address:
-                                </strong>
-                              </h6>
-                            </div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Account No. :
-                                </strong>
-                              </h6>
-                            </div>
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>Remark:
-                                </strong>
-                              </h6>
-                            </div>
-                            <div class="col-md-4">
-                              <h6 class="font-12 mb-3 font-normal">
-                                <strong>:Balance
-                                </strong>0
-                              </h6>
-                            </div>
-                          </div>
-
                         </div>
 
-                        <hr>
+                        <!-- <hr>
                         <div class="row mt-30">
                           <div class="col-12">
                             <div class="card">
@@ -644,14 +654,14 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> -->
 
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button> -->
-                    <ng-container class="float-right">
+                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                    <!-- <ng-container class="float-right">
                       <div class="row float-right" style="margin: 10px">
                         <button type="button" tooltip="Button"
                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2">
@@ -668,7 +678,7 @@
                           class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                           <b><i class="fa fa-times" aria-hidden="true"></i></b>Close Window</button>
                       </div>
-                    </ng-container>
+                    </ng-container> -->
                   </div>
                 </ng-template>
 

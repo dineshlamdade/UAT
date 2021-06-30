@@ -18,6 +18,7 @@ export interface Customer {
    empCode;
    empName;
    loanType;
+   Type;
   //  Group;
    Amount;
    loanAmnt;
@@ -83,19 +84,19 @@ export class LoanComponent implements OnInit {
   ngOnInit(): void {
     // this.getAllData();
     this.customers = [
-      {applNo: '551', Date:'12Apr2021', empCode: '001',empName:'AAA', loanType:'House Rent', Amount:'10,000.00',loanAmnt:'1',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '11', Date:'12Apr2021',empCode: '002', empName:'bbb',loanType:'House Rent', Amount:'50,000.00', loanAmnt:'2',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '11', Date:'12Apr2021',empCode: '003',empName:'SSS', loanType:'House Rent', Amount:'30,000.00', loanAmnt:'3',noOInstallmnts:'44',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '555',Date:'12Apr2021', empCode: '004',empName:'AAA', loanType:'House Rent', Amount:'1,20,000.00',loanAmnt:'234234',noOInstallmnts:'6',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '11', Date:'12Apr2021',empCode: '005',empName:'AAA', loanType:'House Rent', Amount:'1,80,000.00',loanAmnt:'234234',noOInstallmnts:'8',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '006',empName:'LLL', loanType:'House Rent', Amount:'80,000.00', loanAmnt:'234234',noOInstallmnts:'9',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '007',empName:'AAA', loanType:'House Rent', Amount:'40,000.00',loanAmnt:'234234',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '008',empName:'PPP', loanType:'House Rent', Amount:'30,000.00', loanAmnt:'234234',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '009',empName:'CCC', loanType:'dddddd', Amount:'20,000.00',loanAmnt:'234234',noOInstallmnts:'11',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '888',Date:'12Apr2021', empCode: '010',empName:'DDD', loanType:'dddddd', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'14',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '011',empName:'JJJ', loanType:'dddddd', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'15',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '012',empName:'MMM', loanType:'dddddd', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'17',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '66',Date:'12Apr2021', empCode: '013',empName:'BBB', loanType:'dddddd', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'1',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '551', Date:'12Apr2021', empCode: '001',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'10,000.00',loanAmnt:'1',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '11', Date:'12Apr2021',empCode: '002', empName:'bbb',loanType:'House Rent',Type:'Settlement', Amount:'50,000.00', loanAmnt:'2',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '11', Date:'12Apr2021',empCode: '003',empName:'SSS', loanType:'House Rent',Type:'Disbursement', Amount:'30,000.00', loanAmnt:'3',noOInstallmnts:'44',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '555',Date:'12Apr2021', empCode: '004',empName:'AAA', loanType:'House Rent',Type:'Reschedule', Amount:'1,20,000.00',loanAmnt:'2',noOInstallmnts:'6',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '11', Date:'12Apr2021',empCode: '005',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'1,80,000.00',loanAmnt:'2',noOInstallmnts:'8',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '1',Date:'12Apr2021', empCode: '006',empName:'LLL', loanType:'House Rent', Type:'Adhoc',Amount:'80,000.00', loanAmnt:'234234',noOInstallmnts:'9',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '1',Date:'12Apr2021', empCode: '007',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'40,000.00',loanAmnt:'234234',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '1',Date:'12Apr2021', empCode: '008',empName:'PPP', loanType:'House Rent', Type:'Adhoc',Amount:'30,000.00', loanAmnt:'234234',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '1',Date:'12Apr2021', empCode: '009',empName:'CCC', loanType:'dddddd', Type:'Adhoc',Amount:'20,000.00',loanAmnt:'234234',noOInstallmnts:'11',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '888',Date:'12Apr2021', empCode: '010',empName:'DDD', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'14',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '1',Date:'12Apr2021', empCode: '011',empName:'JJJ', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'15',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '1',Date:'12Apr2021', empCode: '012',empName:'MMM', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'17',interest:'2',remark:'Approved',Status:'Submitted'},
+      {applNo: '66',Date:'12Apr2021', empCode: '013',empName:'BBB', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'1',interest:'2',remark:'Approved',Status:'Submitted'},
      
     ];
 

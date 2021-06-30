@@ -199,11 +199,11 @@
                     <input type="text" class="form-control" formControlName="loanAmount"
                       value="{{loanAmount | number:'1.2-2'}}" />
                   </div>
-                  <div class="col-md-3">
+                  <!-- <div class="col-md-3">
                     <label class="form-label">Branch Address</label>
                     <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
                       value="{{loanAmount | number:'1.2-2'}}" ></textarea>
-                  </div>
+                  </div> -->
                   <div class="col-md-3">
                     <label class="form-label">Cheque/ UTR No.</label>
                     <input type="text" class="form-control" formControlName="underlineAssestValue"
@@ -226,37 +226,24 @@
                                 class="form-control" placeholder="Date" bsDatepicker>
                         </div>
                     </div>
-
                 </div>
-                  <!-- <div class="col-md-3">
-                    <label class="form-label"></label>
-                    <input type="text" class="form-control" formControlName="loanAmount"
-                      value="{{loanAmount | number:'1.2-2'}}" />
-                  </div> -->
-                  
-                 
+                <div class="col-md-3">
+                  <label class="form-label">Amount</label>
+                  <input type="text" class="form-control" formControlName="underlineAssestValue"
+                    [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                     />
+                </div>
                 </div>
                 
                 <div class="row mt-1 mb-0">
-                  <div class="col-md-3">
-                    <label class="form-label">Amount</label>
-                    <input type="text" class="form-control" formControlName="underlineAssestValue"
-                      [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
-                       />
-                  </div>
+                  
                   <div class="col-md-3">
                     <label class="form-label">Remark</label>
                     <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
                       value="{{loanAmount | number:'1.2-2'}}" ></textarea>
                   </div>
                   </div>
-                  <!-- 
-                  <div class="col-md-3">
-                    <label class="form-label">Loan Balance</label>
-                    <input type="text" class="form-control" formControlName="repaymentType"  />
-                  </div>
-                </div> -->
-          
+                  
           </div>
         </div>
 
@@ -271,7 +258,7 @@
                         <div class="col-md-3">
                           <label class="form-label">Mode of Payment</label>
                           <select class="form-control"
-                            placeholder="Select" >
+                            placeholder="Select" disabled>
                             <option [ngValue]="null" selected>Select</option>
                             <option  [selected]="loanType == loan.loanCode">
                               Cheque</option>
@@ -309,17 +296,21 @@
                           <input type="text" class="form-control" formControlName="loanAmount"
                             value="{{loanAmount | number:'1.2-2'}}" />
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <label class="form-label">Branch Address</label>
                           <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
                             value="{{loanAmount | number:'1.2-2'}}" ></textarea>
-                        </div>
+                        </div> -->
                         <div class="col-md-3">
                           <label class="form-label">Date of Receipt</label>
                           <input type="text" class="form-control" formControlName="loanAmount"
                             value="{{loanAmount | number:'1.2-2'}}" disabled/>
                         </div>
-                      
+                        <div class="col-md-3">
+                          <label class="form-label">Cycle Name
+                          </label>
+                          <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                        </div>
                         <div class="col-md-3">
                           <label class="form-label">Amount Received</label>
                           <input type="text" class="form-control" formControlName="repaymentType"  />
@@ -334,11 +325,7 @@
                           <label class="form-label">Loan Balance</label>
                           <input type="text" class="form-control" formControlName="repaymentType"  />
                         </div>
-                        <div class="col-md-3">
-                          <label class="form-label">Cycle Name
-                          </label>
-                          <input type="text" class="form-control" formControlName="repaymentType" disabled />
-                        </div>
+                        
                         <div class="col-md-3">
                           <label class="form-label">Remark</label>
                           <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
@@ -364,9 +351,9 @@
                         </div>
                         <div class="col-md-6 ">
                           <h6 class="font-12 mb-3 font-normal float-right">
-                            <strong>Overall Status </strong>&nbsp;&nbsp;
+                            <strong>Overall Status : </strong>&nbsp;&nbsp;
 
-                            <strong class="btn-bg-green p-2">Submit:Pending with Approver 2</strong>
+                            <strong class="btn-bg-green p-2">Pending</strong>
                           </h6>
                         </div>
 
