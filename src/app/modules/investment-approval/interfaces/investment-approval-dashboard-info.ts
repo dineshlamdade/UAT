@@ -6,6 +6,7 @@ export interface InvestmentApprovalDashboardInfo {
     sendBack: number;
     submitted: number;
     reSubmitted: number;
+    reOpen: number;
     total: number;
   };
   transactionCount: {
@@ -13,6 +14,7 @@ export interface InvestmentApprovalDashboardInfo {
     sendBack: number;
     submitted: number;
     reSubmitted: number;
+    reOpen: number;
     total: number;
   };
   assignedProofSubmissionList: InvestmentApprovalDashboardEmployeeInfo[];
