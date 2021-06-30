@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from './../../../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, distinctUntilChanged } from 'rxjs/operators';
+import { RSA_NO_PADDING } from 'node:constants';
 
 
 @Injectable({
@@ -46,6 +47,23 @@ export class JobInformationService {
       return res;
     }))
   }
+  // get job Details  by job masster type
+  getJobMasterByType(type){
+    return this.httpClient.get(environment.baseUrl8083+ 'job-master/'+type,{headers:{'X-Tenantid':'PaysquareDefault'}})
+    .pipe(map((res:any)=>{
+      return res;
+    }))
+  }
+
+
+  // get job Details  by job masster id
+  getJobMasterByJobMasterId(jobMasterId){
+    return this.httpClient.get(environment.baseUrl8083+ 'job-master-mapping/master/'+jobMasterId,{headers:{'X-Tenantid':'PaysquareDefault'}})
+    .pipe(map((res:any)=>{
+      return res;
+    }))
+  }
+
 //check mapping available or not for copy from option
 
 getAvailableJobMappingId(employeeMasterId){

@@ -36,8 +36,8 @@ export class OrganizationDetailsModel {
 		public position2List:JobDetailsDTO,
 		public position3List:JobDetailsDTO,
 		public position4List:JobDetailsDTO,
-		public position5List:JobDetailsDTO
-
+		public position5List:JobDetailsDTO,
+  
 
 		
 		
@@ -121,17 +121,3 @@ export class OrganizationDetailsModel {
 
 	
  }
-
- export class JobDataDTO {
-
-	
-	constructor(	
-		
-		public employeeMasterId:any,
-		public payrollAreaCode:any,	
-		public establishmentMasterId:any,
-		public type:any,
-	    public jobdetailsDTO:Array<JobDetailsDTO>
-
-	){}
-	}

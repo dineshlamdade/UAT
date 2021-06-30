@@ -82,7 +82,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="businessAreaFromDateControl" [minDate]="payrollAreaFromDate"
                             [(ngModel)]="organizationDetailsModel.businessAreaList.fromDate"
@@ -100,7 +100,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="businessAreaToDateControl"
+                            formControlName="businessAreaToDateControl" placement="center"
                             [minDate]="organizationDetailsModel.businessAreaList.fromDate"
                             [maxDate]="payrollAreaToDate"
                             [(ngModel)]="organizationDetailsModel.businessAreaList.toDate"
@@ -140,7 +140,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subAreaFromDateControl" [minDate]="payrollAreaFromDate"
-                            [(ngModel)]="organizationDetailsModel.subAreaList.fromDate"
+                            [(ngModel)]="organizationDetailsModel.subAreaList.fromDate" placement="center"
                             (ngModelChange)="validateSubAreaToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('subAreaFromDateControl').status == 'INVALID'}">
                    
@@ -158,7 +158,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subAreaToDateControl" [minDate]="organizationDetailsModel.subAreaList.fromDate"
                             [maxDate]="payrollAreaToDate"
-                            [(ngModel)]="organizationDetailsModel.subAreaList.toDate"
+                            [(ngModel)]="organizationDetailsModel.subAreaList.toDate" placement="center"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('subAreaToDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -198,7 +198,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="strategicBusinessFromDateControl" [minDate]="payrollAreaFromDate"
                             [(ngModel)]="organizationDetailsModel.strategicBusinessAreaList.fromDate"
-                            (ngModelChange)="validateStrategicToDate($event)"
+                            (ngModelChange)="validateStrategicToDate($event)" placement="center"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('strategicBusinessFromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -214,7 +214,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="strategicBusinessToDateControl"
                             [minDate]="organizationDetailsModel.strategicBusinessAreaList.fromDate"
-                            [maxDate]="payrollAreaToDate"
+                            [maxDate]="payrollAreaToDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.strategicBusinessAreaList.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('strategicBusinessToDateControl').status == 'INVALID'}">
                    
@@ -251,7 +251,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="divisionFromDateControl" [minDate]="payrollAreaFromDate"
+                            formControlName="divisionFromDateControl" [minDate]="payrollAreaFromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.divisionList.fromDate"
                             (ngModelChange)="validateDivisionToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('divisionFromDateControl').status == 'INVALID'}">
@@ -268,7 +268,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="divisionToDateControl"
-                            [maxDate]="payrollAreaToDate"
+                            [maxDate]="payrollAreaToDate" placement="center"
                             [minDate]="organizationDetailsModel.divisionList.fromDate"
                             [(ngModel)]="organizationDetailsModel.divisionList.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('divisionToDateControl').status == 'INVALID'}">
@@ -306,7 +306,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="profitCentreFromDateControl" [minDate]="payrollAreaFromDate"
+                            formControlName="profitCentreFromDateControl" [minDate]="payrollAreaFromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.profitCenterList.fromDate"
                             (ngModelChange)="validateProfitToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('profitCentreFromDateControl').status == 'INVALID'}">
@@ -322,7 +322,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="profitCentreToDateControl"
+                            formControlName="profitCentreToDateControl" placement="center"
                             [minDate]="organizationDetailsModel.profitCenterList.fromDate"
                             [maxDate]="payrollAreaToDate"
                             [(ngModel)]="organizationDetailsModel.profitCenterList.toDate"
@@ -358,7 +358,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="establishmentFromDateControl" [minDate]="payrollAreaFromDate"
                             [(ngModel)]="organizationDetailsModel.establishmentList.fromDate"
@@ -376,7 +376,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="establishmentToDateControl"
+                            formControlName="establishmentToDateControl" placement="center"
                             [maxDate]="payrollAreaToDate"
                             [minDate]="organizationDetailsModel.establishmentList.fromDate"
                             [(ngModel)]="organizationDetailsModel.establishmentList.toDate"
@@ -414,7 +414,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subLocationFromDateControl" [minDate]="payrollAreaFromDate"
                             [(ngModel)]="organizationDetailsModel.subLocationList.fromDate"
@@ -433,7 +433,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="subLocationToDateControl"
+                            formControlName="subLocationToDateControl" placement="center"
                             [maxDate]="payrollAreaToDate"
                             [minDate]="organizationDetailsModel.subLocationList.fromDate"
                             [(ngModel)]="organizationDetailsModel.subLocationList.toDate"
@@ -470,7 +470,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="workLocationFromDateControl" [minDate]="payrollAreaFromDate"
                             [(ngModel)]="organizationDetailsModel.workLocationList.fromDate"
@@ -488,7 +488,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="workLocationToDateControl"
+                            formControlName="workLocationToDateControl" placement="center"
                             [maxDate]="payrollAreaToDate"
                             [minDate]="organizationDetailsModel.workLocationList.fromDate"
                             [(ngModel)]="organizationDetailsModel.workLocationList.toDate"
@@ -520,7 +520,7 @@
 
                 <label class="form-label mt-10">From Date</label>
                 <div class="form-group">
-                    <div class="input-group">
+                    <div class="input-group"> 
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
@@ -528,7 +528,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="costCentreFromDateControl" [minDate]="payrollAreaFromDate"
                             [(ngModel)]="organizationDetailsModel.costCenterList.fromDate"
-                            (ngModelChange)="validateCostToDate($event)"
+                            (ngModelChange)="validateCostToDate($event)" placement="center"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('costCentreFromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -543,7 +543,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="costCentreToDateControl"
-                            [maxDate]="payrollAreaToDate"
+                            [maxDate]="payrollAreaToDate" placement="center"
                             [minDate]="organizationDetailsModel.costCenterList.fromDate"
                             [(ngModel)]="organizationDetailsModel.costCenterList.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('costCentreToDateControl').status == 'INVALID'}">
@@ -581,7 +581,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subCostCentreFromDateControl" [minDate]="payrollAreaFromDate"
-                            [(ngModel)]="organizationDetailsModel.subCostCenterList.fromDate"
+                            [(ngModel)]="organizationDetailsModel.subCostCenterList.fromDate" placement="center"
                             (ngModelChange)="validateSubCostToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('subCostCentreFromDateControl').status == 'INVALID'}">
                    
@@ -597,7 +597,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subCostCentreToDateControl"
-                            [maxDate]="payrollAreaToDate"
+                            [maxDate]="payrollAreaToDate" placement="center"
                             [minDate]="organizationDetailsModel.subCostCenterList.fromDate"
                             [(ngModel)]="organizationDetailsModel.subCostCenterList.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('subCostCentreToDateControl').status == 'INVALID'}">
@@ -634,7 +634,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" placement="center"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="departmentFromDateControl" [minDate]="payrollAreaFromDate"
                             [(ngModel)]="organizationDetailsModel.departmentList.fromDate"
@@ -654,7 +654,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="departmentToDateControl"
                             [maxDate]="payrollAreaToDate"
-                            [minDate]="organizationDetailsModel.departmentList.fromDate"
+                            [minDate]="organizationDetailsModel.departmentList.fromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.departmentList.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('departmentToDateControl').status == 'INVALID'}">
                    
@@ -692,7 +692,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="subDepartmentFromDateControl" [minDate]="payrollAreaFromDate"
+                            formControlName="subDepartmentFromDateControl" [minDate]="payrollAreaFromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.subDepartmentList.fromDate"
                             (ngModelChange)="validateSubDepartmentToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('subDepartmentFromDateControl').status == 'INVALID'}">
@@ -710,7 +710,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="subDepartmentToDateControl"
+                            formControlName="subDepartmentToDateControl" placement="center"
                             [maxDate]="payrollAreaToDate"
                             [minDate]="organizationDetailsModel.subDepartmentList.fromDate"
                             [(ngModel)]="organizationDetailsModel.subDepartmentList.toDate"
@@ -721,6 +721,7 @@
                 </div>
             </div>
         </div>
+
 
         <div *ngIf="filteredJob1List?.length" class="col-sm-6 col-lg-3">
             <div  class=" card p-3  row-card-color">
@@ -747,7 +748,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="job1FromDateControl" [minDate]="payrollAreaFromDate"
+                            formControlName="job1FromDateControl" [minDate]="payrollAreaFromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.job1List.fromDate"
                             (ngModelChange)="validateJob1ToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job1FromDateControl').status == 'INVALID'}">
@@ -765,7 +766,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="job1ToDateControl"
                             [maxDate]="payrollAreaToDate"
-                            [minDate]="organizationDetailsModel.job1List.fromDate"
+                            [minDate]="organizationDetailsModel.job1List.fromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.job1List.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job1ToDateControl').status == 'INVALID'}">
                    
@@ -801,7 +802,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="job2FromDateControl" [minDate]="payrollAreaFromDate"
-                            [(ngModel)]="organizationDetailsModel.job2List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.job2List.fromDate" placement="center"
                             (ngModelChange)="validateJob2ToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job2FromDateControl').status == 'INVALID'}">
                    
@@ -818,7 +819,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="job2ToDateControl"
                             [maxDate]="payrollAreaToDate"
-                            [minDate]="organizationDetailsModel.job2List.fromDate"
+                            [minDate]="organizationDetailsModel.job2List.fromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.job2List.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job2ToDateControl').status == 'INVALID'}">
                    
@@ -853,7 +854,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="job3FromDateControl" [minDate]="payrollAreaFromDate"
+                            formControlName="job3FromDateControl" [minDate]="payrollAreaFromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.job3List.fromDate"
                             (ngModelChange)="validateJob3ToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job3FromDateControl').status == 'INVALID'}">
@@ -869,7 +870,7 @@
                         </div>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
-                            formControlName="job3ToDateControl"
+                            formControlName="job3ToDateControl" placement="center"
                             [maxDate]="payrollAreaToDate"
                             [minDate]="organizationDetailsModel.job3List.fromDate"
                             [maxDate]="payrollAreaToDate"
@@ -909,7 +910,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="job4FromDateControl" [minDate]="payrollAreaFromDate"
                             [(ngModel)]="organizationDetailsModel.job4List.fromDate"
-                            (ngModelChange)="validateJob4ToDate($event)"
+                            (ngModelChange)="validateJob4ToDate($event)" placement="center"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job4FromDateControl').status == 'INVALID'}">
                    
                     </div>
@@ -924,7 +925,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="job4ToDateControl"
-                            [maxDate]="payrollAreaToDate"
+                            [maxDate]="payrollAreaToDate" placement="center"
                             [minDate]="organizationDetailsModel.job4List.fromDate"
                             [(ngModel)]="organizationDetailsModel.job4List.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job4ToDateControl').status == 'INVALID'}">
@@ -961,7 +962,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="job5FromDateControl" [minDate]="payrollAreaFromDate"
-                            [(ngModel)]="organizationDetailsModel.job5List.fromDate"
+                            [(ngModel)]="organizationDetailsModel.job5List.fromDate" placement="center"
                             (ngModelChange)="validateJob5ToDate($event)"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job5FromDateControl').status == 'INVALID'}">
                    
@@ -978,7 +979,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="job5ToDateControl"
                             [maxDate]="payrollAreaToDate"
-                            [minDate]="organizationDetailsModel.job5List.fromDate"
+                            [minDate]="organizationDetailsModel.job5List.fromDate" placement="center"
                             [(ngModel)]="organizationDetailsModel.job5List.toDate"
                             [ngClass]="{'is-invalid' : OrganizationForm.get('job5ToDateControl').status == 'INVALID'}">
                    

@@ -84,6 +84,7 @@ export class OrganizationDetailComponent implements OnInit {
   filteredCostCenterList: Array<any> = [];
   filteredSubCostCenterList: Array<any> = [];
   filteredProfitCenterList: Array<any> = [];
+
  filteredJob1List:Array<any>=[];
  filteredJob2List:Array<any>=[];
  filteredJob3List:Array<any>=[];
@@ -91,17 +92,17 @@ export class OrganizationDetailComponent implements OnInit {
  filteredJob5List:Array<any>=[];
   establishmentDescription: any;
   establishmentCode: any;
-  subLocationDescription: any;
+  // subLocationDescription: any;
   subLocationCode: any;
-  workLocationDescription: any;
+  // workLocationDescription: any;
   workLocationCode: any;
-  businessAreaDescription: any;
+  // businessAreaDescription: any;
   businessAreaCode: any;
-  subAreaDescription: any;
+  // subAreaDescription: any;
   subAreaCode: any;
-  strategicDescription: any;
+  // strategicDescription: any;
   strategicCode: any;
-  divisionDescription: any;
+  // divisionDescription: any;
   divisionCode: any;
   departmentDescription: any;
   departmentCode: any;
@@ -118,6 +119,7 @@ export class OrganizationDetailComponent implements OnInit {
   job3Code:any;
   job4Code:any;
   job5Code:any;
+ 
   // saveNextBoolean: boolean = false;
   payrollAreaCode: any;
   companyName: any;
@@ -192,6 +194,8 @@ dto=new JobDetailsDTO('','','','','','','');
       profitCentreMasterIdControl: [''],
       profitCentreFromDateControl: [{ value: null, disabled: true }],
       profitCentreToDateControl: [{ value: null, disabled: true }],
+
+     
 
       job1IdControl: [''],
       job1FromDateControl: [{ value: null, disabled: true }],
@@ -299,6 +303,7 @@ dto=new JobDetailsDTO('','','','','','','');
       this.filteredCostCenterList=[];
       this.filteredSubCostCenterList=[];
       this.filteredProfitCenterList=[];
+    
  
     
       this.filteredJob1List=[];
@@ -321,19 +326,20 @@ dto=new JobDetailsDTO('','','','','','','');
       this.organizationDetailsModel.costCenterList=new JobDetailsDTO('','','','','','','')
       this.organizationDetailsModel.subCostCenterList =new JobDetailsDTO('','','','','','','')
       this.organizationDetailsModel.profitCenterList =new JobDetailsDTO('','','','','','','')
+      
       this.organizationDetailsModel.job1List= new JobDetailsDTO('','','','','','','')
       this.organizationDetailsModel.job2List= new JobDetailsDTO('','','','','','','')
       this.organizationDetailsModel.job3List= new JobDetailsDTO('','','','','','','')
       this.organizationDetailsModel.job4List= new JobDetailsDTO('','','','','','','')
       this.organizationDetailsModel.job5List= new JobDetailsDTO('','','','','','','')
-      this.organizationDetailsModel.designation1List=new JobDetailsDTO('','','','','','','')
-      this.organizationDetailsModel.designation2List=new JobDetailsDTO('','','','','','','')
-      this.organizationDetailsModel.gradeList= new JobDetailsDTO('','','','','','','')
-      this.organizationDetailsModel.position1List= new JobDetailsDTO('','','','','','','')
-      this.organizationDetailsModel.position2List= new JobDetailsDTO('','','','','','','')
-      this.organizationDetailsModel.position3List= new JobDetailsDTO('','','','','','','')
-      this.organizationDetailsModel.position4List= new JobDetailsDTO('','','','','','','')
-      this.organizationDetailsModel.position5List= new JobDetailsDTO('','','','','','','')
+      // this.organizationDetailsModel.designation1List=new JobDetailsDTO('','','','','','','')
+      // this.organizationDetailsModel.designation2List=new JobDetailsDTO('','','','','','','')
+      // this.organizationDetailsModel.gradeList= new JobDetailsDTO('','','','','','','')
+      // this.organizationDetailsModel.position1List= new JobDetailsDTO('','','','','','','')
+      // this.organizationDetailsModel.position2List= new JobDetailsDTO('','','','','','','')
+      // this.organizationDetailsModel.position3List= new JobDetailsDTO('','','','','','','')
+      // this.organizationDetailsModel.position4List= new JobDetailsDTO('','','','','','','')
+      // this.organizationDetailsModel.position5List= new JobDetailsDTO('','','','','','','')
    
 
      
@@ -416,6 +422,9 @@ dto=new JobDetailsDTO('','','','','','','');
           if(this.profitCentreCode==null){const b=this.JobMasterList.find((c)=>c.jobMasterType === item.jobMasterType)
             this.profitCentreCode=b.description;}
         }
+
+       
+
         if (item.jobMasterType == 'Job1') {
           this.organizationDetailsModel.job1List.jobMasterType=item.jobMasterType;        
          this.filteredJob1List.push(item);   
@@ -596,6 +605,8 @@ dto=new JobDetailsDTO('','','','','','','');
         } else{ location.establishmntList=this.organizationDetailsModel.establishmentList;}}
       }else{location.establishmentList=null}
 
+     
+
       location.designation1List=null;
         location.designation2List=null;
         location.gradeList=null;
@@ -639,11 +650,7 @@ dto=new JobDetailsDTO('','','','','','','');
           this.organizationDetailsModel.strategicBusinessAreaList.fromDate= new Date(this.organizationDetailsModel.strategicBusinessAreaList.fromDate);
           this.organizationDetailsModel.strategicBusinessAreaList.toDate= new Date(this.organizationDetailsModel.strategicBusinessAreaList.toDate);
         }
-        if(location.divisionList!=null){          
-          this.organizationDetailsModel.divisionList=location.divisionList;
-          this.organizationDetailsModel.divisionList.fromDate= new Date(this.organizationDetailsModel.divisionList.fromDate);
-          this.organizationDetailsModel.divisionList.toDate= new Date(this.organizationDetailsModel.divisionList.toDate);
-        }
+       
         if(location.departmentList!=null){          
           this.organizationDetailsModel.departmentList=location.departmentList;
           this.organizationDetailsModel.departmentList.fromDate= new Date(this.organizationDetailsModel.departmentList.fromDate)
@@ -864,6 +871,8 @@ dto=new JobDetailsDTO('','','','','','','');
         else {
           this.disableProfitDates();
         }
+
+       
         //job1
         if (this.organizationDetailsModel.job1List.description!= "") {
           const job1FromDate = this.OrganizationForm.get('job1FromDateControl');
@@ -1200,14 +1209,15 @@ dto=new JobDetailsDTO('','','','','','','');
     eFromDate.enable();
     const eToDate = this.OrganizationForm.get('establishmentToDateControl');
     eToDate.enable();
-    if (this.organizationDetailsModel.businessAreaList.masterCode == '' || this.organizationDetailsModel.businessAreaList.masterCode == null) {
+    if (this.organizationDetailsModel.establishmentList.masterCode == '' || this.organizationDetailsModel.establishmentList.masterCode == null) {
       this.organizationDetailsModel.establishmentList.fromDate = null;
       this.organizationDetailsModel.establishmentList.toDate = null;
       this.disableEstDates();
     }
   }
 
-
+ 
+ 
   validateSubAreaToDate(event) {
     if(event){
     if (this.organizationDetailsModel.subAreaList.toDate == '' || this.organizationDetailsModel.subAreaList.toDate == null) {
@@ -1419,6 +1429,9 @@ dto=new JobDetailsDTO('','','','','','','');
     this.OrganizationForm.controls.profitCentreToDateControl.updateValueAndValidity();
 
   }
+
+ 
+
   enableProfitDate() {
     const profitFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
     profitFromDate.enable();
@@ -1819,6 +1832,7 @@ dto=new JobDetailsDTO('','','','','','','');
     }
     this.filteredSubCostCenterList = filtered;
   }
+  
 
   disableProfitDates() {
     const profitCentreFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
@@ -1844,6 +1858,8 @@ dto=new JobDetailsDTO('','','','','','','');
     }
     this.filteredProfitCenterList = filtered;
   }
+
+  
 
   SearchJob1(event){
     this.organizationDetailsModel.job1List.description = null;
@@ -2154,7 +2170,8 @@ dto=new JobDetailsDTO('','','','','','','');
       this.disableJob5Dates();
     }
   }
-
+  
+  
 
   filterpayrollArea(event) {
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side

@@ -18,7 +18,8 @@ export class ProjectDetailComponent implements OnInit {
   projectForm: FormGroup;
   tomorrow = new Date();
   projectDetailsModel = new ProjectDetailsModel('', '', null, null, null, '', '', null, '', '', '', '', '');
-  projectList = 'Project1,Project2,Project3,Project4,Project5'.split(',');
+  projectList :Array<any>=[];
+  //'Project1,Project2,Project3,Project4,Project5'.split(',');
   billableList = 'Billable,Not Billable,Not Applicable'.split(',');
 
   employeeMasterId: number;
@@ -67,7 +68,18 @@ payrollAreaId:any;
     if (companyName != null) {
       this.companyName = new String(companyName);
     }
+    
+this.JobInformationService.getJobMasterByType('Project').subscribe(res=>{
+  const jobMasterId = res.data.results[0].jobMasterId;
+  this.JobInformationService.getJobMasterByJobMasterId(jobMasterId).subscribe(res=>{
+    let project:Array<any> = res.data.results;
+    this.projectList =project.find((d)=>d.groupCompanyId===this.companyId)
+   console.log(this.projectList);
+   })
+})
 
+        
+     
     //get payroll area's list
     this.getPayrollAreaInformation();
 
