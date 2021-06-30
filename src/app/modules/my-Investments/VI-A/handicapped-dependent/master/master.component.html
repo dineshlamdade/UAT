@@ -31,17 +31,17 @@
                 <div *ngIf="masterForm.relationship.errors.required">Relationship Is Mandatory</div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-4" >
               <label class="form-label ml-15" tooltip="Is Family Member Claiming Deduction [Sec.80-U]?"
                 placement="left">Is Family Member Claiming Deduction [Sec.80-U]?</label>
               <div class="custom-controls-stacked ml-15 mt-10">
                 <label class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" class="custom-control-input" name="isClaiming80U" value=1
+                  <input type="radio" class="custom-control-input" name="isClaiming80U" value=1 [disabled]="isRadioButtonDisabled"
                     (change)="onRadioChange(true)">
                   <span class="custom-control-label">Yes</span>
                 </label>
                 <label class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" class="custom-control-input" name="isClaiming80U" value=0 checked
+                  <input type="radio" class="custom-control-input" name="isClaiming80U" value=0 checked [disabled]="isRadioButtonDisabled"
                     (change)="onRadioChange(false)">
                   <span class="custom-control-label">No</span>
                 </label>
