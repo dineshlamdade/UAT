@@ -80,6 +80,7 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 import { LoanMasterModule } from './modules/loan-master/loan-master.module';
 import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
+import { TestComponent } from './test/test.component';
 
 
 @NgModule( {
@@ -88,6 +89,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     ProfileComponent,
     ShortenStringPipe,
     SettingsComponent,
+    TestComponent,
   ],
 
   exports: [],

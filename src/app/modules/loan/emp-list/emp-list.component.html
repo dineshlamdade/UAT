@@ -1,0 +1,450 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="tabset">
+                        <!-- Tab 1 -->
+                        <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
+                        <label for="tab1">Loan Details</label>
+                        <!-- Tab 2 -->
+                        <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+                        <label for="tab2">Transaction</label>
+
+
+                        <div class="tab-panels">
+                            <section id="marzen" class="tab-panel">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <form [formName]="LoanForm" (ngSubmit)="loanFormSubmit()">
+                                                    <div class="row mt-25">
+                                                        <p-table #dt1 [value]="customers" [paginator]="true" [rows]="10"
+                                                            [showCurrentPageReport]="true"
+                                                            (sortFunction)="customSort($event)" [customSort]="true"
+                                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                            [rowsPerPageOptions]="[10,25,50]"
+                                                            [globalFilterFields]="['applNo','Date','empCode','empName','loanType','Amount','loanAmnt','noOInstallmnts','interest','Status']">
+
+                                                            <ng-template pTemplate="caption">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                                                                            aria-hidden="true"
+                                                                            [routerLink]="['/loan/disbursement']"><b><i
+                                                                                    class="fa fa-money"></i></b>
+                                                                            Disbursement
+                                                                            Request
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                                                                            [routerLink]="['/loan/adhoc']"><b><i
+                                                                                    class="fa fa-credit-card"></i></b>
+                                                                            Adhoc
+                                                                            Repayment
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                                                                            [routerLink]="['/loan/rescheduleRequest']"><b><i
+                                                                                    class="fa fa-calendar-check-o"></i></b>
+                                                                            Reschedule
+                                                                            Request
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                                                                            [routerLink]="['/loan/settlementRequest']"><b><i
+                                                                                    class="fa fa-handshake-o"></i></b>
+                                                                            Settlement
+                                                                            Request
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                                                                            aria-hidden="true"><b><i
+                                                                                    class="fa fa-check-square-o"></i></b>Approve
+                                                                        </button>
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <!-- </div> -->
+                                                            </ng-template>
+
+                                                            <ng-template pTemplate="header">
+                                                                <tr>
+                                                                    <th  style="width: 3rem">
+                                                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                                                    </th>
+
+                                                                    <th >
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Loan Application
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="applNo"
+                                                                                    pSortableColumn="applNo">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter field="applNo"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th >
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Date
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Date"
+                                                                                    pSortableColumn="Date">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text" field="Date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Loan Type
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="empCode"
+                                                                                    pSortableColumn="empCode">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="empCode" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Repayment Type
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="empName"
+                                                                                    pSortableColumn="empName">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="empName" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div
+                                                                            class="p-d-flex p-ai-center justify-content-center">
+                                                                            Amount
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="proofsubmission"
+                                                                                    pSortableColumn="proofsubmission">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text" field="name"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Balance
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="loanType"
+                                                                                    pSortableColumn="loanType">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="loanType" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Status
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="loanType"
+                                                                                    pSortableColumn="loanType">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="loanType" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                   
+                                                                    <th>Action</th>
+                                                                </tr>
+
+                                                            </ng-template>
+
+                                                            <ng-template pTemplate="body" let-customer>
+                                                                <tr class="p-selectable-row">
+                                                                    <td>
+                                                                        <p-tableCheckbox [value]="customer">
+                                                                        </p-tableCheckbox>
+                                                                    </td>
+                                                                    <!-- <td>1</td> -->
+                                                                    <td>+121</td>
+                                                                    <td>{{customer.Date}}</td>
+                                                                    <td>Car Loan</td>
+                                                                    <td></td>
+                                                                    <td>111111</td>
+
+                                                                    <td>121</td>
+                                                                    <td>Approved</td>
+                                                                    
+
+                                                                    <td class="primeng-table-header-left">
+                                                                        <span>
+                                                                            <i
+                                                                                class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
+                                                                                tooltip="Edit"
+                                                                                [routerLink]="['/loan/add-new-loan']"></i>
+
+                                                                            <i class="fa fa-eye font-16 text-blue cursor-pointer mr-10"
+                                                                                tooltip="View"
+                                                                                (click)="viewEmployeeRow(employee)"></i>
+
+                                                                        </span>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </ng-template>
+
+                                                        </p-table>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section id="rauchbier" class="tab-panel">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <form [formName]="LoanForm" (ngSubmit)="loanFormSubmit()">
+                                                    <div class="row mt-25">
+                                                        <p-table #dt1 [value]="customers" [paginator]="true" [rows]="10"
+                                                            [showCurrentPageReport]="true"
+                                                            (sortFunction)="customSort($event)" [customSort]="true"
+                                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                            [rowsPerPageOptions]="[10,25,50]"
+                                                            [globalFilterFields]="['applNo','Date','empCode','empName','loanType','Amount','loanAmnt','noOInstallmnts','interest','Status']">
+
+                                                            <ng-template pTemplate="caption">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                                                                            aria-hidden="true"
+                                                                            [routerLink]="['/loan/disbursement']"><b><i
+                                                                                    class="fa fa-money"></i></b>
+                                                                            Disbursement
+                                                                            Request
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                                                                            [routerLink]="['/loan/adhoc']"><b><i
+                                                                                    class="fa fa-credit-card"></i></b>
+                                                                            Adhoc
+                                                                            Repayment
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                                                                            [routerLink]="['/loan/rescheduleRequest']"><b><i
+                                                                                    class="fa fa-calendar-check-o"></i></b>
+                                                                            Reschedule
+                                                                            Request
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
+                                                                            [routerLink]="['/loan/settlementRequest']"><b><i
+                                                                                    class="fa fa-handshake-o"></i></b>
+                                                                            Settlement
+                                                                            Request
+                                                                        </button>
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                                                                            aria-hidden="true"><b><i
+                                                                                    class="fa fa-check-square-o"></i></b>Approve
+                                                                        </button>
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <!-- </div> -->
+                                                            </ng-template>
+
+                                                            <ng-template pTemplate="header">
+                                                                <tr>
+                                                                    <th  style="width: 3rem">
+                                                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                                                    </th>
+
+                                                                    <th >
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Loan Application
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="applNo"
+                                                                                    pSortableColumn="applNo">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter field="applNo"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th >
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Date
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="Date"
+                                                                                    pSortableColumn="Date">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text" field="Date"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Loan Type
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="empCode"
+                                                                                    pSortableColumn="empCode">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="empCode" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Repayment Type
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="empName"
+                                                                                    pSortableColumn="empName">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="empName" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div
+                                                                            class="p-d-flex p-ai-center justify-content-center">
+                                                                            Amount
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="proofsubmission"
+                                                                                    pSortableColumn="proofsubmission">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text" field="name"
+                                                                                    display="menu" class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Balance
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="loanType"
+                                                                                    pSortableColumn="loanType">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="loanType" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                                            Status
+                                                                            <div class="Sort_Filter_Position">
+                                                                                <p-sortIcon field="loanType"
+                                                                                    pSortableColumn="loanType">
+                                                                                </p-sortIcon>
+                                                                                <p-columnFilter type="text"
+                                                                                    field="loanType" display="menu"
+                                                                                    class="p-ml-auto">
+                                                                                </p-columnFilter>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                   
+                                                                    <th>Action</th>
+                                                                </tr>
+
+                                                            </ng-template>
+
+                                                            <ng-template pTemplate="body" let-customer>
+                                                                <tr class="p-selectable-row">
+                                                                    <td>
+                                                                        <p-tableCheckbox [value]="customer">
+                                                                        </p-tableCheckbox>
+                                                                    </td>
+                                                                    <!-- <td>1</td> -->
+                                                                    <td>+121</td>
+                                                                    <td>{{customer.Date}}</td>
+                                                                    <td>Car Loan</td>
+                                                                    <td></td>
+                                                                    <td>111111</td>
+
+                                                                    <td>121</td>
+                                                                    <td>Approved</td>
+                                                                    
+
+                                                                    <td class="primeng-table-header-left">
+                                                                        <span>
+                                                                            <i
+                                                                                class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
+                                                                                tooltip="Edit"
+                                                                                [routerLink]="['/loan/add-new-loan']"></i>
+
+                                                                            <i class="fa fa-eye font-16 text-blue cursor-pointer mr-10"
+                                                                                tooltip="View"
+                                                                                (click)="viewEmployeeRow(employee)"></i>
+
+                                                                        </span>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </ng-template>
+
+                                                        </p-table>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

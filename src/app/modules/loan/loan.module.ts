@@ -18,9 +18,10 @@ import { RescheduleComponent } from './reschedule/reschedule.component';
 import { SettlementComponent } from './settlement/settlement.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { EmpListComponent } from './emp-list/emp-list.component';
 
 @NgModule({
-  declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent, SettlementComponent],
+  declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent, SettlementComponent, EmpListComponent],
   imports: [
     CommonModule,
     LoanRoutingModule,

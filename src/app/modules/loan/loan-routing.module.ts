@@ -6,7 +6,7 @@ import { LoanComponent } from './loan/loan.component';
 import {AdhocComponent} from './adhoc/adhoc.component';
 import {RescheduleComponent} from './reschedule/reschedule.component';
 import { SettlementComponent } from './settlement/settlement.component';
-
+import { EmpListComponent } from './emp-list/emp-list.component';
 
 const routes: Routes = [
   {
@@ -41,6 +41,11 @@ const routes: Routes = [
         path:'application',
         component:LoanComponent,
 
+    },
+    {
+      path:'empList',
+      component:EmpListComponent,
+    
     },
     ]
   },
