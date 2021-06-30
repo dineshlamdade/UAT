@@ -410,10 +410,10 @@
                                         <label class="form-lable mb-0">{{(prio.priorityType)}} </label>
                                       </td>
                                       <td>
-                                        <label class="form-lable mb-0"><input type="text"  [disabled]="viewFlag"  value="{{prio.resolutionTime}}"></label>
+                                        <label class="form-lable mb-0"><input type="text"  [disabled]="viewFlag"  value="{{prio.resolutionTime}}"  (focusout)="resolutionTime($event.target.value,prio)" ></label>
                                       </td>
                                       <td>
-                                        <label class="form-lable mb-0"><input type="text"  [disabled]="viewFlag" value="{{prio.autoClose}}"></label>
+                                        <label class="form-lable mb-0"><input type="text"  [disabled]="viewFlag" value="{{prio.autoClose}}"  (focusout)="autoClose($event.target.value,prio)"></label>
                                       </td>
                                       <td>
                                         <label class="form-lable mb-0" ><label class="custom-control custom-checkbox checkbox-center">

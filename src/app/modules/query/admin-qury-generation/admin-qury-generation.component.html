@@ -216,7 +216,7 @@
 
                                       <td>
                                         <!-- <pre>{{listDoc | json}}</pre> -->
-                                        <span  class="text-orange" tooltip="{{item.name}}," (click)="docViewer(template1,i)"><i
+                                        <span  class="text-orange" tooltip="{{item.name}}" (click)="docViewer(template1,i)"><i
                                         class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.fileName}},</span>
                                                             <!-- <div class="col-md-12" *ngFor="let doc of listDoc; let i = index"> {{ doc.fileName }}
                                                                 <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
@@ -228,7 +228,7 @@
 
                                       <td *ngIf="hideEditTime">
                                           <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal" >
-                               </i>&nbsp;&nbsp;
+                                    </i>&nbsp;&nbsp;
                                       </td>
                                   </tr>
 
@@ -352,7 +352,7 @@
                         <b><i class="fa fa-file"></i></b> Save Draft & Next
                       </button>
 
-                      <button  type="submit" tooltip =" Save Draft " *ngIf="isSaveDraft"
+                      <button  type="submit" tooltip =" Save Draft " *ngIf="isSaveDraft"  [routerLink]="['/admin-query-generation']"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
                         (click)="saveandDraftPopUp(saveanddraftQueryGeneration)" [disabled]="!queryGenerationForm.valid"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}" >
@@ -387,7 +387,7 @@
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-save"></i></b> Save & next</button>
 
-                      <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" *ngIf="isSave"
+                      <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" *ngIf="isSave" [routerLink]="['/admin-query-generation']"
                       tooltip="Save"[disabled]="!queryGenerationForm.valid" (click)="savePopUp(saveQueryGeneration)"
                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;

@@ -22,6 +22,7 @@ import {TreeModule} from 'primeng/tree';
 import { QueryCOmmunicationComponent } from './query-communication/query-communication.component';
 import {MultiSelectModule} from 'primeng/multiselect';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
 // import { ChartComponent } from "ng-apexcharts";
 @NgModule({
   declarations:
@@ -30,6 +31,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
   AdminQuryGenerationComponent,
   QueryDashboardComponent,
   QueryCOmmunicationComponent,
+  DocumentViewerComponent,
   ],
   imports: [
     TreeModule,

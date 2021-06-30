@@ -36,13 +36,13 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private alertService: AlertServiceService,
   ) {
-    
+
     // this.detectedLocale = this.getUsersLocale('en-US');
     this.selectedLanguage = localStorage.getItem('selectedLanguage');
     // generate a regex from the locales we support
     const supportedRegex = new RegExp('^' + this.locales.map((l) => l.value.substring(0, 2)).join('|^'));
     // check if the user's preferred language is supported and if so, use it.
-    
+
     if (this.selectedLanguage) {
       // check if the user's preferred language is supported and if so, use it.
       if (this.selectedLanguage.match(supportedRegex)) {
@@ -58,8 +58,8 @@ export class LoginComponent implements OnInit {
   signIn() {
 
     const data = {
-      emailId: this.email,
-      password: this.password,
+      emailId: 'pooja.katkar@paysquare.com',
+      password: 'pay@123',
     };
     console.log(data);
     this.service.postLogin(data)
@@ -140,7 +140,7 @@ export class LoginComponent implements OnInit {
 
   // change locale/language at runtime
   updateLocale(locale) {
-    
+
     localStorage.setItem('selectedLanguage', locale);
 
     if (this.locales.some((l) => l.value === locale)) {

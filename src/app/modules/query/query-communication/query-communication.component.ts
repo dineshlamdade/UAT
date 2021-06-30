@@ -91,7 +91,6 @@ constructor(private modalService: BsModalService ,public formBuilder : FormBuild
 
     this.route.params.subscribe(value =>{
       this.queryGenerationEmpId = value.id;
-
     })
 
     if( localStorage.getItem('dashboardSummary') != null)
@@ -352,18 +351,6 @@ addQueryIteration(value){ // post api for save data
       this.alertService.sweetalertMasterSuccess('Query Replied Successfully', '' );
       this.getIterationdetailsbyQueryID(0);
     })
-    // results: object = new Object();
-
-    // this.results = [{
-    //   {
-    //     "queAnsMasterId": this.queryCommunicationForm.controls.queAnsMasterId.value
-    //   },
-    //   {
-    //     "queryDescription": this.queryCommunicationForm.controls.queryDescription.value
-    //   }
-
-    // }]
-
     this.reset();
 }
 addForwordScreen(value)
@@ -599,5 +586,24 @@ this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
  this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
 );
 }
+
+
+navigateToDocmentViewer() {
+  const url = this.router.serializeUrl(
+    this.router.createUrlTree(['/document-viewer'])
+  );
+
+  // localStorage.setItem('masterInfo', JSON.stringify(this.masterInfo));
+  // localStorage.setItem('documentInformationId', documentInformationId);
+
+  this.router.navigate([]).then((result) => {
+    window.open(
+      url,
+      '_blank',
+      'location=yes,height=1000,width=1000,scrollbars=yes,status=yes'
+    );
+  });
+}
+
 
 };

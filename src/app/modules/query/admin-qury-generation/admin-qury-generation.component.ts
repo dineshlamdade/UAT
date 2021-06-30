@@ -396,8 +396,6 @@ addQuerywithDocs()
         this.reset();
       })
 
-
-
 }
 updateQuerywithDoc(value)
 {
@@ -446,29 +444,8 @@ getEmpMasterDetails(employeeMasterIdData)// temp id is used
     })
 }
 
-// getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list by QueryGenerationEmpId
-//                                         //for Query Iteration reply screen dropdown.
-// {
-//   this.queryService.getQueAnstemplistById(this.queryGenerationEmpId).subscribe(res =>
-//     {
-//       this.getQueAnstemplistByIdData = res.data.results;
-//     })
-// }
-// answerTempChange(value)
-// {
-//   console.log("this.getQueAnstemplistByIdData: "+ JSON.stringify(this.getQueAnstemplistByIdData))
-
-//     this.getQueAnstemplistByIdData.forEach(element => {
-//       if(element.queAnsMasterId == value)
-//     {
-//          this.descriptionData = element.answerDescription;
-//          this.queryGenerationForm.controls['queryDescription'].setValue(this.descriptionData);
-//     }
-//     // this.descriptionData = element.answerDescription;
-
-//   });
-// }
 editQuery(queryGenerationSummary) {
+
   this.querySubQueryTypeQAData = null
   this.listQAData = [];
   this.editflag = true;
@@ -479,13 +456,18 @@ editQuery(queryGenerationSummary) {
   this.isReset = false;
   this.isCancle = true;
   this.isUpdateDraft = true;
+  this.hideEditTime = false;
+  // if(this.listDoc.length == 0)
+  // {
+  // this.editflag = false;
+  // this.hideEditTime = true;
+  // }
   this.getById(queryGenerationSummary.queryGenerationEmpId);
   this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
   this.editQuerySummaery = queryGenerationSummary;
-
   this.queryGenerationForm.controls['queryNumber'].disable();
   this.urlArray = queryGenerationSummary.listDoc;
-  this.hideEditTime = false;
+
 
 }
 viewQuery(queryGenerationSummary)
@@ -568,7 +550,7 @@ public removeSelectedLicMasterDocument(index: number, docType: string) {
 public docViewer(template1: TemplateRef<any>, document: any) {
   //console.log('---in doc viewer--');
   this.ListOfDocuments = document;
-  this.urlIndex = 0;
+  this.urlIndex = document;
   //document.documents.forEach(element => {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       document.documents[this.urlIndex].queryBlobURI

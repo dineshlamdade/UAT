@@ -197,9 +197,13 @@ export class QueryTypeMasterComponent implements OnInit {
 radioButtonChanged(event){
   let radioValue = event.target['value'];
    if(radioValue == 0){
-     this.ishidden = true;
+     this.ishidden = false;
      this.subquerview = false;
      this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
+     this.subQueryRequestDTO = [];
+     this.querytypeForm.controls['subQueryRequestDTO'].setValue([]);
+     this.querytypeForm.controls['subQuery'].setValue(false);
+
 
    }else{
      this.ishidden = false;
@@ -712,5 +716,29 @@ resolutionEvent(value,prio)
   "defaultPriority":'',
   "active":true
 })
+}
+resolutionTime(value,prio)
+{
+  this.listQueryPriorityRequestDTO.push({
+    "queTypePriorityMasterId":0,
+    "queryTypeMasterId":0,
+    "priorityType":'',
+    "resolutionTime":value,
+    "autoClose":prio.autoClose,
+    "defaultPriority":'',
+    "active":true
+  })
+}
+autoClose(value,prio)
+{
+  this.listQueryPriorityRequestDTO.push({
+    "queTypePriorityMasterId":0,
+    "queryTypeMasterId":0,
+    "priorityType":'',
+    "resolutionTime":prio.resolutionTime,
+    "autoClose":value,
+    "defaultPriority":'',
+    "active":true
+  })
 }
 }
