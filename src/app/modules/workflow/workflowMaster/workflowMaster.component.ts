@@ -43,6 +43,7 @@ export class WorkflowMasterComponent implements OnInit {
   selectedLevelManager: any;
   selectedLevelManagerRM: any;
   numberOfApprovalLevel: number = 1;
+  header: any[];
   
 
   constructor(private formBuilder: FormBuilder,
@@ -582,6 +583,8 @@ export class WorkflowMasterComponent implements OnInit {
 
   exportAsXLSX(): void {
     this.excelData = [];
+    this.header = []
+    this.header =["Code","Description","No. Of Approval Level","No. Of Approvers", "Auto Approval", "Create By", "Created Date"]
     //this.excelData = this.workflowMasterHeaderResponseDTO
     this.workflowMasterHeaderResponseDTO.forEach(element => {
       if(element.autoApproval == true){
@@ -600,7 +603,7 @@ export class WorkflowMasterComponent implements OnInit {
 			}
 			this.excelData.push(obj)
 		});
-    this.excelservice.exportAsExcelFile(this.excelData, 'Workflow-Summary','Workflow-Master');
+    this.excelservice.exportAsExcelFile(this.excelData, 'Workflow-Summary','Workflow-Master',this.header);
   }
 
 

@@ -12,9 +12,12 @@ export class ExcelserviceService {
 
   constructor() { }
 
-  public exportAsExcelFile(json: any[], excelFileName: string, sheetname: string): void {
+  public exportAsExcelFile(json: any[], excelFileName: string, sheetname: string,header): void {
+
+    
 
     const myworksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    
     if (sheetname == 'Workflow-Master') {
       const myworkbook: XLSX.WorkBook = { Sheets: { 'Workflow-Master': myworksheet }, SheetNames: [sheetname] };
       const excelBuffer: any = XLSX.write(myworkbook, { bookType: 'xlsx', type: 'array' });

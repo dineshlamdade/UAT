@@ -117,6 +117,7 @@ export class AttendanceComponent implements OnInit {
   selectedProcessingCyclename: any;
   payrollListData: any;
   attendanceInputGetHistoryfuturecyclesData: any;
+  header: any[];
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
     private payrollservice: PayrollInputsService,
@@ -208,8 +209,9 @@ export class AttendanceComponent implements OnInit {
 
   exportAsXLSX(): void {
     this.excelData = [];
+    this.header = []
     this.excelData = this.attendanceData
-    this.excelservice.exportAsExcelFile(this.excelData, 'Attandence','Attendance');
+    this.excelservice.exportAsExcelFile(this.excelData, 'Attandence','Attendance',this.header);
   }
 
   AttendanceSummaryDatewiseRecordsUI() {
