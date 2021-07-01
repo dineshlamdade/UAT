@@ -22,8 +22,8 @@
                                             <div class="card-body">
 
                                                 <form [formName]="LoanForm" (ngSubmit)="loanFormSubmit()">
-                                                    <div class="row mt-25">
-                                                        <p-table #dt1 [value]="customers" [paginator]="true" [rows]="10"
+                                                    <div class="mt-25">
+                                                        <p-table #dt1  [paginator]="true" [rows]="10"
                                                             [showCurrentPageReport]="true"
                                                             (sortFunction)="customSort($event)" [customSort]="true"
                                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -63,11 +63,11 @@
                                                                             Settlement
                                                                             Request
                                                                         </button>
-                                                                        <button type="button" tooltip="Button"
+                                                                        <!-- <button type="button" tooltip="Button"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
                                                                             aria-hidden="true"><b><i
                                                                                     class="fa fa-check-square-o"></i></b>Approve
-                                                                        </button>
+                                                                        </button> -->
 
                                                                     </div>
 
@@ -183,15 +183,15 @@
 
                                                             </ng-template>
 
-                                                            <ng-template pTemplate="body" let-customer>
+                                                            <ng-template pTemplate="body" >
                                                                 <tr class="p-selectable-row">
                                                                     <td>
-                                                                        <p-tableCheckbox [value]="customer">
+                                                                        <p-tableCheckbox>
                                                                         </p-tableCheckbox>
                                                                     </td>
                                                                     <!-- <td>1</td> -->
                                                                     <td>+121</td>
-                                                                    <td>{{customer.Date}}</td>
+                                                                    <td>12-Apr-2021</td>
                                                                     <td>Car Loan</td>
                                                                     <td></td>
                                                                     <td>111111</td>
@@ -234,8 +234,8 @@
                                             <div class="card-body">
 
                                                 <form [formName]="LoanForm" (ngSubmit)="loanFormSubmit()">
-                                                    <div class="row mt-25">
-                                                        <p-table #dt1 [value]="customers" [paginator]="true" [rows]="10"
+                                                    <div class="mt-25">
+                                                        <p-table #dt1  [paginator]="true" [rows]="10"
                                                             [showCurrentPageReport]="true"
                                                             (sortFunction)="customSort($event)" [customSort]="true"
                                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -275,11 +275,11 @@
                                                                             Settlement
                                                                             Request
                                                                         </button>
-                                                                        <button type="button" tooltip="Button"
+                                                                        <!-- <button type="button" tooltip="Button"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
                                                                             aria-hidden="true"><b><i
                                                                                     class="fa fa-check-square-o"></i></b>Approve
-                                                                        </button>
+                                                                        </button> -->
 
                                                                     </div>
 
@@ -395,15 +395,15 @@
 
                                                             </ng-template>
 
-                                                            <ng-template pTemplate="body" let-customer>
+                                                            <ng-template pTemplate="body" >
                                                                 <tr class="p-selectable-row">
                                                                     <td>
-                                                                        <p-tableCheckbox [value]="customer">
+                                                                        <p-tableCheckbox>
                                                                         </p-tableCheckbox>
                                                                     </td>
                                                                     <!-- <td>1</td> -->
                                                                     <td>+121</td>
-                                                                    <td>{{customer.Date}}</td>
+                                                                    <td>12-Apr-2021</td>
                                                                     <td>Car Loan</td>
                                                                     <td></td>
                                                                     <td>111111</td>

@@ -70,10 +70,12 @@ export class LoanComponent implements OnInit {
   group:groups[];
   first = 0;
   rows = 10;
+  loanApplicationSummary: any;
 
   constructor(public formBuilder : FormBuilder,
-    private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService ,
-    private datePipe: DatePipe,private excelservice: ExcelService, public sanitizer: DomSanitizer,private router: Router) {
+    private modalService: BsModalService, private loanservice:LoanService,public toster : ToastrService ,
+    private datePipe: DatePipe,private excelservice: ExcelService, public sanitizer: DomSanitizer,private router: Router,
+    ) {
     this.LoanForm = this.formBuilder.group({
 
       // "searchText": new FormControl(''),
@@ -82,7 +84,7 @@ export class LoanComponent implements OnInit {
 
    }
   ngOnInit(): void {
-    // this.getAllData();
+   this.getAllData();
     this.customers = [
       {applNo: '551', Date:'12Apr2021', empCode: '001',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'10,000.00',loanAmnt:'1',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
       {applNo: '11', Date:'12Apr2021',empCode: '002', empName:'bbb',loanType:'House Rent',Type:'Settlement', Amount:'50,000.00', loanAmnt:'2',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'Submitted'},
@@ -124,6 +126,8 @@ export class LoanComponent implements OnInit {
     
     ];
   }
+
+  
   loanFormSubmit()
   {
 
@@ -192,7 +196,7 @@ export class LoanComponent implements OnInit {
 {
 this.loanservice.getAll().subscribe(res =>
   {
-    this.summaryData = res.data.results[0];
+    this.loanApplicationSummary = res.data.results[0];
   })
 }
 
