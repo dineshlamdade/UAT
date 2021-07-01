@@ -84,7 +84,7 @@ export class LoanComponent implements OnInit {
 
    }
   ngOnInit(): void {
-   this.getAllData();
+  //  this.getAllData();
     this.customers = [
       {applNo: '551', Date:'12Apr2021', empCode: '001',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'10,000.00',loanAmnt:'1',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
       {applNo: '11', Date:'12Apr2021',empCode: '002', empName:'bbb',loanType:'House Rent',Type:'Settlement', Amount:'50,000.00', loanAmnt:'2',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'Submitted'},
