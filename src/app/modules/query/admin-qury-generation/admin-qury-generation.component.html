@@ -183,7 +183,7 @@
                                         <th scope="col" class="font700 wd-12"  *ngIf="hideEditTime" >Action</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngIf="!editflag">
+                                <tbody *ngIf="!editflag || !hideEditTime1">
                                     <tr  >
                                         <th scope="row"><span tooltip="1">1</span></th>
 
@@ -208,7 +208,7 @@
                                     </tr>
 
                                 </tbody>
-                                <tbody *ngIf="editflag">
+                                <tbody *ngIf="editflag && hideEditTime1 ">
                                   <tr  *ngFor="let item of listDoc; let i = index">
                                       <th scope="row"><span tooltip="1">{{i+1}}</span></th>
 
@@ -317,7 +317,7 @@
                         </div>
                         <div class="col-md-1">
                           <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
-                            [disabled]="urlIndex == urlArray.length - 1">
+                            [disabled]="urlIndex == listDoc.length - 1">
                             <i class="fa fa-angle-right text-white font-30 p-10"></i>
                           </button>
                         </div>

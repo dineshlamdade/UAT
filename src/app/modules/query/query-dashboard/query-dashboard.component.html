@@ -488,7 +488,7 @@
                                                                     class="form-lable mb-0 " >{{summary.applicationModuleName}}</label>
                                                             </td>
 
-                                                            <td class="a" (click)="smallpopup(queryDescription,summary)"> <label
+                                                            <td class="a" (click)="smallpopup1(queryDescription,summary)"> <label
                                                               class="form-lable mb-0 a" ><p class="a">{{summary.queryDescription}}</p></label>
                                                             </td  >
 
@@ -613,7 +613,7 @@
                                                           </div>
                                                       </div>
                                                       <div class="modal-footer">
-                                                          <button type="button" class="btn btn-primary" (click)="getDeleteById(summary);modalRef.hide()">Yes</button>
+                                                          <button type="button" class="btn btn-primary" (click)="getDeleteById(queryGenerationEmpId);modalRef.hide()">Yes</button>
                                                           <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
                                                       </div>
                                                   </ng-template>

@@ -588,7 +588,8 @@ this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
 }
 
 
-navigateToDocmentViewer() {
+navigateToDocmentViewer(GetIterationdetailsbyQueryIDData) {
+  localStorage.setItem('GetIterationdetailsbyQueryIDData',JSON.stringify(GetIterationdetailsbyQueryIDData))
   const url = this.router.serializeUrl(
     this.router.createUrlTree(['/document-viewer'])
   );

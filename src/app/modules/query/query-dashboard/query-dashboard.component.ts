@@ -63,6 +63,7 @@ export class QueryDashboardComponent implements OnInit {
   summarydescription: any;
   summarysubject: any;
   summarysubquerydescription: any;
+  queryGenerationEmpId: any;
 
   constructor(public formBuilder : FormBuilder,public queryService :QueryService
     ,private excelservice: ExcelService,private alertService: AlertServiceService,private router: Router,
@@ -124,7 +125,14 @@ export class QueryDashboardComponent implements OnInit {
           ]
         };
 }
-  smallpopup(queryDescription: TemplateRef<any>,summary ) {
+smallpopup(template: TemplateRef<any>) {
+  this.modalRef = this.modalService.show(
+    template,
+    Object.assign({}, { class: 'gray modal-md' })
+  );
+}
+
+  smallpopup1(queryDescription: TemplateRef<any>,summary ) {
     this.summarydescription = summary.queryDescription;
     // console.log("summary",summary)
      this.modalRef = this.modalService.show(queryDescription,
@@ -170,7 +178,11 @@ this.getAllQueryListSummary();
    this.queryService.getAllQueryList().subscribe(res =>
   {
     this.getAllQueryGenerationData = res.data.results;
+    // console.log(" this.getAllQueryGenerationData", this.getAllQueryGenerationData)
     this.summaryLength = this.getAllQueryGenerationData.length;
+    this.getAllQueryGenerationData.forEach(element => {
+      this.queryGenerationEmpId = element.queryGenerationEmpId;
+    });
   })
 }
 nevigateToCommunication(summary)
@@ -192,16 +204,18 @@ viewQuery(summary){
 getDeleteById(queryGenerationEmpId) // delete the record from summary
 {
 
-        this.queryService.getDeleteById(queryGenerationEmpId.queryGenerationEmpId).subscribe(res =>
+        this.queryService.getDeleteById(this.queryGenerationEmpId).subscribe(res =>
           {
             this.alertService.sweetalertMasterSuccess('Query Deleted Successfully', '' );
             this.getAllQueryListSummary();
-          },error => {
-            if(error.error.status.code == '4001'){
-              this.alertService.sweetalertWarning( 'Query With Closed Status cant be deleted' );
+          }
+          // ,error => {
+          //   if(error.error.status.code == '4001'){
+          //     this.alertService.sweetalertWarning( 'Query With Closed Status cant be deleted' );
 
-            }
-          });
+          //   }
+          // }
+          );
 
 
 }

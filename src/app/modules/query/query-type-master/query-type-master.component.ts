@@ -228,8 +228,10 @@ priorityRequiredevent(value, priority,event)
 {
 
   if(event.checked){
-    this.listQueryPriorityRequestDTO.splice(0,1);
-    this.priorityData.forEach(ele =>{
+    if(this.listQueryPriorityRequestDTO.length > 0){
+      this.listQueryPriorityRequestDTO.forEach(element => {
+        if(element.priorityType == priority.priorityType){
+ this.priorityData.forEach(ele =>{
       if(ele.priorityType == priority.priorityType){
         ele.defaultPriority = true
       }
@@ -241,11 +243,36 @@ priorityRequiredevent(value, priority,event)
       "queTypePriorityMasterId":0,
            "queryTypeMasterId":0,
            "priorityType":priority.priorityType,
-           "resolutionTime":priority.resolutionTime,
-           "autoClose":priority.autoClose,
+           "resolutionTime":element.resolutionTime,
+           "autoClose":element.autoClose,
            "defaultPriority":value,
            "active":true
     })
+        }else{
+          this.listQueryPriorityRequestDTO.splice(0,1);
+        }
+      });
+    }else{
+      this.priorityData.forEach(ele =>{
+        if(ele.priorityType == priority.priorityType){
+          ele.defaultPriority = true
+        }
+        if(ele.priorityType != priority.priorityType){
+          ele.defaultPriority = false;
+        }
+      })
+      this.listQueryPriorityRequestDTO.push({
+        "queTypePriorityMasterId":0,
+             "queryTypeMasterId":0,
+             "priorityType":priority.priorityType,
+             "resolutionTime":priority.resolutionTime,
+             "autoClose":priority.autoClose,
+             "defaultPriority":value,
+             "active":true
+      })
+    }
+
+
     console.log(JSON.stringify( this.listQueryPriorityRequestDTO));
   }else{
     this.listQueryPriorityRequestDTO.splice(0,1);
@@ -710,7 +737,19 @@ resolutionEvent(value,prio)
   this.listQueryPriorityRequestDTO.push({
   "queTypePriorityMasterId":0,
   "queryTypeMasterId":0,
-  "priorityType":'',
+  "priorityType":prio.priorityType,
+  "resolutionTime":prio.resolutionTime,
+  "autoClose":value,
+  "defaultPriority":'',
+  "active":true
+})
+}
+resolutionEvent1(value,prio)
+{
+  this.listQueryPriorityRequestDTO.push({
+  "queTypePriorityMasterId":0,
+  "queryTypeMasterId":0,
+  "priorityType":prio.priorityType,
   "resolutionTime":prio.resolutionTime,
   "autoClose":value,
   "defaultPriority":'',
@@ -722,7 +761,7 @@ resolutionTime(value,prio)
   this.listQueryPriorityRequestDTO.push({
     "queTypePriorityMasterId":0,
     "queryTypeMasterId":0,
-    "priorityType":'',
+    "priorityType":prio.priorityType,
     "resolutionTime":value,
     "autoClose":prio.autoClose,
     "defaultPriority":'',
@@ -731,10 +770,11 @@ resolutionTime(value,prio)
 }
 autoClose(value,prio)
 {
+
   this.listQueryPriorityRequestDTO.push({
     "queTypePriorityMasterId":0,
     "queryTypeMasterId":0,
-    "priorityType":'',
+    "priorityType":prio.priorityType,
     "resolutionTime":prio.resolutionTime,
     "autoClose":value,
     "defaultPriority":'',

@@ -16,35 +16,50 @@ export class DocumentViewerComponent implements OnInit {
   public urlIndex: number;
   public urlSafe: SafeResourceUrl;
   documentList: any = [];
-  listDoc: File[] = [];
+  listDoc: any= [];
   ListOfDocuments: any;
 
   constructor( private router: Router,
     private modalService: BsModalService,
     public sanitizer: DomSanitizer) {
-      if( localStorage.getItem('communicationFormSummary') != null){
-      let communicationFormData = JSON.parse(localStorage.getItem('communicationFormSummary'))
+
+      if( localStorage.getItem('GetIterationdetailsbyQueryIDData') != null){
+      let communicationFormData = JSON.parse(localStorage.getItem('GetIterationdetailsbyQueryIDData'))
+      this.listDoc = communicationFormData.documents;
+      console.log("this.listDoc",this.listDoc);
       }
+      this.openModal(this.listDoc);
      }
+
+
+     public openModal(documentInformationId:any) {
+    //   this.documentList = this.masterInfo.masterDetail.documentDetailList;
+
+    //  this.documentURLIndex = this.documentList.findIndex(doc=> doc.documentInformationId ==documentInformationId);
+
+    //  this.documentType =
+    //   this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+
+    }
+
+
+
 
   ngOnInit(): void {
   }
 
   public docViewer(template1: TemplateRef<any>, document: any) {
-    //console.log('---in doc viewer--');
+
     this.ListOfDocuments = document;
     this.urlIndex = 0;
-    //document.documents.forEach(element => {
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        document.documents[this.urlIndex].queryBlobURI
-      );
+      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      //  this.listDoc[this.urlIndex].queryBlobURI
+      // );
 
-    //});
-    console.log('urlSafe::', this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template1,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
+    // this.modalRef = this.modalService.show(
+    //   template1,
+    //   Object.assign({}, { class: 'gray modal-xl' })
+    // );
   }
   // Previous Doc Viewer
   public previousDocViewer() { //not yet used

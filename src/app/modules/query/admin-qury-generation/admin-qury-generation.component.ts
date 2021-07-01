@@ -51,7 +51,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   queryTemplateData: any;
   selectedModule: any;
   queryNumberData: any;
-  listDoc: File[] = [];
+  listDoc: any = [];
   editQuerySummaery: any;
 
   employeeMasterId: any;
@@ -65,7 +65,8 @@ export class AdminQuryGenerationComponent implements OnInit {
   fileName:any;
   editQueryTypeMasterId: any = '';
   hideEditTime:boolean= true;
-  ListOfDocuments: any;
+  hideEditTime1:boolean=true;
+  ListOfDocuments:any;
   documents: any;
 // ...........for single query btns.........................................
    isSaveDraft:boolean=true;
@@ -83,6 +84,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   selectedQueryTemp: any;
   querySubject: any;
   queryDesc: any;
+  viewDoc: File[];
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
     private modalService: BsModalService, )
@@ -207,6 +209,7 @@ getById(queryGenerationEmpId) { //used for the edit
     this.querySubQueryTypeQA(this.getByIdData.applicationModuleId);
 
     this.listDoc = this.getByIdData.listDoc;
+    this.viewDoc = this.listDoc;
     this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
     this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
     this.queryGenerationForm.controls['priority'].setValue(this.getByIdData.priority);
@@ -448,7 +451,9 @@ editQuery(queryGenerationSummary) {
 
   this.querySubQueryTypeQAData = null
   this.listQAData = [];
+
   this.editflag = true;
+
   this.queryGenerationForm.enable();
   this.queryGenerationForm.patchValue(queryGenerationSummary);
   this.isUpdate = true;
@@ -456,12 +461,16 @@ editQuery(queryGenerationSummary) {
   this.isReset = false;
   this.isCancle = true;
   this.isUpdateDraft = true;
-  this.hideEditTime = false;
-  // if(this.listDoc.length == 0)
-  // {
+  // this.hideEditTime = false;
+  if(this.listDoc.length == 0)
+  {
   // this.editflag = false;
-  // this.hideEditTime = true;
-  // }
+  this.hideEditTime1 = false;
+  }else
+  {
+  this.hideEditTime1 = true;
+
+  }
   this.getById(queryGenerationSummary.queryGenerationEmpId);
   this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
   this.editQuerySummaery = queryGenerationSummary;
@@ -547,13 +556,13 @@ public removeSelectedLicMasterDocument(index: number, docType: string) {
 }
 
 
-public docViewer(template1: TemplateRef<any>, document: any) {
-  //console.log('---in doc viewer--');
+public docViewer(template1: TemplateRef<any>, i: any) {
   this.ListOfDocuments = document;
-  this.urlIndex = document;
+  this.urlIndex = i;
+  console.log(JSON.stringify(this.listDoc));
   //document.documents.forEach(element => {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      document.documents[this.urlIndex].queryBlobURI
+      this.listDoc[this.urlIndex].queryBlobURI
     );
 
   //});
@@ -568,7 +577,7 @@ public docViewer(template1: TemplateRef<any>, document: any) {
 public previousDocViewer() { //not yet used
   this.urlIndex = this.urlIndex - 1;
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.ListOfDocuments.listDoc[this.urlIndex].queryBlobURI
+    this.ListOfDocuments[this.urlIndex].queryBlobURI
   );
 }
 
@@ -576,7 +585,7 @@ public previousDocViewer() { //not yet used
 public nextDocViewer() { //not yet used
 this.urlIndex = this.urlIndex + 1;
 this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
- this.ListOfDocuments.listDoc[this.urlIndex].queryBlobURI
+ this.ListOfDocuments[this.urlIndex].queryBlobURI
 );
 }
 
