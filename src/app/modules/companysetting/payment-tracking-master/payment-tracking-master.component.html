@@ -56,7 +56,7 @@
                                     <div class="col-sm-4">
                                       <label class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" name="nature"
-                                        formControlName="nature" value="option1" checked>
+                                        formControlName="nature" value="Employee Payment" checked>
                                           <span class="custom-control-label">Employee Payments</span>
                                      </label>
                                   
@@ -66,7 +66,7 @@
 
                                       <label class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" name="nature"
-                                        formControlName="nature" value="option2" >
+                                        formControlName="nature" value="Compliance" >
                                           <span class="custom-control-label">Compliance</span>
                                      </label>
                                     </div> 
@@ -74,7 +74,7 @@
                                     
                                       <label class="custom-control custom-radio custom-control-inline">
                                         <input type="radio" class="custom-control-input" name="nature"
-                                        formControlName="nature" value="option3" >
+                                        formControlName="nature" value="Garnishment" >
                                           <span class="custom-control-label">Garnishment / Third Party Payments
                                           </span>
                                      </label>
@@ -89,7 +89,7 @@
                                       <select name="Select" class="form-control text-center" formControlName="moduleId"
                                      >
                                         <option value="Select"> Select </option>
-                                        <option *ngFor="let applicationModule of applicationModuleNameList" [value]="applicationModule.moduleId"  >
+                                        <option *ngFor="let applicationModule of applicationModuleNameList" [value]="applicationModule.applicationModuleId"  >
                                           {{applicationModule.applicationModuleName}}
                                         </option>
                                 </select>
@@ -98,11 +98,11 @@
                                     <div class="col-sm-5">
 
                                       <label class="form-label">Payment Mode</label>
-                                      <select name="Select" class="form-control">
+                                      <select name="Select" class="form-control" formControlName="paymentMode">
                                         <option value="Select"> Select </option>                                      
-                                        <option value="">Cheque </option>
-                                        <option value="">Bank Transfer </option>
-                                        <option value=""> Cash</option>
+                                        <option value="Cheque">Cheque </option>
+                                        <option value="Bank Transfer">Bank Transfer </option>
+                                        <option value="Cash"> Cash</option>
                                     </select>
                                     </div>
                                   </div>
@@ -114,7 +114,7 @@
                                         <select name="Select" class="form-control" formControlName="complianceHead" (change)="onSelectComplianceMaster($event.target.value)">
                                           <option value="Select"> Select </option>   
                                           <option  *ngFor = "let complianceHeadName of complianceHeadList"
-                                           [value]="complianceHeadName.complianceHeadId">                                   
+                                           [value]="complianceHeadName.complianceHeadName">                                   
                                          {{complianceHeadName.complianceHeadName}}
                                          </option>
                                       </select>
@@ -124,7 +124,7 @@
                                         <label class="form-label">Compliance Master</label>
                                         <select name="Select" class="form-control" formControlName="complianceMaster">
                                           <option value="Select"> Select </option>                                      
-                                          <option  *ngFor = "let complianceName of complianceMasterList" [value]="complianceName.complianceMasterId">
+                                          <option  *ngFor = "let complianceName of complianceMasterList" [value]="complianceName.complianceName">
                                             {{complianceName.complianceName}}
                                           </option>
                                       </select>
@@ -137,7 +137,7 @@
                                       <div class="row mt-10" >
                                         <div class="col-sm-7" style="margin-right: -30px;">
                                           <label class="form-label">Payee Name</label>
-                                          <select name="Select" class="form-control" formControlName="description">
+                                          <select name="Select" class="form-control" formControlName="payeeName">
                                             <option *ngFor = "let description of garnishmentDetailsList" [value]="description.description">                                       
                                             {{description.description}}</option>
                                           
@@ -168,7 +168,7 @@
                                         <th class="wd-20 font700">S NO</th>
                                         <th class="wd-20 font700">Head</th>
                                         <th class="wd-20 font700" >Logic</th>
-                                        <th class="wd-20 font700" *ngIf="logicValue !='Input'">Formula Value</th>
+                                        <th class="wd-20 font700" *ngIf="logicValue !='Input'">FormulaValue</th>
                                         <th class="wd-30 font700">Action</th>
                                    </tr>
 
@@ -181,7 +181,7 @@
                                         1
                                       </td>
                                       <td>
-                                        <input type="text" class="form-control"  formControlName="payHead"  
+                                        <input type="text" class="form-control"  formControlName="paymentTrackingAddPayVoucherMaster"  
                                       ></td>
 
                                         <td >  <select  class="form-control custom-select"
@@ -193,7 +193,7 @@
                                          <td *ngIf="logicValue !='Input'">
                                            
                                           <select  class="form-control custom-select"
-                                            formControlName="formulaMasterId">
+                                            formControlName="formulaMasterId" (change)="onSelectFormulaName($event.target.value)">
                                           <option *ngFor="let formula of formulaName" [value]="formula.formulaId">{{formula.formulaName}}</option>
                                              
                                              </select>
@@ -225,9 +225,15 @@
                                           <input class="form-control custom-select" disabled value="{{rowAddV.FormulaValue}}">
                                             <!-- <select  class="form-control custom-select " disabled
                                             formControlName="formulaName">
-                                          <option *ngFor="let formula of formulaName" [value]="rowAddV.formulaId">{{rowAddV.FormulaValue}}</option>
+                                       <option [ngValue]="0">Select Previous Emp.</option>
+                    <option  [value]="previousEmployee.value"
+                      [selected]="
+                       previousEmployee.value == summary.previousEmployerId">
+                      {{ previousEmployee.label }}
+                    </option>
                                              
                                              </select> -->
+                                             
                                         </td>
                                        
                                         <td>
@@ -255,8 +261,8 @@
                       <label class="form-label"> Automatic Creation of Payments Voucher &nbsp;&nbsp; &nbsp;  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                       <select name="custom-select" class="form-control" formControlName="autoCreaPayVouch">
                         <option value="Select">Select</option>
-                        <option value="yes"> Yes</option>
-                        <option value="no">No</option>
+                        <option value="true"> Yes</option>
+                        <option value="false">No</option>
                         </select> 
                     </div>
 
@@ -264,8 +270,8 @@
                       <label class="form-label">Option to Pay at one go for more than one Processing Cycles</label>
                       <select name="custom-select" class="form-control" formControlName="payMoreOneProcCyOneGo">
                         <option value="Select">Select</option>
-                        <option value="Yes"> Yes</option>
-                        <option value="No"> No</option>
+                        <option value="true"> Yes</option>
+                        <option value="false"> No</option>
                         </select> 
 
                     </div>
@@ -274,8 +280,8 @@
                       <label class="form-label"> Option to Pay at one go for more than one Pertaining Cycles</label>
                       <select name="custom-select" class="form-control" formControlName="payMoreOnePertainCyOneGo">
                         <option value="Select">Select</option>
-                        <option value="Yes"> Yes</option>
-                        <option value="No"> No</option>
+                        <option value="true"> Yes</option>
+                        <option value="false"> No</option>
                         </select> 
                      </div>
                      <div class="col-sm-3">
@@ -283,8 +289,8 @@
                        </label><br>
                       <select name="custom-select" class="form-control" formControlName="partPay">
                         <option value="Select">Select</option>
-                        <option value="Yes"> Yes</option>
-                        <option value="No"> No</option>
+                        <option value="true"> Yes</option>
+                        <option value="false"> No</option>
                         </select> 
                      </div>
                
@@ -295,7 +301,7 @@
                    <div class="row mt-10">
                     <div class="col-sm-3">
                       <label class="form-label"> Job Field</label>
-                      <select name="custom-select" class="form-control" formControlName="jobMasterType"
+                      <select name="custom-select" class="form-control" formControlName="jobFieldValue"
                        (change)="onSelectJobFieldValue($event.target.value)">
                         <option value="Select">Select</option>
                         <option  *ngFor = "let jobMasterType of jobMasterList" [value]="jobMasterType.jobMasterId">
@@ -310,9 +316,9 @@
                       <p-multiSelect 
                        [options]="jobMasterMappingList"
                        class="multiselect-custom"
-                      [showHeader]="true" 
-                     
-                      [virtualScroll]="true"
+                       [showHeader]="true" 
+                       (onChange)="onItemSubJobMastert($event)"
+                        [virtualScroll]="true"
                         formControlName="jobFieldValue"
                        [filterPlaceHolder]="'Select'"
                         [placeholder]="'Select Template'"
@@ -336,7 +342,7 @@
                       <label class="form-label"> Approval SDM</label>
                       <select name="custom-select" class="form-control" formControlName="approvalSDMId">
                         <option value="Select">Select</option>
-                        <option *ngFor="let sdm of sdmApproval" [value]="sdm.sdmSchemaName">{{sdm.sdmSchemaName}}</option>
+                        <option *ngFor="let sdm of sdmApproval" [value]="sdm.companySDMFormId">{{sdm.sdmSchemaName}}</option>
                       
                         </select> 
                      </div>

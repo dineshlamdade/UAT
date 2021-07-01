@@ -50,12 +50,16 @@ export class PaymentTrackingMasterComponent implements OnInit {
   isVisible: boolean = false;
   isShown: boolean = true;
   addPaymentTrackingForm: any;
+  complianceHeadId: any;
+  paymentTrackingJobFieldValueMapping: any =[];
+  selectedFormulaname: any;
+  jobField: any;
   
  
   constructor( private formBuilder: FormBuilder, private service:PaymenttrackingMasterService,
     private alertService: AlertServiceService,) {
       this.paymenttrackingForm = this.formBuilder.group({
-      "active": new FormControl(""),
+      "active": new FormControl(true),
         "approvalSDMId": new FormControl(""),
         "autoCreaPayVouch": new FormControl(""),
         "code": new FormControl(""),
@@ -63,7 +67,7 @@ export class PaymentTrackingMasterComponent implements OnInit {
         "complianceMaster": new FormControl(""),
         "defaultModePayment": new FormControl(""),
         "description": new FormControl(""),
-        "groupCompanyId": new FormControl(""),
+        "groupCompanyId": new FormControl(1),
         "moduleId": new FormControl(""),
         "nature": new FormControl(""),
         "partPay": new FormControl(""),
@@ -71,7 +75,7 @@ export class PaymentTrackingMasterComponent implements OnInit {
         "payMoreOneProcCyOneGo": new FormControl(""),
         "payeeName": new FormControl(""),
         "paymentMode": new FormControl(""),
-        "paymentTrackMastId": new FormControl(""),
+        "paymentTrackMastId": new FormControl(0),
         "paymentTrackingAddPayVoucherMaster": new FormControl([]),
         "paymentTrackingJobFieldMaster": new FormControl([]),
         "paymentTrackingMasterBankDetails": new FormControl([]),
@@ -248,6 +252,7 @@ getJobMasterMapping(){
   this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].setValue(this.paymentTrackingAddPayVoucherMaster);
   this.paymenttrackingForm.controls['paymentTrackingJobFieldMaster'].setValue(this.paymentTrackingJobFieldMaster);
   this.paymenttrackingForm.controls['paymentTrackingMasterBankDetails'].setValue(this.paymentTrackingMasterBankDetails);
+  
 
   console.log(JSON.stringify(this.paymenttrackingForm.value));
   
@@ -298,23 +303,29 @@ getJobMasterMapping(){
   this.isVisible = false;
   this.isShown = false;
  }
-
  deleteSummary(){
-
  }
 
- onSelectComplianceMaster(complianceHeadId){
-if(complianceHeadId){
-  this.service.getComplianceMaster().subscribe(res =>{
-    this.complianceMasterList = res.data.results;
-  })
-  
-}
-console.log("complianceMasterList::::::",this.complianceMasterList)
+ onItemSubJobMastert(event){
+this.paymentTrackingJobFieldValueMapping.push({
+         "active": true,
+          "jobFieldValue":event.itemValue,
+          "payTrackJobMappId": 0
+})
+console.log(event);
  }
+
 
  onSelectJobFieldValue(jobMasterId){
    if(jobMasterId){
+     this.paymentTrackingJobFieldMaster.push({
+      "active": true,
+      "jobField": this.jobField,
+      "payTrackJobFieldMasterId": 0,
+      "paymentTrackingJobFieldValueMapping":this.paymentTrackingJobFieldValueMapping
+      
+
+     })
   this.service.getJobMasterMapping().subscribe(res =>{
    // this.jobMasterMappingList = res.data.results;
 
@@ -352,30 +363,34 @@ deleteRows(x) {
 }
 addTableVoucher(){
 
-  const obj = {
-    payHead: this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster.payHead'].value,
+  
+
+   const obj ={
+
+     payHead: this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].value,
     logicMethod: this.logicValue,
     formulaMasterId: this.formulaMasterId,
-    active: this.active,
+    active: true,
     paymentTrackingAddPayVoucherMasterid: 0
-   };
+      };
+   
+  
   
 
    this.paymentTrackingAddPayVoucherMaster.push(obj)
 
 
-   this.rowV =[];
-   this.logicMethod = ''
-   this.formulaMasterId = ''
-   this.payHead = ''
-
+  
  this.rowV.push({
-   'Head':this.paymenttrackingForm.controls['payHead'].value,
+   'Head': this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].value,
    'Logic' : this.logicValue,
-   'FormulaValue': this.formulaName
+   'FormulaValue': this.selectedFormulaname,
+  'paymentTrackingAddPayVoucherMasterid' :0
  });
  
- 
+ this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].reset()
+ this.paymenttrackingForm.controls['formulaMasterId'].reset()
+ this.paymenttrackingForm.controls['logicMethod'].reset()
 
 
 }
@@ -398,6 +413,14 @@ onSelectFormula(value){
       // this.formulaMasterId= res.data.results[0].formulaId
     })
   }
+}
+
+onSelectFormulaName(value){
+  this.formulaName.forEach(element => {
+    if(element.formulaId == value){
+      this.selectedFormulaname = element.formulaName
+    }
+  });
 }
 
 onRowSelect(event) {

@@ -1996,6 +1996,16 @@ export class RolePrivilegeComponent implements OnInit {
          // this.getRolePrivilegeSummaryByUserRoleId();
       }
 
+   
+         onSelectFieldLevel(template1:TemplateRef<any>)
+         {
+           this.modalRef = this.modalService.show(
+             template1,
+             Object.assign({}, { class: 'gray modal-lg' })
+           );
+         }
+      
+
       largepopup(template: TemplateRef<any>) {
          this.modalRef = this.modalService.show(
             template,

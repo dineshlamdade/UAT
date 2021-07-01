@@ -328,11 +328,12 @@
                 </div>
             </td>
             <td>
-              <button type="button"  tooltip="feild Label"  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
-                </button
-              >&nbsp;
+              <button type="button" tooltip="field level"
+              class="custom_button custom_btn bg-color-purple btn-labeled btn-labeled-left mr-10" 
+              (click)="onSelectFieldLevel(template1)">Field Level </button>             
             </td>
               </tr>
+              
           </tbody>
       </table>
   </div>
@@ -1327,3 +1328,40 @@
     </button>
   </div>
 </ng-template>
+
+<ng-template #template1>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel"></h5>
+      <button type="button" (click)="modalRef.hide();" class="close" data-dismiss="modal" aria-label="Close"><span style="font-size: 20px;"
+aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+      <div class="card">
+          <div class="card-body">
+            <table class="table table-striped table-hover table-bordered  m-b-0 my-registertable" style=" height: 500px;">
+              <thead style="background-color: #8d8b8d;">
+                <tr>
+                    <th scope="col" class="font700 wd-30 text-center" style="color: white">Name</th>
+                    <th  scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" name="websitecheckRead" [checked]="isChecked"> Read</th>
+                    <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" name="websitecheckWrite" [checked]="isChecked"> Write</th>
+                    <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" name="websitecheckModify" [checked]="isChecked">Modify</th>
+                    <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" name="websitecheckDelete" [checked]="isChecked">Hide</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+            </table>
+           
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="saveAssignGroupData();modalRef.hide()"><b><i class="fa fa-save"></i></b> Save </button>
+
+      <button type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="resetAssignData()"><b><i class="fa fa-refresh"></i></b> Reset</button>
+      <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button> -->
+  </div>
+</ng-template>
+
