@@ -107,6 +107,8 @@ export class NonRecurringAmtComponent implements OnInit {
 	deviationData: any;
 	deviationModeData: any;
 	repeatModeData: any;
+	deviationcount: any = 0;
+	repeatcount:any = 0;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -878,7 +880,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		let percentage = 0;
 
 		percentage = (data.deviationAmount / data.deviationAmountLimit) * 100;
-		return percentage;
+		return percentage.toFixed(2);
 	}
 
 	/** On change From Date */
@@ -898,37 +900,47 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.nonRecService.NonRecurringTransactionGroupGetSDMValue(inputdata).subscribe(res =>{
 				this.SDMAmountValue = res 
 				this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].openingAmount = this.SDMAmountValue
-				let inputdata1 = {
-					"employeeMasterId":this.selectedEmployeeMasterId,
-					"headMasterId": data.headId,
-					"payrollAreaId":"1",
-					"amount": this.SDMAmountValue,
-					"fromDate": this.selectedFromDateForSave
-				}
-				// let inputdata1 = {
-				// 	"employeeMasterId":1,
-				// 	"headMasterId":49,
-				// 	"payrollAreaId":"1",
-				// 	 "amount":88000,
-				// 	 "fromDate":"2020-04-08 00:00:00"
-				// }
-				this.deviationModeData = []
-				this.repeatModeData = []
-				this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata1).subscribe(res =>{
-					this.deviationData = res 
-					this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
-					this.deviationData.forEach(element => {
-						if(element.mode == 'Deviation'){
-							this.deviationModeData.push(element)
-						}else if(element.mode == 'Repeat'){
-							this.repeatModeData.push(element)
-						}
-					});
-				})
 			})
-
-			
 		}
+		// else{
+		// 	if(data.closingAmount != '' || data.closingAmount != null){
+				
+		// 			let inputdata1 = {
+		// 				"employeeMasterId":this.selectedEmployeeMasterId,
+		// 				"headMasterId": data.headId,
+		// 				"payrollAreaId":"1",
+		// 				"amount": this.SDMAmountValue,
+		// 				"fromDate": this.selectedFromDateForSave
+		// 			}
+		// 			// let inputdata1 = {
+		// 			// 	"employeeMasterId":1,
+		// 			// 	"headMasterId":49,
+		// 			// 	"payrollAreaId":"1",
+		// 			// 	 "amount":88000,
+		// 			// 	 "fromDate":"2020-04-08 00:00:00"
+		// 			// }
+		// 			this.deviationModeData = []
+		// 			this.repeatModeData = []
+		// 			this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata1).subscribe(res =>{
+		// 				// this.deviationData = res 
+		// 				let resp : any = res;
+        //                 resp.forEach(element => {
+		// 					if(element.status != 'No Deviation'){
+		// 						this.deviationData.push(element)
+		// 					}
+		// 				});
+		// 				this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
+		// 				this.deviationData.forEach(element => {
+		// 					if(element.mode == 'Deviation'){
+		// 						this.deviationModeData.push(element)
+		// 					}else if(element.mode == 'Repeat'){
+		// 						this.repeatModeData.push(element)
+		// 					}
+		// 				});
+		// 			})
+				
+		// 	}
+		// }
 		let todate = "";
 		if (this.selectedTransactionType == 'NoOfTransaction') {
 			todate = ""
@@ -969,11 +981,11 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
 						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"mode": "",
+						"deviationType": "",
+						"deviationRemark": "",
+						"deviationStatus": "",
+						"deviationAmountLimit": 0
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1463,27 +1475,35 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
 		}
 
-			let inputdata = {
-				"employeeMasterId":this.selectedEmployeeMasterId,
-				"headMasterId": data.headId,
-				"payrollAreaId":"1",
-				"amount": value,
-				"fromDate": this.selectedFromDateForSave
-			}
-			    
-			this.deviationModeData = []
-				this.repeatModeData = []
-				this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
-					this.deviationData = res 
-					this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
-					this.deviationData.forEach(element => {
-						if(element.mode == 'Deviation'){
-							this.deviationModeData.push(element)
-						}else if(element.mode == 'Repeat'){
-							this.repeatModeData.push(element)
-						}
-					});
-				})
+		if(data.executeSDM != 'YES' || data.executeSDM != 'Yes' || data.executeSDM != 'yes')
+		{
+			if(this.selectedFromDateForSave != ''){
+				let inputdata = {
+					"employeeMasterId":this.selectedEmployeeMasterId,
+					"headMasterId": data.headId,
+					"payrollAreaId":"1",
+					"amount": value,
+					"fromDate": this.selectedFromDateForSave
+				}
+					
+				this.deviationModeData = []
+					this.repeatModeData = []
+					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
+						this.deviationData = res 
+						this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
+						this.deviationData.forEach(element => {
+							if(element.mode == 'Deviation'){
+								this.deviationModeData.push(element)
+								this.deviationcount = this.deviationModeData.length
+							}else if(element.mode == 'Repeat'){
+								this.repeatModeData.push(element)
+								this.repeatcount = this.repeatModeData.length
+							}
+						});
+					})
+			}	
+		}
+			
 		
 		if (this.saveTransactionData.length > 0) {
 			this.saveTransactionData.forEach((element, index) => {

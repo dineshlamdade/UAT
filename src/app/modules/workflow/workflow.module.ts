@@ -30,7 +30,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { yesNoPipeModule } from '../../core/utility/pipes/yesNoPipe/yesNo.pipe.module';
-
+import {TableModule} from 'primeng/table';
 @NgModule({
   declarations: [
     WorkflowMasterComponent,
@@ -67,6 +67,7 @@ import { yesNoPipeModule } from '../../core/utility/pipes/yesNoPipe/yesNo.pipe.m
       positionClass: 'toast-top-center',
     }),
     SharedlayoutModule,
+    TableModule
   ],
 
   providers: [ DatePipe, NumberFormatPipe, workflowService,
