@@ -133,18 +133,10 @@ p{
   }
 }
 
-.tabset .backcolor
-{
-  background: #713f93;
-  color:white;
-}
-.tabset input:checked +label
-{
-  color: white !important;
-}
+
 .tabset .backcolor:hover
 {
-  color: #e6e2e9 !important;
+  color: #713f93 !important;
 }
 // .input-sizer {
 //   display: inline-grid;
@@ -186,4 +178,31 @@ p{
 //     white-space: pre-wrap;
 //   }
 
+// }
+
+
+
+.tabset>input:checked+label {
+  border: 2px solid #713f93 !important;
+  border-top: 7px solid #713f93 !important;
+  border-bottom: 1px solid #fff !important;
+  margin-bottom: -1px;
+  color: #713f93 !important;}
+
+
+.Closed{
+  color:#cc99ff!important;
+}
+.Submit{
+  color: #0080ff!important;
+}
+.Draft{
+  color:#cedd7a!important;
+}
+.status .dark{
+color: #0c0d0e;
+font-weight: 700;
+}
+// .status span .tag{
+//   background-color: #eaeeef!important;
 // }

@@ -18,6 +18,7 @@ export class DocumentViewerComponent implements OnInit {
   documentList: any = [];
   listDoc: any= [];
   ListOfDocuments: any;
+  documentURLIndex: any;
 
   constructor( private router: Router,
     private modalService: BsModalService,
@@ -33,12 +34,11 @@ export class DocumentViewerComponent implements OnInit {
 
 
      public openModal(documentInformationId:any) {
-    //   this.documentList = this.masterInfo.masterDetail.documentDetailList;
+      // this.documentList = this.masterInfo.masterDetail.documentDetailList;
 
-    //  this.documentURLIndex = this.documentList.findIndex(doc=> doc.documentInformationId ==documentInformationId);
+     this.documentURLIndex = this.listDoc.findIndex(doc=> doc.documentInformationId ==documentInformationId);
 
-    //  this.documentType =
-    //   this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
+    //  this.documentType = this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
 
     }
 

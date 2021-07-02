@@ -251,7 +251,8 @@
                                                                                             <div _ngcontent-kmp-c585=""
                                                                                                 class="custom_Label_badge bagde1">
                                                                                                 <button class="btn defaultbtn"> Document</button>
-                                                                                                <span class="Label_badge" style="text-align: center;"  (click)="docViewer(template1,GetIterationdetailsbyQueryIDData);navigateToDocmentViewer(GetIterationdetailsbyQueryIDData)">{{GetIterationdetailsbyQueryIDData.numberOfDocuments}}</span>
+                                                                                                <!-- docViewer(template1,GetIterationdetailsbyQueryIDData); -->
+                                                                                                <span class="Label_badge" style="text-align: center;"  (click)="navigateToDocmentViewer(GetIterationdetailsbyQueryIDData)">{{GetIterationdetailsbyQueryIDData.numberOfDocuments}}</span>
                                                                                             </div>
                                                                                         </div>
                                                                                         <!-- oninput="this.parentNode.dataset.value = this.value" rows="4" -->
@@ -285,8 +286,14 @@
                                                                                             </div>
 
                                                                                         </div>
-                                                                                        <div class="col-md-3">
+                                                                                        <!-- <div class="col-md-3">
                                                                                             <span  class="tag tag-gray">Status :&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                        </div> -->
+                                                                                        <div class="col-md-3 status">
+                                                                                          <span  class=" tag Closed" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Closed'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Submit" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Submit'">Status :&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Draft" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Draft'">Status :&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -423,10 +430,10 @@
                                                                                                           <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
                                                                                                           class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                                                                                                                               <div class="col-md-12" *ngFor="let doc of listDoc; let i = index"> {{ doc.fileName }}
-                                                                                                                                  <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
+                                                                                                                                  <!-- <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
                                                                                                                                       <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
                                                                                                                                       {{ doc.fileName }}
-                                                                                                                                  </div>
+                                                                                                                                  </div> -->
                                                                                                                               </div>
                                                                                                         </td>
 
@@ -596,12 +603,12 @@
                                                                                         <legend>Forward</legend>
 
                                                                                     <div class="row" *ngIf="GetIterationdetailsbyQueryIDData">
-                                                                                        <div class="col-md-3">
+                                                                                        <!-- <div class="col-md-3">
                                                                                             <label
                                                                                                 class="form-label">Ref. No.</label>
                                                                                             <input class="form-control"
                                                                                             disabled>
-                                                                                        </div>
+                                                                                        </div> -->
                                                                                         <div class="col-md-3">
                                                                                             <label
                                                                                                 class="form-label">Forward
@@ -621,7 +628,7 @@
                                                                                             value="{{approverEmpRoleName}}"  disabled>
 
                                                                                         </div>
-                                                                                        <div class="col-md-3">
+                                                                                        <!-- <div class="col-md-3">
                                                                                             <label
                                                                                                 class="form-label">Updated
                                                                                                 Date & Time</label>
@@ -645,9 +652,7 @@
                                                                                                         disabled >
                                                                                                 </div>
                                                                                             </div>
-
-
-                                                                                        </div>
+                                                                                        </div> -->
                                                                                     </div>
 
                                                                                     <!-- <div class="row mt-25">

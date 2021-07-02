@@ -191,12 +191,12 @@
 
                                         <td>
                                           <!-- <pre>{{listDoc | json}}</pre> -->
-                                          <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
-                                          class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                          <span *ngFor="let item of listDoc"  tooltip="{{item.name}},"><i
+                                           aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                                                               <div class="col-md-12" *ngFor="let doc of listDoc; let i = index"> {{ doc.fileName }}
                                                                   <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
                                                                       <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
-                                                                      {{ doc.fileName }}
+                                                                      <!-- {{ doc.fileName }} -->
                                                                   </div>
                                                               </div>
                                         </td>

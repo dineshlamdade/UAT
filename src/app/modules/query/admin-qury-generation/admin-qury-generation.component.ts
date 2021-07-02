@@ -8,7 +8,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
-import Swal from 'sweetalert2/src/sweetalert2.js'
+// import Swal from 'sweetalert2/src/sweetalert2.js'
 
 @Component({
   selector: 'app-admin-qury-generation',

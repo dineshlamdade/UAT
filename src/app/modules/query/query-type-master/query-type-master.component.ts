@@ -72,8 +72,10 @@ export class QueryTypeMasterComponent implements OnInit {
   // boxChecked:boolean=true;
   isActionShow:boolean=true;
   descriptionData: any;
+  listSubQueryAnsMappingResponseDTO:any =[];
   constructor(public formBuilder : FormBuilder,public queryService :QueryService ,
      private alertService: AlertServiceService) {
+
     this.querytypeForm = this.formBuilder.group(
         {
 
@@ -201,9 +203,10 @@ radioButtonChanged(event){
      this.subquerview = false;
      this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
      this.subQueryRequestDTO = [];
-     this.querytypeForm.controls['subQueryRequestDTO'].setValue([]);
-     this.querytypeForm.controls['subQuery'].setValue(false);
-
+     this.finalForm.controls['subQuery'].setValue(0);
+     this.querytypeForm.controls['subQuery'].setValue(0);
+    //  this.finalForm.controls['subQueryRequestDTO'].setValue([]);
+// console.log(JSON.stringify(this.querytypeForm.value))
 
    }else{
      this.ishidden = false;
@@ -403,6 +406,7 @@ getAlldataById(queryTypeMasterId)// for edit....
      this.priorityRequiredFlag = false;
 
     }
+
     // this.getAlldataByIdforedit.listSubQueryAnsMappingResponseDTO =[];
 //     this.getAlldataByIdforedit.listSubQueryAnsMappingResponseDTO.forEach(element => {
 //     this.listSubQueryQueAnsMapping.push({
@@ -429,7 +433,38 @@ getAlldataById(queryTypeMasterId)// for edit....
               "active":true
             }],
          } );
+
       });
+    //  alert(this.getAlldataByIdforedit.subQuery)
+       if(this.getAlldataByIdforedit.listQueryAnsMappingResponseDTO.lenght > 0){
+        this.subQueryRequestDTO = this.getAlldataByIdforedit.listQueryAnsMappingResponseDTO;
+        console.log("listQueryAnsMappingResponseDTO",this.subQueryRequestDTO)
+        this.getAlldataByIdforedit.listQueryAnsMappingResponseDTO.forEach(element => {
+          // alert(element)
+          this.AssignQNATemplate.push({
+            'queAnsMasterId': element.queAnsMasterId,
+          'description': element.description
+
+          })
+          this.querytypeForm.controls['assignQATemplate1'].setValue(this.AssignQNATemplate);
+          console.log("this.AssignQNATemplate",this.AssignQNATemplate)
+        });
+
+      }else
+      {
+        this.subQueryRequestDTO = this.getAlldataByIdforedit.listSubQueryAnsMappingResponseDTO;
+        this.getAlldataByIdforedit.listSubQueryAnsMappingResponseDTO.forEach(element => {
+          this.AssignQNATemplate.push({
+            'queAnsMasterId': element.queAnsMasterId,
+          'description': element.description
+
+          })
+          this.querytypeForm.controls['assignQATemplate2'].setValue(this.AssignQNATemplate);
+          console.log("this.AssignQNATemplate",this.AssignQNATemplate)
+
+        });
+
+      }
 
        console.log("subquery edit: " +JSON.stringify(this.subQueryRequestDTO))
       this.priorityData.forEach(element =>{
@@ -676,12 +711,14 @@ cancel()
 
 editQuerySummary(query) // whole page edit function
 {
+
   this.querySubQuerySummary = []; // reset the subquery added table
 
    if(query.subcount == 0)
   {
     this.ishidden = true;
     this.subquerview = false;
+
   }else{
     this.ishidden = false;
     this.subquerview = true;
@@ -699,10 +736,15 @@ editQuerySummary(query) // whole page edit function
   this.getAlldataById(query.queryTypeMasterId);
   this.queryTypeMasterId = query.queryTypeMasterId;
   this.moduleName = query.applicationModuleName;
+  this.selectedModuleId = query.applicationModuleId;
+  this.getAll();
+console.log("queryListData",this.queryListData)
 
   this.isAddTempQuery = true;
   this.isUpdateTempQuery = false;
   this.getPriorityData();
+  // this.querytypeForm.controls[''].setValue(this.listSubQueryAnsMappingResponseDTO.queAnsMasterId);
+  // console.log('listSubQueryAnsMappingResponseDTO');
 
 }
 viewQuerySummary(query) // whole page view function
