@@ -3,7 +3,7 @@ import { InvestmentApprovalMasterPaymentInfo } from './investment-approval-maste
 import { InvestmentApprovalMasterRemarkInfo } from './investment-approval-master-remark-info';
 
 export interface InvestmentApprovalMasterInfo {
-  psidDetailList: [];
+
   psidDetail: {
     groupName: string;
     section: string;

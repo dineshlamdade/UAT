@@ -13,5 +13,6 @@ export interface InvestmentApprovalMasterDocumentInfo {
   lastModifiedDateTime: Date;
   documentStatus: string;
   statusRemark: string;
+  employeeMasterId: number;
   documentRemarkDetailList: InvestmentApprovalDocumentRemarkInfo[];
 }
