@@ -26,6 +26,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
 import { TabsModule } from 'ngx-bootstrap/tabs';
  
+import {MultiSelectModule} from 'primeng/multiselect';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { translocoLoader } from './core/strategies/transloco.loader';
@@ -49,6 +50,12 @@ import { EmployeeMasterModule } from './modules/employee-master/employee-master.
 //accordion and accordion tab
 //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
+
+
+
+
+
+
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
@@ -61,7 +68,7 @@ import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.mod
 import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 import { LockModule } from './modules/lock/lock.module';
-
+import {FlexiModule} from './modules/flexi/flexi.module'
 
 
 
@@ -108,9 +115,12 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     CompanySettingModule,
     MyInvestmentsModule,
     PayrollInputsModule,
+    MultiSelectModule,
     /////////////////
     //  payrollModule,
     LockModule,
+    FlexiModule,
+   
     ReimbursementModule,
     ////////////////////////////////
     MyInvestmentsModule,

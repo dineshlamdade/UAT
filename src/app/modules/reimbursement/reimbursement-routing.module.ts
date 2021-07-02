@@ -5,7 +5,7 @@ import { RembRegistrationComponent } from './remb-registration/remb-registration
 import { RembClaimTaxableComponent } from './remb-claim-taxable/remb-claim-taxable.component';
 import { RembClaimNontaxComponent } from './remb-claim-nontax/remb-claim-nontax.component';
 import { ReimbursementComponent } from './reimbursement.component';
-
+import { LtaComponent } from './lta/lta.component';
 const routes: Routes = [
 {
   path: '',
@@ -39,6 +39,11 @@ const routes: Routes = [
       path:'remb-summary',
       component: RembSummaryComponent,
       data: { title: ':: Epic :: Summary'}
+    },
+    {
+      path:'lta',
+      component: LtaComponent,
+      data: { title: ':: Epic :: lta'}
     },
   ]
 }

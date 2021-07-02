@@ -1,0 +1,533 @@
+<app-leftadminmenu> </app-leftadminmenu>
+<div class="page">
+    <app-header></app-header>
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tabview-containts">
+                                <div class="tabview tabview_upload_excel">
+                                    <input name="nav" type="radio" class="about-radio" id="Tab1" checked/>
+                                    <div class="tabs about-page">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="card1">
+                                                        <div class="row">
+                                                            <div class="col-md-2"><label class="form-label">Flexi Section Name</label></div>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-25">
+                                                            <div class="col-md-4">
+                                                                <label class="form-label">
+                                                                    Flexi Section No.
+                                                                </label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                    <option value="Male"> Select </option>
+                                                                    <option value="Female"> Female</option>
+                                                            </select>
+                                                           
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label">
+                                                                    Maximum Limit
+                                                                </label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                    <option value="Male"> Select </option>
+                                                                    <option value="Female"> Female</option>
+                                                            </select>
+                                                           
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label">
+                                                                  Own Fix Limit
+                                                                </label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                    <option value="Male"> Select </option>
+                                                                    <option value="Female"> Female</option>
+                                                            </select>
+                                                           
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-25">
+                                                            <div class="col-md-4">
+                                                                <label class="form-label">
+                                                                  Balancing Figure Applicable
+                                                                </label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                    <option value="Male"> Select </option>
+                                                                    <option value="Female"> Female</option>
+                                                            </select>
+                                                           
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label">
+                                                                 Balancing Figure Earning Head
+                                                                </label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                    <option value="Male"> Select </option>
+                                                                    <option value="Female"> Female</option>
+                                                            </select>
+                                                           
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-25">
+                                                        <div class="col-md-12">
+                                                            <div class="float-right">
+                                                                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2" tooltip="Save"><b>
+                                                                    <i class="fa fa-floppy-o"></i></b> Save</button>
+                                                                    <button type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2"><b><i class="fa fa-refresh"></i></b> Reset</button>
+                                                                    <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i class="fa fa-times"></i></b> Cancel</button>
+                                                   
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-25">
+                                                        <div class="col-md-12">
+                    
+                                                            <p-table #dt1 [value]="ltaavailed1" [paginator]="true" [rows]="10"
+                                                                [showCurrentPageReport]="true" (sortFunction)="customSort($event)" [customSort]="true"
+                                                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                                [rowsPerPageOptions]="[10,25,50]" >
+                    
+                                          
+                                                                <ng-template pTemplate="header">
+                                                                    <tr>
+                                                                        <th>
+                                                                          Sr.No.
+                                                                        </th>                                                                    
+                                                                         
+                                           
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Flexi Section Name                                                                               <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="Group" pSortableColumn="Group"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="Group" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                       
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Flexi Section
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="ItSection" pSortableColumn="ItSection"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="ItSection" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Maximum Limit
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="Type" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Own Fixed Limit
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="name" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Balancing Fig. Applicable
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="PSIdDetails" pSortableColumn="PSIdDetails"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="PSIdDetails" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Balancing Fig. Earning Head
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="SubmissionDate" pSortableColumn="SubmissionDate"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="SubmissionDate" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                    
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="body" let-ltaavailed>
+                                                                    <tr class="p-selectable-row">
+                                                                        <td>
+                                                                           1
+                                                                        </td>
+                                                                        <td>{{ ltaavailed.flexisectionname}}</td>
+                                                                        <td>{{ ltaavailed.flexisection}}</td>
+                                                                        <td>{{ ltaavailed.Maximumlimit}}</td>
+                                                                        <td>{{ ltaavailed.ownfixedlimit}}</td>
+                                                                        <td>{{ ltaavailed.balancingapplicable}}</td>
+                                                                        <td>{{ltaavailed.balancingapplicableearning}}</td>
+                                                                      
+                                                                        <td><span><i class="fa fa-pencil fa2 mr-2 text-blue font-16" ></i>
+                                                                        
+                                                                            <i class="fa fa-times font-16 text-red"></i>
+                                                                        </span></td>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="paginatorleft">
+                                                                    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                                                                    </p-button>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="paginatorright">
+                                                                    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                                                                    </p-button>
+                                                                </ng-template>
+                                                            </p-table>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="nav" for="Tab1"><span> Flexi Input </span></label>
+                                    <input name="nav" type="radio" class="about-radio" id="Tab2" />
+                                    <div class="tabs about-page">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                      <div class="card1">
+                                                          <div class="row">
+                                                              <div class="col-md-12">
+                                                                <div class="custom-controls-stacked">
+                                                                    <label class="custom-control custom-radio custom-control-inline">
+                                                                       <input type="radio" class="custom-control-input" name="example-inline-radios" value="option1" checked>
+                                                                         <span class="custom-control-label form-label">Non-E/D Head</span>
+                                                                    </label>
+                                                                    <label class="custom-control  custom-radio custom-control-inline">
+                                                                      <input type="radio" class="custom-control-input" name="example-inline-radios" value="option2">
+                                                                        <span class="custom-control-label form-label">E/D Head</span>
+                                                                    </label>
+                                                                   
+                                                                 </div>
+                                                                 
+                                                              </div>
+                                                          </div>
+
+                                                          <fieldset class=" mt-25">
+                                                            
+                                                          
+                                                          <div class="row ">
+                                                              <div class="col-md-3"> <label class="form-label">
+                                                                Non E/D Head Name
+                                                            </label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                              <div class="col-md-3">
+                                                                  <label class="form-label">E/D Head</label>
+                                                                  <select name="Gender" class="form-control custom-select">
+                                                                    <option value="Male"> Head 1 </option>
+                                                                    <option value="Female"> Head 2</option>
+                                                            </select>
+                                                           
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Attribute</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Head 1 </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                         
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Part Of Non-E/D Head</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Head 1 </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                         
+                                                            </div>
+                                                             
+                                                          </div>
+                                                          <div class="row mt-25">
+                                                            
+                                                             
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Section Of Flexi Form</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> CTC Section</option>
+                                                                  <option value="Female"> Fixed Section</option>
+                                                          </select>
+                                                         
+                                                            </div>
+                                                            <div class="col-md-3"> <label class="form-label">
+                                                                Caption of Input Field
+                                                            </label>
+                                                            <input type="text" class="form-control">
+                                                        </div>
+                                                          </div>
+                                                        </fieldset>
+                                                        <fieldset class="mt-25">
+                                                           
+                                                          <div class="row ">
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Enable Head If Updated</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Head 1 </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Value Thereof</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Disable Head if Updated</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Value Thereof</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                          </div>
+                                                          <div class="row mt-25">
+
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Updation Type</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Updation Type</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">My Eligibility Limit</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Maximum Eligibility Limit</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                          </div>
+                                                          <div class="row mt-25">
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Nodes Applicable</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Nodes Gap</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Updation w.e.f. Earlier Cycle</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Reduced Master Value Possible</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+
+                                                          </div>
+                                                          <div class="row mt-25">
+
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">Already Paid Amount Recovery Possible</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-3">
+                                                                <label class="form-label">Updation Enabling Dates Template</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                              <div class="col-md-4">
+                                                                <label class="form-label">Copy the Declaration to Next Business Year</label>
+                                                                <select name="Gender" class="form-control custom-select">
+                                                                  <option value="Male"> Select </option>
+                                                                  <option value="Female"> Head 2</option>
+                                                          </select>
+                                                              </div>
+                                                             
+                                                          </div>
+                                                          <div class="row mt-25">
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Instructions</label>
+                                                            <textarea class="form-control"></textarea>
+                                                              </div>
+                                                          </div>
+                                                         </fieldset>
+                                                      </div>
+                                                      <div class="row mt-25">
+                                                        <div class="col-md-12">
+                                                            <div class="float-right">
+                                                                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2" tooltip="Save"><b>
+                                                                    <i class="fa fa-floppy-o"></i></b> Save</button>
+                                                                    <button type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2"><b><i class="fa fa-refresh"></i></b> Reset</button>
+                                                                    <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i class="fa fa-times"></i></b> Cancel</button>
+                                                   
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-25">
+                                                        <div class="col-md-12">
+                    
+                                                            <p-table #dt1 [value]="Summs" [paginator]="true" [rows]="10"
+                                                                [showCurrentPageReport]="true" (sortFunction)="customSort($event)" [customSort]="true"
+                                                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                                [rowsPerPageOptions]="[10,25,50]" >
+                    
+                                          
+                                                                <ng-template pTemplate="header">
+                                                                    <tr>
+                                                                        <th>
+                                                                          Sr.No.
+                                                                        </th>  
+                                                                       
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Type
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="ItSection" pSortableColumn="ItSection"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="ItSection" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">E/D Head
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="Type" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Attribute
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="name" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Non E/D Head
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="PSIdDetails" pSortableColumn="PSIdDetails"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="PSIdDetails" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div class="p-d-flex p-jc-between p-ai-center">Order No.
+                                                                                <div class="Sort_Filter_Position">
+                                                                                    <p-sortIcon field="SubmissionDate" pSortableColumn="SubmissionDate"></p-sortIcon>
+                                                                                    <p-columnFilter type="text" field="SubmissionDate" display="menu"
+                                                                                        class="p-ml-auto">
+                                                                                    </p-columnFilter>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                    
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="body" let-Summ>
+                                                                    <tr class="p-selectable-row">
+                                                                        <td>
+                                                                           1
+                                                                        </td>
+                                                                        <td>{{ Summ.type}}</td>
+                                                                        <td>{{ Summ.EDhead}}</td>
+                                                                        <td>{{ Summ.attribute}}</td>
+                                                                        <td>{{ Summ.nonedhead}}</td>
+                                                                        <td>{{ Summ.orderno}}</td>                                                                    
+                                                                      
+                                                                        <td><span><i class="fa fa-pencil fa2 mr-2 text-blue font-16" ></i>
+                                                                        
+                                                                            <i class="fa fa-times font-16 text-red"></i>
+                                                                        </span></td>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="paginatorleft">
+                                                                    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                                                                    </p-button>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="paginatorright">
+                                                                    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                                                                    </p-button>
+                                                                </ng-template>
+                                                            </p-table>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="nav" for="Tab2"><span> Flexi Earning Head Setting </span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

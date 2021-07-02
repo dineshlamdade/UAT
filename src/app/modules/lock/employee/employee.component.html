@@ -1,7 +1,12 @@
- 
-<div class="tabview-myform">
+<section _ngcontent-isn-c526="" id="rauchbier" class="tab-panel">
+    <div _ngcontent-isn-c526="" class="row">
+        <div _ngcontent-isn-c526="" class="col-md-12">
+            <div _ngcontent-isn-c526="" class="card">
+                
+                   
+
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body p-0">
                     <fieldset>
@@ -9,24 +14,32 @@
 
                             <div class="row">
                                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  mb-3">
-
                                     <fieldset>
                                         <legend>Employee</legend>
-
                                         <div class="row">
-                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">Cycle Definition</label>
+                                                    <select class="form-control">
+                                                        <option>Select</option>
+                                                        <option value="">Weekly</option>
+                                                        <option value="">By Weekly</option>
+                                                        <option value="">Monthly</option>
+                                                        <option value="">Semi Monthly</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label class="form-label">*Cycle Name</label>
                                                     <select class="form-control">
                                                         <option>Select</option>
-                                                        <option value="">Abc</option>
-                                                        <option value="">Abc</option>
-                                                        <option value="">Abc</option>
-                                                        <option value="">Abc</option>
+                                                        <option value="">Apr 2022</option>
+                                                        <option value="">Apr 2020</option>                                                       
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                            <div class="col-md-3 ">
 
                                                 <div class="form-group">
                                                     <label class="form-label">Start Date</label>
@@ -37,13 +50,14 @@
                                                         </div>
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
-                                                            class="form-control" (bsValueChange)="setPolicyEndDate()"
+                                                            class="form-control"
+                                                            (bsValueChange)="setPolicyEndDate()"
                                                             placeholder="Cycle Start Date" bsDatepicker
                                                             [maxDate]="today">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                            <div class="col-md-3">
 
                                                 <div class="form-group">
                                                     <label class="form-label">End Date</label>
@@ -54,8 +68,10 @@
                                                         </div>
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
-                                                            class="form-control" (bsValueChange)="setPolicyEndDate()"
-                                                            placeholder="Cycle End Date" bsDatepicker [maxDate]="today">
+                                                            class="form-control"
+                                                            (bsValueChange)="setPolicyEndDate()"
+                                                            placeholder="Cycle End Date" bsDatepicker
+                                                            [maxDate]="today">
                                                     </div>
                                                 </div>
                                             </div>
@@ -65,13 +81,13 @@
                                     </fieldset>
                                 </div>
 
-                                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <div class="col-md-4 ">
 
                                     <fieldset>
                                         <legend>Organizational Selection</legend>
 
                                         <div class="row">
-                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                            <!-- <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                                 <div class="form-group">
                                                     <label class="form-label mb-3">Company Name</label>
                                                     <ng-multiselect-dropdown [placeholder]="'None Selected'"
@@ -80,25 +96,17 @@
                                                         (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
                                                     </ng-multiselect-dropdown>
                                                 </div>
+                                            </div> -->
+                                            <div class="col-md-6 ">
+                                              
+                                                    <label class="form-label">Service</label>
+                                                    <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" optionValue="name"></p-multiSelect>
+                                            
                                             </div>
-                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                            <div class="col-md-6 ">
                                                 <div class="form-group">
-                                                    <label class="form-label mb-3">Service</label>
-                                                    <ng-multiselect-dropdown [placeholder]="'None Selected'"
-                                                        [settings]="dropdownSettings" [data]="dropdownList"
-                                                        (onSelect)="onItemSelect($event)"
-                                                        (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
-                                                    </ng-multiselect-dropdown>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="form-label mb-3">Area</label>
-                                                    <ng-multiselect-dropdown [placeholder]="'None Selected'"
-                                                        [settings]="dropdownSettings" [data]="dropdownList"
-                                                        (onSelect)="onItemSelect($event)"
-                                                        (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
-                                                    </ng-multiselect-dropdown>
+                                                    <label class="form-label">Area</label>
+                                                    <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" ></p-multiSelect>
                                                 </div>
                                             </div>
                                         </div>
@@ -106,7 +114,7 @@
 
                                     </fieldset>
                                 </div>
-                                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <div class="col-md-8">
 
                                     <fieldset>
                                         <legend>Employee Selection</legend>
@@ -121,12 +129,14 @@
                                                             <div class="custom-control-label">Employee Code</div>
                                                         </label>
                                                     </div>
-
-                                                    <ng-multiselect-dropdown [placeholder]="'None Selected'"
+                                                 
+                                                    <p-multiSelect [options]="group" [(ngModel)]="selectedgroup"
+                                                    optionLabel="name"></p-multiSelect>
+                                                    <!-- <ng-multiselect-dropdown [placeholder]="'None Selected'"
                                                         [settings]="dropdownSettings" [data]="dropdownList"
                                                         (onSelect)="onItemSelect($event)"
                                                         (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
-                                                    </ng-multiselect-dropdown>
+                                                    </ng-multiselect-dropdown> -->
 
 
                                                 </div>
@@ -140,12 +150,9 @@
                                                             <div class="custom-control-label">Employee Set </div>
                                                         </label>
                                                     </div>
-
-                                                    <ng-multiselect-dropdown [placeholder]="'None Selected'"
-                                                        [settings]="dropdownSettings" [data]="dropdownList"
-                                                        (onSelect)="onItemSelect($event)"
-                                                        (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
-                                                    </ng-multiselect-dropdown>
+                                                    <p-multiSelect [options]="cities" [(ngModel)]="selectedCities"
+                                                    optionLabel="name"></p-multiSelect>
+                                                   
                                                 </div>
                                             </div>
                                             <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
@@ -184,11 +191,11 @@
                                             <b><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>
                                             Previous</button> -->
 
-                                                <button type="submit"
+                                                <!-- <button type="submit"
                                                     class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
                                                     tooltip="show list" [disabled]="loading">
                                                     <b><i class="fa fa-paper-plane" aria-hidden="true"></i></b>
-                                                    Go</button>
+                                                    Go</button> -->
 
 
                                                 <button type="button" tooltip="Reset"
@@ -217,7 +224,7 @@
                                         class="btn btn-primary mr-2" (click)="cycleList(template3)">Lock
                                         cycle</button><button class="btn btn-secondary">Exel</button></span></h6>
                         </div>
-                        <p-table [value]="users1">
+                        <p-table #dt1  [value]="users1" (sortFunction)="customSort($event)" [customSort]="true">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th rowspan="1" class="wd-10">
@@ -227,7 +234,7 @@
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Company Name
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="name"></p-sortIcon>
+                                                <p-sortIcon field="headtype" pSortableColumn="headtype"></p-sortIcon>
                                                 <p-columnFilter type="text" field="name" display="menu"
                                                     class="p-ml-auto"></p-columnFilter>
                                             </div>
@@ -238,7 +245,7 @@
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Area
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="representative.name"></p-sortIcon>
+                                                <p-sortIcon field="headtype" pSortableColumn="headtype"></p-sortIcon>
                                                 <p-columnFilter field="representative" matchMode="in" display="menu"
                                                     [showMatchModes]="false" [showOperator]="false"
                                                     [showAddButton]="false" class="p-ml-auto">
@@ -270,7 +277,7 @@
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Service
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="date"></p-sortIcon>
+                                                <p-sortIcon field="headtype" pSortableColumn="headtype"></p-sortIcon>
                                                 <p-columnFilter type="date" field="date" display="menu"
                                                     class="p-ml-auto"></p-columnFilter>
                                             </div>
@@ -289,7 +296,7 @@
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Cycle
                                             <div class="Sort_Filter_Position">
-                                                <p-sortIcon field="status"></p-sortIcon>
+                                                <p-sortIcon field="headtype" pSortableColumn="headtype"></p-sortIcon>
                                                 <p-columnFilter field="status" matchMode="equals" display="menu"
                                                     class="p-ml-auto">
                                                     <ng-template pTemplate="filter" let-value
@@ -347,6 +354,176 @@
 
 
                     </div>
+                    <div class="row mt-25">
+                        <div class="col-md-12">
+
+                            <p-table #dt1 [value]="customers" [paginator]="true" [rows]="10"
+                                [showCurrentPageReport]="true" (sortFunction)="customSort($event)" [customSort]="true"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [rowsPerPageOptions]="[10,25,50]"
+                                [globalFilterFields]="['empcode','empName','Group','Frequency','Type','proofsubmission','PSIdDetails','SubmissionDate','Status']">
+
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <div class="d-flex">  
+                                            <button type="button" tooltip="Button"
+                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 " (click)="UploadModal2 (template2)"><b><i
+                                                    class="fa fa-file"></i></b> Section wise status
+                                        </button>
+                                        <button type="button" tooltip="Button"
+                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 " [routerLink]="['/approved-investmentsecond']"><b><i
+                                                    class="fa fa-check"></i></b> Approved </button>
+                                                    <i class="fa fa-file-excel-o  fa-2x mr-2"></i>
+                                        
+                                              
+                                                      <span class="p-input-icon-left p-ml-auto">
+                                                        <i class="pi pi-search" style="top: 9px !important;"></i>
+                                                        <input pInputText type="text"
+                                                            (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                            placeholder="Search keyword" />
+                                          </span>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                 
+                                        
+                                       
+                                 
+
+                                </ng-template>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 3rem">
+                                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        </th>
+                                      
+                                         <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Emp.Code
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                                                    <p-columnFilter field="empcode" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+
+
+                                        </th> 
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Emp Name
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="empName"  pSortableColumn="empName"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="empName" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Group
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="Group" pSortableColumn="Group"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="Group" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                       
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">IT Section
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="ItSection" pSortableColumn="ItSection"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="ItSection" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Type
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="Type" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Proof Submission Id
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="name" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">PS Id Details
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="PSIdDetails" pSortableColumn="PSIdDetails"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="PSIdDetails" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Submission Date
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="SubmissionDate" pSortableColumn="SubmissionDate"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="SubmissionDate" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">Status
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="Status" pSortableColumn="Status"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="Status" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>Action</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-customer>
+                                    <tr class="p-selectable-row">
+                                        <td>
+                                            <p-tableCheckbox [value]="customer"></p-tableCheckbox>
+                                        </td>
+                                        <td>{{ customer.empcode}}</td>
+                                        <td>{{ customer.empName}}</td>
+                                        <td>{{ customer.Group}}</td>
+                                        <td>{{ customer.ItSection}}</td>
+                                        <td>{{ customer.Type}}</td>
+                                        <td>{{customer.proofsubmission}}</td>
+                                        <td>{{customer.PSIdDetails}}</td>
+                                        <td>{{customer.SubmissionDate}}</td>
+                                        <td>{{customer.Status}}</td>
+                                        <td><i class="fa fa-eye fa2" ></i></td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="paginatorleft">
+                                    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text">
+                                    </p-button>
+                                </ng-template>
+                                <ng-template pTemplate="paginatorright">
+                                    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text">
+                                    </p-button>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -354,6 +531,8 @@
 
             </div>
         </div>
+        </div>
+
         <ng-template #template4>
             <div class="modal-header">
                 <h5 class="modal-title" id="UploadModalLabel">Cycle List</h5>
@@ -498,5 +677,10 @@
                 <i class="fa fa-angle-double-up text-white font-18"></i>
             </button>
         </div>
-    </div>
+    
+
+
 </div>
+</div>
+</div>
+</section>

@@ -12,7 +12,7 @@ export class LeftmenuComponent implements OnInit {
   public menuDetails: Array<any>;
 
   public isCollapsed = true;
-
+  // public iFlexi = true;
   public isEmployeeMaster = true;
   public isProjectCollapsed = true;
   public isJobportalCollapsed = true;

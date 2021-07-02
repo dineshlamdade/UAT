@@ -56,7 +56,7 @@ const routes: Routes = [
   { path: 'lock', loadChildren: './modules/lock/lock.module#LockModule' },
   { path: 'reimbursement-master', loadChildren: './modules/reimbursement/reimbursement.module#ReimbursementModule' },
 
-
+  { path: 'flexiinput', loadChildren: './modules/flexi/flexi.module#FlexiModule' },
 
 ];
 

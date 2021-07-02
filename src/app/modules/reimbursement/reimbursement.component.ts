@@ -1,6 +1,7 @@
 import { Component, HostListener, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { SortEvent } from 'primeng/api';
 
 @Component({
   selector: 'app-reimbursement',
@@ -12,10 +13,11 @@ export class ReimbursementComponent implements OnInit {
   public policyNumber: string;
   public windowScrolled: boolean;
   public data: any;
-
-  constructor() { }
+ 
+  constructor(private modalService: BsModalService) { }
 
   ngOnInit(): void {
+  
   }
 
   changeTabIndexForRedirect(event: any) {

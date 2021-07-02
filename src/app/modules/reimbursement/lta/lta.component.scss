@@ -1,0 +1,131 @@
+.green{
+    background-color: #106510;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    border: none;
+    padding: 4px;
+    margin: 2px;
+}
+.table th{
+  text-transform: none !important;}
+.fx{
+    color:white;
+}
+.borderno{
+   border-top:0px !important;
+   text-align: center;
+   font-weight: 600;
+   color: darkgray;
+
+}
+.font{
+    font-weight:bold;
+}
+.info {
+    background-color: #e7f3fe;
+    padding: 10px;
+  
+    color: #13424c;
+    // font-family: Montserrat, sans-serif !important;
+    border-left: 6px solid #2196F3;
+  }
+  .valign{
+      vertical-align: middle;
+  }
+  .gray{
+      background-color: #efeaea;
+  }
+  .gray1{
+      background:lightgray;
+      border-radius: 30%;
+      margin:10px
+  }
+.bold{
+  font-weight:bold;
+}
+.agree{
+font-weight: 700;
+padding: 4px;
+// color: darkblue;
+// background: #4df7ff;
+color: #0e4c70;
+    background: #98c8f3;
+
+}
+.align-center{text-align: center;}
+.align-right{
+  text-align: right;
+}
+//
+// Demo stuff
+// --------------------------------------------------
+
+
+//
+// Tables
+// --------------------------------------------------
+
+// @table-cell-padding:            14px;
+// @table-bg:                      transparent;
+// @table-bg-accent:               #fff;
+// @table-bg-hover:                #f7f8fb;
+// @table-bg-active:               @table-bg-hover;
+
+.table1 {
+  background-color: transparent;
+  width: 100%;
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 7px;
+  
+  > .thead1,
+  > .tbody1,
+  > .tfoot1 {
+    > .tr1 {
+      > .th1,
+      > .td1{
+        padding:14px;
+        line-height: 20px;
+        text-align: left;
+      }
+    }
+  }
+  
+  .th1 {
+    font-weight:700;
+    
+    
+    vertical-align: bottom;
+    padding: 0 14px!important;
+  }
+  
+  .td1 {
+    vertical-align: middle;
+    background:#e1e1e1;
+    box-shadow: 0 3px 2px rgba(0,0,0,.08);
+    transition:all .2s ease;
+    
+   ;
+    
+    &:last-child {
+  border-radius: 0 6px 6px 0;
+    }
+    
+     &:first-child {
+     border-radius: 6px 0 0 6px;
+    }
+  }
+  
+  .tr1 {
+    
+    
+    &:hover {
+      
+      .td1 {
+        background-color:  #f7f8fb;
+        color:#444;
+      }
+    }
+  }
+}

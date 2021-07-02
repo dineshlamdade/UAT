@@ -1,0 +1,1409 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form>
+                              
+                                <div class="tabview">
+                                    <input name="nav" type="radio" class="about-radio" id="Tab1" checked />
+                                    <div class="tabs about-page">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="row ">
+                                                            <div class="col-md-12">
+                                                                <div class="cycle-table ">
+                                                                    <div class="cycle-value ">
+                                                                        <h6
+                                                                            class="font-14 text-purple font-bold mt-3 mb-3">
+                                                                          Key Figures<span
+                                                                                class="float-right">
+
+                                                                            </span></h6>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="row bg-color-light_gray pt-15 pl-15 pr-15">
+                                                                    <div class="col-md-3 col-xs-12">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Monthly
+                                                                                Accural :
+                                                                            </strong>20,1212
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-xs-12">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Accural
+                                                                                so far :
+                                                                            </strong>10000
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-xs-12">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Total
+                                                                                Entitlement :
+                                                                            </strong>12404
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-xs-12">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Balance
+                                                                                Entitlement :
+                                                                            </strong>414114
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-xs-12">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Paid So
+                                                                                Far :
+                                                                            </strong>72542
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-xs-12">
+                                                                        <h6 class="font-12 mb-3 font-normal"><strong>Max.
+                                                                                new
+                                                                                claim to
+                                                                                submit : </strong>42274 </h6>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-xs-12">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Bills
+                                                                                available :
+                                                                            </strong>102255
+                                                                        </h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="row mt-10">
+                                                            <div class="col-md-12">
+                                                                <div class="cycle-table mt-4">
+                                                                    <div class="cycle-value mb-4">
+                                                                        <h6
+                                                                            class="font-14 text-purple font-bold mt-3 mb-3">
+                                                                            Declaration From Employee <span
+                                                                                class="float-right">
+
+                                                                            </span></h6>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-12">
+                                                                <div
+                                                                    class="table table-responsive table-custom custom-table">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="float-right">
+
+                                                                                <button type="button"
+                                                                                    (click)="mediumpopup(template)"
+                                                                                    tooltip="blockwise Exemption Counts"
+                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
+                                                                                            class="fa fa-eye"></i></b>
+                                                                                    Blockwise
+                                                                                    Exemption Counts </button>
+                                                                                <button type="button"
+                                                                                    tooltip="Add Claim (Non Taxable)"
+                                                                                    (click)="mediumpopup1(template1)"
+                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
+                                                                                            class="fa fa-plus"></i></b>
+                                                                                    Add Claim (Non Taxable) </button>
+                                                                                <button type="button"
+                                                                                    tooltip="Add Claim (Taxable)"
+                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
+                                                                                            class="fa fa-plus"></i></b>
+                                                                                    Add
+                                                                                    Claim (Taxable) </button>
+
+
+                                                                                <i
+                                                                                    class="fa fa-file-excel-o text-dark-green fa-2x  valign"></i>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class=" table-responsive Custom_Table mt-15">
+                                                                     
+                                                                        <p-table [value]="users1" class="mt-10">
+                                                                            <ng-template pTemplate="header">
+                                                                                <tr>
+                                                                                    <th class=" align-center">Sr. No.</th>
+
+                                                                                    <th class=" align-center">
+                                                                                        <div
+                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            Block Period
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="name">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter field="name"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class=" align-center">
+                                                                                        <div
+                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            Claim No.
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="representative.name">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter
+                                                                                                    type="text"
+                                                                                                    field="Desc"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class=" align-center">
+                                                                                        <div
+                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            Date Of Submission
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="date">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter
+                                                                                                    type="date"
+                                                                                                    field="date"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class=" align-center">
+                                                                                        <div
+                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            Claim Type
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="status">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter
+                                                                                                    field="status"
+                                                                                                    matchMode="equals"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class=" align-center">
+                                                                                        <div
+                                                                                            class="p-d-flex justify-content-center p-ai-center">
+                                                                                            Claim Name
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="activity">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter
+                                                                                                    field="activity"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class=" align-center">
+                                                                                        <div
+                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            Claim Amount
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="activity">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter
+                                                                                                    field="activity"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class=" align-center">
+                                                                                        <div
+                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            Rejected
+                                                                                                Amount
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="activity">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter
+                                                                                                    field="activity"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                    <th class=" align-center">Approved Amount</th>
+                                                                                    <th class=" align-center"> Remark </th>
+                                                                                    <th class=" align-center">
+                                                                                        <div
+                                                                                            class="p-d-flex p-ai-center justify-content-center">
+                                                                                            Status
+                                                                                            <div
+                                                                                                class="Sort_Filter_Position">
+                                                                                                <p-sortIcon
+                                                                                                    field="activity">
+                                                                                                </p-sortIcon>
+                                                                                                <p-columnFilter
+                                                                                                    field="activity"
+                                                                                                    display="menu"
+                                                                                                    class="p-ml-auto">
+                                                                                                </p-columnFilter>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </th>
+                                                                                   
+                                                                                    <th class="wd-8 align-center">Action</th>
+                                                                                </tr>
+
+                                                                            </ng-template>
+                                                                            <ng-template pTemplate="body" let-user1>
+                                                                                <tr class="p-selectable-row">
+                                                                                    <td class=" align-center">
+                                                                                        {{user1.srno}}
+                                                                                    </td>
+                                                                                    <td class=" align-center bg-color-light_gray">
+                                                                                        <label
+                                                                                            class="form-lable mb-0">{{user1.BlockNo}}</label>
+                                                                                    </td>
+                                                                                    <td class=" align-center bg-color-light_gray">
+                                                                                        <label
+                                                                                            class=" align-center form-lable mb-0">{{user1.ClaimNo}}</label>
+                                                                                    </td>
+                                                                                    <td class=" align-center bg-color-light_gray"> <label class="form-lable mb-0"
+                                                                                            disabled>{{user1.Dateofsubmission}}</label>
+
+                                                                                    </td>
+                                                                                    <td><label class="form-lable mb-0"
+                                                                                            disabled>{{user1.ClaimType}}
+                                                                                        </label>
+                                                                                    </td>
+                                                                                    <td><label class="form-lable mb-0"
+                                                                                            disabled>{{user1.ClaimName}}
+                                                                                        </label>
+                                                                                    </td>
+                                                                                    <td class="align-right"><label class="align-right form-lable mb-0"
+                                                                                            disabled>{{user1.Claimamount}}
+                                                                                        </label>
+                                                                                    </td>
+                                                                                    <td
+                                                                                        class="align-right bg-color-light_gray">
+                                                                                        <label
+                                                                                            class="form-lable mb-0">{{user1.Rejectedamount}}</label>
+                                                                                    </td>
+                                                                                    <td
+                                                                                        class=" align-right bg-color-light_gray ">
+                                                                                        <label
+                                                                                            class="form-lable mb-0">{{user1.Approvedamount}}</label>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <label class="form-lable mb-0"
+                                                                                            disabled>{{user1.remark}}
+                                                                                        </label>
+                                                                                    </td>
+                                                                                    <td
+                                                                                        class="bg-color-light_gray ">
+                                                                                        <label
+                                                                                            class="form-lable mb-0">{{user1.status}}</label>
+                                                                                    </td>
+
+
+                                                                                   
+                                                                                    <td><span><i
+                                                                                                class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2"></i>
+                                                                                            <i
+                                                                                                class="fa fa-eye font-16 text-blue  cursor-pointer  mr-2"></i>
+                                                                                            <i
+                                                                                                class="fa fa-print  font-16 text-blue "></i></span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </ng-template>
+                                                                            <ng-template pTemplate="emptymessage">
+                                                                                <tr>
+                                                                                    <td colspan="15"
+                                                                                        class="font-14 font500 text-center text-red">
+                                                                                        <span>No Data
+                                                                                            Available</span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </ng-template>
+                                                                        </p-table>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="nav" for="Tab1">
+                                        <span> Summary </span>
+                                    </label>
+
+                                    <input name="nav" type="radio" class="nav home-radio" id="Tab2" />
+                                    <div class="tabs about-page">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="fourtabview-contents">
+
+
+                                                            <div class=" bg-color-light_gray pt-15 pl-15 pr-15">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Claim No. :
+                                                                            </strong>201212
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Date Of Submission:
+                                                                            </strong>21-Apr-2021
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Block Period:
+                                                                            </strong>2018-2021
+                                                                        </h6>
+                                                                    </div>
+                                                                   
+                                                                   
+                                                                </div>
+                                                                <div class="row">
+                                                                  
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Dates Of Leave:
+                                                                            </strong> 21-Mar-2021
+                                                                            - 22-Mar-2021
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>No. Of Leaves:
+                                                                            </strong>2
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Status:
+                                                                            </strong>Submitted
+                                                                        </h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-1">
+
+                                                                    <label class="form-label float-right mt-2"> Claim
+                                                                        Name
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" class="form-control">
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-12">
+                                                                    <div class="table-responsive ">
+                                                                        <p-table [value]="clntxs"
+                                                                            [showCurrentPageReport]="true"
+                                                                            (sortFunction)="customSort($event)"
+                                                                            [customSort]="true">
+
+                                                                            <ng-template pTemplate="header">
+                                                                                <tr>
+                                                                                    <th rowspan="2" class=" align-center">
+                                                                                        <p-tableHeaderCheckbox>
+                                                                                        </p-tableHeaderCheckbox>
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Travel Details
+
+                                                                                    </th>
+                                                                                    <th colspan="2" class=" align-center">
+
+                                                                                        Place
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Bill No.
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Bill Date
+
+                                                                                    </th>
+                                                                                  
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Bill Amount
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Rejected Amount
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Approved Amount
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Remark
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Proof Submission ID
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Status
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">Action</th>
+
+
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th class=" align-center">
+
+                                                                                        From
+
+                                                                                    </th>
+                                                                                    <th class=" align-center">
+
+                                                                                        To
+
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </ng-template>
+                                                                            <ng-template pTemplate="body" let-clntx>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <p-tableCheckbox
+                                                                                            [value]="clntx">
+                                                                                        </p-tableCheckbox>
+                                                                                    </td>
+                                                                                    <td  class=" align-center"><a class="text-blue"
+                                                                                        (click)="model(template2)">{{ clntx.Traveldetails }}</a> </td>
+                                                                                    <td  class=" align-center">{{ clntx.from }} </td>
+                                                                                    <td  class=" align-center">{{ clntx.to }} </td>
+                                                                                    <td  class=" align-center">{{ clntx.billno }} </td>
+                                                                                    <td  class=" align-center">{{ clntx.billdate }} </td>
+                                                                                   
+                                                                                    <td  class=" align-right">{{ clntx.billamount }} </td>
+                                                                                    <td  class=" align-right">{{ clntx.rejectedamount }} </td>
+                                                                                    <td  class=" align-right">{{ clntx.approvedamount }} </td>
+                                                                                    <td class=" align-center">{{ clntx.remark }} </td>
+                                                                                    <td class=" align-center">{{ clntx.psid }} </td>
+                                                                                    <td class=" align-center">{{ clntx.status }} </td>
+                                                                                    <td>
+                                                                                        <i
+                                                                                            class="fa fa-plus font-16 text-dark-green mr-2"></i>
+                                                                                        <i
+                                                                                            class="fa fa-times font-16 text-red"></i>
+                                                                                    </td>
+
+                                                                                </tr>
+                                                                            </ng-template>
+                                                                        </p-table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-2">
+                                                                    <h6 class="font-14 text-purple font-bold ">
+                                                                        Upload <span class="float-right">
+
+                                                                        </span></h6>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-15">
+
+                                                                <div class="col-md-4">
+                                                                    <p-table [value]="clntxs"
+                                                                        (sortFunction)="customSort($event)"
+                                                                        [customSort]="true">
+
+                                                                        <ng-template pTemplate="header">
+                                                                            <tr>
+                                                                                <th class=" align-center">
+                                                                                    Sr.No.
+                                                                                </th>
+                                                                                <th rowspan="2" class=" align-center">
+
+                                                                                    Attachment
+
+                                                                                </th>
+                                                                                <th rowspan="2" class=" align-center">
+                                                                                    Action
+                                                                                </th>
+                                                                            </tr>
+                                                                        </ng-template>
+                                                                        <ng-template pTemplate="body">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    1
+                                                                                </td>
+                                                                                <td><input type="text"
+                                                                                        class="form-control"> </td>
+                                                                                <td><i
+                                                                                        class="fa fa-upload font-16 text-purple"></i>
+                                                                                </td>
+
+
+                                                                            </tr>
+                                                                        </ng-template>
+                                                                    </p-table>
+
+
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-12">
+                                                                    <div class="float-right">
+                                                                        <button type="button" tooltip="Save"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
+                                                                                    class="fa fa-save"></i></b> Save
+                                                                            Draft</button>
+                                                                        <button type="button" tooltip="Save"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
+                                                                                    class="fa fa-save"></i></b>
+                                                                            Save</button>
+                                                                        <button type="button" tooltip="Reset"
+                                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i
+                                                                                    class="fa fa-refresh"></i></b>
+                                                                            Reset</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-2">
+                                                                    <h6 class="font-14 text-purple font-bold ">
+                                                                        Summary <span class="float-right">
+
+                                                                        </span></h6>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-12">
+                                                                    <div class="table-responsive ">
+                                                                        <p-table [value]="clntxs1">
+
+                                                                            <ng-template pTemplate="header">
+                                                                                <tr>
+                                                                                    <th rowspan="2" class=" align-center">
+                                                                                        Sr.No.
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        PS.ID
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Travel Details
+
+                                                                                    </th>
+                                                                                    <th colspan="2" class=" align-center">
+
+                                                                                        Place
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Start date
+
+                                                                                    </th>
+                                                                                   
+                                                                                  
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Bill Amount
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Exempt Amount
+
+                                                                                    </th>
+
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Remark
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Document
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class=" align-center">
+
+                                                                                        Status
+
+                                                                                    </th>
+                                                                                    <th rowspan="2" class="align-center">
+                                                                                        Action
+                                                                                    </th>
+
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th class=" align-center">
+
+                                                                                      
+                                                                                        From
+                                                                                        
+
+                                                                                    </th>
+                                                                                    <th  class=" align-center" >
+                                                                                       
+                                                                                        To
+                                                                                        
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </ng-template>
+                                                                            <ng-template pTemplate="body" let-clntx1>
+                                                                                <tr>
+                                                                                    <td  class=" align-center">
+                                                                                        1
+                                                                                    </td>
+                                                                                    <td  class=" align-center">{{ clntx1.psid }} </td>
+                                                                                    <td  class=" align-center">{{clntx1.Traveldetails }}
+                                                                                    </td>
+                                                                                    <td  class=" align-center">{{ clntx1.from }} </td>
+                                                                                    <td  class=" align-center">{{ clntx1.to }} </td>
+                                                                                    <td  class=" align-center">{{ clntx1.startdate }} </td>
+                                                                                   
+                                                                                   
+                                                                                    <td  class=" align-right">{{ clntx1.billamount }} </td>
+                                                                                    <td  class=" align-right">{{ clntx1.exemptamount }} </td>
+                                                                                    <td  class=" align-center">{{ clntx1.remark }} </td>
+                                                                                    <td  class=" align-center">{{ clntx1.document }} </td>
+                                                                                    <td  class=" align-center">{{ clntx1.status }} </td>
+                                                                                    <td><i
+                                                                                            class="fa fa-eye mr-2 font-16 text-blue"></i>
+                                                                                        <i
+                                                                                            class="fa fa-pencil font-16 text-dark-green"></i>
+                                                                                    </td>
+
+                                                                                </tr>
+                                                                            </ng-template>
+                                                                        </p-table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-12">
+                                                                    <div class="info form-label">
+
+                                                                        <ol>
+                                                                          I <strong>Sujata Patil</strong> hereby
+                                                                                declare that all the information
+                                                                                provided above is correct.
+                                                                            <li>I Agree that any misstatements
+                                                                                discovered in this form will be grounds
+                                                                                for rejection of this application and/or
+                                                                                termination of Employment.</li>
+                                                                            <li>I also undertake all amount paid to me
+                                                                                and bear the tax liability on the
+                                                                                improper Reimbursment.</li>
+                                                                            <li>If the information Provoided in the
+                                                                                Application is Established To be
+                                                                                Misstated.</li>
+                                                                        </ol>
+                                                                        <div class="row mt-10">
+                                                                            <div class="col-md-12">
+                                                                               
+                                                                                    <label
+                                                                                        class="custom-control custom-checkbox checkbox-center">
+                                                                                        <input type="checkbox"
+                                                                                            class="custom-control-input"
+                                                                                            name="select" /> <span
+                                                                                            class="custom-control-label agree ">I
+                                                                                            Agree</span>
+                                                                                    </label>
+
+                                                                               
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-12">
+                                                                    <div class="float-right">
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+                                                                                    class="fa fa-check"></i></b> Submit
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="nav" for="Tab2" (click)="mediumpopup1(template1)">
+                                        <span> Claim - Non Taxable </span>
+                                    </label>
+
+                                    <input name="nav" type="radio" class="about-radio" id="Tab3" />
+                                    <div class="tabs about-page">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="fourtabview-contents">
+
+
+                                                            <div class=" bg-color-light_gray pt-15 pl-15 pr-15">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Claim Number :
+                                                                            </strong>201212
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Date of Submission:
+                                                                            </strong>21-Apr-2021
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h6 class="font-12 mb-3 font-normal">
+                                                                            <strong>Status:
+                                                                            </strong>Submitted
+                                                                        </h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-1">
+
+                                                                    <label class="form-label float-right mt-2"> Claim
+                                                                        Name
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" class="form-control">
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-12">
+                                                                    <p-table [value]="cltaxs"
+                                                                        (sortFunction)="customSort($event)"
+                                                                        [customSort]="true">
+
+                                                                        <ng-template pTemplate="header">
+                                                                            <tr>
+                                                                                <th class=" align-center" style="width: 3rem">
+                                                                                    Sr.No.
+                                                                                </th>
+                                                                                <th class=" align-center">
+
+                                                                                  Claimed Amount
+
+                                                                                </th>
+                                                                                <th class=" align-center">
+
+                                                                                    Rejected Amount
+
+                                                                                </th>
+                                                                                <th class=" align-center">
+
+                                                                                    Approved Amount
+
+                                                                                </th>
+                                                                                <th class=" align-center">
+
+                                                                                    Remark
+
+                                                                                </th>
+                                                                                <th class=" align-center">
+
+                                                                                    Status
+
+                                                                                </th>
+
+
+                                                                            </tr>
+                                                                        </ng-template>
+                                                                        <ng-template pTemplate="body" let-cltax>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    1
+                                                                                </td>
+                                                                                <td><input type="text" class="form-control" value="{{cltax.Amount}}"> </td>
+                                                                                <td class="align-right">{{ cltax.rejectedamt }} </td>
+                                                                                <td class="align-right">{{ cltax.approvedamt }} </td>
+                                                                                <td>{{ cltax.remark }} </td>
+                                                                                <td>{{ cltax.status }} </td>
+
+
+                                                                            </tr>
+                                                                        </ng-template>
+                                                                    </p-table>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-10">
+                                                                <div class="col-md-12">
+                                                                    <div class="info form-label">
+                                                                        <ol>
+                                                                          I <strong>Sujata Patil</strong> hereby
+                                                                                declare that all the information
+                                                                                provided above is correct.
+                                                                            <li>I Agree that any misstatements
+                                                                                discovered in this form will be grounds
+                                                                                for rejection of this application and/or
+                                                                                termination of Employment.</li>
+                                                                            <li>I also undertake all amount paid to me
+                                                                                and bear the tax liability on the
+                                                                                improper Reimbursment.</li>
+                                                                            <li>If the information Provoided in the
+                                                                                Application is Established To be
+                                                                                Misstated.</li>
+                                                                        </ol>
+                                                                        <div class="row mt-10">
+                                                                            <div class="col-md-12">
+                                                                              
+                                                                                    <label class="custom-control custom-checkbox checkbox-center">
+                                                                                        <input type="checkbox"
+                                                                                            class="custom-control-input"
+                                                                                            name="select" /> <span
+                                                                                            class="custom-control-label agree ">I
+                                                                                            Agree</span>
+                                                                                    </label>
+
+                                                                               
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-25">
+                                                                <div class="col-md-12">
+                                                                    <div class="float-right">
+                                                                        <button type="button" tooltip="Button"
+                                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+                                                                                    class="fa fa-check"></i></b> Submit
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <label class="nav" for="Tab3">
+                                        <span> Claim - Taxable </span>
+                                    </label>
+                                </div>
+                            </form>
+                            <ng-template #template>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="UploadModalLabel">Exempt LTA Availed - No. Of Instances
+                                    </h5>
+                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                    <table class="table table-bordered custom-table gray">
+
+                                                        <thead><tr>
+                                                            <th rowspan="2"   class="bold align-center "> Block Period</th>
+                                                            <th colspan="3" class="bold align-center">No. Of Instances</th>
+                                                           </tr>
+                                                           <tr> <th class="bold align-center">Max. Permissible</th>
+                                                            <th class="bold align-center">Availed</th>
+                                                            <th class="bold align-center">Balance</th></tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>2018-2021</td>
+                                                                <td>2</td>
+                                                                <td>0</td>
+                                                                <td> 2</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2014-2017</td>
+                                                                <td>2</td>
+                                                                <td>0</td>
+                                                                <td>2</td>
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        (click)="modalRef.hide()">Ok</button>
+                                </div>
+                            </ng-template>
+
+
+
+
+                            <ng-template #template1>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="UploadModalLabel">Leaves Availed for Exempt LTA Claim
+                                    </h5>
+                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row clearfix">
+                                                <div class="col-md-12">
+
+
+                                                    <p-table [value]="ltaavailed1">
+
+                                                        <ng-template pTemplate="header">
+                                                            <tr>
+                                                                <th style="width: 3rem">
+                                                                    <p-tableHeaderCheckbox style="visibility: hidden;"></p-tableHeaderCheckbox>
+                                                                </th>
+                                                                <th class="primeng-table-header-center wd-10">
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Leaves Application No.
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="status">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="status"
+                                                                                matchMode="equals" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="primeng-table-header-center wd-15">
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Application Date
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="status">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="status"
+                                                                                matchMode="equals" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="primeng-table-header-center wd-15">
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Leave Type
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="status">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="status"
+                                                                                matchMode="equals" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="primeng-table-header-center wd-15">
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        From Date
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="status">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="status"
+                                                                                matchMode="equals" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="primeng-table-header-center wd-15">
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        To Date
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="status">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="status"
+                                                                                matchMode="equals" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="primeng-table-header-center wd-10">
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Total Leave Days
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="status">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="status"
+                                                                                matchMode="equals" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th class="primeng-table-header-center wd-15">
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                       Remark
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="status">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="status"
+                                                                                matchMode="equals" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+
+                                                            </tr>
+                                                        </ng-template>
+                                                        <ng-template pTemplate="body" let-ltaavailed>
+                                                            <tr>
+                                                                <td style="width: 3px;">
+                                                                    <p-tableCheckbox [value]="ltaavailed">
+                                                                    </p-tableCheckbox>
+                                                                </td>
+                                                                <td class="text-center">{{ ltaavailed.leavesapplicationno }} </td>
+                                                                <td class="text-center">{{ ltaavailed.appldate }} </td>
+                                                                <td class="text-center">{{ ltaavailed.leavetype }} </td>
+                                                                <td class="text-center">{{ ltaavailed.fromdate }} </td>
+                                                                <td class="text-center">{{ ltaavailed.todate }} </td>
+                                                                <td class="text-center">{{ ltaavailed.totalleaves }} </td>
+                                                                <td>{{ ltaavailed.leaveremark }} </td>
+                                                            </tr>
+                                                        </ng-template>
+                                                    </p-table>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="row mt-15">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">From Date</label>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                           <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                               <i class="fa fa-calendar"></i>
+                                                                          </span>
+                                                           </div>
+                                                   <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker>
+                                                     </div>
+                                                   </div>
+                                                   
+                                                </div>
+                                                <div class="col-md-4"> 
+                                                      <label class="form-label">To Date</label>
+                                                    <div class="form-group">
+                                         <div class="input-group">
+                                     <div class="input-group-prepend">
+ 			                               <span class="input-group-text">
+                                              <i class="fa fa-calendar"></i>
+                                                </span>
+                                    </div>
+                                     <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker>
+                              </div>
+                              </div>
+
+                                                    </div>
+                                                <div class="col-md-4"> 
+                                                      <label class="form-label">Total Leave Days</label>
+                                                <input type="text" class="form-control" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" for="Tab2" id="Tab2"  tooltip="Proceed" (click)="modalRef.hide()"
+                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+                                                class="fa fa-arrow-right "></i></b> Proceed </button>
+                                    <!-- <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                        ><i class="fa fa-check"></i>Claim</button> -->
+                                </div>
+                            </ng-template>
+
+
+                            <ng-template #template2>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="UploadModalLabel">Travel Details
+                                    </h5>
+                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row clearfix">
+                                               
+                                                <div class="col-md-4">
+                                                    <label class="form-label">From Place</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">To Place</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <span>
+                                                        <label class="form-label">Sector No.</label>
+                                                        <input type="text" class="form-control" disabled></span>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-15">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Start Date of Journey</label>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input data-provide="datepicker" data-date-autoclose="true"
+                                                                class="form-control" placeholder="Date" bsDatepicker>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Mode of Travel</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male"> Air </option>
+                                                        <option value="Female"> Train</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Class</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male"> Economy </option>
+                                                        <option value="Female"> Business Class</option>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Carrier</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male"> National </option>
+                                                        <option value="Female"> Other</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Shortest Distance (KM)</label>
+                                                    <input type="text" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-12">
+                                                    <fieldset>
+                                                        <legend>Passangers</legend>
+                                                        <div class="row">
+                                                            <div class="col-md-2"> 
+                                                                <label class="form-label float-right valign">Copy From</label>
+                                                                </div>
+                                                                <div class="col-md-4"> 
+                                                                    <select name="Gender"
+                                                                        class="form-control custom-select">
+                                                                        <option value="Male"> Select </option>
+                                                                        <option value="Female"> Other</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                      
+                                                        <div class="row mt-25">
+                                                            <div class="col-md-12">
+                                                                <table class=" table1 ">
+                                                                    <thead class="thead1">
+                                                                        <th  class="  th1 r">Name</th>
+                                                                        <th class="th1 ">Relationship</th>
+                                                                        <th class="th1 ">Dependant</th>
+                                                                        <th class="th1 ">Age (Yrs.)</th>
+                                                                        <th class="th1 ">Part of Trip
+                                                                        </th>
+
+                                                                    </thead>
+                                                                    <tbody class="tbody1">
+                                                                        <tr class=" tr1 gray1">
+                                                                            <td class="td1">ABCD</td>
+                                                                            <td class="td1">Self</td>
+                                                                            <td class="td1">Yes</td>
+                                                                            <td class="td1">20</td>
+                                                                            <td class="td1"><label class="custom-switch mt_5">
+                                                                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                                                                                <span class="custom-switch-indicator"></span>&nbsp;
+                                                                                <span class="form-label">Yes</span>
+                                                                                </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="tr1 gray1">
+                                                                            <td class="td1">ABCD</td>
+                                                                            <td class="td1">Self</td>
+                                                                            <td class="td1">Yes</td>
+                                                                            <td class="td1">20</td>
+                                                                            <td class="td1"><label class="custom-switch mt_5">
+                                                                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                                                                                <span class="custom-switch-indicator"></span>&nbsp;
+                                                                                <span class="form-label">No</span>
+                                                                                </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class=" tr1 gray1">
+                                                                            <td class="td1">ABCD</td>
+                                                                            <td class="td1">Self</td>
+                                                                            <td class="td1">Yes</td>
+                                                                            <td class="td1">20</td>
+                                                                            <td class="td1">  <label class="custom-switch mt_5">
+                                                                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                                                                                <span class="custom-switch-indicator"></span>&nbsp;
+                                                                                <span class="form-label">No</span>
+                                                                                </label>
+                                                         
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="tr1 gray1">
+                                                                            <td class="td1">ABCD</td>
+                                                                            <td class="td1">Self</td>
+                                                                            <td class="td1">Yes</td>
+                                                                            <td class="td1">20</td>
+                                                                            <td class="td1"><label class="custom-switch mt_5">
+                                                                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                                                                                <span class="custom-switch-indicator"></span>&nbsp;
+                                                                                <span class="form-label">No</span>
+                                                                                </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Fare Amount</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                               
+                                                <div class="col-md-6">
+                                                    <label class="form-label">
+                                                        Exemption Amount
+                                                    </label>
+                                                    <input type="text" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">
+                                                        National Carrier-Economy Class Air Fare
+                                                    </label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                                <div class="col-md-6"> <label
+                                                        class="form-label ">Remark</label>
+                                                
+                                                    <textarea class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" (click)="modalRef.hide()" tooltip="Save"
+                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+                                                class="fa fa-save"></i></b> Save </button>
+                                    <!-- <button type="button" class="btn btn-secondary"
+                                        (click)="modalRef.hide()">Ok</button> -->
+                                    <button type="button" tooltip="Reset"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"><b><i
+                                                class="fa fa-refresh"></i></b> Reset</button>
+                                </div>
+                            </ng-template>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

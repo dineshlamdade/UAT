@@ -1,0 +1,1305 @@
+<app-leftadminmenu> </app-leftadminmenu>
+<div class="page">
+    <app-header></app-header>
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="btn-group">
+                                        <button class="btn btn-success">Payroll Area1</button>
+                                        <button class="btn btn-success" disabled>Payroll Area2</button>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="float-right">
+                                        <button class="btn btn-primary mr-2">Flexi Basket Policy</button>
+                                        <button class="btn btn-primary mr-2"
+                                            (click)="mediumpopup(template)">History</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sticky">
+                                <div class="row mt-25">
+                                    <div class="col-md-12">
+                                        <div class="row bg-color-light_gray pt-15 pl-15 pr-15">
+                                            <div class="col-md-2">
+                                                <label class="form-label mt-1 mb-0">Employee No. & Name</label>
+                                                <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                    Sujata Patil - 3998</label>
+                                            </div>
+                                            <div class="col-md-2 col-xs-12">
+                                                <label class="form-label mt-1 mb-0">Date of Joining </label>
+
+                                                <label class="font-12 text-ellipsis mt-1 mb-0">24-Mar-2021
+                                                </label>
+                                            </div>
+                                            <div class="col-md-2 col-xs-12">
+                                                <label class="form-label mt-1 mb-0">
+                                                    Establishment </label>
+                                                <label class="font-12 text-ellipsis mt-1 mb-0">12404
+                                                </label>
+                                            </div>
+                                            <div class="col-md-2 col-xs-12">
+                                                <label class="form-label mt-1 mb-0">
+                                                    Department</label>
+
+                                                <label class="font-12 text-ellipsis mt-1 mb-0">Worker
+                                                </label>
+                                            </div>
+                                            <div class="col-md-1 col-xs-12">
+                                                <label class="form-label mt-1 mb-0">
+                                                    Grade</label>
+                                                <label class="font-12 text-ellipsis mt-1 mb-0">72542
+                                                </label>
+                                            </div>
+                                            <div class="col-md-2 col-xs-12">
+                                                <label class="form-label mt-1 mb-0">Designation
+                                                </label> <label class="font-12 text-ellipsis mt-1 mb-0">Developer
+                                                </label>
+                                            </div>
+                                            <div class="col-md-1 col-xs-12">
+                                                <label class="form-label mt-1 mb-0">
+                                                    Status </label>
+                                                <label class="font-12 text-ellipsis mt-1 mb-0">Submitted
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row mt-25">
+                                    <div class="col-md-12">
+                                        <div class="row bg-color-light_gray pt-15 pl-15 pr-15">
+                                            <div class="col-md-3 col-xs-12">
+                                                <h6 class="font-12 mb-3 font-normal">
+                                                    <strong>Employee No. & Name :
+                                                    </strong>3998- Sujata Patil
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-3 col-xs-12">
+                                                <h6 class="font-12 mb-3 font-normal">
+                                                    <strong>Date of Joining :
+                                                    </strong>24-Mar-2021
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-3 col-xs-12">
+                                                <h6 class="font-12 mb-3 font-normal">
+                                                    <strong>Establishment :
+                                                    </strong>12404
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-3 col-xs-12">
+                                                <h6 class="font-12 mb-3 font-normal">
+                                                    <strong>Employee Type :
+                                                    </strong>Worker
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-3 col-xs-12">
+                                                <h6 class="font-12 mb-3 font-normal">
+                                                    <strong>Grade:
+                                                    </strong>72542
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-3 col-xs-12">
+                                                <h6 class="font-12 mb-3 font-normal"><strong>Designation :
+                                                    </strong>Developer </h6>
+                                            </div>
+                                            <div class="col-md-3 col-xs-12">
+                                                <h6 class="font-12 mb-3 font-normal">
+                                                    <strong>Status :
+                                                    </strong>Submitted
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            <!-- <div class="row mt-25">
+                                    <table class="table table-bordered">
+                                        
+                                        <thead class="thead-dark">
+                                        <tr>
+                                        <th scope="col">Perticulars</th>
+                                        <th scope="col">Exercise Choice</th>
+                                        <th scope="col">Effective Form</th>
+                                        <th scope="col">Per Month</th>
+                                        <th scope="col">Per Annum </th>
+                                        <th scope="col">Financial Year</th>
+                                        <th scope="col">Instruction</th>
+                                        </tr>
+                                        </thead>
+                                        <tr>
+                                        <td class="text-blue">Annual Based full CTC</td>
+                                        
+                                        <td>Get the head with Value "CTC" at 1.06</td>
+                                        <td>
+                                            
+                                        <select name="Gender" class="form-control custom-select">
+                                            <option value="Male"> June 2021 </option>
+                                            <option value="Female"> June 2022</option>
+                                        </select>
+
+                                        </td>
+                                        <td>70,000.00</td>
+                                        <td>840,000.00.00</td>
+                                        <td  class="text-blue"><u>70,000.00</u></td>
+                                        <td></td>
+                                        </tr>
+                                        <tr>
+                                        <th scope="row" class="text-blue"><u>1.Fixed Heads</u></th>
+                                        <th scope="row" ></th>
+                                        <th scope="row"> <select name="Gender" class="form-control custom-select">
+                                            <option value="Male"> June 2021 </option>
+                                            <option value="Female"> June 2022</option>
+                                        </select></th>
+                                        <th scope="row">28,000</th>
+                                        <th scope="row">336,000</th>
+                                        <th scope="row" class="text-blue">  288000</th>
+                                        <th scope="row"></th>
+                                        </tr>
+                                    
+                                        <tr>
+                                            <td class="text-blue"><u>Basic Salary</u>></td>
+                                            <td >Clive Lloyd</td>
+                                            <td>410-306-1420</td>
+                                            <td>410-306-5400</td>
+                                            <td>Baltimore</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2.</td>
+                                            <td >Clive Lloyd</td>
+                                            <td>410-306-1420</td>
+                                            <td>410-306-5400</td>
+                                            <td>Baltimore</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3.</td>
+                                            <th scope="row">Gordon Greenidge</th>
+                                            <th scope="row">Gordon Greenidge</th>
+                                            <th scope="row">Gordon Greenidge</th>
+                                            <th scope="row">Gordon Greenidge</th>
+                                        </tr>
+                                    </table>
+                                </div> -->
+
+
+                            <div class="row mt-25">
+
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <!-- <span class="badge badge-primary mr-2">Flexi Basket Policy </span>
+                                            <span class="badge badge-primary">History</span> -->
+                                        <span class="span-green">Balancing Figure-2000</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="row mt-15">
+                                <div class="col-md-12"> -->
+
+                                    <!-- <div class="card-header cardhead1">
+                                                Flexi Basket Approval
+                                            </div> -->
+
+                                    <!-- <h5 class="card-title">Special title treatment</h5>
+                                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                            <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- <div class="fixTableHead"> -->
+                                            <div id="table-scroll" class="table-scroll">
+                                                <table id="main-table" class=" table1 main-table ">
+                                                    <thead class="thead1 ">
+                                                        <tr>
+                                                            <th rowspan="2" class="th1">Particulars</th>
+                                                            <th rowspan="2" class="th1">Exercise Choice</th>
+                                                            <th rowspan="2" class="th1">Effective From</th>
+                                                            <th colspan="3" class="th1">Entered / Computed Values </th>
+                                                            <th rowspan="2" class="th1">Instructions</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th    rowspan="2">Per Month</th>
+                                                            <th    rowspan="2">Per Annum
+                                                            </th>
+                                                            <th    rowspan="2">Financial Year 
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody1">
+                                                        <!-- //head1 -->
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Annual Based full CTC</td>
+
+                                                            <td class="td1">
+                                                            </td>
+                                                            <td class="td1">
+
+                                                                <label class="form-label align-center text-center color-gray">June-2020</label>
+
+                                                            </td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>70,000.00</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class="tr1 gray1">
+                                                            <td class="td2">1. Fixed Heads</td>
+                                                            <td class="td2"></td>
+                                                            <td class="td2"></td>
+                                                            <td class="td2">
+                                                            </td>
+                                                            <td class="td2">
+
+                                                            </td>
+                                                            <td class="td2">
+
+                                                            </td>
+                                                            <td class="td2">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Basic Salary</td>
+
+                                                            <td class="td1"></td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>70,000.00</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Co Con to PF</td>
+
+                                                            <td class="td1">
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-primary" disabled>Nill</button>
+                                                                    <button class="btn btn-primary">1800</button>
+                                                                    <button class="btn btn-primary" disabled>Full</button>
+  
+                                                                </div>
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u></u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+
+                                                        <tr class=" tr1 gray1 green-textrow ">
+                                                            <td class="text-black td1">Total of Fixed Heads
+                                                            </td>
+
+                                                            <td class="td1">
+
+                                                            </td>
+                                                            <td class="td1">
+
+
+
+                                                            </td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>94,000.00</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <!-- <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Amount Available for Flexi Basket
+                                                                Allocation in Flexi Section 1
+                                                            </td>
+
+                                                            <td class="td1"></td>
+                                                            <td class="td1">
+
+
+
+                                                            </td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>70,000.00</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr> -->
+                                                        <!-- //head2 -->
+                                                        <tr class="tr1 gray1">
+                                                            <td class="td2">Flexi Section 1)</td>
+                                                            <td class="td2">
+
+                                                            </td>
+                                                            <td class="td2">
+
+
+                                                            </td>
+                                                            <td class="td2 align-right">32,000.00</td>
+                                                            <td class="td2 align-right">
+                                                                44,0000.00
+                                                            </td>
+                                                            <td class="td2 align-right">
+                                                                70,000.00
+                                                            </td>
+                                                            <td class="td2">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1" (click)="noofschool(template1)">Child Education Allowance</td>
+
+                                                            <td class="td1">
+                                                                <span class="text-dark-green">Enter No. of School Going
+                                                                    Children</span>
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-primary" disabled>1</button>
+                                                                    <button class="btn btn-primary">2</button>
+                                                                    <button class="btn btn-primary" disabled>3</button>
+
+                                                                </div>
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>70,000.00</u></td>
+                                                            <td class="td1">Rs.200 per child/month upto max.2 child
+                                                            </td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="td1">
+                                                        <tr>
+                                                            <td class=" text-blue">Core Scheme</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class=" cursor-pointer  text-blue" (click)="remibur(template2)">Internet</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class=" cursor-pointer text-blue" (click)="remibur(template2)">DAP</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="  cursor-pointer text-blue" (click)="remibur(template2)">Mobile</td>
+                                                        </tr>
+                                                        </td>
+
+
+                                                        <td class="td1">
+                                                            <tr class="mb-2">
+                                                                <td>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="mt-25">
+                                                                <div class="custom-controls-stacked radiobtn ">
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios" value="option1"
+                                                                            checked>
+                                                                        <span class="custom-control-label">Opted</span>
+                                                                    </label>
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios"
+                                                                            value="option2">
+                                                                        <span
+                                                                            class="custom-control-label">Non-Opted</span>
+                                                                    </label>
+
+                                                                </div>
+                                                            </tr>
+                                                            <tr class="mt-25">
+                                                                <div class="custom-controls-stacked ">
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios" value="option1"
+                                                                            checked>
+                                                                        <span class="custom-control-label">Opted</span>
+                                                                    </label>
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios"
+                                                                            value="option2">
+                                                                        <span
+                                                                            class="custom-control-label">Non-Opted</span>
+                                                                    </label>
+
+                                                                </div>
+                                                            </tr>
+                                                            <tr class="mt-25">
+                                                                <div class="custom-controls-stacked ">
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios" value="option1"
+                                                                            checked>
+                                                                        <span class="custom-control-label">Opted</span>
+                                                                    </label>
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios"
+                                                                            value="option2">
+                                                                        <span
+                                                                            class="custom-control-label">Non-Opted</span>
+                                                                    </label>
+
+                                                                </div>
+                                                            </tr>
+                                                        </td>
+
+                                                        <td class="td1">
+                                                            <tr><td ><label _ngcontent-lrc-c451="" disabled="" class="form-label align-center text-center color-gray">June-2020</label></td></tr>
+                                                            <tr>
+                                                                <td><label _ngcontent-lrc-c451="" disabled="" class="form-label align-center text-center color-gray">June-2020</label></td></tr>
+                                                            <tr><td ><label _ngcontent-lrc-c451="" disabled="" class="form-label align-center text-center color-gray">June-2020</label></td></tr>
+                                                            
+                                                            
+                                                                                                                    </td>
+                                                                                                                    <td class="td1">
+                                                                                                                        <tr class="align-right">
+                                                                                                                            1,000.00
+                                                                                                                        </tr>
+                                                                                                                        <tr class="align-right">
+                                                                                                                            2,000.00
+                                                                                                                        </tr>
+                                                                                                                        <tr class="align-right">
+                                                                                                                           3,000.00
+                                                                                                                        </tr>
+                                                                                                                    </td>
+                                                        <td class="td1"></td>
+                                                        <td class="text-blue td1"><u>70,000.00</u></td>
+                                                        <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Co-Contribution to PF</td>
+
+                                                            <td class="td1">
+                                                                  <div class="btn-group">
+                                                                    <button class="btn btn-primary" disabled>Nill</button>
+                                                                    <button class="btn btn-primary">1800</button>
+                                                                    <button class="btn btn-primary" disabled>Full</button>
+
+                                                                </div>
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>70,000.00</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <!-- <tr class=" tr1 gray1">
+                                                                    <td class="text-blue td1">PDA Reimbursement</td>
+
+                                                                    <td class="td1">
+                                                                        <h6>{{val3}}</h6>
+                                                                        <p-slider [(ngModel)]="val3"></p-slider>
+                                                                    </td>
+                                                                    <td class="td1">
+
+                                                                        <select name="Gender"
+                                                                            class="form-control custom-select">
+                                                                            <option value="Male"> June 2021 </option>
+                                                                            <option value="Female"> June 2022</option>
+                                                                        </select>
+
+                                                                    </td>
+                                                                    <td class="td1"></td>
+                                                                    <td class="td1"></td>
+                                                                    <td class="text-blue td1"><u>70,000.00</u></td>
+                                                                    <td class="td1">Upto Rs.15000</td>
+                                                                </tr> -->
+                                                        <!-- <tr class=" tr1 gray1">
+                                                                    <td class="text-blue td1">Internet Reimbursement</td>
+
+                                                                    <td class="td1">
+                                                                        <h6>{{val4}}</h6>
+                                                                        <p-slider [(ngModel)]="val4"></p-slider>
+                                                                    </td>
+                                                                    <td class="td1">
+
+                                                                        <select name="Gender"
+                                                                            class="form-control custom-select">
+                                                                            <option value="Male"> June 2021 </option>
+                                                                            <option value="Female"> June 2022</option>
+                                                                        </select>
+
+                                                                    </td>
+                                                                    <td class="td1"></td>
+                                                                    <td class="td1"></td>
+                                                                    <td class="text-blue td1"><u>70,000.00</u></td>
+                                                                    <td class="td1">Please Select As per Usage</td>
+                                                                </tr> -->
+                                                        <!-- <tr class=" tr1 gray1">
+                                                                    <td class="text-blue td1">Mobile Handset</td>
+
+                                                                    <td class="td1">
+                                                                        <h6>{{val4}}</h6>
+                                                                        <p-slider [(ngModel)]="val4"></p-slider>
+                                                                    </td>
+                                                                    <td class="td1">
+
+                                                                        <select name="Gender"
+                                                                            class="form-control custom-select">
+                                                                            <option value="Male"> June 2021 </option>
+                                                                            <option value="Female"> June 2022</option>
+                                                                        </select>
+
+                                                                    </td>
+                                                                    <td class="td1"></td>
+                                                                    <td class="td1"></td>
+                                                                    <td class="text-blue td1"><u>20,000</u></td>
+                                                                    <td class="td1"></td>
+                                                                </tr> -->
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Leave Travel Allowance</td>
+
+                                                            <td class="td1">
+                                                                <h6>{{val4}}</h6>
+                                                                <p-slider [(ngModel)]="val4"></p-slider>
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>20,000</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Child Education Allowance</td>
+
+                                                            <td class="td1">
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-primary"
+                                                                        disabled>1100</button>
+                                                                    <button class="btn btn-primary">2200</button>
+                                                                    <button class="btn btn-primary"
+                                                                        disabled>3300</button>
+
+                                                                </div>
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>20,000</u></td>
+                                                            <td class="td1">Please Select As per Usage</td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1 green-textrow">
+                                                            <td class="text-black td1">Total Flexi Section
+                                                                1</td>
+
+                                                            <td class="td1">
+                                                            </td>
+                                                            <td class="td1">
+
+
+
+                                                            </td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>20,000</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <!-- //head3 -->
+                                                        <tr class="tr1 gray1">
+                                                            <td class="td2">3)Flexi Section 2</td>
+                                                            <td class="td2">
+                                                              
+                                                                <div class="d-flex justify-content-center align-items-center">
+                                                                    <span class="font-weight-bold  mr-3">{{min}}</span>
+                                                                     <p-slider [(ngModel)]="val8" style="width: 80%;">  <span>{{val8}}</span></p-slider> <span class="font-weight-bold  ml-2">{{max}}</span>
+                                                                    </div>
+                                                            </td>
+                                                            <td class="td2"></td>
+                                                            <td class="td2 align-right">32,000.00</td>
+                                                            <td class="td2 align-right">
+                                                                44,0000.00
+                                                            </td>
+                                                            <td class="td2 align-right">
+                                                                70,000.00
+                                                            </td>
+                                                            <td class="td2">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Child Education Allowance</td>
+
+                                                            <td class="td1">
+                                                                <div class="btn-group">
+                                                                    <button class="btn btn-primary">0</button>
+                                                                    <button class="btn btn-primary" disabled>1</button>
+                                                                    <button class="btn btn-primary" disabled>2</button>
+
+                                                                </div>
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>70,000.00</u></td>
+                                                            <td class="td1">Rs.200 per child/month upto max.2 child
+                                                            </td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="td1">
+                                                        <tr>
+                                                            <td class=" text-blue">Core Scheme</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="  text-blue">Internet</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="  text-blue">DAP</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-blue">Mobile</td>
+                                                        </tr>
+                                                        </td>
+
+
+                                                        <td class="td1">
+                                                            <tr class="mb-2">
+                                                                <td>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="custom-controls-stacked radiobtn mt-25">
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios" value="option1"
+                                                                            checked>
+                                                                        <span class="custom-control-label">Opted</span>
+                                                                    </label>
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios"
+                                                                            value="option2">
+                                                                        <span
+                                                                            class="custom-control-label">Non-Opted</span>
+                                                                    </label>
+
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="custom-controls-stacked">
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios" value="option1"
+                                                                            checked>
+                                                                        <span class="custom-control-label">Opted</span>
+                                                                    </label>
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios"
+                                                                            value="option2">
+                                                                        <span
+                                                                            class="custom-control-label">Non-Opted</span>
+                                                                    </label>
+
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="custom-controls-stacked">
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios" value="option1"
+                                                                            checked>
+                                                                        <span class="custom-control-label">Opted</span>
+                                                                    </label>
+                                                                    <label
+                                                                        class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                            name="example-inline-radios"
+                                                                            value="option2">
+                                                                        <span
+                                                                            class="custom-control-label">Non-Opted</span>
+                                                                    </label>
+
+                                                                </div>
+                                                            </tr>
+                                                        </td>
+
+                                                        <td class="td1">
+<tr><td ><label _ngcontent-lrc-c451="" disabled="" class="form-label align-center text-center color-gray">June-2020</label></td></tr>
+<tr>
+    <td><label _ngcontent-lrc-c451="" disabled="" class="form-label align-center text-center color-gray">June-2020</label></td></tr>
+<tr><td ><label _ngcontent-lrc-c451="" disabled="" class="form-label align-center text-center color-gray">June-2020</label></td></tr>
+
+
+                                                        </td>
+                                                        <td class="td1">
+                                                            <tr class="align-right">
+                                                                1,000.00
+                                                            </tr>
+                                                            <tr class="align-right">
+                                                                2,000.00
+                                                            </tr>
+                                                            <tr class="align-right">
+                                                               3,000.00
+                                                            </tr>
+                                                        </td>
+                                                        <td class="td1"></td>
+                                                        <td class="text-blue td1"><u>70,000.00</u></td>
+                                                        <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Fuel</td>
+
+                                                            <td class="td1">
+                                                             
+                                                                <!-- <ngx-slider [(value)]="value" [options]="options">   <h6>{{val9}}</h6></ngx-slider> -->
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>15,000</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Maintainance</td>
+
+                                                            <td class="td1">
+                                                                <!-- <ngx-slider [(value)]="remi.value" [options]="roptions" (userChangeEnd)="update()">
+                                                                </ngx-slider> -->
+                                                                
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>15,000</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Driver</td>
+
+                                                            <td class="td1">
+                                                                <h6>{{val12}}</h6>
+                                                                <div data-role="rangeslider">
+                                                                    <label for="price-min">0</label>
+                                                                    <input type="range" name="price-max" id="price-max" value="800" min="0" max="1000">
+                                                                    <label for="price-max">200</label>
+                                                                    
+                                                                  </div>
+                                                              
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>15,000</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1">
+                                                            <td class="text-blue td1">Co-Contribution to PF</td>
+
+                                                            <!-- <td class="td1">
+                                                                <h6>{{val9}}</h6>
+                                                                <p-slider [(ngModel)]="val9"></p-slider>
+                                                            </td> -->
+                                                            <td class="td1">
+                                                                <div class="btn-group">
+                                                                  <button class="btn btn-primary" disabled>Nill</button>
+                                                                  <button class="btn btn-primary">1800</button>
+                                                                  <button class="btn btn-primary" disabled>Full</button>
+
+                                                              </div>
+                                                          </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>15,000</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1 green-textrow">
+                                                            <td class="text-black td1">Total of Flexi Section
+                                                                2Name</td>
+
+                                                            <td class="td1">
+
+                                                            </td>
+                                                            <td class="td1">
+
+
+
+                                                            </td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>15,000</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+                                                        <!-- //head4 -->
+                                                        <tr class="tr1 gray1">
+                                                            <td class="td2">Balancing Figure</td>
+                                                            <td class="td2">
+                                                                <p-slider [(ngModel)]="val8"></p-slider>
+                                                            </td>
+                                                            <td class="td2"></td>
+                                                            <td class="td2">
+                                                            </td>
+                                                            <td class="td2">
+
+                                                            </td>
+                                                            <td class="td2">
+
+                                                            </td>
+                                                            <td class="td2">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class=" tr1 gray1 green-textrow">
+                                                            <td class="text-black td1">Special Allowance</td>
+
+                                                            <td class="td1">
+                                                               
+                                                            </td>
+                                                          <td class="td1"><label class="form-label align-center text-center color-gray" disabled>June-2020</label></td>
+                                                            <td class="td1"></td>
+                                                            <td class="td1"></td>
+                                                            <td class="text-blue td1"><u>15,000</u></td>
+                                                            <td class="td1"></td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                    <!-- <tfoot>
+                                                        <tr class=" tr1 gray1">
+                                                            <th class="  th1 align-left">Annual Base
+                                                                Pay / CTC = 1+2+3+4</th>
+
+                                                            <th class="  th1 ">
+
+                                                            </th>
+                                                            <th class="  th1 ">
+
+
+
+                                                            </th>
+                                                            <th class="  th1 ">77,000</th>
+                                                            <th class="  th1 ">40,000.00</th>
+                                                            <th class="  th1 "><u>94,000.00</u></th>
+                                                            <th class="  th1 "></th>
+                                                        </tr>
+                                                    </tfoot> -->
+                                                </table>
+                                            </div>
+                                            <!-- </div> -->
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="card-footer">
+                                                <div class="float-right">
+                                                    <button type="button" tooltip="Button"
+                                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
+                                                                class="fa fa-file"></i></b> Save </button>
+                                                    <button type="button" tooltip="Cancel"
+                                                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-2"><b><i
+                                                                class="fa fa-times"></i></b> Cancel</button>
+                                                    <button type="button" tooltip="Reset"
+                                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+                                                                class="fa fa-refresh"></i></b> Reset</button>
+                                                </div>
+                                            </div> -->
+
+                                <!-- </div>
+                            </div> -->
+                            <div class="row mt-25">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <button type="button" tooltip="Button"
+                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
+                                                    class="fa fa-save"></i></b> Save </button>
+                                        <button type="button" tooltip="Cancel"
+                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-2"><b><i
+                                                    class="fa fa-times"></i></b> Cancel</button>
+                                        <button type="button" tooltip="Reset"
+                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+                                                    class="fa fa-refresh"></i></b> Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-25">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <button type="button" tooltip="Button" class="btn btn-primary mr-2">Salary
+                                            Breakup </button>
+                                        <button type="button" tooltip="Button" class="btn btn-primary mr-2">Annual
+                                            Compensation Summary </button>
+                                        <button type="button" tooltip="Button" class="btn btn-primary mr-2">Simulated
+                                            Payslip </button>
+                                        <button type="button" tooltip="Button" class="btn btn-primary">Simulated
+                                            TaxSheet </button>
+                                    </div>
+                                </div>
+                            </div>
+                       
+                       
+                            <ng-template #template>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="UploadModalLabel">History</h5>
+                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3"> <label class="form-label float-right">Financial Year</label>
+                                                </div>
+                                                <div class="col-md-5">
+                
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                            <select name="Gender" class="form-control custom-select">
+                                                                <option value="Male"> 2020-2021 </option>
+                                                                <option value="Female"> 2021-2022</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                
+                                                </div>
+                                            </div>
+                                            <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>21-Mar-2021</td>
+                                                                <td><i class="fa fa-pencil text-dark-green ml-2"></i></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>21-Feb-2021</td>
+                                                                <td><i class="fa fa-eye  text-blue ml-2"></i></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>21-Apr-2020</td>
+                                                                <td><i class="fa fa-eye text-blue ml-2"></i></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        
+                                                    </table>
+                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i
+                                            class="fa fa-times"></i>Close</button>
+                                </div>
+                            </ng-template>
+                            <ng-template #template1>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="UploadModalLabel">Master Head</h5>
+                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3"> <label class="form-label "><strong>Earning Head</strong> : CEA</label>
+                                                    
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <label class="form-label " ><strong>Caption</strong>: No.Of School going Children</label>
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                    <table class="tablke table-bordered">
+                                                        <thead class="thead">
+                                                            <tr>
+                                                                <th class="thead" rowspan="2"></th>
+                                                                <th class="thead" rowspan="2">Updated Date</th>
+                                                                <th class="thead" rowspan="2">Caption Value</th>
+                                                                <th class="thead" colspan="3">Entered / Computed Values</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="thead">Per Month</th>
+                                                                <th class="thead">Per Annum</th>
+                                                                <th class="thead">Computed Values</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Mar-2021</td>
+                                                                <td></td>
+                                                                <td>1</td>
+                                                                <td>100</td>
+                                                                <td>1200</td>
+                                                                <td>100</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Apr-2021</td>
+                                                                <td></td>
+                                                                <td>1</td>
+                                                                <td>100</td>
+                                                                <td>1200</td>
+                                                                <td>100</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Aug-2021</td>
+                                                                <td></td>
+                                                                <td>1</td>
+                                                                <td>100</td>
+                                                                <td>1200</td>
+                                                                <td>100</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot class="thead">
+                                                            <tr>
+                                                                <th>
+                                                                   Total 
+                                                                </th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th>300</th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i
+                                            class="fa fa-times"></i>Close</button>
+                                </div>
+                            </ng-template>
+                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+         
+
+
+
+
+
+            <ng-template #template2>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="UploadModalLabel">Reimbursement</h5>
+                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                           
+                            <div class="row clearfix">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered">
+                                        <thead class="thead">
+                                            <tr>
+                                                <th class="thead">Month</th>
+                                                <th class="thead">PM Master</th>
+                                                <th class="thead">PA Master</th>
+                                                <th class="thead">Attendance</th>
+                                                <th class="thead">Total days</th>
+                                                <th class="thead">Accured Amount</th>
+                                                <th class="thead">accrued arrear Amount	
+                                                </th>
+                                                <th class="thead">Accrued + Arrear</th>
+                                                <th class="thead">Projection</th>
+                                                <th class="thead">Total</th>
+                                            </tr>
+                                           
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Apr-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td  class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td></tr>
+                                            <tr>
+                                                <td>May-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>June-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>July-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aug-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sep-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Oct-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Nov-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Dec-2021</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Jan-2022</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Feb-2022</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mar-2022</td>
+                                                <td class="align-right">50,000</td>
+                                                <td class="align-right">60,000</td>
+                                                <td class="align-center">27</td>
+                                                <td class="align-center">30</td>
+                                                <td class="align-right">4500</td>
+                                                <td>
+
+                                                </td><td class="align-right">4,600</td>
+                                                <td class="align-right">4,600</td><td></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot class="thead">
+                                            <tr>
+                                                <th class="thead">
+                                                   Total 
+                                                </th>
+                                                <th ></th>
+                                                <th ></th>
+                                                <th></th>
+                                                <th ></th>
+                                                <th class="align-right">20,200</th>
+                                                <th  class="align-right">20,200</th>
+                                                <th  class="align-right">20,200</th>
+                                                <th  class="align-right">20,200</th>
+                                                <th  class="align-right">20,200</th>
+                                            </tr>
+                                           
+                                        </tfoot>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i
+                            class="fa fa-times"></i>Close</button>
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+</div>

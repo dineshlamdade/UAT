@@ -1,6 +1,13 @@
-import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { FlexiRoutingModule } from './flexi-routing.module';
+import { FlexiinputComponent } from './flexiinput/flexiinput.component';
+
+import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -12,36 +19,30 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
-import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
-import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { MatSliderModule } from '@angular/material/slider';
-import { LockRoutingModule } from './lock-routing.module';
-import { LockComponent } from './lock.component';
-import { BusinessYearComponent } from './business-year/business-year.component';
-import { CycleComponent } from './cycle/cycle.component';
-import { EmployeeComponent } from './employee/employee.component';
 import {TableModule} from 'primeng/table';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TabsModule } from 'ngx-bootstrap/tabs';
+import { MatSliderModule } from '@angular/material/slider';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import {PickListModule} from 'primeng/picklist';
+import { FlexibasketallocationComponent } from './flexibasketallocation/flexibasketallocation.component';
+import {SliderModule} from 'primeng/slider';
 
-import { AdhocComponent } from './adhoc/adhoc.component';
-import {MultiSelectModule} from 'primeng/multiselect';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 @NgModule({
-  declarations: [
-    LockComponent,
-    BusinessYearComponent,
-    CycleComponent,
-    EmployeeComponent,
-    AdhocComponent
-  ],
+  declarations: [FlexiinputComponent, FlexibasketallocationComponent],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MultiSelectModule,
+    TableModule,
+    FlexiRoutingModule,
+    SharedlayoutModule,
+    PickListModule,
+    CommonModule,
+    NgxSliderModule,
+    SharedlayoutModule,
+    ReactiveFormsModule,   
     FormsModule,
     MatSliderModule,
+    SliderModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),
@@ -54,19 +55,15 @@ import {MultiSelectModule} from 'primeng/multiselect';
     ProgressbarModule.forRoot(),
     CarouselModule.forRoot(),
     BsDatepickerModule.forRoot(),
-    CarouselModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    CarouselModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),
     SharedlayoutModule,
-    LockRoutingModule,
-    TableModule,
-    TabsModule.forRoot(),
-  ],
+  
 
-  providers: [ DatePipe, NumberFormatPipe],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
 
+  ]
 })
-export class LockModule { }
+export class FlexiModule { }

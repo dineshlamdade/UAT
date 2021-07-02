@@ -26,10 +26,11 @@ import { RembSummaryComponent } from './remb-summary/remb-summary.component';
 import { RembRegistrationComponent } from './remb-registration/remb-registration.component';
 import { RembClaimNontaxComponent } from './remb-claim-nontax/remb-claim-nontax.component';
 import { RembClaimTaxableComponent } from './remb-claim-taxable/remb-claim-taxable.component';
+import { LtaComponent } from './lta/lta.component';
 
 
 @NgModule({
-  declarations: [ReimbursementComponent, RembSummaryComponent, RembRegistrationComponent, RembClaimNontaxComponent, RembClaimTaxableComponent],
+  declarations: [ReimbursementComponent, RembSummaryComponent, RembRegistrationComponent, RembClaimNontaxComponent, RembClaimTaxableComponent, LtaComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
