@@ -25,13 +25,13 @@
               <label class="form-label ml-15" tooltip="Full Time ourse" placement="left">Full Time Course</label>
               <div class="custom-controls-stacked ml-15 mt-10">
                 <label class="custom-control custom-radio custom-control-inline">
-                  <input formControlName="fullTimeCourse" type="radio" class="custom-control-input"
-                    name="fullTimeCourse" value="true" (change)="onRadioChange(false)">
+                  <input formControlName="fullTimeCourse" type="radio" class="custom-control-input" 
+                    name="fullTimeCourse" value="true"   (change)="onRadioChange($event.target.value)" checked>
                   <span class="custom-control-label">Yes</span>
                 </label>
                 <label class="custom-control custom-radio custom-control-inline">
                   <input formControlName="fullTimeCourse" type="radio" class="custom-control-input"
-                    name="fullTimeCourse" value="false" (change)="onRadioChange(true)">
+                    name="fullTimeCourse" value="false" (change)="onRadioChange($event.target.value)">
                   <span class="custom-control-label">No</span>
                 </label>
               </div>

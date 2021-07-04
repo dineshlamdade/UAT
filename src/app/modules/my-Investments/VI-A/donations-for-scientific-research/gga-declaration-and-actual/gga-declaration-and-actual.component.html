@@ -24,7 +24,7 @@
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">PS.ID.</th>
+                <th rowspan="2" class="wd-5">PS.ID.</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 <!-- <th rowspan="2" class="wd-10 font700">Action</th> -->
               </tr>
@@ -50,7 +50,7 @@
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">PS.ID.</th>
+                <th rowspan="2" class="wd-5">PS.ID.</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 <!-- <th rowspan="2" class="wd-10 font700">Action</th> -->
               </tr>
@@ -97,7 +97,7 @@
                   </select>
                 </td>
                 <td>
-                  <input type="text" class="form-control" [ngModel]="summary.donee" [disabled]="summary.donee" />
+                  <input type="text"  class="form-control" onkeypress="return /[a-zA-Z' ]/i.test(event.key)" [ngModel]="summary.donee" [disabled]="summary.donee" />
                 </td>
                 <td>
                   <select name="Purpose" class="form-control custom-select" [disabled]="summary.purpose"
@@ -197,7 +197,7 @@
                   </select>
                 </td>
                 <td>
-                  <input type="text" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" formControlName="donee"
+                  <input type="text"  onkeypress="return /[a-zA-Z' ]/i.test(event.key)" formControlName="donee"
                     class="form-control" placeholder="Enter donee Name" [ngClass]="{
                       'is-invalid': submitted && masterForm.donee.errors
                     }" />
@@ -522,7 +522,7 @@
               <th rowspan="2" class="wd-9 font700">Actual</th>
               <th colspan="2" class="wd-17 font700">Receipt Amount</th>
               <th rowspan="2" class="wd-7 font700">Remark</th>
-              <th rowspan="2" class="wd-8">PS.ID.</th>
+              <th rowspan="2" class="wd-5">PS.ID.</th>
               <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               <!-- <th rowspan="2" class="wd-10 font700">Action</th> -->
             </tr>
@@ -542,7 +542,7 @@
               <th rowspan="2" class="wd-9 font700">Actual</th>
               <th colspan="2" class="wd-17 font700">Receipt Amount</th>
               <th rowspan="2" class="wd-7 font700">Remark</th>
-              <th rowspan="2" class="wd-8">PS.ID.</th>
+              <th rowspan="2" class="wd-5">PS.ID.</th>
               <th rowspan="2" class="wd-10 font700">Transaction Status</th>
             </tr>
             <tr>
@@ -636,6 +636,14 @@
                 />
               </td> -->
               <td>
+                    <input type="text" onkeypress="return /[0-9 ]/i.test(event.key)"
+                      id="actualAmount{{ summary.donations80GGTransactionId }}"
+                      name="actualAmount{{ summary.donations80GGTransactionId }}"
+                      [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeInEditCase(summary, i, j)"
+                      [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
+                      class="form-control align-right" />
+                  </td>
+            <!--   <td>
                 <input
                   type="text"
                   id="actualAmount{{ summary.donations80GGTransactionId }}"
@@ -646,7 +654,7 @@
                   (change)="onActualAmountChangeInEditCase(summary, j)"
                   class="form-control align-right"
                 />
-              </td>
+              </td> -->
 
 
               <td>
