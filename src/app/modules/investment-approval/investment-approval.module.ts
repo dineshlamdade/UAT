@@ -8,12 +8,14 @@ import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { TableModule } from 'primeng/table';
 import { DocumentviewerComponent } from './documentviewer/documentviewer.component';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { InvestmentTransactionApprovalComponent } from './investment-transaction-approval/investment-transaction-approval.component';
 
 @NgModule({
   declarations: [
     InvestmentApprovalComponent,
     InvestmentMasterApprovalComponent,
-    DocumentviewerComponent
+    DocumentviewerComponent,
+    InvestmentTransactionApprovalComponent
   ],
   imports: [
     CommonModule,
