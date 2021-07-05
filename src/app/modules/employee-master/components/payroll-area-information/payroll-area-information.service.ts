@@ -22,7 +22,7 @@ export class PayrollAreaInformationService {
 
   postPayrollAreaInfoForm(PayrollAreaSummaryGridData){
     return this.httpClient.post(environment.baseUrl8082+
-      '/bankMapping',PayrollAreaSummaryGridData, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+      '/payroll-information',PayrollAreaSummaryGridData, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
   .pipe(map((res:any)=>{
     return res;
   }))
