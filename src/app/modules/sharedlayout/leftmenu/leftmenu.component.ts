@@ -235,6 +235,7 @@ public isCollapsedQuery = true;
     let routerlink  = "'/"+link+"'"
     console.log(routerlink)
    this.router.navigate(['/userrolesandpermission'])
+   //this.router.navigate([routerlink])
   }
 
   checkEmpId() {

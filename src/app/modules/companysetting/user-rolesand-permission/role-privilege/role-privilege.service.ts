@@ -124,10 +124,7 @@ getCompanyId(companyGroupMasterId){
 getSummaryData(page,size): Observable<any>{ 
   return this._HTTP.get<any>(environment.baseUrl8080 +'userRolePrivilegesMatrix/?page='+page+'&size='+size)
 }
-
-
-
- public addUserRolePrivilege(data)
+public addUserRolePrivilege(data)
  {
    return this._HTTP.post<any>(this.apiUrl  +'userRolePrivilegesMatrix/' ,data);
  }
@@ -137,6 +134,14 @@ getSummaryData(page,size): Observable<any>{
    return this._HTTP.put<any>(this.apiUrl  +'userRolePrivilegesMatrix/' ,data);
  }
 
+
+ ///////---------FeildLabel------API---------Start-----------
+
+// -------------- getAllFieldData---------------
+
+getAllField(){
+  return this._HTTP.get<any>(environment.baseUrl8080 + 'formField/getAllField');
+}
  
 
 }

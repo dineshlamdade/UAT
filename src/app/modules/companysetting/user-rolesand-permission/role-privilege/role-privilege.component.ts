@@ -69,6 +69,11 @@ export class RolePrivilegeComponent implements OnInit {
    companyName: any;
    editMenuSummaryData: any;
    selectedCompanyName: { globalCompanyMasterId: any; companyName: any; }[];
+   fieldLevelMenu: any;
+   isCheckedReadFields: boolean = false;
+   SelectedDataFields: any=[];
+   fieldLeveleAccessMatrixId: any = 0;
+   formFieldId: any = 0;
    
 
 
@@ -92,6 +97,7 @@ export class RolePrivilegeComponent implements OnInit {
          this.getRolePrivilegeSummaryByUserRoleId();
          this.getApplicationMenus();
          //this.getRolePrivilegeSummary();
+         this.getAllFieldLevelData();
 
       })
    }
@@ -1996,14 +2002,159 @@ export class RolePrivilegeComponent implements OnInit {
          // this.getRolePrivilegeSummaryByUserRoleId();
       }
 
-   
-         onSelectFieldLevel(template1:TemplateRef<any>)
-         {
-           this.modalRef = this.modalService.show(
-             template1,
-             Object.assign({}, { class: 'gray modal-lg' })
-           );
+/////----------FieldLavel------------------
+
+ // ---------get All FieldLevel-------
+
+ getAllFieldLevelData(){
+    this.service.getAllField().subscribe(res =>{
+      this.fieldLevelMenu = res.data.results[0];
+    })
+ }
+
+/// ---- field level checkUncheckCheckbox---------------------
+  //////-------checkUncheckallReadFields()----------
+  checkUncheckallReadFields(){
+   if (this.isCheckedReadFields == true) {
+      this.isCheckedReadFields = false;
+      this.SelectedDataFields = []
+   }
+   else {
+      this.isCheckedReadFields = true;
+      this.fieldLevelMenu.forEach((ele: any) => {
+
+         if (ele.formFieldDetails != null) {
+            ele.formFieldDetails.forEach(element => {
+               element.readAccess = false
+               ele.readFlag = false;
+               element.writeAccess = false
+               element.hide = false
+               element.modifyAccess = false
+               element.allAccess = false
+               ele.allFlag = false
+            });
          }
+
+         this.SelectedDataFields.push({
+            "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+            "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
+            "formFieldId": this.formFieldId,
+           "hide":0,
+            "readAccess": true,
+            "writeAccess": false,
+            "modifyAccess": false
+            
+         })
+      })
+   }
+
+   console.log("FieldsData Read is: " + JSON.stringify(this.SelectedDataFields))
+  }
+
+  /** single Fields checked uncheked read */
+
+  checkeUncheckSingleReadFields(fieldmenu,event){
+
+   if(event.checked) {
+            
+               
+      if(this.SelectedDataFields.length > 0){
+        this.SelectedDataFields.forEach((fieldLevelPrivilegeData,index) => {
+           if(fieldLevelPrivilegeData.applicationMenusId == fieldmenu.applicationMenusId ){
+              let ind = index;
+              this.SelectedDataFields.splice(ind,1,{
+               "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+               "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
+               "formFieldId": this.formFieldId,
+              "hide":0,
+               "readAccess": true,
+               "writeAccess": false,
+               "modifyAccess": false
+              })
+           }else{
+              this.SelectedDataFields.push({
+               "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+               "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
+               "formFieldId": this.formFieldId,
+              "hide":0,
+               "readAccess": true,
+               "writeAccess": false,
+               "modifyAccess": false
+              }) 
+           }
+        })
+        //  element.allFlag = true
+       
+      }else{
+        this.SelectedDataFields.push({
+         "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+         "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
+         "formFieldId": this.formFieldId,
+        "hide":0,
+         "readAccess": true,
+         "writeAccess": false,
+         "modifyAccess": false
+        }) 
+      }
+      this.fieldLevelMenu.forEach((ele: any,index) => {
+        if (ele.applicationMenuId == fieldmenu.parentMenuId) {
+
+           if (ele.childItems != null) {
+              ele.childItems.forEach(element => {
+                 if (element.applicationMenuId == fieldmenu.applicationMenuId) {
+                    element.readFlag = true
+                    element.readAccess = true
+                 }
+              })
+           }
+        } 
+  });
+
+
+} else {
+  this.fieldLevelMenu.forEach((ele: any) => {
+     if (ele.applicationMenuId == fieldmenu.parentMenuId) {
+        this.SelectedDataFields.forEach((item, index) => {
+           if (item.menuId == fieldmenu.parentMenuId) {
+              let ind = index;
+              this.SelectedData.splice(ind, 1, {
+                 "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                 "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                 "applicationMenusId": fieldmenu.applicationMenuId,
+                 "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                 "readAccess": 0,
+                 "modifyAccess": ele.modifyAccess,
+                 "deleteAccess": ele.deleteAccess,
+                 "writeAccess": ele.writeAccess
+              })
+           }
+        });
+
+     }
+     if (ele.childItems != null) {
+        ele.childItems.forEach(element => {
+           if (element.applicationMenuId == fieldmenu.applicationMenuId) {
+              element.readFlag = false
+              element.readAccess = false
+           }
+        })
+     }
+  })
+}
+
+console.log("read single value: " + JSON.stringify(this.SelectedData))
+
+  }
+
+
+   
+onSelectFieldLevel(template1:TemplateRef<any>)
+    {
+       this.modalRef = this.modalService.show(
+        template1,
+        Object.assign({}, { class: 'gray modal-lg' })
+           );
+    }
       
 
       largepopup(template: TemplateRef<any>) {
