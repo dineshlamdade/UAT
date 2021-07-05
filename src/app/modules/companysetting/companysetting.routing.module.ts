@@ -24,6 +24,7 @@ import { AttributeGlobalComponent } from './attribute-global/attribute-global.co
 import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
 import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
 import { AreasetComponent } from './areaset/areaset.component';
+import { EmployeesetComponent } from './employeeset/employeeset/employeeset.component';
 
 const routes: Routes = [
 
@@ -116,11 +117,18 @@ const routes: Routes = [
     component: PayRollStructureComponent,
     data: { title: ':: Epic :: Company Setting' }
   },
+ 
   {
     path: 'areaset',
     component: AreasetComponent,
     data: { title: ':: Epic :: Area Set' }
   },
+  {
+    path: 'employeeset',
+    component: EmployeesetComponent,
+    data: { title: ':: Epic :: Employee Set' }
+  }
+  
 
 ];
 
