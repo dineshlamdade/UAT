@@ -21,6 +21,11 @@ import { SaveAttributeSelection } from '../model/business-cycle-model';
 import { AnyCnameRecord } from 'node:dns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
+export class headDetail {
+  headGroupDefinitionId: number;
+}
+
+
 interface User1 {
   code;
   standardname;
@@ -83,8 +88,13 @@ export class PayRollStructureComponent implements OnInit {
   public listOfPHG: Array<any> = [];
   public selectedUser: Array<any> = [];
   public GroupMasterCode: Array<any> = [];
+  public headGroupDefinitions: Array<any> = [];
   public allGroupList: Array<any> = [];
-  public allGroupAndDescriptionList: Array<any> = [];
+
+  public allGroupListByPostTime: Array<any> = [];
+
+  public targetProductsListBeforeSave: Array<any> = [];
+    public allGroupAndDescriptionList: Array<any> = [];
   public targetProducts: Array<any> = [];
   public HighlightRight: any;
   public isVisible: boolean = false;
@@ -119,6 +129,7 @@ export class PayRollStructureComponent implements OnInit {
       sdmDescription: new FormControl(null),
       noOfSourceCount: new FormControl(null, Validators.required),
       sourcePeriod: new FormControl(null, Validators.required),
+
     });
   }
   stepperIndex = 0;
@@ -130,6 +141,8 @@ export class PayRollStructureComponent implements OnInit {
       companyGroupMasterId: new FormControl(null),
       companyGroupCode: new FormControl('', Validators.required),
       companyGroupName: new FormControl(''),
+      headGroupDefinitionId : new FormControl (''),
+      headGroupDefinitionName : new FormControl (''),
     });
 
     this.users1 = [{ code: '1', standardname: 'grp', nature: 'earning' }];
@@ -316,22 +329,51 @@ export class PayRollStructureComponent implements OnInit {
   // }
 
   savePHG() {
-    const data = this.pHGForm.getRawValue();
+    const selectedCompanyGroupCodes = this.pHGForm.get('companyGroupCode').value;
+    console.log('selectedCompanyGroupCodes' + selectedCompanyGroupCodes);
+    selectedCompanyGroupCodes.forEach((element) => {
+      this.allGroupListByPostTime.push(element.code);
+    });
+    console.log("allGroupListByPostTime",this.allGroupListByPostTime);
+
+      console.log("allGroupList",this.allGroupList);
+      this.targetProducts.forEach((element) => {
+        const obj = {
+          headGroupDefinitionId: element.headGroupDefinitionId,
+        };
+        this.targetProductsListBeforeSave.push(obj);
+      });
+
+         const data = {
+        headGroupDefinitions : this.targetProductsListBeforeSave,
+        groupCode : this.allGroupListByPostTime,
+        // groupCode : this.pHGForm.get('companyGroupCode').value,
+        groupDescription : this.pHGForm.get('companyGroupName').value
+       }
+
 
     this.payRollService.postAllPHG(data).subscribe(
       (res: any) => {
-        // addAttributeCreation.attributeMasterIdList = [];
-        this.targetProducts = [];
-        // this.getAllAttributeSelection();
-        this.alertService.sweetalertMasterSuccess(res.status.message, '');
-        this.pHGForm.reset();
-        // this.resetAttributeSelection();
-      },
-      (error: any) => {
-        this.alertService.sweetalertError(error['error']['status']['message']);
+        console.log(res);
+        if(res){
+          if(res.data.results.length > 0) {
+            this.targetProducts = res.data.results;
+            console.log(res);
+            // this.refreshHtmlTable();
+            this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+            this.alertService.sweetalertMasterSuccess( 'PHG saved Successfully to group', '' );
+
+          } else {
+            this.alertService.sweetalertWarning(res.status.messsage);
+          }
+        }else {
+          this.alertService.sweetalertError(
+            'Something went wrong. Please try again.'
+          );
+        }
+      });
+      this.pHGForm.reset();
       }
-    );
-  }
 
   // //Anant Save post aPI
   //   //add Payroll HeadGroup
