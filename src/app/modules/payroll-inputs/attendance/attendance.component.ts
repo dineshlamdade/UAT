@@ -210,7 +210,32 @@ export class AttendanceComponent implements OnInit {
   exportAsXLSX(): void {
     this.excelData = [];
     this.header = []
-    this.excelData = this.attendanceData
+    this.header =["Emp. Code","Emp. Name","Payroll Area", "Cycle", "Total Days", "Weekly Off", "Holiday", "Paid Leave", "Leave Without Pay", "Before-DOJ/After-DOL", "Adjustment Days", "Present Days", "Future Days", "Payable Days"]
+    //this.excelData = this.attendanceData
+    this.attendanceData.forEach(element => {
+      
+
+			let obj = {
+				"Emp. Code": element.empcode,
+				"Emp. Name": element.empName,
+        "Payroll Area": element.payrollAreacode,
+				"Cycle": element.cycleName,
+				"Total Days": element.totalDaysInCycle,
+				"Weekly Off": element.weeklyOff,
+				"Holiday": element.holiday,
+        "Paid Leave":element.paidLeave,
+        "Leave Without Pay":element.leaveWithoutPay,
+        "Before-DOJ/After-DOL":element.beforeDOJOrAfterDOL,
+        "Adjustment Days":element.adjustment, 
+        "Present Days":element.presentDays,
+        "Future Days":element.futureDays,
+        "Payable Days":element.paidDays
+
+
+			}
+			this.excelData.push(obj)
+		});
+   // console.log(this.excelData)
     this.excelservice.exportAsExcelFile(this.excelData, 'Attandence','Attendance',this.header);
   }
 
