@@ -82,6 +82,7 @@ import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { InvestmentApprovalModule } from './modules/investment-approval/investment-approval.module';
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 
@@ -123,6 +124,7 @@ import { ApprovedInvestmentModule } from './modules/approved-investment/approved
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
+    MultiSelectModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
     ToastrModule.forRoot( {

@@ -1,0 +1,169 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
+import { AreasetService } from './areaset.service';
+import { SelectItem, PrimeNGConfig } from "primeng/api";
+import { element } from 'protractor';
+
+@Component({
+  selector: 'app-areaset',
+  templateUrl: './areaset.component.html',
+  styleUrls: ['./areaset.component.scss']
+})
+export class AreasetComponent implements OnInit {
+  public apiUrl = environment.baseUrl8084;
+  areasetForm : FormGroup;
+  areaMaster : any = [];
+  serviceListData: any;
+  areaListData: any;
+  summaryData: any;
+  editFormFlag: boolean = false;
+  viewFormFlag: boolean = false;
+  
+
+  constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
+    private toaster : ToastrService, private primengConfig: PrimeNGConfig) { 
+      this.areasetForm = new FormGroup({
+      areaSetMasterId: new FormControl('',Validators.required),
+      areaSetName: new FormControl('',Validators.required),
+      serviceMasterId: new FormControl('',Validators.required),
+      remark: new FormControl('',Validators.required),
+      areaMaster: new FormControl([])
+    })
+    //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;
+    
+
+    
+  }
+
+  ngOnInit(): void {
+    // this.areaListData=[{
+    //   label: 'PA-staff', 
+    //   value: 1,
+    // }]
+   // this.primengConfig.ripple = true;
+   
+      this.getServiceList();
+      this.getSummaryData();
+  }
+
+  /**save and submit data also add data*/
+  onSubmit(){
+        this.areasetService.saveAreaSet(this.areasetForm.value).subscribe((res)=>{
+        this.toaster.success('','Area set saved succefully');
+        this.getSummaryData();
+        this.areasetForm.reset();
+        this.areaListData = [];
+        this.editFormFlag = false;
+        this.viewFormFlag = false
+      })
+   // console.log(this.areasetForm.value);
+   
+     this.areasetForm.reset();
+  }
+
+  
+  
+/**Update data */
+  onUpdate(){
+      this.areasetService.updateAreaSet(this.areasetForm.value).subscribe((res)=>{
+      this.toaster.success('','Area set updated succefully');
+      this.getSummaryData();
+      this.areasetForm.reset();
+      
+      this.areaListData = [];
+      this.editFormFlag = false;
+      this.viewFormFlag = false
+    })
+ // console.log(this.areasetForm.value);
+ 
+  // this.areasetForm.reset();
+}
+
+/**Reset button */
+formReset(){
+      this.areasetForm.reset();
+      this.editFormFlag = false;
+      this.viewFormFlag = false;
+      this.areasetForm.enable();
+}
+
+/**primeng mult select area master array payrollareaid and payrollareacode */
+getAreaMasterId(e){
+    console.log(JSON.stringify(e))  //Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
+    /** prime ng multiselect */
+    this.areaMaster.push({
+      "areaSetMasterDetailsId":0,
+      "areaMasterId":e.itemValue
+    })
+
+    /** Single select i.e select */
+    // this.areaMaster.push({
+    //   "areaSetMasterDetailsId":0,
+    //   "areaMasterId":e
+    // })
+
+    this.areasetForm.controls['areaMaster'].setValue(this.areaMaster)
+   
+  }
+
+  /**Summary data */
+  getSummaryData(){
+      this.areasetService.getSummaryData().subscribe(res =>{
+      this.summaryData = res.data.results;
+    })
+  }
+
+  /**Service list */
+  getServiceList(){
+    // console.log(this.serviceListData);
+      this.areasetService.getServiceList().subscribe(res =>{
+      this.serviceListData = res.data.results[0];
+      
+    })
+  }
+
+/**Service list by name with id */
+  getAreasetByService(serviceid){
+      this.areaListData = []
+      this.areasetService.getByServiceName(serviceid).subscribe(res =>{
+      //this.areaListData = res.data.results;
+      res.data.results[0].forEach(element => {
+        if(serviceid == 1){
+          this.areaListData.push({
+            label: element.payrollAreaCode, 
+            value: element.payrollAreaId
+        })
+        }else{
+            this.areaListData.push({
+            label: element.payrollArea.payrollAreaCode, 
+            value: element.payrollArea.payrollAreaId
+          })
+        }
+           console.log("this.areaListData: "+ this.areaListData)
+      });
+      // this.areasetForm.reset();
+    })
+    
+  }
+
+  editAreaSet(data){
+      this.editFormFlag =true;
+      this.viewFormFlag = false;
+      this.areasetForm.enable();
+      this.areasetForm.patchValue(data);
+  }
+
+  viewAreaSet(data){
+      this.editFormFlag =false;
+      this.viewFormFlag = true;
+      this.areasetForm.disable();
+      this.areasetForm.patchValue(data);
+  }  
+
+}
+
+
+//AreaSetMaster and AreaSetMasterDetails

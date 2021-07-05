@@ -43,6 +43,7 @@ import { UserGroupComponent } from './user-rolesand-permission/user-group/user-g
 import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
 import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
 import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
+import { AreasetComponent } from './areaset/areaset.component';
 
 
 
@@ -64,6 +65,7 @@ import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structu
     RolePrivilegeComponent,
      UserDashboardComponent,
      PayRollStructureComponent,
+     AreasetComponent
   ],
   imports: [
     CommonModule,

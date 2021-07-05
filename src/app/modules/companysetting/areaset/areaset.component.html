@@ -1,0 +1,229 @@
+<!-- <p>areaset works!</p> -->
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+      <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+        <div class="tabview-contents">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body p-0">
+                   
+                  <div class="col-12 mt-10">
+                    <form class = "card" role = "form" [formGroup] = "areasetForm">                  
+                    <div class="row">             
+                      <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 form-group">
+                        <label class="form-label">Area Set Name</label> 
+                        <input type="text" class="form-control" formControlName = "areaSetName">
+                        <small id="areaHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.required">
+                          Area set name is required</small>
+                        </div>
+                       </div> 
+                       
+                             <br>    
+                       
+                   <div class="row">
+            
+                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                  <fieldset>
+                    <legend>Service</legend>
+                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                      <div class="form-group ">
+                      
+                        <label class="form-label">Service</label>
+                          <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
+                          <select class="form-control" (change)="getAreasetByService($event.target.value)" formControlName = "serviceMasterId">
+                            <option>Select</option>
+                            <option *ngFor="let service of serviceListData" value="{{service.serviceMasterId}}">
+                                {{service.serviceName}}
+                            </option>
+                          </select>
+                          <small id="serviceHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('serviceMasterId').errors?.required">
+                            Service is required</small>
+
+                      </div>
+                  </div>
+                  </fieldset>
+                  </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+
+                    <fieldset>
+                        <legend>Area Selection </legend>
+
+                        <div class="row">
+                        
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <div class="form-group ">
+                                
+                                  <label class="form-label">Area</label>
+                                    <p-multiSelect [options]="areaListData"
+                                    (onChange)="getAreaMasterId($event)">
+                                    </p-multiSelect>
+                                    <!-- <p-multiSelect [options]="areaListData" class="multiselect-custom"
+                                    [disabled]="viewFlag" [virtualScroll]="true"
+                                    formControlName="areaMaster" [filterPlaceHolder]="'Select'" [placeholder]="'Select Area'"
+                                    ngDefaultControl>
+                                    </p-multiSelect> -->
+
+
+                                    <!-- <select class="form-control" (change)="getAreaMasterId($event.target.value)" formControlName = "areaSetMasterId">
+                                        <option>Select</option>
+                                        <option *ngFor="let area of areaListData" value="{{area.value}}">
+                                            {{area.label}}
+                                        </option>
+                                      </select> -->
+                                      <!-- <small id="areaSetMasteIdHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetMasterId').errors?.required">
+                                        Area is required</small> -->
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <div class="custom-controls-stacked mb-2 ml-5">
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input"
+                                                    name="example- radios" value="option1"
+                                                    (click)="ViewHistory(template4)" checked>
+                                                <div class="custom-control-label"> Area List </div>
+                                            </label>
+                                        </div>
+    
+                                    </div>
+
+                                   
+                                </div>
+                            </div>
+                           
+
+
+                        </div>
+
+
+
+                    </fieldset>
+                </div>
+                <!-- mt-50 ml-40 -->
+             
+                   </div> 
+               <br>
+               <br>
+                   <div class="float-left d-flex justify-content form-group">
+                <input type="checkbox"  class="mt-2">&nbsp;
+              <label class="form-label mt-2 margin-right:30px;" >Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="form-label mt-2">Remark</label>&nbsp;
+              <textarea type="text" formControlName = "remark">
+              
+              </textarea>
+              <small id="areaSetMasteIdHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('remark').errors?.required">
+                Remark is required</small>
+              </div> 
+                   
+                 <div class="row mt-15">
+                <div class="col-12">
+                   <div class="float-right mb-15">
+                    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
+                     (click)="onSubmit()"><b>
+                      <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Update" *ngIf="editFormFlag && !viewFormFlag"
+                     (click)="onUpdate()"><b>
+                      <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+                  <button type="button" 
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset" (click)="formReset()"><b>
+                    <i class="fa fa-refresh"></i></b> Reset</button>
+                   </div>
+                </div>
+              
+                 </div>
+                </form>
+                  <br>
+               <div class="mb-0">
+                      <h3 class="font-14 text-purple font-bold">Summary</h3>
+                </div> 
+                    <div class="row">
+                        <div class="col-md-8">
+                      <p-table [value]="summaryData" >
+                       <ng-template pTemplate="header">
+                         <tr>
+                           <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
+                         
+                          <th rowspan="2" class="wd-8 text-center">
+                           <div class="p-d-flex p-jc-between p-ai-center">Area Set Name
+                           <div class="Sort_Filter_Position">
+                              <p-sortIcon field="Description"
+                              pSortableColumn="Description"></p-sortIcon>
+                      <p-columnFilter type="text" field="Desc"  display="menu" class="p-ml-auto">
+                      </p-columnFilter>
+                           </div>
+                           </div>
+                         </th>
+                         <th rowspan="2" class="wd-8 text-center">
+                          <div class="p-d-flex p-jc-between p-ai-center">No. of Areas
+                          <div class="Sort_Filter_Position">
+                              <p-sortIcon field="Type"
+                              pSortableColumn="Type"></p-sortIcon>
+                     <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">     </p-columnFilter>
+                         </div>
+                         </div>
+                        </th>
+                             
+                 
+                     <th rowspan="2" class="wd-4 text-center"> Action </th>
+                     
+                     </tr>
+                   
+                    </ng-template>
+                   <ng-template pTemplate="body" let-data let-rowIndex = rowIndex>
+                      <tr class="p-selectable-row">
+                         <td class="text-center">{{rowIndex+1}}</td>
+                        
+                        <td>
+                         {{data.areaSetName}}
+
+                        </td>
+                        <td>
+                          {{data.numberOfArea}} 
+
+                        </td>
+                       
+                  
+                    <td>
+                        
+                      <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" tooltip="Edit" aria-hidden="true" (click)="editAreaSet(data)"></i>&nbsp;
+                      <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View" (click)="viewAreaSet(data)" aria-hidden="true"></i>&nbsp;
+                     
+                    </td>
+                  </tr>
+                 
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                       <tr>
+                        <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                      Available</span>
+                        </td>
+                       </tr>
+                  </ng-template>
+                  </p-table> 
+                </div>
+                </div>
+            
+                  </div>
+
+                </div> <!-- card body -->               
+              </div>
+            </div>
+
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+</div>
+
+
+<!-- <p-multiSelect [options]="queryListData" class="multiselect-custom"
+                        [disabled]="viewFlag" [virtualScroll]="true"
+                        formControlName="assignQATemplate1" [filterPlaceHolder]="'Select'" [placeholder]="'Select Template'"
+                        ngDefaultControl>
+                        </p-multiSelect> -->
