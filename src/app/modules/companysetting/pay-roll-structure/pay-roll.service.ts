@@ -35,7 +35,26 @@ export class PayRollService {
       } ) );
   }
 
+//  Assign E/D Heads API
 
+//Get All Assign Heads
+getAllEDHeadsGroup(){
+  return this._HTTP.get(environment.baseUrl8084 + 'payrollhead-master/global-getAll')
+  .pipe (map (( res : any ) => {
+    return res;
+  }))
+}
+
+// headGroup/phgCommonHeads
+
+//Post Assign ED Heads
+postAllAssignEDHeads( data): Observable<number | {}> {
+
+  return this._HTTP.post( environment.baseUrl8084 + 'headGroup/phgCommonHeads', data )
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
 
 
 }
