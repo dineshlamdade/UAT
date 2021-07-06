@@ -34,6 +34,9 @@ import { LandingPageComponent } from './.././employee-master/components/landing-
 import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
 import { PersonalInformationComponent } from './components/personal-information/personal-information.component';
 import { PreviousEmploymentInformationComponent } from './components/previous-employment-information/previous-employment-information.component';
+import { PayrollAreaComponent } from './components/payroll-area-information/payroll-area/payroll-area.component';
+import { DisbursementsComponent } from './components/payroll-area-information/disbursements/disbursements.component';
+import { OtherAreasComponent } from './components/payroll-area-information/other-areas/other-areas.component';
 
 const routes: Routes = [
 
@@ -74,6 +77,23 @@ const routes: Routes = [
         path: 'payroll-area-information',
         component: PayrollAreaInformationComponent,
         data: { title: ':: DelziaHR :: payroll-area-information' },
+        children: [
+          {
+            path: 'payrollArea-details',
+            component: PayrollAreaComponent,
+            data: { title: ':: DelziaHR :: payrollArea-details' },
+          },
+          {
+            path: 'disbursements-details',
+            component: DisbursementsComponent,
+            data: { title: ':: DelziaHR :: disbursements-details' },
+          },
+          {
+            path: 'otherAreas-details',
+            component: OtherAreasComponent,
+            data: { title: ':: DelziaHR :: otherAreas-details' },
+          }
+        ]
       },
       {
         path: 'family-information',

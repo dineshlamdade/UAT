@@ -76,6 +76,9 @@ import { ToastModule } from 'primeng/toast';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { PayrollAreaComponent } from './components/payroll-area-information/payroll-area/payroll-area.component';
+import { DisbursementsComponent } from './components/payroll-area-information/disbursements/disbursements.component';
+import { OtherAreasComponent } from './components/payroll-area-information/other-areas/other-areas.component';
 
 @NgModule( {
   declarations: [
@@ -115,7 +118,10 @@ import { ProgressBarModule } from 'primeng/progressbar';
     ComplianceSummaryComponent,
     JobSummaryComponent,
     LandingPageComponent,
-    BlockCopyPasteDirective
+    BlockCopyPasteDirective,
+    PayrollAreaComponent,
+    DisbursementsComponent,
+    OtherAreasComponent
   ],
   imports: [
     CommonModule,

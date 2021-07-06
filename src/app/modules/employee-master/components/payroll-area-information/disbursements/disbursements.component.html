@@ -1,0 +1,557 @@
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+
+                    <div class="col-12 mt-10">
+
+                        <fieldset>
+                            <legend>Disbursement</legend>
+
+                            <div class="row mt-10">
+
+
+                                <div class="col-sm-3">
+                                    <label class="form-label">Area</label>
+                                    <select name="payrollarea" class="form-control">
+                                        <option value=""> Select</option>
+                                        <option value=""> All </option>
+                                        <option value=""> Worker</option>
+                                        <option value="">Staff </option>
+                                        <option value="">Apprentice </option>
+                                        <option value="">Expat </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label class="form-label">Type of Payment</label>
+                                    <select name="payrollarea" class="form-control">
+                                        <option value=""> Select</option>
+                                        <option value=""> Salary </option>
+                                        <option value="">Payroll Reimbursement </option>
+                                        <option value=""> </option>
+                                        <option value=""> </option>
+                                    </select>
+
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label class="form-label">From Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                            placeholder="Date" bsDatepicker>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="form-label">To Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                            placeholder="Date" bsDatepicker>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="row mt-10">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <label class="form-label">Copy From</label>
+                                    <select name="payrollarea" class="form-control">
+                                        <option value=""> Select</option>
+                                        <option value="">PA_Worker-Salary </option>
+                                        <option value="">PA_Worker-Payroll Reimbursement </option>
+                                        <option value=""> PA_Staff-Salary</option>
+                                        <option value="">PA_Staff-Payroll Reimbursement </option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <br>
+                            <br>
+
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p-table [value]="users1">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th rowspan="2" class="wd-2 text-center">Sr. No.</th>
+                                                <th rowspan="2" class="wd-6 text-center">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">Mode of Payment
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="PayrollArea"
+                                                                pSortableColumn="PayrollArea"></p-sortIcon>
+                                                            <p-columnFilter type="text" field="name" display="menu"
+                                                                class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2" class="wd-6 text-center">
+                                                    <div class="p-d-flex p-jc-between p-ai-center"> Bank Name
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Description"
+                                                                pSortableColumn="Description"></p-sortIcon>
+                                                            <p-columnFilter type="text" field="Desc" display="menu"
+                                                                class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2" class="wd-12 text-center">
+                                                    <div class="p-d-flex p-jc-between p-ai-center"
+                                                        style="margin-left: 20px;">IFSC / SWIFT
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Type" pSortableColumn="Type">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"> </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2" class="wd-8 text-center">
+                                                    <div class="p-d-flex p-jc-between p-ai-center"> Account No.
+
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="PrimaryArea"
+                                                                pSortableColumn="PrimaryArea"></p-sortIcon>
+                                                            <p-columnFilter field="status" matchMode="equals"
+                                                                display="menu" class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2" class="wd-8 text-center">
+                                                    <div class="p-d-flex justify-content-center p-ai-center">Payee Name
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="FromDate" pSortableColumn="FromDate">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="activity" display="menu"
+                                                                class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2" class="wd-8 text-center">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">% Net Pay
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="activity" display="menu"
+                                                                class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2" class="wd-8 text-center">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">Amount
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="activity" display="menu"
+                                                                class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2" class="wd-8 text-center">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">Priority
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="activity" display="menu"
+                                                                class="p-ml-auto">
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+
+
+                                                <th rowspan="2" class="wd-4 text-center"> Action </th>
+
+                                            </tr>
+
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-user1>
+                                            <tr class="p-selectable-row">
+                                                <td class="text-center">1</td>
+                                                <td>
+                                                    <select name="BankTransfer" class="form-control">
+                                                        <option value=""> Bank Transfer</option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select name="BankName" class="form-control">
+                                                        <option value="">Kotak Name</option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select name="BranchCode" class="form-control">
+                                                        <option value=""> KKBSDJFG(Kothrud)</option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select name="AccountNo" class="form-control">
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                        <option value=""> </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control">
+                                                </td>
+
+                                                <td>
+                                                    5,000.00
+                                                </td>
+
+
+                                                <td>
+                                                    <input type="text" class="form-control">
+                                                </td>
+
+                                                <td>
+
+                                                    <i class="fa fa-times  font-18 text-red cursor-pointer"
+                                                        aria-hidden="true"></i>&nbsp;
+                                                    <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
+                                                        aria-hidden="true"></i>&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr class="p-selectable-row">
+                                                <td class="text-center">2</td>
+                                                <td>
+                                                    Bank Transfer
+
+                                                </td>
+                                                <td>
+                                                    Kotak Name
+
+                                                </td>
+                                                <td>
+
+                                                    KKBSDJFGjh(Kothrud)
+
+
+                                                </td>
+                                                <td>
+                                                    ***********29 <i
+                                                        class="fa fa-eye-slash  font-18 text-blue cursor-pointer"
+                                                        aria-hidden="true"></i>
+                                                </td>
+                                                <td>
+
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control">
+                                                </td>
+
+                                                <td>
+                                                    10,000
+                                                </td>
+
+
+                                                <td>
+                                                    1
+                                                </td>
+
+                                                <td>
+
+                                                    <i class="fa fa-times  font-18 text-red cursor-pointer"
+                                                        aria-hidden="true"></i>&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr class="p-selectable-row">
+                                                <td class="text-center">3</td>
+                                                <td>Cheque</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+
+                                                <td>
+                                                    20,000
+                                                </td>
+
+
+                                                <td>
+                                                    2
+                                                </td>
+
+                                                <td>
+
+                                                    <i class="fa fa-times  font-18 text-red cursor-pointer"
+                                                        aria-hidden="true"></i>&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr class="p-selectable-row">
+                                                <td class="text-center">4</td>
+                                                <td>Cash</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>40</td>
+
+                                                <td>
+
+                                                </td>
+
+                                                <td>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <i class="fa fa-times  font-18 text-red cursor-pointer"
+                                                        aria-hidden="true"></i>&nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr class="p-selectable-row">
+                                                <td class="text-center">5</td>
+                                                <td>DD</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>45</td>
+
+                                                <td>
+
+                                                </td>
+
+                                                <td>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <i class="fa fa-times  font-18 text-red cursor-pointer"
+                                                        aria-hidden="true"></i>&nbsp;
+                                                </td>
+                                            </tr>
+
+                                            <tr class="p-selectable-row table-light-color">
+
+                                                <td colspan="6" class="text-bold text-right ">Total
+
+                                                </td>
+                                                <td class="text-center text-bold">85</td>
+                                                <td class="text-center text-bold">40,000</td>
+                                                <td colspan="2"></td>
+
+
+
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No
+                                                        Data
+                                                        Available</span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="row mt-15">
+                            <div class="col-12">
+                                <div class="float-right mb-15">
+                                    <button type="submit"
+                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                        tooltip="Save"><b>
+                                            <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                                    <button type="button"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
+                                        tooltip="Reset"><b>
+                                            <i class="fa fa-refresh"></i></b> Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="mb-0">
+                            <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <p-table [value]="users1">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
+
+                                            <th rowspan="2" class="wd-8 text-center">
+                                                <div class="p-d-flex p-jc-between p-ai-center">Area
+                                                    <div class="Sort_Filter_Position">
+                                                        <p-sortIcon field="Description" pSortableColumn="Description">
+                                                        </p-sortIcon>
+                                                        <p-columnFilter type="text" field="Desc" display="menu"
+                                                            class="p-ml-auto">
+                                                        </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th rowspan="2" class="wd-8 text-center">
+                                                <div class="p-d-flex p-jc-between p-ai-center">Type of Payment
+                                                    <div class="Sort_Filter_Position">
+                                                        <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                                        <p-columnFilter type="date" field="date" display="menu"
+                                                            class="p-ml-auto"> </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th rowspan="2" class="wd-8 text-center">
+                                                <div class="p-d-flex p-jc-between p-ai-center">No. of Entries
+                                                    <div class="Sort_Filter_Position">
+                                                        <p-sortIcon field="ToDate" pSortableColumn="ToDate">
+                                                        </p-sortIcon>
+                                                        <p-columnFilter field="activity" display="menu"
+                                                            class="p-ml-auto">
+                                                        </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th rowspan="2" class="wd-8 text-center">
+                                                <div class="p-d-flex p-jc-between p-ai-center">From Date
+
+                                                    <div class="Sort_Filter_Position">
+                                                        <p-sortIcon field="PrimaryArea" pSortableColumn="PrimaryArea">
+                                                        </p-sortIcon>
+                                                        <p-columnFilter field="status" matchMode="equals" display="menu"
+                                                            class="p-ml-auto"></p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th rowspan="2" class="wd-8 text-center">
+                                                <div class="p-d-flex justify-content-center p-ai-center">To Date
+                                                    <div class="Sort_Filter_Position">
+                                                        <p-sortIcon field="FromDate" pSortableColumn="FromDate">
+                                                        </p-sortIcon>
+                                                        <p-columnFilter field="activity" display="menu"
+                                                            class="p-ml-auto">
+                                                        </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+
+
+
+
+
+                                            <th rowspan="2" class="wd-4 text-center"> Action </th>
+
+                                        </tr>
+
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-user1>
+                                        <tr class="p-selectable-row">
+                                            <td class="text-center">1</td>
+
+                                            <td>
+                                                PA
+
+                                            </td>
+                                            <td>
+                                                Salary
+
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                01-Apr-2021
+
+                                            </td>
+                                            <td>
+                                                31-Dec-9999
+
+                                            </td>
+
+                                            <td>
+
+                                                <i class="fa fa-edit  font-18 text-dark-green cursor-pointer"
+                                                    aria-hidden="true"></i>&nbsp;
+                                                <i class="fa fa-eye font-18 text-blue cursor-pointer"
+                                                    aria-hidden="true"></i>&nbsp;
+
+                                            </td>
+                                        </tr>
+                                        <tr class="p-selectable-row">
+                                            <td class="text-center">2</td>
+
+                                            <td>
+                                                PA
+
+                                            </td>
+                                            <td>
+                                                Reimbursement
+
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                01-Apr-2021
+
+                                            </td>
+                                            <td>
+                                                31-Dec-9999
+
+                                            </td>
+
+                                            <td>
+
+                                                <i class="fa fa-edit  font-18 text-dark-green cursor-pointer"
+                                                    aria-hidden="true"></i>&nbsp;
+                                                <i class="fa fa-eye font-18 text-blue cursor-pointer"
+                                                    aria-hidden="true"></i>&nbsp;
+
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                                    Available</span>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div> <!-- card body -->
+            </div>
