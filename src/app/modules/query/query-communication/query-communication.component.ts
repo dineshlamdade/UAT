@@ -6,6 +6,7 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 import { CKEditorModule } from 'ckeditor4-angular';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { QueryService } from '../query.service';
+// import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
 
 
 export interface user2 {

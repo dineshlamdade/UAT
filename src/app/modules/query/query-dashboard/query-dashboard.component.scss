@@ -131,7 +131,7 @@ background-clip: border-box;
   min-height: 127px!important;
 }
 .a {
-  white-space: nowrap;
+  white-space: nowrap!important;
   width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;

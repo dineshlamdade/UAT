@@ -7,10 +7,10 @@
             class="card-header mb-0"
             style="font-weight: bold; color: purple"
           >
-            Premium payment Receipt
+            <!-- Premium payment Receipt -->
             <!-- <button (click)="click()">Rotate Right</button> -->
           </div>
- <pre>{{listDoc |json}}</pre>
+ <!-- <pre>{{listDoc |json}}</pre> -->
           <div class="card-body">
             <div class="tabview-contents">
               <div class="row">
@@ -66,7 +66,7 @@
                     class="btn active Next_Previous_Btn"
                     tooltip="Previous Document"
                     (click)="previousDocViewer()"
-
+                    [disabled]="documentURLIndex == 0"
                   >
                     <i class="fa fa-angle-left text-white font-30 p-10"></i>
                   </button>
@@ -79,7 +79,7 @@
                       display: block;
                       overflow-y: scroll;
                     "
-
+                    [src]="urlSafe"
                     provider="google"
                   ></iframe>
                 </div>
@@ -89,7 +89,7 @@
                     class="btn active Next_Previous_Btn"
                     tooltip="Next Document"
                     (click)="nextDocViewer()"
-                   >
+                    [disabled]="documentURLIndex == documentList.length - 1">
                     <i class="fa fa-angle-right text-white font-30 p-10"></i>
                   </button>
                 </div>

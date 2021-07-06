@@ -489,7 +489,7 @@
                                                             </td>
 
                                                             <td class="a" (click)="smallpopup1(queryDescription,summary)"> <label
-                                                              class="form-lable mb-0 a" ><p class="a">{{summary.queryDescription}}</p></label>
+                                                              class="form-lable mb-0 " > <span [innerHTML]="summary.queryDescription"></span></label>
                                                             </td  >
 
                                                             <ng-template #queryDescription>
@@ -503,7 +503,7 @@
                                                                       <div class="card-body">
                                                                           <div class="row clearfix">
                                                                               <div class="col-md-12">
-                                                                                  <p>{{summarydescription}}</p>
+                                                                                  <p [innerHTML]="summarydescription"></p>
                                                                               </div>
                                                                           </div>
                                                                       </div>
@@ -516,7 +516,7 @@
 
 
                                                             <td class="a"  (click)="smallpopup3(subqueryDescription,summary)"><label
-                                                                    class="form-lable mb-0 a"><p class="a">{{summary.subQueryTypeCode}}</p></label>
+                                                                    class="form-lable mb-0 a"><p class="a" [innerHTML]="summary.subQueryTypeCode">{{summary.subQueryTypeCode}}</p></label>
 
                                                             </td>
                                                             <ng-template #subqueryDescription>
@@ -530,7 +530,7 @@
                                                                       <div class="card-body">
                                                                           <div class="row clearfix">
                                                                               <div class="col-md-12">
-                                                                                  <p>{{summarysubquerydescription}}</p>
+                                                                                  <p  [innerHTML]="summarysubquerydescription"></p>
                                                                               </div>
                                                                           </div>
                                                                       </div>

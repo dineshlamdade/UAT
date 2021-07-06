@@ -199,10 +199,21 @@ p{
 .Draft{
   color:#cedd7a!important;
 }
+.Replied
+{
+  color:#713f93!important;
+}
 .status .dark{
 color: #0c0d0e;
-font-weight: 700;
+font-weight: 600;
 }
 // .status span .tag{
 //   background-color: #eaeeef!important;
 // }
+.status .tag{
+  background-color: transparent!important;
+}
+.status .updated
+{
+  color: #006666;
+}

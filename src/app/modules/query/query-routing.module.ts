@@ -6,6 +6,7 @@ import { QueryDashboardComponent} from './query-dashboard/query-dashboard.compon
 import { AdminQuryGenerationComponent} from './admin-qury-generation/admin-qury-generation.component'
 import { from } from 'rxjs';
 import { QueryCOmmunicationComponent } from './query-communication/query-communication.component'
+import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
 
 
 const routes :Routes =[
@@ -40,6 +41,12 @@ const routes :Routes =[
         path:'Query-Communication/:id',
         component:QueryCOmmunicationComponent,
         data: { title: ':: DelziaHR :: Query Communication' },
+
+      },
+      {
+        path:'document-viewer',
+        component:DocumentViewerComponent,
+        data: { title: ':: DelziaHR :: document-viewer' },
 
       }
     ]

@@ -258,18 +258,18 @@
                                                                                         <!-- oninput="this.parentNode.dataset.value = this.value" rows="4" -->
                                                                                         <div class="col-md-10" >
                                                                                             <textarea style="overflow:hidden;"
-                                                                                                class="form-control"
-                                                                                                disabled>{{GetIterationdetailsbyQueryIDData.queryDescription}}</textarea>
+                                                                                                class="form-control" [innerHTML]="GetIterationdetailsbyQueryIDData.queryDescription"
+                                                                                                disabled></textarea>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row mt-10">
                                                                                         <div class="col-md-2">
                                                                                             <span
-                                                                                                class="tag tag-purpul">Ref {{GetIterationdetailsbyQueryIDData.refNumber}}</span>
+                                                                                                class="tag tag-lightgray">Ref {{GetIterationdetailsbyQueryIDData.refNumber}}</span>
                                                                                         </div>
-                                                                                        <div class="col-md-4">
+                                                                                        <div class="col-md-4 status">
                                                                                             <span
-                                                                                                class="tag tag-success">Updated By : {{GetIterationdetailsbyQueryIDData.refUpdatedByName}}</span>
+                                                                                                class="tag updated"> <span class="dark">Updated By : </span>&nbsp;{{GetIterationdetailsbyQueryIDData.refUpdatedByName}}</span>
                                                                                         </div>
                                                                                         <div class="col-md-3">
                                                                                             <div class="form-group">
@@ -291,8 +291,9 @@
                                                                                         </div> -->
                                                                                         <div class="col-md-3 status">
                                                                                           <span  class=" tag Closed" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Closed'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
-                                                                                          <span  class=" tag Submit" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Submit'">Status :&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
-                                                                                          <span  class=" tag Draft" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Draft'">Status :&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Submit" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Submit'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Draft" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Draft'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Replied" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Replied'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
 
                                                                                         </div>
                                                                                     </div>

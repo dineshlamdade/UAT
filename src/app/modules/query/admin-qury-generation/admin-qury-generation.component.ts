@@ -85,6 +85,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   querySubject: any;
   queryDesc: any;
   viewDoc: File[];
+
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
     private modalService: BsModalService, )

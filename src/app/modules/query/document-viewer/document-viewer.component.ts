@@ -18,62 +18,73 @@ export class DocumentViewerComponent implements OnInit {
   documentList: any = [];
   listDoc: any= [];
   ListOfDocuments: any;
-  documentURLIndex: any;
+  documentURLIndex: number;
+  queryDocumentId: any;
+  documents: any;
 
-  constructor( private router: Router,
-    private modalService: BsModalService,
-    public sanitizer: DomSanitizer) {
+  constructor( private router: Router, private modalService: BsModalService,  public sanitizer: DomSanitizer) {
 
-      if( localStorage.getItem('GetIterationdetailsbyQueryIDData') != null){
-      let communicationFormData = JSON.parse(localStorage.getItem('GetIterationdetailsbyQueryIDData'))
-      this.listDoc = communicationFormData.documents;
-      console.log("this.listDoc",this.listDoc);
-      }
-      this.openModal(this.listDoc);
+
      }
-
-
-     public openModal(documentInformationId:any) {
-      // this.documentList = this.masterInfo.masterDetail.documentDetailList;
-
-     this.documentURLIndex = this.listDoc.findIndex(doc=> doc.documentInformationId ==documentInformationId);
-
-    //  this.documentType = this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex].documentType;
-
-    }
-
 
 
 
   ngOnInit(): void {
+    if( localStorage.getItem('GetIterationdetailsbyQueryIDData') != null){
+      let communicationFormData = JSON.parse(localStorage.getItem('GetIterationdetailsbyQueryIDData'))
+      this.listDoc = communicationFormData.documents;
+      console.log("this.listDoc",this.listDoc);
+
+      this.listDoc.forEach(element => {
+        this.queryDocumentId = element.queryDocumentId;
+      });
+      console.log("this.queryDocumentId",this.queryDocumentId);
+      }
+      this.openModal(this.queryDocumentId);
   }
 
-  public docViewer(template1: TemplateRef<any>, document: any) {
 
-    this.ListOfDocuments = document;
-    this.urlIndex = 0;
-      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      //  this.listDoc[this.urlIndex].queryBlobURI
-      // );
+  public openModal(queryDocumentId:any) {
+    this.documentList = this.listDoc;
+    console.log("queryDocumentId",queryDocumentId)
+    console.log(" this.documentList", this.documentList)
+    console.log(" this.urlSafe", this.urlSafe)
+   this.documentURLIndex = this.listDoc.findIndex(doc=> doc.queryDocumentId == queryDocumentId);
+   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+  this.documentList[this.documentURLIndex].queryBlobURI
+  );
+  console.log(" this.documentURLIndex", this.documentURLIndex)
+  console.log(" this.urlSafe", this.urlSafe)
 
-    // this.modalRef = this.modalService.show(
-    //   template1,
-    //   Object.assign({}, { class: 'gray modal-xl' })
-    // );
+  }
+
+  public docViewer(template1: TemplateRef<any>, index: any) {
+
+    // this.ListOfDocuments = document;
+    this.documentURLIndex = index;
+
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.listDoc[this.documentURLIndex].queryBlobURI
+       );
+
+     this.modalRef = this.modalService.show(
+       template1,
+       Object.assign({}, { class: 'gray modal-xl' })
+     );
   }
   // Previous Doc Viewer
   public previousDocViewer() { //not yet used
-    this.urlIndex = this.urlIndex - 1;
+    this.urlIndex = this.documentURLIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
+      this.listDoc[this.urlIndex].queryBlobURI
     );
   }
 
   // Next Doc Viewer
   public nextDocViewer() { //not yet used
-  this.urlIndex = this.urlIndex + 1;
+  this.urlIndex = this.documentURLIndex + 1;
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-   this.ListOfDocuments.documents[this.urlIndex].queryBlobURI
+    this.listDoc[this.urlIndex].queryBlobURI
   );
   }
 

@@ -289,11 +289,11 @@ let queansid = item.value.toString();
   this.listSubQueryQueAnsMapping.push({
     "subQueryTypeQueAnsMappingId":0,
     "subQueryTypeMasterId":0,
-    "queansid":item.itemValue,
+    "queAnsMasterId":item.itemValue,
     "active":true
   })
   this.AssignQNATemplate.push({
-    'queAnsMasterId': item.value,
+    'queAnsMasterId': item.itemValue,
   'description': item.label
   })
 }
@@ -352,6 +352,9 @@ this.querytypeForm.controls['subqueryTypedescription'].reset();
 this.querytypeForm.controls['assignQATemplate2'].reset();
 this.listSubQueryQueAnsMapping = []
 this.AssignQNATemplate=[];
+this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
+// this.finalForm.controls['subqueryTypedescription'].clearValidators();
+
 }
 
 changeEvent1($event) {
@@ -531,18 +534,22 @@ addQueryType() // main post api to save all form data .
     {
       "queryTypeQueAnsMappingId":0,
       "queryTypeMasterId":this.queryTypeMasterId,
-      "queAnsMasterId":0,
+      "queAnsMasterId":this.queAnsMasterId,
       "active":true
     }
   ]
   this.finalForm.patchValue(this.querytypeForm.value);
   this.finalForm.controls['applicationModuleId'].setValue(parseInt(this.querytypeForm.controls['applicationModuleId'].value));
+  // this.finalForm.controls['assignQATemplate1'].setValue(parseInt(this.querytypeForm.controls['assignQATemplate1'].value));
+  // this.finalForm.controls['assignQATemplate2'].setValue(parseInt(this.querytypeForm.controls['assignQATemplate2'].value));
+
   this.finalForm.controls['priorityRequired'].setValue(parseInt(this.querytypeForm.controls['priorityRequired'].value))
   this.finalForm.controls['forwardWorkFlowId'].setValue(parseInt(this.querytypeForm.controls['forwardWorkFlowId'].value));
   this.finalForm.controls['replyWorkflowId'].setValue(parseInt(this.querytypeForm.controls['replyWorkflowId'].value));
   this.finalForm.controls['listQueryAnsMappingReqDTO'].setValue(listQueryAnsMappingReqDTO);
   this.finalForm.controls['subQueryRequestDTO'].setValue(this.subQueryRequestDTO);
   this.finalForm.controls['listQueryPriorityRequestDTO'].setValue(this.listQueryPriorityRequestDTO);
+
 
   console.log(JSON.stringify(this.finalForm.value));
 
@@ -580,6 +587,9 @@ updateQueryType()   //update all form
   ]
   this.finalForm.patchValue(this.querytypeForm.value);
   this.finalForm.controls['applicationModuleId'].setValue(parseInt(this.querytypeForm.controls['applicationModuleId'].value));
+  // this.finalForm.controls['assignQATemplate1'].setValue(parseInt(this.querytypeForm.controls['assignQATemplate1'].value));
+  // this.finalForm.controls['assignQATemplate2'].setValue(parseInt(this.querytypeForm.controls['assignQATemplate2'].value));
+
   this.finalForm.controls['priorityRequired'].setValue(parseInt(this.querytypeForm.controls['priorityRequired'].value))
   this.finalForm.controls['forwardWorkFlowId'].setValue(parseInt(this.querytypeForm.controls['forwardWorkFlowId'].value));
   this.finalForm.controls['replyWorkflowId'].setValue(parseInt(this.querytypeForm.controls['replyWorkflowId'].value));
@@ -627,7 +637,6 @@ getAll() // this api call for the assign Q & A template dropdown
           // console.log("queryListData",this.descriptionData)
         });
       if(this.queryListData.length > 0){
-      // console.log("here")
        this.dropdownSettings = {
          singleSelection: false,
          idField: 'queAnsMasterId',
@@ -776,44 +785,126 @@ viewQuerySummary(query) // whole page view function
 
 resolutionEvent(value,prio)
 {
-  this.listQueryPriorityRequestDTO.push({
-  "queTypePriorityMasterId":0,
-  "queryTypeMasterId":0,
-  "priorityType":prio.priorityType,
-  "resolutionTime":prio.resolutionTime,
-  "autoClose":value,
-  "defaultPriority":'',
-  "active":true
-})
+  if(this.listQueryPriorityRequestDTO.length > 0){
+    this.listQueryPriorityRequestDTO.forEach((element,index) => {
+      if(element.priorityType == prio.priorityType){
+       let i = index;
+       this.listQueryPriorityRequestDTO.splice(i,1,
+        {
+          "queTypePriorityMasterId":0,
+          "queryTypeMasterId":0,
+          "priorityType":prio.priorityType,
+          "resolutionTime":prio.resolutionTime,
+          "autoClose":value,
+          "defaultPriority":'',
+          "active":true
+        })
+      }else
+      {
+        this.listQueryPriorityRequestDTO.push({
+          "queTypePriorityMasterId":0,
+          "queryTypeMasterId":0,
+          "priorityType":prio.priorityType,
+          "resolutionTime":prio.resolutionTime,
+          "autoClose":value,
+          "defaultPriority":'',
+          "active":true
+        })
+      }
+    });
+  }
+
 }
 resolutionEvent1(value,prio)
 {
-  this.listQueryPriorityRequestDTO.push({
-  "queTypePriorityMasterId":0,
-  "queryTypeMasterId":0,
-  "priorityType":prio.priorityType,
-  "resolutionTime":prio.resolutionTime,
-  "autoClose":value,
-  "defaultPriority":'',
-  "active":true
-})
+  if(this.listQueryPriorityRequestDTO.length > 0){
+    this.listQueryPriorityRequestDTO.forEach((element,index) => {
+      if(element.priorityType == prio.priorityType){
+       let i = index;
+       this.listQueryPriorityRequestDTO.splice(i,1,
+        {
+          "queTypePriorityMasterId":0,
+          "queryTypeMasterId":0,
+          "priorityType":prio.priorityType,
+          "resolutionTime":value,
+          "autoClose":prio.autoClose,
+          "defaultPriority":'',
+          "active":true
+        })
+      }else
+      {
+        this.listQueryPriorityRequestDTO.push({
+          "queTypePriorityMasterId":0,
+          "queryTypeMasterId":0,
+          "priorityType":prio.priorityType,
+          "resolutionTime":value,
+          "autoClose":prio.autoClose,
+          "defaultPriority":'',
+          "active":true
+        })
+      }
+    });
+  }
+
+//   this.listQueryPriorityRequestDTO.push({
+//   "queTypePriorityMasterId":0,
+//   "queryTypeMasterId":0,
+//   "priorityType":prio.priorityType,
+//   "resolutionTime":value,
+//   "autoClose":prio.autoClose,
+//   "defaultPriority":'',
+//   "active":true
+// })
 }
 resolutionTime(value,prio)
 {
-  this.listQueryPriorityRequestDTO.push({
-    "queTypePriorityMasterId":0,
-    "queryTypeMasterId":0,
-    "priorityType":prio.priorityType,
-    "resolutionTime":value,
-    "autoClose":prio.autoClose,
-    "defaultPriority":'',
-    "active":true
-  })
+  if(this.listQueryPriorityRequestDTO.length > 0){
+    this.listQueryPriorityRequestDTO.forEach((element,index) => {
+      if(element.priorityType == prio.priorityType){
+       let i = index;
+       this.listQueryPriorityRequestDTO.splice(i,1,
+        {
+          "queTypePriorityMasterId":0,
+            "queryTypeMasterId":0,
+            "priorityType":prio.priorityType,
+            "resolutionTime":value,
+            "autoClose":prio.autoClose,
+            "defaultPriority":'',
+            "active":true
+        })
+      }else
+      {
+        this.listQueryPriorityRequestDTO.push({
+          "queTypePriorityMasterId":0,
+            "queryTypeMasterId":0,
+            "priorityType":prio.priorityType,
+            "resolutionTime":value,
+            "autoClose":prio.autoClose,
+            "defaultPriority":'',
+            "active":true
+        })
+      }
+    });
+  }
+  // this.listQueryPriorityRequestDTO.push({
+  //   "queTypePriorityMasterId":0,
+  //   "queryTypeMasterId":0,
+  //   "priorityType":prio.priorityType,
+  //   "resolutionTime":value,
+  //   "autoClose":prio.autoClose,
+  //   "defaultPriority":'',
+  //   "active":true
+  // })
 }
 autoClose(value,prio)
 {
 
-  this.listQueryPriorityRequestDTO.push({
+  if(this.listQueryPriorityRequestDTO.length > 0){
+    this.listQueryPriorityRequestDTO.forEach((element,index) => {
+      if(element.priorityType == prio.priorityType){
+       let i = index;
+       this.listQueryPriorityRequestDTO.splice(i,1,
+        {
     "queTypePriorityMasterId":0,
     "queryTypeMasterId":0,
     "priorityType":prio.priorityType,
@@ -821,6 +912,30 @@ autoClose(value,prio)
     "autoClose":value,
     "defaultPriority":'',
     "active":true
-  })
+        })
+      }else
+      {
+        this.listQueryPriorityRequestDTO.push({
+    "queTypePriorityMasterId":0,
+    "queryTypeMasterId":0,
+    "priorityType":prio.priorityType,
+    "resolutionTime":prio.resolutionTime,
+    "autoClose":value,
+    "defaultPriority":'',
+    "active":true
+        })
+      }
+    });
+  }
+
+  // this.listQueryPriorityRequestDTO.push({
+  //   "queTypePriorityMasterId":0,
+  //   "queryTypeMasterId":0,
+  //   "priorityType":prio.priorityType,
+  //   "resolutionTime":prio.resolutionTime,
+  //   "autoClose":value,
+  //   "defaultPriority":'',
+  //   "active":true
+  // })
 }
 }
