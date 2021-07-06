@@ -9,9 +9,9 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
-              <form [formGroup]="AddLoanForm" (ngSubmit)="addloanFormSubmit()">
+              <form [formGroup]="AddDisburseForm" (ngSubmit)="addDisFormSubmit()">
                 <fieldset>
-                  <legend>Employee Details All</legend>
+                  <legend>Employee Details</legend>
                 <!-- <div class="row"> -->
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2 mt-3">
@@ -55,36 +55,7 @@
                     </div>
                   </div>
                   </fieldset>
-                <!-- </div> -->
-
-                <!-- <div class="col-md-12 pl-0 pr-0">
-                  <div class="border-dark-card radius-10 p-2 mt-3">
-                    <div class="row">
-                      <div class="col-md-3">
-                        <label class="form-label mt-1 mb-0" >Emp.Code</label >
-                         <input type="text" class="form-control"  value="{{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}"
-                          disabled />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="form-label mt-1 mb-0">Emp.Name</label  >
-
-                        <input type="text" class="form-control" value="{{perticularEmpDetails.establishment}}" disabled />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="form-label mt-1 mb-0">Loan No.</label>
-                        <input type="text" class="form-control" value="{{perticularEmpDetails.employeeType}}"  disabled />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="form-label mt-1 mb-0">Application Date</label >
-                        <input type="text" class="form-control" value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
-                         disabled />
-                      </div>
-                      
-                     
-                    </div>
-                  </div>
-                </div> -->
-                <!-- </fieldset> -->
+               
                 <br>
                 
                 <fieldset>
@@ -92,6 +63,14 @@
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2">
                   <div class="row mt-1 mb-0">
+                    <div class="col-md-3">
+                      <label class="form-label">Loan Type</label>
+                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Description</label>
+                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                    </div>
                     <div class="col-md-3">
                       <label class="form-label mt-1 mb-0">Loan No.</label>
                       <input type="text" class="form-control" value="{{perticularEmpDetails.employeeType}}"  disabled />
@@ -101,15 +80,7 @@
                       <input type="text" class="form-control" value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
                        disabled />
                     </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Loan Type</label>
-                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Description</label>
-                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
-                    </div>
-                   
+                                      
                   </div>
                 
                   <br>
@@ -126,7 +97,7 @@
                     <div class="col-md-3">
                       <label class="form-label">Disbursed Amt.</label>
                       <input type="text" class="form-control" formControlName="underlineAssestValue"
-                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                        [ngClass]="{'is-invalid' : AddDisburseForm.get('underlineAssestValue').status == 'INVALID'}"
                         disabled />
                     </div>
                     <div class="col-md-3">
@@ -168,11 +139,11 @@
                       <label class="form-label">Mode of Payment</label>
                       <select class="form-control"
                         placeholder="Select" >
-                        <option [ngValue]="null" selected>Select</option>
-                        <option  [selected]="loanType == loan.loanCode">
+                        <option [ngValue]="null" >Select</option>
+                        <option  [selected]="loanType == loan.loanCode" selected>
                           Cheque</option>
                           <option  [selected]="loanType == loan.loanCode">
-                            Online</option>
+                            Bank Transfer</option>
                             <option  [selected]="loanType == loan.loanCode">
                               Through Salary</option>
                       </select>
@@ -182,7 +153,7 @@
                     <button type="button" tooltip="Button"
                     class="custom_button custom_btn1 btn-bg-green btn-labeled1 btn-labeled-left ml-2 mr-2 mt-4"
                     aria-hidden="true" ><b><i class="fa fa-university" aria-hidden="true"></i>
-</b>Bank Details
+</b>Employee Bank Details
 
                   </button>
                     </div>
@@ -192,7 +163,7 @@
                     <div class="col-md-3">
                       <label class="form-label">IFSC</label>
                       <input type="text" class="form-control" formControlName="underlineAssestValue"
-                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                        [ngClass]="{'is-invalid' : AddDisburseForm.get('underlineAssestValue').status == 'INVALID'}"
                          />
                     </div>
                     <div class="col-md-3">
@@ -250,12 +221,27 @@
                     </div>
                   </div>
                   <div class="row mt-1 mb-0">
+                    
+                    <div class="col-md-3">
+                      <label class="form-label">Transaction No.</label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Application Date </label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Payroll Area</label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" />
+                    </div>
                     <div class="col-md-3">
                       <label class="form-label">Remark</label>
                       <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
                         value="{{loanAmount | number:'1.2-2'}}" ></textarea>
                     </div>
-                   
 
                   </div>
                   <br />
@@ -302,7 +288,7 @@
                         <div class="col-md-3">
                           <label class="form-label">IFSC</label>
                           <input type="text" class="form-control" formControlName="underlineAssestValue"
-                            [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                            [ngClass]="{'is-invalid' : AddDisburseForm.get('underlineAssestValue').status == 'INVALID'}"
                              />
                         </div>
                         
@@ -325,6 +311,10 @@
                         </div> -->
                         <div class="col-md-3">
                           <label class="form-label">Account No.</label>
+                          <input type="text" class="form-control" formControlName="repaymentType"  />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Cheque/UTR No.</label>
                           <input type="text" class="form-control" formControlName="repaymentType"  />
                         </div>
                         <div class="col-md-3">
@@ -405,20 +395,7 @@
                 </div>
                 <br><br>
 
-                <!-- <ng-container class="float-right">
-                 
-                  <div class="row float-right" style="margin: 10px">
-                    <button type="submit" tooltip="Save"
-                        class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left ml-10"
-                        (click)="reset()" >
-                        <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
-                                      
-                    <button type="button" tooltip="Reset"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
-                        (click)="reset()" >
-                        <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>&nbsp;
-e</button> -->
-
+              
 <br><br>
 
                   <ng-container class="float-right">
@@ -426,11 +403,11 @@ e</button> -->
                     <div class="row float-right" style="margin: 10px">
                       <button type="button" tooltip="Button"
                       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
-                      aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Submit
+                      aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Save
                     </button>
                     <button type="button" tooltip="Button"
                       class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
-                      aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Send Back
+                      aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Cancel
                     </button>
                     <button
                           type="button"

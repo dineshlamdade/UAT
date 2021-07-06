@@ -93,6 +93,14 @@
                     <div class="border-dark-card radius-10 p-2">
                   <div class="row">
                     <div class="col-md-3">
+                      <label class="form-label">Loan Type</label>
+                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Description</label>
+                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
+                    </div>
+                    <div class="col-md-3">
                       <label class="form-label mt-1 mb-0">Loan No.</label>
                       <input type="text" class="form-control" value="{{perticularEmpDetails.employeeType}}"  disabled />
                     </div>
@@ -101,14 +109,7 @@
                       <input type="text" class="form-control" value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
                        disabled />
                     </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Loan Type</label>
-                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Description</label>
-                      <input type="text" class="form-control" formControlName="repaymentType" disabled />
-                    </div>
+                    
                     
                   </div>
                 
@@ -168,9 +169,9 @@
                     </div>
 
                     <div class="col-md-3">
-                      <label class="form-label">Remark</label>
-                      <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
-                        value="{{loanAmount | number:'1.2-2'}}" ></textarea>
+                      <label class="form-label">Transaction No.</label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" />
                     </div>
                     <!-- <div class="col-md-3">
                       <label class="form-label mt-1 mb-0">Balance</label>
@@ -178,9 +179,25 @@
                         [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
                         disabled />
                     </div> -->
-
-
                   </div>
+                  <div class="row mt-1 mb-0">
+                    
+                    <div class="col-md-3">
+                      <label class="form-label">Application Date </label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Payroll Area</label>
+                      <input type="text" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" />
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Remark</label>
+                      <textarea  type="text" rows="1" class="form-control" formControlName="loanAmount"
+                        value="{{loanAmount | number:'1.2-2'}}" ></textarea>
+                    </div>
+                    </div>
 <br>
                   <div class="row">
                     <div class="col-md-6">
@@ -299,11 +316,11 @@
                   <div class="row float-right" style="margin: 10px">
                     <button type="button" tooltip="Button"
                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
-                    aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Approve
+                    aria-hidden="true"><b><i class="fa fa-check-square-o"></i></b>Save
                   </button>
                   <button type="button" tooltip="Button"
                     class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
-                    aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Send Back
+                    aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Cancel
                   </button>
                   <button
                         type="button"

@@ -19,6 +19,7 @@ import { SettlementComponent } from './settlement/settlement.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { EmpListComponent } from './emp-list/emp-list.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent, SettlementComponent, EmpListComponent],
@@ -34,8 +35,8 @@ import { EmpListComponent } from './emp-list/emp-list.component';
     Ng2SearchPipeModule,
     TableModule,
     BsDatepickerModule.forRoot(),
-    TooltipModule
-
+    TooltipModule,
+    HttpClientModule
   ],
   // providers: [ExcelService],
   providers: [ExcelService, DatePipe],

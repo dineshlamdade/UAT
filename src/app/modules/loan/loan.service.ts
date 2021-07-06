@@ -10,8 +10,13 @@ export class LoanService {
 
 public apiUrl = environment.baseUrl8087;
 public apiUrl1 = environment.baseUrl8088;
+
 constructor(private http : HttpClient) { }
 // .....................loan application Api....................................................................
+public addDisburseData(data)
+{ 
+  return this.http.post<any>(this.apiUrl  +'disbursement/add',data);
+}
 public getAll()
 {
 return this.http.get<any>(this.apiUrl + 'loanApplication/getAll');
