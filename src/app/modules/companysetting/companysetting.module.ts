@@ -100,6 +100,7 @@ import { EmployeesetComponent } from './employeeset/employeeset/employeeset.comp
     ToastModule,
     InputTextModule,
     ProgressBarModule,
+    MultiSelectModule
   ],
 
   providers: [DatePipe, NumberFormatPipe],

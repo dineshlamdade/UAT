@@ -16,9 +16,9 @@
                     <div class="row">             
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 form-group">
                         <label class="form-label">Area Set Name</label> 
-                        <input type="text" class="form-control" formControlName = "areaSetName">
+                        <input type="text" class="form-control" formControlName = "areaSetName" placeholder = "Enter area set name">
                         <small id="areaHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.required">
-                          Area set name is required</small>
+                          </small>
                         </div>
                        </div> 
                        
@@ -34,14 +34,14 @@
                       
                         <label class="form-label">Service</label>
                           <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
-                          <select class="form-control" (change)="getAreasetByService($event.target.value)" formControlName = "serviceMasterId">
-                            <option>Select</option>
+                          <select class="form-control" (change)="getAreasetByService($event.target.value)" formControlName = "serviceMasterId" placeholder = "">
+                            <option>Select Service</option>
                             <option *ngFor="let service of serviceListData" value="{{service.serviceMasterId}}">
                                 {{service.serviceName}}
                             </option>
                           </select>
                           <small id="serviceHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('serviceMasterId').errors?.required">
-                            Service is required</small>
+                           </small>
 
                       </div>
                   </div>
@@ -58,9 +58,11 @@
                                 <div class="form-group ">
                                 
                                   <label class="form-label">Area</label>
-                                    <p-multiSelect [options]="areaListData"
-                                    (onChange)="getAreaMasterId($event)">
+                                    <p-multiSelect [options]="areaListData" class="multiselect-custom"  [virtualScroll]="true"
+                                    (onChange)="getAreaMasterId($event)"  [placeholder]="'Select Area'">
                                     </p-multiSelect>
+
+
                                     <!-- <p-multiSelect [options]="areaListData" class="multiselect-custom"
                                     [disabled]="viewFlag" [virtualScroll]="true"
                                     formControlName="areaMaster" [filterPlaceHolder]="'Select'" [placeholder]="'Select Area'"
@@ -108,9 +110,38 @@
                 <!-- mt-50 ml-40 -->
              
                    </div> 
+               
                <br>
-               <br>
-                   <div class="float-left d-flex justify-content form-group">
+               <ng-container>
+                <div class="row mt-20">
+                  <div class="col-md-3 form-group">
+                    <label
+                      class="custom-control custom-checkbox custom-control-inline pl-45" >
+                      <input
+                        autocomplete="off"
+                        type="checkbox"
+                        class="custom-control-input"
+                        name="example-inline-checkbox1"
+                        checked
+                        (change)="changeEvent2($event)"
+                        readonly />
+                      <span class="custom-control-label">Active </span>
+                    </label>
+                  </div>
+                  <div class="col-md-3 form-group" *ngIf="hideRemarkDiv2">
+                    <label class="form-label">Remark</label>
+                    <textarea
+                      autocomplete="off"
+                      class="form-control"
+                      rows="2"
+                      placeholder="Enter Remark"
+                      [required]="hideRemarkDiv1"
+                      formControlName="remark"
+                    ></textarea>
+                  </div>
+                </div>
+              </ng-container>
+                   <!-- <div class="float-left d-flex justify-content form-group">
                 <input type="checkbox"  class="mt-2">&nbsp;
               <label class="form-label mt-2 margin-right:30px;" >Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <label class="form-label mt-2">Remark</label>&nbsp;
@@ -118,8 +149,8 @@
               
               </textarea>
               <small id="areaSetMasteIdHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('remark').errors?.required">
-                Remark is required</small>
-              </div> 
+                </small>
+              </div>  -->
                    
                  <div class="row mt-15">
                 <div class="col-12">

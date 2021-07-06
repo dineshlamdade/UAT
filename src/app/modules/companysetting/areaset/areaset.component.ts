@@ -21,7 +21,7 @@ export class AreasetComponent implements OnInit {
   summaryData: any;
   editFormFlag: boolean = false;
   viewFormFlag: boolean = false;
-  
+  hideRemarkDiv2:boolean = true;
 
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
     private toaster : ToastrService, private primengConfig: PrimeNGConfig) { 
@@ -30,24 +30,29 @@ export class AreasetComponent implements OnInit {
       areaSetName: new FormControl('',Validators.required),
       serviceMasterId: new FormControl('',Validators.required),
       remark: new FormControl('',Validators.required),
-      areaMaster: new FormControl([])
+      areaMaster: new FormControl([],Validators.required)
     })
-    //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;
-    
-
-    
+    //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;   
   }
 
+
+  changeEvent2($event) {
+
+    if ($event.target.checked) {
+        this.hideRemarkDiv2 = false;
+    }
+    else {
+        this.hideRemarkDiv2 = true;
+    }
+  }
+
+
   ngOnInit(): void {
-    // this.areaListData=[{
-    //   label: 'PA-staff', 
-    //   value: 1,
-    // }]
-   // this.primengConfig.ripple = true;
-   
       this.getServiceList();
       this.getSummaryData();
   }
+
+
 
   /**save and submit data also add data*/
   onSubmit(){
@@ -57,11 +62,9 @@ export class AreasetComponent implements OnInit {
         this.areasetForm.reset();
         this.areaListData = [];
         this.editFormFlag = false;
-        this.viewFormFlag = false
+        this.viewFormFlag = false;
       })
-   // console.log(this.areasetForm.value);
-   
-     this.areasetForm.reset();
+        //this.areasetForm.reset();
   }
 
   
@@ -72,25 +75,24 @@ export class AreasetComponent implements OnInit {
       this.toaster.success('','Area set updated succefully');
       this.getSummaryData();
       this.areasetForm.reset();
-      
       this.areaListData = [];
       this.editFormFlag = false;
       this.viewFormFlag = false
     })
  // console.log(this.areasetForm.value);
- 
-  // this.areasetForm.reset();
+// this.areasetForm.reset();
 }
 
 /**Reset button */
 formReset(){
       this.areasetForm.reset();
+      this.areaListData = [];
       this.editFormFlag = false;
       this.viewFormFlag = false;
-      this.areasetForm.enable();
+      this.areasetForm.enable();     
 }
 
-/**primeng mult select area master array payrollareaid and payrollareacode */
+/**primeng multi select area master array payrollareaid and payrollareacode */
 getAreaMasterId(e){
     console.log(JSON.stringify(e))  //Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
     /** prime ng multiselect */
@@ -98,22 +100,19 @@ getAreaMasterId(e){
       "areaSetMasterDetailsId":0,
       "areaMasterId":e.itemValue
     })
-
+    this.areasetForm.controls['areaMaster'].setValue(this.areaMaster);
     /** Single select i.e select */
     // this.areaMaster.push({
     //   "areaSetMasterDetailsId":0,
     //   "areaMasterId":e
-    // })
-
-    this.areasetForm.controls['areaMaster'].setValue(this.areaMaster)
-   
+    // }) 
   }
 
   /**Summary data */
   getSummaryData(){
       this.areasetService.getSummaryData().subscribe(res =>{
       this.summaryData = res.data.results;
-    })
+       })
   }
 
   /**Service list */
@@ -121,13 +120,12 @@ getAreaMasterId(e){
     // console.log(this.serviceListData);
       this.areasetService.getServiceList().subscribe(res =>{
       this.serviceListData = res.data.results[0];
-      
-    })
+      })
   }
 
 /**Service list by name with id */
   getAreasetByService(serviceid){
-      this.areaListData = []
+       this.areaListData = [];
       this.areasetService.getByServiceName(serviceid).subscribe(res =>{
       //this.areaListData = res.data.results;
       res.data.results[0].forEach(element => {
@@ -141,10 +139,12 @@ getAreaMasterId(e){
             label: element.payrollArea.payrollAreaCode, 
             value: element.payrollArea.payrollAreaId
           })
+          
         }
            console.log("this.areaListData: "+ this.areaListData)
+           
       });
-      // this.areasetForm.reset();
+      
     })
     
   }
