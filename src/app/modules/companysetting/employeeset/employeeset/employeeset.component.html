@@ -1,190 +1,215 @@
-
 <app-leftmenu></app-leftmenu>
 <!-- Main body part  -->
 <div class="page">
-    <app-header></app-header>
-    <div class="section-body mt-3">
-      <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
-        <div class="tabview-contents">
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-body p-0">
-                  
-                  <div class="col-12 mt-10">
-                    <form class = "card" [formGroup] = "employeesetForm">                  
-                  
-                  <div class="row">
-                      
-                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                      <label class="form-label">Emp. Set Name</label>
-                      <input type="text" class="form-control">
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                      
-                      <label class="form-label">Emp. Code</label>             
-                   <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
-                   <p-multiSelect [options]="empData" class="multiselect-custom"  [virtualScroll]="true"
-                   (onChange)="getEmployeeMasterId($event)"  [placeholder]="'Select Emp code'">
-                   </p-multiSelect>
-                    </div>
-                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+      <div class="tabview-contents">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0">
+
+                <div class="col-12 mt-10">
+                  <form class="card" [formGroup]="employeesetForm" role="form">
+
+                    <div class="row">
+
+                      <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                        <label class="form-label">Emp. Set Name</label>
+                        <input type="text" class="form-control">
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+
+                        <label class="form-label">Emp. Code</label>
+                        <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
+                        <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
+                          (onChange)="getEmployeeMasterId($event)" [placeholder]="'Select Emp code'" formControlName = "employeeCode">
+                        </p-multiSelect>
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
                         <div class="form-group">
-                            <div class="form-group">
-                                <div class="custom-controls-stacked">
-                                    <label class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input"
-                                            name="example- radios" value="option1"
-                                            (click)="ViewHistory(template4)" checked>
-                                        <div class="custom-control-label"> Emp. List </div>
-                                    </label>
-                                </div>
-
+                          <div class="form-group">
+                            <div class="custom-controls-stacked">
+                              <label class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="example- radios" value="option1"
+                                  (click)="ViewHistory(template4)" checked>
+                                <div class="custom-control-label"> Emp. List </div>
+                              </label>
                             </div>
-
-                          
+                      
+                          </div>
+                      
+                      
                         </div>
+                      
+                      
+                      </div>
 
-                     
+
+
                     </div>
-                
+                  </form>
+                  <br>
 
-
-                </div>  
-              </form>    
-               <br>
-               <div class="float-left d-flex justify-content">
+                  <ng-container>
+                    <div class="row mt-20">
+                      <div class="col-md-3 form-group">
+                        <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                          <input autocomplete="off" type="checkbox" class="custom-control-input" name="example-inline-checkbox1" checked
+                            (change)="changeEvent2($event)" readonly />
+                          <span class="custom-control-label">Active </span>
+                        </label>
+                      </div>
+                      <div class="col-md-3 form-group" *ngIf="hideRemarkDiv2">
+                        <label class="form-label">Remark</label>
+                        <textarea autocomplete="off" class="form-control" rows="2" placeholder="Enter Remark"
+                          [required]="hideRemarkDiv1"></textarea>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <!-- <div class="float-left d-flex justify-content">
                 <input type="checkbox"  class="mt-2"/>&nbsp;
               <label class="form-label mt-2 margin-right:30px;">Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <label class="form-label mt-2">Remark</label>&nbsp;
               <textarea type="text"></textarea>
               </div>
-           
-                 <div class="row mt-15">
-                <div class="col-12">
-                   <div class="float-right mb-15">
-                    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
-                      <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                  <button type="button" 
-                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
-                    <i class="fa fa-refresh"></i></b> Reset</button>
-                   </div>
-                </div>
-                 </div>
+            -->
+                  <div class="row mt-15">
+                    <div class="col-12">
+                      <div class="float-right mb-15">
+                        <button type="submit"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                          tooltip="Save" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag" (click)="onSubmit()"><b>
+                            <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                        <button type="submit"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                          tooltip="Update" tooltip="Update" *ngIf="editFormFlag && !viewFormFlag"
+                          (click)="onUpdate()"><b>
+                            <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+                        <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
+                          tooltip="Reset" (click)="formReset()"><b>
+                            <i class="fa fa-refresh"></i></b> Reset</button>
+                      </div>
+                    </div>
+                  </div>
                   <br>
-                <div class="mb-0">
-                      <h3 class="font-14 text-purple font-bold">Summary</h3>
-                </div> 
-                    <div class="row">
-                        <div class="col-md-8">
-                      <p-table [value]="summaryData" >
-                       <ng-template pTemplate="header">
-                         <tr>
-                           <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
-                         
-                          <th rowspan="2" class="wd-8 text-center">
-                           <div class="p-d-flex p-jc-between p-ai-center">Emp. Set Name
-                           <div class="Sort_Filter_Position">
-                              <p-sortIcon field="Description"
-                              pSortableColumn="Description"></p-sortIcon>
-                      <p-columnFilter type="text" field="Desc"  display="menu" class="p-ml-auto">
-                      </p-columnFilter>
-                           </div>
-                           </div>
-                         </th>
-                         <th rowspan="2" class="wd-8 text-center">
-                          <div class="p-d-flex p-jc-between p-ai-center">No. of Emp.
-                          <div class="Sort_Filter_Position">
-                              <p-sortIcon field="Type"
-                              pSortableColumn="Type"></p-sortIcon>
-                     <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">     </p-columnFilter>
-                         </div>
-                         </div>
-                        </th>
-                             
-                 
-                     <th rowspan="2" class="wd-4 text-center"> Action </th>
-                     
-                     </tr>
-                   
-                    </ng-template>
-                   <ng-template pTemplate="body" let-data let-rowIndex = rowIndex>
-                      <tr class="p-selectable-row">
-                         <td class="text-center">{{rowIndex+1}}</td>
-                        
-                        <td>
-                          PA
+                  <div class="mb-0">
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <p-table [value]="summaryData">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
 
-                        </td>
-                        <td>
-                          Salary 
+                            <th rowspan="2" class="wd-8 text-center">
+                              <div class="p-d-flex p-jc-between p-ai-center">Emp. Set Name
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="Description" pSortableColumn="Description"></p-sortIcon>
+                                  <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+                            <th rowspan="2" class="wd-8 text-center">
+                              <div class="p-d-flex p-jc-between p-ai-center">No. of Emp.
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
 
-                        </td>
-                        <td></td>
-                        <td>
-                          01-Apr-2021
 
-                        </td>
-                        <td>
-                          31-Dec-9999
+                            <th rowspan="2" class="wd-4 text-center"> Action </th>
 
-                        </td>
-                  
-                    <td>
-                        
-                      <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" tooltip="Edit" aria-hidden="true"></i>&nbsp;
-                      <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View" aria-hidden="true"></i>&nbsp;
-                     
-                    </td>
-                  </tr>
-                  <tr class="p-selectable-row">
-                    <td class="text-center">2</td>
-                  
-                   <td>
-                    PA
+                          </tr>
 
-                   </td>
-                   <td>
-                    Reimbursement  
+                        </ng-template>
+                        <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
+                          <tr class="p-selectable-row">
+                            <td class="text-center">{{rowIndex+1}}</td>
 
-                   </td>
-                   <td></td>
-                   <td>
-                    01-Apr-2021
+                            <td>
+                              PA
 
-                  </td>
-                  <td>
-                    31-Dec-9999
+                            </td>
+                            <td>
+                              Salary
 
-                  </td>
-           
-               <td>
-                   
-                  <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"></i>&nbsp;
-                 <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"></i>&nbsp;
-                 
-               </td>
-             </tr>
-                  </ng-template>
-                  <ng-template pTemplate="emptymessage">
-                       <tr>
-                        <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
-                                      Available</span>
-                        </td>
-                       </tr>
-                  </ng-template>
-                  </p-table> 
-                </div>
-                </div>
-            
+                            </td>
+                            <td></td>
+                            <td>
+                              01-Apr-2021
+
+                            </td>
+                            <td>
+                              31-Dec-9999
+
+                            </td>
+
+                            <td>
+
+                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" tooltip="Edit"
+                                aria-hidden="true"></i>&nbsp;
+                              <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
+                                aria-hidden="true"></i>&nbsp;
+
+                            </td>
+                          </tr>
+                          <tr class="p-selectable-row">
+                            <td class="text-center">2</td>
+
+                            <td>
+                              PA
+
+                            </td>
+                            <td>
+                              Reimbursement
+
+                            </td>
+                            <td></td>
+                            <td>
+                              01-Apr-2021
+
+                            </td>
+                            <td>
+                              31-Dec-9999
+
+                            </td>
+
+                            <td>
+
+                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer"
+                                aria-hidden="true" tooltip = "Edit"(click) = "editEmployeeSet()"></i>&nbsp;
+                              <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true" tootltip = "View"
+                              (click) = "viewEmployeeSet()"></i>&nbsp;
+
+                            </td>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                Available</span>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
                   </div>
 
-                </div> <!-- card body -->               
-              </div>
+                </div>
+
+              </div> <!-- card body -->
             </div>
+          </div>
 
         </div>
       </div>
       <app-footer></app-footer>
     </div>
-</div>
+  </div>

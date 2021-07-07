@@ -16,9 +16,11 @@
                     <div class="row">             
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 form-group">
                         <label class="form-label">Area Set Name</label> 
-                        <input type="text" class="form-control" formControlName = "areaSetName" placeholder = "Enter area set name">
-                        <small id="areaHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.required">
-                          </small>
+                        <input type="text" class="form-control" formControlName = "areaSetName" 
+                        [ngClass]="{'is-invalid' : areasetForm.get('areaSetName').status == 'INVALID'}"
+                        placeholder = "Enter area set name">
+                        <!-- <small id="areaHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.required">
+                          </small> -->
                         </div>
                        </div> 
                        
@@ -34,14 +36,15 @@
                       
                         <label class="form-label">Service</label>
                           <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
-                          <select class="form-control" (change)="getAreasetByService($event.target.value)" formControlName = "serviceMasterId" placeholder = "">
+                          <select class="form-control" (change)="getAreasetByService($event.target.value)" formControlName = "serviceMasterId"
+                          [ngClass]="{'is-invalid' : areasetForm.get('serviceMasterId').status == 'INVALID'}">
                             <option>Select Service</option>
                             <option *ngFor="let service of serviceListData" value="{{service.serviceMasterId}}">
                                 {{service.serviceName}}
                             </option>
                           </select>
-                          <small id="serviceHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('serviceMasterId').errors?.required">
-                           </small>
+                          <!-- <small id="serviceHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('serviceMasterId').errors?.required">
+                           </small> -->
 
                       </div>
                   </div>
@@ -59,7 +62,8 @@
                                 
                                   <label class="form-label">Area</label>
                                     <p-multiSelect [options]="areaListData" class="multiselect-custom"  [virtualScroll]="true"
-                                    (onChange)="getAreaMasterId($event)"  [placeholder]="'Select Area'">
+                                    (onChange)="getAreaMasterId($event)"  [placeholder]="'Select Area'" 
+                                >
                                     </p-multiSelect>
 
 
@@ -137,6 +141,7 @@
                       placeholder="Enter Remark"
                       [required]="hideRemarkDiv1"
                       formControlName="remark"
+                      [ngClass]="{'is-invalid' : areasetForm.get('remark').status == 'INVALID'}"
                     ></textarea>
                   </div>
                 </div>

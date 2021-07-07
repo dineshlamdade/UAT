@@ -60,6 +60,7 @@ export class AreasetComponent implements OnInit {
         this.toaster.success('','Area set saved succefully');
         this.getSummaryData();
         this.areasetForm.reset();
+        
         this.areaListData = [];
         this.editFormFlag = false;
         this.viewFormFlag = false;

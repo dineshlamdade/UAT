@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeesetService } from '../employeeset.service';
 
 @Component({
@@ -8,62 +8,102 @@ import { EmployeesetService } from '../employeeset.service';
   styleUrls: ['./employeeset.component.scss']
 })
 export class EmployeesetComponent implements OnInit {
-  employeesetForm : FormGroup;
-  serviceListData: any;
+  employeesetForm: FormGroup;
+  serviceListData: any = [];
   empData: any;
   summaryData: any;
   employeeMasterId: number;
   serviceData: any;
+  editFormFlag: boolean = false;
+  viewFormFlag: boolean = false;
+  hideRemarkDiv2: boolean = true;
+  employeeMaster: any;
+  selectedemployeeMasterId: any;
 
-  constructor(public empService : EmployeesetService,public fb : FormBuilder) { 
+
+  constructor(public empService: EmployeesetService, public fb: FormBuilder) {
     this.employeesetForm = new FormGroup({
-
+       empSetName : new FormControl('',Validators.required),
+       employeeCode : new FormControl('',Validators.required),
+       remark : new FormControl('',Validators.required)
     })
   }
 
   ngOnInit(): void {
     this.getServiceList();
-    this.getSummaryData();
-    // this.getByEmployeeId(this.employeeMasterId);
-    // console.log("this.employeeMasterId",this.employeeMasterId)
+    //this.getSummaryData();
   }
 
-  getEmployeeMasterId(e){
+  changeEvent2($event) {
+
+    if ($event.target.checked) {
+      this.hideRemarkDiv2 = false;
+    }
+    else {
+      this.hideRemarkDiv2 = true;
+    }
+  }
+
+  onSubmit() {
 
   }
 
-  getServiceList(){
-    this.empService.getServiceList().subscribe((res)=>{
-      this.serviceListData = res.data.results[0];
-      // this.serviceListData.forEach(element => {
-      // this.employeeMasterId =  element.employeeMasterId;
+  onUpdate() {
 
-      // });
-      // this.serviceData = res.data.results;
-      // this.serviceData.forEach(element => {
-      //   this.employeeMasterId =  element.employeeMasterId;
-      // });
+  }
+
+  getEmployeeMasterId(e) {
+    this.selectedemployeeMasterId = e.itemValue;
+    this.empService.getByEmlpoyeeId(this.selectedemployeeMasterId).subscribe((res)=>{
+      //this.serviceListData = res.data.results;
+    console.log(res);
+    })
+
+  }
+
+  getServiceList() {
+    this.empService.getServiceList().subscribe((res) => {
+      //this.serviceListData = res.data.results[0];
+     res.data.results[0].forEach(element => {
+        this.serviceListData.push({
+          label : element.employeeCode,
+          value : element.employeeMasterId
+        })
+        
+      });
+      console.log(this.serviceListData);
      
-      //console.log(" this.employeeMasterId", this.employeeMasterId);
     })
   }
 
-  getByEmployeeId(employeeMasterId){
-     this.empService.getByEmlpoyeeId(this.employeeMasterId).subscribe((res)=>{
-      // console.log(res);
-      this.empData = res.data.results;
-      console.log("empData",this.empData)
+  // getByEmployeeId(employeeMasterId) {
+  //   this.empService.getByEmlpoyeeId(this.employeeMasterId).subscribe((res) => {
+  //     console.log(res);
+  //     this.empData = res.data.results;
+  //     console.log("empData",this.empData)
 
-    //   this.empData.push({
-    //     label: payrollAreaCode, 
-    //     value: payrollAreaId
-    // })
-     })
+  //     //   this.empData.push({
+  //     //     label: payrollAreaCode, 
+  //     //     value: payrollAreaId
+  //     // })
+  //   })
+  // }
+
+  // getSummaryData(){
+  //   this.empService.getSummaryData().subscribe((res)=>{
+  //     this.summaryData = res.data.results;
+  //   })
+  // }
+
+  formReset() {
+     this.employeesetForm.reset();
   }
 
-  getSummaryData(){
-    this.empService.getSummaryData().subscribe((res)=>{
-      this.summaryData = res.data.results;
-    })
+  editEmployeeSet(){
+
+  }
+
+  viewEmployeeSet(){
+
   }
 }
