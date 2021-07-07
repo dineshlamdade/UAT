@@ -275,9 +275,9 @@ const routes: Routes = [
         data: { title:  ':: DelziaHR :: DonationsForScientificResearchRuralDevelopmentScreenGGA' },
       },
       {
-        path:   'Chapter-VI-A-DonationsForScientificResearchGGC',
+        path:   'Chapter-VI-A-DonationsForRegisteredPoliticalPartyElectoralTrustSec80-GGC',
         component:  GGCComponent,
-        data: { title:  ':: DelziaHR :: DonationsForScientificResearchGGC' },
+        data: { title:  ':: DelziaHR :: DonationsForRegisteredPoliticalPartyElectoralTrustSec80-GGC'},
       },
       {
         path:   'Chapter-VI-A-Mediclaim80D',
