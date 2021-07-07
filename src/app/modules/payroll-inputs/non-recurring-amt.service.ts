@@ -92,4 +92,8 @@ export class NonRecurringAmtService {
   NonRecurringTransactionGrouprangeValidation(data){
     return this.HttpClient.post(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGrouprangeValidation` , data)
   }
+
+  nonRecurringTransactionGroupDeviation_RepeateBynonTransactionId(nonRecurringTransactionGroupId){
+    return this.HttpClient.get(this.apiUrl + `NonRecurringTransactionGroup/nonRecurringTransactionGroupDeviation_RepeateBynonTransactionId?nonRecurringTransactionGroupId=`+nonRecurringTransactionGroupId)
+  }
 }

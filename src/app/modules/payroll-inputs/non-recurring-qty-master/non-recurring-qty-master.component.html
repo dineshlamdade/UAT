@@ -1,0 +1,367 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+      <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+        <div class="tabview-contents">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body p-0">
+               
+                  <div class="col-12 mt-10">
+                    <fieldset style="margin-top:-20px;">
+                      <legend>Non Recurring Quantity (NRQ) Master
+                      </legend>
+                      
+                      <div class="row mt-10">
+                        <div class="col-sm-3">
+                          <label class="form-label">  Code</label>
+                          <input type="text" class="form-control" placeholder="Enter Code" >
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="form-label"> Description</label>
+                       
+                         <input type="text" class="form-control" placeholder="Enter Description" > 
+
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="form-label">E/D Head Code</label>
+                          <select name="custom-select" class="form-control">
+                           <option value="Select">Select</option>
+                           <option value=""> </option>
+                           </select>
+                  
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="form-label">E/D Head Description</label>
+                       
+                         <input type="text" class="form-control" placeholder="Enter Description" > 
+
+                        </div>
+
+                        <!-- <div class="col-sm-3">
+                          <label class="form-label"> Display Name</label>
+                          <input type="text" class="form-control" placeholder="Enter Display Name" >  
+                         </div> -->
+                       
+                     
+                       
+
+
+                      </div> <!-- end of row -->
+
+
+                      <!-- <div class="row mt-20">
+
+
+                        <div class="col-sm-3">
+                          <label class="form-label">E/ D Head Description</label>
+                          <input type="text" class="form-control" disabled  autocomplete="off">    
+                         </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Nature</label>
+                          <input type="text" class="form-control" disabled  autocomplete="off"> 
+                         </div>
+
+
+                         <div class="col-sm-3">
+                          <label class="form-label">Rate</label>
+                          <div class="custom-controls-stacked">
+                           <label class="custom-control custom-radio custom-control-inline">
+                           <input type="radio"
+                              class="custom-control-input" checked>
+                           <span class="custom-control-label">Input</span>
+                           </label>
+                           <label class="custom-control custom-radio custom-control-inline">
+                           <input  type="radio"
+                              class="custom-control-input">
+                           <span class="custom-control-label">SDM</span>
+                           </label>
+                        </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="form-label">Rate SDM</label>
+                          <select name="custom-select" class="form-control">
+                           <option value="Select">Select</option>
+                           <option value=""> </option>
+                           </select>
+                  
+                        </div>
+
+                      </div> -->
+                      <br>
+                      <div class="row">
+
+
+                        <div class="col-sm-3">
+                          <label class="form-label">UOM</label>
+                          
+                        <input type="text" class="form-control" disabled>
+
+                        </div>
+                       
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Value Updation Through</label>
+                          <label class="custom-switch mt_5">
+                            <span class="form-label">NRQ Type</span>&nbsp;&nbsp;
+                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                            <span class="custom-switch-indicator"></span>&nbsp;&nbsp;
+                            <span class="form-label">SDM</span>
+                            </label>
+        
+                         </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">SDM</label>
+                          <select name="custom-select" class="form-control">
+                            <option value="Select">Select</option>
+                            <option value=""></option>
+                            </select>
+                         </div>
+
+
+                       
+
+                      </div>
+                      <br>
+                      <br>
+
+                      <div class="col-md-10">
+                        <div class="mb-0">
+                          <h3 class="font-14 text-purple font-bold">NRQ Types </h3>
+                        </div>
+                   <p-table [value]="users1">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th rowspan="2" class="wd-12 text-center">Sr. No.
+
+                            </th>
+                            <th rowspan="2" class="wd-12 text-center">
+                              <div class="p-d-flex p-jc-between p-ai-center">Name 
+  
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="TypeValues"
+                                pSortableColumn="TypeValues"></p-sortIcon>
+                         <p-columnFilter type="text" field="Desc"  display="menu" class="p-ml-auto">
+                         </p-columnFilter>
+                              </div>
+                              </div>
+                            </th>
+                           <th rowspan="2" class="wd-12 text-center">
+                            <div class="p-d-flex p-jc-between p-ai-center">Nature 
+
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="TypeValues"
+                              pSortableColumn="TypeValues"></p-sortIcon>
+                       <p-columnFilter type="text" field="Desc"  display="menu" class="p-ml-auto">
+                       </p-columnFilter>
+                            </div>
+                            </div>
+                          </th>
+                          <th rowspan="2" class="wd-12 text-center">
+                           <div class="p-d-flex p-jc-between p-ai-center">Derived - Rate
+  
+
+                           <div class="Sort_Filter_Position">
+                            <p-sortIcon field="RateInput "
+                            pSortableColumn="RateInput"></p-sortIcon>
+                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">     </p-columnFilter>
+                          </div>
+                          </div>
+                         </th>
+                         <th rowspan="2" class="wd-12 text-center">
+                          <div class="p-d-flex p-jc-between p-ai-center">Derived - Multiplier
+  
+
+                          <div class="Sort_Filter_Position">
+                           <p-sortIcon field="RateInput "
+                           pSortableColumn="RateInput"></p-sortIcon>
+                     <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">     </p-columnFilter>
+                         </div>
+                         </div>
+                        </th>
+                         <th rowspan="2" class="wd-8 text-center"> Action 
+
+                         </th>
+                      <!-- <th rowspan="2"></th> -->
+                      </tr>
+                    
+                     </ng-template>
+                    <ng-template pTemplate="body" let-user1>
+                       <tr class="p-selectable-row">
+                          <td class="text-center">1</td>
+                       
+                        
+                        <td>
+                           <input type="text" value={{RateInput}} class="form-control" >
+                      </td>
+                      <td >
+                        <select name="custom-select" class="form-control">
+                          <option value="Select">Select</option>
+                          <option value="">Rate </option>
+                          <option value="">Multiplier </option>
+                          </select>
+                       </td>
+                      <td>
+                        <select name="custom-select" class="form-control">
+                          <option value="Select">Select</option>
+                          <option value=""> </option>
+                          <option value=""> </option>
+                          </select>
+                   </td>
+                   <td>
+                    <select name="custom-select" class="form-control">
+                      <option value="Select">Select</option>
+                      <option value=""> </option>
+                      <option value=""> </option>
+                      </select>
+               </td>
+                   <td>
+                     <span class="ml-1 mt-2"> <i
+                        class="fa fa-plus-circle font-20 text-dark-green" 
+                        tooltip="Add"></i></span>
+                        <span class="ml-1 mt-2"> <i
+                           class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel">
+                        </i>
+                     </span>
+                  </td>
+                     
+                   </tr>
+                   </ng-template>
+                   <ng-template pTemplate="emptymessage">
+                        <tr>
+                         <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                       Available</span>
+                         </td>
+                        </tr>
+                   </ng-template>
+                   </p-table>
+
+                  </div>
+
+                         <br>
+                      <div class="row mt-15">
+                        <div class="col-12">
+                           <div class="float-right mb-15">
+                            <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+                              <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                          <button type="button" 
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
+                            <i class="fa fa-refresh"></i></b> Reset</button>
+                           </div>
+                        </div>
+                   </div>
+                    </fieldset>
+
+                    <br>
+                    <br>
+                    <div class="mb-0">
+                      <h3 class="font-14 text-purple font-bold">Summary</h3>
+                    </div>
+                    <p-table [value]="users1">
+                     <ng-template pTemplate="header">
+                       <tr>
+                         <th rowspan="2" class="wd-7 text-center">Sr. No.</th>
+                         <th rowspan="2" class="wd-6 text-center">
+                           <div class="p-d-flex p-jc-between p-ai-center"> Code
+                             <div class="Sort_Filter_Position">
+                               <p-sortIcon field="name"></p-sortIcon>
+                   <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                   </p-columnFilter>
+                             </div>
+                            </div>
+                        </th>
+                        <th rowspan="2" class="wd-6 text-center">
+                          <div class="p-d-flex p-jc-between p-ai-center"> Description 
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="representative.name"></p-sortIcon>
+                     <p-columnFilter type="text" field="Desc"  display="menu" class="p-ml-auto">
+                     </p-columnFilter>
+                          </div>
+                          </div>
+                        </th>
+                      <th rowspan="2" class="wd-8 text-center">
+                        <div class="p-d-flex p-jc-between p-ai-center"> E/D Head Desc
+  
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="status"></p-sortIcon>
+                        <p-columnFilter field="status" matchMode="equals" display="menu" class="p-ml-auto"></p-columnFilter>
+                       </div>
+                       </div>
+                   </th>
+                       
+                   
+                 <th rowspan="2" class="wd-8 text-center">
+                    <div class="p-d-flex justify-content-center p-ai-center">Value Updation Through
+                    <div class="Sort_Filter_Position">
+                     <p-sortIcon field="activity"></p-sortIcon>
+                <p-columnFilter field="activity" display="menu"  class="p-ml-auto">
+                </p-columnFilter>
+                    </div>
+                   </div>
+                </th>
+                <th rowspan="2" class="wd-8 text-center">
+                  <div class="p-d-flex p-jc-between p-ai-center">No. Of NRQ Types
+                  <div class="Sort_Filter_Position">
+                    <p-sortIcon field="activity"></p-sortIcon>
+                    <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                     </p-columnFilter>
+                   </div>
+                  </div>
+                </th>
+              
+                
+                   <th rowspan="2" class="wd-8 text-center"> Action </th>
+                   <!-- <th rowspan="2"></th> -->
+                   </tr>
+                 
+                  </ng-template>
+                 <ng-template pTemplate="body" let-user1>
+                    <tr class="p-selectable-row">
+                       <td class="bg-color-light_gray text-center">1</td>
+                       <td class="bg-color-light_gray">
+                        <input type="text" value={{code}} class="form-control" disabled>
+                      </td>
+                      <td class="bg-color-light_gray">
+                        <input type="text" value={{unitofmeasure}} class="form-control" disabled>
+                      </td>
+                     <td class="bg-color-light_gray"><input type="text" value={{EDheadcode}} class="form-control" disabled>
+                   </td>
+                     <td class="bg-color-light_gray"><input type="text" value={{description}} class="form-control" disabled></td>
+                     
+              
+                 
+                <td class="bg-color-light_gray">
+                <input type="text" value={{action}} class="form-control" disabled></td>
+                  <td class="bg-color-light_gray text-center"><span class="ml-1 mt-2"><i class="fa fa-edit font-18 text-dark-green cursor-pointer" aria-hidden="true"></i></span>
+                     <span class="ml-1 mt-2"><i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"></i></span>
+                     <span class="ml-1 mt-2"><i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i></span>
+                  </td>
+                </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                     <tr>
+                      <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                    Available</span>
+                      </td>
+                     </tr>
+                </ng-template>
+                </p-table>
+                
+                  </div>
+
+                </div> <!-- card body -->
+               
+              </div>
+            </div>
+
+        
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+</div>

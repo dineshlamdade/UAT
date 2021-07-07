@@ -109,6 +109,10 @@ export class NonRecurringAmtComponent implements OnInit {
 	repeatModeData: any;
 	deviationcount: any = 0;
 	repeatcount:any = 0;
+	nonRecurringTransactionGroupDeviationList: any[] = [];
+	devationRemarkText: any = '';
+	selectedDeviationdata: any;
+	repeatRemarkText: any;
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -406,6 +410,27 @@ export class NonRecurringAmtComponent implements OnInit {
 				this.refPayrolArea = transactionData.refferedpayrollAreaCode
 				this.executeSDM = transactionData.executeSDM
 				// console.log(this.NonRecurringTransactionGroupAPIbyIdData[0])
+
+				this.nonRecService.nonRecurringTransactionGroupDeviation_RepeateBynonTransactionId(this.nonRecurringTransactionGroupId).subscribe(
+					res=>{
+						let resp : any = res;
+						resp.forEach(element => {
+							if(element.status != 'No Deviation'){
+								this.deviationData.push(element)
+							}
+						});
+					this.NonRecurringTransactionGroupAPIbyIdData.deviationCount = this.deviationData.length
+					this.deviationData.forEach(element => {
+						if(element.mode == 'Deviation'){
+							this.deviationModeData.push(element)
+							this.deviationcount = this.deviationModeData.length
+						}else if(element.mode == 'Repeat'){
+							this.repeatModeData.push(element)
+							this.repeatcount = this.repeatModeData.length
+						}
+					});
+					}
+				)
 			}
 		)
 	}
@@ -477,8 +502,76 @@ export class NonRecurringAmtComponent implements OnInit {
 	}
 
 	/**get update opening amount */
-	getUpdateOpeningAmt(value) {
+	getUpdateOpeningAmt(value,data) {
 		this.openingAmount = value
+		if(data.executeSDM != 'YES' || data.executeSDM != 'Yes' || data.executeSDM != 'yes')
+		{
+			if(this.selectedFromDate != ''){
+				let inputdata = {
+					"employeeMasterId":this.selectedEmpData[this.index].employeeMasterId,
+					"headMasterId": parseInt(this.headMasterId),
+					"payrollAreaId":"1",
+					"amount": value,
+					"fromDate": this.selectedFromDate
+				}
+					
+				this.deviationModeData = []
+					this.repeatModeData = []
+					this.deviationData = []
+					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
+						// this.deviationData = res 
+						let resp : any = res;
+							resp.forEach(element => {
+								if(element.status != 'No Deviation'){
+									this.deviationData.push(element)
+								}
+							});
+						data.deviationCount = this.deviationData.length
+						this.deviationData.forEach(element => {
+							if(element.mode == 'Deviation'){
+								this.deviationModeData.push(element)
+								this.deviationcount = this.deviationModeData.length
+							}else if(element.mode == 'Repeat'){
+								this.repeatModeData.push(element)
+								this.repeatcount = this.repeatModeData.length
+							}
+						});
+					})
+			}	
+		}
+			
+	}
+
+    /** edit deviation popup */
+	editdeviationPopupOpen(editdeviationPopup: TemplateRef<any>, data, rowindex){
+		if(data.deviationCount > 0){
+			this.modalRef = this.modalService.show(
+				editdeviationPopup,
+				Object.assign({}, {
+					class: 'gray modal-xl'
+				})
+			);
+			this.selectedDevData = data;
+		}
+	}
+
+	updateDeviationRepeatData(selectedDevData){
+		let remark = ''
+		if(this.selectedDeviationdata.mode == 'Deviation'){
+			remark = this.devationRemarkText
+		}else{
+			remark = this.repeatRemarkText
+		}
+
+		let obj = {
+			"deviationAmount":this.selectedDeviationdata.deviationAmount,
+			"mode": this.selectedDeviationdata.mode,
+			"deviationType": this.selectedDeviationdata.deviationType,
+			"deviationRemark":remark,
+			"deviationStatus":this.selectedDeviationdata.status,
+			"deviationAmountLimit":this.selectedDeviationdata.deviationAmountLimit
+		}
+		this.nonRecurringTransactionGroupDeviationList.push(obj)
 	}
 
 	/** update single transaction */
@@ -521,13 +614,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			"refferedEmpId": this.refralemployeeMasterId,
 			"refferedpayrollAreaCode": this.refPayrolArea,
 			"approveStatus": "Pending",
-			"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
-
+			"nonRecurringTransactionGroupDeviationList":this.nonRecurringTransactionGroupDeviationList
 		}]
 
 		console.log("Data is: " + JSON.stringify(data))
@@ -537,7 +624,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	/** Update transaction  */
 	attendanceInputAPIRecordsUI(data) {
 
-		//console.log("data: "+ JSON.stringify(data))
+		console.log("data: "+ JSON.stringify(data))
 
 		this.nonRecService.attendanceInputAPIRecordsUI(data, this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
 			res => {
@@ -794,12 +881,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -829,12 +912,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -864,12 +943,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 
@@ -980,12 +1055,8 @@ export class NonRecurringAmtComponent implements OnInit {
 					    "refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-						"mode": "",
-						"deviationType": "",
-						"deviationRemark": "",
-						"deviationStatus": "",
-						"deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1015,12 +1086,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -1050,12 +1117,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,				
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("fromDate: " + JSON.stringify(this.saveTransactionData))
@@ -1134,12 +1197,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1169,12 +1228,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -1204,12 +1259,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("transaction type: " + JSON.stringify(this.saveTransactionData))
@@ -1257,12 +1308,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1292,12 +1339,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -1327,12 +1370,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("todate: " + JSON.stringify(this.saveTransactionData))
@@ -1379,12 +1418,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1414,12 +1449,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -1449,12 +1480,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("remark: " + JSON.stringify(this.saveTransactionData))
@@ -1488,8 +1515,15 @@ export class NonRecurringAmtComponent implements OnInit {
 					
 				this.deviationModeData = []
 					this.repeatModeData = []
+					this.deviationData = []
 					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
-						this.deviationData = res 
+						// this.deviationData = res 
+						let resp : any = res;
+							resp.forEach(element => {
+								if(element.status != 'No Deviation'){
+									this.deviationData.push(element)
+								}
+							});
 						this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
 						this.deviationData.forEach(element => {
 							if(element.mode == 'Deviation'){
@@ -1533,12 +1567,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-						"mode": "",
-						"deviationType": "",
-						"deviationRemark": "",
-						"deviationStatus": "",
-						"deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1568,12 +1598,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -1603,12 +1629,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("Amount: " + JSON.stringify(this.saveTransactionData))
@@ -1659,12 +1681,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					length = this.saveTransactionData.length - 1;
@@ -1695,12 +1713,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -1730,12 +1744,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("frequency: " + JSON.stringify(this.saveTransactionData))
@@ -1784,12 +1794,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1819,12 +1825,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -1854,12 +1856,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("No Of transaction: " + JSON.stringify(this.saveTransactionData))
@@ -1935,12 +1933,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1970,12 +1964,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -2005,12 +1995,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("Applicable at: " + JSON.stringify(this.saveTransactionData))
@@ -2061,12 +2047,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -2096,12 +2078,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -2131,12 +2109,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("input type: " + JSON.stringify(this.saveTransactionData))
@@ -2184,12 +2158,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -2219,12 +2189,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -2253,12 +2219,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("clawback period: " + JSON.stringify(this.saveTransactionData))
@@ -2306,12 +2268,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -2341,12 +2299,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -2376,12 +2330,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 		console.log("clawback frequency: " + JSON.stringify(this.saveTransactionData))
@@ -2429,12 +2379,8 @@ export class NonRecurringAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-						"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -2464,12 +2410,8 @@ export class NonRecurringAmtComponent implements OnInit {
 							"refferedEmpId": this.refralemployeeMasterId,
 							"refferedpayrollAreaCode": this.refPayrolArea,
 							"approveStatus": "Pending",
-							"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+							"nonRecurringTransactionGroupDeviationList":[]
+
 						})
 					}
 				}
@@ -2499,12 +2441,8 @@ export class NonRecurringAmtComponent implements OnInit {
 				"refferedEmpId": this.refralemployeeMasterId,
 				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
-				"deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+				"nonRecurringTransactionGroupDeviationList":[]
+
 			})
 		}
 	}
@@ -2539,6 +2477,73 @@ export class NonRecurringAmtComponent implements OnInit {
 
 	getEmployeePayrollArea(value){
 		this.refPayrolArea = value
+	}
+
+	/** save deviation remark data */
+	deviationRemark(remark, deviationdata){
+       this.devationRemarkText = remark;
+	   this.selectedDeviationdata = deviationdata
+	//    console.log(JSON.stringify(this.selectedDeviationdata) + " :this.selectedDeviationdata")
+	}
+
+	/**save repeat remark data */
+	repeatRemark(remark,remarkdata){
+		this.repeatRemarkText = remark;
+		this.selectedDeviationdata = remarkdata
+	}
+
+	saveDeviationRepeatData(selectedDevData){
+		let remark = ''
+		if(this.selectedDeviationdata.mode == 'Deviation'){
+			remark = this.devationRemarkText
+		}else{
+			remark = this.repeatRemarkText
+		}
+
+		let obj = {
+			"deviationAmount":this.selectedDeviationdata.deviationAmount,
+			"mode": this.selectedDeviationdata.mode,
+			"deviationType": this.selectedDeviationdata.deviationType,
+			"deviationRemark":remark,
+			"deviationStatus":this.selectedDeviationdata.status,
+			"deviationAmountLimit":this.selectedDeviationdata.deviationAmountLimit
+		}
+		this.nonRecurringTransactionGroupDeviationList.push(obj)
+		
+		this.saveTransactionData.forEach((element, index) => {
+			if (element.headMasterId == selectedDevData.headId) {
+				let ind = index;
+				this.saveTransactionData.splice(ind, 1, {
+					"employeeMasterId": this.selectedEmployeeMasterId,
+					"headMasterId": element.headMasterId,
+					"standardName": element.standardName,
+					"payrollAreaId": "1",
+					"payrollAreaCode": element.payrollAreaCode,
+					"onceEvery": element.onceEvery,
+					"frequency": element.frequency,
+					"fromDate": element.fromDate,
+					"transactionsType": this.selectedTransactionType,
+					"numberOfTransactions": element.numberOfTransactions,
+					"toDate": element.toDate,
+					"amount": element.amount,
+					"remark": element.remark,
+					"createdBy": "rahul",
+					"clawbackApplicableAt": element.clawbackApplicableAt,
+					"clawbackInputType": element.clawbackInputType,
+					"clawbackPeriod": element.clawbackPeriod,
+					"clawbackUnit": element.clawbackUnit,
+					"clawbackDate": element.clawbackDate,
+					"executeSDM": element.executeSDM,
+					"refferedEmpId": element.refferedEmpId,
+					"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
+					"approveStatus": "Pending",
+					"nonRecurringTransactionGroupDeviationList":this.nonRecurringTransactionGroupDeviationList
+
+				})
+			} 
+		})
+
+		console.log("this.saveTransactionData: "+ JSON.stringify(this.saveTransactionData))
 	}
 
 	/** save transaction data */

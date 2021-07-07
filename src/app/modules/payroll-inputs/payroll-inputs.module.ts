@@ -36,6 +36,8 @@ import { SharedlayoutModule } from '../sharedlayout/sharedlayout';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
+import { SdmComponent } from './steppersdm/sdm.component';
+import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 
 
 
@@ -46,7 +48,9 @@ import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.com
      FinancialMasterComponent,
      NonRecurringAmtComponent,
      NonRecurringQtyComponent,
-     FastentryNRAmtComponent
+     FastentryNRAmtComponent,
+     SdmComponent,
+     NonRecurringQtyMasterComponent
     ],
   imports: [
     CommonModule,

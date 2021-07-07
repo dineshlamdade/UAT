@@ -57,6 +57,7 @@ export class FastentryNRAmtComponent implements OnInit {
   selectedApplicableAt: any;
   selectedTransactionClawback: any;
   selectedClawbackRowIndex: any;
+  nonRecurringTransactionGroupDeviationList: any = [];
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
@@ -218,12 +219,7 @@ export class FastentryNRAmtComponent implements OnInit {
 				"refferedEmpId": element.refferedEmpId,
 				"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 				"approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
       })
     })
   }
@@ -274,12 +270,7 @@ export class FastentryNRAmtComponent implements OnInit {
             "refferedEmpId": element.refferedEmpId,
             "refferedpayrollAreaCode": element.refferedpayrollAreaCode,
             "approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":[]
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -309,12 +300,7 @@ export class FastentryNRAmtComponent implements OnInit {
               "refferedEmpId": 0,
               "refferedpayrollAreaCode": "",
               "approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
             })
           }
         }
@@ -344,12 +330,7 @@ export class FastentryNRAmtComponent implements OnInit {
         "refferedEmpId": 0,
         "refferedpayrollAreaCode": "",
         "approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
       })
     }
   }
@@ -393,12 +374,7 @@ export class FastentryNRAmtComponent implements OnInit {
             "refferedEmpId": element.refferedEmpId,
             "refferedpayrollAreaCode": element.refferedpayrollAreaCode,
             "approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":[]
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -428,12 +404,7 @@ export class FastentryNRAmtComponent implements OnInit {
               "refferedEmpId": 0,
               "refferedpayrollAreaCode": "",
               "approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
             })
           }
         }
@@ -463,12 +434,7 @@ export class FastentryNRAmtComponent implements OnInit {
         "refferedEmpId": 0,
         "refferedpayrollAreaCode": "",
         "approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
       })
     }
   }
@@ -513,12 +479,7 @@ export class FastentryNRAmtComponent implements OnInit {
             "refferedEmpId": element.refferedEmpId,
             "refferedpayrollAreaCode": element.refferedpayrollAreaCode,
             "approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":[]
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -550,12 +511,7 @@ export class FastentryNRAmtComponent implements OnInit {
               "refferedEmpId": 0,
               "refferedpayrollAreaCode": '',
               "approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
             })
           }
         }
@@ -585,12 +541,7 @@ export class FastentryNRAmtComponent implements OnInit {
         "refferedEmpId": 0,
         "refferedpayrollAreaCode": '',
         "approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
       })
     }
   }
@@ -634,12 +585,7 @@ export class FastentryNRAmtComponent implements OnInit {
             "refferedEmpId": element.refferedEmpId,
             "refferedpayrollAreaCode": element.refferedpayrollAreaCode,
             "approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":[]
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -671,12 +617,7 @@ export class FastentryNRAmtComponent implements OnInit {
               "refferedEmpId": 0,
               "refferedpayrollAreaCode": '',
               "approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
             })
           }
         }
@@ -706,12 +647,7 @@ export class FastentryNRAmtComponent implements OnInit {
         "refferedEmpId": 0,
         "refferedpayrollAreaCode": '',
         "approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
       })
     }
   }
@@ -755,12 +691,7 @@ export class FastentryNRAmtComponent implements OnInit {
             "refferedEmpId": element.refferedEmpId,
             "refferedpayrollAreaCode": element.refferedpayrollAreaCode,
             "approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":[]
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -792,12 +723,7 @@ export class FastentryNRAmtComponent implements OnInit {
               "refferedEmpId": 0,
               "refferedpayrollAreaCode": "",
               "approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
             })
           }
         }
@@ -827,12 +753,7 @@ export class FastentryNRAmtComponent implements OnInit {
         "refferedEmpId": 0,
         "refferedpayrollAreaCode": "",
         "approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
       })
     }
   }
@@ -889,12 +810,7 @@ export class FastentryNRAmtComponent implements OnInit {
             "refferedEmpId": element.refferedEmpId,
             "refferedpayrollAreaCode": element.refferedpayrollAreaCode,
             "approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":[]
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -926,12 +842,7 @@ export class FastentryNRAmtComponent implements OnInit {
               "refferedEmpId": 0,
               "refferedpayrollAreaCode": '',
               "approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
             })
           }
         }
@@ -961,12 +872,7 @@ export class FastentryNRAmtComponent implements OnInit {
         "refferedEmpId": 0,
         "refferedpayrollAreaCode": '',
         "approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
       })
     }
   }
@@ -1010,12 +916,7 @@ export class FastentryNRAmtComponent implements OnInit {
             "refferedEmpId": element.refferedEmpId,
             "refferedpayrollAreaCode": element.refferedpayrollAreaCode,
             "approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":[]
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -1047,12 +948,7 @@ export class FastentryNRAmtComponent implements OnInit {
               "refferedEmpId": 0,
               "refferedpayrollAreaCode": "",
               "approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
             })
           }
         }
@@ -1082,12 +978,7 @@ export class FastentryNRAmtComponent implements OnInit {
         "refferedEmpId": 0,
         "refferedpayrollAreaCode": "",
         "approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
       })
     }
   }
@@ -1136,12 +1027,7 @@ export class FastentryNRAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1171,12 +1057,7 @@ export class FastentryNRAmtComponent implements OnInit {
 							"refferedEmpId": 0,
 							"refferedpayrollAreaCode": "",
 							"approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
 						})
 					}
 				}
@@ -1206,12 +1087,7 @@ export class FastentryNRAmtComponent implements OnInit {
 				"refferedEmpId": 0,
 				"refferedpayrollAreaCode": "",
 				"approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
 			})
 		}
 		console.log("Applicable at: " + JSON.stringify(this.saveTransactionData))
@@ -1260,12 +1136,7 @@ export class FastentryNRAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1295,12 +1166,7 @@ export class FastentryNRAmtComponent implements OnInit {
 							"refferedEmpId": 0,
 							"refferedpayrollAreaCode": "",
 							"approveStatus": "Pending",
-              "deviationAmount": 0,
-              "mode": "",
-              "deviationType": "",
-              "deviationRemark": "",
-              "deviationStatus": "",
-              "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
 						})
 					}
 				}
@@ -1330,12 +1196,7 @@ export class FastentryNRAmtComponent implements OnInit {
 				"refferedEmpId": 0,
 				"refferedpayrollAreaCode": "",
 				"approveStatus": "Pending",
-        "deviationAmount": 0,
-        "mode": "",
-        "deviationType": "",
-        "deviationRemark": "",
-        "deviationStatus": "",
-        "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
 			})
 		}
 		console.log("input type: " + JSON.stringify(this.saveTransactionData))
@@ -1393,12 +1254,7 @@ export class FastentryNRAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1428,12 +1284,7 @@ export class FastentryNRAmtComponent implements OnInit {
 							"refferedEmpId": 0,
 							"refferedpayrollAreaCode": "",
 							"approveStatus": "Pending",
-              "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
 						})
 					}
 				}
@@ -1462,12 +1313,7 @@ export class FastentryNRAmtComponent implements OnInit {
 				"refferedEmpId": 0,
 				"refferedpayrollAreaCode": "",
 				"approveStatus": "Pending",
-        "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
 			})
 		}
 		console.log("clawback period: " + JSON.stringify(this.saveTransactionData))
@@ -1513,12 +1359,7 @@ export class FastentryNRAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1548,12 +1389,7 @@ export class FastentryNRAmtComponent implements OnInit {
 							"refferedEmpId": 0,
 							"refferedpayrollAreaCode": "",
 							"approveStatus": "Pending",
-              "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
 						})
 					}
 				}
@@ -1583,12 +1419,7 @@ export class FastentryNRAmtComponent implements OnInit {
 				"refferedEmpId": 0,
 				"refferedpayrollAreaCode": "",
 				"approveStatus": "Pending",
-        "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
 			})
 		}
 		console.log("clawback frequency: " + JSON.stringify(this.saveTransactionData))
@@ -1634,12 +1465,7 @@ export class FastentryNRAmtComponent implements OnInit {
 						"refferedEmpId": element.refferedEmpId,
 						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
 						"approveStatus": "Pending",
-            "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+            "nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
@@ -1669,12 +1495,7 @@ export class FastentryNRAmtComponent implements OnInit {
 							"refferedEmpId": 0,
 							"refferedpayrollAreaCode": "",
 							"approveStatus": "Pending",
-              "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+              "nonRecurringTransactionGroupDeviationList":[]
 						})
 					}
 				}
@@ -1704,12 +1525,7 @@ export class FastentryNRAmtComponent implements OnInit {
 				"refferedEmpId": 0,
 				"refferedpayrollAreaCode": "",
 				"approveStatus": "Pending",
-        "deviationAmount": 0,
-            "mode": "",
-            "deviationType": "",
-            "deviationRemark": "",
-            "deviationStatus": "",
-            "deviationAmountLimit": 0
+        "nonRecurringTransactionGroupDeviationList":[]
 			})
 		}
 	}
