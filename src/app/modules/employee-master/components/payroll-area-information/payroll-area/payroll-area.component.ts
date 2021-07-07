@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SortEvent } from 'primeng/api';
+import { max } from 'rxjs/operators';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { PayrollAreaInformationService } from '../payroll-area-information.service';
 
@@ -20,13 +21,14 @@ export class PayrollAreaComponent implements OnInit {
   copyPayrollType='Primary Main,Primary Additional,Secondary'.split(',');
   payrollAreaList: Array<any> = [];
   fromDateValidation: any;
-  primaryMainAvailabe: any;
+  primaryMainAvailabe: Array<any>=[];
   employeeId: any;
   viewFlag:boolean;
   primaryPayrollList: Array<any> = [];
   copyPayrollAreaList: Array<any> = [];
   additionalPayrollAllowed: any = false;
   toDateValidation: any;
+  latestPrimary: any;
   constructor(
     private payrollService: PayrollAreaInformationService,
     private formBuilder: FormBuilder,
@@ -166,6 +168,12 @@ export class PayrollAreaComponent implements OnInit {
     const payrollAvailable = this.payrollAreaList.find(item => item.payrollAreaId === payroll.payrollAreaId)
     if (!payrollAvailable) {
       this.payrollAreaList = this.copyPayrollAreaList;
+//remove secondary an daddtial payroll from payroll Area List
+if(payroll.type==='Primary Main'){
+    let arr:Array<any> =  this.summaryData.filter(a=>a.type!=='Primary Main');
+     this.payrollAreaList = this.payrollAreaList.filter(ar => !arr.find(rm => (rm.payrollAreaId === ar.payrollAreaId) ))
+  // this.payrollAreaList=listRemaining;
+}
     }
     this.form.patchValue(payroll);
     if(payroll.type==='Primary Main'){
@@ -178,13 +186,19 @@ export class PayrollAreaComponent implements OnInit {
   }
 
   removePrimaryArea() {
-    this.primaryMainAvailabe = this.summaryData.find(a => a.type === 'Primary Main');
-    if (this.primaryMainAvailabe) {
+    this.primaryMainAvailabe = this.summaryData.filter(a => a.type  === 'Primary Main');
+
+    const maxDate = new Date(Math.max.apply(null,
+      this.primaryMainAvailabe
+      .map(x => new Date(x.payrollAreaFromDate))));
+
+    this.latestPrimary = this.primaryMainAvailabe.find(a=>a.payrollAreaFromDate === this.datePipe.transform(maxDate, 'dd-MMM-yyyy'))
+    if ( this.latestPrimary) {
       //remove type if primary main is already used
-      this.payrollType = this.payrollType.filter(item => item !== this.primaryMainAvailabe.type);
+      this.payrollType = this.payrollType.filter(item => item !== this.latestPrimary.type);
 
       // remove primary payroll from payroll Area list if it is already is primary
-      this.payrollAreaList = this.payrollAreaList.filter(item => item.payrollAreaId !== this.primaryMainAvailabe.payrollAreaId)
+      this.payrollAreaList = this.payrollAreaList.filter(item => item.payrollAreaId !== this.latestPrimary.payrollAreaId)
 
       //primary AreaList
       this.primaryPayrollList = this.summaryData.filter(a => a.type === 'Primary Main');
@@ -206,6 +220,14 @@ export class PayrollAreaComponent implements OnInit {
     this.form.patchValue(payroll);
     this.form.disable();
   }
+changePrimaryAreaName(){
+  const toSelect = this.summaryData.filter(c=>c.payrollAreaCode===this.form.get('primaryAreaName').value)
+  if(toSelect){
+    this.fromDateValidation=new Date(toSelect[0].payrollAreaFromDate);
+  }
+}
+
+
   customSort(event: SortEvent) {
     event.data.sort((data1, data2) => {
       let value1 = data1[event.field];
