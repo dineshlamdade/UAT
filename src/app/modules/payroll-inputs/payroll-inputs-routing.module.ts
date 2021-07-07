@@ -5,6 +5,8 @@ import { FinancialMasterComponent } from './financial-master/financial-master.co
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { PayrollListComponent } from './payroll-list/payroll-list.component';
+import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
+import { SdmComponent } from './sdm/sdm.component';
 
 
 const routes: Routes = [
@@ -39,6 +41,18 @@ const routes: Routes = [
         path:   'attendance',
         component:  AttendanceComponent,
         data: { title: ':: DelziaHR :: Attendance' },
+        
+      },
+      {
+        path:   'sdm',
+        component:  SdmComponent,
+        data: { title: ':: DelziaHR :: SDM Creation' },
+        
+      },
+      {
+        path:   'sdm-stepper',
+        component:  SdmStepperComponent,
+        data: { title: ':: DelziaHR :: SDM Stepper' },
         
       },
     ],

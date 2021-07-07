@@ -39,7 +39,8 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { GarnishmentComponent } from './garnishment/garnishment.component';
 import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-recurring-dashboard.component';
 import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
-
+import { SdmComponent } from './sdm/sdm.component';
+import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 
 
 @NgModule({
@@ -51,7 +52,9 @@ import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-num
      AttendanceComponent,
      GarnishmentComponent,
      NonRecurringDashboardComponent,
-     TwoDigitDecimaNumberDirective
+     TwoDigitDecimaNumberDirective,
+     SdmComponent,
+     SdmStepperComponent
     ],
   imports: [
     CommonModule,
