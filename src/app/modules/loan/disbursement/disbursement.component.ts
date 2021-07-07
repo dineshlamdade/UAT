@@ -1,16 +1,17 @@
 // import { Component, OnInit } from '@angular/core';
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+// import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { LoanService } from '../loan.service';
 import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { DatePipe } from '@angular/common';
+// import { DatePipe } from '@angular/common';
 import jspdf from 'jspdf';
 import * as _html2canvas from "html2canvas";
 import { Router } from '@angular/router';
 const html2canvas: any = _html2canvas;
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-disbursement',
@@ -24,7 +25,8 @@ export class DisbursementComponent implements OnInit {
   constructor(public formBuilder: FormBuilder,
     private router: Router,
     private modalService: BsModalService, public disbservice: LoanService, public toster: ToastrService,
-    private datePipe: DatePipe, private excelservice: ExcelService, public sanitizer: DomSanitizer,) {
+    // private datePipe: DatePipe,
+     private excelservice: ExcelService, public sanitizer: DomSanitizer,) {
       this.AddLoanForm = this.formBuilder.group(
         {
           "accountNo": new FormControl(''),

@@ -2,10 +2,11 @@
 <div class="page">
     <app-header></app-header>
     <div class="section-body mt-3">
-        <div class="container-fluid">
+        <button class="btn btn-success" (click)="navigateToAdd()"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp; Add new Loan</button>
+        <div class="container-fluid mt-30" style="border: 1px solid #ccc; background-color: #fff;">
+            
             <div class="row">
-                <button class="btn btn-success" (click)="navigateToAdd()" style="float: right;" ><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp; Add new Loan</button>
-                <div class="col-12">
+                <div class="col-12 ">
                     <div class="tabset">
                         <!-- Tab 1 -->
                         <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
@@ -356,10 +357,10 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="3">
+                                                                    <th colspan="4">
                                                                         <div
                                                                             class="p-d-flex p-ai-center justify-content-center">
-                                                                            Loan Amount
+                                                                            Transaction
                                                                             <div class="Sort_Filter_Position">
                                                                                 <p-sortIcon field="proofsubmission"
                                                                                     pSortableColumn="proofsubmission">
@@ -402,9 +403,10 @@
                                                                     <th rowspan="2">Action</th>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th class="text-center">Applied/ Approved </th>
-                                                                    <th class="text-center">Disbursed</th>
-                                                                    <th class="text-center">Balance</th>
+                                                                    <th class="text-center">Type</th>
+                                                                    <th class="text-center">No.</th>
+                                                                    <th class="text-center">Date</th>
+                                                                    <th class="text-center">Amount</th>
                                                                 </tr>
 
                                                             </ng-template>
@@ -424,6 +426,7 @@
 
                                                                     <td>121</td>
                                                                     <td>Approved</td>
+                                                                    <td></td>
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td></td>
