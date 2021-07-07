@@ -74,6 +74,11 @@ export class RolePrivilegeComponent implements OnInit {
    SelectedDataFields: any=[];
    fieldLeveleAccessMatrixId: any = 0;
    formFieldId: any = 0;
+   fieldAllMasterData: any=[];
+   isCheckedWriteFields: boolean = false;
+   isCheckedModifyFields: boolean = false;
+   isCheckedHideFields: boolean = false;
+   fieldLevelData: any;
    
 
 
@@ -243,7 +248,7 @@ export class RolePrivilegeComponent implements OnInit {
             this.totalRecords = res.data.results[0].totalElements
             // alert(this.totalRecords)
            
-          console.log(JSON.stringify(this.menuSummaryData))
+         // console.log(JSON.stringify(this.menuSummaryData))
 
       });
    }
@@ -2007,9 +2012,18 @@ export class RolePrivilegeComponent implements OnInit {
  // ---------get All FieldLevel-------
 
  getAllFieldLevelData(){
+   this.fieldAllMasterData = [];
+   this.fieldLevelMenu = null
     this.service.getAllField().subscribe(res =>{
+      console.log('fieldAllMasterData::', res);
+       
       this.fieldLevelMenu = res.data.results[0];
+      this.fieldLevelMenu.forEach(ele =>{
+        this.fieldAllMasterData.push(ele.formFieldDetails)
+
+      })
     })
+    console.log("this.fieldAllMasterData: " + this.fieldAllMasterData)
  }
 
 /// ---- field level checkUncheckCheckbox---------------------
@@ -2050,6 +2064,119 @@ export class RolePrivilegeComponent implements OnInit {
 
    console.log("FieldsData Read is: " + JSON.stringify(this.SelectedDataFields))
   }
+
+  //////-------checkUncheckallWriteFields()----------
+  checkUncheckallWriteFields(){
+   if (this.isCheckedWriteFields == true) {
+      this.isCheckedWriteFields = false;
+      this.SelectedDataFields = []
+   }
+   else {
+      this.isCheckedWriteFields = true;
+      this.fieldLevelMenu.forEach((ele: any) => {
+
+         if (ele.formFieldDetails != null) {
+            ele.formFieldDetails.forEach(element => {
+               element.readAccess = false
+               ele.readFlag = false;
+               element.writeAccess = false
+               element.hide = false
+               element.modifyAccess = false
+               element.allAccess = false
+               ele.allFlag = false
+            });
+         }
+
+         this.SelectedDataFields.push({
+            "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+            "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
+            "formFieldId": this.formFieldId,
+           "hide":0,
+            "readAccess": false,
+            "writeAccess": true,
+            "modifyAccess": false
+            
+         })
+      })
+   }
+
+   console.log("FieldsData Read is: " + JSON.stringify(this.SelectedDataFields))
+  }
+//////-------checkUncheckallModifyFields()----------
+  checkUncheckallModifyFields(){
+   if (this.isCheckedModifyFields == true) {
+      this.isCheckedModifyFields = false;
+      this.SelectedDataFields = []
+   }
+   else {
+      this.isCheckedModifyFields = true;
+      this.fieldLevelMenu.forEach((ele: any) => {
+
+         if (ele.formFieldDetails != null) {
+            ele.formFieldDetails.forEach(element => {
+               element.readAccess = false
+               ele.readFlag = false;
+               element.writeAccess = false
+               element.hide = false
+               element.modifyAccess = false
+               element.allAccess = false
+               ele.allFlag = false
+            });
+         }
+
+         this.SelectedDataFields.push({
+            "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+            "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
+            "formFieldId": this.formFieldId,
+           "hide":0,
+            "readAccess": false,
+            "writeAccess": false,
+            "modifyAccess": true
+            
+         })
+      })
+   }
+
+   console.log("FieldsData Read is: " + JSON.stringify(this.SelectedDataFields))
+  }
+  //////-------checkUncheckallModifyFields()----------
+  checkUncheckallHideFields(){
+   if (this.isCheckedHideFields == true) {
+      this.isCheckedHideFields = false;
+      this.SelectedDataFields = []
+   }
+   else {
+      this.isCheckedHideFields = true;
+      this.fieldLevelMenu.forEach((ele: any) => {
+
+         if (ele.formFieldDetails != null) {
+            ele.formFieldDetails.forEach(element => {
+               element.readAccess = false
+               ele.readFlag = false;
+               element.writeAccess = false
+               element.hide = false
+               element.modifyAccess = false
+               element.allAccess = false
+               ele.allFlag = false
+            });
+         }
+
+         this.SelectedDataFields.push({
+            "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+            "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
+            "formFieldId": this.formFieldId,
+           "hide":0,
+            "readAccess": false,
+            "writeAccess": false,
+            "modifyAccess": false
+            
+         })
+      })
+   }
+
+   console.log("FieldsData Read is: " + JSON.stringify(this.SelectedDataFields))
+  }
+
 
   /** single Fields checked uncheked read */
 
@@ -2118,14 +2245,13 @@ export class RolePrivilegeComponent implements OnInit {
            if (item.menuId == fieldmenu.parentMenuId) {
               let ind = index;
               this.SelectedData.splice(ind, 1, {
-                 "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-                 "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
-                 "applicationMenusId": fieldmenu.applicationMenuId,
-                 "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
-                 "readAccess": 0,
-                 "modifyAccess": ele.modifyAccess,
-                 "deleteAccess": ele.deleteAccess,
-                 "writeAccess": ele.writeAccess
+               "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+         "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
+         "formFieldId": this.formFieldId,
+        "hide":0,
+         "readAccess": 0,
+         "writeAccess": ele.modifyAccess,
+         "modifyAccess": ele.modifyAccess
               })
            }
         });
@@ -2142,7 +2268,16 @@ export class RolePrivilegeComponent implements OnInit {
   })
 }
 
-console.log("read single value: " + JSON.stringify(this.SelectedData))
+console.log("read single value: " + JSON.stringify(this.SelectedDataFields))
+
+  }
+
+  saveFieldLevelData(){
+
+   this.fieldLevelData = this.SelectedDataFields
+   this.service.addFields(this.fieldLevelData).subscribe(res =>{
+
+   })
 
   }
 

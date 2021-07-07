@@ -142,6 +142,17 @@ public addUserRolePrivilege(data)
 getAllField(){
   return this._HTTP.get<any>(environment.baseUrl8080 + 'formField/getAllField');
 }
+  
+public addFields(data)
+ {
+   return this._HTTP.post<any>(this.apiUrl  +'formField/formFieldDetails' ,data);
+ }
+ public updateFields(data)
+ {
+   return this._HTTP.put<any>(this.apiUrl  +'formField/updateField' ,data);
+ }
+
+
  
 
 }

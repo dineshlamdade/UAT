@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PaymenttrackingMasterService } from './paymenttracking-master.service';
 
 @Component({
@@ -54,12 +55,14 @@ export class PaymentTrackingMasterComponent implements OnInit {
   paymentTrackingJobFieldValueMapping: any =[];
   selectedFormulaname: any;
   jobField: any;
+  modalRef: any;
+
   
  
-  constructor( private formBuilder: FormBuilder, private service:PaymenttrackingMasterService,
+  constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private service:PaymenttrackingMasterService,
     private alertService: AlertServiceService,) {
       this.paymenttrackingForm = this.formBuilder.group({
-      "active": new FormControl(true),
+      "active": new FormControl(''),
         "approvalSDMId": new FormControl(""),
         "autoCreaPayVouch": new FormControl(""),
         "code": new FormControl(""),
@@ -247,6 +250,8 @@ getJobMasterMapping(){
 }
 
 
+
+
  paymentTrackingFormSubmit(){
 
   this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].setValue(this.paymentTrackingAddPayVoucherMaster);
@@ -339,6 +344,20 @@ console.log(event);
   })
    }
    console.log("jobMasterMappingList::::::",this.jobMasterMappingList)
+ }
+
+ onSelectBanksdetails(event: any, row: any){
+   if(event.checked){
+
+    this.bankData.push({
+      'ifscCode':row.ifscCode,
+      'bankName':row.bankName,
+      'branchName':row.branchName,
+      
+     })
+     console.log("Row Data is: "+ JSON.stringify(this.row))
+
+   }
  }
 
 
@@ -439,4 +458,10 @@ cancel(){
          this.isVisible = false;
 }
 
+bankDetailsInfo(template: TemplateRef<any>,) {
+  this.modalRef = this.modalService.show(
+   template,
+        Object.assign({}, { class: 'gray modal-lg' })
+  );
+}
 }

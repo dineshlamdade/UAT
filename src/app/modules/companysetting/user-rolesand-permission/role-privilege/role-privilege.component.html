@@ -1368,18 +1368,19 @@ aria-hidden="true">×</span></button>
                 </tr>
             </thead>
             <tbody>
-              <tr *ngFor = "let fields of fieldLevelMenu; let i = index">
+              <tr *ngFor = "let fields of fieldAllMasterData; let i = index">
                 <td style="vertical-align:left;text-align:left;" >
+                  <!-- <pre>{{ fields | json}}</pre> -->
                   <div> 
-                    <label >{{fields.menuName}}</label>
+                    <label> {{fields.applicationMenus.menuName}}</label>
                      <div class="">
                           <a class="p-0 d-flex" for="identifier-1">
                               <label   class="custom-control custom-checkbox">
                                   <ul style="list-style-type:none;position:sticky;">
-                                      <div *ngFor="let fieldmenu of fields.formFieldDetails">
-                                        <li  id="{{fieldmenu.controlName}}">
-                                              {{fieldmenu.controlName}}
-                                             
+                                      <div>
+                                        <li  id="{{fields.controlName}}">
+                                              {{fields.controlName}}
+                                             <!-- [{{fields.controlType}}] -->
                                           </li>
                                       </div>
                                   </ul>
@@ -1396,20 +1397,76 @@ aria-hidden="true">×</span></button>
                     <a class="p-0 d-flex">
                         <label class="custom-control custom-checkbox ">
                             <ul style="list-style-type:none;">
-                                <div *ngFor="let fieldmenu of fields.formFieldDetails">
-                                    <li id="{{fieldmenu.menuName}}" style="margin-left: -80px;">
+                              <div>
+                                    <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                         <input type="checkbox" name="websitecheckMenuMainRead"
-                                            [checked]="isChecked || isCheckedReadFields || fields.readFlag || fields.allFlag || fieldmenu.allFlag || fieldmenu.readAccess" [disabled]="viewFlag" (click)="checkeUncheckSingleReadFields(fieldmenu,$event.target)" />
-
-                                           
-                                            
-                                    </li>
+                                            [checked]="isChecked || isCheckedReadFields || fields.readFlag || fields.allFlag " [disabled]="viewFlag"
+                                             (click)="checkeUncheckSingleReadFields(fieldmenu,$event.target)" />
+                                     </li>
                                 </div>
                             </ul>
                         </label>
                     </a>
                 </div>
             </td>
+            <td class="text-center">
+              <input type="checkbox" name="fieldcheckWrite" [checked]="isCheckedWriteFields || isChecked || fields.allFlag" [disabled]="viewFlag"
+               (click)="checkUncheckWriteSelectedFieldLevel(fields,$event.target)">
+              write 
+              <div class="">
+                  <a class="p-0 d-flex">
+                      <label class="custom-control custom-checkbox ">
+                          <ul style="list-style-type:none;">
+                            <div>
+                                  <li id="{{fields.controlName}}" style="margin-left: -80px;">
+                                      <input type="checkbox" name="websitecheckMenuMainWrite"
+                                          [checked]="isChecked || isCheckedWriteFields || fields.writeFlag || fields.allFlag" [disabled]="viewFlag" (click)="checkeUncheckSingleWriteFields(fieldmenu,$event.target)" />
+                                   </li>
+                              </div>
+                          </ul>
+                      </label>
+                  </a>
+              </div>
+          </td>
+          <td class="text-center">
+            <input type="checkbox" name="fieldcheckModify" [checked]="isCheckedModifyFields || isChecked || fields.allFlag" [disabled]="viewFlag"
+             (click)="checkUncheckModifySelectedFieldLevel(fields,$event.target)">
+            Modify 
+            <div class="">
+                <a class="p-0 d-flex">
+                    <label class="custom-control custom-checkbox ">
+                        <ul style="list-style-type:none;">
+                          <div>
+                                <li id="{{fields.controlName}}" style="margin-left: -80px;">
+                                    <input type="checkbox" name="websitecheckMenuMainModify"
+                                        [checked]="isChecked || isCheckedModifyFields || fields.writeFlag || fields.allFlag" [disabled]="viewFlag" (click)="checkeUncheckSingleModifyFields(fieldmenu,$event.target)" />
+                                 </li>
+                            </div>
+                        </ul>
+                    </label>
+                </a>
+            </div>
+        </td>
+        <td class="text-center">
+          <input type="checkbox" name="fieldcheckHide" [checked]="isCheckedHideFields || isChecked || fields.allFlag" [disabled]="viewFlag"
+           (click)="checkUncheckhideSelectedFieldLevel(fields,$event.target)">
+          Hide
+          <div class="">
+              <a class="p-0 d-flex">
+                  <label class="custom-control custom-checkbox ">
+                      <ul style="list-style-type:none;">
+                        <div>
+                              <li id="{{fields.controlName}}" style="margin-left: -80px;">
+                                  <input type="checkbox" name="websitecheckMenuMainHide"
+                                      [checked]="isChecked || isCheckedHideFields || fields.HideFlag || fields.allFlag" [disabled]="viewFlag"
+                                       (click)="checkeUncheckSingleHideFields(fieldmenu,$event.target)" />
+                               </li>
+                          </div>
+                      </ul>
+                  </label>
+              </a>
+          </div>
+      </td>
               </tr>
             </tbody>
             </table>
@@ -1418,10 +1475,10 @@ aria-hidden="true">×</span></button>
       </div>
   </div>
   <div class="modal-footer">
-      <button type="button" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="saveAssignGroupData();modalRef.hide()"><b><i class="fa fa-save"></i></b> Save </button>
+      <button type="button" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="saveFieldLevelData();modalRef.hide()"><b><i class="fa fa-save"></i></b> Save </button>
 
-      <button type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="resetAssignData()"><b><i class="fa fa-refresh"></i></b> Reset</button>
-      <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button> -->
+      <button type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="resetFields()"><b><i class="fa fa-refresh"></i></b> Reset</button>
+      
   </div>
 </ng-template>
 

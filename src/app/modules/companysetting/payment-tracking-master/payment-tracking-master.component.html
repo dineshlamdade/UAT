@@ -392,8 +392,8 @@
                                     
                                     <tr *ngFor = "let bankDetails of bankDetailssummary,let i = index; ">
                                        <td>{{i+1}}</td>
-                                       <td><p-button [label]="selectedProduct ? selectedProduct.name : 'Select a Bank'" 
-                                        icon="pi pi-search" (click)="op.toggle($event)"></p-button></td>
+                                       <td> <button type="button" tooltip="" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" 
+                                        (click)="bankDetailsInfo(template)">Bank Details</button></td>
 
                                         <td>{{bankDetails.ifscCode}} </td>
                                         
@@ -407,19 +407,18 @@
                                           
                                        
                                         <td> 
-                                            <i
-                                            class="fa fa-plus-circle align-right font700 font-16 text-light-green cursor-pointer"
-                                      
-                                        tooltip="Add"
-                                        (click)="addTable()"
-                                      ></i>&nbsp;&nbsp;
+                                          <i 
+                                          class="fa fa-times font-16 text-red cursor-pointer"
+                                          tooltip="Cancel"
+                                          (click)="deleteRows(rowAdd.employeeRoleAssignmentId,i)"
+                                        ></i>&nbsp;&nbsp;
                                             
                                     
                                          
                                     </td>
                                     </tr>
                                     <!-- <pre>{{row | json}}</pre> -->
-                                    <tr *ngFor="let rowAdd of row; let i = index;" >
+                                    <!-- <tr *ngFor="let rowAdd of row; let i = index;" >
                                         
                                         <td>
                                            </td>
@@ -439,12 +438,8 @@
                                         <td>
                                            
                                            
-                                          <i 
-                                          class="fa fa-times font-16 text-red cursor-pointer"
-                                          tooltip="Cancel"
-                                          (click)="deleteRows(rowAdd.employeeRoleAssignmentId,i)"
-                                        ></i></td>
-                                    </tr>
+                                        </td>
+                                    </tr> -->
                                    
                                 </tbody>
                             </table>
@@ -646,22 +641,144 @@
 
 <ng-template #template>
   <div class="modal-header">
-      <h5 class="modal-title" id="UploadModalLabel">Full Page Dialog</h5>
+      <h5 class="modal-title" id="UploadModalLabel">Bank Details</h5>
       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
       aria-hidden="true">×</span></button>
   </div>
   <div class="modal-body">
       <div class="card">
           <div class="card-body">
+           
+            <div class="row">
+              <div class="col-12">
+                 <div class="float-right mb-15">
+                  <div class="form-group">
+                    <label class="form-label"></label>
+                    <div class="input-icon mb-3">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                    </div>
+                    </div>
+                   </div>
+                   </div>
+                   </div>
               <div class="row clearfix">
+                
                   <div class="col-md-12">
-                      <h4>Full Page Popup</h4>
+              
+                    <p-table [value]="bankData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" >
+                      <ng-template pTemplate="header">
+                          <tr>
+                              
+                              <th rowspan="2">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Select 
+                                </div>
+                            </th>
+                          
+                           
+                            <th rowspan="2">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  IFCS Code
+                    
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Attribute"
+                                      pSortableColumn="Attribute"></p-sortIcon>
+                                     <p-columnFilter type="text" field="name" display="menu"
+                                         class="p-ml-auto"></p-columnFilter>
+                                    </div>
+                                </div>
+                            </th>
+                                                                                   
+                         
+                      <th rowspan="2" >
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                          Bank Name
+                            <div class="Sort_Filter_Position">
+                              <p-sortIcon field="Attribute"
+                              pSortableColumn="Attribute"></p-sortIcon>
+                                <p-columnFilter type="date" field="date" display="menu"
+                                    class="p-ml-auto"></p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                    <th rowspan="2" >
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Branch Name
+                          <div class="Sort_Filter_Position">
+                            <p-sortIcon field="Attribute"
+                            pSortableColumn="Attribute"></p-sortIcon>
+                              <p-columnFilter type="date" field="date" display="menu"
+                                  class="p-ml-auto"></p-columnFilter>
+                          </div>
+                      </div>
+                  </th>
+                  <th rowspan="2" >
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Account Number
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="Attribute"
+                          pSortableColumn="Attribute"></p-sortIcon>
+                            <p-columnFilter type="date" field="date" display="menu"
+                                class="p-ml-auto"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                    
+                          </tr>
+                         
+                         
+                      </ng-template>
+                    
+                                       
+                      <ng-template pTemplate="body" let-bankData>
+                         
+                          <tr class="p-selectable-row">
+                             
+                            <td class="text-center bg-color-light_gray">
+                              <label class="custom-control custom-checkbox checkbox-center">
+                                <input type="checkbox"  class="custom-control-input" name="select" (click)="onSelectBanksdetails($event.target,bankData)"  /> 
+                                <span class="custom-control-label"></span>
+                           </label>
+                           
+                            </td>
+                                <td class="text-center bg-color-light_gray">{{bankData.ifscCode}}</td>
+                                  <td class="text-center bg-color-light_gray">{{bankData.bankName}}</td>
+                                  <td class="text-center bg-color-light_gray">{{bankData.branchName}}</td>
+                                  <td class="text-center bg-color-light_gray">{{bankData.accountNumber}}</td>
+                    
+                            <!-- <td class="bg-color-light_gray"><label
+                                    class="form-lable mb-0"> </label>{{bankData.ifscCode}}</td>
+                            <td class="bg-color-light_gray">
+                          
+                            </td> -->
+                          
+                                  
+                          
+                        </tr>
+                      
+                    
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                          <tr>
+                              <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                      Available</span></td>
+                          </tr>
+                      </ng-template>
+                    </p-table>
                   </div>
+                
               </div>
           </div>
       </div>
   </div>
   <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-  </div>
+    <button type="button" 
+    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
+    <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+   
+      <button type="button" 
+    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left " tooltip="Close" (click)="modalRef.hide()"><b>
+    <i class="fa fa-times"></i></b> Close</button>&nbsp;
+      </div>
 </ng-template>
