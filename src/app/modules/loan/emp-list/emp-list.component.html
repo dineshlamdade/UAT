@@ -4,6 +4,7 @@
     <div class="section-body mt-3">
         <div class="container-fluid">
             <div class="row">
+                <button class="btn btn-success" (click)="navigateToAdd()" style="float: right;" ><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp; Add new Loan</button>
                 <div class="col-12">
                     <div class="tabset">
                         <!-- Tab 1 -->
@@ -15,9 +16,9 @@
 
 
                         <div class="tab-panels">
-                            <button class="btn btn-success" (click)="navigateToAdd()" ><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp; Add new Loan</button>
+                            
                             <section id="marzen" class="tab-panel">
-                                <div class="row">
+                                <div class="row mt-30">
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-body">
@@ -78,11 +79,11 @@
 
                                                             <ng-template pTemplate="header">
                                                                 <tr>
-                                                                    <th  style="width: 3rem">
+                                                                    <th rowspan="2" style="width: 3rem">
                                                                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                                                                     </th>
 
-                                                                    <th >
+                                                                    <th rowspan="2">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Loan No.
                                                                             <div class="Sort_Filter_Position">
@@ -95,7 +96,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th >
+                                                                    <th rowspan="2">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Date
                                                                             <div class="Sort_Filter_Position">
@@ -108,7 +109,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th>
+                                                                    <th rowspan="2">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Loan Type
                                                                             <div class="Sort_Filter_Position">
@@ -122,7 +123,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th>
+                                                                    <th rowspan="2">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Repayment Type
                                                                             <div class="Sort_Filter_Position">
@@ -136,10 +137,10 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th>
+                                                                    <th colspan="3">
                                                                         <div
                                                                             class="p-d-flex p-ai-center justify-content-center">
-                                                                            Amount
+                                                                            Loan Amount
                                                                             <div class="Sort_Filter_Position">
                                                                                 <p-sortIcon field="proofsubmission"
                                                                                     pSortableColumn="proofsubmission">
@@ -150,7 +151,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th>
+                                                                    <!-- <th>
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Balance
                                                                             <div class="Sort_Filter_Position">
@@ -163,8 +164,8 @@
                                                                                 </p-columnFilter>
                                                                             </div>
                                                                         </div>
-                                                                    </th>
-                                                                    <th>
+                                                                    </th> -->
+                                                                    <th rowspan="2">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             Status
                                                                             <div class="Sort_Filter_Position">
@@ -179,7 +180,12 @@
                                                                         </div>
                                                                     </th>
                                                                    
-                                                                    <th>Action</th>
+                                                                    <th rowspan="2">Action</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-center">Applied/ Approved </th>
+                                                                    <th class="text-center">Disbursed</th>
+                                                                    <th class="text-center">Balance</th>
                                                                 </tr>
 
                                                             </ng-template>
@@ -199,7 +205,9 @@
 
                                                                     <td>121</td>
                                                                     <td>Approved</td>
-                                                                    
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
 
                                                                     <td class="primeng-table-header-left">
                                                                         <span>
@@ -348,7 +356,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th colspan="2">
+                                                                    <th colspan="3">
                                                                         <div
                                                                             class="p-d-flex p-ai-center justify-content-center">
                                                                             Loan Amount
@@ -416,7 +424,9 @@
 
                                                                     <td>121</td>
                                                                     <td>Approved</td>
-                                                                    
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
 
                                                                     <td class="primeng-table-header-left">
                                                                         <span>
