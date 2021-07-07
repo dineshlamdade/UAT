@@ -1820,12 +1820,10 @@
         [routerLinkActiveOptions]="{ exact: true }"
       >
         <a
-          [routerLink]="['/investment-approval-new/approved-investmentsecond']"
-          (click)="isCollapsed = !isCollapsed"
-          [attr.aria-expanded]="!isCollapsed"
-          aria-controls="collapseBasic"
+          [routerLink]="['/investment-approval/dashboard']"
+
           class="has-arrow arrow-c"
-          aria-expanded="true"
+
         >
           <i class="icon-rocket"></i><span>Approved Investment</span>
         </a>

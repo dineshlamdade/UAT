@@ -898,6 +898,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.documentRemark = '';
   }
 
   changeReceiptAmountFormat() {
@@ -1145,6 +1146,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1156,6 +1158,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+        //this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
         this.editinterestOnSavingDeposit80TTMasterId = res.data.results[0].interestOnSavingDeposit80TTTransactionList[0].interestOnSavingDeposit80TTMasterId;

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DocumentviewerComponent } from './documentviewer/documentviewer.component';
 import { InvestmentApprovalComponent } from './investment-approval.component';
 import { InvestmentMasterApprovalComponent } from './investment-master-approval/investment-master-approval.component';
+import { InvestmentTransactionApprovalComponent } from './investment-transaction-approval/investment-transaction-approval.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,16 @@ const routes: Routes = [
         path: 'master',
         component: InvestmentMasterApprovalComponent,
         data: { title: ':: Delizia-HR :: Investment-Approval-Master' },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: 'transaction',
+        component: InvestmentTransactionApprovalComponent,
+        data: { title: ':: Delizia-HR :: Investment-Approval-Transaction' },
       },
     ],
   },
