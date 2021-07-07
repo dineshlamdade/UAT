@@ -8,44 +8,13 @@
           <div class="card">
             <div class="card-body">
 
-              <!-- <legend style="font-size: 17px !important;">Loan Approval</legend> -->
-              <!-- <div class="justify-content-spacearound"> -->
-
-              <div class="d-flex">
-
-                <!-- </button> -->
-                <!-- <button type="button" tooltip="Button"
-                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
-                  aria-hidden="true" [routerLink]="['/loan/disbursement']"><b><i class="fa fa-money"></i></b>
-                  Disbursement
-                  Request
-                </button>
-                <button type="button" tooltip="Button"
-                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
-                  [routerLink]="['/loan/adhoc']"><b><i class="fa fa-credit-card"></i></b> Adhoc
-                  Repayment
-                </button>
-                <button type="button" tooltip="Button"
-                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
-                  [routerLink]="['/loan/rescheduleRequest']"><b><i class="fa fa-calendar-check-o"></i></b> Reschedule
-                  Request
-                </button>
-                <button type="button" tooltip="Button"
-                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
-                  [routerLink]="['/loan/settlementRequest']"><b><i class="fa fa-handshake-o"></i></b> Settlement
-                  Request
-                </button> -->
-                <!-- <button type="button" tooltip="Button"
-                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2 "
-                    (click)="settlementRequest(template4)"><b><i class="fa fa-handshake-o"></i></b> Settlement
-                    Request
-                  </button> -->
-
-
-              </div>
-              <!-- </div> -->
-
-
+              <div class="row">
+                <div class="col-sm-3">
+                  <label class="form-label">Transaction Type</label>
+                  <p-multiSelect [options]="cities" [(ngModel)]="selectedCities2" defaultLabel="Select" optionLabel="name"></p-multiSelect>
+                </div>
+            </div>
+            
               <div class="d-flex justify-content-spacearound mt-5">
                 <div class="wd-150">
                   <div class="card text-center btn-bg-green">
@@ -121,7 +90,7 @@
                               <button type="button" class="btn btn-bg-green mr-2" (click)="sendBack()">Send Back
                                 <span class="tag tag-orange ml-4">5</span></button> -->
   
-                                <button type="button" tooltip="Button"
+                                <!-- <button type="button" tooltip="Button"
                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
                     aria-hidden="true" [routerLink]="['/loan/disbursement']"><b><i class="fa fa-money"></i></b>
                     Disbursement
@@ -149,7 +118,7 @@
                             <button type="button" tooltip="Button"
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
                               aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Send back
-                            </button>
+                            </button> -->
                             </div>
 
 
@@ -188,7 +157,7 @@
                         <!-- <th rowspan="2">Sr.No.</th> -->
 
                         <th rowspan="2">
-                          <div class="p-d-flex p-jc-between p-ai-center">Application No.
+                          <div class="p-d-flex p-jc-between p-ai-center">App. No.
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="applNo" pSortableColumn="applNo"></p-sortIcon>
                               <p-columnFilter field="applNo" display="menu" class="p-ml-auto">
@@ -197,7 +166,7 @@
                           </div>
                         </th>
                         <th rowspan="2">
-                          <div class="p-d-flex p-jc-between p-ai-center">Date
+                          <div class="p-d-flex p-jc-between p-ai-center">App. Date
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="Date" pSortableColumn="Date"></p-sortIcon>
                               <p-columnFilter type="text" field="Date" display="menu" class="p-ml-auto">
@@ -495,11 +464,11 @@
                                 </table>
                               </div>
                             <!-- </div> -->
-                            <br>
+                            <!-- <br>
                                     <div class="float-left d-flex justify-content">
                                         <label class="form-label mt-2">Remark</label>&nbsp;
                                         <textarea type="text"></textarea>
-                                    </div>
+                                    </div> -->
                                    
                           <!-- </div> -->
                         <!-- </div> -->
@@ -515,7 +484,7 @@
                           <button type="submit"
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
                               tooltip="Save" (click)=" extralargepopup(template)"><b>
-                                  <i class="fa fa-reply"></i></b> Send Back </button>&nbsp;
+                                  <i class="fa fa-reply"></i></b> Send Back Loan</button>&nbsp;
                           <!-- <button type="submit"
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ripple"
                               tooltip="Save" (click)=" extralargepopup(template)"><b>
@@ -523,7 +492,7 @@
                           <button type="submit"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                               tooltip="Save" (click)=" extralargepopup(template)"><b>
-                                  <i class="fa fa-check-square-o "></i></b> Approve
+                                  <i class="fa fa-check-square-o "></i></b> Approve Loan
                               </button>&nbsp;
                           <!-- <button type="submit"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
@@ -531,9 +500,15 @@
                                   <i class="fa fa-check-square-o"></i></b> Approve
                               Deviation</button>&nbsp; -->
                           <button type="submit"
-                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                               tooltip="Reset"><b>
-                                  <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+                                <i class="fa fa-check-square-o "></i></b> Approve Deviation
+                                </button>&nbsp;
+                                <button type="submit"
+                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                tooltip="Reset"><b>
+                                    <i class="fa fa-refresh"></i></b> Reset
+                                  </button>&nbsp;
 
 
                       </div>

@@ -114,10 +114,13 @@ export class LoanComponent implements OnInit {
       sendback:'No',
       approved:'yes'}  ];
     this.cities = [
-      {name: 'LIC'},
-      {name: 'PPF'},
-      {name: 'Pensionplan'},
-      
+      {name: 'All'},
+      {name: 'Loan Application'},
+      {name: 'Disbursement'},
+      {name: 'Adhoc'},
+      {name: 'Reschedule'},
+      {name: 'Settlement'}
+     
     ];
     this.group = [
       {name: '80-C'},
