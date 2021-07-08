@@ -73,6 +73,8 @@ export class QueryTypeMasterComponent implements OnInit {
   isActionShow:boolean=true;
   descriptionData: any;
   listSubQueryAnsMappingResponseDTO:any =[];
+  priortynoresolutiontime: any;
+  priortynoautoclose: any;
   constructor(public formBuilder : FormBuilder,public queryService :QueryService ,
      private alertService: AlertServiceService) {
 
@@ -206,7 +208,7 @@ radioButtonChanged(event){
      this.finalForm.controls['subQuery'].setValue(0);
      this.querytypeForm.controls['subQuery'].setValue(0);
     //  this.finalForm.controls['subQueryRequestDTO'].setValue([]);
-// console.log(JSON.stringify(this.querytypeForm.value))
+    // console.log(JSON.stringify(this.querytypeForm.value))
 
    }else{
      this.ishidden = false;
@@ -229,7 +231,6 @@ getPriorityRequired(value){
 
 priorityRequiredevent(value, priority,event)
 {
-
   if(event.checked){
     if(this.listQueryPriorityRequestDTO.length > 0){
       this.listQueryPriorityRequestDTO.forEach(element => {
@@ -303,6 +304,8 @@ onSelectAllSubQuery(item){
 }
 addSubqueryInTable() //temp data store in table on add button click .
 {
+this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
+
   this.finalForm.controls['subQuery'].setValue(1);
   this.querytypeForm.controls['subQuery'].setValue(1);
 
@@ -352,7 +355,6 @@ this.querytypeForm.controls['subqueryTypedescription'].reset();
 this.querytypeForm.controls['assignQATemplate2'].reset();
 this.listSubQueryQueAnsMapping = []
 this.AssignQNATemplate=[];
-this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
 // this.finalForm.controls['subqueryTypedescription'].clearValidators();
 
 }
@@ -410,17 +412,6 @@ getAlldataById(queryTypeMasterId)// for edit....
 
     }
 
-    // this.getAlldataByIdforedit.listSubQueryAnsMappingResponseDTO =[];
-//     this.getAlldataByIdforedit.listSubQueryAnsMappingResponseDTO.forEach(element => {
-//     this.listSubQueryQueAnsMapping.push({
-//       "subQueryTypeQueAnsMappingId":element.subQueryTypeQueAnsMappingId,
-//       "subQueryTypeMasterId":element.subQueryTypeMasterId,
-//       "queAnsMasterId":element.queAnsMasterId,
-//       "active":true
-//     })
-// this.querytypeForm.controls['queAnsMasterId'].setValue(element.queAnsMasterId);
-//   })
-
       this.getAlldataByIdforedit.subQueryResponseDTO.forEach(element => {
         this.subQueryRequestDTO.push(
           {
@@ -449,8 +440,8 @@ getAlldataById(queryTypeMasterId)// for edit....
           'description': element.description
 
           })
-          this.querytypeForm.controls['assignQATemplate1'].setValue(this.AssignQNATemplate);
-          console.log("this.AssignQNATemplate",this.AssignQNATemplate)
+          this.querytypeForm.controls['assignQATemplate1'].setValue(this.queAnsMasterId);
+          console.log("this.AssignQNATemplate",this.queAnsMasterId)
         });
 
       }else
@@ -462,20 +453,25 @@ getAlldataById(queryTypeMasterId)// for edit....
           'description': element.description
 
           })
-          this.querytypeForm.controls['assignQATemplate2'].setValue(this.AssignQNATemplate);
-          console.log("this.AssignQNATemplate",this.AssignQNATemplate)
+          this.querytypeForm.controls['assignQATemplate2'].setValue(this.queAnsMasterId);
+          console.log("this.AssignQNATemplate",this.queAnsMasterId)
 
         });
 
       }
 
        console.log("subquery edit: " +JSON.stringify(this.subQueryRequestDTO))
+
+      //  this.priorityData= this.getAlldataByIdforedit.listQueryPriorityResponseDTO;
+
       this.priorityData.forEach(element =>{
       this.getAlldataByIdforedit.listQueryPriorityResponseDTO.forEach(ele => {
           if(element.priorityType == ele.priorityType){
             element.defaultPriority = true;
-          }
+            element.resolutionTime = ele.resolutionTime;
+            element.autoClose = ele.autoClose;
 
+          }
         });
       })
       this.priorityData2.forEach(element =>{
@@ -506,8 +502,8 @@ getAlldataById(queryTypeMasterId)// for edit....
       });
       this.getAll();
       console.log(JSON.stringify(this.querySubQuerySummary));
-
       });
+
 
 }
 moduleChange(value) // when module is changed then that data store in temp tabel .
@@ -785,79 +781,105 @@ viewQuerySummary(query) // whole page view function
 
 resolutionEvent(value,prio)
 {
-  if(this.listQueryPriorityRequestDTO.length > 0){
-    this.listQueryPriorityRequestDTO.forEach((element,index) => {
-      if(element.priorityType == prio.priorityType){
-       let i = index;
-       this.listQueryPriorityRequestDTO.splice(i,1,
-        {
-          "queTypePriorityMasterId":0,
-          "queryTypeMasterId":0,
-          "priorityType":prio.priorityType,
-          "resolutionTime":prio.resolutionTime,
-          "autoClose":value,
-          "defaultPriority":'',
-          "active":true
-        })
-      }else
-      {
-        this.listQueryPriorityRequestDTO.push({
-          "queTypePriorityMasterId":0,
-          "queryTypeMasterId":0,
-          "priorityType":prio.priorityType,
-          "resolutionTime":prio.resolutionTime,
-          "autoClose":value,
-          "defaultPriority":'',
-          "active":true
-        })
-      }
-    });
-  }
+  // if(this.listQueryPriorityRequestDTO.length > 0){
+  //   this.listQueryPriorityRequestDTO.forEach((element,index) => {
+  //     if(element.priorityType == prio.priorityType){
+  //      let i = index;
+  //      this.listQueryPriorityRequestDTO.splice(i,1,
+  //       {
+  //         "queTypePriorityMasterId":0,
+  //         "queryTypeMasterId":0,
+  //         "priorityType":prio.priorityType,
+  //         "resolutionTime":prio.resolutionTime,
+  //         "autoClose":value,
+  //         "defaultPriority":'',
+  //         "active":true
+  //       })
+  //     }else
+  //     {
+  //       this.listQueryPriorityRequestDTO.push({
+  //         "queTypePriorityMasterId":0,
+  //         "queryTypeMasterId":0,
+  //         "priorityType":prio.priorityType,
+  //         "resolutionTime":prio.resolutionTime,
+  //         "autoClose":value,
+  //         "defaultPriority":'',
+  //         "active":true
+  //       })
+  //     }
+  //   });
+  // }
+  this.priortynoautoclose = value;
+  this.listQueryPriorityRequestDTO.push({
+  "queTypePriorityMasterId":0,
+  "queryTypeMasterId":0,
+  "priorityType":prio.priorityType,
+  "resolutionTime":this.priortynoresolutiontime,
+  "autoClose":this.priortynoautoclose,
+  "defaultPriority":'',
+  "active":true
+})
 
+console.log(JSON.stringify( this.listQueryPriorityRequestDTO));
 }
 resolutionEvent1(value,prio)
 {
-  if(this.listQueryPriorityRequestDTO.length > 0){
-    this.listQueryPriorityRequestDTO.forEach((element,index) => {
-      if(element.priorityType == prio.priorityType){
-       let i = index;
-       this.listQueryPriorityRequestDTO.splice(i,1,
-        {
-          "queTypePriorityMasterId":0,
-          "queryTypeMasterId":0,
-          "priorityType":prio.priorityType,
-          "resolutionTime":value,
-          "autoClose":prio.autoClose,
-          "defaultPriority":'',
-          "active":true
-        })
-      }else
-      {
-        this.listQueryPriorityRequestDTO.push({
-          "queTypePriorityMasterId":0,
-          "queryTypeMasterId":0,
-          "priorityType":prio.priorityType,
-          "resolutionTime":value,
-          "autoClose":prio.autoClose,
-          "defaultPriority":'',
-          "active":true
-        })
-      }
-    });
-  }
+//   if(this.listQueryPriorityRequestDTO.length > 0){
+//     this.listQueryPriorityRequestDTO.forEach((element,index) => {
+//       if(element.priorityType == prio.priorityType){
+//        let i = index;
+//        this.listQueryPriorityRequestDTO.splice(i,1,
+//         {
+//           "queTypePriorityMasterId":0,
+//           "queryTypeMasterId":0,
+//           "priorityType":prio.priorityType,
+//           "resolutionTime":value,
+//           "autoClose":prio.autoClose,
+//           "defaultPriority":'',
+//           "active":true
+//         })
+//       }else
+//       {
+//         this.listQueryPriorityRequestDTO.push({
+//           "queTypePriorityMasterId":0,
+//           "queryTypeMasterId":0,
+//           "priorityType":prio.priorityType,
+//           "resolutionTime":value,
+//           "autoClose":prio.autoClose,
+//           "defaultPriority":'',
+//           "active":true
+//         })
+//       }
+//     });
+// console.log(JSON.stringify( this.listQueryPriorityRequestDTO));
 
-//   this.listQueryPriorityRequestDTO.push({
-//   "queTypePriorityMasterId":0,
-//   "queryTypeMasterId":0,
-//   "priorityType":prio.priorityType,
-//   "resolutionTime":value,
-//   "autoClose":prio.autoClose,
-//   "defaultPriority":'',
-//   "active":true
-// })
+//   }
+//   else
+//   {
+//     this.listQueryPriorityRequestDTO.push({
+//       "queTypePriorityMasterId":0,
+//       "queryTypeMasterId":0,
+//       "priorityType":prio.priorityType,
+//       "resolutionTime":value,
+//       "autoClose":prio.autoClose,
+//       "defaultPriority":'',
+//       "active":true
+//     })
+//   }
+  this.priortynoresolutiontime = value;
+  this.listQueryPriorityRequestDTO.push({
+  "queTypePriorityMasterId":0,
+  "queryTypeMasterId":0,
+  "priorityType":prio.priorityType,
+  "resolutionTime":value,
+  "autoClose":this.priortynoautoclose,
+  "defaultPriority":'',
+  "active":true
+})
 }
 resolutionTime(value,prio)
 {
+
   if(this.listQueryPriorityRequestDTO.length > 0){
     this.listQueryPriorityRequestDTO.forEach((element,index) => {
       if(element.priorityType == prio.priorityType){
@@ -868,7 +890,7 @@ resolutionTime(value,prio)
             "queryTypeMasterId":0,
             "priorityType":prio.priorityType,
             "resolutionTime":value,
-            "autoClose":prio.autoClose,
+            "autoClose":element.autoClose,
             "defaultPriority":'',
             "active":true
         })
@@ -885,7 +907,20 @@ resolutionTime(value,prio)
         })
       }
     });
+  }else
+  {
+    this.listQueryPriorityRequestDTO.push({
+      "queTypePriorityMasterId":0,
+        "queryTypeMasterId":0,
+        "priorityType":prio.priorityType,
+        "resolutionTime":value,
+        "autoClose":prio.autoClose,
+        "defaultPriority":'',
+        "active":true
+    })
   }
+console.log(JSON.stringify( this.listQueryPriorityRequestDTO));
+
   // this.listQueryPriorityRequestDTO.push({
   //   "queTypePriorityMasterId":0,
   //   "queryTypeMasterId":0,
@@ -908,7 +943,7 @@ autoClose(value,prio)
     "queTypePriorityMasterId":0,
     "queryTypeMasterId":0,
     "priorityType":prio.priorityType,
-    "resolutionTime":prio.resolutionTime,
+    "resolutionTime":element.resolutionTime,
     "autoClose":value,
     "defaultPriority":'',
     "active":true
@@ -926,6 +961,8 @@ autoClose(value,prio)
         })
       }
     });
+console.log(JSON.stringify( this.listQueryPriorityRequestDTO));
+
   }
 
   // this.listQueryPriorityRequestDTO.push({

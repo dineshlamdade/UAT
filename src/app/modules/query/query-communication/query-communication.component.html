@@ -250,22 +250,23 @@
                                                                                         <div class="col-md-2">
                                                                                             <div _ngcontent-kmp-c585=""
                                                                                                 class="custom_Label_badge bagde1">
-                                                                                                <button class="btn defaultbtn"> Document</button>
+                                                                                                <button class="btn defaultbtn" > Document</button>
                                                                                                 <!-- docViewer(template1,GetIterationdetailsbyQueryIDData); -->
-                                                                                                <span class="Label_badge" style="text-align: center;"  (click)="navigateToDocmentViewer(GetIterationdetailsbyQueryIDData)">{{GetIterationdetailsbyQueryIDData.numberOfDocuments}}</span>
+                                                                                                <span class="Label_badge" style="text-align: center;"  (click)="navigateToDocmentViewer(GetIterationdetailsbyQueryIDData)"
+                                                                                                >{{GetIterationdetailsbyQueryIDData.numberOfDocuments}}</span>
                                                                                             </div>
                                                                                         </div>
                                                                                         <!-- oninput="this.parentNode.dataset.value = this.value" rows="4" -->
                                                                                         <div class="col-md-10" >
                                                                                             <textarea style="overflow:hidden;"
                                                                                                 class="form-control" [innerHTML]="GetIterationdetailsbyQueryIDData.queryDescription"
-                                                                                                disabled></textarea>
+                                                                                               disabled></textarea>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row mt-10">
                                                                                         <div class="col-md-2">
                                                                                             <span
-                                                                                                class="tag tag-lightgray">Ref {{GetIterationdetailsbyQueryIDData.refNumber}}</span>
+                                                                                                class="tag tag-lightgray dark" >Ref : {{GetIterationdetailsbyQueryIDData.refNumber}}</span>
                                                                                         </div>
                                                                                         <div class="col-md-4 status">
                                                                                             <span
@@ -294,6 +295,7 @@
                                                                                           <span  class=" tag Submit" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Submit'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
                                                                                           <span  class=" tag Draft" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Draft'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
                                                                                           <span  class=" tag Replied" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Replied'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Redirect" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Redirect'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
 
                                                                                         </div>
                                                                                     </div>
@@ -410,7 +412,7 @@
                                                                                     </div>
 
                                                                                     <div class="row mt-25" >
-                                                                                      <div class="col-md-6">
+                                                                                      <div class="col-md-8">
                                                                                         <div class="table-responsive Custom_Table">
                                                                                             <table class="table table-striped table-hover table-bordered">
                                                                                                 <thead class="thead-dark">
@@ -733,13 +735,13 @@
                                                                                                             pTemplate="header">
                                                                                                             <tr>
                                                                                                                 <th rowspan="2"
-                                                                                                                    class="wd-14">
+                                                                                                                    class="wd-10">
                                                                                                                     Sr.
                                                                                                                     No.
                                                                                                                 </th>
 
                                                                                                                 <th rowspan="2"
-                                                                                                                    class="wd-15">
+                                                                                                                    class="wd-10">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center">
                                                                                                                         Ref. No.
@@ -759,7 +761,7 @@
                                                                                                                 </th>
 
                                                                                                                 <th rowspan="2"
-                                                                                                                    class="wd-15">
+                                                                                                                    class="wd-20">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center">
                                                                                                                         Documents
@@ -796,10 +798,10 @@
                                                                                                                     </div>
                                                                                                                 </th> -->
                                                                                                                 <th colspan="2"
-                                                                                                                    class="wd-15">
+                                                                                                                    class="wd-25">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center" style="margin-left:70px;">
-                                                                                                                        Created/Updated
+                                                                                                                        Created / Updated
 
                                                                                                                     </div>
                                                                                                                 </th>
@@ -913,13 +915,13 @@
                                                                                                             pTemplate="header">
                                                                                                             <tr>
                                                                                                                 <th rowspan="2"
-                                                                                                                    class="wd-14">
+                                                                                                                    class="wd-10">
                                                                                                                     Sr.
                                                                                                                     No.
                                                                                                                 </th>
 
                                                                                                                 <th rowspan="2"
-                                                                                                                    class="wd-15">
+                                                                                                                    class="wd-10">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center">
                                                                                                                         Ref. No.
@@ -940,15 +942,15 @@
 
 
                                                                                                                 <th colspan="2"
-                                                                                                                    class="wd-15">
+                                                                                                                    class="wd-30">
                                                                                                                     <div
-                                                                                                                        class="p-d-flex p-jc-between p-ai-center" style="margin-left:70px;">
-                                                                                                                        Created/Updated
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center" style="margin-left:70px !important;">
+                                                                                                                        Created / Updated
 
                                                                                                                     </div>
                                                                                                                 </th>
                                                                                                                 <th rowspan="2"
-                                                                                                                    class="wd-15">
+                                                                                                                    class="wd-10">
                                                                                                                     <div
                                                                                                                         class="p-d-flex p-jc-between p-ai-center">
                                                                                                                         Status
@@ -1351,10 +1353,16 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" tooltip="Skip"  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="skipScreen()"><b><i class="fa fa-step-forward"></i></b> Skip </button>
+                                    <button type="button" tooltip="Skip"  class="custom_button custom_btn btn-bg-green bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="skipScreen()" >
+                                      <b><i class="fa fa-step-forward"></i></b> Skip </button>
+
                                     <button type="button" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="closeScreen();modalRef.hide()"
                                     [disabled]="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'"
-                                    [ngClass]="{'disabled-btn-bg-green':ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'}"><b><i class="fa fa-floppy-o"></i></b> Save </button>
+                                    [ngClass]="{'disabled-btn-bg-green':ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'}">
+                                    <b><i class="fa fa-floppy-o"></i></b> Save </button>
+
+                                    <button type="button"tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " (click)="resetFeedbackForm()"><b><i
+                                     class="fa fa-refresh"></i></b> Reset</button>
                                     <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button> -->
                                 </div>
                             </ng-template>

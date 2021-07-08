@@ -12,7 +12,7 @@
                   <div>
                     <div class="row" *ngIf="perticularEmpDetails">
                       <div class="col-md-12 pl-0 pr-0">
-                        <div class="border-dark-card radius-10 p-2 mt-3">
+                        <div class="border-dark-card radius-10 p-2 mt-3" style="margin-left: 10px;">
                           <div class="row">
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0" >Employee No. & Name </label >
@@ -20,7 +20,7 @@
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Date of Joining</label >
-                                <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}</label >
+                                <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.joiningDate| date:'dd-MMM-yyyy hh:mm a'}}</label >
                             </div>
                             <div class="col-md-2">
                               <label class="form-label mt-1 mb-0">Establishment</label>
@@ -67,7 +67,7 @@
                               class="form-control"
                               placeholder="Date"
                               bsDatepicker
-                              disabled  value="{{editQuerySummaery.submissionDate |date: 'dd-MMM-yyyy' }}"
+                              disabled  value="{{editQuerySummaery.submissionDate | date:'dd-MMM-yyyy hh:mm a' }}"
                             />
                           </div>
                         </div>
@@ -87,7 +87,7 @@
                               class="form-control"
                               placeholder="Date"
                               bsDatepicker
-                              disabled value="{{editQuerySummaery.escalationDate |date: 'dd-MMM-yyyy' }}"
+                              disabled value="{{editQuerySummaery.escalationDate  | date:'dd-MMM-yyyy hh:mm a' }}"
                             />
                           </div>
                         </div>
@@ -178,7 +178,7 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th scope="col" class="font700 wd-8">Sr No.</th>
+                                        <th scope="col" class="font700 wd-8">Sr. No.</th>
                                         <!-- <th scope="col" class="font700 wd-40">Document Name</th> -->
                                         <th scope="col" class="font700 wd-40">Attachment</th>
                                         <th scope="col" class="font700 wd-12"  *ngIf="hideEditTime" >Action</th>
@@ -355,11 +355,11 @@
 
                       <button  type="submit" tooltip =" Save Draft " *ngIf="isSaveDraft"  [routerLink]="['/admin-query-generation']"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
-                        (click)="saveandDraftPopUp(saveanddraftQueryGeneration)" [disabled]="!queryGenerationForm.valid"
+                        (click)="queryGenerationFormSubmit('Draft')" [disabled]="!queryGenerationForm.valid"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}" >
                         <b><i class="fa fa-file"></i></b> Save Draft </button>
 
-                        <ng-template #saveanddraftQueryGeneration>
+                        <!-- <ng-template #saveanddraftQueryGeneration>
                           <div class="modal-header">
                               <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
                               <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -382,18 +382,18 @@
                               <button type="button" class="btn btn-primary" (click)="queryGenerationFormSubmit('Draft');modalRef.hide()">Yes</button>
                               <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
                           </div>
-                      </ng-template>
+                      </ng-template> -->
 
                       <button type="button" tooltip=" Save & next" *ngIf="isSaveNext"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-save"></i></b> Save & next</button>
 
                       <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" *ngIf="isSave" [routerLink]="['/admin-query-generation']"
-                      tooltip="Save"[disabled]="!queryGenerationForm.valid" (click)="savePopUp(saveQueryGeneration)"
+                      tooltip="Save"[disabled]="!queryGenerationForm.valid" (click)="queryGenerationFormSubmit('Save')"
                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
 
-                       <ng-template #saveQueryGeneration>
+                       <!-- <ng-template #saveQueryGeneration>
                         <div class="modal-header">
                             <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
                             <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -416,7 +416,7 @@
                             <button type="button" class="btn btn-primary" (click)="queryGenerationFormSubmit('Save');modalRef.hide()">Yes</button>
                             <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
                         </div>
-                    </ng-template>
+                    </ng-template> -->
 
 
                       <button  type="button" tooltip="Reset" *ngIf="isReset" (click)="reset()"
@@ -431,7 +431,7 @@
                         <button type="submit" tooltip="Update"class="custom_button custom_btn btn-labeled btn-labeled-left"
                         [disabled]="!queryGenerationForm.valid" *ngIf="isUpdateDraft " (click)="updateQueryGeneration('Draft')"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
-                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button >&nbsp;
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Draft</button >&nbsp;
 
                       <button type="button" tooltip="Cancel" (click)="cancel()" *ngIf="isCancle"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left mr-10">
@@ -445,337 +445,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="tabview-contents">
-                  <div class="row mt-20">
-                    <div class="col-md-12">
-                      <h3 class="font-14 text-purple font-bold">Summary</h3>
-                      <div class="table-responsive Custom_Table table-striped table-hover table-bordered">
-                        <p-table [value]="getAllQueryGenerationData"  [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
-                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-                          <ng-template pTemplate="header">
-                            <tr>
-                              <th >Sr. No.</th>
-                              <th >
-                                <div class="p-d-flex p-jc-between p-ai-center">
-                                  Query No.
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="name" pSortableColumn="queryNumber"></p-sortIcon>
-                                    <p-columnFilter
-                                      type="text"
-                                      field="queryNumber"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div class="p-d-flex p-jc-between p-ai-center">
-                                  Submission Date
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="date" pSortableColumn="submissionDate"></p-sortIcon>
-                                    <p-columnFilter
-                                      type="date"
-                                      field="submissionDate"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div class="p-d-flex p-jc-between p-ai-center">
-                                  Creator Name
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="date" pSortableColumn="createdBy"></p-sortIcon>
-                                    <p-columnFilter
-                                      type="date"
-                                      field="createdBy"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div class="p-d-flex p-jc-between p-ai-center">
-                                  Employee Code
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="status" pSortableColumn="employeeCode"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="employeeCode"
-                                      matchMode="equals"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div
-                                  class="p-d-flex justify-content-center p-ai-center"
-                                >
-                                  Employee Name
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="empName"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="empName"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div class="p-d-flex p-jc-between p-ai-center">
-                                  Company Name
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="companyName"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="companyName"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div class="p-d-flex p-jc-between p-ai-center">
-                                  <span tooltip="Unit of Measure"
-                                    >Module Name</span
-                                  >
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="applicationModuleName"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="applicationModuleName"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div class="p-d-flex p-jc-between p-ai-center">
-                                  <span tooltip="Unit of Measure"
-                                    >Query Type</span
-                                  >
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="queryTypeCode"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="queryTypeCode"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div
-                                  class="p-d-flex p-ai-center justify-content-center">
-                                  Sub-Query Type
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="subQueryTypeCode"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="subQueryTypeCode"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th>
-                                <div
-                                  class="p-d-flex p-ai-center justify-content-center"
-                                >
-                                  Subject
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="subject"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="subject"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div
-                                  class="p-d-flex p-ai-center justify-content-center"
-                                >
-                                  Priority
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="priority"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="priority"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div
-                                  class="p-d-flex p-ai-center justify-content-center"
-                                >
-                                  Escalation Date
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="escalationDate"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="escalationDate"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th >
-                                <div
-                                  class="p-d-flex p-ai-center justify-content-center"
-                                >
-                                  Status
-                                  <div class="Sort_Filter_Position">
-                                    <p-sortIcon field="activity" pSortableColumn="status"></p-sortIcon>
-                                    <p-columnFilter
-                                      field="status"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    >
-                                    </p-columnFilter>
-                                  </div>
-                                </div>
-                              </th>
-                              <th class="wd-20">Action</th>
-                            </tr>
-                          </ng-template>
-                          <ng-template pTemplate="body" let-queryGenerationSummary let-rowIndex="rowIndex">
-                            <tr class="p-selectable-row textcenter ">
-                              <td class="text-center">{{ rowIndex + 1 }}</td>
-                              <td>
-                                <label class="form-lable mb-0">{{ queryGenerationSummary.queryNumber}}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.submissionDate | date :"dd-MMM-yyyy"
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.createdBy
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.employeeCode
-                                }}</label>
-                              </td>
 
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.empName
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.companyName
-                                }}</label>
-                              </td>
-
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.applicationModuleName
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.queryTypeCode
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.subQueryTypeCode
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.subject
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.priority
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.escalationDate |date:"dd-MMM-yyyy"
-                                }}</label>
-                              </td>
-                              <td>
-                                <label class="form-lable mb-0">{{
-                                  queryGenerationSummary.status
-                                }}</label>
-                              </td>
-                              <td>
-                                <span >
-                                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(queryGenerationSummary)" ></i>
-                                    <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(queryGenerationSummary)"></i>
-                                    <i class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="getDeleteById(queryGenerationSummary,deleteTemp)" ></i ></span>
-
-                              </td>
-                            </tr>
-                          </ng-template>
-                          <ng-template pTemplate="emptymessage">
-                            <tr>
-                              <td
-                                colspan="15"
-                                class="font-14 font500 text-center text-red"
-                              >
-                                <span>No Data Available</span>
-                              </td>
-                            </tr>
-                          </ng-template>
-
-                          <ng-template #deleteTemp>
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="UploadModalLabel">Delete Business Year Definition</h5>
-                              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-                                  aria-hidden="true">×</span></button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="card">
-                                <div class="card-body">
-                                  <div class="row clearfix">
-                                    <div class="col-md-12">
-                                      <label class="form-label">Are you sure Delete query?</label>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-primary"
-                                (click)="deletePreviewCycleDiscard();modalRef1.hide();modalRef.hide()">Yes</button>
-                              <button type="button" class="btn btn-secondary" (click)="modalRef1.hide()">No</button>
-                            </div>
-                          </ng-template>
-
-                        </p-table>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
               </form>
             </div>
           </div>

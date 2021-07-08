@@ -64,6 +64,7 @@ export class QueryDashboardComponent implements OnInit {
   summarysubject: any;
   summarysubquerydescription: any;
   queryGenerationEmpId: any;
+  queryTypeMasterId: any;
 
   constructor(public formBuilder : FormBuilder,public queryService :QueryService
     ,private excelservice: ExcelService,private alertService: AlertServiceService,private router: Router,
@@ -134,6 +135,7 @@ smallpopup(template: TemplateRef<any>) {
 
   smallpopup1(queryDescription: TemplateRef<any>,summary ) {
     this.summarydescription = summary.queryDescription;
+    // this.queryTypeMasterId = summary.queryTypeMasterId;
     // console.log("summary",summary)
      this.modalRef = this.modalService.show(queryDescription,
        Object.assign({}, { class: 'gray modal-md' })
@@ -148,7 +150,7 @@ smallpopup(template: TemplateRef<any>) {
    }
 
    smallpopup3(subqueryDescription: TemplateRef<any>,summary ) {
-    this.summarysubquerydescription = summary.subQueryTypeCode;
+    this.summarysubquerydescription = summary.subQueryTypeDescription;
      this.modalRef = this.modalService.show(subqueryDescription,
        Object.assign({}, { class: 'gray modal-md' })
      );

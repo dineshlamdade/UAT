@@ -270,7 +270,7 @@
 
                                                 <ng-template pTemplate="caption">
                                                   <div class="col-md-6 mt-4">
-                                                    <label class="form-label">Total Count:({{summaryLength}})</label>
+                                                    <label class="form-label">Total Count : &nbsp;({{summaryLength}})</label>
                                                 </div>
                                                   <div style="text-align: right">
                                                       <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
@@ -299,7 +299,7 @@
                                                             </th>
                                                             <th class="wd-15">
                                                                 <div class="p-d-flex p-jc-between p-ai-center">
-                                                                    Submission Date
+                                                                    Submit Date
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"  pSortableColumn="submissionDate"></p-sortIcon>
                                                                         <p-columnFilter type="date" field="submissionDate"
@@ -426,8 +426,8 @@
                                                             <th class="wd-15">
                                                                 <div
                                                                     class="p-d-flex p-ai-center justify-content-center">
-                                                                    Lastupdate
-                                                                    Date
+                                                                    Last updated
+
                                                                     <div class="Sort_Filter_Position">
                                                                       <p-sortIcon field="activity" pSortableColumn="escalationDate"></p-sortIcon>
                                                                       <p-columnFilter
@@ -489,8 +489,10 @@
                                                             </td>
 
                                                             <td class="a" (click)="smallpopup1(queryDescription,summary)"> <label
-                                                              class="form-lable mb-0 " > <span [innerHTML]="summary.queryDescription"></span></label>
-                                                            </td  >
+                                                              class="form-lable mb-0 a" ><p class="a" [innerHTML]="summary.queryDescription"></p></label>
+                                                              <!-- <span class="a" [innerHTML]="summary.queryDescription"></span> -->
+
+                                                            </td >
 
                                                             <ng-template #queryDescription>
                                                               <div class="modal-header">
@@ -516,12 +518,12 @@
 
 
                                                             <td class="a"  (click)="smallpopup3(subqueryDescription,summary)"><label
-                                                                    class="form-lable mb-0 a"><p class="a" [innerHTML]="summary.subQueryTypeCode">{{summary.subQueryTypeCode}}</p></label>
+                                                                    class="form-lable mb-0 a"><p class="a" [innerHTML]="summary.subQueryTypeDescription">{{summary.subQueryTypeDescription}}</p></label>
 
                                                             </td>
                                                             <ng-template #subqueryDescription>
                                                               <div class="modal-header">
-                                                                  <h6 class="modal-title" id="UploadModalLabel">Query Description</h6>
+                                                                  <h6 class="modal-title" id="UploadModalLabel">Query Subject</h6>
                                                                   <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
                                                                   aria-hidden="true">×</span></button>
                                                               </div>
@@ -541,12 +543,12 @@
                                                               </div>
                                                           </ng-template>
                                                             <td  class="a" (click)="smallpopup2(querySubject,summary)">  <label
-                                                                    class="form-lable mb-0 a"><p class="a">{{summary.subject}}</p></label>
+                                                                    class="form-lable mb-0 a"><p class="a" [innerHTML]="summary.subject">{{summary.subject}}</p></label>
 
                                                             </td>
                                                             <ng-template #querySubject>
                                                               <div class="modal-header">
-                                                                  <h6 class="modal-title" id="UploadModalLabel">Query Description</h6>
+                                                                  <h6 class="modal-title" id="UploadModalLabel">SubQuery Description</h6>
                                                                   <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
                                                                   aria-hidden="true">×</span></button>
                                                               </div>
@@ -555,7 +557,7 @@
                                                                       <div class="card-body">
                                                                           <div class="row clearfix">
                                                                               <div class="col-md-12">
-                                                                                  <p>{{summarysubject}}</p>
+                                                                                  <p [innerHTML]="summarysubquerydescription">{{summarysubquerydescription}}</p>
                                                                               </div>
                                                                           </div>
                                                                       </div>
@@ -585,9 +587,9 @@
                                                                         aria-hidden="true"></i></span></td> -->
                                                                         <td>
                                                                           <span >
-                                                                              <i *ngIf="summary.status != 'Closed'" class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(summary)" ></i>
+                                                                              <i *ngIf="summary.status != 'Closed' && summary.status != 'Redirect'" class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(summary)" ></i>
                                                                               <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(summary)"></i>
-                                                                              <i *ngIf="summary.status != 'Closed'"  class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="smallpopup4(deleteTemp)" ></i ></span>
+                                                                              <i *ngIf="summary.status != 'Closed' && summary.status != 'Redirect'"  class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="smallpopup4(deleteTemp)" ></i ></span>
                                                                                 <!--  -->
                                                                         </td>
                                                         </tr>

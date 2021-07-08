@@ -86,7 +86,7 @@ queryCommunicationForm: FormGroup;
   addressedToEmpId: number;
   docName: any =[];
   // hideClosebtn :boolean = true;
-
+  badgeCount:boolean=true;
 constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,
   public sanitizer: DomSanitizer,private alertService: AlertServiceService, private route:ActivatedRoute ){
 
@@ -445,9 +445,8 @@ skipScreen()
   });
   this.queryService.addQueryIteration(formData).subscribe(res =>
   {
-    this.alertService.sweetalertMasterSuccess('Query Skipped Successfully', '' );
-    this.status = 'Closed';
-
+    // this.alertService.sweetalertMasterSuccess('Query Skipped Successfully', '' );
+    // this.status = 'Closed';
   })
   this.reset();
 }
@@ -591,12 +590,10 @@ this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
 
 navigateToDocmentViewer(GetIterationdetailsbyQueryIDData) {
   localStorage.setItem('GetIterationdetailsbyQueryIDData',JSON.stringify(GetIterationdetailsbyQueryIDData))
+  if(GetIterationdetailsbyQueryIDData.numberOfDocuments > 0){
   const url = this.router.serializeUrl(
     this.router.createUrlTree(['/document-viewer'])
   );
-
-  // localStorage.setItem('masterInfo', JSON.stringify(this.masterInfo));
-  // localStorage.setItem('documentInformationId', documentInformationId);
 
   this.router.navigate([]).then((result) => {
     window.open(
@@ -606,6 +603,10 @@ navigateToDocmentViewer(GetIterationdetailsbyQueryIDData) {
     );
   });
 }
-
+}
+resetFeedbackForm()
+{
+this.ratingName = [];
+}
 
 };
