@@ -3,6 +3,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <form  [formGroup]="form" #formDirective="ngForm"
+                (ngSubmit)="addBankInfo(form,formDirective)" method="post" novalidate>
                 <div class="card-body p-0">
 
                     <div class="col-12 mt-10">
@@ -15,24 +17,20 @@
 
                                 <div class="col-sm-3">
                                     <label class="form-label">Area</label>
-                                    <select name="payrollarea" class="form-control">
+                                    <select name="payrollAreaCode" class="form-control" formControlName='payrollAreaCode'>
                                         <option value=""> Select</option>
-                                        <option value=""> All </option>
-                                        <option value=""> Worker</option>
-                                        <option value="">Staff </option>
-                                        <option value="">Apprentice </option>
-                                        <option value="">Expat </option>
+                                        <option *ngFor="let list of payrollList" [value]="list.payrollAreaCode"> 
+                                            {{list.payrollAreaCode}} </option>
+                                       
                                     </select>
                                 </div>
 
                                 <div class="col-sm-3">
                                     <label class="form-label">Type of Payment</label>
-                                    <select name="payrollarea" class="form-control">
+                                    <select name="payrollarea" class="form-control" fromControlName="typeOfPayment">
                                         <option value=""> Select</option>
-                                        <option value=""> Salary </option>
-                                        <option value="">Payroll Reimbursement </option>
-                                        <option value=""> </option>
-                                        <option value=""> </option>
+                                        <option *ngFor="let type of typeOfPaymentList" [value]="type"> {{type}} </option>
+                                      
                                     </select>
 
                                 </div>
@@ -45,7 +43,8 @@
                                                 <i class="fa fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                        <input data-provide="datepicker" data-date-autoclose="true" formControlName="fromDate" class="form-control"
+                                        [minDate]="formMinDate" placement="center"  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                             placeholder="Date" bsDatepicker>
                                     </div>
 
@@ -58,7 +57,8 @@
                                                 <i class="fa fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control" formControlName="toDate"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" placement="center"
                                             placeholder="Date" bsDatepicker>
                                     </div>
 
@@ -71,12 +71,10 @@
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-3">
                                     <label class="form-label">Copy From</label>
-                                    <select name="payrollarea" class="form-control">
+                                    <select name="copyFromPayrollArea" class="form-control" formControlName="copyFromPayrollArea">
                                         <option value=""> Select</option>
-                                        <option value="">PA_Worker-Salary </option>
-                                        <option value="">PA_Worker-Payroll Reimbursement </option>
-                                        <option value=""> PA_Staff-Salary</option>
-                                        <option value="">PA_Staff-Payroll Reimbursement </option>
+                                        <option *ngFor="let copy of copyFromPayrollAreaList">{{copy.name}} </option>
+                                       
                                     </select>
                                 </div>
 
@@ -85,7 +83,7 @@
                             <br>
 
                             
-                            <div class="row">
+                            <div class="row" formArrayName="pfFormArray">
                                 <div class="col-md-12">
                                     <p-table [value]="users1">
                                         <ng-template pTemplate="header">
@@ -186,70 +184,62 @@
                                             </tr>
 
                                         </ng-template>
-                                        <ng-template pTemplate="body" let-user1>
-                                            <tr class="p-selectable-row">
-                                                <td class="text-center">1</td>
-                                                <td>
-                                                    <select name="BankTransfer" class="form-control">
-                                                        <option value=""> Bank Transfer</option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
+                                        <ng-template pTemplate="body"  let-rowIndex="rowIndex">
+                                            <tr class="p-selectable-row"   *ngFor="let summary of pfArray.controls; index as i" [formGroupName]="i">
+                                                <td class="text-center">{{i+1}}</td>
+                                                <td scope="row">
+                                                    <select name="modeOfPayment" class="form-control" formControlName="modeOfPayment">
+                                                        <option value=""> Select</option>
+                                                        <option *ngFor="let mode of modeOfPaymentList" [value]="mode">{{mode}}</option>
                                                     </select>
                                                 </td>
-                                                <td>
-                                                    <select name="BankName" class="form-control">
-                                                        <option value="">Kotak Name</option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
+                                                <td scope="row">
+                                                    <select name="bankName" class="form-control" formControlName="bankName"  (change)="bankSelect($event)">
+                                                        <option value="">Select</option>
+                                                        <option *ngFor="let bank of bankList" value="bank.bankName" > {{bank.bankName}}</option>
                                                     </select>
                                                 </td>
-                                                <td>
-                                                    <select name="BranchCode" class="form-control">
-                                                        <option value=""> KKBSDJFG(Kothrud)</option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
+                                                <td scope="row">
+                                                    <select name="ifsc" class="form-control" formControlName="ifsc">
+                                                        <option value=""> Select</option>
+                                                        <option *ngFor="let bank of bankList" [value]="bank.bankIFSC"> {{bank.bankIFSC}}</option>
+                                                        
                                                     </select>
                                                 </td>
-                                                <td>
-                                                    <select name="AccountNo" class="form-control">
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
-                                                        <option value=""> </option>
+                                                <td scope="row">
+                                                    <select name="accountNo" class="form-control" formControlName="accountNo">
+                                                        <option value=""> Select</option>
+                                                        <option *ngFor="let bank of bankList" [value]="bank.accountNo"> {{bank.accountNo}}</option>
+                                                  
                                                     </select>
                                                 </td>
-                                                <td>
+                                                <td scope="row">
+                                                    <input type="text" class="form-control"  formControlName="nameAsPerBank">
+                                                </td>
+                                                <td scope="row">
+                                                    <input type="text" class="form-control"  formControlName="percentNetpay"
+                                                     (change)="percentValidate($event)">
+                                                </td>
 
+                                                <td scope="row">
+                                                    <input type="text" class="form-control" formControlName="amount"
+                                                     >
                                                 </td>
-                                                <td>
+
+
+                                                <td scope="row">
                                                     <input type="text" class="form-control">
                                                 </td>
 
-                                                <td>
-                                                    5,000.00
-                                                </td>
+                                                <td scope="row">
 
-
-                                                <td>
-                                                    <input type="text" class="form-control">
-                                                </td>
-
-                                                <td>
-
-                                                    <i class="fa fa-times  font-18 text-red cursor-pointer"
+                                                    <i class="fa fa-times  font-18 text-red cursor-pointer" (click)="deleteRow()"
                                                         aria-hidden="true"></i>&nbsp;
-                                                    <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
+                                                    <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer" (click)="addRow()"
                                                         aria-hidden="true"></i>&nbsp;
                                                 </td>
                                             </tr>
-                                            <tr class="p-selectable-row">
+                                            <!-- <tr class="p-selectable-row">
                                                 <td class="text-center">2</td>
                                                 <td>
                                                     Bank Transfer
@@ -363,23 +353,32 @@
                                                     <i class="fa fa-times  font-18 text-red cursor-pointer"
                                                         aria-hidden="true"></i>&nbsp;
                                                 </td>
-                                            </tr>
+                                            </tr> -->
 
-                                            <tr class="p-selectable-row table-light-color">
+                                            <!-- <tr class="p-selectable-row table-light-color">
 
                                                 <td colspan="6" class="text-bold text-right ">Total
 
                                                 </td>
-                                                <td class="text-center text-bold">85</td>
+                                                <td class="text-center text-bold">{{percentageTotal()}}</td>
                                                 <td class="text-center text-bold">40,000</td>
                                                 <td colspan="2"></td>
 
 
 
+                                            </tr> -->
+                                        </ng-template>
+                                        <ng-template pTemplate="footer">
+                                            <tr>
+                                                
+                                                <td colspan="6"class="text-bold text-right ">Total</td>
+                                                <td class="text-center text-bold">{{percentageTotal()}}</td>
+                                                <td class="text-center text-bold"></td>
+                                                <td colspan="2"></td>
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="emptymessage">
-                                            <tr>
+                                            <tr>    
                                                 <td colspan="15" class="font-14 font500 text-center text-red"><span>No
                                                         Data
                                                         Available</span>
@@ -502,9 +501,9 @@
 
                                             <td>
 
-                                                <i class="fa fa-edit  font-18 text-dark-green cursor-pointer"
+                                                <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" (click)="addRow()"
                                                     aria-hidden="true"></i>&nbsp;
-                                                <i class="fa fa-eye font-18 text-blue cursor-pointer"
+                                                <i class="fa fa-eye font-18 text-blue cursor-pointer" (click)="deleteRow()"
                                                     aria-hidden="true"></i>&nbsp;
 
                                             </td>
@@ -554,4 +553,5 @@
                     </div>
 
                 </div> <!-- card body -->
+            </form>
             </div>

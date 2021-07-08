@@ -29,6 +29,7 @@ export class PayrollAreaComponent implements OnInit {
   additionalPayrollAllowed: any = false;
   toDateValidation: any;
   latestPrimary: any;
+  hidePrimary:any=true;
   constructor(
     private payrollService: PayrollAreaInformationService,
     private formBuilder: FormBuilder,
@@ -224,6 +225,14 @@ changePrimaryAreaName(){
   const toSelect = this.summaryData.filter(c=>c.payrollAreaCode===this.form.get('primaryAreaName').value)
   if(toSelect){
     this.fromDateValidation=new Date(toSelect[0].payrollAreaFromDate);
+  }
+}
+
+hidePrimaryAreaName(){
+  if(this.form.get('type').value==='Primary Main' || this.form.get('type').value==='Primary Additional'){
+    this.hidePrimary = false;
+  }else{
+    this.hidePrimary = true;
   }
 }
 
