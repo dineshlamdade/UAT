@@ -8,13 +8,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-
                             <!--Source-->
-                            <div class="mb-0">
+                            <div class="mb-0" *ngIf="!summeryFlag">
                                 <h3 class="font-14 text-purple font-bold">Summary</h3>&nbsp;
                             </div>
 
-                            <div [@slideInOut]>
+                            <div [@slideInOut] >
 
                                 <div class="row">
 
@@ -23,14 +22,19 @@
 
                                             <div class="" style="margin-left: 12px;">
 
-                                                <button type="submit"
+                                                <button *ngIf="!summeryFlag" (click)="stepperFunction('addNew')"
                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple "
                                                     tooltip="Save" style="margin-left:20px ;"><b>
                                                         <i class="fa fa-plus-circle"></i></b> Add New</button>&nbsp;
 
+                                                        <button *ngIf="summeryFlag" (click)="stepperFunction('viewSum')"
+                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple "
+                                                    tooltip="Save" style="margin-left:20px ;"><b>
+                                                        <i class="fa fa-plus-circle"></i></b> View Summary</button>&nbsp;
+
                                             </div>
                                         </div>
-                                        <div class="card">
+                                        <div class="card" *ngIf="!summeryFlag">
 
                                             <br>
                                             <div class="table-responsive Custom_Table">
@@ -319,7 +323,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-0">
+                            <div class="mb-0" *ngIf="summeryFlag">
                                 <h3 class="font-14 text-purple font-bold"> Matrix
                                 </h3>&nbsp;
                             </div>
@@ -328,7 +332,7 @@
 
 
                             <!--stepper indexes open-->
-                            <div class="row divided" style="padding-left: 176px;margin-top: -33px;">
+                            <div class="row divided"  *ngIf="summeryFlag"  style="padding-left: 176px;margin-top: -33px;">
                                 <!-- <div class="col-sm-3">
                                <button class="stepbutton" (click)="abc(0)">Summary</button>
                              </div> -->
@@ -394,7 +398,7 @@
                             </div>
                             <!--stepper indexes exit-->
 
-                            <div class="row divided">
+                            <div class="row divided"  *ngIf="summeryFlag">
                                 
                                 <div class="col-sm-4 stepperIndex" style="padding-left: 185px;">Source</div>
                                 <div class="col-sm-4 stepperIndex" style="padding-left: 112px;">Source Combination</div>
@@ -403,7 +407,7 @@
                             </div>
 
 
-                            <div class="tabview-contents">
+                            <div class="tabview-contents"  *ngIf="summeryFlag">
                                 <div [ngSwitch]="stepperIndex">
                                     <div *ngSwitchCase="0" [@slideInOut]>
                                         <div class="row mt-20">

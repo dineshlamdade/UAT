@@ -85,6 +85,9 @@ export class SdmStepperComponent implements OnInit {
   sourceArray: Array<any> = [];
   sourceCountArray: Array<number> = [1, 2, 3, 4, 5]
   sourcePeriodArrayList: ["Asd", "Asd", "Asd", "Asd", "Asd"]
+
+  summeryFlag:boolean=false;
+
   public windowScrolled: boolean;
   constructor(private formBuilder: FormBuilder) {
     this.sdmFormStep1 = this.formBuilder.group({
@@ -183,6 +186,11 @@ export class SdmStepperComponent implements OnInit {
     ) {
       this.windowScrolled = false;
     }
+  }
+
+  stepperFunction(value){
+   
+    this.summeryFlag = ! this.summeryFlag;
   }
 
   scrollToTop() {
