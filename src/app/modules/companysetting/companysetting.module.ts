@@ -45,6 +45,9 @@ import { UserDashboardComponent } from './user-rolesand-permission/user-dashboar
 import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
 import { AreasetComponent } from './areaset/areaset.component';
 import { EmployeesetComponent } from './employeeset/employeeset/employeeset.component';
+import { AdhocComponent } from './business-cycle/adhoc/adhoc.component';
+import { SupplementaryComponent } from './business-cycle/supplementary/supplementary.component';
+
 
 
 
@@ -67,7 +70,10 @@ import { EmployeesetComponent } from './employeeset/employeeset/employeeset.comp
      UserDashboardComponent,
      PayRollStructureComponent,
      AreasetComponent,
-     EmployeesetComponent
+     EmployeesetComponent,
+     AdhocComponent,
+     SupplementaryComponent
+    
   ],
   imports: [
     CommonModule,

@@ -23,6 +23,8 @@ export class AreasetComponent implements OnInit {
   viewFormFlag: boolean = false;
   hideRemarkDiv2:boolean = true;
 
+  
+
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
     private toaster : ToastrService, private primengConfig: PrimeNGConfig) { 
       this.areasetForm = new FormGroup({
@@ -31,6 +33,7 @@ export class AreasetComponent implements OnInit {
       serviceMasterId: new FormControl('',Validators.required),
       remark: new FormControl('',Validators.required),
       areaMaster: new FormControl([],Validators.required)
+     
     })
     //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;   
   }
@@ -45,7 +48,7 @@ export class AreasetComponent implements OnInit {
         this.hideRemarkDiv2 = true;
     }
   }
-
+  
 
   ngOnInit(): void {
       this.getServiceList();
@@ -59,9 +62,8 @@ export class AreasetComponent implements OnInit {
         this.areasetService.saveAreaSet(this.areasetForm.value).subscribe((res)=>{
         this.toaster.success('','Area set saved succefully');
         this.getSummaryData();
-        this.areasetForm.reset();
-        
         this.areaListData = [];
+        this.areasetForm.reset();
         this.editFormFlag = false;
         this.viewFormFlag = false;
       })

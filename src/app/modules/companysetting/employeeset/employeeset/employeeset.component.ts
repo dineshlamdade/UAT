@@ -37,15 +37,16 @@ export class EmployeesetComponent implements OnInit {
   changeEvent2($event) {
 
     if ($event.target.checked) {
-      this.hideRemarkDiv2 = false;
+      this.hideRemarkDiv2 = true;
     }
     else {
-      this.hideRemarkDiv2 = true;
+      this.hideRemarkDiv2 = false;
     }
   }
 
   onSubmit() {
-
+   console.log(this.employeesetForm.value)
+   this.employeesetForm.reset();
   }
 
   onUpdate() {

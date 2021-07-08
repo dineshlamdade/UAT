@@ -17,7 +17,7 @@
 
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                         <label class="form-label">Emp. Set Name</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" formControlName = "empSetName">
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
 
@@ -49,7 +49,7 @@
 
 
                     </div>
-                  </form>
+                  
                   <br>
 
                   <ng-container>
@@ -63,18 +63,16 @@
                       </div>
                       <div class="col-md-3 form-group" *ngIf="hideRemarkDiv2">
                         <label class="form-label">Remark</label>
-                        <textarea autocomplete="off" class="form-control" rows="2" placeholder="Enter Remark"
-                          [required]="hideRemarkDiv1"></textarea>
+                        <textarea autocomplete="off" class="form-control" rows="2" 
+                        placeholder="Enter Remark" formControlName = "remark"
+                        [required]="hideRemarkDiv1">
+                        </textarea>
                       </div>
                     </div>
                   </ng-container>
-                  <!-- <div class="float-left d-flex justify-content">
-                <input type="checkbox"  class="mt-2"/>&nbsp;
-              <label class="form-label mt-2 margin-right:30px;">Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <label class="form-label mt-2">Remark</label>&nbsp;
-              <textarea type="text"></textarea>
-              </div>
-            -->
+                 
+
+         
                   <div class="row mt-15">
                     <div class="col-12">
                       <div class="float-right mb-15">
@@ -93,6 +91,9 @@
                       </div>
                     </div>
                   </div>
+                </form>
+
+                
                   <br>
                   <div class="mb-0">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
@@ -184,7 +185,7 @@
                             <td>
 
                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer"
-                                aria-hidden="true" tooltip = "Edit"(click) = "editEmployeeSet()"></i>&nbsp;
+                                aria-hidden="true" tooltip = "Edit" (click) = "editEmployeeSet()"></i>&nbsp;
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true" tootltip = "View"
                               (click) = "viewEmployeeSet()"></i>&nbsp;
 

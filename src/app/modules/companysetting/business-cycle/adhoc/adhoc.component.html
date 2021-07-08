@@ -1,0 +1,577 @@
+
+
+  
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+
+              <form class="card" role="form" formGroup="AttributeCreationForm" (ngSubmit)="addAttributeCreation()"
+                method="post" novalidate>
+           <fieldset>
+               <legend>Primary Cycle</legend>
+                <div class="row">
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Cycle Definition</label>
+                    <div class="input-group">
+                        <select class="form-control">
+                            <option>Select</option>
+                            <option value=""> Weekly </option>
+                            <option value="">By Weekly</option>
+                            <option value="">Monthly</option>
+                            <option value="">Semi Monthly</option>
+                            <option value="">Adhoc</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Cycle</label>
+                    <div class="input-group">
+                        <select class="form-control">
+                            <option>Select</option>
+                            <option value=""> APR 2020 </option>
+                            <option value="">MAY 2020</option>
+                            <option value="">JUNE 2020</option>
+                            <option value="">JUL 202</option>
+                        
+                        </select>
+                    </div>
+                  </div>
+                 <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Start Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                            data-provide="datepicker" data-date-autoclose="true"
+                                            class="form-control" (bsValueChange)="setPolicyEndDate()"
+                                            placeholder="" bsDatepicker
+                                            [maxDate]="today" disabled>
+                                    </div>
+                                </div>
+
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                    <label class="form-label">End Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i
+                                    class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                            data-provide="datepicker" data-date-autoclose="true"
+                            class="form-control" (bsValueChange)="setPolicyEndDate()"
+                            placeholder="" bsDatepicker
+                            [maxDate]="today" disabled>
+                    </div>
+                  </div>
+                 
+                  <br><br><br>
+                  <div class="col-sm-6 col-md-3" *ngIf="hidevalue">
+                    <label class="form-label"></label>
+                    <div class="input-group">
+                      <input type="text"
+                        ngClass="{'is-invalid' : AttributeCreationForm.get('optionList').status == 'INVALID'}"
+                        [readonly]="!disabled" (change)="onChangeEvent($event.target.value)"
+                        formControlName="optionList" class="form-control" placeholder="Description">
+                    </div>
+                  </div>
+
+
+                  <div style="margin-top: 23px" *ngIf="hidevalue">
+                    
+                    <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addOptionList()"></i>
+                   
+                  </div>
+             
+                </div>
+            </fieldset>
+            <br>
+            <fieldset>
+              <legend>Adhoc Cycle</legend>          
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                  <label class="form-label">Cycle Name</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <label class="form-label">From Date</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i
+                                class="fa fa-calendar"></i></span>
+                    </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                        data-provide="datepicker" data-date-autoclose="true"
+                        class="form-control" (bsValueChange)="setPolicyEndDate()"
+                        placeholder="" bsDatepicker
+                        [maxDate]="today">
+                </div>
+                </div>
+               <div class="col-sm-6 col-md-3">
+                                  <label class="form-label">To Date</label>
+                                  <div class="input-group">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text"><i
+                                                  class="fa fa-calendar"></i></span>
+                                      </div>
+                                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                          data-provide="datepicker" data-date-autoclose="true"
+                                          class="form-control" (bsValueChange)="setPolicyEndDate()"
+                                          placeholder="" bsDatepicker
+                                          [maxDate]="today" disabled>
+                                  </div>
+                              </div>
+              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Copy From</label>
+                                <select class="form-control">
+                                    <option>Select</option>
+                                    <option value=""> Cycle 1 </option>
+                                    <option value="">Cycle 2</option>
+                                    <option value="">Cycle 3</option>
+                                    <option value="">Cycle 4</option>
+                                </select>
+             </div>
+               </div>
+               <br>
+              </fieldset>
+              
+               <br>
+               <fieldset>
+                   <legend>Heads</legend>
+
+                   <div class="row">
+                    <div class="col-5">
+                    <label for="" class="text-purple">Source</label>
+                    <span for="" class="text-purple" style="margin-left: 290px;">Count : 0</span>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col-1"> </div>
+                <div class="col-5">
+                    <label for="" class="text-purple">Destination</label>
+                    <span for="" class="mr-33  text-purple" style="margin-left: 279px;">Count: 0</span>
+                </div>
+                </div> 
+               <div class="row">
+               
+                <div class="col-5">
+                   
+                    <div class="card">            
+                   
+                            <div class="table-responsive Custom_Table">
+                              <p-table [value]="users1" [paginator]="true" [rows]="10">
+                                <ng-template pTemplate="header">
+                                  <tr>
+                                    
+                                  
+                                  <th rowspan="2" class="wd-12 text-center">
+                                   <div class="p-d-flex p-jc-between p-ai-center text-center">Head
+    
+              
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="Code"
+                                     pSortableColumn="Code"></p-sortIcon>
+                              <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">   
+                                  </p-columnFilter>
+                                  </div>
+                                  </div>
+                                 </th> 
+              
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                <div class="Sort_Filter_Position">
+                                 <p-sortIcon field="Nature"
+                                 pSortableColumn="Nature"></p-sortIcon>
+                             <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                                  </p-columnFilter>
+                                 </div>
+                                 </div>
+                                </th>
+                              </tr>
+                            
+                             </ng-template>
+                            <ng-template pTemplate="body" let-user1>
+                               <tr class="p-selectable-row">
+                                  <td>  NR1  
+                                 </td>
+                                 
+                                  <td>  Earning
+                                  </td>
+                                </tr>
+                               
+                                <tr class="p-selectable-row">
+                                  <td>   NR2 
+                                 </td>
+                                
+                                  <td>  Earning
+                                  </td>
+                                </tr>
+                               
+                                <tr class="p-selectable-row">
+                                  <td>  NR3
+                                 </td>
+                              
+                                  <td>  Earning 
+                                  </td>
+                                </tr>
+    
+                           
+                           </ng-template>
+                           <ng-template pTemplate="emptymessage">
+                                <tr>
+                                 <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                               Available</span>
+                                 </td>
+                                </tr>
+                           </ng-template>
+                           </p-table>
+                            </div>
+                   
+
+                           
+                    </div>
+                  
+                </div>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col-1">                                
+                        <div class="row">
+                        <div class="col-md-12 mt-50">
+                        <button type="button" class="btn"><i class="fa fa-chevron-right
+                            "></i></button>
+                        </div>
+                        <div class="col-md-12 mt-10">
+                        <button type="button" class="btn"><i class="fa fa-chevron-left
+                            "></i></button>
+                        </div>
+                        </div>
+                        
+                  
+                 </div>
+
+                <div class="col-5">
+                    <div class="card">            
+                      
+                            <div class="table-responsive Custom_Table">
+                              <p-table [value]="users1" [paginator]="true" [rows]="10">
+                                <ng-template pTemplate="header">
+                                  <tr>
+                                    
+                                  
+                                  <th rowspan="2" class="wd-4 text-center">
+                                   <div class="p-d-flex p-jc-between p-ai-center text-center">Head
+    
+              
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="Head"
+                                     pSortableColumn="Head"></p-sortIcon>
+                              <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">   
+                                  </p-columnFilter>
+                                  </div>
+                                  </div>
+                                 </th> 
+              
+                               
+                                <th rowspan="2" class="wd-4 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                <div class="Sort_Filter_Position">
+                                 <p-sortIcon field="Nature"
+                                 pSortableColumn="Nature"></p-sortIcon>
+                             <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">  
+                                  </p-columnFilter>
+                                 </div>
+                                 </div>
+                                </th>
+                              </tr>
+                            
+                             </ng-template>
+                            <ng-template pTemplate="body" let-user1>
+                              <tr class="p-selectable-row">
+                                <td>  NR1
+                               </td>
+                               
+                                <td>  Earning
+                                </td>
+                              </tr>
+                             
+                              <tr class="p-selectable-row">
+                                <td>  NR3
+                               </td>
+                              
+                                <td>  Earning
+                                </td>
+                              </tr>
+                             
+                              <tr class="p-selectable-row">
+                                <td> NR5
+                               </td>
+                              
+                               
+                                <td> Deduction 
+                                </td>
+                              </tr>
+                               
+                               
+                                                       
+                           
+                           </ng-template>
+                           <ng-template pTemplate="emptymessage">
+                                <tr>
+                                 <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                               Available</span>
+                                 </td>
+                                </tr>
+                           </ng-template>
+                           </p-table>
+                            </div>
+                      
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+        <br>
+        <div class="float-left d-flex justify-content ml-20">
+          <input type="checkbox"  class="mt-2"/>&nbsp;
+        <label class="form-label mt-2 margin-right:30px;">Arrear</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="form-label mt-2">Remark</label>&nbsp;
+        <textarea type="text"></textarea>
+        </div>
+                <div class="row mt-15">
+                  <div class="col-12">
+                    <div class="float-right mb-15">
+                      <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForminvalid"
+                        ngClass="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
+                            class="fa fa-floppy-o"></i></b>
+                        Save</button>
+                      <!--     [disabled]="CycleDefinationForm.invalid" [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}" -->
+
+                      <button type="button" (click)="CancelAttributeCreation()" *ngIf="viewCancelButton"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                        tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                        Cancel</button>
+
+                      <button type="button" (click)="ResetAttributeCreation()" *ngIf="!viewCancelButton"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                        tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                        Reset</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <div class="row mt-30">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="mb-10 text-purple font-bold">
+                      <!-- <h3 class="card-title  font-bold"></h3> -->
+                      Summary
+                    </div>
+                    <div class="">
+                        <p-table [value]="users1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th rowspan="2" >
+                                        Sr. No.
+                                    </th>
+                                    <th rowspan="2" >
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        Adhoc Cycle
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="name"></p-sortIcon>
+                                              <p-columnFilter type="text" field="name" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                       From Date
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="name"></p-sortIcon>
+                                              <p-columnFilter type="text" field="name" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                      To Date
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="name"></p-sortIcon>
+                                              <p-columnFilter type="text" field="name" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                               
+                                 
+                                    <th colspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center ml-50">
+                                        Primary Cycle
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Arrears
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="representative.name"></p-sortIcon>
+                                                <p-columnFilter field="representative" matchMode="in" display="menu"
+                                                    [showMatchModes]="false" [showOperator]="false"
+                                                    [showAddButton]="false" class="p-ml-auto">
+                                                    <ng-template pTemplate="header">
+                                                        <div class="p-px-3 p-pt-3 p-pb-0">
+                                                            <span class="p-text-bold">Agent Picker</span>
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="filter" let-value
+                                                        let-filter="filterCallback">
+                                                        <p-multiSelect [ngModel]="value" [options]="representatives"
+                                                            placeholder="Any" (onChange)="filter($event.value)"
+                                                            optionLabel="name">
+                                                            <ng-template let-option pTemplate="item">
+                                                                <div class="p-multiselect-representative-option">
+                                                                    <img [alt]="option.label"
+                                                                        src="assets/showcase/images/demo/avatar/{{option.image}}"
+                                                                        width="32" style="vertical-align: middle" />
+                                                                    <span class="p-ml-1">{{option.name}}</span>
+                                                                </div>
+                                                            </ng-template>
+                                                        </p-multiSelect>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    
+                                    <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Count of Heads
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Remark
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Lock Status
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Action
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                </tr>
+                              <tr>
+      <th rowspan="2" class="wd-10">
+         Definition
+      </th>
+      <th rowspan="2" class="wd-10">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Name
+            <div class="Sort_Filter_Position">
+                <p-sortIcon field="name"></p-sortIcon>
+                <p-columnFilter type="text" field="name" display="menu"
+                    class="p-ml-auto"></p-columnFilter>
+            </div>
+        </div>
+    </th>
+                               </tr>
+                            </ng-template>
+  
+  
+  
+                            <ng-template pTemplate="body" let-user1>
+                                <tr class="p-selectable-row">
+                                    <td class="bg-color-light_gray">1</td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.headtype}}</label>
+  
+                                    </td>
+  
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.openingval}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                                            <td class="bg-color-light_gray"><label
+                                              class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                      <td class="bg-color-light_gray"><label
+                                              class="form-lable mb-0">{{user1.openingval}}</label></td>
+                                      <td class="bg-color-light_gray"><label
+                                              class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                                              <td class="bg-color-light_gray"><label
+                                                  class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                          <td class="bg-color-light_gray text-center">Lock
+                                              <!-- <i class="fa fa-lock font-18 " aria-hidden="true"></i></td> -->
+                                          <td class="bg-color-light_gray">
+                                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                              <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                              <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                          </td>
+                                </tr>
+  
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                            Available</span></td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+      </div>
+    </div>
+ 
