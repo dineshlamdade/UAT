@@ -58,6 +58,15 @@ export class FastentryNRAmtComponent implements OnInit {
   selectedTransactionClawback: any;
   selectedClawbackRowIndex: any;
   nonRecurringTransactionGroupDeviationList: any = [];
+  deviationModeData: any[];
+  repeatModeData: any[];
+  deviationData: any[];
+  deviationcount: number;
+  repeatcount: number;
+  selectedDevData: any;
+  repeatRemarkText: any;
+  selectedDeviationdata: any;
+  devationRemarkText: any;
 
   constructor(private datepipe: DatePipe,
     private nonRecService: NonRecurringAmtService,
@@ -241,6 +250,42 @@ export class FastentryNRAmtComponent implements OnInit {
     } else {
       todate = this.saveToDate;
     }
+
+    if(data.executeSDM != 'YES' || data.executeSDM != 'Yes' || data.executeSDM != 'yes')
+		{
+			if(this.selectedFromDate != ''){
+				let inputdata = {
+					"employeeMasterId":data.employeeMasterId,
+					"headMasterId": data.headId,
+					"payrollAreaId":"1",
+					"amount": value,
+					"fromDate": this.selectedFromDate
+				}
+					
+				this.deviationModeData = []
+					this.repeatModeData = []
+					this.deviationData = []
+					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
+						// this.deviationData = res 
+						let resp : any = res;
+							resp.forEach(element => {
+								if(element.status != 'No Deviation'){
+									this.deviationData.push(element)
+								}
+							});
+						data.deviationCount = this.deviationData.length
+						this.deviationData.forEach(element => {
+							if(element.mode == 'Deviation'){
+								this.deviationModeData.push(element)
+								this.deviationcount = this.deviationModeData.length
+							}else if(element.mode == 'Repeat'){
+								this.repeatModeData.push(element)
+								this.repeatcount = this.repeatModeData.length
+							}
+						});
+					})
+			}	
+		}
 
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
@@ -982,6 +1027,50 @@ export class FastentryNRAmtComponent implements OnInit {
       })
     }
   }
+
+   /** edit deviation popup */
+	editdeviationPopupOpen(editdeviationPopup: TemplateRef<any>, data, rowindex){
+		if(data.deviationCount > 0){
+			this.modalRef = this.modalService.show(
+				editdeviationPopup,
+				Object.assign({}, {
+					class: 'gray modal-xl'
+				})
+			);
+			this.selectedDevData = data;
+		}
+	}
+
+  /** save deviation remark data */
+	deviationRemark(remark, deviationdata){
+    this.devationRemarkText = remark;
+    this.selectedDeviationdata = deviationdata
+  }
+
+  /**save repeat remark data */
+	repeatRemark(remark,remarkdata){
+		this.repeatRemarkText = remark;
+		this.selectedDeviationdata = remarkdata
+	}
+
+  updateDeviationRepeatData(selectedDevData){
+		let remark = ''
+		if(this.selectedDeviationdata.mode == 'Deviation'){
+			remark = this.devationRemarkText
+		}else{
+			remark = this.repeatRemarkText
+		}
+
+		let obj = {
+			"deviationAmount":this.selectedDeviationdata.deviationAmount,
+			"mode": this.selectedDeviationdata.mode,
+			"deviationType": this.selectedDeviationdata.deviationType,
+			"deviationRemark":remark,
+			"deviationStatus":this.selectedDeviationdata.status,
+			"deviationAmountLimit":this.selectedDeviationdata.deviationAmountLimit
+		}
+		this.nonRecurringTransactionGroupDeviationList.push(obj)
+	}
 
   /** Get Applcable At selected Value */
 	getSelectedApplicable(value, data) {
