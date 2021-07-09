@@ -35,6 +35,11 @@ export class PayRollService {
       } ) );
   }
 
+
+
+
+
+
 //  Assign E/D Heads API
 
 //Get All Assign Heads
@@ -56,5 +61,63 @@ postAllAssignEDHeads( data): Observable<number | {}> {
     } ) );
 }
 
+  //Get saved PHG
+  getSavedPHGInED( data): Observable<number | {}> {
+    return this._HTTP.post( environment.baseUrl8084 + 'headGroup/phgCommonHeads', data )
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+
+
+//Assign Attribute Heads
+getAttHeads(){
+  return this._HTTP.get(environment.baseUrl8084 + 'attribute-group/global-getAll')
+.pipe(map ((res : any ) => {
+  return res;
+}))
+}
+
+ //Get ED Heads in Att
+ getSavedEDInAtt( data): Observable<number | {}> {
+  return this._HTTP.post( environment.baseUrl8084 + 'headGroup/phgCommonAttributeGroup', data )
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Post ED
+
+postAttGroup( data): Observable<number | {}> {
+  return this._HTTP.post( environment.baseUrl8084 + 'headGroup/attGroup-cascading', data )
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+
+
+//Attribute Step 4 API
+
+//Get All Attribute list
+getAllAttributeList(){
+  return this._HTTP.get(environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster')
+  .pipe(map ((res : any ) => {
+    return res;
+  }))
+}
+
+//Post API IN step 3 and get the list step 4
+getSavedAttributeHeads(data): Observable<number | {}> {
+return this._HTTP.post(environment.baseUrl8084 + 'headGroup/phgCommonAttributes', data).pipe( map ( ( res: any ) =>{
+  return res;
+}));
+}
+
+postAttribute(data): Observable<number | {}> {
+  return this._HTTP.post(environment.baseUrl8084 + 'headGroup/attribute-cascading', data).pipe( map ( ( res: any ) =>{
+    return res;
+  }));
+  }
 
 }
