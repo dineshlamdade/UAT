@@ -43,7 +43,7 @@ export class GgaSummaryComponent implements OnInit {
     this.summaryPage();
   }
 
-  redirectToDeclarationActual(
+ /*  redirectToDeclarationActual(
     institution: string,
     policyNo: string,
     mode: string
@@ -56,10 +56,29 @@ export class GgaSummaryComponent implements OnInit {
       canEdit: mode == 'edit' ? true : false,
     };
     this.institution = institution;
-    this.policyNo = policyNo;
+    this.policyNo = policyNo; */
     //console.log('institution::', institution);
     //console.log('policyNo::', policyNo);
+   // this.myEvent.emit(data);
+ // }
+
+  redirectToDeclarationActual(
+    institution: string,
+    policyNo: string,
+    mode: string
+  ) {
+    this.tabIndex = 2;
+    const data = {
+      institution: institution,
+      policyNo: policyNo,
+      tabIndex: this.tabIndex,
+      canEdit: mode == 'edit' ? true : false,
+      canView: mode == 'view' ? true : false,
+    };
+    this.institution = institution;
+    this.policyNo = policyNo;
     this.myEvent.emit(data);
+    //this.editTransactionUpload.disabled;
   }
 
   // ---------------------Summary ----------------------
