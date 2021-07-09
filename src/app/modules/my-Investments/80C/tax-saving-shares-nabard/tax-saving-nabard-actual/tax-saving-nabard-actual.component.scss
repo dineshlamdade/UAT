@@ -3,3 +3,7 @@ table tr.highlight {
     color: #ffffff;
   }
   
+  .disabled{
+    cursor: not-allowed !important;
+    pointer-events: none;
+}

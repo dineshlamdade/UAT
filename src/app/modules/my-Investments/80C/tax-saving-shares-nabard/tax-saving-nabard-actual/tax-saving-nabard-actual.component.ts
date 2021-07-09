@@ -175,6 +175,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   globalSelectedAmounts: any = '0.00';
   public addNewRow: boolean = true;
   public showDeleteButton: boolean = false;
+  public enableButton : boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -293,6 +294,12 @@ export class TaxSavingNabardActualComponent implements OnInit {
    
   this.getTransactionFilterData();
   if (this.data) {
+    if(this.data.canEdit == true) {
+      this.isDisabled = false;
+    } else if (this.data.canView == true) {
+      this.isDisabled = true;
+      this.enableButton = true;
+    }
     this.selectrow = this.data.accountNumber;
     } else {
       this.selectrow = "any";

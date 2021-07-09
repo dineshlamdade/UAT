@@ -991,20 +991,33 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   changeReceiptAmountFormat() {
+    let receiptAmount_: number;
+    let globalSelectedAmount_ : number;
+
+    receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+    globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
     // let formatedReceiptAmount = this.numberFormat.transform(this.receiptAmount)
     // console.log('formatedReceiptAmount::', formatedReceiptAmount);
     // this.receiptAmount = formatedReceiptAmount;
-    this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
-    if (this.receiptAmount < this.globalSelectedAmount) {
+    // debugger
+    // this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    if (receiptAmount_ < globalSelectedAmount_) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
       );
-    } else if (this.receiptAmount > this.globalSelectedAmount) {
+      this.receiptAmount = '0.00';
+      return false;
+    } else if (receiptAmount_ > globalSelectedAmount_) {
+      console.log(receiptAmount_);
+      console.log(globalSelectedAmount_);
       this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
+        'Receipt Amount is greater than Selected line Actual Amount',
       );
     }
-    console.log('receiptAmount::', this.receiptAmount);
+    // console.log('receiptAmount::', this.receiptAmount);
+    this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
 
      // Update Previous Employee in Edit Modal
