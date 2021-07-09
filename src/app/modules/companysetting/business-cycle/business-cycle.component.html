@@ -16,7 +16,6 @@
                         <div class="card">
                             <div class="card-body">
                               <app-business-year></app-business-year>
-
                               <!-- <app-business-year *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"
                               (accountNo)="redirectToMaster($event)"
                               ></app-business-year> -->
@@ -64,7 +63,6 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                            
                              <app-adhoc></app-adhoc>
                             </div>
                         </div>
@@ -80,7 +78,6 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                               
                                 <app-supplementary></app-supplementary>
                             </div>
                         </div>
@@ -95,7 +92,21 @@
             <br>
 
 
-              
+          </div>
+        </div>
+      </div>
+      <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+        <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+          (click)="scrollToTop()">
+          <i class="fa fa-angle-double-up text-white font-18"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+</div>
+
             
             <!-- <div class="tabview">
 
@@ -149,21 +160,7 @@
                 </label>
             
               </div> -->
-            </div>
-          </div>
-        </div>
-        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
-          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
-            (click)="scrollToTop()">
-            <i class="fa fa-angle-double-up text-white font-18"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-    <app-footer></app-footer>
-  </div>
-</div>
-
+           
 
 
 

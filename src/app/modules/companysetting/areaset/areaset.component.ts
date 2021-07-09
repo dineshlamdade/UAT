@@ -23,10 +23,12 @@ export class AreasetComponent implements OnInit {
   viewFormFlag: boolean = false;
   hideRemarkDiv2:boolean = true;
 
+
   
 
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
     private toaster : ToastrService, private primengConfig: PrimeNGConfig) { 
+      
       this.areasetForm = new FormGroup({
       areaSetMasterId: new FormControl('',Validators.required),
       areaSetName: new FormControl('',Validators.required),
@@ -59,13 +61,16 @@ export class AreasetComponent implements OnInit {
 
   /**save and submit data also add data*/
   onSubmit(){
+   // console.log(this.areasetForm.value)
         this.areasetService.saveAreaSet(this.areasetForm.value).subscribe((res)=>{
         this.toaster.success('','Area set saved succefully');
         this.getSummaryData();
-        this.areaListData = [];
         this.areasetForm.reset();
+        this.areaListData = [];
+      
         this.editFormFlag = false;
         this.viewFormFlag = false;
+       
       })
         //this.areasetForm.reset();
   }

@@ -17,14 +17,16 @@
 
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                         <label class="form-label">Emp. Set Name</label>
-                        <input type="text" class="form-control" formControlName = "empSetName">
+                        <input type="text" class="form-control" formControlName = "empSetName"
+                        [ngClass]="{'is-invalid' : employeesetForm.get('empSetName').status == 'INVALID'}">
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
 
                         <label class="form-label">Emp. Code</label>
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
                         <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
-                          (onChange)="getEmployeeMasterId($event)" [placeholder]="'Select Emp code'" formControlName = "employeeCode">
+                          (onChange)="getEmployeeMasterId($event)" [placeholder]="'Select Emp code'" formControlName = "employeeCode"
+                          [ngClass]="{'is-invalid' : employeesetForm.get('employeeCode').status == 'INVALID'}">
                         </p-multiSelect>
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
@@ -65,6 +67,7 @@
                         <label class="form-label">Remark</label>
                         <textarea autocomplete="off" class="form-control" rows="2" 
                         placeholder="Enter Remark" formControlName = "remark"
+                        [ngClass]="{'is-invalid' : employeesetForm.get('remark').status == 'INVALID'}"
                         [required]="hideRemarkDiv1">
                         </textarea>
                       </div>

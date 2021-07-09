@@ -100,11 +100,17 @@ export class EmployeesetComponent implements OnInit {
      this.employeesetForm.reset();
   }
 
-  editEmployeeSet(){
-
+  editEmployeeSet(data){
+    this.editFormFlag =true;
+    this.viewFormFlag = false;
+    this.employeesetForm.enable();
+    this.employeesetForm.patchValue(data);
   }
 
-  viewEmployeeSet(){
-
+  viewEmployeeSet(data){
+    this.editFormFlag =false;
+    this.viewFormFlag = true;
+    this.employeesetForm.disable();
+    this.employeesetForm.patchValue(data);
   }
 }
