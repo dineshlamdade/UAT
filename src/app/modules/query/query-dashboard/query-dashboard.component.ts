@@ -2,8 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TemplateRef} from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
  import { ChartComponent } from "ng-apexcharts";
- import Swal from 'sweetalert2/src/sweetalert2.js'
-
  import {
  ApexNonAxisChartSeries,
  ApexResponsive,
@@ -16,9 +14,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { QueryService } from '../query.service';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import jspdf from 'jspdf';
-import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
 import * as _html2canvas from "html2canvas";
 import { Router } from '@angular/router';
+import { ExcelserviceService } from '../../excel_service/excelservice.service';
+
 const html2canvas: any = _html2canvas;
 
 export interface user2 {
@@ -65,10 +64,11 @@ export class QueryDashboardComponent implements OnInit {
   summarysubquerydescription: any;
   queryGenerationEmpId: any;
   queryTypeMasterId: any;
+  header: any[];
 
   constructor(public formBuilder : FormBuilder,public queryService :QueryService
-    ,private excelservice: ExcelService,private alertService: AlertServiceService,private router: Router,
-    private modalService: BsModalService)
+    ,private alertService: AlertServiceService,private router: Router,
+    private modalService: BsModalService,private excelservice: ExcelserviceService)
    {
 
     localStorage.removeItem('dashboardSummary');
@@ -223,12 +223,40 @@ getDeleteById(queryGenerationEmpId) // delete the record from summary
 }
 
  // .......................................Excel and PDF Code.................................................
- exportAsXLSX():void {
+//  exportAsXLSX():void {
+//   this.excelData = [];
+//   this.excelData = this.getAllQueryGenerationData;
+//   this.excelservice.exportAsExcelFile(this.excelData, 'Query Summary');
+// }
+exportAsXLSX(): void {
   this.excelData = [];
+  this.header = []
+  this.header =["Query No.","Sumbit Date","Emp. Code","Emp. Name","Company Name", "Module Name", "Query Type",
+   "Sub-Query Type", "Subject", "Priority", "Last Updated", "Status",]
   this.excelData = this.getAllQueryGenerationData;
-  this.excelservice.exportAsExcelFile(this.excelData, 'Query Summary');
-}
+  this.getAllQueryGenerationData.forEach(element => {
+    let obj = {
+      "Query No.":element.queryNumber,
+      "Sumbit Date":element.submissionDate,
+      "Emp. Code": element.employeeCode,
+      "Emp. Name": element.empName,
+      "Company Name": element.companyName,
+      "Module Name": element.applicationModuleName,
+      "Query Type": element.queryDescription,
+      "Sub-Query Type": element.subqueryDescription,
+      "Subject": element.subject,
+      "Priority":element.priority,
+      "Last Updated":element.escalationDate,
+      "Status":element.status,
+    }
+    this.excelData.push(obj)
+  });
+ // console.log(this.excelData)
+  // this.excelservice.exportAsExcelFile(this.excelData, 'Attandence','Attendance',this.header);
+  this.excelservice.exportAsExcelFile(this.excelData, 'Query Summary','Query Summary',this.header);
 
+}
+// ..................PDF Download.........................................................................
 download(){
   let data = document.getElementById('contentToConvert');  // Id of the table
   html2canvas(data).then(canvas => {

@@ -278,7 +278,11 @@
                                                       style="width:20%">
                                                       <div class="float-right">
                                                         <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="download()"></i></span>&nbsp;
-                                                        <span class="ml-10"><i class="fa fa-file-excel-o font-18 text-dark-green" (click)="exportAsXLSX()" tooltip="Export to Excel"></i ></span>
+                                                        <!-- <span class="ml-10"><i class="fa fa-file-excel-o font-18 text-dark-green" (click)="exportAsXLSX()" tooltip="Export to Excel"></i ></span> -->
+                                                          <a tooltip="Export to Excel" style="cursor: pointer"
+                                                            (click)="exportAsXLSX()"><i
+                                                                class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                   </div>
                                               </ng-template>
@@ -321,7 +325,7 @@
                                                                     </div>
                                                                 </div>
                                                             </th>
-                                                            <th class="wd-24">
+                                                            <th class="wd-35">
                                                                 <div
                                                                     class="p-d-flex justify-content-center p-ai-center">
                                                                     Emp. Name
@@ -488,8 +492,8 @@
                                                                     class="form-lable mb-0 " >{{summary.applicationModuleName}}</label>
                                                             </td>
 
-                                                            <td class="a" (click)="smallpopup1(queryDescription,summary)"> <label
-                                                              class="form-lable mb-0 a" ><p class="a" [innerHTML]="summary.queryDescription"></p></label>
+                                                            <td > <label
+                                                              class="form-lable mb-0 " ><p [innerHTML]="summary.queryDescription"></p></label>
                                                               <!-- <span class="a" [innerHTML]="summary.queryDescription"></span> -->
 
                                                             </td >
@@ -517,13 +521,13 @@
                                                           </ng-template>
 
 
-                                                            <td class="a"  (click)="smallpopup3(subqueryDescription,summary)"><label
-                                                                    class="form-lable mb-0 a"><p class="a" [innerHTML]="summary.subQueryTypeDescription">{{summary.subQueryTypeDescription}}</p></label>
+                                                            <td ><label
+                                                                    class="form-lable mb-0 "><p >{{summary.subQueryTypeDescription}}</p></label>
 
                                                             </td>
-                                                            <ng-template #subqueryDescription>
+                                                            <!-- <ng-template #subqueryDescription>
                                                               <div class="modal-header">
-                                                                  <h6 class="modal-title" id="UploadModalLabel">Query Subject</h6>
+                                                                  <h6 class="modal-title" id="UploadModalLabel">Sub Query Description</h6>
                                                                   <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
                                                                   aria-hidden="true">×</span></button>
                                                               </div>
@@ -541,14 +545,15 @@
                                                               <div class="modal-footer">
                                                                   <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
                                                               </div>
-                                                          </ng-template>
-                                                            <td  class="a" (click)="smallpopup2(querySubject,summary)">  <label
-                                                                    class="form-lable mb-0 a"><p class="a" [innerHTML]="summary.subject">{{summary.subject}}</p></label>
+                                                          </ng-template> -->
+
+                                                          <td   (click)="smallpopup1(queryDescription,summary)">  <label
+                                                                    class="form-lable mb-0 "><p class="a" [innerHTML]="summary.subject">{{summary.subject}}</p></label>
 
                                                             </td>
                                                             <ng-template #querySubject>
                                                               <div class="modal-header">
-                                                                  <h6 class="modal-title" id="UploadModalLabel">SubQuery Description</h6>
+                                                                  <h6 class="modal-title" id="UploadModalLabel">Subject</h6>
                                                                   <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
                                                                   aria-hidden="true">×</span></button>
                                                               </div>
@@ -557,7 +562,8 @@
                                                                       <div class="card-body">
                                                                           <div class="row clearfix">
                                                                               <div class="col-md-12">
-                                                                                  <p [innerHTML]="summarysubquerydescription">{{summarysubquerydescription}}</p>
+                                                                                <p [innerHTML]="summarydescription">{{summarydescription}}</p>
+                                                                                <!-- <p [innerHTML]="summarysubquerydescription">{{summarysubquerydescription}}</p> -->
                                                                               </div>
                                                                           </div>
                                                                       </div>

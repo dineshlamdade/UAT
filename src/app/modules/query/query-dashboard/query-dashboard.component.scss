@@ -133,12 +133,15 @@ background-clip: border-box;
 .a {
   white-space: nowrap!important;
   width: 100px;
+  // height:100px;
   overflow: hidden;
   text-overflow: ellipsis;
   // border: 1px solid #000000;
 }
 
-// .a:hover {
-//   overflow: visible;
-//   white-space: pre-wrap;
-// }
+
+.a:hover {
+  overflow: visible;
+  white-space: pre-wrap;
+}
+

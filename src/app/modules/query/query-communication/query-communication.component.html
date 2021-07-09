@@ -297,7 +297,13 @@
                                                                                           <span  class=" tag Replied" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Replied'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
                                                                                           <span  class=" tag Redirect" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Redirect'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
 
+                                                                                          <!-- <span class="badge" [ngClass]="{'
+                                                                                          badge-primary': GetIterationdetailsbyQueryIDData.status=='Re-Open',
+                                                                                        ' badge-success': GetIterationdetailsbyQueryIDData.status=='Approved',
+                                                                                        ' badge-danger': GetIterationdetailsbyQueryIDData.status=='SendBack',
+                                                                                        ' badge-info': GetIterationdetailsbyQueryIDData.status=='Submit'}"></span> -->
                                                                                         </div>
+
                                                                                     </div>
                                                                                 </div>
                                                                                 <!-- .....................budge document view..........................................................  -->
