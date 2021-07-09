@@ -36,7 +36,7 @@ export class GeneralComponent implements OnInit {
       loanDescription: new FormControl(""),
       minimumNetPayLoan: new FormControl(""),
       loanApplicationTemplate: new FormControl([null]),
-      approvalWorkFlow: new FormControl(""),
+      approvalWorkFlowId: new FormControl(""),
       approvalWorkFlowSDM: new FormControl(""),
       servicePeriod: new FormControl(""),
       underliningAsset: new FormControl(""),
@@ -49,12 +49,12 @@ export class GeneralComponent implements OnInit {
       minRemainingServiceLoanApplication: new FormControl(""),
       minRemainingServiceLoanCompletion: new FormControl(""),
       deviationAmount: new FormControl(""),
-      deviationIntrest: new FormControl(""),
+      deviationInterest: new FormControl(""),
       deviationNoOfInstallment: new FormControl(""),
      
-      intrestNode: new FormControl(0),
-      intrestWithNode: new FormControl(""),
-      intrestWithoutNode: new FormControl(""),
+      interestNode: new FormControl(0),
+      interestWithNode: new FormControl(""),
+      interestWithoutNode: new FormControl(""),
 
       noOfInstallmentNode: new FormControl(0),
       noOfInstallmenttWithNode: new FormControl(""),
@@ -293,9 +293,9 @@ export class GeneralComponent implements OnInit {
 
   getdeviationIntrest(value) {
     if (value == 'Yes') {
-      this.generalLoanForm.controls['deviationIntrest'].setValue(1)
+      this.generalLoanForm.controls['deviationInterest'].setValue(1)
     } else {
-      this.generalLoanForm.controls['deviationIntrest'].setValue(0)
+      this.generalLoanForm.controls['deviationInterest'].setValue(0)
     }
   }
 
@@ -311,10 +311,14 @@ export class GeneralComponent implements OnInit {
   submitGenralForm() {
     if (this.loandata == '') {
       this.generalLoanForm.controls['minLoanAmount'].setValue(parseInt(this.generalLoanForm.controls['minLoanAmount'].value))
-      this.generalLoanForm.controls['intrestNode'].setValue(parseInt(this.generalLoanForm.controls['intrestNode'].value))
+      this.generalLoanForm.controls['interestNode'].setValue(parseInt(this.generalLoanForm.controls['interestNode'].value))
       this.generalLoanForm.controls['noOfInstallmentNode'].setValue(parseInt(this.generalLoanForm.controls['noOfInstallmentNode'].value))
       this.generalLoanForm.controls['principalAmountNode'].setValue(parseInt(this.generalLoanForm.controls['principalAmountNode'].value))
-
+      this.generalLoanForm.controls['approvalWorkFlowId'].setValue(parseInt(this.generalLoanForm.controls['approvalWorkFlowId'].value))
+      this.generalLoanForm.controls['deviationAmount'].setValue(parseInt(this.generalLoanForm.controls['deviationAmount'].value))
+      this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(parseInt(this.generalLoanForm.controls['deviationNoOfInstallment'].value))
+      this.generalLoanForm.controls['deviationInterest'].setValue(parseInt(this.generalLoanForm.controls['deviationInterest'].value))
+      
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
       this.generalLoanForm.controls['loanApplicationTemplate'].setValue([null])
       localStorage.setItem('generalForm', JSON.stringify(this.generalLoanForm.value))
@@ -359,11 +363,11 @@ export class GeneralComponent implements OnInit {
   getInterestAmount(event) {
     this.InterestNode = event.value
     if(this.InterestNode == 'withNode'){
-      this.generalLoanForm.controls['intrestWithNode'].setValue(true)
-      this.generalLoanForm.controls['intrestWithoutNode'].setValue(false)
+      this.generalLoanForm.controls['interestWithNode'].setValue(true)
+      this.generalLoanForm.controls['interestWithoutNode'].setValue(false)
     }else{
-      this.generalLoanForm.controls['intrestWithNode'].setValue(false)
-      this.generalLoanForm.controls['intrestWithoutNode'].setValue(true)
+      this.generalLoanForm.controls['interestWithNode'].setValue(false)
+      this.generalLoanForm.controls['interestWithoutNode'].setValue(true)
     }
   }
 

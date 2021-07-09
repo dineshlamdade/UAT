@@ -37,10 +37,10 @@
                                 </div>
                                 <div class="col-sm-3 col-md-3 mt-10">
                                     <label class="form-label">Approval Workflow</label>
-                                    <select class="form-control " formControlName="approvalWorkFlow">
+                                    <select class="form-control " formControlName="approvalWorkFlowId">
                                         <option value="">Select</option>
-                                        <option>SDM1</option>
-                                        <option>SDM2</option>
+                                        <option value="1">SDM1</option>
+                                        <option value="2">SDM2</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-3 col-md-3 mt-10">
@@ -131,7 +131,7 @@
                                                 <div class="custom-control-label">Without Node</div>
                                             </label>
                                             <input type="text" class="form-control" placeholder="Gap between two nodes" 
-                                            *ngIf="InterestNode == 'withNode'" formControlName = "intrestNode">
+                                            *ngIf="InterestNode == 'withNode'" formControlName = "interestNode">
                                         </div>
                                     </div>
                                     <div class="col-sm-3 col-md-3 mt-10">
