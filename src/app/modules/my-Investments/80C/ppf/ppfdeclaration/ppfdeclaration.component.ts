@@ -577,25 +577,33 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
-  checkUncheckAll(item: any,event: { target: { checked: any } }) {
+  checkUncheckAll(item: any) {
+  // checkUncheckAll(item: any,event: { target: { checked: any } }) {
 
-    console.log(event.target.checked);
-    this.isCheckAll=event.target.checked;
-    console.log(this.isCheckAll);
-    if (!this.isCheckAll) {
-      console.log('CHECK ALL IS FALSE ');
-      this.isCheckAll = false;
-      this.enableSelectAll = false;
-      this.enableCheckboxFlag2 = null;
-      this.uploadGridData = [];
-    } else {
-      console.log('CHECK ALL IS TRUE ');
+    // console.log(event.target.checked);
+    // this.isCheckAll=event.target.checked;
+    // console.log(this.isCheckAll);
+    // if (!this.isCheckAll) {
+      if (this.isCheckAll) {
+      // console.log('CHECK ALL IS FALSE ');
+      // this.isCheckAll = false;
+      // this.enableSelectAll = false;
       this.isCheckAll = true;
       this.enableSelectAll = true;
+      // this.enableCheckboxFlag2 = null;
       this.enableCheckboxFlag2 = item.institutionName;
+      // this.uploadGridData = [];
       item.groupTransactionList.forEach((element) => {
         this.uploadGridData.push(element.investmentGroup1TransactionId);
       });
+    // } else {
+    //   console.log('CHECK ALL IS TRUE ');
+    //   this.isCheckAll = true;
+    //   this.enableSelectAll = true;
+    //   this.enableCheckboxFlag2 = item.institutionName;
+    //   item.groupTransactionList.forEach((element) => {
+    //     this.uploadGridData.push(element.investmentGroup1TransactionId);
+    //   });
       this.enableFileUpload = true;
     }
     // console.log('enableSelectAll...',  this.enableSelectAll);

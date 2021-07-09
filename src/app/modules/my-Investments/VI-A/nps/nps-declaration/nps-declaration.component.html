@@ -191,7 +191,7 @@
                     type="text" 
                     class="form-control" 
                     [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate" 
+                      [maxDate]="today" 
                       [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" 
                       [disabled]="initialArrayIndex[j] > i || summary.isECS === 1
                       " (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
@@ -218,7 +218,7 @@
                       [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" 
                       (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" 
+                      [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'" 
                       />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
@@ -253,7 +253,7 @@
                   <input type="text" 
                   id="actualAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}" 
-                    [disabled]="initialArrayIndex[j] > i && item.frequency !=='As & When'"
+                    [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'"
                     [(ngModel)]="summary.actualAmount" 
                     (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" 
@@ -477,11 +477,13 @@
                       class="form-control align-right"
                       (blur)="changeReceiptAmountFormat()"
                       [(ngModel)]="receiptAmount"
+                      [disabled] ="isDisabled"
                     />
                     </span>
                     </td>
-                    <td>
-                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+                    <td [disabled] ="isDisabled">
+                      <i [ngClass]="{ 'disabled': isDisabled}"
+                      class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
                           !enableFileUpload
                             ? sweetalertWarning(
                                 'Please select transaction to Upload Document'
