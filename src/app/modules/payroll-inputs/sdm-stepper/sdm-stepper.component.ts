@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { trigger, transition, animate, style, state } from '@angular/animations'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { SdnCreationService } from '../sdn-creation.service';
 
 interface User1 {
   SrNo;
@@ -89,7 +90,23 @@ export class SdmStepperComponent implements OnInit {
   summeryFlag:boolean=false;
 
   public windowScrolled: boolean;
-  constructor(private formBuilder: FormBuilder) {
+  moduleData: any;
+  tableListData: any;
+  fieldTypeData: any;
+  sourceTableId: number;
+  sourceFieldId: number;
+  valueListData: any;
+  sourceMasterId: any;
+  sourceMasterName: any;
+  sourceFieldTypeName: any;
+  tempSourceTable: any = [];
+  stepperIndex = 1;
+  tablevalue: string = '';
+  fieldtypevalue: string = '';
+  valuelist: any = [];
+  sourceValueId: any;
+
+  constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService) {
     this.sdmFormStep1 = this.formBuilder.group({
       sdmName: new FormControl(null, Validators.required),
       sdmDescription: new FormControl(null),
@@ -97,17 +114,9 @@ export class SdmStepperComponent implements OnInit {
       sourcePeriod: new FormControl(null, Validators.required),
     })
   }
-  stepperIndex = 1;
+  
   ngOnInit() {
-    this.cities = [
-      { name: 'G1', code: '' },
-      { name: 'G2', code: '' },
-      { name: 'G3', code: '' },
-      { name: 'G4', code: '' },
-      { name: 'G5', code: '' }
-    ];
-
-
+    this.valueListData = [];
     this.users1 = [
       { SrNo: '1', DerivedName: 'grp', Module: 'AAA', TableName: 'B', FieldName: 'Hold', DerivedType: 'C', JobFieldType: 'D', Percentageof: 'E' },
 
@@ -125,14 +134,9 @@ export class SdmStepperComponent implements OnInit {
   editSummary() { }
   viewSummary() { }
 
-  abc(i) {
-    this.stepperIndex = i;
-  }
-
   previous() {
     this.stepperIndex = this.stepperIndex - 1;
   }
-
   next() {
     switch (this.stepperIndex) {
       case 1: {
@@ -188,9 +192,12 @@ export class SdmStepperComponent implements OnInit {
     }
   }
 
-  stepperFunction(value){
-   
+  stepperFunction(value){ 
     this.summeryFlag = ! this.summeryFlag;
+    if(this.summeryFlag == true){
+      this.applicationModule()
+      this.sourceTableList()
+    }
   }
 
   scrollToTop() {
@@ -201,5 +208,73 @@ export class SdmStepperComponent implements OnInit {
         window.scrollTo(0, currentScroll - (currentScroll / 8));
       }
     })();
+  }
+
+
+  //*************** SDM Function start****************************//
+  applicationModule(){
+    this.sdmService.applicationModule().subscribe(
+      res => {
+        this.moduleData = res.data.results;
+      }
+    )
+  }
+
+  sourceTableList(){
+    this.sdmService.sourceTableList().subscribe(
+      res => {
+        this.tableListData = res.data.results;
+        // this.sourceMasterId = this.tableListData.sourceMasterId;
+      }
+    )
+  }
+
+  fieldTypeList(value){
+    let val = value.split(',')
+    this.sourceMasterId = val[0]
+    this.sourceMasterName = val[1]
+    this.sdmService.fieldTypeList(this.sourceMasterId).subscribe(
+      res => {
+        this.fieldTypeData = res.data.results;
+      }
+    )
+  }
+
+  valuesList(SelectedId){
+   let value = SelectedId.split(',')
+   this.sourceFieldId = value[0]
+    this.sourceTableId = value[1]
+    this.sourceFieldTypeName = value[2]
+    this.sdmService.valuesList(this.sourceTableId,this.sourceFieldId).subscribe(
+      res => {
+        // this.valueListData = res.data.results;
+        res.data.results.forEach(element => {
+          this.valueListData.push({
+            'label':element.sourceValueName,
+            'value':element.sourceValueId
+          })
+        });
+      }
+    )
+  }
+
+  valueListDataValue(event){
+    this.sourceValueId = event.itemValue
+  }
+
+  addSource(){
+    this.tempSourceTable.push({
+      'tableName': this.sourceMasterName,
+      'fieldType':this.sourceFieldTypeName,
+      'valueId':this.sourceValueId
+    })
+
+    this.tablevalue = ""
+    this.fieldtypevalue = ""
+    this.valuelist = []
+  }
+ 
+  removeSource(index){
+    this.tempSourceTable.splice(index,1)
   }
 }
