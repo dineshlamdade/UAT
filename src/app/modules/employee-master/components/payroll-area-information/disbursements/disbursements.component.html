@@ -144,7 +144,7 @@
                                                         </div>
                                                     </div>
                                                 </th>
-                                                <th rowspan="2" class="wd-8 text-center">
+                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-8 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center">% Net Pay
                                                         <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="ToDate" pSortableColumn="ToDate">
@@ -155,7 +155,7 @@
                                                         </div>
                                                     </div>
                                                 </th>
-                                                <th rowspan="2" class="wd-8 text-center">
+                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-8 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center">Amount
                                                         <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="ToDate" pSortableColumn="ToDate">
@@ -166,7 +166,7 @@
                                                         </div>
                                                     </div>
                                                 </th>
-                                                <th rowspan="2" class="wd-8 text-center">
+                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-8 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center">Priority
                                                         <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="ToDate" pSortableColumn="ToDate">
@@ -179,7 +179,7 @@
                                                 </th>
 
 
-                                                <th rowspan="2" class="wd-4 text-center"> Action </th>
+                                                <th  *ngIf="multiBankingAllowed" rowspan="2" class="wd-4 text-center"> Action </th>
 
                                             </tr>
 
@@ -188,54 +188,55 @@
                                             <tr class="p-selectable-row"   *ngFor="let summary of pfArray.controls; index as i" [formGroupName]="i">
                                                 <td class="text-center">{{i+1}}</td>
                                                 <td scope="row">
-                                                    <select name="modeOfPayment" class="form-control" formControlName="modeOfPayment">
+                                                    <select name="modeOfPayment"  class="form-control" formControlName="modeOfPayment">
                                                         <option value=""> Select</option>
-                                                        <option *ngFor="let mode of modeOfPaymentList" [value]="mode">{{mode}}</option>
+                                                        <option  *ngFor="let mode of modeOfPaymentList" [value]="mode">{{mode}}</option>
                                                     </select>
                                                 </td>
                                                 <td scope="row">
-                                                    <select name="bankName" class="form-control" formControlName="bankName"  (change)="bankSelect($event)">
+                                                    <select name="bankName"   class="form-control" formControlName="bankName"  (change)="ifscSelect(i)">
                                                         <option value="">Select</option>
-                                                        <option *ngFor="let bank of bankList" value="bank.bankName" > {{bank.bankName}}</option>
+                                                        <option  *ngFor="let bank of bankList" > {{bank.bankName}}</option>
                                                     </select>
                                                 </td>
-                                                <td scope="row">
-                                                    <select name="ifsc" class="form-control" formControlName="ifsc">
+                                                <!-- let bank of summary.get('ifscList').controls -->
+                                                <td scope="row"  >
+                                                    <select name="ifsc" class="form-control" formControlName="ifsc" (change)="accountSelect(i)">
                                                         <option value=""> Select</option>
-                                                        <option *ngFor="let bank of bankList" [value]="bank.bankIFSC"> {{bank.bankIFSC}}</option>
+                                                        <option *ngFor="let bank of summary.get('ifscList').value"> {{bank.ifsc}}</option>
                                                         
                                                     </select>
                                                 </td>
                                                 <td scope="row">
                                                     <select name="accountNo" class="form-control" formControlName="accountNo">
                                                         <option value=""> Select</option>
-                                                        <option *ngFor="let bank of bankList" [value]="bank.accountNo"> {{bank.accountNo}}</option>
+                                                        <option *ngFor="let bank of summary.get('accountNoList').value"> {{bank.account}}</option>
                                                   
                                                     </select>
                                                 </td>
                                                 <td scope="row">
-                                                    <input type="text" class="form-control"  formControlName="nameAsPerBank">
+                                                    <input type="text" class="form-control"  formControlName="nameAsPerBank" >
                                                 </td>
-                                                <td scope="row">
+                                                <td *ngIf="multiBankingAllowed" scope="row">
                                                     <input type="text" class="form-control"  formControlName="percentNetpay"
-                                                     (change)="percentValidate($event)">
+                                                     (keyup)="percentageTotal()">
                                                 </td>
 
-                                                <td scope="row">
+                                                <td *ngIf="multiBankingAllowed" scope="row">
                                                     <input type="text" class="form-control" formControlName="amount"
-                                                     >
+                                                     (keyup)="amountTotal()">
                                                 </td>
 
 
-                                                <td scope="row">
+                                                <td  *ngIf="multiBankingAllowed" scope="row">
                                                     <input type="text" class="form-control">
                                                 </td>
 
-                                                <td scope="row">
+                                                <td *ngIf="multiBankingAllowed" scope="row">
 
                                                     <i class="fa fa-times  font-18 text-red cursor-pointer" (click)="deleteRow()"
                                                         aria-hidden="true"></i>&nbsp;
-                                                    <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer" (click)="addRow()"
+                                                    <i  class="fa fa-plus-circle font-18 text-dark-green cursor-pointer" (click)="addRow()"
                                                         aria-hidden="true"></i>&nbsp;
                                                 </td>
                                             </tr>
@@ -368,12 +369,12 @@
 
                                             </tr> -->
                                         </ng-template>
-                                        <ng-template pTemplate="footer">
+                                        <ng-template *ngIf="multiBankingAllowed" pTemplate="footer">
                                             <tr>
                                                 
                                                 <td colspan="6"class="text-bold text-right ">Total</td>
-                                                <td class="text-center text-bold">{{percentageTotal()}}</td>
-                                                <td class="text-center text-bold"></td>
+                                                <td class="text-center text-bold">{{percentTotal}}</td>
+                                                <td class="text-center text-bold">{{amtTotal}}</td>
                                                 <td colspan="2"></td>
                                             </tr>
                                         </ng-template>
