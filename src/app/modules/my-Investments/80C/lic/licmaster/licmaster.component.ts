@@ -42,6 +42,8 @@ export class LicmasterComponent implements OnInit {
   public name = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
   public summarynew: any = {};
+  public remark : any;
+  public test : File[] = [];
   public summaryGridData: Array<any> = [];
   public summaryComputationGridDate: any;
   public masterGridData: Array<any> = [];
@@ -59,7 +61,9 @@ export class LicmasterComponent implements OnInit {
   public transactionInstitutionListWithPolicies: Array<any> = [];
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
+  public PremiumurlArray: Array<any> = [];
   public urlIndex: number;
+  public premiumurlIndex: number;
   public glbalECS: number;
   public form: FormGroup;
   public Index: number;
@@ -69,15 +73,22 @@ export class LicmasterComponent implements OnInit {
   public familyRelationSame: boolean;
 
   public documentRemark: any;
+  public document2Password: any;
+  public documentPassword = [];
+  public remarkList = [];
+  
+;  public document2Remark: any;
   public isECS = true;
 
   public masterfilesArray: File[] = [];
+  public PremiumFileArray: File[] = [];
   public receiptNumber: number;
   public receiptAmount: string;
   public receiptDate: Date;
   public selectedInstitution: string;
   public policyDuplicate: string;
   public sumDeclared: any;
+  public isVisibleTable: boolean = false;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
   public policyMinDate: any;
@@ -115,6 +126,13 @@ export class LicmasterComponent implements OnInit {
   paymentDetailsToDate: any;
   policyMaxDate: any;
   selectedPolicyFromDate: any;
+  documentArray: any[] =[];
+  premiumFileName: any;
+  masterFileName: any;
+  masterFileType: any;
+  premiumFileType: any;
+  masterFileStatus: any;
+  premiumFileStatus: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -129,6 +147,52 @@ export class LicmasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+    // this.form = this.formBuilder.group({
+    //   institutionName: new FormControl(null, Validators.required),
+    //   policyNo: new FormControl(null, Validators.required),
+    //   policyholdername: new FormControl(null, Validators.required),
+    //   relationship: new FormControl(
+    //     { value: null, disabled: true },
+    //     Validators.required
+    //   ),
+    //   policyStartDate: new FormControl(null, Validators.required),
+    //   policyEndDate: new FormControl(null, Validators.required),
+    //   familyMemberInfoId: new FormControl(null, Validators.required),
+    //   active: new FormControl(true, Validators.required),
+    //   remark: new FormControl(null),
+    //   frequencyOfPayment: new FormControl(null, Validators.required),
+    //   premiumAmount: new FormControl(null, Validators.required),
+    //   annualAmount: new FormControl(
+    //     { value: null, disabled: true },
+    //     Validators.required
+    //   ),
+    //   fromDate: new FormControl(null, Validators.required),
+    //   toDate: new FormControl(null, Validators.required),
+    //   ecs: new FormControl('0'),
+    //   licMasterPaymentDetailsId: new FormControl(0),
+    //   licMasterId: new FormControl(0),
+    //   proofSubmissionId: new FormControl(''),
+    // });
+
+    // this.frequencyOfPaymentList = [
+    //   { label: 'Monthly', value: 'Monthly' },
+    //   { label: 'Quarterly', value: 'Quarterly' },
+    //   { label: 'Half-Yearly', value: 'Halfyearly' },
+    //   { label: 'Yearly', value: 'Yearly' },
+    //   { label: 'Single Premium', value: 'SinglePremium' },
+    // ];
+
+    // this.addNewRowId = 0;
+    // this.hideRemarkDiv = false;
+    // this.hideRemoveRow = false;
+    // this.isClear = false;
+    // this.isCancel = false;
+    // this.receiptAmount = this.numberFormat.transform(0);
+    // this.globalAddRowIndex = 0;
+    // this.globalSelectedAmount = this.numberFormat.transform(0);
+    this.getInitialData();
+  }
+  getInitialData() {
     this.form = this.formBuilder.group({
       institutionName: new FormControl(null, Validators.required),
       policyNo: new FormControl(null, Validators.required),
@@ -141,7 +205,7 @@ export class LicmasterComponent implements OnInit {
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
-      remark: new FormControl(null),
+      remark: new FormControl(null, Validators.required),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
@@ -151,9 +215,12 @@ export class LicmasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl('0'),
+      // remark: new FormControl('0'),
       licMasterPaymentDetailsId: new FormControl(0),
       licMasterId: new FormControl(0),
       proofSubmissionId: new FormControl(''),
+      documentPassword: new FormControl([]),
+      remarkList: new FormControl([]),
     });
 
     this.frequencyOfPaymentList = [
@@ -178,6 +245,74 @@ export class LicmasterComponent implements OnInit {
     // this.editMaster(this.policyNumber.policyNo);
   }
   public ngOnInit(): void {
+    // this.masterPage();
+    // console.log('masterPage::', this.policyNumber);
+
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+
+    // // -------------- Business Financial Year API Call -------------------------------
+    // this.Service.getBusinessFinancialYear().subscribe((res) => {
+    //   this.financialYearStart = res.data.results[0].fromDate;
+    // });
+
+    // // -------------- Family Member List API call ---------------------------
+    // this.Service.getFamilyInfo().subscribe((res) => {
+    //   this.familyMemberGroup = res.data.results;
+    //   console.log('familyMemberName::', res);
+    //   res.data.results.forEach((element) => {
+    //     const obj = {
+    //       label: element.familyMemberName,
+    //       value: element.familyMemberName,
+    //     };
+    //     this.familyMemberName.push(obj);
+    //   });
+    // });
+
+    // this.deactivateRemark();
+
+    // // -------------------- Get All Institutes From Global Table -------------------------
+    // this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
+    //   res.data.results.forEach((element: { insurerName: any }) => {
+    //     console.log('institutionNameList::', res);
+    //     const obj = {
+    //       label: element.insurerName,
+    //       value: element.insurerName,
+    //     };
+    //     this.institutionNameList.push(obj);
+    //   });
+    // });
+
+    // // ------------------ Get All Previous Employer -----------------------------
+    // this.Service.getAllPreviousEmployer().subscribe((res) => {
+    //   if (res.data.results.length > 0) {
+    //     this.employeeJoiningDate = res.data.results[0].joiningDate;
+    //   }
+    // });
+
+    // if (this.today.getMonth() + 1 <= 3) {
+    //   this.financialYear =
+    //     this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+    // } else {
+    //   this.financialYear =
+    //     this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+    // }
+
+    // const splitYear = this.financialYear.split('-', 2);
+
+    // this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
+    // this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    // if (this.policyNumber != undefined || this.policyNumber != null) {
+    //   const input = this.policyNumber;
+    //   // console.log("edit", input)
+    //   // this.editMaster(input);
+    //   // console.log('editMaster policyNo', input);
+    //   this.editMaster(input.policyNo);
+    //   console.log('editMaster policyNo', input.policyNo);
+    // }
+    this.getDetails();
+  }
+  getDetails(){
     this.masterPage();
     console.log('masterPage::', this.policyNumber);
 
@@ -244,7 +379,6 @@ export class LicmasterComponent implements OnInit {
       console.log('editMaster policyNo', input.policyNo);
     }
   }
-
   // ------------------------------------Master----------------------------
 
   // ------------------- convenience getter for easy access to form fields -----------------
@@ -269,7 +403,7 @@ export class LicmasterComponent implements OnInit {
     }
     this.form.patchValue({
       fromDate: this.policyMinDate,
-      
+
     });
 
     this.setPaymentDetailToDate();
@@ -343,6 +477,31 @@ export class LicmasterComponent implements OnInit {
         element.policyEndDate = new Date(element.policyEndDate);
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
+        element.documentInformationList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
       });
     });
   }
@@ -371,23 +530,48 @@ export class LicmasterComponent implements OnInit {
         'yyyy-MM-dd'
       );
 
-      // const data = {
+      
+      // const documentPassword = [];
+      // documentPassword.push(this.documentPassword);
+      // // documentPassword.push(this.document2Password);
 
+      // const remarkList = [];
+      // remarkList.push(this.documentRemark);
+      // remarkList.push(this.document2Remark);
+
+     
       // }
       // console.log('proofSubmissionId::', this.proofSubmissionId);
+
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
+      data.documentPassword = this.documentPassword;
+      data.remarkList = this.remarkList;
+      
+   
+
+  
+  //     public documentRemark: any;
+  // public document2Password: any;
+  // public documentPassword: any;
+  // public document2Remark: any;
+  
 
       data.fromDate = from;
       data.toDate = to;
+      data.remark = this.remark;
       data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('LICdata::', data);
+    //  this.test.push(this.masterfilesArray);
+    //  this.test.push(this.PremiumFileArray);
+    //  this.masterfilesArray.push(this.PremiumFileArray);
 
       this.fileService
-        .uploadMultipleMasterFiles(this.masterfilesArray, data)
+        .uploadMultipleMasterFiles(this.masterfilesArray, this.PremiumFileArray, data)
         .subscribe((res) => {
           console.log(res);
+          this.isVisibleTable = false;
           if (res) {
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
@@ -397,6 +581,47 @@ export class LicmasterComponent implements OnInit {
                 element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate);
               });
+
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
+
+              
+
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
                 'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
@@ -419,8 +644,14 @@ export class LicmasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.PremiumFileArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
       this.urlArray = [];
+      this.PremiumurlArray = [];
       this.submitted = false;
+      this.getInitialData();
+      this.getDetails();
     }
   }
 
@@ -429,6 +660,9 @@ export class LicmasterComponent implements OnInit {
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
         this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
       }
     }
     // console.log('this.masterfilesArray::', this.masterfilesArray);
@@ -437,6 +671,55 @@ export class LicmasterComponent implements OnInit {
   // Remove LicMaster Document
   public removeSelectedLicMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
+  }
+
+  onPremiumUpload(event: { target: { files: string | any[] } }) {
+  
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        // this.masterfilesArray.push(file);
+        this.PremiumFileArray.push(file);
+        // this.premiumFileName = file.name
+        // this.premiumFileType = file.type
+        // this.premiumFileStatus = file.status
+        
+      }
+    }
+
+   
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
+  }
+
+  // getDocumentList1(){
+  //   this.documentArray.push({
+  //     'dateofsubmission':new Date(),
+  //       'documentType':this.masterFileType,
+  //       'documentName': this.masterFileName,
+  //       'documentPassword':this.documentPassword,
+  //       'documentRemark':this.documentRemark,
+  //       // 'documentStatus' : this.masterFileStatus,
+        
+
+  //   });
+  // }
+
+  // getDocumentList(){
+  //   this.documentArray.push({
+  //     'dateofsubmission':new Date(),
+  //       'documentType':this.premiumFileType,
+  //       'documentName': this.premiumFileName,
+  //       'documentPassword':this.document2Password,
+  //       'documentRemark':this.document2Remark,
+  //       // 'documentStatus' : this.premiumFileStatus,
+
+  //   });
+  //   console.log("this.documentArraay: "+ JSON.stringify(this.documentArray))
+  // }
+
+  // Remove LicMaster Document
+  public removeSelectedPremiumDocument(index: number) {
+    this.PremiumFileArray.splice(index, 1);
   }
 
   // Calculate annual amount on basis of premium and frquency
@@ -485,8 +768,10 @@ export class LicmasterComponent implements OnInit {
 
   // ------------- On Master Edit functionality --------------------
   public editMaster(policyNo) {
+  
     this.scrollToTop();
     this.Service.getEightyCMaster().subscribe((res) => {
+      this.isVisibleTable = true;
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -499,6 +784,7 @@ export class LicmasterComponent implements OnInit {
       const obj = this.findByPolicyNo(policyNo, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
+      
       console.log('Edit Master', obj);
       if (obj != 'undefined') {
         this.paymentDetailGridData = obj.paymentDetails;
@@ -509,8 +795,27 @@ export class LicmasterComponent implements OnInit {
         this.checkFinancialYearStartDateWithPolicyEnd();
         this.showUpdateButton = true;
         this.isClear = true;
+        
         this.urlArray = obj.documentInformationList;
+        this.PremiumurlArray = obj.documentInformationList;
         this.proofSubmissionId = obj.proofSubmissionId;
+        // this.documentArray = obj.documentInformationList;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+          
+        });
+        console.log("documentArray::",this.documentArray);
       }
     });
   }
@@ -545,11 +850,12 @@ export class LicmasterComponent implements OnInit {
   public resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
     this.urlArray = [];
+    this.PremiumurlArray = [];
     this.isCancel = false;
   }
 
@@ -582,10 +888,26 @@ export class LicmasterComponent implements OnInit {
     );
   }
 
+  // ---------- For Doc Viewer -----------------------
+  public nextDoc1Viewer() {
+    this.premiumurlIndex = this.premiumurlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.PremiumurlArray[this.premiumurlIndex].blobURI
+    );
+  }
+
+  public previousDoc1Viewer() {
+    this.premiumurlIndex = this.premiumurlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.PremiumurlArray[this.premiumurlIndex].blobURI
+    );
+  }
   public docViewer(template3: TemplateRef<any>, index: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
-
+    // this.urlIndex = 0;
+    
+console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI

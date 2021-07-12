@@ -28,7 +28,7 @@
             </div>
             <div class="col-sm-6 col-md-3">
                 <label class="form-label">Certificate No.</label>
-                <input type="text" formControlName="accountNumber" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)" class="form-control" placeholder="Enter Certificate No.." [ngClass]="{
+                <input type="text" formControlName="accountNumber" onkeypress="return /[0-9]/i.test(event.key)" class="form-control" placeholder="Enter Certificate No.." [ngClass]="{
             'is-invalid': submitted && masterForm.accountNumber.errors
           }" />
                 <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
@@ -410,12 +410,12 @@
                         }}</span>
                                         </td>
                                         <td class="wd-10">
-                                            <span tooltip="{{ summary.policyEndDate }}">{{
+                                            <span tooltip="{{ summary.policyStartDate  | date: 'dd-MMM-yyyy'}}">{{
                         summary.policyStartDate | date: "dd-MMM-yyyy"
                         }}</span>
                                         </td>
                                         <td class="wd-10">
-                                            <span tooltip="{{ summary.policyEndDate }}">{{
+                                            <span tooltip="{{ summary.policyEndDate  | date: 'dd-MMM-yyyy'}}">{{
                         summary.policyEndDate | date: "dd-MMM-yyyy"
                         }}</span>
                                         </td>

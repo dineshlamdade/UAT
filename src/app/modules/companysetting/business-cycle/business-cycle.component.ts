@@ -18,6 +18,11 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 } )
 export class BusinessCycleComponent implements OnInit {
 
+  public tabIndex = 0;
+  public accountNo: string;
+  public windowScrolled: boolean;
+  public data: any;
+
   today: any = new Date();
   editedRecordIndexId: number = 0;
 
@@ -39,7 +44,6 @@ export class BusinessCycleComponent implements OnInit {
   // form1: FormGroup;
   Index: number;
   showUpdateButton: boolean;
-  tabIndex = 0;
   radioSelected: string;
   familyRelationSame: boolean;
   enableEditRow: number;
@@ -67,7 +71,6 @@ export class BusinessCycleComponent implements OnInit {
   selectedInstitution: string;
   enableCheckboxFlag2: any;
   greaterDateValidations: boolean;
-  windowScrolled: boolean;
   @ViewChild( 'template2' ) template2: TemplateRef<any>;
 
   activeFrequencyList: Array<any> = [];
@@ -120,7 +123,6 @@ export class BusinessCycleComponent implements OnInit {
   adjustedToNextCycle: boolean = false;
   //businessCycleList=[];
   businessCycleList: Array<any> = [];
-  data = [];
   businessYearUpdate: string;
 
   //template2:TemplateRef<any>;
@@ -139,24 +141,67 @@ export class BusinessCycleComponent implements OnInit {
   modalRef: BsModalRef;
   modalRef1: BsModalRef;
 
-  @HostListener( "window:scroll", [] )
-  onWindowScroll() {
-    if ( window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100 ) {
-      this.windowScrolled = true;
+  changeTabIndex(index: number)
+  {
+    // console.log(this.accountNo)
+    if(index !== 2) {
+      this.data = undefined;
     }
-    else if ( this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop < 10 ) {
+    if(index !== 1) {
+      this.accountNo = undefined;
+    }
+    this.tabIndex = index;
+  }
+
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop > 100
+    ) {
+      this.windowScrolled = true;
+    } else if (
+      (this.windowScrolled && window.pageYOffset) ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop < 10
+    ) {
       this.windowScrolled = false;
     }
   }
+
   scrollToTop() {
-    ( function smoothscroll() {
-      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      if ( currentScroll > 0 ) {
-        window.requestAnimationFrame( smoothscroll );
-        window.scrollTo( 0, currentScroll - ( currentScroll / 8 ) );
+    (function smoothscroll() {
+      let currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
       }
-    } )();
+    })();
   }
+
+
+
+  // @HostListener( "window:scroll", [] )
+  // onWindowScroll() {
+  //   if ( window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100 ) {
+  //     this.windowScrolled = true;
+  //   }
+  //   else if ( this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop < 10 ) {
+  //     this.windowScrolled = false;
+  //   }
+  // }
+  // scrollToTop() {
+  //   ( function smoothscroll() {
+  //     var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+  //     if ( currentScroll > 0 ) {
+  //       window.requestAnimationFrame( smoothscroll );
+  //       window.scrollTo( 0, currentScroll - ( currentScroll / 8 ) );
+  //     }
+  //   } )();
+  // }
 
   ngOnInit(): void {
 

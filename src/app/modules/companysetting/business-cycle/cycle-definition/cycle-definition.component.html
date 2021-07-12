@@ -75,7 +75,8 @@
           </select>
         </div> -->
 
-        <div class="col-sm-6 col-md-3" *ngIf="!CycleupdateFlag">
+        <!--  //Comment by komal
+       <div class="col-sm-6 col-md-3" *ngIf="!CycleupdateFlag">
           <label class="form-label">Services</label>
           <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect style="font-size: small;"
             [ngClass]="{'is-invalid' : cycleDefinitionForm.get('multiselectServices').status == 'INVALID'}"
@@ -83,7 +84,7 @@
             formControlName="multiselectServices" (onSelectAll)="onSelectAll($event)"
             (onDeSelect)="onItemDeSelect($event)">
           </ng-multiselect-dropdown>
-        </div>
+        </div> -->
       </div>
 
     </div>
@@ -238,9 +239,14 @@
       <div class="cycle-table mt-4">
         <h3 class="font-14 text-purple font-bold">Summary</h3>
 
-        <p-table [value]="CycleDefinitionList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+        <!-- <p-table [value]="CycleDefinitionList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          [rowsPerPageOptions]="[10,25,50]">
+          [rowsPerPageOptions]="[10,25,50]"> -->
+
+        <p-table [value]="CycleDefinitionList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+          [pageLinks]="5"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          totalRecords={{CycleDefinitionList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
           <ng-template pTemplate="header">
             <tr>
               <th rowspan="1" class="wd-8 text-center">
@@ -285,7 +291,7 @@
                   </div>
                 </div>
               </th>
-              <th class="wd-8">
+              <!-- <th class="wd-8">
                 <div class="p-d-flex p-jc-between p-ai-center">
                   Service Name
                   <div class="Sort_Filter_Position">
@@ -293,7 +299,7 @@
                     <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
                   </div>
                 </div>
-              </th>
+              </th> -->
               <th colspan="2" class="wd-16">
                 <div class="p-d-flex p-jc-between p-ai-center">
                   Business Year
@@ -324,7 +330,7 @@
             <tr>
               <th></th>
               <th></th>
-              <th></th>
+              <!-- <th></th> -->
               <th></th>
               <th scope="col">From Date</th>
               <th scope="col">To Date</th>
@@ -345,7 +351,7 @@
               <td class="bg-color-light_gray text-center"><label class="form-lable mb-0">{{rowIndex+1}}</label></td>
               <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycleName}}</label></td>
               <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label></td>
-              <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td>
+              <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td> -->
               <td class="bg-color-light_gray"><label
                   class="form-lable mb-0">{{user1.businessYearDefinition.fullFromDate}}</label></td>
               <td class="bg-color-light_gray"><label
@@ -354,7 +360,7 @@
                 <button *ngIf="!user1.isUsed" type="button" class="btn btn-icon text-blue" tooltip="Edit"><i
                     (click)="GetCycleDefinitionbyId(user1.id)" class="fa fa-edit"></i></button>
 
-                <button (click)="GetCycleDefinitionbyIdDisable(user1.id)" *ngIf="user1.isUsed" type="button"
+                <button (click)="GetCycleDefinitionbyIdDisable(user1.id)" type="button"
                   class="btn btn-icon text-blue" tooltip="View">
                   <i class="fa fa-eye"></i></button>
 
@@ -405,17 +411,4 @@
       </div>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 </form>

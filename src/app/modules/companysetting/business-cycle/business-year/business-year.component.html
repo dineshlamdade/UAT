@@ -71,12 +71,12 @@
             Save</button>
 
 
-
+          <span *ngIf="!hideUpdate">
           <button type="submit" *ngIf="updateFlag"
             [ngClass]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}"
             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"><b><i
                 class="fa fa-floppy-o"></i></b>
-            Update</button>
+            Update</button></span>
 
           <button type="button" (click)="ResetBusiness()" *ngIf="updateFlag"
             class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"><b><i
@@ -185,10 +185,16 @@
 
           <h3 class="font-14 text-purple font-bold">Summary</h3>
 
-
+<!--
           <p-table [value]="BusinessyearList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,25,50,100,200]">
+            [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+            <p-table [value]="BusinessyearList" [paginator]="true" [rows]="10"
+            [showCurrentPageReport]="true" [pageLinks]="5"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            totalRecords={{BusinessyearList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
             <ng-template pTemplate="header">
               <tr>
                 <th class="wd-8 text-center">
@@ -248,10 +254,16 @@
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.description}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.yearDefinition}}</label></td>
                 <td class="wd-10 align-left">
-                  <button *ngIf="!user1.used" type="button"
-                    (click)="GetBussinessyearById(user1.businessYearDefinitionId)" class="btn btn-icon text-blue"
+                  <button *ngIf="!user1.used; " type="button"
+                    (click)="GetBussinessyearById(user1.businessYearDefinitionId, true)" class="btn btn-icon text-blue"
                     tooltip="Edit"><i class="fa fa-edit"></i>
                   </button>
+
+                  <button type="button" class="btn btn-icon text-blue" tooltip="View"
+                  (click)="GetBussinessyearById(user1.businessYearDefinitionId, false)"
+                  data-toggle="modal" data-target="#UploadModal">
+                  <i class="fa fa-eye"></i></button>
+                  <!-- (click)="UploadModal1(template1);getBussinessyear(user1.businessYear,user1.businessCycleDefinition.businessYearDefinitionId)" -->
 
                   <button *ngIf="!user1.used" type="button" (click)="UploadModal1(template12);" data-toggle="modal"
                     data-target="#UploadModal" class="btn btn-icon js-sweetalert text-blue" tooltip="Delete"

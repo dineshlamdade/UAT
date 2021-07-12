@@ -85,7 +85,7 @@ export class PreviousemployersummaryComponent implements OnInit {
     );
   }
 
-    // ---------------------Summary ----------------------
+      // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
     this.PreviousEmployerService.gethousePreviousEmployerSummary().subscribe((res) => {
@@ -99,4 +99,5 @@ export class PreviousemployersummaryComponent implements OnInit {
     });
   }
 }
+
   

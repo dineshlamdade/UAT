@@ -7,9 +7,10 @@
             <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
               <tr>
                 
-                <th rowspan="2" class="wd-4">
+                <th rowspan="2" class="wd-6">
                   <label
                     class="custom-control custom-checkbox checkbox-center"
+                    placement="bottom" [adaptivePosition]="false"
                     tooltip="Select All"
                   >
                     <input
@@ -47,8 +48,9 @@
             </thead>
             <thead class="thead-dark" *ngIf="!previousEmployeeList.length">
               <tr>
-                <th rowspan="2" class="wd-4">
-                  <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                <th rowspan="2" class="wd-6">
+                  <label class="custom-control custom-checkbox checkbox-center" placement="bottom" [adaptivePosition]="false"
+                  tooltip="Select All">
                     <input type="checkbox" class="custom-control-input" name="select" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -258,7 +260,7 @@
                     [ngModel]="enableSelectAll"
                     [disabled]="isDisabled"
                     (change)="
-                      onSelectCheckBox($event, i);
+                      onSelectCheckBox($event, i, addRowSummary);
                       enableCheckboxFlag = i
                     "
                     class="custom-control-input"
@@ -275,7 +277,7 @@
                     [ngModel]="enableSelectAll"
                     [disabled]="isDisabled "
                     (change)="
-                      onSelectCheckBox($event, i);
+                      onSelectCheckBox($event, i, addRowSummary);
                       enableCheckboxFlag = i
                      
                     "
@@ -308,7 +310,7 @@
                     class="form-control"
                     placeholder="Institution"
                     (change)="onInstitutionChange(addRowSummary, i)"
-                    [ngClass]="{ 'is-invalid': this.requiredField }"
+                    [ngClass]="{ 'is-invalid': this.requiredInstitution }"
                   />
                 </td>
                 <td>
@@ -319,7 +321,7 @@
                       class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)"
                       placeholder="Account No."
                       (change)="onAccountNoChange(addRowSummary, i)"
-                      [ngClass]="{ 'is-invalid': this.requiredField }"
+                      [ngClass]="{ 'is-invalid': this.requiredaccountNumber }"
                       />
 
                   </div>
@@ -332,8 +334,9 @@
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       class="form-control align-right"
                       placeholder="Declared"
-                      (change)="setActualAmout($event)"
-                      disabled
+                      (change)="onDeclearedAmountChange(addRowSummary, i)"
+                      [ngClass]="{ 'is-invalid': this.requireddeclaredAmount }"
+                      
 
 
                     />
@@ -353,7 +356,7 @@
                     "
                     class="form-control"
                     bsDatepicker
-                    [ngClass]="{ 'is-invalid': this.requiredField }"
+                    [ngClass]="{ 'is-invalid': this.requireddateOfPayment }"
                   />
                 </td>
                 <td>
@@ -364,7 +367,7 @@
                     class="form-control align-right"
                     (change)="onActualAmountChange(addRowSummary, i)"
                     maxlength="22"
-                    [ngClass]="{ 'is-invalid': this.requiredField }"
+                    
                   />
                 </td>
                 <td>
@@ -389,6 +392,7 @@
                   <!-- <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
                     </span> -->
+                    {{addRowSummary.transactionStatus}}
                 </td>
                 <!-- </form> -->
               </tr>
@@ -407,13 +411,14 @@
                   <i
                     class="fa fa-plus-circle font-20"
                     tooltip="Add"
+                    *ngIf="!enableButton"
                     (click)="addRowInList(declarationService)"
                   ></i>
-                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <span *ngIf="!enableButton" tooltip="Add Row">Add</span>&nbsp;&nbsp;
                   <i
                     class="fa fa-times font-16 text-red cursor-pointer"
-                    *ngIf="hideRemoveRow"
-                    tooltip="Cancel"
+                    *ngIf="showDeleteButton"
+                    tooltip="Delete Row"
                     (click)="deleteRow()"
                   ></i>
                 </td>
@@ -534,7 +539,7 @@
                         <input
                           type="text"
                           class="form-control align-right"
-                          [(ngModel)]="globalSelectedAmount"
+                          [(ngModel)]="globalSelectedAmounts"
                           [disabled]="true"
                         />
                       </span>
@@ -547,11 +552,12 @@
                           onkeypress="return /[0-9]/i.test(event.key)"
                           (change)="changeReceiptAmountFormat()"
                           [(ngModel)]="receiptAmount"
+                          [disabled] ="isDisabled"
                         />
                       </span>
                     </td>
-                    <td>
-                      <i
+                    <td [disabled] ="isDisabled">
+                      <i [ngClass]="{ 'disabled': isDisabled}"
                         class="fa fa-upload font-16 text-blue cursor-pointer"
                         tooltip="Upload"
                         (click)="uploadModal(template4)"
@@ -570,7 +576,7 @@
   <div class="row mt-15">
     <div class="col-12">
       <div class="float-right mb-15">
-        <button
+        <button *ngIf="!enableButton"
           type="button"
           (click)="
             receiptAmount < globalSelectedAmount
@@ -601,7 +607,7 @@
                   <th scope="col" class="font700 wd-15">PS ID</th>
                   <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Policy No.</th>
+                  <th scope="col" class="font700 wd-15">Account No.</th>
                   <th scope="col" class="font700 wd-10">Receipt Amount</th>
                   <th scope="col" class="font700 wd-15">Document Name</th>
                   <th scope="col" class="font700 wd-10">Action</th>
@@ -687,7 +693,8 @@
                           documentSummary.proofSubmissionId
                         );
                         viewDocumentDetail = true
-                      " tooltip="Edit"></i>
+                      " tooltip="Edit"
+                      *ngIf="!enableButton"></i>
                   </td>
                 </tr>
               </tbody>

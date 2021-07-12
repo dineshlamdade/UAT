@@ -200,15 +200,15 @@
                 <div class="custom-controls-stacked ml-15 mt-10">
                   <div class="custom-control custom-radio custom-control-inline">
                     <label class="custom-control custom-radio custom-control-inline">
-                      <input type="radio" class="custom-control-input" formControlName="firstTimeHomeBuyer"
-                        [value]="true" checked>
+                      <input type="radio" class="custom-control-input" formControlName="firstTimeHomeBuyer" 
+                        [value]="true" checked [disabled]="isRadioButtonDisabled">
                       <span class="custom-control-label">Yes</span>
                     </label>
                   </div>
                   <div class="custom-control custom-radio custom-control-inline">
                     <label class="custom-control custom-radio custom-control-inline">
                       <input type="radio" class="custom-control-input" formControlName="firstTimeHomeBuyer"
-                        [value]="false">
+                        [value]="false" [disabled]="isRadioButtonDisabled">
                       <span class="custom-control-label">No</span>
                     </label>
                   </div>
@@ -732,7 +732,7 @@
       </div>
     </div>
     <div class="col-sm-6 col-md-3" *ngIf="visibilityFlagProperty">
-   <label class="form-label">Property Registration Amount</label>
+   <label class="form-label">Property Value</label>
               <!--  <input type="text" formControlName="propertyRegistrationValue" class="form-control"
         placeholder="Enter Property Name" onkeypress="return /[0-9]/i.test(event.key)"
         [ngClass]="{ 'is-invalid': submitted && houseLoanF.propertyRegistrationValue.errors }"  > -->

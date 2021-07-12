@@ -8,6 +8,7 @@ RUN yum install nodejs -y
 RUN yum install npm -y
 
 #RUN yum install  ng-common 
+
 #RUN npm install -g @angular/cli
 
 # Create a directory where our app will be placed
@@ -39,7 +40,7 @@ ENV NODE_OPTIONS="--max-old-space-size=8192"
 
 #RUN npm i @angular-devkit/build-angular@0.901.9
 
-RUN npm run build --prod
+RUN npm run build --prod --aot --outputHashing=all
 
 #Stage 2
 FROM nginx:alpine

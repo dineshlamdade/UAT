@@ -1048,20 +1048,30 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotalEditModal =
-          res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotalEditModal =
-          res.data.results[0].grandApprovedTotal;
+        this.grandRejectedTotalEditModal =  res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotalEditModal =    res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
+        
         //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
+      //  this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
+       //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
           // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+       // });
         //console.log('converted:: ', this.urlArray);
         // console.log('proofSubmissionId::', this.proofSubmissionId);
+        
+        this.editTransactionUpload.forEach((element) => {
+          element.donations80GGTransactionList.forEach((innerElement) => {
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount,
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount,
+            );
+          });
+        });
 
       });
 
