@@ -138,33 +138,28 @@
                             <td class="text-center">{{rowIndex+1}}</td>
 
                             <td>
-                              PA
+                             {{data.employeeSetName}}
 
                             </td>
                             <td>
-                              Salary
+                             {{data.numberOfArea}}
 
                             </td>
-                            <td></td>
-                            <td>
-                              01-Apr-2021
-
-                            </td>
-                            <td>
-                              31-Dec-9999
-
-                            </td>
+                            
+                            
 
                             <td>
 
                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" tooltip="Edit"
+                              (click) = "editEmployeeSet()"
                                 aria-hidden="true"></i>&nbsp;
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
+                              (click) = "viewEmployeeSet()"
                                 aria-hidden="true"></i>&nbsp;
 
                             </td>
                           </tr>
-                          <tr class="p-selectable-row">
+                          <!-- <tr class="p-selectable-row">
                             <td class="text-center">2</td>
 
                             <td>
@@ -188,12 +183,12 @@
                             <td>
 
                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer"
-                                aria-hidden="true" tooltip = "Edit" (click) = "editEmployeeSet()"></i>&nbsp;
+                                aria-hidden="true" tooltip = "Edit"></i>&nbsp;
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true" tootltip = "View"
-                              (click) = "viewEmployeeSet()"></i>&nbsp;
+                             ></i>&nbsp;
 
                             </td>
-                          </tr>
+                          </tr> -->
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
                           <tr>

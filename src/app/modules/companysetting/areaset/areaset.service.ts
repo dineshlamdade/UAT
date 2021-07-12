@@ -29,7 +29,7 @@ public apiUrl = environment.baseUrl8084;
 
     /**save areaset */
     saveAreaSet(data):Observable<any>{
-         return this.http.post<any>(this.apiUrl+ `Areamaster/AddNewData/`, data);
+         return this.http.post<any>(this.apiUrl+ `Areamaster/Add`, data);
     }
 
     /**update areaset */

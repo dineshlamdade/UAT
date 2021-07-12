@@ -34,7 +34,7 @@ export class AreasetComponent implements OnInit {
       areaSetName: new FormControl('',Validators.required),
       serviceMasterId: new FormControl('',Validators.required),
       remark: new FormControl('',Validators.required),
-      areaMaster: new FormControl([],Validators.required)
+      areaSelectionList: new FormControl([],Validators.required)
      
     })
     //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;   
@@ -62,6 +62,9 @@ export class AreasetComponent implements OnInit {
   /**save and submit data also add data*/
   onSubmit(){
    // console.log(this.areasetForm.value)
+
+   this.areasetForm.removeControl('areaSetMasterId')
+   this.areasetForm.controls['serviceMasterId'].setValue(parseInt(this.areasetForm.controls['serviceMasterId'].value))
         this.areasetService.saveAreaSet(this.areasetForm.value).subscribe((res)=>{
         this.toaster.success('','Area set saved succefully');
         this.getSummaryData();
@@ -105,10 +108,10 @@ getAreaMasterId(e){
     console.log(JSON.stringify(e))  //Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
     /** prime ng multiselect */
     this.areaMaster.push({
-      "areaSetMasterDetailsId":0,
-      "areaMasterId":e.itemValue
+      "code":"PA-Staff",
+      "id":e.itemValue
     })
-    this.areasetForm.controls['areaMaster'].setValue(this.areaMaster);
+    this.areasetForm.controls['areaSelectionList'].setValue(this.areaMaster);
     /** Single select i.e select */
     // this.areaMaster.push({
     //   "areaSetMasterDetailsId":0,

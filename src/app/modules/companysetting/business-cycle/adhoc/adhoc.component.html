@@ -6,33 +6,38 @@
           <div class="card">
             <div class="card-body">
 
-              <form class="card" role="form" formGroup="AttributeCreationForm" (ngSubmit)="addAttributeCreation()"
-                method="post" novalidate>
+              <form class="card" role="form" formGroup="adhocForm">
            <fieldset>
                <legend>Primary Cycle</legend>
                 <div class="row">
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Cycle Definition</label>
                     <div class="input-group">
-                        <select class="form-control">
-                            <option>Select</option>
-                            <option value=""> Weekly </option>
-                            <option value="">By Weekly</option>
-                            <option value="">Monthly</option>
-                            <option value="">Semi Monthly</option>
-                            <option value="">Adhoc</option>
+                        <select class="form-control" formControlName = "businessCycleDefinitionId"
+                        (change) ="getCycleNameById($event.target.value)" >
+                       
+                        <option selected value=''>Select </option>
+                        <option *ngFor="let Cycle of cycleDefifitionList" [value]="Cycle.id">
+                       {{Cycle.cycleName}}
+                       </option>
+                        
                         </select>
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Cycle</label>
                     <div class="input-group">
-                        <select class="form-control">
-                            <option>Select</option>
-                            <option value=""> APR 2020 </option>
+                        <select class="form-control" formControlName = "businessCycleDefinitionId">
+                            <!-- <option>Select</option> -->
+                            <!-- <option value=""> APR 2020 </option>
                             <option value="">MAY 2020</option>
                             <option value="">JUNE 2020</option>
-                            <option value="">JUL 202</option>
+                            <option value="">JUL 202</option> -->
+                            <option selected value=''>Select </option>
+                        <option *ngFor="let Cycle of cycleNameList" [value]="Cycle.periodId">
+                       {{Cycle.periodName}}
+                       </option>
+                        
                         
                         </select>
                     </div>
@@ -129,10 +134,10 @@
                                 <label class="form-label">Copy From</label>
                                 <select class="form-control">
                                     <option>Select</option>
-                                    <option value=""> Cycle 1 </option>
+                                    <!-- <option value=""> Cycle 1 </option>
                                     <option value="">Cycle 2</option>
                                     <option value="">Cycle 3</option>
-                                    <option value="">Cycle 4</option>
+                                    <option value="">Cycle 4</option> -->
                                 </select>
              </div>
                </div>
@@ -337,27 +342,36 @@
           <input type="checkbox"  class="mt-2"/>&nbsp;
         <label class="form-label mt-2 margin-right:30px;">Arrear</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <label class="form-label mt-2">Remark</label>&nbsp;
-        <textarea type="text"></textarea>
+        <textarea type="text" formControlName = "remark"></textarea>
         </div>
                 <div class="row mt-15">
                   <div class="col-12">
                     <div class="float-right mb-15">
-                      <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForminvalid"
+                      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
+                      (click)="onSubmit()"><b>
+                       <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="editFormFlag && !viewFormFlag"
+                      (click)="onUpdate()"><b>
+                       <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+                      <!-- <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForminvalid"
                         ngClass="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
                             class="fa fa-floppy-o"></i></b>
-                        Save</button>
+                        Save</button> -->
                       <!--     [disabled]="CycleDefinationForm.invalid" [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}" -->
 
-                      <button type="button" (click)="CancelAttributeCreation()" *ngIf="viewCancelButton"
+                      <!-- <button type="button" (click)="CancelAttributeCreation()" *ngIf="viewCancelButton"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                         tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
-                        Cancel</button>
+                        Cancel</button> -->
+                        <button type="button" 
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset" (click)="formReset()"><b>
+                    <i class="fa fa-refresh"></i></b> Reset</button>
 
-                      <button type="button" (click)="ResetAttributeCreation()" *ngIf="!viewCancelButton"
+                      <!-- <button type="button" (click)="ResetAttributeCreation()" *ngIf="!viewCancelButton"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
                         tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
-                        Reset</button>
+                        Reset</button> -->
                     </div>
                   </div>
                 </div>

@@ -26,4 +26,8 @@ import { Observable } from "rxjs";
     getSummaryData():Observable<any>{
       return this.http.get<any>(this.apiUrl+ `EmployeeMaster/SummaryData`);
     }
+
+    saveEmployeeSet(data):Observable<any>{
+      return this.http.post<any>(this.apiUrl+ `EmployeeMaster/AddNewData`, data);
+ }
   }

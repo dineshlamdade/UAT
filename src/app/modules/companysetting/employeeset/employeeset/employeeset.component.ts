@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { EmployeesetService } from '../employeeset.service';
 
 @Component({
@@ -21,7 +22,7 @@ export class EmployeesetComponent implements OnInit {
   selectedemployeeMasterId: any;
 
 
-  constructor(public empService: EmployeesetService, public fb: FormBuilder) {
+  constructor(public empService: EmployeesetService, public fb: FormBuilder,public toaster : ToastrService) {
     this.employeesetForm = new FormGroup({
        empSetName : new FormControl('',Validators.required),
        employeeCode : new FormControl('',Validators.required),
@@ -31,7 +32,7 @@ export class EmployeesetComponent implements OnInit {
 
   ngOnInit(): void {
     this.getServiceList();
-    //this.getSummaryData();
+    this.getSummaryData();
   }
 
   changeEvent2($event) {
@@ -45,8 +46,14 @@ export class EmployeesetComponent implements OnInit {
   }
 
   onSubmit() {
-   console.log(this.employeesetForm.value)
-   this.employeesetForm.reset();
+   //console.log(this.employeesetForm.value)
+   this.empService.saveEmployeeSet(this.employeesetForm.value).subscribe((res)=>{
+    this.toaster.success('','Employee set saved succefully');
+    this.getSummaryData();
+    this.serviceListData = [];
+    this.employeesetForm.reset();
+   })
+  // this.employeesetForm.reset();
   }
 
   onUpdate() {
@@ -90,11 +97,11 @@ export class EmployeesetComponent implements OnInit {
   //   })
   // }
 
-  // getSummaryData(){
-  //   this.empService.getSummaryData().subscribe((res)=>{
-  //     this.summaryData = res.data.results;
-  //   })
-  // }
+  getSummaryData(){
+    this.empService.getSummaryData().subscribe((res)=>{
+      this.summaryData = res.data.results;
+    })
+  }
 
   formReset() {
      this.employeesetForm.reset();
