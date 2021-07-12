@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { SortEvent } from 'primeng/api';
-
-interface User1 {
-  head;
-  nature;
-
-}
+import { NonRecurringQtyService } from '../non-recurring-qty.service';
 
 @Component({
   selector: 'app-non-recurring-qty-master',
@@ -14,41 +9,61 @@ interface User1 {
   styleUrls: ['./non-recurring-qty-master.component.scss']
 })
 export class NonRecurringQtyMasterComponent implements OnInit {
+  summaryData: any;
+  masterForm: FormGroup
+  nonSalaryOptionList: any = [];
+  nonSalaryName: any = ''
+  users1: { head: string; nature: string; }[];
+  nonSalaryNature: any;
+  nonSalaryRate: any;
+  nonSalaryMultiplier: any;
 
-  users1: User1[];
-  nonrecuringForm: FormGroup;
-  BasicInfoForm: FormGroup;
-  constructor(private formBuilder: FormBuilder,) { }
+  constructor(private nonrecqtyservice : NonRecurringQtyService) { 
+     this.masterForm = new FormGroup({
+      "nonSalaryDetailId": new FormControl(''),
+      "code": new FormControl(''),
+     "description": new FormControl(''),
+     "unit": new FormControl('HR'),
+     "headOfPayment": new FormControl(''),
+     "descriptionHeadOfPayment": new FormControl(''),
+     "valueUpdationThrough": new FormControl(''),
+     "sdmName": new FormControl(''),
+     "isActive": new FormControl(''),
+     "createdBy": new FormControl(''),
+     "nonSalaryOptionList": new FormControl([])
+     })
+  }
 
   ngOnInit(): void {
-    this.BasicInfoForm = this.formBuilder.group({    
-    });
     this.users1 = [
-        { head: '1', nature: 'Earning'},
-    
-    
+      { head: '1', nature: 'Earning'},
     ];
+    this.getMasterSummaryData()
   }
-  customSort(event: SortEvent) {
-    event.data.sort((data1, data2) => {
-        let value1 = data1[event.field];
-        let value2 = data2[event.field];
-        let result = null;
-  
-        if (value1 == null && value2 != null)
-            result = -1;
-        else if (value1 != null && value2 == null)
-            result = 1;
-        else if (value1 == null && value2 == null)
-            result = 0;
-        else if (typeof value1 === 'string' && typeof value2 === 'string')
-            result = value1.localeCompare(value2);
-        else
-            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
-  
-        return (event.order * result);
-    });
-  
-}
 
+  getMasterSummaryData(){
+    this.nonrecqtyservice.NonRecurringnonsalary().subscribe(res =>{
+      this.summaryData = res.data.results
+    })
+  }
+
+  addNRQType(){
+    this.nonSalaryOptionList.push(
+      {
+        "name": this.nonSalaryName,
+        "nature": this.nonSalaryNature,
+        "rate":0.0,
+        "multipier":0.0,
+        "derivedRate": this.nonSalaryRate,
+        "derivedmultipier":this.nonSalaryMultiplier,
+        "isActive":1
+      }
+    )
+
+    this.masterForm.controls['nonSalaryOptionList'].setValue(this.nonSalaryOptionList)
+  }
+
+  saveNonSalary(){
+    console.log("Form Data: "+ JSON.stringify(this.masterForm.value))
+  }
 }

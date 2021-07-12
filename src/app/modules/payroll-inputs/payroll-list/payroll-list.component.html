@@ -35,6 +35,7 @@
                             </div>
                             <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-bg-green"
+                                    [routerLink]="['/PayrollInputs/Non-Recurring-qty']"
                                     [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length > 0}"
                                     [disabled]="selectedEmployeeData.length > 0">
                                     Non-Recurring Quantity
