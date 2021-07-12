@@ -3,6 +3,7 @@ import { trigger, transition, animate, style, state } from '@angular/animations'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { SdnCreationService } from '../sdn-creation.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface User1 {
   SrNo;
@@ -104,15 +105,32 @@ export class SdmStepperComponent implements OnInit {
   tablevalue: string = '';
   fieldtypevalue: string = '';
   valuelist: any = [];
-  sourceValueId: any;
+  sourceValueId: any = [];
+  sdmSourceMasterFieldValueMappingDetailList: any = [];
+  step1FormDisableFlag: boolean = false;
 
-  constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService) {
+  constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, private toaster: ToastrService) {
+
     this.sdmFormStep1 = this.formBuilder.group({
-      sdmName: new FormControl(null, Validators.required),
-      sdmDescription: new FormControl(null),
-      noOfSourceCount: new FormControl(null, Validators.required),
-      sourcePeriod: new FormControl(null, Validators.required),
+      "sdmMasterId": new FormControl(""),
+    "groupCompanyId": new FormControl("1"),
+    "sdmName": new FormControl(""),
+    "sdmDescription": new FormControl(""),
+    "sourcePeriod": new FormControl(""),
+    "isActive": new FormControl("1"),
+    "sdmRemark": new FormControl(""),
+    "moduleIdList": new FormControl(""),
+    "sdmSourceMasterFieldValueMappingDetailList": new FormControl([]),
     })
+
+    if(localStorage.getItem('sdmFormStep1') != null){
+      let data = JSON.parse(localStorage.getItem('sdmFormStep1'))
+      this.sdmFormStep1.patchValue(data)
+      this.sdmSourceMasterFieldValueMappingDetailList = data.sdmSourceMasterFieldValueMappingDetailList
+      this.sdmFormStep1.disable()
+      this.step1FormDisableFlag = true;
+      this.sourceTableList()
+    }
   }
   
   ngOnInit() {
@@ -134,13 +152,19 @@ export class SdmStepperComponent implements OnInit {
   editSummary() { }
   viewSummary() { }
 
+  abc(value){
+  this.stepperIndex = value
+  }
+
   previous() {
     this.stepperIndex = this.stepperIndex - 1;
   }
+
   next() {
     switch (this.stepperIndex) {
       case 1: {
-        this.step1Submit()
+        // this.step1Submit()
+        this.saveSourceDerivedMatrix();
         break;
       }
       case 2: {
@@ -155,18 +179,18 @@ export class SdmStepperComponent implements OnInit {
   }
 
   step1Submit() {
-    console.log(this.sdmFormStep1.value)
-    let sourceCount = this.sdmFormStep1.get('noOfSourceCount').value
-    for (let i = 0; i < sourceCount; i++) {
-      this.sourceArray.push({
-        sdmMasterDetailsId: null,
-        sdmSourceDerivedFieldMappingId: null,
-        isRangeOptionSelected: null,
-        sourceTableName: null,
-        sourceValue: null,
-        isActive: null,
-      })
-    }
+    // console.log(this.sdmFormStep1.value)
+    // let sourceCount = this.sdmFormStep1.get('noOfSourceCount').value
+    // for (let i = 0; i < sourceCount; i++) {
+    //   this.sourceArray.push({
+    //     sdmMasterDetailsId: null,
+    //     sdmSourceDerivedFieldMappingId: null,
+    //     isRangeOptionSelected: null,
+    //     sourceTableName: null,
+    //     sourceValue: null,
+    //     isActive: null,
+    //   })
+    // }
   }
 
   step2Submit() {
@@ -224,7 +248,27 @@ export class SdmStepperComponent implements OnInit {
     this.sdmService.sourceTableList().subscribe(
       res => {
         this.tableListData = res.data.results;
-        // this.sourceMasterId = this.tableListData.sourceMasterId;
+        if(this.step1FormDisableFlag){
+          this.tableListData.forEach(ele => {
+          this.sdmSourceMasterFieldValueMappingDetailList.forEach(element => {
+              if(element.sourceTableId == ele.sourceMasterId){
+                this.sourceMasterName = ele.sourceObjectName
+              }
+              this.sourceValueId = element.sourceValueIdList
+            });
+            // this.fieldTypeData.forEach(ele => {
+            //   if(element.sourceFieldId == ele.sourceFieldId){
+            //     this.sourceFieldTypeName = ele.sourceFieldTypeName
+            //   }
+            // });
+            
+          });
+          this.tempSourceTable.push({
+            'tableName': this.sourceMasterName,
+            'fieldType':this.sourceFieldTypeName,
+            'valueId':this.sourceValueId.toString()
+          })
+        }
       }
     )
   }
@@ -259,22 +303,45 @@ export class SdmStepperComponent implements OnInit {
   }
 
   valueListDataValue(event){
-    this.sourceValueId = event.itemValue
+    this.sourceValueId.push(event.itemValue)
   }
 
   addSource(){
+    if(!this.step1FormDisableFlag){
     this.tempSourceTable.push({
       'tableName': this.sourceMasterName,
       'fieldType':this.sourceFieldTypeName,
-      'valueId':this.sourceValueId
+      'valueId':this.sourceValueId.toString()
     })
+
+    this.sdmSourceMasterFieldValueMappingDetailList.push(
+      {
+        "sourceMasterFieldValueDetailId":"0",
+        "sourceTableId": this.sourceTableId,
+        "sourceFieldId": this.sourceFieldId,
+        "sourceValueIdList": this.sourceValueId   
+      }
+    )
+
+    this.sdmFormStep1.controls['sdmSourceMasterFieldValueMappingDetailList'].setValue(this.sdmSourceMasterFieldValueMappingDetailList)
 
     this.tablevalue = ""
     this.fieldtypevalue = ""
     this.valuelist = []
+    }
   }
  
   removeSource(index){
     this.tempSourceTable.splice(index,1)
+  }
+
+  saveSourceDerivedMatrix(){
+    this.sdmFormStep1.controls['moduleIdList'].setValue([parseInt(this.sdmFormStep1.controls['moduleIdList'].value)])
+    this.sdmFormStep1.controls['sdmMasterId'].setValue(0)
+   this.sdmService.saveSourceDerivedMatrix(this.sdmFormStep1.value).subscribe(res =>{
+      this.toaster.success("","SDM data saved successfully.")
+      this.sdmFormStep1.disable();
+      localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
+   })
   }
 }

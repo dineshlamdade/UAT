@@ -511,10 +511,10 @@
                                         </div>
                                     </div>
 
-                                    <div *ngSwitchCase="1" [@slideInOut]>
-                                        <div class="">
-                                            <form class="card" role="form" [formGroup]="sdmFormStep1"
-                                                #formDirective="ngForm" method="post" novalidate>
+                                    <form [formGroup]="sdmFormStep1">
+                                        <div *ngSwitchCase="1" [@slideInOut]>
+                                            <div class="">
+                                           
 
                                                 <div class="row d-flex"
                                                     style="border: 1px solid #ccc; background-color: #fff;padding-top: 25px ;padding-bottom:25px;border-radius:2px;">
@@ -523,10 +523,10 @@
                                                             Module<span class="text-red"></span></label>
                                                     </div>
                                                     <div class="col-2">
-                                                        <select name="custom-select" class="form-control">
+                                                        <select name="custom-select" class="form-control" formControlName="moduleIdList">
                                                             <option>Select Module</option>
                                                             <option *ngFor="let module of moduleData"
-                                                                value="module.applicationModuleId">
+                                                                [value]="module.applicationModuleId">
                                                                 {{module.applicationModuleName}}</option>
 
                                                         </select>
@@ -537,7 +537,7 @@
                                                             Code<span class="text-red"></span></label>
                                                     </div>
                                                     <div class="col-2">
-                                                        <input type="text" class="form-control" value="">
+                                                        <input type="text" class="form-control" value="" formControlName="sdmName">
                                                     </div>
 
                                                     <div class="ml-2 pl-1 pr-0">
@@ -546,18 +546,18 @@
 
                                                     </div>
                                                     <div class="col-2">
-                                                        <input type="text" class="form-control" value="">
+                                                        <input type="text" class="form-control" value="" formControlName="sdmDescription">
                                                     </div>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <div class="float-left d-flex justify-content">
-                                                        <input type="checkbox" class="mt-2" />&nbsp;
+                                                        <input type="checkbox" class="mt-2" formControlName="isActive" />&nbsp;
                                                         <label
                                                             class="form-label mt-2 margin-right:30px;">Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                         <label class="form-label mt-2">Remark</label>&nbsp;
-                                                        <textarea type="text"></textarea>
+                                                        <textarea type="text" formControlName="sdmRemark"></textarea>
                                                     </div>
                                                 </div>
-                                            </form>
+                                            
                                         </div>
                                         <fieldset>
                                             <legend>Source</legend>
@@ -655,6 +655,8 @@
                                                                         <td class="text-center">
                                                                             <select name="Select" class="form-control"
                                                                             [(ngModel)]="tablevalue"
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            [disabled]="step1FormDisableFlag"
                                                                                 (change)="fieldTypeList($event.target.value)">
                                                                                 <option>Select Table Value</option>
                                                                                 <option
@@ -668,6 +670,8 @@
                                                                         <td class="text-center">
                                                                             <select name="Select" class="form-control"
                                                                             [(ngModel)]="fieldtypevalue"
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            [disabled]="step1FormDisableFlag"
                                                                                 (change)="valuesList($event.target.value)">
                                                                                 <option>Select Field Type</option>
                                                                                 <option
@@ -682,6 +686,8 @@
                                                                         <td class="text-center">
                                                                             <p-multiSelect [options]="valueListData"
                                                                             [(ngModel)]="valuelist"
+                                                                            [disabled]="step1FormDisableFlag"
+                                                                            [ngModelOptions]="{standalone: true}"
                                                                             (onChange)="valueListDataValue($event)"
                                                                                 placeholder="Select All">
                                                                             </p-multiSelect>
@@ -715,147 +721,7 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    <!-- <tr class="p-selectable-row">
-                                                                        <td class="text-center">2</td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="Select" class="form-control">
-                                                                                <option value="Select">Organization
-                                                                                    Details
-                                                                                </option>
-                                                                                <option value=""> </option>
-                                                                                <option value=""></option>
-                                                                                <option value=""> </option>
-                                                                                <option value=""></option>
-                                                                                <option value=""></option>
-                                                                            </select>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="Select" class="form-control">
-                                                                                <option value="Select"> Departments
-                                                                                </option>
-                                                                                <option value="">Grade </option>
-                                                                                <option value="">SBU/option>
-                                                                                <option value=""> Emp Type</option>
-                                                                                <option value="">Location</option>
-
-                                                                            </select>
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            <p-multiSelect [options]="cities"
-                                                                                [(ngModel)]="selectedCities"
-                                                                                optionLabel="name"
-                                                                                placeholder="Select All">
-                                                                            </p-multiSelect>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                                                tooltip="Add"></i>&nbsp;
-                                                                        </td>
-
-                                                                    </tr>
-
-                                                                    <tr class="p-selectable-row">
-                                                                        <td class="text-center">3</td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="Select" class="form-control">
-                                                                                <option value="Select">Position Details
-                                                                                </option>
-                                                                                <option value=""> </option>
-                                                                                <option value=""></option>
-                                                                                <option value=""> </option>
-                                                                                <option value=""></option>
-                                                                                <option value=""></option>
-                                                                            </select>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="Select" class="form-control">
-                                                                                <option value="Select"> Grade </option>
-                                                                                <option value="">Grade </option>
-                                                                                <option value="">Grade </option>
-                                                                                <option value="">SBU/option>
-                                                                                <option value=""> Emp Type</option>
-                                                                                <option value="">Location</option>
-
-                                                                            </select>
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            <p-multiSelect [options]="cities"
-                                                                                [(ngModel)]="selectedCities"
-                                                                                optionLabel="name"
-                                                                                placeholder="Select All">
-                                                                            </p-multiSelect>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                                                tooltip="Add"></i>&nbsp;
-                                                                        </td>
-
-                                                                    </tr>
-
-                                                                    <tr class="p-selectable-row">
-                                                                        <td class="text-center">4</td>
-
-                                                                        <td class="text-center">
-                                                                            <select name="Select" class="form-control">
-                                                                                <option value="Select">Emp Age
-
-                                                                                </option>
-                                                                                <option value=""> </option>
-                                                                                <option value=""></option>
-                                                                                <option value=""> </option>
-                                                                                <option value=""></option>
-                                                                                <option value=""></option>
-                                                                            </select>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                        </td>
-
-
-                                                                        <td class="text-center">
-                                                                            <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                                                tooltip="Add"></i>&nbsp;
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="p-selectable-row">
-                                                                        <td class="text-center">5</td>
-
-                                                                        <td class="">
-
-                                                                            <select name="Select" class="form-control">
-                                                                                <option value="Select"> Service Age
-
-                                                                                </option>
-                                                                                <option value=""> </option>
-                                                                                <option value=""></option>
-                                                                                <option value=""> </option>
-                                                                                <option value=""></option>
-                                                                                <option value=""></option>
-                                                                            </select>
-                                                                        </td>
-
-                                                                        <td class="text-center">
-
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                                                tooltip="Add"></i>&nbsp;
-                                                                        </td>
-
-                                                                    </tr> -->
-                                                                </ng-template>
+                                                                                                                                    </ng-template>
                                                                 <ng-template pTemplate="emptymessage">
                                                                     <tr>
                                                                         <td colspan="15"
@@ -885,28 +751,28 @@
 
                                                 </div>
                                                 <div class="col-2">
-                                                    <select name="Select" class="form-control">
+                                                    <select name="Select" class="form-control" formControlName="sourcePeriod">
                                                         <option value="Select"> Select </option>
-                                                        <option value="">Current Cycle End</option>
-                                                        <option value="">Current Cycle Start </option>
-                                                        <option value=""> Previous Cycle End</option>
-                                                        <option value="">Previous Cycle Start</option>
-                                                        <option value="">Current Month End</option>
+                                                        <option >Current Cycle End</option>
+                                                        <option >Current Cycle Start </option>
+                                                        <option > Previous Cycle End</option>
+                                                        <option >Previous Cycle Start</option>
+                                                        <option >Current Month End</option>
 
-                                                        <option value="">Current Month Start</option>
-                                                        <option value="">Previous Month End</option>
-                                                        <option value="">Previous Month Start</option>
-                                                        <option value="">Previous BY End</option>
-                                                        <option value="">Previous BY Start </option>
-                                                        <option value="">Current Cal. Year End</option>
-                                                        <option value="">Current Cal. Year End</option>
+                                                        <option >Current Month Start</option>
+                                                        <option >Previous Month End</option>
+                                                        <option >Previous Month Start</option>
+                                                        <option >Previous BY End</option>
+                                                        <option >Previous BY Start </option>
+                                                        <option >Current Cal. Year End</option>
+                                                        <option >Current Cal. Year End</option>
 
-                                                        <option value="">Previous Cal. Year End</option>
-                                                        <option value="">Previous Cal. Year Start</option>
-                                                        <option value="">During Current Cycle</option>
-                                                        <option value="">During Current Month</option>
-                                                        <option value="">During Current BY</option>
-                                                        <option value="">During Current Cal. Year</option>
+                                                        <option >Previous Cal. Year End</option>
+                                                        <option >Previous Cal. Year Start</option>
+                                                        <option >During Current Cycle</option>
+                                                        <option >During Current Month</option>
+                                                        <option >During Current BY</option>
+                                                        <option >During Current Cal. Year</option>
 
 
                                                     </select>
@@ -920,7 +786,7 @@
                                                 <div class="float-right ">
                                                     <button type="submit" (click)="next()"
                                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                        tooltip="Save"><b>
+                                                        tooltip="Save" [disabled]="step1FormDisableFlag"><b>
                                                             <i class="fa fa-floppy-o"></i></b>Save</button>&nbsp;
                                                     <button type="submit"
                                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
@@ -933,7 +799,8 @@
 
                                             </div>
                                         </fieldset>
-                                    </div>
+                                        </div>
+                                    </form>
                                     <br>
 
 
@@ -1250,11 +1117,11 @@
                                                             <label class="form-label">Module</label>
                                                             <select name="custom-select" class="form-control">
                                                                 <option value="Select">Select</option>
-                                                                <option value="">
+                                                                <option >
                                                                 </option>
-                                                                <option value=""></option>
-                                                                <option value=""></option>
-                                                                <option value=""></option>
+                                                                <option ></option>
+                                                                <option ></option>
+                                                                <option ></option>
                                                             </select>
 
                                                         </div>
@@ -1262,11 +1129,11 @@
                                                             <label class="form-label">Derived Type</label>
                                                             <select name="custom-select" class="form-control">
                                                                 <option value="Select">Select</option>
-                                                                <option value="">Amount
+                                                                <option >Amount
                                                                 </option>
-                                                                <option value="">% Percentage</option>
-                                                                <option value="">Job Field Type</option>
-                                                                <option value="">Not Applicable</option>
+                                                                <option >% Percentage</option>
+                                                                <option >Job Field Type</option>
+                                                                <option >Not Applicable</option>
                                                             </select>
 
                                                         </div>
@@ -1275,10 +1142,10 @@
                                                             </label>
                                                             <select name="custom-select" class="form-control">
                                                                 <option value="Select">Select</option>
-                                                                <option value=""> </option>
-                                                                <option value=""></option>
-                                                                <option value=""></option>
-                                                                <option value=""> </option>
+                                                                <option > </option>
+                                                                <option ></option>
+                                                                <option ></option>
+                                                                <option > </option>
                                                             </select>
 
                                                         </div>
@@ -1293,10 +1160,10 @@
                                                             <label class="form-label">Table Name</label>
                                                             <select name="custom-select" class="form-control">
                                                                 <option value="Select">Select</option>
-                                                                <option value=""></option>
-                                                                <option value=""></option>
-                                                                <option value=""></option>
-                                                                <option value=""></option>
+                                                                <option ></option>
+                                                                <option ></option>
+                                                                <option ></option>
+                                                                <option ></option>
                                                             </select>
 
                                                         </div>
@@ -1305,8 +1172,8 @@
 
                                                             <select name="custom-select" class="form-control">
                                                                 <option value="Select">Select</option>
-                                                                <option value="">Service Period</option>
-                                                                <option value="">Max Amount Allowed</option>
+                                                                <option >Service Period</option>
+                                                                <option >Max Amount Allowed</option>
                                                             </select>
 
                                                         </div>
@@ -1655,10 +1522,10 @@
                                                     <select name="custom-select" class="form-control"
                                                         style="width:100px;">
                                                         <option value="Select">Select</option>
-                                                        <option value="">D1 </option>
-                                                        <option value="">D2</option>
-                                                        <option value="">D3</option>
-                                                        <option value="">D4</option>
+                                                        <option >D1 </option>
+                                                        <option >D2</option>
+                                                        <option >D3</option>
+                                                        <option >D4</option>
                                                     </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <label class="form-label mb-0 mt-2">Derived Type</label>
                                                     &nbsp;&nbsp;&nbsp; <span

@@ -27,4 +27,8 @@ export class SdnCreationService {
   valuesList(sourceTableId,sourceFieldId) : Observable<any> {
     return this.HttpClient.get<any>(this.url + `source-derived-matrix/source-master-field/value/` + sourceTableId+ `/field/` + sourceFieldId);
   }
+
+  saveSourceDerivedMatrix(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `source-derived-matrix/` , data);
+  }
 }
