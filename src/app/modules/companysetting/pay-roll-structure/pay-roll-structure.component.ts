@@ -598,12 +598,16 @@ export class PayRollStructureComponent implements OnInit {
           if(res.data.results.length > 0) {
             this.targetProductsED = res.data.results;
             console.log("res.data.results",res.data.results)
-            this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+            this.alertService.sweetalertMasterSuccess( res.status.message, 'Heads assigned to group successfully' );
             this.ChangeStepper(3)
             this.goToNextStep('step3');
             this.getAttHeadsAfterSaveEDGroups();
           } else {
-            this.alertService.sweetalertWarning(res.status.messsage);
+            this.alertService.sweetalertMasterSuccess( res.status.message, 'Heads assigned to group successfully' );
+            this.ChangeStepper(3)
+            this.goToNextStep('step3');
+            this.getAttHeadsAfterSaveEDGroups();
+            // this.alertService.sweetalertWarning(res.status.messsage);
           }
         }else {
           this.alertService.sweetalertError(
@@ -791,14 +795,16 @@ export class PayRollStructureComponent implements OnInit {
         this.payRollService.postAttGroup(data).subscribe(
           (res: any) => {
             if(res){
-              this.ChangeStepper(4);
-              this.goToNextStep('step4');
-              this.getAttributeHeadsAfterSavePHG();
+
               if(res.data.results.length > 0) {
                 this.targetProductsAttGroupList = res.data.results;
                 this.alertService.sweetalertMasterSuccess( 'Attribute Group assigned to group successfully', '' );
               }else {
-                this.alertService.sweetalertWarning(res.status.messsage);
+                this.alertService.sweetalertMasterSuccess( 'Attribute Group assigned to group successfully', '' );
+                this.ChangeStepper(4);
+                this.goToNextStep('step4');
+                this.getAttributeHeadsAfterSavePHG();
+                // this.alertService.sweetalertWarning(res.status.messsage);
               }
             }else {
               this.alertService.sweetalertError(
@@ -985,12 +991,13 @@ saveAttribute() {
         if(res.data.results.length > 0) {
           this.targetProductsAttributeList = res.data.results;
           // this.refreshHtmlTable();
-          this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+          this.alertService.sweetalertMasterSuccess( res.status.message, 'Attributes assigned to group successfully' );
           // this.ChangeStepper(3)
           // this.goToNextStep('step3');
           // this.getAttHeadsAfterSaveEDGroups();
         } else {
-          this.alertService.sweetalertWarning(res.status.messsage);
+          this.alertService.sweetalertMasterSuccess( res.status.message, 'Attributes assigned to group successfully' );
+          // this.alertService.sweetalertWarning(res.status.messsage);
         }
       }else {
         this.alertService.sweetalertError(

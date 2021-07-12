@@ -68,7 +68,7 @@ export class AttributeGlobalComponent implements OnInit {
 
   }
   getAllAttributeCreation() {
-
+    this.viewupdateButton = true;
     this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe( res => {
       console.log( 'check source res ', res );
       this.originalSourceProductList = res.data.results;
@@ -76,6 +76,7 @@ export class AttributeGlobalComponent implements OnInit {
     } );
   }
   getAllAttributeSelection(): void {
+    this.viewupdateButton = true;
     this.summaryList = [];
     this.attributeSelectionService.getAllGlobalAttributeMasterByGlobal().subscribe( res => {
       console.log( 'res check11 ', res );

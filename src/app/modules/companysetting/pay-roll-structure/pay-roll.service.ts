@@ -55,7 +55,7 @@ getAllEDHeadsGroup(){
 //Post Assign ED Heads
 postAllAssignEDHeads( data): Observable<number | {}> {
 
-  return this._HTTP.post( environment.baseUrl8084 + 'headGroup/phgCommonHeads', data )
+  return this._HTTP.post( environment.baseUrl8084 + 'headGroup/head-cascading', data )
     .pipe( map( ( res: any ) => {
       return res;
     } ) );
