@@ -139,9 +139,23 @@ public addUserRolePrivilege(data)
 
 // -------------- getAllFieldData---------------
 
-getAllField(){
+getAllFieldSummary(){
   return this._HTTP.get<any>(environment.baseUrl8080 + 'formField/getAllField');
 }
+
+getAllField(){
+  return this._HTTP.get<any>(environment.baseUrl8080 + 'field/');
+}
+
+getFieldById(applicationMenuId){
+  let token = this.authservice.getJwtToken()
+    const headers = new HttpHeaders()
+    .set('X-Authorization', token);
+    return this._HTTP.get<any>(environment.baseUrl8080 +'field/getByApplicationMenuId/'+applicationMenuId,{ headers: headers } )
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
   
 public addFields(data)
  {

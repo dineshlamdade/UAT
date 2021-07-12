@@ -79,6 +79,10 @@ export class RolePrivilegeComponent implements OnInit {
    isCheckedModifyFields: boolean = false;
    isCheckedHideFields: boolean = false;
    fieldLevelData: any;
+   applicationMenuId: any = 0;
+   parentMenuId: any;
+   selectedapplicationMenuId: any;
+   selectedSubMenuName: any;
    
 
 
@@ -102,7 +106,8 @@ export class RolePrivilegeComponent implements OnInit {
          this.getRolePrivilegeSummaryByUserRoleId();
          this.getApplicationMenus();
          //this.getRolePrivilegeSummary();
-         this.getAllFieldLevelData();
+         // this.getAllFieldLevelData();
+         
 
       })
    }
@@ -111,6 +116,7 @@ export class RolePrivilegeComponent implements OnInit {
       console.log("condition is false")
 
       this.getGroupName()
+      
       // this.getUserGroupName()
 // this.editMenuSummaryData.userGroupId = 0
 
@@ -2012,19 +2018,62 @@ export class RolePrivilegeComponent implements OnInit {
  // ---------get All FieldLevel-------
 
  getAllFieldLevelData(){
-   this.fieldAllMasterData = [];
-   this.fieldLevelMenu = null
-    this.service.getAllField().subscribe(res =>{
+   this.fieldLevelMenu = [];
+   this.fieldAllMasterData = null
+    this.service.getFieldById(this.selectedapplicationMenuId).subscribe(res =>{
       console.log('fieldAllMasterData::', res);
        
       this.fieldLevelMenu = res.data.results[0];
-      this.fieldLevelMenu.forEach(ele =>{
-        this.fieldAllMasterData.push(ele.formFieldDetails)
+       this.fieldAllMasterData = res.data.results[0];
+      // this.fieldLevelMenu.forEach(ele =>{
+      //   this.fieldAllMasterData.push(ele[0])
 
-      })
+      // })
     })
     console.log("this.fieldAllMasterData: " + this.fieldAllMasterData)
  }
+  
+
+ saveFieldLevelData(){
+
+   {
+      let data = {
+         
+            "fieldLeveleAccessMatrixId": 0,
+            "rolePrivilegeMatrixId": 132,
+            "formFieldId": 5,
+            "hide": 0,
+            "readAccess": true,
+            "writeAccess": true,
+            "modifyAccess": true,
+            "isActive": true
+             
+      } 
+      this.service.addFields(data).subscribe((res) => {
+        console.log("AssignedGroupSave:::",res);
+        this.fieldAllMasterData = res.data.results;
+      });
+    }
+
+   // this.fieldLevelData = this.SelectedDataFields
+   // console.log("before: " + JSON.stringify(this.fieldLevelData))
+   // this.service.addFields(this.fieldLevelData).subscribe(res =>{
+   //    this.alertService.sweetalertMasterSuccess("Field Level Privilege data saved successfully", "");
+   //    this.SelectedDataFields = []
+   //    this.fieldLevelData = []
+   //    this.fieldAllMasterData.forEach(element => {
+   //       // element.modifyFlag = false
+   //       // element.writeFlag = false
+   //       // element.readFlag = false
+   //       // element.allFlag = false
+   //       // element.deleteFlag = false
+
+   //    });
+
+   // })
+
+  }
+
 
 /// ---- field level checkUncheckCheckbox---------------------
   //////-------checkUncheckallReadFields()----------
@@ -2056,9 +2105,9 @@ export class RolePrivilegeComponent implements OnInit {
            "hide":0,
             "readAccess": true,
             "writeAccess": false,
-            "modifyAccess": false
-            
-         })
+            "modifyAccess": false,
+            "isActive": true
+             })
       })
    }
 
@@ -2272,23 +2321,19 @@ console.log("read single value: " + JSON.stringify(this.SelectedDataFields))
 
   }
 
-  saveFieldLevelData(){
-
-   this.fieldLevelData = this.SelectedDataFields
-   this.service.addFields(this.fieldLevelData).subscribe(res =>{
-
-   })
-
-  }
-
+ 
 
    
-onSelectFieldLevel(template1:TemplateRef<any>)
+onSelectFieldLevel(template1:TemplateRef<any>, menu)
     {
        this.modalRef = this.modalService.show(
         template1,
         Object.assign({}, { class: 'gray modal-lg' })
            );
+
+         this.selectedapplicationMenuId = menu.applicationMenuId
+         this.selectedSubMenuName = menu.menuName
+         this.getAllFieldLevelData()
     }
       
 
