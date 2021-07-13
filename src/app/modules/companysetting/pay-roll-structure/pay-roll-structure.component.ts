@@ -124,7 +124,7 @@ export class PayRollStructureComponent implements OnInit {
   public  selectedUserAttribute: Array<any> = [];
   public  selectedUser2Attribute: Array<any> = [];
   public saveAttGroupListFromPHGList : Array<any> = [];
-
+  public showSaveButton : boolean = false;
 
 
   public selectedheadName: Array<any> = [];
@@ -322,6 +322,7 @@ export class PayRollStructureComponent implements OnInit {
       element.isHighlight = false;
       element.isHighlightright = false;
       this.targetProducts.push(element);
+      this.showSaveButton = true;
     });
 
     var v = this.selectedUser;
@@ -366,9 +367,14 @@ export class PayRollStructureComponent implements OnInit {
     this.getGroupDiscription = this.pHGForm.get('companyGroupName').value;
     console.log("getGroupDiscription",this.getGroupDiscription);
 
+    if(selectedCompanyGroupCodes.length > 0){
     selectedCompanyGroupCodes.forEach((element) => {
       this.allGroupListByPostTime.push(element.code);
     });
+  }else {
+    this.alertService.sweetalertWarning("Please select Group code");
+    return false;
+  }
 
       this.targetProducts.forEach((element) => {
         const obj = {
@@ -388,7 +394,7 @@ export class PayRollStructureComponent implements OnInit {
       (res: any) => {
 
         if(res){
-        if(res.data.results.length > 0) {
+        if(res.data.results.length >= 1) {
             this.targetProducts = res.data.results;
             //  this.targetProductsED = this.targetProducts;
             console.log("targetProductsED",this.targetProductsED);
@@ -401,7 +407,7 @@ export class PayRollStructureComponent implements OnInit {
 
             // this.goToNextStep('step2');
           } else {
-            this.alertService.sweetalertWarning(res.status.messsage);
+            this.alertService.sweetalertWarning("Please select PHG");
           }
         }else {
           this.alertService.sweetalertError(
@@ -645,11 +651,11 @@ export class PayRollStructureComponent implements OnInit {
 
       removeDuplicateCodesAttHeads(){
 
-        for (let i = 0; i < this.targetProductsED.length; i++) {
-          const targetProductsAttGroupList = this.targetProductsED;
+        for (let i = 0; i < this.targetProductsAttGroupList.length; i++) {
+          const tempTargetproductAttGroup = this.targetProductsAttGroupList;
           // find the matched array element on left side array
           let matchedElement = this.listOfAttGroupList.find(function(item) {
-            if (item.headMasterId == targetProductsAttGroupList[i].headMasterId) {
+            if (item.id == tempTargetproductAttGroup[i].id) {
               return item;
             }
           });
@@ -843,10 +849,10 @@ getListOfAllAttributeHeads() {
 removeDuplicateCodesAttribute(){
 
   for (let i = 0; i < this.targetProductsAttributeList.length; i++) {
-    const targetProductsAttGroupList = this.targetProductsAttributeList;
+    const targetProductsAttList = this.targetProductsAttributeList;
     // find the matched array element on left side array
     let matchedElement = this.AssignAttributeList.find(function(item) {
-      if (item.headMasterId == targetProductsAttGroupList[i].headMasterId) {
+      if (item.attributeMasterId == targetProductsAttList[i].attributeMasterId) {
         return item;
       }
     });

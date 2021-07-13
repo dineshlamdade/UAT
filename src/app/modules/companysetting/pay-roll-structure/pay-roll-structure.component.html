@@ -202,22 +202,6 @@
                           List : <span class="font-14 text-dark-green">({{selectedUser2.length}})</span></label>
                       </div>
                     </div>
-                    <!--
-                  <div class="row">
-                    <div class="col-md-6">
-                      <span class="form-label font-14 text-purple font-bold">Total Head:
-                        <span class="font-14 text-dark-green">({{listOfPHG.length}})</span>
-                      </span>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="float-right">
-                        <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp; Selected Head:
-                          &nbsp;
-                          <span class="font-14 text-dark-green">({{listOfPHG.length}})</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div> -->
 
                     <div class="row">
 
@@ -345,10 +329,6 @@
                                 </tr>
 
                               </ng-template>
-                              <!-- <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                              <tr (click)="RowSelectedtargetProducts(user1, rowIndex);" [class.active]="user1.isHighlight"
-                                (dblclick)="doubleClickOnLeftTable(user1)"
-                                [ngClass]="{'outofstock':user1.isHighlight == true}"> -->
 
                               <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                 <tr (click)="RowSelectedtargetProducts(user1, rowIndex);"
@@ -378,17 +358,18 @@
 
                       <div class="float-right ">
 
-                        <button type="submit"
+                        <button type="submit" *ngIf="showSaveButton"
                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                          tooltip="Save"><b>
+                          tooltip="Save" [disabled]="pHGForm.invalid"
+                          [ngClass]="{'disabled-btn-bg-green' : pHGForm.invalid,'btn-bg-green': !pHGForm.invalid}"><b>
                             <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
 
-                        <button type="submit"
+                        <button type="button" (click)="resetPHGForm()"
                           class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                           tooltip="Reset"><b>
                             <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
 
-                        <button type="button" tooltip="Next"
+                        <button type="button" tooltip="Next" (click)="resetPHGForm()"
                           class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" tooltip="Clear">
                           <b><i class="fa fa-times"></i></b> Clear</button>
                       </div>

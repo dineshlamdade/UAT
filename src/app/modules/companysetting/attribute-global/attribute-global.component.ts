@@ -37,6 +37,8 @@ export class AttributeGlobalComponent implements OnInit {
   optionList = [];
   selectedNature: string;
   viewupdateButton = false;
+  viewLeftRightButton = true;
+
   attributeGroupId: number;
   sourceProducts: Array<any> = [];
   targetProducts: Array<any> = [];
@@ -68,7 +70,6 @@ export class AttributeGlobalComponent implements OnInit {
 
   }
   getAllAttributeCreation() {
-    this.viewupdateButton = true;
     this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe( res => {
       console.log( 'check source res ', res );
       this.originalSourceProductList = res.data.results;
@@ -76,7 +77,6 @@ export class AttributeGlobalComponent implements OnInit {
     } );
   }
   getAllAttributeSelection(): void {
-    this.viewupdateButton = true;
     this.summaryList = [];
     this.attributeSelectionService.getAllGlobalAttributeMasterByGlobal().subscribe( res => {
       console.log( 'res check11 ', res );
@@ -307,6 +307,7 @@ export class AttributeGlobalComponent implements OnInit {
     }, ( error ) => {
       this.alertService.sweetalertError( error["error"]["status"]["message"] );
     }, () => {
+      this.viewLeftRightButton = false;
       this.disabled = false;
       this.viewupdateButton = false;
       this.viewCancelButton = true;
@@ -329,6 +330,7 @@ export class AttributeGlobalComponent implements OnInit {
     } );
   }
   GetAttributeSelectionById( id, isUsed: boolean ): void {
+
     window.scrollTo( 0, 0 );
     this.attributeSelectionService.getAllGlobalAttributeCreation().subscribe( res => {
       console.log( 'check source res ', res );
@@ -339,6 +341,7 @@ export class AttributeGlobalComponent implements OnInit {
 
     }, () => {
       this.originalTargetList = [];
+      this.viewLeftRightButton = true;
       this.disabled = true;
       this.viewupdateButton = true;
       this.viewCancelButton = true;
@@ -371,6 +374,7 @@ export class AttributeGlobalComponent implements OnInit {
         this.alertService.sweetalertError( error["error"]["status"]["message"] );
       } );
   }
+
 
   addAttributeSelection(): void {
     const addAttributeCreation: SaveAttributeSelection = Object.assign( {} );
