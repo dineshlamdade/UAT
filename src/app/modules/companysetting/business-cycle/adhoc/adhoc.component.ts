@@ -15,27 +15,40 @@ export class AdhocComponent implements OnInit {
  
   cycleNameList: Array<any> = [];
   
-  businessCycleDefinitionId: number;
+  
   adhocCycleList: any;
   activeHeadList: any;
   summarydata: any;
   editFormFlag: boolean = false;
   viewFormFlag: boolean = false;
+  date: any;
+  fromDate: any;
+  toDate: any;
 
   constructor(public adhocService : AdhocService,public toaster : ToastrService) {
     this.adhocForm = new FormGroup({
-      businessCycleDefinitionId : new FormControl(''),
+     
+      businessCycleId : new FormControl(''),
       periodName : new FormControl(''),
-      startDate : new FormControl(''),
-      endDate : new FormControl(''),
+      fromDate : new FormControl(''),
+      toDate : new FormControl({ value: '', disabled: true } ),
       remark : new FormControl(''),
-      arrear : new FormControl('')
+      arrear : new FormControl(''),
+      headMasterIds : new FormControl(''),
+      cycleName : new FormControl(''),
+      //copyfrom : new FormControl(''),
       
+     startDate : new FormControl(''),
+     endDate : new FormControl('')
+     // adhocCycleName : new FormControl('')
 
     })
    }
 
   ngOnInit(): void {
+   
+
+
     this.getAllCycleDefinition();
     this.getAdhocCycle();
     this.getActiveHead();
@@ -45,7 +58,7 @@ export class AdhocComponent implements OnInit {
   }
 
   onSubmit(){
-    //console.log(this.adhocForm.value);
+    console.log(this.adhocForm.value);
     this.adhocService.saveAdhocCycle(this.adhocForm.value).subscribe((res)=>{
     this.toaster.success('',"Adhoc cycle saved successfully");
     this.getSummaryData();
@@ -56,6 +69,7 @@ export class AdhocComponent implements OnInit {
     
   }
 
+  
   onUpdate(){
       this.adhocService.updateData(this.adhocForm.value).subscribe((res)=>{
       this.toaster.success('',"Updated successfully");
@@ -84,24 +98,28 @@ export class AdhocComponent implements OnInit {
      });
     console.log("this.cycleNameList:" + this.cycleNameList);
     //this.getAllCycleDefinition();
-    this.adhocForm.reset();
+   // this.adhocForm.reset();
   }
 
   getAdhocCycle(){
-    this.adhocService.getAdhocCycle().subscribe((res)=>{
+      this.adhocService.getAdhocCycle().subscribe((res)=>{
       this.adhocCycleList = res.data.results[0];
+      // this.adhocCycleList = res.data.results.businessYeardefinition;
+      console.log(this.adhocCycleList);
     })
   }
 
   getActiveHead(){
       this.adhocService.getActiveHead().subscribe((res)=>{
       this.activeHeadList = res.data.results[0];
+      console.log(this.activeHeadList);
     })
   }
 
   getSummaryData(){
       this.adhocService.getSummaryData().subscribe((res)=>{
       this.summarydata = res.data.results;
+      console.log(this.summarydata);
     })
   }
 
@@ -111,5 +129,22 @@ export class AdhocComponent implements OnInit {
 
   }
 
+  onChangeCycle(evt : any){
+    console.log(evt);
+    if(evt == ''){
+      this.adhocForm.patchValue({
+        toDate : ''
+        
+      });
+    }else{
+      const index = this.cycleNameList.findIndex( o => o.periodName == evt)
+      this.adhocForm.patchValue({
+        toDate : this.cycleNameList[index].toDate
+      });
+    }
+
+  }
+
   
+ 
 }

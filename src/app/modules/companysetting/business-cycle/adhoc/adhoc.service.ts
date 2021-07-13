@@ -45,7 +45,8 @@ export class AdhocService{
         return this.http.post<any>(this.apiUrl+ `business-cycle/adhoc`, data)
     }
 
+    /**Update data */
     updateData(data):Observable<any>{
-        return this.http.put<any>(this.apiUrl+ `business-cycle/update/`,data);
+        return this.http.put<any>(this.apiUrl+ `business-cycle/update/`, data);
     }
 }

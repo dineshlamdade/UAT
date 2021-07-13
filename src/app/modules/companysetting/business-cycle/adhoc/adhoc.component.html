@@ -6,14 +6,14 @@
           <div class="card">
             <div class="card-body">
 
-              <form class="card" role="form" formGroup="adhocForm">
+              <form class="card" role="form" [formGroup]="adhocForm">
            <fieldset>
                <legend>Primary Cycle</legend>
                 <div class="row">
-                  <div class="col-sm-6 col-md-3">
+                  <div class="col-sm-6 col-md-3 form-group">
                     <label class="form-label">Cycle Definition</label>
                     <div class="input-group">
-                        <select class="form-control" formControlName = "businessCycleDefinitionId"
+                        <select class="form-control" formControlName = "businessCycleId"
                         (change) ="getCycleNameById($event.target.value)" >
                        
                         <option selected value=''>Select </option>
@@ -24,10 +24,13 @@
                         </select>
                     </div>
                   </div>
-                  <div class="col-sm-6 col-md-3">
+                  <div class="col-sm-6 col-md-3  form-group">
                     <label class="form-label">Cycle</label>
                     <div class="input-group">
-                        <select class="form-control" formControlName = "businessCycleDefinitionId">
+                        <select class="form-control" formControlName = "periodName" 
+                     
+                        
+                        >
                             <!-- <option>Select</option> -->
                             <!-- <option value=""> APR 2020 </option>
                             <option value="">MAY 2020</option>
@@ -52,8 +55,8 @@
                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                             data-provide="datepicker" data-date-autoclose="true"
                                             class="form-control" (bsValueChange)="setPolicyEndDate()"
-                                            placeholder="" bsDatepicker
-                                            [maxDate]="today" disabled>
+                                            placeholder="" bsDatepicker formControlName = "startDate"
+                                           readonly>
                                     </div>
                                 </div>
 
@@ -67,8 +70,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                             data-provide="datepicker" data-date-autoclose="true"
                             class="form-control" (bsValueChange)="setPolicyEndDate()"
-                            placeholder="" bsDatepicker
-                            [maxDate]="today" disabled>
+                            placeholder="" bsDatepicker formControlName = "endDate"
+                            readonly
+                           >
                     </div>
                   </div>
                  
@@ -96,13 +100,13 @@
             <fieldset>
               <legend>Adhoc Cycle</legend>          
             <div class="row">
-                <div class="col-sm-6 col-md-3">
+                <div class="col-sm-6 col-md-3 form-group">
                   <label class="form-label">Cycle Name</label>
                   <div class="input-group">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" formcontrolName = "cycleName">
                   </div>
                 </div>
-                <div class="col-sm-6 col-md-3">
+                <div class="col-sm-6 col-md-3 form-group">
                   <label class="form-label">From Date</label>
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -113,7 +117,7 @@
                         data-provide="datepicker" data-date-autoclose="true"
                         class="form-control" (bsValueChange)="setPolicyEndDate()"
                         placeholder="" bsDatepicker
-                        [maxDate]="today">
+                        [maxDate]="today" formControlName = "fromDate">
                 </div>
                 </div>
                <div class="col-sm-6 col-md-3">
@@ -126,18 +130,22 @@
                                       <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                           data-provide="datepicker" data-date-autoclose="true"
                                           class="form-control" (bsValueChange)="setPolicyEndDate()"
-                                          placeholder="" bsDatepicker
-                                          [maxDate]="today" disabled>
+                                          placeholder="" bsDatepicker formControlName = "toDate"
+                                          [readonly]="!disabled" >
                                   </div>
                               </div>
-              <div class="col-sm-6 col-md-3">
+              <div class="col-sm-6 col-md-3 form-group">
                                 <label class="form-label">Copy From</label>
-                                <select class="form-control">
+                                <select class="form-control" formControlName = "">
                                     <option>Select</option>
                                     <!-- <option value=""> Cycle 1 </option>
                                     <option value="">Cycle 2</option>
                                     <option value="">Cycle 3</option>
                                     <option value="">Cycle 4</option> -->
+                                    <!-- <option selected value=''>Select </option>
+                        <option *ngFor="let Cycle of adhocCycleList" [value]="Cycle.periodId">
+                       {{Cycle.periodName}}
+                       </option> -->
                                 </select>
              </div>
                </div>
@@ -198,12 +206,12 @@
                               </tr>
                             
                              </ng-template>
-                            <ng-template pTemplate="body" let-user1>
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                <tr class="p-selectable-row">
-                                  <td>  NR1  
+                                  <td> {{user1.headMasterId}}
                                  </td>
                                  
-                                  <td>  Earning
+                                  <td> {{user1.headNature}}
                                   </td>
                                 </tr>
                                
@@ -292,12 +300,12 @@
                               </tr>
                             
                              </ng-template>
-                            <ng-template pTemplate="body" let-user1>
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                               <tr class="p-selectable-row">
-                                <td>  NR1
+                                <td> {{user1.headMasterId}}
                                </td>
                                
-                                <td>  Earning
+                                <td>  {{user1.headNature}}
                                 </td>
                               </tr>
                              
@@ -339,9 +347,9 @@
         </fieldset>
         <br>
         <div class="float-left d-flex justify-content ml-20">
-          <input type="checkbox"  class="mt-2"/>&nbsp;
+          <input type="checkbox"  class="mt-2" formControlName = "arrear"/>&nbsp;
         <label class="form-label mt-2 margin-right:30px;">Arrear</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <label class="form-label mt-2">Remark</label>&nbsp;
+        <label class="form-label mt-2 formGroup">Remark</label>&nbsp;
         <textarea type="text" formControlName = "remark"></textarea>
         </div>
                 <div class="row mt-15">
