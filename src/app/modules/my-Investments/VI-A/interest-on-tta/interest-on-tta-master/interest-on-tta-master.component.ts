@@ -1,12 +1,6 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import {
-  Component,
-  Inject,
-  Input,
-  OnInit,
-  TemplateRef,
-} from '@angular/core';
+import { Component, Inject, Input, OnInit, TemplateRef } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -26,7 +20,7 @@ import { InterestOnTtaService } from '../interest-on-tta.service';
 @Component({
   selector: 'app-interest-on-tta-master',
   templateUrl: './interest-on-tta-master.component.html',
-  styleUrls: ['./interest-on-tta-master.component.scss']
+  styleUrls: ['./interest-on-tta-master.component.scss'],
 })
 export class InterestOnTtaMasterComponent implements OnInit {
   @Input() public accountNo: any;
@@ -59,10 +53,11 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public stateNameList: Array<any> = [];
   public ifscCodeList: Array<any> = [];
   public bankNameLsit: Array<any> = [];
-  public bankIFSC:any;
+  public bankIFSC: any;
 
+  public accountNumberlistedit: Array<any> = [];
 
-  public  TotalIFSCcodeList: Array<any> = [];
+  public TotalIFSCcodeList: Array<any> = [];
   public urlArray: Array<any> = [];
   public urlIndex: number;
   public glbalECS: number;
@@ -115,10 +110,10 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public globalSelectedAmount: string;
   public selectedState: string;
 
-  public disability : string;
-  public severity : string;
+  public disability: string;
+  public severity: string;
   public isClaiming80U: boolean = true;
-  public proofSubmissionId ;
+  public proofSubmissionId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -144,12 +139,9 @@ export class InterestOnTtaMasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
     this.initiateMasterForm();
-
-
   }
 
- public ngOnInit(): void {
-
+  public ngOnInit(): void {
     this.getFinacialYear();
     this.getMasterIFSCCodeList();
     this.getMasterStateList();
@@ -173,7 +165,6 @@ export class InterestOnTtaMasterComponent implements OnInit {
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
-
   }
 
   // initiate Reactive Master Form
@@ -181,18 +172,27 @@ export class InterestOnTtaMasterComponent implements OnInit {
     this.form = this.formBuilder.group({
       savingBankMasterId: new FormControl(0),
       ifscCode: new FormControl(null, Validators.required),
-      state:  new FormControl(null, Validators.required),
-      bankName: new FormControl({value: null, disabled: true },Validators.required),
-      branchName: new FormControl({value: null, disabled: true },Validators.required),
-      bankAddress: new FormControl({value: null, disabled: true },Validators.required),
+      state: new FormControl(null, Validators.required),
+      bankName: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
+      branchName: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
+      bankAddress: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       accountNumber: new FormControl(null, Validators.required),
       interestOnSavingDeposit80TTMasterId: new FormControl(0),
-      documentRemark : new FormControl(null),
+      documentRemark: new FormControl(null),
     });
   }
 
-   // convenience getter for easy access to form fields
-   get masterForm() {
+  // convenience getter for easy access to form fields
+  get masterForm() {
     return this.form.controls;
   }
 
@@ -203,138 +203,136 @@ export class InterestOnTtaMasterComponent implements OnInit {
     });
   }
 
-    // State Code List API call
-    getMasterStateList() {
+  // State Code List API call
+  getMasterStateList() {
+    this.interestOnTtaService.getStateInfoList().subscribe((res) => {
+      this.stateNameList = res.data.results;
+    });
+  }
 
-      this.interestOnTtaService.getStateInfoList().subscribe((res) => {
-        this.stateNameList = res.data.results;
-      });
-    }
-
-      //get ifsc detail
-      IFSCDetails(bankIFSC) {
-        if(bankIFSC.length == 11) {
-        this.interestOnTtaService.getDataFromIFSC(bankIFSC).subscribe(res => {
-
-          console.log(res);
-          this.form.patchValue({
-            branchName: res.data.results[0].branchName,
-            bankAddress: res.data.results[0].address,
-            bankName: res.data.results[0].bankName,
-          });
-
+  //get ifsc detail
+  IFSCDetails(bankIFSC) {
+    if (bankIFSC.length == 11) {
+      this.interestOnTtaService.getDataFromIFSC(bankIFSC).subscribe((res) => {
+        console.log(res);
+        this.form.patchValue({
+          branchName: res.data.results[0].branchName,
+          bankAddress: res.data.results[0].address,
+          bankName: res.data.results[0].bankName,
         });
-      }
-      }
-      // search IFSC code
-      onSelectIFSCCode(evt: any) {
-        if (evt !== null && evt.length == 11) {
-          this.interestOnTtaService.getDataFromIFSC(evt).subscribe((res) => {
-            this.form.patchValue({
-              branchName: res.data.results[0].branchName,
-              bankAddress: res.data.results[0].address,
-              bankName: res.data.results[0].bankName,
-            });
-          });
-        }
-      }
-
-    getDataFromIFSC(bankIFSC) {
-      if (bankIFSC.length < 11) {
-        // this.BankInformationModel.bankName = '';
-        // this.BankInformationModel.branchName = '';
-        // this.BankInformationModel.bankAddress = '';
-        // this.confirmAccountNumber = '';
-        // this.BankInformationModel.accountNo = '';
-        // this.BankInformationModel.nameAsPerBank = '';
-      }
-      if (bankIFSC.length == 11) {
-        this.IFSCDetails(bankIFSC);
-      }
-      if (bankIFSC) {
-        // this.gridEditIFSC1 = bankIFSC
-        // this.IFSCGridDetails(bankIFSC);
-      }
-    }
-
-    searchIFSC(searchTerm, bankIFSC) {
-      this.form.patchValue({
-        branchName:'',
-        bankAddress: '',
-        bankName:'',
       });
+    }
+  }
+  // search IFSC code
+  onSelectIFSCCode(evt: any) {
+    if (evt !== null && evt.length == 11) {
+      this.interestOnTtaService.getDataFromIFSC(evt).subscribe((res) => {
+        this.form.patchValue({
+          branchName: res.data.results[0].branchName,
+          bankAddress: res.data.results[0].address,
+          bankName: res.data.results[0].bankName,
+        });
+      });
+    }
+  }
 
-      if (searchTerm.query.length < 11) {
-        this.ifscCodeList = []
+  getDataFromIFSC(bankIFSC) {
+    if (bankIFSC.length < 11) {
+      // this.BankInformationModel.bankName = '';
+      // this.BankInformationModel.branchName = '';
+      // this.BankInformationModel.bankAddress = '';
+      // this.confirmAccountNumber = '';
+      // this.BankInformationModel.accountNo = '';
+      // this.BankInformationModel.nameAsPerBank = '';
+    }
+    if (bankIFSC.length == 11) {
+      this.IFSCDetails(bankIFSC);
+    }
+    if (bankIFSC) {
+      // this.gridEditIFSC1 = bankIFSC
+      // this.IFSCGridDetails(bankIFSC);
+    }
+  }
 
-      }
-      if (bankIFSC.length < 11) {
-        // this.BankInformationModel.bankName = '';
-        // this.BankInformationModel.branchName = '';
-        // this.BankInformationModel.bankAddress = '';
-        // this.confirmAccountNumber = '';
-        // this.BankInformationModel.accountNo = '';
-        // this.BankInformationModel.nameAsPerBank = '';
-      }
-      if (searchTerm.query.length == 2) {
-        // setTimeout(() => {
-        this.interestOnTtaService.searchIFSC(searchTerm.query, this.form.get('state').value).subscribe(res => {
+  searchIFSC(searchTerm, bankIFSC) {
+    this.form.patchValue({
+      branchName: '',
+      bankAddress: '',
+      bankName: '',
+    });
+
+    if (searchTerm.query.length < 11) {
+      this.ifscCodeList = [];
+    }
+    if (bankIFSC.length < 11) {
+      // this.BankInformationModel.bankName = '';
+      // this.BankInformationModel.branchName = '';
+      // this.BankInformationModel.bankAddress = '';
+      // this.confirmAccountNumber = '';
+      // this.BankInformationModel.accountNo = '';
+      // this.BankInformationModel.nameAsPerBank = '';
+    }
+    if (searchTerm.query.length == 2) {
+      // setTimeout(() => {
+      this.interestOnTtaService
+        .searchIFSC(searchTerm.query, this.form.get('state').value)
+        .subscribe((res) => {
           console.log(res);
           this.ifscCodeList = res.data.results[0];
           this.TotalIFSCcodeList = res.data.results[0];
           if (this.ifscCodeList.length > 0) {
             this.filterIFSCCodes(searchTerm.query);
           } else {
-           // this.alertService.sweetalertError('Record Not Found');
+            // this.alertService.sweetalertError('Record Not Found');
             // this.notifyService.showError ('Recordnot found', "Error..!!")
           }
         });
-        // }, 1500)
-      }
-      this.filterIFSCCodes(searchTerm.query);
+      // }, 1500)
+    }
+    this.filterIFSCCodes(searchTerm.query);
 
-      if (bankIFSC.length == 11) {
-        const ifsc = this.TotalIFSCcodeList.filter((item) => {
-          return item == searchTerm.query;
-        });
-        if (ifsc == searchTerm.query) {
-           this.IFSCDetails(searchTerm.query);
-        }
+    if (bankIFSC.length == 11) {
+      const ifsc = this.TotalIFSCcodeList.filter((item) => {
+        return item == searchTerm.query;
+      });
+      if (ifsc == searchTerm.query) {
+        this.IFSCDetails(searchTerm.query);
       }
     }
+  }
 
-    filterIFSCCodes(searchTerm) {
-      if (searchTerm.length > 2) {
-        searchTerm = searchTerm.toLowerCase();
-        const ifsc = this.TotalIFSCcodeList.filter((item) => {
-          return JSON.stringify(item).toLowerCase().includes(searchTerm);
-        });
-        this.ifscCodeList = ifsc;
-        // this.GridIFSCcodeList = ifsc;
-        // this.showOptios = true;
-      }
+  filterIFSCCodes(searchTerm) {
+    if (searchTerm.length > 2) {
+      searchTerm = searchTerm.toLowerCase();
+      const ifsc = this.TotalIFSCcodeList.filter((item) => {
+        return JSON.stringify(item).toLowerCase().includes(searchTerm);
+      });
+      this.ifscCodeList = ifsc;
+      // this.GridIFSCcodeList = ifsc;
+      // this.showOptios = true;
     }
+  }
 
-    onSelectState(evt: any) {
+  onSelectState(evt: any) {
     this.selectedState = evt;
-     this.bankIFSC ='';
-    }
+    this.bankIFSC = '';
+  }
 
-    // IFSC Code List API call
-    getMasterIFSCCodeList() {
-      const state = this.masterForm.state.value;
-      if (state !== null) {
-        this.interestOnTtaService.getIFSCCodeList(state).subscribe((res) => {
-          res.data.results[0].forEach((element) => {
-            const obj = {
-              label: element,
-              value: element,
-            };
-            this.ifscCodeList.push(obj);
-          });
+  // IFSC Code List API call
+  getMasterIFSCCodeList() {
+    const state = this.masterForm.state.value;
+    if (state !== null) {
+      this.interestOnTtaService.getIFSCCodeList(state).subscribe((res) => {
+        res.data.results[0].forEach((element) => {
+          const obj = {
+            label: element,
+            value: element,
+          };
+          this.ifscCodeList.push(obj);
         });
-      }
+      });
     }
+  }
 
   // Get All Previous Employer
   getPreviousEmployer() {
@@ -355,7 +353,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
   }
 
   // Post Master Page Data API call
-  public addMaster(formData: any, formDirective: FormGroupDirective,): void {
+  public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.submitted = true;
 
     if (this.form.invalid) {
@@ -368,12 +366,21 @@ export class InterestOnTtaMasterComponent implements OnInit {
       );
       return;
     } else {
-
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
 
-
       console.log('Interest On 80TTA ::', data);
+      console.log(data.accountNumber);
+      console.log(this.accountNumberlistedit);
+
+      this.masterGridData.forEach((element) => {
+        if (data.accountNumber == element.accountNumber) {
+          this.alertService.sweetalertWarning(
+            'Duplicate Account should Not be Acceptable'
+          );
+          return 0;
+        }
+      });
 
       this.interestOnTtaService
         .uploadMultiple80TTAMasterFiles(this.masterfilesArray, data)
@@ -383,7 +390,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
               // this.masterGridData = res.data.results[0].documentInformationList;
-              console.log("masterGridData",this.masterGridData);
+              console.log('masterGridData', this.masterGridData);
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
                 'Go to "Declaration & Actual" Page to see Schedule.'
@@ -413,6 +420,21 @@ export class InterestOnTtaMasterComponent implements OnInit {
     }
   }
 
+  //Duplicate account should not be acceptable
+
+  matchAccountNumber(event: any) {
+    console.log('event...', event);
+    this.masterGridData.forEach((element) => {
+      this.accountNumberlistedit = element.accountNumber;
+      if (event == element.accountNumber) {
+        this.alertService.sweetalertWarning(
+          'Duplicate Account should Not be Acceptable'
+        );
+      }
+      console.log(element.accountNumber);
+    }); return;
+  }
+
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
     if (event.target.files.length > 0) {
@@ -430,49 +452,45 @@ export class InterestOnTtaMasterComponent implements OnInit {
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
-   //------------- On Master Edit functionality --------------------
-   editMaster(accountNumber) {
+  //------------- On Master Edit functionality --------------------
+  editMaster(accountNumber) {
     this.scrollToTop();
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
 
-      console.log(accountNumber)
-      const obj =  this.findByaccountNumber(accountNumber,this.masterGridData);
+      console.log(accountNumber);
+      const obj = this.findByaccountNumber(accountNumber, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
-      console.log("Edit Master",obj);
-      if (obj!= 'undefined'){
-
-      this.paymentDetailGridData = obj.paymentDetails;
-      this.form.patchValue(obj);
-      this.Index = obj.accountNumber;
-      this.showUpdateButton = true;
-      this.isClear = true;
-      this.urlArray = obj.documentInformationList;
-      this.proofSubmissionId = obj.proofSubmissionId;
-
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
       }
     });
-
   }
 
-  findByaccountNumber(accountNumber,masterGridData){
-    return masterGridData.find(x => x.accountNumber === accountNumber)
+  findByaccountNumber(accountNumber, masterGridData) {
+    return masterGridData.find((x) => x.accountNumber === accountNumber);
   }
 
-    // scrollToTop Fuctionality
-    public scrollToTop() {
-      (function smoothscroll() {
-        var currentScroll =
-          document.documentElement.scrollTop || document.body.scrollTop;
-        if (currentScroll > 0) {
-          window.requestAnimationFrame(smoothscroll);
-          window.scrollTo(0, currentScroll - currentScroll / 8);
-        }
-      })();
-    }
-
+  // scrollToTop Fuctionality
+  public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
 
   // On Edit Cancel
   cancelEdit() {
@@ -513,67 +531,64 @@ export class InterestOnTtaMasterComponent implements OnInit {
     );
   }
 
-    //---------- On View Cancel -------------------
-    resetView() {
-      this.form.reset();
-      this.urlArray = [];
-      this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
-      this.showUpdateButton = false;
-      this.paymentDetailGridData = [];
-      this.masterfilesArray = [];
-      this.isCancel = false;
+  //---------- On View Cancel -------------------
+  resetView() {
+    this.form.reset();
+    this.urlArray = [];
+    //this.form.get('active').setValue(true);
+    // this.form.get('ecs').setValue(0);
+    this.showUpdateButton = false;
+    this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+    this.isCancel = false;
+    this.urlArray = [];
+  }
+
+  //---------- For Doc Viewer -----------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+  //----------------- Remove LicMaster Document -----------------------------
+  removeSelectedDocument(index: number) {
+    this.masterfilesArray.splice(index, 1);
+  }
+
+  /*   accountNumber  */
+
+  toggleFieldTextType() {
+    this.accountNo = !this.accountNo;
+  }
+
+  hideAccountNo(accountNo) {
+    if (accountNo == true) {
+      setTimeout(() => {
+        this.accountNo = false;
+      }, 3000);
     }
-
-    //---------- For Doc Viewer -----------------------
-    nextDocViewer() {
-
-      this.urlIndex = this.urlIndex + 1;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-    }
-
-    previousDocViewer() {
-
-      this.urlIndex = this.urlIndex - 1;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-    }
-
-    docViewer(template3: TemplateRef<any>,index:any) {
-      console.log("---in doc viewer--");
-      this.urlIndex = index;
-
-      console.log("urlArray::", this.urlArray);
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-      console.log("urlSafe::",  this.urlSafe);
-      this.modalRef = this.modalService.show(
-        template3,
-        Object.assign({}, { class: 'gray modal-xl' }),
-      );
-    }
-    //----------------- Remove LicMaster Document -----------------------------
-    removeSelectedDocument(index: number) {
-      this.masterfilesArray.splice(index, 1);
-    }
-
-     /*   accountNumber  */
-
-    toggleFieldTextType() {
-      this.accountNo = !this.accountNo
-    }
-
-    hideAccountNo( accountNo ) {
-      if ( accountNo == true ) {
-        setTimeout( () => {
-          this.accountNo = false;
-        }, 3000 )
-      }
-    }
+  }
 }
-
-

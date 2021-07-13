@@ -715,6 +715,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+    this.urlArray = [];
     this.isCancel = false;
   }
   UploadModal(template: TemplateRef<any>) {

@@ -8,6 +8,7 @@ RUN yum install nodejs -y
 RUN yum install npm -y
 
 #RUN yum install  ng-common 
+
 #RUN npm install -g @angular/cli
 
 # Create a directory where our app will be placed

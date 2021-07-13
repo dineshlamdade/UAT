@@ -692,6 +692,8 @@ export class PostOfficeMasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.urlArray = [];
     this.isCancel = false;
+    this.form.get('accountHolderName').setValue('Aishwarya Malviya');
+    this.form.get('relationship').setValue('Self');
   }
 
   // On Master Edit functionality

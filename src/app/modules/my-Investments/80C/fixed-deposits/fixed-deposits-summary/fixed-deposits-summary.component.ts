@@ -13,24 +13,28 @@ export class FixedDepositsSummaryComponent implements OnInit {
   @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
 
-  onEditSummary(institution: string, accountNumber: string) {
+  onEditSummary(institution: string, accountNumber: string,  mode: string) {
     this.tabIndex = 2;
     const data = {
       institution: institution,
       accountNumber: accountNumber,
       tabIndex: this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
     };
     this.institution = institution;
     this.accountNumber = accountNumber;
 
     this.myEvent.emit(data);
   }
-  onViewSummary(institution: string, accountNumber: string) {
+  onViewSummary(institution: string, accountNumber: string,  mode: string) {
     this.tabIndex = 2;
     const data = {
       institution: institution,
       accountNumber: accountNumber,
       tabIndex: this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
     };
     this.institution = institution;
     this.accountNumber = accountNumber;

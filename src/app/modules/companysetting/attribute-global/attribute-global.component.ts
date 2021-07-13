@@ -307,7 +307,7 @@ export class AttributeGlobalComponent implements OnInit {
       this.alertService.sweetalertError( error["error"]["status"]["message"] );
     }, () => {
       this.disabled = false;
-      this.viewupdateButton = true;
+      this.viewupdateButton = false;
       this.viewCancelButton = true;
 
 
@@ -339,7 +339,7 @@ export class AttributeGlobalComponent implements OnInit {
     }, () => {
       this.originalTargetList = [];
       this.disabled = true;
-      this.viewupdateButton = false;
+      this.viewupdateButton = true;
       this.viewCancelButton = true;
       this.attributeGroupId = id;
       this.attributeSelectionService.GetAttriubuteSelectionByIdGlobal( id )
