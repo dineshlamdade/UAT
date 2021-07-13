@@ -142,4 +142,8 @@ public getIterationdetailsbyQueryID(id)
   {
   return this.http.post<any>(this.apiUrl2 + 'workflowMaster-report/approverDetails' , data);
   }
+  // ........................employee List api.......................................
+  public getAllEmployeeDetails() {
+  return this.http.get<any>(this.apiUrl3 + '/employee-master')
+  }
 }

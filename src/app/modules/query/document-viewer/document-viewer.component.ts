@@ -106,8 +106,8 @@ export class DocumentViewerComponent implements OnInit {
     {
       this.GetIterationdetailsbyQueryIDData = res.data.results;
       this.GetIterationdetailsbyQueryIDData2 = res.data.results[0];
-      this.refNumber = this.GetIterationdetailsbyQueryIDData2.refNumber;
-      console.log("this.refNumber",this.refNumber);
+      // this.refNumber = this.GetIterationdetailsbyQueryIDData2.refNumber;
+      // console.log("this.refNumber",this.refNumber);
 
       console.log("GetIterationdetailsbyQueryIDData2",this.GetIterationdetailsbyQueryIDData2)
       this.GetIterationdetailsbyQueryIDData.forEach(element => {
@@ -121,9 +121,10 @@ export class DocumentViewerComponent implements OnInit {
       this.queryNumber = element.queryNumber;
       this.queryTypeCode = element.queryTypeCode;
 
-      // if(this.docData == !null){
-      // this.refNumber = element.refNumber;
-      //  }
+      if(this.docData != null){
+      this.refNumber = element.refNumber;
+      console.log("this.refNumber",this.refNumber)
+       }
 
       });
 

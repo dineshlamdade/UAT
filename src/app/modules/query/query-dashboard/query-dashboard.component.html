@@ -250,7 +250,7 @@
 
                                 <div class="tabview-contents mt-25">
 
-                                    <div class="row" >
+                                    <!-- <div class="row" >
                                       <div class="col-md-6"></div>
                                         <div class="col-md-6" >
                                             <button type="button" tooltip="Add Query" (click)="smallpopup(template)"
@@ -258,7 +258,7 @@
                                                 [routerLink]="['/admin-query-generation']"><b><i
                                                         class="fa fa-plus"></i></b> Add Query </button>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="row">
                                         <div class="col-md-12">
@@ -272,13 +272,12 @@
                                                   <div class="col-md-6 mt-4">
                                                     <label class="form-label">Total Count : &nbsp;({{summaryLength}})</label>
                                                 </div>
-                                                  <div style="text-align: right">
+                                                  <div style="text-align: right;  margin-top :-35px">
                                                       <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
                                                       <input type="text"  pInputText size="50" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')"
                                                       style="width:20%">
                                                       <div class="float-right">
-                                                        <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="download()"></i></span>&nbsp;
-                                                        <!-- <span class="ml-10"><i class="fa fa-file-excel-o font-18 text-dark-green" (click)="exportAsXLSX()" tooltip="Export to Excel"></i ></span> -->
+                                                        <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="downloadPdf()"></i></span>&nbsp;
                                                           <a tooltip="Export to Excel" style="cursor: pointer"
                                                             (click)="exportAsXLSX()"><i
                                                                 class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
@@ -479,7 +478,7 @@
                                                             <td> <label
                                                                     class="form-lable mb-0 ">{{summary.employeeCode}}</label>
 
-                                                            <td> <label
+                                                            <td> <label style="width: max-content;"
                                                                     class="form-lable mb-0 ">{{summary.empName}}</label>
 
                                                             </td>
@@ -492,7 +491,7 @@
                                                                     class="form-lable mb-0 " >{{summary.applicationModuleName}}</label>
                                                             </td>
 
-                                                            <td > <label
+                                                            <td > <label style="width: max-content;"
                                                               class="form-lable mb-0 " ><p [innerHTML]="summary.queryDescription"></p></label>
                                                               <!-- <span class="a" [innerHTML]="summary.queryDescription"></span> -->
 
@@ -521,7 +520,7 @@
                                                           </ng-template>
 
 
-                                                            <td ><label
+                                                            <td ><label style="width: max-content;"
                                                                     class="form-lable mb-0 "><p >{{summary.subQueryTypeDescription}}</p></label>
 
                                                             </td>
@@ -547,7 +546,7 @@
                                                               </div>
                                                           </ng-template> -->
 
-                                                          <td   (click)="smallpopup1(queryDescription,summary)">  <label
+                                                          <td class="a" (click)="smallpopup1(queryDescription,summary)">  <label
                                                                     class="form-lable mb-0 "><p class="a" [innerHTML]="summary.subject">{{summary.subject}}</p></label>
 
                                                             </td>
@@ -642,7 +641,7 @@
 
                                 </div>
                             </form>
-                            <ng-template #template>
+                            <!-- <ng-template #template>
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="UploadModalLabel">Add-Query</h5>
                                     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
@@ -705,7 +704,7 @@
                                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i
                                                 class="fa fa-times"></i></b> Cancel</button>
                                 </div>
-                            </ng-template>
+                            </ng-template> -->
 
                         </div>
                     </div>

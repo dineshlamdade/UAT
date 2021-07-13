@@ -197,6 +197,7 @@ this.queryService.getAllQueryList().subscribe(res =>
     });
     this.getEmpMasterDetails(this.employeeMasterIdData);
 
+
   })
 }
 
@@ -498,8 +499,12 @@ editQuery(queryGenerationSummary) {
   this.queryGenerationEmpId = queryGenerationSummary.queryGenerationEmpId;
   this.editQuerySummaery = queryGenerationSummary;
   this.queryGenerationForm.controls['queryNumber'].disable();
+  if(queryGenerationSummary.listDoc != null){
   this.urlArray = queryGenerationSummary.listDoc;
-
+}else
+{
+  this.urlArray = [];
+}
 
 }
 viewQuery(queryGenerationSummary)
@@ -513,7 +518,7 @@ viewQuery(queryGenerationSummary)
  this.isSave = false;
  this.isReset = false;
  this.isCancle = true;
-
+ this.hideEditTime = false;
  this.editQuerySummaery = queryGenerationSummary;
 //  this.queryGenerationForm.controls['queryDescription'].disable();
  this.getById(queryGenerationSummary.queryGenerationEmpId);

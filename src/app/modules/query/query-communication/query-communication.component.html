@@ -259,8 +259,8 @@
                                                                                         <!-- oninput="this.parentNode.dataset.value = this.value" rows="4" -->
                                                                                         <div class="col-md-10" >
                                                                                             <textarea style="overflow:hidden;"
-                                                                                                class="form-control" [innerHTML]="GetIterationdetailsbyQueryIDData.queryDescription"
-                                                                                               disabled></textarea>
+                                                                                                class="form-control owl-carousel"  [innerHTML]="getInnerHTML(GetIterationdetailsbyQueryIDData.queryDescription)"
+                                                                                               disabled value="GetIterationdetailsbyQueryIDData.queryDescription"></textarea>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row mt-10">
@@ -269,22 +269,25 @@
                                                                                                 class="tag tag-lightgray dark" >Ref : {{GetIterationdetailsbyQueryIDData.refNumber}}</span>
                                                                                         </div>
                                                                                         <div class="col-md-4 status">
-                                                                                            <span
-                                                                                                class="tag updated"> <span class="dark">Updated By : </span>&nbsp;{{GetIterationdetailsbyQueryIDData.refUpdatedByName}}</span>
+                                                                                            <span class="tag updated"> <span class="dark">Updated By : </span>&nbsp;{{GetIterationdetailsbyQueryIDData.refUpdatedByName}}</span>
                                                                                         </div>
                                                                                         <div class="col-md-3">
-                                                                                            <div class="form-group">
-                                                                                                <div
-                                                                                                    class="input-group">
 
+                                                                                            <!-- <div class="form-group">
+                                                                                                <div class="input-group">
+                                                                                                  <span class="tag updated"> <span class="dark">Updated By : </span></span>
                                                                                                     <input
                                                                                                         data-provide="datepicker"
                                                                                                         data-date-autoclose="true"
-                                                                                                        class="form-control"
+                                                                                                        class="form-control tag"
                                                                                                         placeholder="Date"
                                                                                                         bsDatepicker disabled value="{{GetIterationdetailsbyQueryIDData.updatedDateTime | date:'dd-MMM-yyyy hh:mm a'}}">
                                                                                                 </div>
-                                                                                            </div>
+                                                                                            </div> -->
+                                                                                            <span class="tag dark2">
+                                                                                               <!-- <span class="dark">Updated By : </span> -->
+                                                                                            {{GetIterationdetailsbyQueryIDData.updatedDateTime | date:'dd-MMM-yyyy hh:mm a'}}</span>
+
 
                                                                                         </div>
                                                                                         <!-- <div class="col-md-3">
@@ -1345,8 +1348,9 @@
                                                                     <div class="col-md-12">
                                                                         <label class="form-label">Remark</label>
 
-                                                                      <textarea class="form-control" [required]="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'"
-                                                                      [ngClass]="{'is-invalid':ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'}"></textarea>
+                                                                      <textarea class="form-control" [(ngModel)]="feedbackRemark" [required]="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'"
+                                                                      [ngClass]="{'is-invalid':(ratingName == 'Highly Dissatisfied' && feedbackRemark == '') || (ratingName == 'Dissatisfied' && feedbackRemark == '')}"></textarea>
+                                                                      <!-- <pre>{{ratingName |json}}</pre> -->
                                                                     </div>
                                                                 </div>
                                                            </div>
@@ -1362,9 +1366,17 @@
                                     <button type="button" tooltip="Skip"  class="custom_button custom_btn btn-bg-green bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="skipScreen()" >
                                       <b><i class="fa fa-step-forward"></i></b> Skip </button>
 
-                                    <button type="button" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="closeScreen();modalRef.hide()"
-                                    [disabled]="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'"
-                                    [ngClass]="{'disabled-btn-bg-green':ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'}">
+                                    <button type="button" *ngIf="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'" tooltip="Save"
+                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                    (click)="closeScreen();modalRef.hide()"
+                                    [disabled]="feedbackRemark == '' "
+                                    [ngClass]="{'disabled-btn-bg-green': feedbackRemark == '' }">
+                                    <b><i class="fa fa-floppy-o"></i></b> Save </button>
+
+                                    <button type="button" *ngIf="ratingName != 'Highly Dissatisfied' && ratingName != 'Dissatisfied'" tooltip="Save"
+                                    [disabled]="ratingName == '' " [ngClass]="{'disabled-btn-bg-green': ratingName == '' }"
+                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                    (click)="closeScreen();modalRef.hide()">
                                     <b><i class="fa fa-floppy-o"></i></b> Save </button>
 
                                     <button type="button"tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " (click)="resetFeedbackForm()"><b><i

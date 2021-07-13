@@ -223,17 +223,13 @@ getDeleteById(queryGenerationEmpId) // delete the record from summary
 }
 
  // .......................................Excel and PDF Code.................................................
-//  exportAsXLSX():void {
-//   this.excelData = [];
-//   this.excelData = this.getAllQueryGenerationData;
-//   this.excelservice.exportAsExcelFile(this.excelData, 'Query Summary');
-// }
+
 exportAsXLSX(): void {
   this.excelData = [];
   this.header = []
   this.header =["Query No.","Sumbit Date","Emp. Code","Emp. Name","Company Name", "Module Name", "Query Type",
    "Sub-Query Type", "Subject", "Priority", "Last Updated", "Status",]
-  this.excelData = this.getAllQueryGenerationData;
+  // this.excelData = this.getAllQueryGenerationData;
   this.getAllQueryGenerationData.forEach(element => {
     let obj = {
       "Query No.":element.queryNumber,
@@ -257,7 +253,7 @@ exportAsXLSX(): void {
 
 }
 // ..................PDF Download.........................................................................
-download(){
+downloadPdf(){
   let data = document.getElementById('contentToConvert');  // Id of the table
   html2canvas(data).then(canvas => {
   const imgWidth = 208;

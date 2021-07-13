@@ -8,24 +8,6 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { QueryService } from '../query.service';
 // import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
 
-
-export interface user2 {
-  SrNo: any;
-  RefNo: any;
-  Documents: any;
-  Description: any;
-  By: any;
-  Date_Time: any;
-
-}
-export interface status{
-  SrNo: any;
-  RefNo: any;
-  By: any;
-  Date_Time: any;
-  status: any;
-
-}
 export interface contact{
   role: any;
   Comapny: any;
@@ -87,6 +69,8 @@ queryCommunicationForm: FormGroup;
   docName: any =[];
   // hideClosebtn :boolean = true;
   badgeCount:boolean=true;
+  feedbackRemark:any= '';
+
 constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,
   public sanitizer: DomSanitizer,private alertService: AlertServiceService, private route:ActivatedRoute ){
 
@@ -148,6 +132,9 @@ this.addressedTodropdown();
         { role: '1', Comapny:'1111', Name:'AAA',Tel_No:'12-8-2020 ',Email:'done',Grade:'A',Designation:'Worker'},
         { role: '2', Comapny:'1112', Name:'AAA',Tel_No:'12-9-2021',Email:'done',Grade:'A',Designation:'Worker'},
       ];
+
+
+
   }
   isRelyDiv = true;
   isShowDiv = false;
@@ -400,7 +387,7 @@ closeScreen()
   this.queryCommunicationForm.controls['status'].setValue('Save');
   this.queryCommunicationForm.controls['rating'].setValue(this.rating);
 
-  // this.queryCommunicationForm.controls['remark'].setValue(this.queryCommunicationForm.value);
+  this.queryCommunicationForm.controls['remark'].setValue(this.feedbackRemark);
 
   console.log(JSON.stringify(this.queryGenerationEmpId));
   const formData  = new FormData();
@@ -415,8 +402,6 @@ closeScreen()
   {
     this.alertService.sweetalertMasterSuccess('Query Closed Successfully', '' );
     this.status = 'Closed';
-
-
   })
   this.reset();
 }
@@ -607,6 +592,13 @@ navigateToDocmentViewer(GetIterationdetailsbyQueryIDData) {
 resetFeedbackForm()
 {
 this.ratingName = [];
+this.feedbackRemark ='';
+}
+
+getInnerHTML(val){
+if(this.GetIterationdetailsbyQueryIDData.queryDescription != null){
+  return val.replace(/(<([^>]+)>)/ig,'');
+}
 }
 
 };

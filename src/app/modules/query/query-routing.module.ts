@@ -7,6 +7,7 @@ import { AdminQuryGenerationComponent} from './admin-qury-generation/admin-qury-
 import { from } from 'rxjs';
 import { QueryCOmmunicationComponent } from './query-communication/query-communication.component'
 import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
+import { EmployeelistComponent } from './employeelist/employeelist.component';
 
 
 const routes :Routes =[
@@ -47,6 +48,12 @@ const routes :Routes =[
         path:'document-viewer',
         component:DocumentViewerComponent,
         data: { title: ':: DelziaHR :: document-viewer' },
+
+      },
+      {
+        path:'employeelist',
+        component:EmployeelistComponent,
+        data: { title: ':: DelziaHR :: Employee list' },
 
       }
     ]

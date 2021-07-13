@@ -1,0 +1,271 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<form [formGroup]="employeeListForm" #formDirective="ngForm">
+    <div>
+        <div class="page">
+            <app-header></app-header>
+            <div class="tabview-contents">
+                <div class="section-body bg-color-white">
+                  <div class="row" >
+                      <div class="col-md-12" >
+                          <button type="button" tooltip="Add Query" (click)="smallpopup(template)"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right mt-10"
+                              [routerLink]="['/admin-query-generation']"><b><i
+                                      class="fa fa-plus"></i></b> Add Query </button>
+                      </div>
+                  </div>
+                    <div class="row" style="margin: 32px;">
+                        <div class="col-md-12">
+                            <div class="row pb-0">
+                                <div class="col-12" style="height: 600px;">
+                                    <p-table [value]="employeeList" [rows]="10" [paginator]="true"
+                                        [rowsPerPageOptions]="[5,10,25,50,100,200]">
+
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th rowspan="2">
+                                                    <input type="checkbox"
+                                                    class="custom-control-input"
+                                                    name="select">
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Employee Code
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="name"></p-sortIcon>
+                                                            <p-columnFilter type="text" field="name" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                       First Name
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="date"></p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                       Last Name
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="date"></p-sortIcon>
+                                                            <p-columnFilter type="date" field="date" display="menu"
+                                                                class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th rowspan="2">
+                                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                                    Joining Date
+                                                      <div class="Sort_Filter_Position">
+                                                          <p-sortIcon field="date"></p-sortIcon>
+                                                          <p-columnFilter type="date" field="date" display="menu"
+                                                              class="p-ml-auto"></p-columnFilter>
+                                                      </div>
+                                                  </div>
+                                              </th>
+                                              <th rowspan="2">
+                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                                   Employee Type
+                                                    <div class="Sort_Filter_Position">
+                                                        <p-sortIcon field="date"></p-sortIcon>
+                                                        <p-columnFilter type="date" field="date" display="menu"
+                                                            class="p-ml-auto"></p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th rowspan="2">
+                                              <div class="p-d-flex p-jc-between p-ai-center">
+                                                 Establishment
+                                                  <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="date"></p-sortIcon>
+                                                      <p-columnFilter type="date" field="date" display="menu"
+                                                          class="p-ml-auto"></p-columnFilter>
+                                                  </div>
+                                              </div>
+                                          </th>
+                                          <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                              Grade
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="date"></p-sortIcon>
+                                                    <p-columnFilter type="date" field="date" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                          <div class="p-d-flex p-jc-between p-ai-center">
+                                             Designation
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="date"></p-sortIcon>
+                                                  <p-columnFilter type="date" field="date" display="menu"
+                                                      class="p-ml-auto"></p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+                                      <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                          Department
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="date"></p-sortIcon>
+                                                <p-columnFilter type="date" field="date" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                         Status
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Action
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="date"></p-sortIcon>
+                                            <p-columnFilter type="date" field="date" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="body" let-user1>
+                                            <tr class="p-selectable-row">
+                                                <td style="width: 3rem">
+                                                    <input type="checkbox"
+                                                    (change)="getSelectedEmployee(user1)">
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0">{{employeeList.employeeCode}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray"><label
+                                                        class="form-lable mb-0">{{employeeList.fullName}}</label></td>
+                                                <td class="bg-color-light_gray">
+                                                    <label class="form-lable mb-0"> {{employeeList.fullName}}</label>
+                                                </td>
+                                                <td class="bg-color-light_gray">
+                                                  <label class="form-lable mb-0">{{employeeList.fullName}} </label>
+                                              </td>
+                                              <td class="bg-color-light_gray">
+                                                <label class="form-lable mb-0">{{employeeList.fullName}} </label>
+                                            </td>
+                                            <td class="bg-color-light_gray">
+                                              <label class="form-lable mb-0"> {{employeeList.fullName}}</label>
+                                          </td>
+                                          <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0"> {{employeeList.fullName}}</label>
+                                        </td>
+                                        <td class="bg-color-light_gray">
+                                          <label class="form-lable mb-0">{{employeeList.fullName}} </label>
+                                      </td>
+                                      <td class="bg-color-light_gray">
+                                        <label class="form-lable mb-0"> {{employeeList.fullName}}</label>
+                                    </td>
+                                    <td class="bg-color-light_gray">
+                                      <label class="form-lable mb-0"> {{employeeList.fullName}}</label>
+                                  </td>
+                                  <td class="bg-color-light_gray">
+                                    <label class="form-lable mb-0"> {{employeeList.fullName}}</label>
+                                </td>
+                                <td class="bg-color-light_gray">
+                                  <label class="form-lable mb-0"> {{employeeList.fullName}}</label>
+                              </td>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No
+                                                        Data
+                                                        Available</span></td>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template #template>
+                                          <div class="modal-header">
+                                              <h5 class="modal-title" id="UploadModalLabel">Add-Query</h5>
+                                              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                                  aria-label="Close"><span aria-hidden="true">×</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                              <div class="card">
+                                                  <div class="card-body">
+                                                      <div class="row clearfix">
+                                                          <div class="col-md-12">
+                                                              <div class="row">
+                                                                  <div class="custom-controls-stacked">
+                                                                      <span class="d-flex"> <label class="form-label mr-55">On
+                                                                              Behalf of Employee's</label>
+                                                                          <label
+                                                                              class="custom-control custom-radio custom-control-inline">
+                                                                              <input type="radio" class="custom-control-input"
+                                                                                  name="example-inline-radios" value="option">
+                                                                              <span class="custom-control-label">Yes</span>
+                                                                          </label>
+                                                                          <label
+                                                                              class="custom-control custom-radio custom-control-inline">
+                                                                              <input type="radio" class="custom-control-input"
+                                                                                  name="example-inline-radios" value="option">
+                                                                              <span class="custom-control-label">No</span>
+                                                                          </label>
+                                                                      </span>
+                                                                  </div>
+                                                              </div>
+                                                              <div class="row mt-25">
+                                                                  <div class="custom-controls-stacked">
+                                                                      <span class="d-flex"> <label class="form-label mr-15">Same
+                                                                              Content For All Employee</label>
+                                                                          <label
+                                                                              class="custom-control custom-radio custom-control-inline ">
+                                                                              <input type="radio" class="custom-control-input"
+                                                                                  name="example-inline-radios" value="option">
+                                                                              <span class="custom-control-label">Yes</span>
+                                                                          </label>
+                                                                          <label
+                                                                              class="custom-control custom-radio custom-control-inline">
+                                                                              <input type="radio" class="custom-control-input"
+                                                                                  name="example-inline-radios" value="option">
+                                                                              <span class="custom-control-label">No</span>
+                                                                          </label></span>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                              <button type="button" tooltip="Ok" (click)="modalRef.hide()"
+                                                  [routerLink]="['/admin-query-generation']"
+                                                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"><b><i
+                                                          class="fa fa-thumbs-up"></i></b> Ok</button>
+                                              <button type="button" tooltip="Cancel" (click)="modalRef.hide()"
+                                                  data-dismiss="modal" aria-label="Close"
+                                                  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i
+                                                          class="fa fa-times"></i></b> Cancel</button>
+                                          </div>
+                                      </ng-template>
+
+                                    </p-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
