@@ -177,7 +177,7 @@
                 <td>
                   <div class="custom_icon_badge">
                     <input type="text" class="form-control" [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
+                      [maxDate]="today" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
                         initialArrayIndex[j] > i || summary.isECS === 1
                       " (ngModelChange)="
                         summary.dueDate = $event.toLocaleDateString();
@@ -416,11 +416,13 @@
                         <input type="text"
                         onkeypress="return /[0-9]/i.test(event.key)"
                         class="form-control align-right" (change)="changeReceiptAmountFormat()"
-                          [(ngModel)]="receiptAmount" />
+                          [(ngModel)]="receiptAmount" 
+                          [disabled] ="isDisabled"/>
                       </span>
                     </td>
-                    <td>
-                      <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+                    <td [disabled] ="isDisabled">
+                      <i [ngClass]="{ 'disabled': isDisabled}"
+                      class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
                           !enableFileUpload
                             ? sweetalertWarning(
                                 'Please select transaction to Upload Document'

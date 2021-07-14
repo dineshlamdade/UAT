@@ -140,7 +140,7 @@
                       [disabled]="isDisabled"
                       name="select"
                       value="isCheckAll{{ j }}"
-                      (change)="checkUncheckAll(item,$event)"
+                      (change)="checkUncheckAll(item, j)"
                     />
                     <span class="custom-control-label"></span>
                   </label>
@@ -243,8 +243,8 @@
                     />
                     <span class="custom-control-label"></span>
                   </label> -->
-                  <label
-                  *ngIf="summary.transactionStatus=='Pending'"
+                  <!-- <label
+              
                   class="custom-control custom-checkbox checkbox-center"
                 >
                   <input
@@ -259,7 +259,26 @@
                     value="option{{ summary.investmentGroup1TransactionId }}"
                   />
                   <span class="custom-control-label"></span>
-                </label> 
+                </label>  -->
+               
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                    tooltip="Select institution for proof submission">
+                    <input type="checkbox" [ngModel]="enableSelectAll"
+                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                        onSelectCheckBox(summary, $event, i, j);
+                        enableCheckboxFlag = j
+                      " class="custom-control-input" value="option{{ summary.investmentGroup1TransactionId }}" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                  <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
+                    <input type="checkbox" [ngModel]="enableSelectAll"
+                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                        onSelectCheckBox(summary, $event, i, j);
+                        enableCheckboxFlag = j
+                      " class="custom-control-input" value="option{{ summary.investmentGroup1TransactionId }}" />
+                    <span class="custom-control-label"></span>
+                  </label>
+                
                 </td>
                 <td *ngIf="previousEmployeeList?.length">
                   <select
@@ -293,7 +312,7 @@
                       type="text"
                       class="form-control"
                       [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate"
+                      [maxDate]="today"
                       [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
                       [disabled]="initialArrayIndex[j] > i || summary.isECS === 1 "
                       (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
@@ -322,7 +341,8 @@
                       [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right"
                       (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i"
+                      
+                      [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'"
                        />
                       <!-- <input
                      *ngIf = "item.frequency ==='As & When'"
@@ -364,7 +384,7 @@
                     id="actualAmount{{ summary.investmentGroup1TransactionId }}"  
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}"
-                    [disabled]="initialArrayIndex[j] > i && item.frequency !=='As & When'"
+                    [disabled]="(initialArrayIndex[j] > i && item.frequency !=='As & When') || isDisabled || summary.transactionStatus === 'Submitted'"
                     [(ngModel)]="summary.actualAmount"
                     (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right"
@@ -655,13 +675,16 @@
                           class="form-control align-right"
                           (change)="changeReceiptAmountFormat()"
                           [(ngModel)]="receiptAmount"
+                          [disabled] ="isDisabled"
                         />
                       </span>
                     </td>
-                    <td>
+                    <td [disabled] ="isDisabled">
                       <i
+                      [ngClass]="{ 'disabled': isDisabled}"
                         class="fa fa-upload font-16 text-blue cursor-pointer"
                         tooltip="Upload"
+                        
                         (click)="
                           !enableFileUpload
                             ? sweetalertWarning(
