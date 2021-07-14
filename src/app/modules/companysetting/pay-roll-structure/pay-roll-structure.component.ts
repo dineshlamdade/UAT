@@ -234,7 +234,7 @@ export class PayRollStructureComponent implements OnInit {
 
 
   // tslint:disable-next-line: typedef
-  OnSelectionfamilyMemberGroup() {
+  OnChangeSelectionGroup() {
     let companyCode = this.pHGForm.get('companyGroupCode').value;
     if (companyCode.length == 1) {
       this.isVisible = true;
@@ -396,9 +396,7 @@ export class PayRollStructureComponent implements OnInit {
         if(res){
         if(res.data.results.length >= 1) {
             this.targetProducts = res.data.results;
-            //  this.targetProductsED = this.targetProducts;
             console.log("targetProductsED",this.targetProductsED);
-            // this.alertService.sweetalertMasterSuccess( res.status.message, '' );
             this.alertService.sweetalertMasterSuccess( 'PHG saved Successfully to group', '' );
             this.ChangeStepper(2);
             this.goToNextStep('step2');
@@ -406,19 +404,34 @@ export class PayRollStructureComponent implements OnInit {
           this.getEDHeadsAfterSavePHG();
 
             // this.goToNextStep('step2');
-          } else {
-            this.alertService.sweetalertWarning("Please select PHG");
           }
-        }else {
-          this.alertService.sweetalertError(
-            'Something went wrong. Please try again.'
-          );
+          // else {
+          //   this.alertService.sweetalertWarning("Please select PHG");
+          // }
         }
-      });
-      this.pHGForm.reset();
+        // else {
+        //   this.alertService.sweetalertError(
+        //     'Something went wrong. Please try again.'
+        //   );
+        // }
+      },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
+      // );
+      // this.pHGForm.reset();
       }
 
-
+        //Reset PHG form
+        resetPHGForm(){
+          this.targetProducts = [];
+          this.listOfPHG = [];
+          this.selectedUser2 = [];
+          this.selectedUser = [];
+           this.pHGForm.reset();
+           this.getListOfAllPHG();
+           this.getGroupList();
+        }
 
 
     /// Step 2 TS code
