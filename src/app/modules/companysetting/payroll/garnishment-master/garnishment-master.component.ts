@@ -250,66 +250,11 @@ export class GarnishmentMasterComponent implements OnInit {
 
 
   refreshHtmlTableData() {
-    this.garnishmentService.getGarnishmentMaster().subscribe(res => {
-      this.summaryHtmlDataList = [];
-      this.companyRegistrationMasterList = res.data.results;
+   this.garnishmentService.getGarnishmentMaster().subscribe(res =>{
+     this.summaryHtmlDataList = res.data.results;
+   })
 
-      let i = 1;
-      this.masterGridDataList = res.data.results;
-      res.data.results.forEach(element => {
-
-        // const obj = {
-        //   SrNo: i++,
-        //   nameOfInstitution: element.nameOfInstitution,
-        //   complianceHeadName: element.complianceHeadName,
-        //   thirdPartyMasterId: element.thirdPartyMasterId,
-        //   description: element.description,
-        //   contactPerson: element.contactPerson,
-        //   contactNumber: element.contactNumber,
-        //   emailId: element.emailId,
-        //   address1: element.address1,
-        //   address2: element.address2,
-        //   address3: element.address3,
-        //   country: element.country,
-        //   pinCode: element.pinCode,
-        //   state: element.state,
-        //   city: element.city,
-        //   villege: element.villege,
-        //   pan: element.pan,
-        //   accountNoInPayeeBook: element.accountNoInPayeeBook,
-        //   standardName: element.standardName,
-        //   formula: element.formula,
-        //   sdm: element.sdm,
-        //   frequency: element.frequency,
-        //   investmentSection: element.investmentSection,
-        //   familyMember: element.familyMember,
-        //   documentId: element.documentId,
-        //   remark: element.remark,
-        //   isActive: element.isActive,
-
-        // };
-        if (element.isActive == false) {
-          this.summaryHtmlDataList.push(element);
-        }
-        var s = this.complianceInstitutionMasterDetails.findIndex(function (o) {
-          return o.thirdPartyMasterId === element.thirdPartyMasterId;
-        });
-        if (s !== -1) {
-          this.complianceInstitutionMasterDetails.splice(s, 1);
-
-        }
-
-      });
-
-    }, (error: any) => {
-      this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
-
-    }, () => {
-
-
-    });
-
-    console.log('this.masterGridDataList', this.masterGridDataList);
+    console.log('this.summaryHtmlDataList', this.summaryHtmlDataList);
 
   }
 
