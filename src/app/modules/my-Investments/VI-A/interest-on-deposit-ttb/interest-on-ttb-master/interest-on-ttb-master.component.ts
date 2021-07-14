@@ -107,6 +107,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  
+  codeInvalid: boolean = false;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -361,14 +363,29 @@ export class InterestOnTtbMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
 
       console.log('Interest On 80TTA ::', data);
-      this.masterGridData.forEach((element) => {
-        if (data.accountNumber == element.accountNumber) {
-          this.alertService.sweetalertWarning(
+      if (data.accountNumber) {
+        this.masterGridData.forEach(results => {
+          if (results.accountNumber == data.accountNumber) {
+            this.codeInvalid = true;
+          }
+        });
+        if (this.codeInvalid) {
+          this.codeInvalid = false;
+          this.alertService.sweetalertError(
             'Duplicate Account should Not be Acceptable'
           );
           return;
         }
-      });      
+      }
+     /*  this.masterGridData.forEach((element) => {
+        if (data.accountNumber == element.accountNumber) {
+          this.alertService.sweetalertWarning(
+            'Duplicate Account should Not be Acceptable'
+          );
+          return 0;
+          this.form.reset();
+        }
+      });  */     
 
       this.interestOnTtbService
         .uploadMultiple80TTBMasterFiles(this.masterfilesArray, data)
@@ -422,7 +439,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
         );
       }
       console.log(element.accountNumber);
-    });return;
+    });
+    return 0;
   }
 
   
