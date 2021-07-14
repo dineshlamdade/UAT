@@ -34,7 +34,7 @@ export class AreasetComponent implements OnInit {
       areaSetName: new FormControl('',Validators.required),
       serviceMasterId: new FormControl('',Validators.required),
       remark: new FormControl('',Validators.required),
-      areaSelectionList: new FormControl([],Validators.required)
+      areaSetMasterDetailsList: new FormControl([],Validators.required)
      
     })
     //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;   
@@ -108,10 +108,10 @@ getAreaMasterId(e){
     console.log(JSON.stringify(e))  //Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
     /** prime ng multiselect */
     this.areaMaster.push({
-      "code":"PA-Staff",
-      "id":e.itemValue
+      "areaId":0,
+      "areaCode":e.itemValue
     })
-    this.areasetForm.controls['areaSelectionList'].setValue(this.areaMaster);
+    this.areasetForm.controls['areaSetMasterDetailsList'].setValue(this.areaMaster);
     /** Single select i.e select */
     // this.areaMaster.push({
     //   "areaSetMasterDetailsId":0,

@@ -10,16 +10,17 @@ import { EmployeesetService } from '../employeeset.service';
 })
 export class EmployeesetComponent implements OnInit {
   employeesetForm: FormGroup;
-  serviceListData: any = [];
+  serviceListData: Array<any> = [];
   empData: any;
-  summaryData: any;
+  summaryData: Array<any> = [];;
   employeeMasterId: number;
   serviceData: any;
   editFormFlag: boolean = false;
   viewFormFlag: boolean = false;
   hideRemarkDiv2: boolean = true;
   employeeMaster: any;
-  selectedemployeeMasterId: any;
+  selectedemployeeMasterId: number;
+  getdata: any;
 
 
   constructor(public empService: EmployeesetService, public fb: FormBuilder,public toaster : ToastrService) {
@@ -48,7 +49,7 @@ export class EmployeesetComponent implements OnInit {
   onSubmit() {
    //console.log(this.employeesetForm.value)
    this.empService.saveEmployeeSet(this.employeesetForm.value).subscribe((res)=>{
-    this.toaster.success('','Employee set saved succefully');
+    this.toaster.success('','Employee set saved successfully');
     this.getSummaryData();
     this.serviceListData = [];
     this.employeesetForm.reset();
@@ -57,13 +58,19 @@ export class EmployeesetComponent implements OnInit {
   }
 
   onUpdate() {
+    this.empService.updateData(this.employeesetForm.value).subscribe((res=>{
+      this.toaster.success('',"employee set updated successfully");
+      this.getSummaryData();
+      this.serviceListData = [];
+      this.employeesetForm.reset();
+    }))
 
   }
 
   getEmployeeMasterId(e) {
     this.selectedemployeeMasterId = e.itemValue;
     this.empService.getByEmlpoyeeId(this.selectedemployeeMasterId).subscribe((res)=>{
-      //this.serviceListData = res.data.results;
+    //this.serviceListData = res.data.results;
     console.log(res);
     })
 

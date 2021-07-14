@@ -34,7 +34,7 @@ public apiUrl = environment.baseUrl8084;
 
     /**update areaset */
     updateAreaSet(data):Observable<any>{
-        return this.http.put<any>(this.apiUrl+ `Areamaster/UpdateData/`, data);
+        return this.http.put<any>(this.apiUrl+ `Areamaster/Update`, data);
    }
 
 

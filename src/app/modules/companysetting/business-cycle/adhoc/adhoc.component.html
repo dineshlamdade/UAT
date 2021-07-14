@@ -28,7 +28,7 @@
                     <label class="form-label">Cycle</label>
                     <div class="input-group">
                         <select class="form-control" formControlName = "periodName" 
-                     
+                         (change)="onChangeCycle($event.target.value)"
                         
                         >
                             <!-- <option>Select</option> -->
@@ -103,7 +103,7 @@
                 <div class="col-sm-6 col-md-3 form-group">
                   <label class="form-label">Cycle Name</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" formcontrolName = "cycleName">
+                    <input type="text" class="form-control" formControlName = "cycleName">
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3 form-group">
@@ -131,21 +131,23 @@
                                           data-provide="datepicker" data-date-autoclose="true"
                                           class="form-control" (bsValueChange)="setPolicyEndDate()"
                                           placeholder="" bsDatepicker formControlName = "toDate"
-                                          [readonly]="!disabled" >
+                                          [maxDate]="today"
+                                          >
                                   </div>
                               </div>
               <div class="col-sm-6 col-md-3 form-group">
                                 <label class="form-label">Copy From</label>
-                                <select class="form-control" formControlName = "">
-                                    <option>Select</option>
+                                <select class="form-control" formControlName = "headNature">
+                                    <!-- <option>Select</option> -->
                                     <!-- <option value=""> Cycle 1 </option>
                                     <option value="">Cycle 2</option>
                                     <option value="">Cycle 3</option>
                                     <option value="">Cycle 4</option> -->
-                                    <!-- <option selected value=''>Select </option>
+                                   
+                                    <option selected value=''>Select </option>
                         <option *ngFor="let Cycle of adhocCycleList" [value]="Cycle.periodId">
                        {{Cycle.periodName}}
-                       </option> -->
+                       </option>
                                 </select>
              </div>
                </div>
@@ -155,17 +157,18 @@
                <br>
                <fieldset>
                    <legend>Heads</legend>
+                   
 
                    <div class="row">
                     <div class="col-5">
                     <label for="" class="text-purple">Source</label>
-                    <span for="" class="text-purple" style="margin-left: 290px;">Count : 0</span>
+                    <span for="" class="text-purple" style="margin-left: 290px;">Count:({{activeHeadList?.length}})</span>
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="col-1"> </div>
                 <div class="col-5">
                     <label for="" class="text-purple">Destination</label>
-                    <span for="" class="mr-33  text-purple" style="margin-left: 279px;">Count: 0</span>
+                    <span for="" class="mr-33  text-purple" style="margin-left: 279px;">Count:({{targetProducts?.length}})</span>
                 </div>
                 </div> 
                <div class="row">
@@ -175,7 +178,7 @@
                     <div class="card">            
                    
                             <div class="table-responsive Custom_Table">
-                              <p-table [value]="users1" [paginator]="true" [rows]="10">
+                              <p-table [value]="activeHeadList" [paginator]="true" [rows]="10">
                                 <ng-template pTemplate="header">
                                   <tr>
                                     
@@ -207,7 +210,11 @@
                             
                              </ng-template>
                             <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                               <tr class="p-selectable-row">
+                               <tr class="p-selectable-row"
+                               (click)="RowSelected(user1, rowIndex);" [class.active]="user1.isHighlight"
+                            (dblclick)="doubleClickOnLeftTable(user1)"
+                            [ngClass]="{'outofstock':user1.isHighlight == true}"
+                               >
                                   <td> {{user1.headMasterId}}
                                  </td>
                                  
@@ -215,7 +222,7 @@
                                   </td>
                                 </tr>
                                
-                                <tr class="p-selectable-row">
+                                <!-- <tr class="p-selectable-row">
                                   <td>   NR2 
                                  </td>
                                 
@@ -230,7 +237,7 @@
                                   <td>  Earning 
                                   </td>
                                 </tr>
-    
+     -->
                            
                            </ng-template>
                            <ng-template pTemplate="emptymessage">
@@ -249,14 +256,14 @@
                   
                 </div>
            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <div class="col-1">                                
+                <div class="col-1" *ngIf="!viewupdateButton">                                
                         <div class="row">
                         <div class="col-md-12 mt-50">
-                        <button type="button" class="btn"><i class="fa fa-chevron-right
+                        <button type="button" class="btn" (click)="lefttablePusg()"><i class="fa fa-chevron-right
                             "></i></button>
                         </div>
                         <div class="col-md-12 mt-10">
-                        <button type="button" class="btn"><i class="fa fa-chevron-left
+                        <button type="button" class="btn" (click)="righttablePusg()"><i class="fa fa-chevron-left
                             "></i></button>
                         </div>
                         </div>
@@ -268,7 +275,7 @@
                     <div class="card">            
                       
                             <div class="table-responsive Custom_Table">
-                              <p-table [value]="users1" [paginator]="true" [rows]="10">
+                              <p-table [value]="targetProducts" [paginator]="true" [rows]="10">
                                 <ng-template pTemplate="header">
                                   <tr>
                                     
@@ -301,7 +308,10 @@
                             
                              </ng-template>
                             <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                              <tr class="p-selectable-row">
+                              <tr (click)="RowSelectedtargetProducts(user1, rowIndex);"
+                              (dblclick)="doubleClickOnRightTable(user1)"
+                              [ngClass]="{'outofstock':user1.isHighlightright == true}"
+                              [ngClass]="{'disable1':user1.disabled == true}">
                                 <td> {{user1.headMasterId}}
                                </td>
                                
@@ -309,7 +319,7 @@
                                 </td>
                               </tr>
                              
-                              <tr class="p-selectable-row">
+                              <!-- <tr class="p-selectable-row">
                                 <td>  NR3
                                </td>
                               
@@ -326,7 +336,7 @@
                                 </td>
                               </tr>
                                
-                               
+                                -->
                                                        
                            
                            </ng-template>
@@ -393,7 +403,7 @@
                       Summary
                     </div>
                     <div class="">
-                        <p-table [value]="users1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                        <p-table [value]="summarydata" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th rowspan="2" >
@@ -534,29 +544,31 @@
   
   
   
-                            <ng-template pTemplate="body" let-user1>
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                 <tr class="p-selectable-row">
-                                    <td class="bg-color-light_gray">1</td>
+                                    <td class="bg-color-light_gray">{{rowIndex+1}}</td>
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.headtype}}</label>
+                                            class="form-lable mb-0">{{user1.periodName}}</label>
   
                                     </td>
   
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                            class="form-lable mb-0">{{user1.fromDate}}</label></td>
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.openingval}}</label></td>
+                                            class="form-lable mb-0">{{user1.toDate}}</label></td>
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                                            class="form-lable mb-0">{{user1.cycleName}}</label></td>
                                             <td class="bg-color-light_gray"><label
-                                              class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                              class="form-lable mb-0">{{user1.periodName}}</label></td>
                                       <td class="bg-color-light_gray"><label
-                                              class="form-lable mb-0">{{user1.openingval}}</label></td>
+                                              class="form-lable mb-0">{{user1.arrear}}</label></td>
                                       <td class="bg-color-light_gray"><label
                                               class="form-lable mb-0">{{user1.chngamount}}</label></td>
                                               <td class="bg-color-light_gray"><label
-                                                  class="form-lable mb-0">{{user1.headdesc}}</label></td>
-                                          <td class="bg-color-light_gray text-center">Lock
+                                                  class="form-lable mb-0">{{user1.remark}}</label></td>
+                                                  
+                                          <td class="bg-color-light_gray text-center"><label
+                                            class="form-lable mb-0">{{user1.locked}}</label></td>
                                               <!-- <i class="fa fa-lock font-18 " aria-hidden="true"></i></td> -->
                                           <td class="bg-color-light_gray">
                                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"></i>&nbsp;

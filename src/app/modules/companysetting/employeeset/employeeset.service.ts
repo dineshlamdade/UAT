@@ -29,5 +29,13 @@ import { Observable } from "rxjs";
 
     saveEmployeeSet(data):Observable<any>{
       return this.http.post<any>(this.apiUrl+ `EmployeeMaster/AddNewData`, data);
- }
+    }
+
+    updateData(data):Observable<any>{
+     return this.http.put<any>(this.apiUrl+`EmployeeMaster/UpdateData`, data);
+    }
   }
+
+  // update(id, data): Observable<any> {
+  //   return this.httpClient.put(`${baseURL}/${id}`, data);
+  // }
