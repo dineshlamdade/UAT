@@ -2036,41 +2036,41 @@ export class RolePrivilegeComponent implements OnInit {
 
  saveFieldLevelData(){
 
-   {
-      let data = {
+   // {
+   //    let data = {
          
-            "fieldLeveleAccessMatrixId": 0,
-            "rolePrivilegeMatrixId": 132,
-            "formFieldId": 5,
-            "hide": 0,
-            "readAccess": true,
-            "writeAccess": true,
-            "modifyAccess": true,
-            "isActive": true
+   //          "fieldLeveleAccessMatrixId": 0,
+   //          "rolePrivilegeMatrixId": 132,
+   //          "formFieldId": 5,
+   //          "hide": 0,
+   //          "readAccess": true,
+   //          "writeAccess": true,
+   //          "modifyAccess": true,
+   //          "isActive": true
              
-      } 
-      this.service.addFields(data).subscribe((res) => {
-        console.log("AssignedGroupSave:::",res);
-        this.fieldAllMasterData = res.data.results;
-      });
-    }
-
-   // this.fieldLevelData = this.SelectedDataFields
-   // console.log("before: " + JSON.stringify(this.fieldLevelData))
-   // this.service.addFields(this.fieldLevelData).subscribe(res =>{
-   //    this.alertService.sweetalertMasterSuccess("Field Level Privilege data saved successfully", "");
-   //    this.SelectedDataFields = []
-   //    this.fieldLevelData = []
-   //    this.fieldAllMasterData.forEach(element => {
-   //       // element.modifyFlag = false
-   //       // element.writeFlag = false
-   //       // element.readFlag = false
-   //       // element.allFlag = false
-   //       // element.deleteFlag = false
-
+   //    } 
+   //    this.service.addFields(data).subscribe((res) => {
+   //      console.log("AssignedGroupSave:::",res);
+   //      this.fieldAllMasterData = res.data.results;
    //    });
+   //  }
 
-   // })
+   this.fieldLevelData = this.SelectedDataFields
+   console.log("before: " + JSON.stringify(this.fieldLevelData))
+   this.service.addFields(this.fieldLevelData).subscribe(res =>{
+      this.alertService.sweetalertMasterSuccess("Field Level Privilege data saved successfully", "");
+      this.SelectedDataFields = []
+      this.fieldLevelData = []
+      this.fieldAllMasterData.forEach(element => {
+         element.modifyFlag = false
+         element.writeFlag = false
+         element.readFlag = false
+         element.allFlag = false
+         element.deleteFlag = false
+
+      });
+
+   })
 
   }
 
@@ -2229,97 +2229,95 @@ export class RolePrivilegeComponent implements OnInit {
 
   /** single Fields checked uncheked read */
 
-  checkeUncheckSingleReadFields(fieldmenu,event){
-
-   if(event.checked) {
-            
-               
+  checkeUncheckSingleReadFields(fields, event) {
+   console.log(JSON.stringify(fields))
+   if (event.checked) {
+     
+        // debugger
       if(this.SelectedDataFields.length > 0){
-        this.SelectedDataFields.forEach((fieldLevelPrivilegeData,index) => {
-           if(fieldLevelPrivilegeData.applicationMenusId == fieldmenu.applicationMenusId ){
-              let ind = index;
-              this.SelectedDataFields.splice(ind,1,{
-               "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-               "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
-               "formFieldId": this.formFieldId,
-              "hide":0,
-               "readAccess": true,
-               "writeAccess": false,
-               "modifyAccess": false
-              })
-           }else{
-              this.SelectedDataFields.push({
-               "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-               "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
-               "formFieldId": this.formFieldId,
-              "hide":0,
-               "readAccess": true,
-               "writeAccess": false,
-               "modifyAccess": false
-              }) 
-           }
-        })
-        //  element.allFlag = true
-       
-      }else{
-        this.SelectedDataFields.push({
-         "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-         "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
-         "formFieldId": this.formFieldId,
-        "hide":0,
-         "readAccess": true,
-         "writeAccess": false,
-         "modifyAccess": false
-        }) 
+         this.SelectedDataFields.forEach((fieldLevelData,index) => {
+            if(fieldLevelData.applicationMenusId == fields.applicationMenuId ){
+               let ind = index;
+               this.SelectedDataFields.splice(ind,1,{
+                  "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                   "fieldLeveleAccessMatrixId" : this.fieldLeveleAccessMatrixId,
+                  "formFieldId": fields.formFieldId,
+                  "isActive" :1,
+                  "readAccess": 1,
+                  "writeAccess":fieldLevelData.readAccess,
+                  "modifyAccess": fieldLevelData.modifyAccess,
+                  "hide": fieldLevelData.hide
+               })
+            }else{
+               let index = this.SelectedDataFields.length -1
+               if(this.SelectedDataFields[length].applicationMenusId == fields.applicationMenuId ){return;}
+          
+            }
+         })
+        
+        
+       }else{
+         this.SelectedDataFields.push({
+            "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+            "fieldLeveleAccessMatrixId" : this.fieldLeveleAccessMatrixId,
+           "formFieldId": this.formFieldId,
+           "isActive" :1,
+           "readAccess": 1,
+           "writeAccess":0,
+           "modifyAccess":0,
+           "hide":0
+         }) 
+       }
+       this.fieldAllMasterData.forEach((ele: any,index) => {
+         if (ele.applicationMenuId == fields.parentMenuId) {
+         if (ele.childItems != null) {
+            ele.childItems.forEach(element => {
+               if (element.applicationMenuId == fields.applicationMenuId) {
+                  element.readFlag = true
+                  element.readAccess = true
+               }
+            })
+         }
       }
-      this.fieldLevelMenu.forEach((ele: any,index) => {
-        if (ele.applicationMenuId == fieldmenu.parentMenuId) {
-
-           if (ele.childItems != null) {
-              ele.childItems.forEach(element => {
-                 if (element.applicationMenuId == fieldmenu.applicationMenuId) {
-                    element.readFlag = true
-                    element.readAccess = true
-                 }
-              })
-           }
-        } 
-  });
+      });
 
 
-} else {
-  this.fieldLevelMenu.forEach((ele: any) => {
-     if (ele.applicationMenuId == fieldmenu.parentMenuId) {
-        this.SelectedDataFields.forEach((item, index) => {
-           if (item.menuId == fieldmenu.parentMenuId) {
-              let ind = index;
-              this.SelectedData.splice(ind, 1, {
-               "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-         "fieldLeveleAccessMatrixId":this.fieldLeveleAccessMatrixId,
-         "formFieldId": this.formFieldId,
-        "hide":0,
-         "readAccess": 0,
-         "writeAccess": ele.modifyAccess,
-         "modifyAccess": ele.modifyAccess
-              })
-           }
-        });
+   } else {
+      this.fieldAllMasterData.forEach((ele: any) => {
 
-     }
-     if (ele.childItems != null) {
-        ele.childItems.forEach(element => {
-           if (element.applicationMenuId == fieldmenu.applicationMenuId) {
-              element.readFlag = false
-              element.readAccess = false
-           }
-        })
-     }
-  })
+         if (ele.applicationMenuId == fields.parentMenuId) {
+            this.SelectedDataFields.forEach((item, index) => {
+               if (item.menuId == fields.parentMenuId) {
+                  let ind = index;
+                  this.SelectedDataFields.splice(ind, 1, {
+                     "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                     "fieldLeveleAccessMatrixId" : this.fieldLeveleAccessMatrixId,
+                     "applicationMenusId": fields.applicationMenuId,
+                     "active":1,
+                     "readAccess": 0,
+                     "modifyAccess": ele.modifyAccess,
+                     "hide": 0,
+                     "writeAccess": ele.modifyAccess
+                  })
+               }
+            });
+
+         }
+
+         if (ele.childItems != null) {
+            ele.childItems.forEach(element => {
+               if (element.applicationMenuId == fields.applicationMenuId) {
+                  element.readFlag = false
+                  element.readAccess = false
+               }
+            })
+         }
+      })
+
+   }
+
+   console.log("writeaccess data: "+ JSON.stringify(this.SelectedData))
 }
-
-console.log("read single value: " + JSON.stringify(this.SelectedDataFields))
-
-  }
 
  
 

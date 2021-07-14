@@ -1071,7 +1071,7 @@
                               <div>
                                     <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                         <input type="checkbox" name="websitecheckMenuMainRead"
-                                            [checked]="isChecked || isCheckedReadFields || fields.readFlag || fields.allFlag " [disabled]="viewFlag"
+                                            [checked]="isChecked || isCheckedReadFields || fields.readFlag || fields.allFlag || fields.readAccess  " [disabled]="viewFlag"
                                              (click)="checkeUncheckSingleReadFields(fieldmenu,$event.target)" />
                                      </li>
                                 </div>
@@ -1130,7 +1130,7 @@
                               <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                   <input type="checkbox" name="websitecheckMenuMainHide"
                                       [checked]="isChecked || isCheckedHideFields || fields.HideFlag || fields.allFlag" [disabled]="viewFlag"
-                                       (click)="checkeUncheckSingleHideFields(fieldmenu,$event.target)" />
+                                       (click)="checkeUncheckSingleHideFields(submenu,$event.target)" />
                                </li>
                           </div>
                       </ul>
