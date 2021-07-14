@@ -41,7 +41,7 @@ import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-re
 import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
 import { SdmComponent } from './sdm/sdm.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -77,6 +77,7 @@ import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),
+    NgMultiSelectDropDownModule.forRoot(),
   
     SharedlayoutModule,
     

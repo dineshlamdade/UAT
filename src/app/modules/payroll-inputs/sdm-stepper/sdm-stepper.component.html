@@ -651,12 +651,12 @@
                                                                 <ng-template pTemplate="body" let-user1>
                                                                     <tr class="p-selectable-row text-center">
                                                                         <td class="text-center">1 </td>
-
+                                                                        <!-- [disabled]="step1FormDisableFlag" -->
                                                                         <td class="text-center">
                                                                             <select name="Select" class="form-control"
                                                                             [(ngModel)]="tablevalue"
                                                                             [ngModelOptions]="{standalone: true}"
-                                                                            [disabled]="step1FormDisableFlag"
+                                                                            
                                                                                 (change)="fieldTypeList($event.target.value)">
                                                                                 <option>Select Table Value</option>
                                                                                 <option
@@ -671,7 +671,6 @@
                                                                             <select name="Select" class="form-control"
                                                                             [(ngModel)]="fieldtypevalue"
                                                                             [ngModelOptions]="{standalone: true}"
-                                                                            [disabled]="step1FormDisableFlag"
                                                                                 (change)="valuesList($event.target.value)">
                                                                                 <option>Select Field Type</option>
                                                                                 <option
@@ -684,20 +683,33 @@
                                                                             </select>
                                                                         </td>
                                                                         <td class="text-center">
-                                                                            <p-multiSelect [options]="valueListData"
+                                                                            <!-- <p-multiSelect [options]="valueListData"
                                                                             [(ngModel)]="valuelist"
-                                                                            [disabled]="step1FormDisableFlag"
                                                                             [ngModelOptions]="{standalone: true}"
                                                                             (onChange)="valueListDataValue($event)"
                                                                                 placeholder="Select All">
-                                                                            </p-multiSelect>
+                                                                            </p-multiSelect> -->
+                                                                           
+                                                                            <ng-multiselect-dropdown *ngIf="valueListData"
+                                                                                [placeholder]="'Select'"
+                                                                                [settings]="dropdownSettings"
+                                                                                [data]="valueListData"
+                                                                                [(ngModel)]="valuelist"
+                                                                                [ngModelOptions]="{standalone: true}"
+                                                                                (onSelect)="valueListDataValue($event)"
+                                                                                
+                                                                                >
+                                                                            </ng-multiselect-dropdown>
                                                                         </td>
 
 
                                                                         <td class="text-center">
-                                                                            <i class="fa fa-plus-circle font-16 text-dark-green cursor-pointer"
+                                                                            <i *ngIf="!editTempFlag" class="fa fa-plus-circle font-16 text-dark-green cursor-pointer"
                                                                                 (click)="addSource()"
                                                                                 tooltip="Add"></i>&nbsp;
+                                                                            <i *ngIf="editTempFlag" class="fa fa-plus-circle font-16 text-dark-green cursor-pointer"
+                                                                                (click)="updateSource()"
+                                                                                tooltip="Update"></i>&nbsp;
                                                                         </td>
                                                                     </tr>
 
@@ -715,9 +727,13 @@
                                                                             {{temp.valueId}}
                                                                         </td>
                                                                         <td class="text-center">
+                                                                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                                                            (click)="editSource(temp,index)"
+                                                                            tooltip="Edit"></i>&nbsp;&nbsp;
                                                                             <i class="fa fa-times font-16 text-red cursor-pointer"
                                                                             (click)="removeSource(index)"
                                                                             tooltip="Remove"></i>&nbsp;
+                                                                           
                                                                         </td>
                                                                     </tr>
 
