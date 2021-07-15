@@ -31,4 +31,8 @@ export class SdnCreationService {
   saveSourceDerivedMatrix(data):Observable<any>{
     return this.HttpClient.post<any>(this.url + `source-derived-matrix/` , data);
   }
+
+  SdmMasterDetails(sdmMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/sdm/` + sdmMasterId);
+  }
 }
