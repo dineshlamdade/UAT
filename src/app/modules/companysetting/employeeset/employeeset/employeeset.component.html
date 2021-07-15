@@ -17,16 +17,16 @@
 
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                         <label class="form-label">Emp. Set Name</label>
-                        <input type="text" class="form-control" formControlName = "empSetName"
-                        [ngClass]="{'is-invalid' : employeesetForm.get('empSetName').status == 'INVALID'}">
+                        <input type="text" class="form-control" formControlName = "employeeSetName"
+                        [ngClass]="{'is-invalid' : employeesetForm.get('employeeSetName').status == 'INVALID'}">
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
 
                         <label class="form-label">Emp. Code</label>
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
                         <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
-                          (onChange)="getEmployeeMasterId($event)" [placeholder]="'Select Emp code'" formControlName = "employeeCode"
-                          [ngClass]="{'is-invalid' : employeesetForm.get('employeeCode').status == 'INVALID'}">
+                          (onChange)="getEmployeeMasterId($event)" [placeholder]="'Select Emp code'" formControlName = "empList"
+                          [ngClass]="{'is-invalid' : employeesetForm.get('empList').status == 'INVALID'}">
                         </p-multiSelect>
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
@@ -151,10 +151,10 @@
                             <td>
 
                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" tooltip="Edit"
-                              (click) = "editEmployeeSet()"
+                              (click) = "editEmployeeSet(data)"
                                 aria-hidden="true"></i>&nbsp;
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
-                              (click) = "viewEmployeeSet()"
+                              (click) = "viewEmployeeSet(data)"
                                 aria-hidden="true"></i>&nbsp;
 
                             </td>

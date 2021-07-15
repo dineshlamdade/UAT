@@ -13,7 +13,7 @@
                   <div class="col-sm-6 col-md-3 form-group">
                     <label class="form-label">Cycle Definition</label>
                     <div class="input-group">
-                        <select class="form-control" formControlName = "businessCycleId"
+                        <select class="form-control" formControlName = "businessCycleDefinitionId"
                         (change) ="getCycleNameById($event.target.value)" >
                        
                         <option selected value=''>Select </option>
@@ -137,7 +137,7 @@
                               </div>
               <div class="col-sm-6 col-md-3 form-group">
                                 <label class="form-label">Copy From</label>
-                                <select class="form-control" formControlName = "headNature">
+                                <select class="form-control" formControlName = "">
                                     <!-- <option>Select</option> -->
                                     <!-- <option value=""> Cycle 1 </option>
                                     <option value="">Cycle 2</option>
@@ -162,13 +162,13 @@
                    <div class="row">
                     <div class="col-5">
                     <label for="" class="text-purple">Source</label>
-                    <span for="" class="text-purple" style="margin-left: 290px;">Count:({{activeHeadList?.length}})</span>
+                    <span for="" class="text-purple" style="margin-left: 250px;">Count({{activeHeadList?.length}})</span>
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="col-1"> </div>
                 <div class="col-5">
                     <label for="" class="text-purple">Destination</label>
-                    <span for="" class="mr-33  text-purple" style="margin-left: 279px;">Count:({{targetProducts?.length}})</span>
+                    <span for="" class="mr-33  text-purple" style="margin-left: 230px;">Count({{targetProducts?.length}})</span>
                 </div>
                 </div> 
                <div class="row">
@@ -357,8 +357,8 @@
         </fieldset>
         <br>
         <div class="float-left d-flex justify-content ml-20">
-          <input type="checkbox"  class="mt-2" formControlName = "arrear"/>&nbsp;
-        <label class="form-label mt-2 margin-right:30px;">Arrear</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" checked class="mt-2" formControlName = "arrear">&nbsp;
+        <label class="form-label formGroup mt-2 margin-right:30px;">Arrear</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <label class="form-label mt-2 formGroup">Remark</label>&nbsp;
         <textarea type="text" formControlName = "remark"></textarea>
         </div>
@@ -557,7 +557,7 @@
                                     <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0">{{user1.toDate}}</label></td>
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.cycleName}}</label></td>
+                                            class="form-lable mb-0">{{user1.businessCycleDefinition.cycleName}}</label></td>
                                             <td class="bg-color-light_gray"><label
                                               class="form-lable mb-0">{{user1.periodName}}</label></td>
                                       <td class="bg-color-light_gray"><label
@@ -571,8 +571,10 @@
                                             class="form-lable mb-0">{{user1.locked}}</label></td>
                                               <!-- <i class="fa fa-lock font-18 " aria-hidden="true"></i></td> -->
                                           <td class="bg-color-light_gray">
-                                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"></i>&nbsp;
-                                              <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"
+                                              tooltip="Edit" aria-hidden="true" (click)="editAreaSet(data)"></i>&nbsp;
+                                              <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"
+                                              tooltip="View" (click)="viewAreaSet(data)"></i>&nbsp;
                                               <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
                                           </td>
                                 </tr>

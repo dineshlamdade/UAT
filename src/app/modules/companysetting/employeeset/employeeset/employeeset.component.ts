@@ -25,9 +25,11 @@ export class EmployeesetComponent implements OnInit {
 
   constructor(public empService: EmployeesetService, public fb: FormBuilder,public toaster : ToastrService) {
     this.employeesetForm = new FormGroup({
-       empSetName : new FormControl('',Validators.required),
-       employeeCode : new FormControl('',Validators.required),
-       remark : new FormControl('',Validators.required)
+      employeeSetName : new FormControl('',Validators.required),
+      empList : new FormControl('',Validators.required),
+      remark : new FormControl('',Validators.required),
+      isActive : new FormControl(1),
+      employeeSetMasterId : new FormControl('')
     })
   }
 
@@ -71,6 +73,8 @@ export class EmployeesetComponent implements OnInit {
     this.selectedemployeeMasterId = e.itemValue;
     this.empService.getByEmlpoyeeId(this.selectedemployeeMasterId).subscribe((res)=>{
     //this.serviceListData = res.data.results;
+
+    
     console.log(res);
     })
 
@@ -112,6 +116,10 @@ export class EmployeesetComponent implements OnInit {
 
   formReset() {
      this.employeesetForm.reset();
+     this.serviceListData = [];
+     this.editFormFlag = false;
+     this.viewFormFlag = false;
+     this.employeesetForm.enable();    
   }
 
   editEmployeeSet(data){
