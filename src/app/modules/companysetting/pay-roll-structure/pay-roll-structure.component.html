@@ -358,9 +358,9 @@
 
                       <div class="float-right ">
                         <!-- *ngIf="showSaveButton" -->
-                        <button type="submit"
+                        <button type="submit" [disabled]="pHGForm.invalid"
                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                          tooltip="Save" [disabled]="pHGForm.invalid"
+                          tooltip="Save"
                           [ngClass]="{'disabled-btn-bg-green' : pHGForm.invalid,'btn-bg-green': !pHGForm.invalid}"><b>
                             <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
 

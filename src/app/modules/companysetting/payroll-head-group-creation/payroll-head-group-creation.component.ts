@@ -533,7 +533,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       }
       this.viewSaveButton = false;
     }, ( error ) => {
-      if ( error.status == 404 ) {
+      if ( error.status == 400 ) {
         this.alertService.sweetalertError( error["error"]["status"]["message"] );
         this.getAllAttributeListByAttGroup( u.headGroupIds );
         this.viewSaveButton = true;

@@ -90,7 +90,7 @@ export class PayRollStructureComponent implements OnInit {
   public listOfPHG: Array<any> = [];
   public allGroupListGetEDList: Array<any> = [];
   public allGroupListGetAttributeList: Array<any> = [];
-
+  public disabled = true;
   public saveEDListFromPHGList: Array<any> = [];
   public saveAttListFromPHGList: Array<any> = [];
   public selectedUser: Array<any> = [];
@@ -125,6 +125,7 @@ export class PayRollStructureComponent implements OnInit {
   public  selectedUser2Attribute: Array<any> = [];
   public saveAttGroupListFromPHGList : Array<any> = [];
   public showSaveButton : boolean = false;
+  public userHasSelectedMandatoryFieldOnly = false;
 
 
   public selectedheadName: Array<any> = [];
@@ -334,6 +335,17 @@ export class PayRollStructureComponent implements OnInit {
         this.listOfPHG.splice(index, 1);
       }
     });
+
+    this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+    if ( this.userHasSelectedMandatoryFieldOnly ) {
+      this.pHGForm.setErrors( { 'invalid': true } );
+
+    } else {
+      console.log( 'in else block' );
+      this.pHGForm.setErrors( null );
+
+    }
+
   }
 
   //Data send from right to left table
@@ -352,6 +364,15 @@ export class PayRollStructureComponent implements OnInit {
         this.targetProducts.splice(index, 1);
       }
     });
+
+    this.userHasSelectedMandatoryFieldOnly = this.targetProducts.every( o => o.disabled == true );
+    if ( this.userHasSelectedMandatoryFieldOnly ) {
+      this.pHGForm.setErrors( { 'invalid': true } );
+
+    } else {
+      console.log( 'in else block' );
+      this.pHGForm.setErrors( null );
+    }
   }
 
   //select PHG
@@ -409,15 +430,16 @@ export class PayRollStructureComponent implements OnInit {
           //   this.alertService.sweetalertWarning("Please select PHG");
           // }
         }
-        // else {
-        //   this.alertService.sweetalertError(
-        //     'Something went wrong. Please try again.'
-        //   );
-        // }
+        else {
+          this.alertService.sweetalertError(
+            'Something went wrong. Please try again.'
+          );
+        }
       },
-      ( error: any ) => {
-        this.alertService.sweetalertError( error["error"]["status"]["message"] );
-      } );
+      // ( error: any ) => {
+      //   this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      // }
+       );
       // );
       // this.pHGForm.reset();
       }
