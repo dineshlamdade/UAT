@@ -160,7 +160,7 @@ export class HousingloanmasterComponent implements OnInit {
   public selectedItems = [];
   public selectedEstablishmentMasterId = [];
 
-
+  public isRadioButtonDisabled:boolean = true;
 
   public abc: any[];
   myDate: string;
@@ -272,6 +272,9 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+
+    //this.visibilityFlag = true;
+    console.log("visibilityFlag", this.visibilityFlag);
     //  this.addOwner(0);
     // this.startDateModel = '31-dec-9999';
     this.housingLoanForm.get('country').setValue('India');

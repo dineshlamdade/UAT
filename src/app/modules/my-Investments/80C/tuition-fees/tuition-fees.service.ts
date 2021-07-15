@@ -142,7 +142,7 @@ export class TuitionFeesService {
 
 
 
-  uploadMultipleULIPDepositMasterFiles(files: File[], data:any): Observable<any> {
+  uploadMultipleULIPDepositMasterFiles(files: File[], data:[]): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {

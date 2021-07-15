@@ -20,8 +20,9 @@
                   </div> -->
             <div class="col-sm-6 col-md-3">
               <label class="form-label">State Name</label>
-              <select name="family_Member_Name" id="state" formControlName="state" (change)='onSelectState()'
-                class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+              <select name="family_Member_Name" id="state" formControlName="state"
+                (change)='onSelectState($event.target.value)' class="form-control custom-select"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
                 <option [ngValue]="null">Select</option>
                 <option *ngFor="let state of stateNameList" [value]="state">
                   {{state}}
@@ -44,9 +45,12 @@
                     <div>
                       {{ifsc}}</div>
                   </div>
-                </ng-template>
+                </ng-template>                
               </p-autoComplete>
               <i class="fa fa-chevron-down down-arrow-icon"></i>
+              <div class="float-left" *ngIf="submitted && ifscCodeList.length == 0">
+                <label class="text-red mb-0" id="s2">Please Enter IFSC Code</label>
+              </div>
             </div>
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Bank Name</label>
@@ -86,12 +90,11 @@
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Account Number</label>
               <input type="password" [type]="accountNo ? 'text' : 'password'"
-              formControlName="accountNumber" class="form-control"
-                placeholder="Enter Account Number"
+                onkeypress="return /[0-9]/i.test(event.key)" (change)="matchAccountNumber($event.target.value)"
+                formControlName="accountNumber" class="form-control" placeholder="Enter Account Number"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
-                <i
-                   class="fa fa-eye" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
-                   [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
+              <i class="fa fa-eye" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
+                [ngClass]="{'visibility': !accountNo,   'visibility_off': accountNo }" id="s1"></i>
               <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
               </div>
@@ -194,7 +197,8 @@
                   <tbody>
                     <tr>
                       <th scope="row"><span tooltip="1">1</span></th>
-                      <td><span tooltip="Interest Certificate / Bank Statement"></span>Interest Certificate / Bank Statement</td>
+                      <td><span tooltip="Interest Certificate / Bank Statement"></span>Interest Certificate / Bank
+                        Statement</td>
                       <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                             class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                         <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
@@ -245,8 +249,8 @@
                     <th scope="col" class="wd-15">IFSC Code</th>
                     <th scope="col" class="wd-15">Bank Name</th>
                     <th scope="col" class="wd-15">Branch Name</th>
-                    <th scope="col" class="wd-15">Account Number</th>
-                    <th scope="col" class="wd-15">Action</th>
+                    <th scope="col" class="wd-19">Account Number</th>
+                    <th scope="col" class="wd-12">Action</th>
                   </tr>
                 </thead>
                 <tbody>

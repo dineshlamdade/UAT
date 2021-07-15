@@ -1,0 +1,71 @@
+.cursor {
+  cursor: pointer;
+}
+.text-gray {
+  color: gray;
+}
+.disablegraybutton {
+  cursor: not-allowed;
+  background-color: grayscale($color: #e7e6e6) !important;
+}
+.disableredbutton {
+  cursor: not-allowed;
+  background-color: grayscale($color: #f38989) !important;
+}
+.disablegreenbutton {
+  cursor: not-allowed;
+  background-color: grayscale($color: #c7cece) !important;
+}
+.disableCheckbox {
+  display: none;
+}
+.invalidRemark {
+  color: #dc3545;
+  font-size: small;
+}
+
+span {
+  font-size: 12px;
+}
+.border-box {
+  border-radius: 9px;
+  padding: 10px;
+  box-shadow: 2px 4px 9px 0px #e5daec8f;
+}
+.Next_Previous_Btn {
+  background: #000;
+  margin: 0;
+  position: absolute;
+  top: 51%;
+  left: 0% !important;
+  right: 3% !important;
+}
+.card2 {
+  background-color: rgb(243 241 241 / 82%);
+}
+.cardnew {
+  border: 1px solid #e6e0e0;
+}
+.disabled {
+  background-color: #f1eded;
+}
+.cont {
+  justify-content: center;
+}
+.align-right {
+  text-align: right;
+}
+.remarktext {
+  background-color: #f9ddee59;
+  text-align: start;
+  justify-content: space-between;
+  vertical-align: middle;
+}
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+ z-index: 9999999;
+ background-color: white;
+ padding: 10px;
+}

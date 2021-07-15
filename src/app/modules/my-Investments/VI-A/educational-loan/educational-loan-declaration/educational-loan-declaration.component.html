@@ -371,9 +371,15 @@
                       </span>
                     </td>
                     <td>
-                      <span>
+                     <!--  <span>
                         <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormat()"
                           [(ngModel)]="receiptAmount" />
+                      </span> -->
+                      <span>
+                        <!-- <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
+                        mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
+                        <input type="text" onkeypress="return /[0-9]/i.test(event.key)" class="form-control align-right"
+                          (blur)="changeReceiptAmountFormat()" [(ngModel)]="receiptAmount" />
                       </span>
                     </td>
                     <td>

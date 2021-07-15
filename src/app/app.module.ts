@@ -80,6 +80,9 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 import { LoanMasterModule } from './modules/loan-master/loan-master.module';
 import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
+import { InvestmentApprovalModule } from './modules/investment-approval/investment-approval.module';
+import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
+
 
 
 
@@ -90,6 +93,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     ProfileComponent,
     ShortenStringPipe,
     SettingsComponent,
+    
   ],
 
   exports: [],
@@ -104,6 +108,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     LoanModule,
     CompanySettingModule,
     MyInvestmentsModule,
+    InvestmentApprovalModule,
     PayrollInputsModule,
     /////////////////
     //  payrollModule,
@@ -146,7 +151,9 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     EmployeemasterlistpageModule,
     EmailSmsModule,
     LoanMasterModule,
-    SignaturePadModule
+    SignaturePadModule,
+    InvestmentApprovalModule,
+    ApprovedInvestmentModule
 
   ],
 

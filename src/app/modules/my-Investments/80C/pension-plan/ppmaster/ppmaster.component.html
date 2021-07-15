@@ -10,7 +10,7 @@
             </div>
             <div class="col-sm-6 col-md-3">
                 <label class="form-label">Account Number</label>
-                <input type="text" formControlName="accountNumber" class="form-control" placeholder="Enter Policy No." onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+                <input type="text" formControlName="accountNumber" class="form-control" placeholder="Enter Policy No." onkeypress="return /[0-9]/i.test(event.key)" [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
                 <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
                     <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
                 </div>
@@ -302,11 +302,11 @@
                                         </td>
                                         <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date
-                        :"dd-MMM-yyyy"}}</span>
+                                        <td class="wd-10"><span tooltip="{{summary.policyStartDate | date: 'dd-MMM-yyyy'}}">
+                                            {{summary.policyStartDate | date: "dd-MMM-yyyy"}}</span>
                                         </td>
-                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date
-                        :"dd-MMM-yyyy"}}</span>
+                                        <td class="wd-10"><span tooltip="{{summary.policyEndDate | date: 'dd-MMM-yyyy'}}">
+                                            {{summary.policyEndDate  | date: "dd-MMM-yyyy"}}</span>
                                         </td>
                                         <td class="wd-10"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
                                         </td>

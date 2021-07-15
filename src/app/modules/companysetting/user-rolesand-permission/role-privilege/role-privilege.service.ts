@@ -124,10 +124,7 @@ getCompanyId(companyGroupMasterId){
 getSummaryData(page,size): Observable<any>{ 
   return this._HTTP.get<any>(environment.baseUrl8080 +'userRolePrivilegesMatrix/?page='+page+'&size='+size)
 }
-
-
-
- public addUserRolePrivilege(data)
+public addUserRolePrivilege(data)
  {
    return this._HTTP.post<any>(this.apiUrl  +'userRolePrivilegesMatrix/' ,data);
  }
@@ -136,6 +133,39 @@ getSummaryData(page,size): Observable<any>{
  {
    return this._HTTP.put<any>(this.apiUrl  +'userRolePrivilegesMatrix/' ,data);
  }
+
+
+ ///////---------FeildLabel------API---------Start-----------
+
+// -------------- getAllFieldData---------------
+
+getAllFieldSummary(){
+  return this._HTTP.get<any>(environment.baseUrl8080 + 'formField/getAllField');
+}
+
+getAllField(){
+  return this._HTTP.get<any>(environment.baseUrl8080 + 'field/');
+}
+
+getFieldById(applicationMenuId){
+  let token = this.authservice.getJwtToken()
+    const headers = new HttpHeaders()
+    .set('X-Authorization', token);
+    return this._HTTP.get<any>(environment.baseUrl8080 +'field/getByApplicationMenuId/'+applicationMenuId,{ headers: headers } )
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+  
+public addFields(data)
+ {
+   return this._HTTP.post<any>(this.apiUrl  +'formField/formFieldDetails' ,data);
+ }
+ public updateFields(data)
+ {
+   return this._HTTP.put<any>(this.apiUrl  +'formField/updateField' ,data);
+ }
+
 
  
 

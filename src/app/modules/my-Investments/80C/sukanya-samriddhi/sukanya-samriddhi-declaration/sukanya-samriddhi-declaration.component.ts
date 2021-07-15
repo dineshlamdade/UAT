@@ -161,8 +161,11 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  sukanyasamriddhiDeclarationData: any;
   public canEdit: boolean;
   dateOfJoining: Date;
+  selectedFrequency: any;
+
 
 
   constructor(
@@ -419,8 +422,10 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-    j: number
+    j: number,
+    frequency: any,
   ) {
+    this.selectedFrequency = frequency;
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
         'Please Enter Declared Amount'
@@ -429,6 +434,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       event.target.checked = false;
     }
     const checked = event.target.checked;
+    this.sukanyasamriddhiDeclarationData = data
 
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
@@ -869,6 +875,9 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
 
   upload() {
 
+
+    console.log(JSON.stringify(this.sukanyasamriddhiDeclarationData))
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -907,6 +916,39 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
         innerElement.dueDate = dueDate;
       });
     });
+
+    if(this.sukanyasamriddhiDeclarationData.previousEmployerId == 0){
+
+    }
+    if (this.sukanyasamriddhiDeclarationData.dateOfPayment == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected date of payment for all selected lines',
+        'Please Select Date Of Payment',
+      );
+      return false;
+    }
+    if (this.selectedFrequency !== 'As & When' && this.sukanyasamriddhiDeclarationData.dueDate == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected due date for all selected lines',
+        'Please Select Date Of DueDate',
+      );
+      return false;
+    }
+    if (this.sukanyasamriddhiDeclarationData.declaredAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected declared amount for all selected lines',
+        'Please Select Date Of Declared Amount',
+      );
+      return false;
+    }
+    if (this.sukanyasamriddhiDeclarationData.actualAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected actual amount for all selected lines',
+        'Please Select Date Of Actual Amount',
+      );
+      return false;
+    }
+
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
@@ -978,6 +1020,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     this.alertService.sweetalertError(
       'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
+    this.receiptAmount = '0.00';
+    return false;
   } else if (receiptAmount_ > globalSelectedAmount_) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
@@ -1174,6 +1218,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   // When Edit of Document Details
   declarationEditUpload(
     template2: TemplateRef<any>, proofSubmissionId: string) {
+
+      this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1185,6 +1231,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload =
@@ -1333,7 +1380,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
-      //documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
     };

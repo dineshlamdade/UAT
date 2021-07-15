@@ -48,6 +48,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
   public familyMemberNameList: Array<any> = [];
 
+  public accountNumberlistedit: Array<any> = [];
+
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
@@ -105,6 +107,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  
+  codeInvalid: boolean = false;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -359,6 +363,29 @@ export class InterestOnTtbMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
 
       console.log('Interest On 80TTA ::', data);
+      if (data.accountNumber) {
+        this.masterGridData.forEach(results => {
+          if (results.accountNumber == data.accountNumber) {
+            this.codeInvalid = true;
+          }
+        });
+        if (this.codeInvalid) {
+          this.codeInvalid = false;
+          this.alertService.sweetalertError(
+            'Duplicate Account should Not be Acceptable'
+          );
+          return;
+        }
+      }
+     /*  this.masterGridData.forEach((element) => {
+        if (data.accountNumber == element.accountNumber) {
+          this.alertService.sweetalertWarning(
+            'Duplicate Account should Not be Acceptable'
+          );
+          return 0;
+          this.form.reset();
+        }
+      });  */     
 
       this.interestOnTtbService
         .uploadMultiple80TTBMasterFiles(this.masterfilesArray, data)
@@ -399,6 +426,24 @@ export class InterestOnTtbMasterComponent implements OnInit {
     }
   }
 
+
+  //Duplicate account should not be acceptable
+
+  matchAccountNumber(event: any) {
+    console.log('event...', event);
+    this.masterGridData.forEach((element) => {
+      this.accountNumberlistedit = element.accountNumber;
+      if (event == element.accountNumber) {
+        this.alertService.sweetalertWarning(
+          'Duplicate Account should Not be Acceptable'
+        );
+      }
+      console.log(element.accountNumber);
+    });
+    return 0;
+  }
+
+  
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
     if (event.target.files.length > 0) {
@@ -464,8 +509,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
   // On View Cancel
   cancelView() {
     this.form.reset();
-    this.form.get('active').setValue(true);
-    this.form.get('isClaiming80U').setValue(0);
+   // this.form.get('active').setValue(true);
+    //this.form.get('isClaiming80U').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;

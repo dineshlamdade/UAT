@@ -20,6 +20,7 @@
           {{ bankName.label }}
         </option>
       </select>
+      
     </div>
 
   </div>
@@ -483,10 +484,10 @@
                   </td>
                   <td>
                     <span tooltip="{{
-                        documentSummary.interestReceivedDate  | date: 'dd-MMM-yyyy'
+                        documentSummary.dateOfSubmission  | date: 'dd-MMM-yyyy'
                       }}">
                       {{
-                      documentSummary.interestReceivedDate | date: "dd-MMM-yyyy"
+                      documentSummary.dateOfSubmission | date: "dd-MMM-yyyy"
                       }}</span>
                   </td>
                   <!-- <td class="padding-0"  *ngIf = "documentSummary.interest80TTBankList.length > 1">

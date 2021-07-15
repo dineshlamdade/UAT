@@ -15,16 +15,16 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Name</label>
                     <div class="input-group">
-                      <input type="text" (change)="onChangeHeadGroupDefinitionName($event)"
+                      <input type="text" (change)="onChangeHeadGroupDefinitionName($event); isContainsOnlySpecialCharacterDescription();" onkeypress="return /[0-9a-zA-Z_-]/i.test(event.key)" [maxlength]="25"
                         formControlName="headGroupDefinitionName" class="form-control" placeholder="Enter Name"
-                        [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('headGroupDefinitionName').status == 'INVALID'}">
+                        [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('headGroupDefinitionName').status == 'INVALID' || codeInvalid == true}">
                     </div>
                   </div>
 
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Description</label>
                     <div class="input-group">
-                      <input type="text" formControlName="description" class="form-control"
+                      <input type="text" formControlName="description" class="form-control" onkeypress="return /[0-9a-zA-Z%/_ ]/i.test(event.key)" [maxlength]="50"
                         placeholder="Enter Description"
                         [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('description').status == 'INVALID'}">
                     </div>
@@ -123,16 +123,24 @@
 
 
 
-                            <!-- <h3 class="font-14 text-purple font-bold"><span class="form-label"> Total Head:
+                           <!-- <h3 class="font-14 text-purple font-bold"><span class="form-label"> Total Head:
                                   <span class="font-14 text-dark-green"> ({{sourceProducts.length}})</span>
                                   &nbsp;&nbsp;&nbsp;<span class="font-14  text-purple font-bold float-right">Selected
                                     Head:
                                     ({{selectedUser.length}})</span> </span></h3> -->
-                            <p-table [value]="sourceProducts" [paginator]="true" [rows]="10"
+
+                            <!-- <p-table [value]="sourceProducts" [paginator]="true" [rows]="10"
                               [showCurrentPageReport]="true" selectionMode="multiple"
                               [(selection)]="selectedSummarySourceProducts"
                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                              [rowsPerPageOptions]="[10,25,50,100,200]">
+                              [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                              <p-table [value]="sourceProducts" [paginator]="true" [rows]="10"
+                              [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              totalRecords={{sourceProducts.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
                               <ng-template pTemplate="header">
                                 <tr>
 
@@ -228,7 +236,7 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- <h3 class="font-14 text-purple font-bold">
+                             <!-- <h3 class="font-14 text-purple font-bold">
                                   <span class="form-label">Total Head:
                                     <span class="font-14 text-dark-green">({{targetProducts.length}})</span>
                                   </span>
@@ -238,11 +246,19 @@
                                   </span>
 
                                 </h3> -->
-
+<!--
                             <p-table [value]="targetProducts" [paginator]="true" [rows]="10"
                               [showCurrentPageReport]="true" selectionMode="multiple"
                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                              [rowsPerPageOptions]="[10,20,50,100,200]">
+                              [rowsPerPageOptions]="[10,20,50,100,200]"> -->
+
+                              <p-table [value]="targetProducts" [paginator]="true" [rows]="10"
+                              [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              totalRecords={{targetProducts.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
+
                               <ng-template pTemplate="header">
                                 <tr>
 
@@ -761,7 +777,7 @@
               <div class="row mt-15">
                 <div class="col-12">
                   <div class="float-right mb-15">
-                    <button type="button" (click)="UploadModalYesNo(template1244);" *ngIf="!viewupdateButton"
+                    <button type="button" (click)="UploadModalYesNo(template1244);" *ngIf="!viewCancelButton && !viewupdateButton"
                       data-toggle="modal" data-target="#UploadModal" [disabled]="payrollHeadGroupCreationForm.invalid"
                       [ngClass]="{'disabled-btn-bg-green' : payrollHeadGroupCreationForm.invalid,'btn-bg-green': !payrollHeadGroupCreationForm.invalid}"
                       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
@@ -780,6 +796,9 @@
                       class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                       tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
                       Cancel</button>
+
+
+
 
                     <button type="button" (click)="resetAttributeSelection()" *ngIf="!viewCancelButton"
                       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
@@ -1041,10 +1060,17 @@
                 <div class="col-md-10">
                   <div class="cycle-table mt-4">
                     <h3 class="font-14 text-purple font-bold">Summary</h3>
-                    <p-table [value]="originalPayrollHeadGroupList" [paginator]="true" [rows]="10"
+                    <!-- <p-table [value]="originalPayrollHeadGroupList" [paginator]="true" [rows]="10"
                       [showCurrentPageReport]="true"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      [rowsPerPageOptions]="[10,25,50,100,200]">
+                      [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                      <p-table [value]="originalPayrollHeadGroupList" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{originalPayrollHeadGroupList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+
+
                       <ng-template pTemplate="header">
                         <tr>
 

@@ -54,12 +54,16 @@ export class FileService {
   }
 
 
-  public uploadMultipleMasterFiles(files: File[], data: any): Observable<any> {
+  public uploadMultipleMasterFiles(files: File[], file1: File[], data: any): Observable<any> {
     let formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (const file of files) {
       formData.append('licDocuments', file);
     }
+    for (const file of file1) {
+      formData.append('licDocuments', file);
+    }
+
     // formData.append('licDocuments', files);
     formData.append('licMasterRequestDTO', JSON.stringify(data));
 

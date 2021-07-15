@@ -521,10 +521,11 @@ export class HouserentmasterComponent implements OnInit {
     this.houseDetailsRentsubmitted = true;
 
     console.log("rentDetail:::::",this.houseRentform.get('rentDetail').value);
-
+   // let invalidSubmission = false;
     console.log('Houserentform', this.houseRentform);
     if(!this.houseRentform.get('rentDetail').invalid)
     {
+    //  invalidSubmission = true;
       console.log("rentDetail:::::----------",this.houseRentform.get('rentDetail').value.rentAmount * 12);
       if(this.houseRentform.get('rentDetail').value.rentAmount * 12 > 100000 && (this.declarationOfLandlordDocument.length === 0 ||
       this.declarationOfLandlordDocumentDetail.length === 0))
@@ -537,24 +538,29 @@ export class HouserentmasterComponent implements OnInit {
      
     }
 
-    if (this.total !== 100) {
+  /*   if (this.total !== 100) {
+      invalidSubmission = true;
       this.alertService.sweetalertWarning(
         ' Landlord Details % Share Of Total Rent Please Fill  100%.'
       ); 
       return;    
     }
-    
+     */
 
+    if (this.landLordDetailTableList.length === 0) {
+    //  invalidSubmission = true;
+      if (this.houseRentform.invalid) {
+        this.alertService.sweetalertWarning('Please enter House  taken details');
+      }
+      return;
+    }
     /*   if (this.houseRentform.get('houseRentMaster').invalid) {
       this.alertService.sweetalertWarning('Please Enter Rent taken details');
       return;
     } */
 
     if (this.landLordDetailTableList.length === 0) {
-      console.log(
-        'landLordDetailTableList',
-        this.landLordDetailTableList.length
-      );
+    //  console.log('landLordDetailTableList',this.landLordDetailTableList.length );
       this.alertService.sweetalertWarning(
         'Please Enter LandLord Detail Table Field'
       );

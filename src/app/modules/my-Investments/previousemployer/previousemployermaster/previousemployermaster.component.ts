@@ -72,7 +72,10 @@ export class PreviousemployermasterComponent implements OnInit {
   public editTransactionUpload: Array<any> = [];
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
-  public familyMemberName: Array<any> = [];
+  public PreviousEmpListGroup: Array<any> = [];
+
+  public previousEmployerName: Array<any> = [];
+
   public urlArray: Array<any> = [];
   public urlIndex: number;
   public glbalECS: number;
@@ -128,14 +131,6 @@ export class PreviousemployermasterComponent implements OnInit {
   public dateOfJoining: Date;
   public dateOfLeaving: Date;
   public typeOfRegime: string;
-  public fullyTaxableHeadsIncome: Number;
-  public headsWithExemptionIncome: Number;
-  public valueOfPerquisites: Number;
-  public taxableIncome: Number;
-  public professionalTax: Number;
-  public standardDeduction: Number;
-  public benefitGivenUnder80C: Number;
-  public taxDeductedAtSource: Number;
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -149,7 +144,8 @@ export class PreviousemployermasterComponent implements OnInit {
 
   imgFile: any = '';
   imageFile: any;
- 
+
+  public previousEmployList: Array<any> = [];
 
 
   constructor(
@@ -165,8 +161,9 @@ export class PreviousemployermasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
-    this.previousEmployerDetailsform = this.formBuilder.group({
-      previousEmployerId: new FormControl(0),
+    this.previousEmployerDetailsform = this.formBuilder.group({     
+      previousEmployerMasterDetailId:new FormControl(0), 
+      employeePreviousEmploymentId: new FormControl(null, Validators.required),
       name: new FormControl(null, Validators.required),
       address: new FormControl(null, Validators.required),
       pan: new FormControl(null, Validators.required),
@@ -174,20 +171,11 @@ export class PreviousemployermasterComponent implements OnInit {
       dateOfJoining: new FormControl(null, Validators.required),
       dateOfLeaving: new FormControl(null, Validators.required),
       typeOfRegime: new FormControl(null, Validators.required),
-      fullyTaxableHeadsIncome: new FormControl(null, Validators.required),
-      headsWithExemptionIncome: new FormControl(null, Validators.required),
-      valueOfPerquisites: new FormControl(null, Validators.required),
-      taxableIncome: new FormControl(
-        { value: 0, disabled: true },
-        Validators.required
-      ),
-      professionalTax: new FormControl(null, Validators.required),
-      standardDeduction: new FormControl(null, Validators.required),
-      benefitGivenUnder80C: new FormControl(null, Validators.required),
-      taxDeductedAtSource: new FormControl(null, Validators.required),
+      proofSubmissionId : new FormControl(""),
+     
     });
 
-    /*     this.masterPage(); */
+    this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
     this.hideRemoveRow = false;
@@ -202,32 +190,47 @@ export class PreviousemployermasterComponent implements OnInit {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
     this.previousDate = this.today;
-    this.previousDate.setDate(this.today.getDate() - 1);
+   /*  this.previousDate.setDate(this.today.getDate() - 1); */
 
-    this.getpreviousEmployerDetailSummary();
+    /* this.getPreviousEmployList(); */
+
+
+    // -------------- PreviousEmployList 2199 EM List API call ---------------------------
+  
+  this.previousEmployerService.getPreviousEmpList().subscribe((res) => {
+    console.log('previousEmployerName::...', res);
+
+    this.PreviousEmpListGroup = res.data.results[0];
+
+    res.data.results[0].forEach((element) => {
+      const obj = {
+        label: element.previousEmployerName,
+        value: element.previousEmployerName,
+      };
+      this.previousEmployList.push(obj);
+    });
+  });
+
+  }
+
+  // Get Master Page Data API call
+  public masterPage() {
+    this.previousEmployerService.getPreviousEmployerMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        if (element.possessionDate !== null) {
+          element.possessionDate = new Date(element.possessionDate);
+        }
+      });
+    });
   }
 
   // ------------------------------------Master----------------------------
-
   //------------------- convenience getter for easy access to previousEmployerDetailsform fields -----------------
   get previousEmployerDetailsMaster() {
     return this.previousEmployerDetailsform.controls;
   }
-
-  //---------------- Get Master Page Data API call -----------------------
-  /* masterPage() {
-    this.Service.getEightyCMaster().subscribe((res) => {
-      console.log('masterSummaryGridData::', res);
-      this.masterSummaryGridData = res.data.results;
-      this.masterSummaryGridData.forEach((element) => {
-        element.policyStartDate = new Date(element.policyStartDate);
-        element.policyEndDate = new Date(element.policyEndDate);
-        element.fromDate = new Date(element.fromDate);
-        element.toDate = new Date(element.toDate);
-      });
-    });
-  } */
-
   //-------------- Post Master Page Data API call -------------------
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     console.log('addMaster::', formData);
@@ -237,10 +240,15 @@ export class PreviousemployermasterComponent implements OnInit {
       return;
     }
     const data = this.previousEmployerDetailsform.getRawValue();
+
+    data.dateOfJoining = new Date(data.dateOfJoining);
+    data.dateOfLeaving = new Date(data.dateOfLeaving);
+  
+    console.log("data::::", data)
     this.previousEmployerService
       .submitPreviousEmployerDetailData(this.masterfilesArray, data)
       .subscribe((res) => {
-        console.log('Response', res);
+        console.log(' ', res);
 
         if (res) {
           if (res.data.results.length > 0) {
@@ -274,6 +282,22 @@ export class PreviousemployermasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.submitted = false;
   }
+  
+ /* ....... Previous Employer Name........ */  
+    OnSelectionPreviousEmployment() {     
+    //  debugger 
+      if (this.previousEmployerDetailsform.get('name').value == null) {
+        this.previousEmployerDetailsform.get('dateOfJoining').setValue(null);
+        this.previousEmployerDetailsform.get('dateOfLeaving').setValue(null);
+      }
+      const toSelect = this.PreviousEmpListGroup.find(
+        (c) => c.previousEmployerName === this.previousEmployerDetailsform.get('name').value
+      );
+      this.previousEmployerDetailsform.get('employeePreviousEmploymentId').setValue(toSelect.employeePreviousEmploymentId);
+      this.previousEmployerDetailsform.get('dateOfJoining').setValue(toSelect.dateOfJoining);
+      this.previousEmployerDetailsform.get('dateOfLeaving').setValue(toSelect.dateOfRelieving);
+    }
+     
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     console.log('event::', event);
@@ -289,23 +313,8 @@ export class PreviousemployermasterComponent implements OnInit {
   //----------------- Remove LicMaster Document -----------------------------
   removeSelectedRentAgreementDocumentDetailDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
-    //console.log('this.filesArray::', this.masterfilesArray);
-    //console.log('this.filesArray.size::', this.masterfilesArray.length);
-  }
-
-  /*   calculateAnnual Amount Calculate Total*/
-  calculateTotal() {
-    let taxableHeadsIncome = this.previousEmployerDetailsform.value
-      .fullyTaxableHeadsIncome;
-    let exemptionIncome = this.previousEmployerDetailsform.value
-      .headsWithExemptionIncome;
-    let perquisites = this.previousEmployerDetailsform.value.valueOfPerquisites;
-    let taxableIncomeTotal = taxableHeadsIncome + exemptionIncome + perquisites;
-    console.log('::', taxableIncomeTotal);
-    this.previousEmployerDetailsform.value.taxableIncome = taxableIncomeTotal;
-    this.previousEmployerDetailsform
-      .get('taxableIncome')
-      .setValue(taxableIncomeTotal);
+    console.log('this.filesArray::', this.masterfilesArray);
+    console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
   //------------------Date of Joining  Validations with Current Finanacial Year -------------------
@@ -346,46 +355,36 @@ export class PreviousemployermasterComponent implements OnInit {
   //* * ---- */
   //------------- On Master Edit functionality --------------------
   editMaster(i: number) {
-    //this.scrollToTop();
-    /*     this.paymentDetailGridData = this.masterSummaryGridData[i].paymentDetails; */
-
-    /*  this.masterSummaryGridData[i].dateOfJoining = this.datePipe.transform(
-       this.masterSummaryGridData[i].dateOfJoining,
-       'dd-mmm-yyyy'
-     );  */
-
+    this.scrollToTop();
     let abc;
     abc = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
     console.log('abc::', abc);
 
-    console.log("dateOfJoining::", this.masterSummaryGridData[i].dateOfJoining)
+    //console.log("dateOfJoining::", this.masterSummaryGridData[i].dateOfJoining)
 
-    /* this.masterSummaryGridData[i].dateOfLeaving = this.datePipe.transform(
-      this.masterSummaryGridData[i].dateOfLeaving,
-      'dd-mmm-yyyy'
-    );  */
-
-    this.previousEmployerDetailsform.patchValue(this.masterSummaryGridData[i]);
-    console.log(this.previousEmployerDetailsform.getRawValue());
+    
+    this.previousEmployerDetailsform.patchValue(this.masterGridData[i]);
+    console.log(":::::",this.previousEmployerDetailsform.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
-    this.previousEmployerDetailsform
-      .get('proofSubmissionId')
-      .setValue(this.masterSummaryGridData[i].proofSubmissionId);
+    this.previousEmployerDetailsform.get('proofSubmissionId')
+      .setValue(this.masterGridData[i].proofSubmissionId);
     this.isClear = true;
-    this.masterfilesArray = this.masterSummaryGridData[i].documentInformationList;
+    this.masterfilesArray = this.masterGridData[i].documentInformationList;
   }
-  //------------------- On Master View functionality -----------------------
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    /*    this.paymentDetailGridData = this.masterSummaryGridData[i].paymentDetails; */
-    this.previousEmployerDetailsform.patchValue(this.masterSummaryGridData[i]);
-    // console.log(this.previousEmployerDetailsform.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.isCancel = true;
-  }
+ 
+
+    // scrollToTop Fuctionality
+    public scrollToTop() {
+      (function smoothscroll() {
+        var currentScroll =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentScroll > 0) {
+          window.requestAnimationFrame(smoothscroll);
+          window.scrollTo(0, currentScroll - currentScroll / 8);
+        }
+      })();
+    }
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.previousEmployerDetailsform.reset();
@@ -393,41 +392,7 @@ export class PreviousemployermasterComponent implements OnInit {
        this.showUpdateButton = false;
        this.isCancel = false; */
   }
-  /* =================pdf======================== */
-  download() {
-    console.log('hi');
 
-    let data = document.getElementById('htmlData');
-    html2canvas(data).then(canvas => {
-      console.log(canvas)
-      // Few necessary setting options
-      const imgWidth = 193;
-     const pageHeight = 0;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-     // const heightLeft = imgHeight;
-
-      const contentDataURL = canvas.toDataURL('image/png')
-      // A4 size page of PDF
-      const pdf = new jspdf('p', 'mm', 'a4');
-      const position = -120;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      // Generated PDF
-      pdf.save('FORM.12B.pdf');
-    });
-  }
-  //------------ On Form 12B Cancel Edit Cancel ----------------
-  cancelFormEdit() { }
-
-  /*   Summary Master */
-  getpreviousEmployerDetailSummary() {
-    this.previousEmployerService
-      .getpreviousEmployerDetailSummary()
-      .subscribe((res) => {
-        console.log('res::', res);
-        console.log('masterSummaryGridData::', res);
-        this.masterSummaryGridData = res.data.results;
-      });
-  }
   /* ==== */
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
@@ -435,12 +400,7 @@ export class PreviousemployermasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
-  openForm12BModal(template1: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      template1,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
+
   openFormSign(template2: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template2,

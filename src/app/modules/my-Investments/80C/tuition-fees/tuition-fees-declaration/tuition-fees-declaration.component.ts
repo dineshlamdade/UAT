@@ -207,7 +207,7 @@ public ngOnInit(): void {
     this.globalInstitution = input.institution;
     this.globalPolicy = input.accountNumber;
     this.getInstitutionListWithPolicyNo();
-    this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+    this.getTransactionFilterData(input.institution, 'null', 'null');
     if (input.canView === true){
       this.isDisabled = true;
     } else{
@@ -1197,6 +1197,7 @@ declarationEditUpload(
   template2: TemplateRef<any>,
   proofSubmissionId: string
 ) {
+  this.documentRemark = '';
   console.log('proofSubmissionId::', proofSubmissionId);
 
   this.modalRef = this.modalService.show(
@@ -1208,6 +1209,7 @@ declarationEditUpload(
     .getTransactionByProofSubmissionId(proofSubmissionId)
     .subscribe((res) => {
       console.log('edit Data:: ', res);
+       this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
       this.urlArray =
         res.data.results[0].documentInformation[0].documentDetailList;
       this.editTransactionUpload =
@@ -1353,7 +1355,7 @@ public uploadUpdateTransaction() {
   const data = {
     investmentGroupTransactionDetail: this.editTransactionUpload,
     groupTransactionIDs: this.uploadGridData,
-    //documentRemark: this.documentRemark,
+    documentRemark: this.documentRemark,
     proofSubmissionId: this.editProofSubmissionId,
     receiptAmount: this.editReceiptAmount,
   };
