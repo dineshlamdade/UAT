@@ -45,13 +45,13 @@
                       <div class="col-sm-3">
                         <label class="form-label">Value Updation Through</label>
                         <label class="custom-switch mt_5">
-                          <span class="form-label">NRQ Type</span>&nbsp;&nbsp;
-                          <input type="checkbox" name="custom-switch-checkbox" formControlName="valueUpdationThrough" class="custom-switch-input">
+                          <span class="form-label">SDM</span>&nbsp;&nbsp;
+                          <input type="checkbox" name="custom-switch-checkbox" (click)="getValueUpdation($event)"  class="custom-switch-input">
                           <span class="custom-switch-indicator"></span>&nbsp;&nbsp;
-                          <span class="form-label">SDM</span>
+                          <span class="form-label">NRQ Type</span>
                         </label>
                       </div>
-                      <div class="col-sm-3">
+                      <div class="col-sm-3" *ngIf="valueUpdationThrough == 'SDM'">
                         <label class="form-label">SDM</label>
                         <select name="custom-select" class="form-control" formControlName="sdmName">
                           <option value="Select">Select</option>

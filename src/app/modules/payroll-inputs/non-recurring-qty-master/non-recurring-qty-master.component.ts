@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { SortEvent } from 'primeng/api';
 import { NonRecurringQtyService } from '../non-recurring-qty.service';
 
@@ -17,8 +18,10 @@ export class NonRecurringQtyMasterComponent implements OnInit {
   nonSalaryNature: any;
   nonSalaryRate: any;
   nonSalaryMultiplier: any;
+  valueUpdationThrough: string = 'NRQ';
+  valueUpdateflag: boolean = true;
 
-  constructor(private nonrecqtyservice : NonRecurringQtyService) { 
+  constructor(private nonrecqtyservice : NonRecurringQtyService, private toaster: ToastrService) { 
      this.masterForm = new FormGroup({
       "nonSalaryDetailId": new FormControl(''),
       "code": new FormControl(''),
@@ -26,10 +29,10 @@ export class NonRecurringQtyMasterComponent implements OnInit {
      "unit": new FormControl('HR'),
      "headOfPayment": new FormControl(''),
      "descriptionHeadOfPayment": new FormControl(''),
-     "valueUpdationThrough": new FormControl(''),
+     "valueUpdationThrough": new FormControl(this.valueUpdationThrough),
      "sdmName": new FormControl(''),
-     "isActive": new FormControl(''),
-     "createdBy": new FormControl(''),
+     "isActive": new FormControl(1),
+     "createdBy": new FormControl('rahul'),
      "nonSalaryOptionList": new FormControl([])
      })
   }
@@ -63,7 +66,32 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     this.masterForm.controls['nonSalaryOptionList'].setValue(this.nonSalaryOptionList)
   }
 
+  getValueUpdation(event){
+    this.valueUpdateflag =! this.valueUpdateflag
+    if(!this.valueUpdateflag){
+      this.valueUpdationThrough = 'SDM'
+    }else{
+      this.valueUpdationThrough = 'NRQ'
+    }
+    // if(event.target.checked){
+    //   alert()
+    //   this.valueUpdationThrough = 'SDM'
+    // }else{
+    //   this.valueUpdationThrough = 'NRQ'
+    // }
+  }
+
   saveNonSalary(){
-    console.log("Form Data: "+ JSON.stringify(this.masterForm.value))
+    this.masterForm.controls['unit'].setValue('HR')
+    this.masterForm.controls['valueUpdationThrough'].setValue(this.valueUpdationThrough)
+    this.masterForm.controls['createdBy'].setValue('rahul')
+    this.masterForm.controls['isActive'].setValue(1)
+    let data = [this.masterForm.value]
+    this.nonrecqtyservice.nonsalary(data).subscribe(
+      res =>{
+        this.toaster.success("","Master Data Saved Successfully.")
+        this.getMasterSummaryData()
+      }
+    )
   }
 }

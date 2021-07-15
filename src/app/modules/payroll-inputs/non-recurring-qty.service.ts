@@ -17,4 +17,11 @@ export class NonRecurringQtyService {
   NonRecurringnonsalary():Observable<any>{
     return this.HttpClient.get<any>(this.apiUrl + `nonsalary`);
   }
+
+  /** Save master data */
+  nonsalary(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `nonsalary`,data);
+  }
+
+  
 }

@@ -1,33 +1,61 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QueryRoutingModule } from './query-routing.module';
 import { QueryComponent } from './standard-que-ans/query.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 // import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { QueryTypeMasterComponent } from './query-type-master/query-type-master.component';
 import { CKEditorModule } from 'ckeditor4-angular';
+import {TableModule} from 'primeng/table';
+import { AdminQuryGenerationComponent } from './admin-qury-generation/admin-qury-generation.component';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {CalendarModule} from 'primeng/calendar';
+import { QueryDashboardComponent } from './query-dashboard/query-dashboard.component';
+import {ChartModule} from 'primeng/chart';
+import { NgApexchartsModule } from "ng-apexcharts";
+import {SidebarModule} from 'primeng/sidebar';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
-
+import {TreeModule} from 'primeng/tree';
+import { QueryCOmmunicationComponent } from './query-communication/query-communication.component';
+import {MultiSelectModule} from 'primeng/multiselect';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
+// import { ChartComponent } from "ng-apexcharts";
 @NgModule({
   declarations:
   [QueryComponent,
   QueryTypeMasterComponent,
+  AdminQuryGenerationComponent,
+  QueryDashboardComponent,
+  QueryCOmmunicationComponent,
+  DocumentViewerComponent,
   ],
   imports: [
+    TreeModule,
     CommonModule,
     QueryRoutingModule,
-    FormsModule,
     ReactiveFormsModule,
     SharedlayoutModule,
     NgxPaginationModule,
     CKEditorModule,
+    TableModule,
+    CalendarModule,
+    BsDatepickerModule,
+    ChartModule,
+    NgApexchartsModule,
+    SidebarModule,
+    ScrollPanelModule,
     NgMultiSelectDropDownModule.forRoot(),
+    MultiSelectModule,
+    TooltipModule,
+
+
+    // ChartComponent
   ],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [NO_ERRORS_SCHEMA],
 
 })
 export class QueryModule { }

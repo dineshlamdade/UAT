@@ -1,0 +1,97 @@
+<div class="section-body mt-3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div
+            class="card-header mb-0"
+            style="font-weight: bold; color: purple"
+          >
+            <!-- Premium payment Receipt -->
+            <!-- <button (click)="click()">Rotate Right</button> -->
+          </div>
+ <!-- <pre>{{listDoc |json}}</pre> -->
+          <div class="card-body">
+            <div class="tabview-contents">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="bg-color-light_gray pt-10 pl-10 pr-10">
+                    <div class="row" >
+                      <div class="col-md-2" >
+                        <label class="form-label mt-1 mb-0">Employee Code</label >
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{this.employeeCode}}</label >
+                          <!-- <pre>{{documentURLIndex }}</pre> -->
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Employee Name</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{this.empName}}
+                        </label>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Query Number</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{this.queryNumber}}
+                        </label>
+                      </div>
+                      <div class="col-md-2" >
+                        <label class="form-label mt-1 mb-0">Reference Number</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                           {{this.refNumber}}
+
+                        </label>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Query Type</label>
+                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                          {{this.queryTypeCode}}
+                        </label>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-25">
+                <div class="col-md-1">
+                  <button
+                    type="button"
+                    class="btn active Next_Previous_Btn"
+                    tooltip="Previous Document"
+                    (click)="previousDocViewer()"
+                    [disabled]="documentURLIndex == 0"
+                  >
+                    <i class="fa fa-angle-left text-white font-30 p-10"></i>
+                  </button>
+                </div>
+                <div class="col-md-10">
+                  <iframe
+                    style="
+                      height: 100vh;
+                      width: 100%;
+                      display: block;
+                      overflow-y: scroll;
+                    "
+                    [src]="urlSafe"
+                    provider="google"
+                  ></iframe>
+                </div>
+                <div class="col-md-1">
+                  <button
+                    type="button"
+                    class="btn active Next_Previous_Btn"
+                    tooltip="Next Document"
+                    (click)="nextDocViewer()"
+                    [disabled]="documentURLIndex == documentList.length - 1">
+                    <i class="fa fa-angle-right text-white font-30 p-10"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
