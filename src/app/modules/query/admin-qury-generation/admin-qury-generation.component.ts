@@ -197,7 +197,6 @@ this.queryService.getAllQueryList().subscribe(res =>
     });
     this.getEmpMasterDetails(this.employeeMasterIdData);
 
-
   })
 }
 

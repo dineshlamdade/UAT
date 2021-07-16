@@ -23,7 +23,7 @@ import { QueryCOmmunicationComponent } from './query-communication/query-communi
 import {MultiSelectModule} from 'primeng/multiselect';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
-import { EmployeelistComponent } from './employeelist/employeelist.component';
+// import { EmployeelistComponent } from './employeelist/employeelist.component';
 // import { ChartComponent } from "ng-apexcharts";
 @NgModule({
   declarations:
@@ -33,7 +33,7 @@ import { EmployeelistComponent } from './employeelist/employeelist.component';
   QueryDashboardComponent,
   QueryCOmmunicationComponent,
   DocumentViewerComponent,
-  EmployeelistComponent,
+  // EmployeelistComponent,
   ],
   imports: [
     TreeModule,

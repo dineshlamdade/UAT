@@ -1,4 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PayrollInputsService } from '../payroll-inputs.service';
 
@@ -27,7 +29,10 @@ export class PayrollListComponent implements OnInit {
   public users: Array<any> = [];
   public checkedEmployeeList: Array<any> = [];
   public modalRef: BsModalRef;
- constructor(private service: PayrollInputsService) { }
+  selectedEmployeeData: any = [];
+  form:FormGroup;
+
+  constructor(private service: PayrollInputsService, private router: Router, private modalService: BsModalService,) { }
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
@@ -35,9 +40,7 @@ export class PayrollListComponent implements OnInit {
 
   public getAllEmployeeDetails(): void {
     this.service.getAllEmployeeDetails().subscribe((res) => {
-      console.log(res);
-      this.users =  res.data.results[0];
-      console.log(this.users);
+      this.users = res.data.results[0];
     });
   }
 
@@ -48,7 +51,7 @@ export class PayrollListComponent implements OnInit {
     } else {
       this.checkedEmployeeList.forEach((value, index) => {
         if (value === id) { this.checkedEmployeeList.splice(index, 1); }
-    });
+      });
     }
     console.log(this.checkedEmployeeList);
     this.service.setEmployeeListArray(this.checkedEmployeeList);
@@ -66,4 +69,22 @@ export class PayrollListComponent implements OnInit {
     }
     this.service.setEmployeeListArray(this.checkedEmployeeList);
   }
+
+
+  /** get selected employee data */
+  getSelectedEmployee(user){
+    this.selectedEmployeeData.push(user)
+  }
+
+  navigateToNRAmt(){
+    localStorage.setItem('payrollListEmpData',JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
+  }
+  smallpopup(querytemplate: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      querytemplate,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
 }
