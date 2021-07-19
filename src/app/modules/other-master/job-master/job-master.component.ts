@@ -26,8 +26,18 @@ export class JobMasterComponent implements OnInit {
     public showButtonSaveAndReset = true;
   public isActivateButton: number;
   public isEditMode = false;
+  public isViewMode = false;
+  public isUpdateMode = false;
+
+  deletedjobMasterId : number;
+  modalRef1: BsModalRef;
+  modalRef2: BsModalRef;
+  deleteModalRef: BsModalRef;
+  deleteRowModal1: BsModalRef;
+
   public isSaveAndReset = true;
   public form: any = FormGroup;
+  public formAssignment: any = FormGroup;
   public formAssign: any = FormGroup;
 
   public masterGridDataList = [];
@@ -75,7 +85,7 @@ export class JobMasterComponent implements OnInit {
   public viewMode = false;
   constructor( private formBuilder: FormBuilder, private modalService: BsModalService, private jobMasterService: JobMasterService, private alertService: AlertServiceService, private bankMasterAtCompanyService: BankMasterAtCompanyService ) {
     this.form = this.formBuilder.group( {
-      masterType: new FormControl( 'All' ),
+      jobMasterType: new FormControl( 'All' ),
       masterCode: new FormControl( '', Validators.required ),
       masterDescription: new FormControl( '', Validators.required ),
       jobMasterId: new FormControl( ''),
@@ -85,10 +95,10 @@ export class JobMasterComponent implements OnInit {
     } );
 
 
-    this.formAssign = this.formBuilder.group( {
+    this.formAssignment = this.formBuilder.group( {
       groupCompanyId: new FormControl( 'All' ),
-      // masterCode: new FormControl( '', Validators.required ),
-      // masterDescription: new FormControl( '', Validators.required ),
+      companyName: new FormControl( '', Validators.required ),
+      jobMasterType: new FormControl( ''),
       // jobMasterId: new FormControl( ''),
       // isActive: new FormControl( '' ),
       // jobMasterValueId: new FormControl( '' ),
@@ -301,64 +311,51 @@ export class JobMasterComponent implements OnInit {
 
   }
 
-  viewJobMaster( i: number) {
-    console.log( i)
+  viewJobMaster(data) {
+    console.log(data)
     window.scrollTo( 0, 0 );
     this.isEditMode = true;
+    this.isViewMode = true;
+    this.isUpdateMode = false;
+
     this.hideFormControl = true;
-    this.form.reset();
-    this.form.patchValue( this.masterGridDataList[i] );
+    // this.form.reset();
+    this.form.patchValue(data);
 
-    this.form.patchValue( {
-      masterId: this.masterGridDataList[i].masterId,
-      jobMasterValueId: this.masterGridDataList[i].jobMasterValueId,
-      masterCode: this.masterGridDataList[i].masterCode,
-      masterDescription: this.masterGridDataList[i].masterDescription,
-      jobMasterType: this.masterGridDataList[i].jobMasterType,
-      isActive: this.masterGridDataList[i].isActive,
-
-      // masterId: element.jobMasterId,
-      // jobMasterValueId: element.jobMasterValueId,
-      // masterCode: element.masterCode,
-      // masterDescription: element.masterDescription,
-      // jobMasterType: element.jobMasterType,
-      // isActive: element.active,
-      // isChecked: false,
-
-    } );
-    this.form.disable();
-
+    // this.form.patchValue( {
+    //   masterId: this.masterGridDataList[data].masterId,
+    //   jobMasterValueId: this.masterGridDataList[i].jobMasterValueId,
+    //   masterCode: this.masterGridDataList[i].masterCode,
+    //   masterDescription: this.masterGridDataList[i].masterDescription,
+    //   jobMasterType: this.masterGridDataList[i].jobMasterType,
+    //   isActive: this.masterGridDataList[i].isActive,
+    // } );
     this.form.disable();
   }
 
-
-
-
-  // editUpdateDataJobMaster(i){
-  //   // this.onSelectJobMaster( i );
-  //   this.hideFormControl = true;
-  //   this.isEditMode = true;
-  //   window.scrollTo( 0, 0 );
-  //   this.form.patchValue(this.masterGridDataList[i]);
-  //   this.Index = i;
-
-  // }
-
-  editUpdateDataJobMaster(i: number){
+  editUpdateDataJobMaster(data){
+    this.form.enable();
+    console.log("data", data)
     // this.onSelectJobMaster( i );
+
     this.hideFormControl = true;
+    this.isUpdateMode = true;
+    this.isViewMode = false;
+
     this.isEditMode = true;
     window.scrollTo( 0, 0 );
-    this.form.patchValue(this.tableDataList[i]);
-    this.Index = i;
-
+    this.form.patchValue(data);
+    // this.form.patchValue(this.tableDataList[data]);
   }
 
   updateSave(){
-    console.log("masterType", this.form.get('masterType').value)
+    this.isUpdateMode = false;
+    // this.isViewMode = false;
+    this.isEditMode = true;
+    console.log("jobMasterType", this.form.get('jobMasterType').value)
 
     const toSelect = this.masterGridDataList.find(
-      (c) => c.jobMasterType == this.form.get('masterType').value);
+      (c) => c.jobMasterType == this.form.get('jobMasterType').value);
 
        this.form.get('jobMasterId').setValue(toSelect.jobMasterId);
        this.form.get('jobMasterValueId').setValue(toSelect.jobMasterValueId);
@@ -383,14 +380,14 @@ export class JobMasterComponent implements OnInit {
         if ( res.data.results.length > 0 ) {
           console.log( 'data is updated' );
           // this.isEditMode = false;
-          this.refreshHtmlTable();
           this.alertService.sweetalertMasterSuccess( 'Recored Updated Successfully.', '' );
-
+          this.refreshHtmlTable();
           // this.isSaveAndReset = true;
           // this.showButtonSaveAndReset = true;
           this.form.reset();
 
           this.isEditMode = false;
+
           // this.refreshHtmlTableData();
           // this.form.patchValue( {
           //   companyRegistrationId: '',
@@ -455,12 +452,12 @@ export class JobMasterComponent implements OnInit {
 
 
   saveMaster() {
-    //  let lastIndex = this.tableDataList.findIndex(o=>o.masterType =='Business Area')
-    let a = this.form.get( 'masterType' ).value;
+    //  let lastIndex = this.tableDataList.findIndex(o=>o.jobMasterType =='Business Area')
+    let a = this.form.get( 'jobMasterType' ).value;
     console.log( 'a value ', a );
 
     let len = this.tableDataList.filter( function ( item ) {
-      return item.masterType == a;
+      return item.jobMasterType == a;
     } ).length;
     this.checks = false;
     this.enableCheckAll = false;
@@ -473,7 +470,7 @@ export class JobMasterComponent implements OnInit {
       isActive = 0;
 
     }
-    const selectedIndex = this.jobMasterList.findIndex( ( o ) => o.value === this.form.get( 'masterType' ).value );
+    const selectedIndex = this.jobMasterList.findIndex( ( o ) => o.value === this.form.get( 'jobMasterType' ).value );
     console.log( 'selected index' + selectedIndex );
     console.log( 'in update fucntion::', this.editedRecordIndex );
     if ( this.editedRecordIndex > 0 ) {
@@ -499,12 +496,13 @@ export class JobMasterComponent implements OnInit {
           this.form.get( 'masterCode' ).setValue( null );
           this.form.get( 'masterDescription' ).setValue( null );
           this.form.get( 'isActive' ).setValue( true );
+          this.isUpdateMode = false;
           this.isEditMode = false;
           this.editedRecordIndex = 0;
 
           let findIndex = this.tableDataList.findIndex( o => o.masterId == res.data.results[0].masterId );
           const obj = {
-            masterType: this.jobMasterList[selectedIndex].value,
+            jobMasterType: this.jobMasterList[selectedIndex].value,
             masterId: res.data.results[0].masterId,
             masterDescription: res.data.results[0].masterDescription,
             masterCode: res.data.results[0].masterCode,
@@ -517,14 +515,14 @@ export class JobMasterComponent implements OnInit {
           //  this.refreshHtmlTable();
           // this.getAllOtheMappingDetails();
           //  this.onSelectJobMaster( 'All' );
-          //   this.tableDataList = this.tableDataList.filter( ( o ) => o.masterType === 'All' );
+          //   this.tableDataList = this.tableDataList.filter( ( o ) => o.jobMasterType === 'All' );
           // this.onSelectJobMaster( 'Plant' );
           this.form.patchValue( {
             masterCode: '',
             masterDescription: '',
             isActive: true,
           } );
-          //  this.tableDataList = this.tableDataList.filter( ( o ) => o.masterType === 'Plant' );
+          //  this.tableDataList = this.tableDataList.filter( ( o ) => o.jobMasterType === 'Plant' );
 
 
         } else {
@@ -556,7 +554,7 @@ export class JobMasterComponent implements OnInit {
 
 
       //     const obj = {
-      //       masterType: this.jobMasterList[selectedIndex].value,
+      //       jobMasterType: this.jobMasterList[selectedIndex].value,
       //       masterId: res.data.results[0].masterId,
       //       masterDescription: res.data.results[0].masterDescription,
       //       masterCode: res.data.results[0].masterCode,
@@ -614,11 +612,11 @@ export class JobMasterComponent implements OnInit {
   //     this.alertService.sweetalertError(error.error['status'].messsage);
   //   }, () => { });
   // }
-
-  DeleteMaster( jobMasterValueId: number, masterType: string ) {
+  // DeleteMaster( jobMasterValueId: number, jobMasterType: string )
+  DeleteMaster( jobMasterValueId: number, jobMasterType: string ) {
 
     console.log( 'delete', jobMasterValueId );
-    const selectedIndex = this.masterGridDataList.findIndex( ( o ) => o.value == masterType );
+    const selectedIndex = this.masterGridDataList.findIndex( ( o ) => o.value == jobMasterType );
     console.log("selectedIndex",selectedIndex);
     this.jobMasterService.delete( jobMasterValueId).subscribe( ( res ) => {
       console.log( res );
@@ -629,10 +627,10 @@ export class JobMasterComponent implements OnInit {
     }, () => { } );
   }
 // komal Delete master
-  // DeleteMaster( masterId: number, masterType: string ) {
+  // DeleteMaster( masterId: number, jobMasterType: string ) {
   //   console.log( 'in delete master' );
 
-  //   const selectedIndex = this.jobMasterList.findIndex( ( o ) => o.value == masterType );
+  //   const selectedIndex = this.jobMasterList.findIndex( ( o ) => o.value == jobMasterType );
   //   this.jobMasterService.delete( masterId, this.jobMasterList[selectedIndex].deleteUrl ).subscribe( ( res ) => {
   //     console.log( res );
   //     this.alertService.sweetalertMasterSuccess( res.status.messsage, '' );
@@ -642,17 +640,17 @@ export class JobMasterComponent implements OnInit {
   //   }, () => { } );
   // }
 
-  // editMaster( masterId: number, masterType: string ) {
-  //   this.onSelectJobMaster( masterType );
+  // editMaster( masterId: number, jobMasterType: string ) {
+  //   this.onSelectJobMaster( jobMasterType );
 
-  //   const findIndex = this.tableDataList.findIndex( ( o ) => o.masterId == masterId && o.masterType == masterType );
+  //   const findIndex = this.tableDataList.findIndex( ( o ) => o.masterId == masterId && o.jobMasterType == jobMasterType );
   //   this.editedRecordIndex = masterId;
   //   this.isEditMode = true;
   //   this.viewMode = false;
   //   this.form.patchValue( this.tableDataList[findIndex] );
   // }
   onSelectJobMaster( evt: any ) {
-    this.selectedMasterTypeDropDownValue = this.form.get( 'masterType' ).value;
+    this.selectedMasterTypeDropDownValue = this.form.get( 'jobMasterType' ).value;
     this.enableCheckAll = false;
     // this.selectedCheckBox = [];
     this.tableDataList = this.summaryHtmlDataList;
@@ -664,26 +662,35 @@ export class JobMasterComponent implements OnInit {
       //  this.tableDataList1 = this.tableDataList;
     } else {
       this.hideFormControl = true;
-      this.tableDataList = this.tableDataList.filter( ( o ) => o.masterType === evt );
+      this.tableDataList = this.tableDataList.filter( ( o ) => o.jobMasterType === evt );
     }
     // this.tableDataList1 = this.tableDataList;
     this.checks = false;
     console.log( evt );
     const toSelect = this.getAllJobMastersList.find(
-      (c) => c.jobMasterType === this.form.get('masterType').value
+      (c) => c.jobMasterType === this.form.get('jobMasterType').value
     );
     this.form.get('jobMasterId').setValue(toSelect.jobMasterId);
       console.log("jobMasterId", this.form.get('jobMasterId').setValue(toSelect.jobMasterId));
       console.log("jobMasterId", this.form.jobMasterId)
   }
   cancelView() {
+
+    this.refreshHtmlTable();
+    this.masterSelected = false;
+    this.form.get( 'isActive' ).setValue( true );
+    this.hideFormControl = false;
+
     this.summaryHtmlDataList.forEach( x => x.isChecked = false );
     this.tableDataList.forEach( x => x.isChecked = false );
+    this.form.enable();
     this.enableCheckAll = false;
     console.log( 'in reset' );
     this.checks = false;
     this.editedRecordIndex = 0;
     this.isEditMode = false;
+    this.isViewMode = false;
+    this.isUpdateMode = false;
     //  this.form.reset();
     this.form.get( 'isActive' ).setValue( true );
     //  this.onSelectJobMaster( 'All' );
@@ -693,7 +700,7 @@ export class JobMasterComponent implements OnInit {
     } )
   }
 
-  onCheckboxChangeMasterSummary( evt: any, id: number, masterType?: string, masterCode?: string ) {
+  onCheckboxChangeMasterSummary( evt: any, id: number, jobMasterType?: string, masterCode?: string ) {
     // this.enableCheckAll = false;
     // console.log(evt);
     // console.log(evt.target.checked);
@@ -728,8 +735,8 @@ export class JobMasterComponent implements OnInit {
         this.selectedCheckBox = [];
       }
     } else {
-      let findIndexOfTableDataList = this.tableDataList.findIndex( o => o.masterType == masterType && o.masterCode == masterCode );
-      let findIndexOfSummaryHtmlDataListList = this.summaryHtmlDataList.findIndex( o => o.masterType == masterType && o.masterCode == masterCode );
+      let findIndexOfTableDataList = this.tableDataList.findIndex( o => o.jobMasterType == jobMasterType && o.masterCode == masterCode );
+      let findIndexOfSummaryHtmlDataListList = this.summaryHtmlDataList.findIndex( o => o.jobMasterType == jobMasterType && o.masterCode == masterCode );
       //console.log( 'indexe find is', findIndex );
       if ( evt.target.checked == true ) {
         console.log( 'xxxxxxxxx' );
@@ -848,7 +855,7 @@ export class JobMasterComponent implements OnInit {
 
 
 
-        if ( this.selectedCheckBox[i].masterType == 'Business Area' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Business Area' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -857,7 +864,7 @@ export class JobMasterComponent implements OnInit {
           businessArea.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Cost Centre' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Cost Centre' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -866,7 +873,7 @@ export class JobMasterComponent implements OnInit {
           Cost_Centre.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Department' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Department' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -875,7 +882,7 @@ export class JobMasterComponent implements OnInit {
           Department.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Division' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Division' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -884,7 +891,7 @@ export class JobMasterComponent implements OnInit {
           Division.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Sub Cost Centre' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Sub Cost Centre' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -893,7 +900,7 @@ export class JobMasterComponent implements OnInit {
           Sub_Cost_Centre.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Sub Department' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Sub Department' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -902,7 +909,7 @@ export class JobMasterComponent implements OnInit {
           Sub_Department.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'GL Code' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'GL Code' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -911,7 +918,7 @@ export class JobMasterComponent implements OnInit {
           GL_Code.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Grade' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Grade' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -920,7 +927,7 @@ export class JobMasterComponent implements OnInit {
           Grade.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Plant' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Plant' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -929,7 +936,7 @@ export class JobMasterComponent implements OnInit {
           Plant.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Sub Location' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Sub Location' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -938,7 +945,7 @@ export class JobMasterComponent implements OnInit {
           Sub_Location.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Project' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Project' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -947,7 +954,7 @@ export class JobMasterComponent implements OnInit {
           Project.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Profit Centre' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Profit Centre' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -955,7 +962,7 @@ export class JobMasterComponent implements OnInit {
           };
           Profit_Centre.push( obj );
         }
-        if ( this.selectedCheckBox[i].masterType == 'Region' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Region' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -964,7 +971,7 @@ export class JobMasterComponent implements OnInit {
           Region.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Sub Area' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Sub Area' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -973,7 +980,7 @@ export class JobMasterComponent implements OnInit {
           SubArea.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Strategic Business Unit' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Strategic Business Unit' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -982,7 +989,7 @@ export class JobMasterComponent implements OnInit {
           Strategic_Business_Unit.push( obj );
 
         }
-        if ( this.selectedCheckBox[i].masterType == 'Work Location' ) {
+        if ( this.selectedCheckBox[i].jobMasterType == 'Work Location' ) {
           const obj = {
             masterId: this.selectedCheckBox[i].masterId,
             groupCompanyId: this.selectedCompanyListCheckBox[j].groupCompanyId,
@@ -1355,9 +1362,9 @@ export class JobMasterComponent implements OnInit {
 
   }
 //Komal comment
-  // DeleteMasterMapping( masterId: number, masterType: string ) {
-  //   console.log( 'in delete master mapping  id', masterId + 'Master type', masterType );
-  //   const selectedIndex = this.jobMasterList.findIndex( ( o ) => o.value === masterType );
+  // DeleteMasterMapping( masterId: number, jobMasterType: string ) {
+  //   console.log( 'in delete master mapping  id', masterId + 'Master type', jobMasterType );
+  //   const selectedIndex = this.jobMasterList.findIndex( ( o ) => o.value === jobMasterType );
 
   //   this.jobMasterService.delete( masterId, this.jobMasterList[selectedIndex].deleteMapping ).subscribe( ( res ) => {
   //     console.log( res );
@@ -1368,10 +1375,10 @@ export class JobMasterComponent implements OnInit {
   //   }, () => { } );
   // }
 
-  DeleteMasterMapping( jobMasterValueId: number, masterType: string ) {
+  DeleteMasterMapping( jobMasterValueId: number, jobMasterType: string ) {
 
     console.log( 'delete', jobMasterValueId );
-    const selectedIndex = this.getAllOtherMappingDetailsResponse.findIndex( ( o ) => o.value == masterType );
+    const selectedIndex = this.getAllOtherMappingDetailsResponse.findIndex( ( o ) => o.value == jobMasterType );
     console.log("selectedIndex",selectedIndex);
     this.jobMasterService.deleteMapping( jobMasterValueId).subscribe( ( res ) => {
       console.log( res );
@@ -1382,8 +1389,8 @@ export class JobMasterComponent implements OnInit {
     }, () => { } );
   }
 
-  ConfirmationDialog( confirmdialog: TemplateRef<any>, id: number, type: string, summaryType: string ) {
-    this.id = id;
+  ConfirmationDialog( confirmdialog: TemplateRef<any>, jobMasterValueId: number, type: string, summaryType: string ) {
+    this.id = jobMasterValueId;
     this.type = type;
     this.summaryType = summaryType;
     this.modalRef = this.modalService.show(
@@ -1400,4 +1407,36 @@ export class JobMasterComponent implements OnInit {
       // this.DeleteMasterMapping( this.id, this.type );
     }
   }
+
+
+  UploadModal1( template: TemplateRef<any>, jobMasterValueId: number ) {
+    this.deletedjobMasterId = jobMasterValueId;
+    this.deleteModalRef = this.modalService.show(
+      template,
+      Object.assign( {}, { class: 'gray modal-md' } )
+    );
+  }
+
+
+  DeletePayrollHeadGroup(): void {
+      this.jobMasterService.delete( this.deletedjobMasterId).subscribe( ( res ) => {
+        console.log( res );
+        this.alertService.sweetalertMasterSuccess('Job Master Mapping deleted successully', '' )
+        this.refreshHtmlTable();
+
+        this.form.reset();
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
+  }
+
+  // UploadModal2( template: TemplateRef<any> ) {
+  //   console.log( 'in UploadModal2 headmaster id', this.jobMasterId );
+  //   this.modalRef = this.modalService.show(
+  //     template,
+  //     Object.assign( {}, { class: 'gray modal-xl' } ) );
+  // }
+
+
 }

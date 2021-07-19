@@ -135,16 +135,34 @@ export class JobMasterService {
   // }
 
 
-  delete(Id: number,) {
+  // delete( id: number) {
+  //   const headers = new HttpHeaders()
+  //     .set('content-type', 'application/json')
+  //     .set('X-TenantId', 'PaysquareDefault');
+  //   return this._HTTP.delete(environment.baseUrl8083 + 'job-master-value/' + Id, { headers: headers })
+  //     .pipe(map((res: any) => {
+  //       return res;
+  //     }));
+  // }
+
+    delete( id: number) {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.delete(environment.baseUrl8083 + 'job-master-value/' + Id, { headers: headers })
+    return this._HTTP.delete(environment.baseUrl8083 + 'job-master-value/' + id, { headers: headers })
       .pipe(map((res: any) => {
         return res;
       }));
   }
 
+
+  //  // delete payroll head group at global
+  //  delete( id: number ) {
+  //   return this._HTTP.delete( environment.baseUrl8083 + 'job-master-value/' + id )
+  //     .pipe( map( ( res: any ) => {
+  //       return res;
+  //     } ) );
+  // }
 
   deleteMapping(Id: number,) {
     const headers = new HttpHeaders()
