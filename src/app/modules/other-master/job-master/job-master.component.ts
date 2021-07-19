@@ -21,11 +21,15 @@ export class JobMasterComponent implements OnInit {
   public summaryCompanyHtmlDataList1 = [];
   public getAllJobMastersList = [];
   public allJobsList : Array<any> = [];
-  public showButtonSaveAndReset = true;
+  public allMappingList : Array<any> = [];
+  public getAllJobMappingsList : Array<any> = [];
+    public showButtonSaveAndReset = true;
   public isActivateButton: number;
   public isEditMode = false;
   public isSaveAndReset = true;
   public form: any = FormGroup;
+  public formAssign: any = FormGroup;
+
   public masterGridDataList = [];
   public editedRecordIndex = 0;
   public getAllOtherMappingDetailsResponse: any;
@@ -79,6 +83,18 @@ export class JobMasterComponent implements OnInit {
       jobMasterValueId: new FormControl( '' ),
       active: new FormControl( '' ),
     } );
+
+
+    this.formAssign = this.formBuilder.group( {
+      groupCompanyId: new FormControl( 'All' ),
+      // masterCode: new FormControl( '', Validators.required ),
+      // masterDescription: new FormControl( '', Validators.required ),
+      // jobMasterId: new FormControl( ''),
+      // isActive: new FormControl( '' ),
+      // jobMasterValueId: new FormControl( '' ),
+      // active: new FormControl( '' ),
+    } );
+
     this.refreshHtmlTable();
     this.masterSelected = false;
     this.form.get( 'isActive' ).setValue( true );
@@ -87,6 +103,7 @@ export class JobMasterComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getJobMasterDropDownList();
+    this.getJobMasterDropDownListAssign();
 
     // this.getAllJobMasters();
 
@@ -97,9 +114,7 @@ export class JobMasterComponent implements OnInit {
       console.log( 'getBusinessAreaMasterMappingDetails', res );
     } );
 
-    this.jobMasterService.get('all-othermasters-mapping/details').subscribe(( res ) => {
-      console.log("all-othermasters-mapping/details",res);
-    });
+
 
     this.bankMasterAtCompanyService.getGroupCompanyDetails().subscribe( ( res ) => {
       console.log( 'bank company', res );
@@ -108,14 +123,18 @@ export class JobMasterComponent implements OnInit {
       res.data.results.forEach( ( element ) => {
         if ( element.companyActive == true ) {
           const obj = {
-            id: i++,
-            groupCompanyId: element.groupCompanyId,
-            companyName: element.companyName,
-            companyActive: element.companyActive,
-            isSelected: false,
+            // id: i++,
+            // groupCompanyId: element.groupCompanyId,
+            // companyName: element.companyName,
+            // companyActive: element.groupCompanyId,
+            // isSelected: false,
+
+            label: element.companyName,
+            value: element.groupCompanyId,
           };
-          this.groupCompanyDetailsList.push( { id: element.groupCompanyId, itemName: element.companyName } );
+          // this.groupCompanyDetailsList.push( { id: element.groupCompanyId, itemName: element.companyName } );
           this.summaryCompanyHtmlDataList.push( obj );
+          this.groupCompanyDetailsList.push( obj );
           this.summaryCompanyHtmlDataList1.push( obj );
         }
       } );
@@ -158,6 +177,21 @@ export class JobMasterComponent implements OnInit {
 
     // this.getAllOtheMappingDetails();
   }
+  getJobMasterDropDownListAssign(){
+    this.jobMasterService.get('all-othermasters-mapping/details').subscribe((res) => {
+      this.getAllJobMappingsList = res.data.results;
+      console.log("getAllJobMappingsList", this.getAllJobMappingsList )
+        res.data.results.forEach((element) => {
+        const obj = {
+          label: element.companyName,
+          value: element.companyName,
+        };
+        this.allMappingList.push(obj);
+      });
+    //  this.refreshHtmlTable();
+
+    });
+  }
 
   //komal // get Job Master Drop down API
 
@@ -194,7 +228,7 @@ export class JobMasterComponent implements OnInit {
           jobMasterValueId: element.jobMasterValueId,
           masterCode: element.masterCode,
           masterDescription: element.masterDescription,
-          masterType: element.jobMasterType,
+          jobMasterType: element.jobMasterType,
           isActive: element.active,
           isChecked: false,
         };
@@ -267,12 +301,50 @@ export class JobMasterComponent implements OnInit {
 
   }
 
+  viewJobMaster( i: number) {
+    console.log( i)
+    window.scrollTo( 0, 0 );
+    this.isEditMode = true;
+    this.hideFormControl = true;
+    this.form.reset();
+    this.form.patchValue( this.masterGridDataList[i] );
+
+    this.form.patchValue( {
+      masterId: this.masterGridDataList[i].masterId,
+      jobMasterValueId: this.masterGridDataList[i].jobMasterValueId,
+      masterCode: this.masterGridDataList[i].masterCode,
+      masterDescription: this.masterGridDataList[i].masterDescription,
+      jobMasterType: this.masterGridDataList[i].jobMasterType,
+      isActive: this.masterGridDataList[i].isActive,
+
+      // masterId: element.jobMasterId,
+      // jobMasterValueId: element.jobMasterValueId,
+      // masterCode: element.masterCode,
+      // masterDescription: element.masterDescription,
+      // jobMasterType: element.jobMasterType,
+      // isActive: element.active,
+      // isChecked: false,
+
+    } );
+    this.form.disable();
+
+    this.form.disable();
+  }
 
 
 
 
+  // editUpdateDataJobMaster(i){
+  //   // this.onSelectJobMaster( i );
+  //   this.hideFormControl = true;
+  //   this.isEditMode = true;
+  //   window.scrollTo( 0, 0 );
+  //   this.form.patchValue(this.masterGridDataList[i]);
+  //   this.Index = i;
 
-  editUpdateDataJobMaster(i){
+  // }
+
+  editUpdateDataJobMaster(i: number){
     // this.onSelectJobMaster( i );
     this.hideFormControl = true;
     this.isEditMode = true;
@@ -369,7 +441,6 @@ export class JobMasterComponent implements OnInit {
       }, ( error: any ) => {
         this.alertService.sweetalertError( error['error']['status']['messsage'] );
       } );
-
     }
       this.enableCheckAll = false;
       this.uncheckSelectAll = false;
@@ -595,12 +666,9 @@ export class JobMasterComponent implements OnInit {
       this.hideFormControl = true;
       this.tableDataList = this.tableDataList.filter( ( o ) => o.masterType === evt );
     }
-
     // this.tableDataList1 = this.tableDataList;
     this.checks = false;
-
     console.log( evt );
-
     const toSelect = this.getAllJobMastersList.find(
       (c) => c.jobMasterType === this.form.get('masterType').value
     );
@@ -623,11 +691,6 @@ export class JobMasterComponent implements OnInit {
       masterCode: '',
       masterDescription: '',
     } )
-
-
-
-
-
   }
 
   onCheckboxChangeMasterSummary( evt: any, id: number, masterType?: string, masterCode?: string ) {

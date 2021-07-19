@@ -348,13 +348,33 @@ export class PayRollStructureComponent implements OnInit {
 
   }
 
+  getIndex(id) {
+  //   this.listOfPHG.forEach((element) => {
+  //     if (element.headGroupDefinitionId > 88)  {
+  // //     //return element.headGroupDefinitionId;
+  // //     return this.listOfPHG.findIndex(element.headGroupDefinitionId);
+  //     }
+  }
+
   //Data send from right to left table
   righttablePusg(): void {
     this.selectedUser2.forEach((element) => {
       element.isHighlight = false;
       element.isHighlightright = false;
+      let arrayIndex = this.getIndex(element.headGroupDefinitionId);
+      // let index = this.listOfPHG.findIndex(element.headGroupDefinitionId);
+      // let newIndex = arrayIndex - 1;
+      // this.listOfPHG.splice((index - 1), 0, 'wednesday');
+      // this.listOfPHG.findIndex(this.getIndex)
       this.listOfPHG.push(element);
     });
+
+    // this.listOfPHG.forEach((element) => {
+    //    if (element.headGroupDefinitionId > )
+    // });
+
+    // this.listOfPHG.findIndex(element.)   // Returns 3
+
     var v = this.selectedUser;
 
     this.selectedUser2.forEach((element) => {
