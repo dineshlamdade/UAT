@@ -114,6 +114,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public severity: string;
   public isClaiming80U: boolean = true;
   public proofSubmissionId;
+  codeInvalid: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -373,14 +374,30 @@ export class InterestOnTtaMasterComponent implements OnInit {
       console.log(data.accountNumber);
       console.log(this.accountNumberlistedit);
 
-      this.masterGridData.forEach((element) => {
+      if (data.accountNumber) {
+        this.masterGridData.forEach(results => {
+          if (results.accountNumber == data.accountNumber) {
+            this.codeInvalid = true;
+          }
+        });
+        if (this.codeInvalid) {
+          this.codeInvalid = false;
+          this.alertService.sweetalertError(
+            'Duplicate Account should Not be Acceptable'
+          );
+          return;
+        }
+      }
+
+     /*  this.masterGridData.forEach((element) => {
         if (data.accountNumber == element.accountNumber) {
           this.alertService.sweetalertWarning(
             'Duplicate Account should Not be Acceptable'
           );
           return 0;
+          this.form.reset();
         }
-      });
+      }); */
 
       this.interestOnTtaService
         .uploadMultiple80TTAMasterFiles(this.masterfilesArray, data)
@@ -432,7 +449,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
         );
       }
       console.log(element.accountNumber);
-    }); return;
+      return 0;
+    }); 
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {

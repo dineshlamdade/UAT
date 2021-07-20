@@ -685,6 +685,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
+    this.urlArray = [];
     this.isCancel = false;
   }
 

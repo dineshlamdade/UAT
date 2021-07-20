@@ -86,7 +86,8 @@
         </div>
         <div class="row mb-10">
             <div class="col-md-8">
-                <p-table [value]="userGridData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                <p-table [value]="userGridData" [(selection)]="selecteduserGridData" dataKey="id" styleClass="p-datatable-userGridData" [rowHover]="true"
+                [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                     <ng-template pTemplate="header" >
                         <tr>
                             <th class="wd-10 text-center">
