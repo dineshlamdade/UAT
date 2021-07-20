@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    width: auto;
+    height:150px;
+    margin-left: -15px;
+
+}
+
+.column {
+    flex: 1;
+    
+    /*for demo purposes only */
+   
+    border: 1px solid#ccc;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px 15px 15px 15px ;
+   
+}
+
+.column-one {
+    order: 3;
+}
+.column-two {
+    order: 1;
+}
+.column-three {
+    order: 4;
+}
+.column-four {
+    order: 2;
+}

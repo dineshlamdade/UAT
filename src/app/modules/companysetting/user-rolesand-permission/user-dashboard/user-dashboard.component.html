@@ -137,6 +137,7 @@
                                                 </option>
                                              </select>
                                           </div>
+                                          
                                             <div class="col-md-2">
                                               <label class="form-label mt-1 mb-0">Company Name</label>
                                               <ng-multiselect-dropdown
@@ -215,9 +216,9 @@
                                     <!-- <p-table [value]="summarydata"> -->
                                         <p-table #dt [value]="summarydata"  
                                        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" 
-                                    [totalRecords]= "totalUsersCount"   [lazy]="true"
+                                    [totalRecords]= "totalUsersCount"   [loading]="loading"
                               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                         (onPage)="paginate($event)">
+                               (onPage)="paginate($event)" >
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th class="text-center">
@@ -563,8 +564,8 @@
                                         <th class="wd-20 font700">Employee Code</th>
                                         <th class="wd-20 font700">Employee Name</th>
                                         <th class="wd-20 font700">Company</th>
-                                        <th class="wd-30 font700">User Group</th>
-                                        <th class="wd-30 font700">User Role</th>
+                                        <th class="wd-20 font700">User Group</th>
+                                        <th class="wd-20 font700">User Role</th>
                                         <th class="wd-30 font700">action</th>
 
                                     </tr>

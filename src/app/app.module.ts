@@ -86,12 +86,14 @@ import { ApprovedInvestmentModule } from './modules/approved-investment/approved
 
 
 
+
 @NgModule( {
   declarations: [
     AppComponent,
     ProfileComponent,
     ShortenStringPipe,
     SettingsComponent,
+    
   ],
 
   exports: [],
