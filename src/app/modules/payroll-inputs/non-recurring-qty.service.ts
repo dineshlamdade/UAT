@@ -23,5 +23,44 @@ export class NonRecurringQtyService {
     return this.HttpClient.post<any>(this.apiUrl + `nonsalary`,data);
   }
 
+  /** Update master data */
+  updatenonsalary(data):Observable<any>{
+    return this.HttpClient.put<any>(this.apiUrl + `nonsalary`,data);
+  }
+
+
+
+  /********************************* NR QTY Transaction  ***************************/
+
+  /** Get All Summary */
+  NonRecurringTransactionGroupSummery():Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl + `NonSalaryTransactionGroup`);
+  }
+
+  /** Transaction History - summary page */
+  NonSalaryTransactionGroupHistoryAPI(data,nonSalaryTransactionGroupId):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupHistoryAPI_ID`, data);
+  }
+
+  /** Schedule History - summary page */
+  NonSalaryTransactionScheduleEMP(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionSchedule/NonSalaryTransactionScheduleEMP`, data);  
+  }
+  
+  /** Head wise history - summary page*/
+  NonSalaryTransactionGroupHeadwiseHistory(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupHeadwiseHistory`, data);  
+
+  }
+
+  /** All schedule data  - schedule tab*/
+  getAllScheduleData():Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl + `NonSalaryTransactionSchedule`);
+  }
+
+  /** Get Schedule popup data - schedule tab */
+  NonSalaryTransactionScheduleRemarkHistorybyScheduleId(data):Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl + `NonSalaryTransactionScheduleRemarkHistory/NonSalaryTransactionScheduleRemarkHistorybyScheduleId`);
+  }
   
 }

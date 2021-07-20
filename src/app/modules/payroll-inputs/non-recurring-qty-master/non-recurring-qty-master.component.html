@@ -13,178 +13,199 @@
                 <div class="col-12 mt-10">
                   <fieldset style="margin-top:-20px;">
                     <legend>Non Recurring Quantity (NRQ) Master </legend>
-                  <form [formGroup]="masterForm">
-                    <div class="row mt-10">
-                      <div class="col-sm-3">
-                        <label class="form-label"> Code</label>
-                        <input type="text" class="form-control" formControlName="code" placeholder="Enter Code">
+                    <form [formGroup]="masterForm">
+                      <div class="row mt-10">
+                        <div class="col-sm-3">
+                          <label class="form-label"> Code</label>
+                          <input type="text" class="form-control" formControlName="code" placeholder="Enter Code">
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="form-label"> Description</label>
+                          <input type="text" class="form-control" formControlName="description"
+                            placeholder="Enter Description">
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="form-label">E/D Head Code</label>
+                          <select name="custom-select" formControlName="headOfPayment" class="form-control">
+                            <option value="Select">Select</option>
+                            <option value="34"> Head1</option>
+                            <option value="49"> Head2</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="form-label">E/D Head Description</label>
+                          <input type="text" class="form-control" formControlName="descriptionHeadOfPayment"
+                            placeholder="Enter Description">
+                        </div>
                       </div>
-                      <div class="col-sm-3">
-                        <label class="form-label"> Description</label>
-                        <input type="text" class="form-control" formControlName="description" placeholder="Enter Description">
+                      <br>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label class="form-label">UOM</label>
+                          <input type="text" class="form-control" formControlName="unit" disabled>
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="form-label">Value Updation Through</label>
+                          <label class="custom-switch mt_5">
+                            <span class="form-label">NRQ Type</span>&nbsp;&nbsp;
+                            <input type="checkbox" name="custom-switch-checkbox" (click)="getValueUpdation($event)"
+                              class="custom-switch-input">
+                            <span class="custom-switch-indicator"></span>&nbsp;&nbsp;
+                            <span class="form-label">SDM</span>
+                          </label>
+                        </div>
+                        <div class="col-sm-3" *ngIf="valueUpdationThrough == 'SDM'">
+                          <label class="form-label">SDM</label>
+                          <select name="custom-select" class="form-control" formControlName="sdmName">
+                            <option value="Select">Select</option>
+                            <option></option>
+                          </select>
+                        </div>
                       </div>
-                      <div class="col-sm-3">
-                        <label class="form-label">E/D Head Code</label>
-                        <select name="custom-select" formControlName="headOfPayment" class="form-control">
-                          <option value="Select">Select</option>
-                          <option value="34"> Head1</option>
-                          <option value="49"> Head2</option>
-                        </select>
-                      </div>
-                      <div class="col-sm-3">
-                        <label class="form-label">E/D Head Description</label>
-                        <input type="text" class="form-control" formControlName="descriptionHeadOfPayment" placeholder="Enter Description">
-                      </div>
-                    </div>             
-                    <br>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <label class="form-label">UOM</label>
-                        <input type="text" class="form-control" formControlName="unit" disabled>
-                      </div>
-                      <div class="col-sm-3">
-                        <label class="form-label">Value Updation Through</label>
-                        <label class="custom-switch mt_5">
-                          <span class="form-label">SDM</span>&nbsp;&nbsp;
-                          <input type="checkbox" name="custom-switch-checkbox" (click)="getValueUpdation($event)"  class="custom-switch-input">
-                          <span class="custom-switch-indicator"></span>&nbsp;&nbsp;
-                          <span class="form-label">NRQ Type</span>
-                        </label>
-                      </div>
-                      <div class="col-sm-3" *ngIf="valueUpdationThrough == 'SDM'">
-                        <label class="form-label">SDM</label>
-                        <select name="custom-select" class="form-control" formControlName="sdmName">
-                          <option value="Select">Select</option>
-                          <option ></option>
-                        </select>
-                      </div>
-                    </div>
-                  
-                    <br>
-                    <br>
 
-                    <div class="col-md-10">
-                      <div class="mb-0">
-                        <h3 class="font-14 text-purple font-bold">NRQ Types </h3>
-                      </div>
-                      <p-table [value]="users1">
+                      <br>
+                      <br>
 
-                        <ng-template pTemplate="header">
-                          <tr>
-                            <th rowspan="2" class="wd-12 text-center">Sr. No.</th>
-                            <th rowspan="2" class="wd-12 text-center">
-                              <div class="p-d-flex p-jc-between p-ai-center">Name
-                                <div class="Sort_Filter_Position">
-                                  <p-sortIcon field="TypeValues" pSortableColumn="TypeValues"></p-sortIcon>
-                                  <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
-                                  </p-columnFilter>
-                                </div>
-                              </div>
-                            </th>
-                            <th rowspan="2" class="wd-12 text-center">
-                              <div class="p-d-flex p-jc-between p-ai-center">Nature
-                                <div class="Sort_Filter_Position">
-                                  <p-sortIcon field="TypeValues" pSortableColumn="TypeValues"></p-sortIcon>
-                                  <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
-                                  </p-columnFilter>
-                                </div>
-                              </div>
-                            </th>
-                            <th rowspan="2" class="wd-12 text-center">
-                              <div class="p-d-flex p-jc-between p-ai-center">Derived - Rate
-                                <div class="Sort_Filter_Position">
-                                  <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
-                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                  </p-columnFilter>
-                                </div>
-                              </div>
-                            </th>
-                            <th rowspan="2" class="wd-12 text-center">
-                              <div class="p-d-flex p-jc-between p-ai-center">Derived - Multiplier
-                                <div class="Sort_Filter_Position">
-                                  <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
-                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                  </p-columnFilter>
-                                </div>
-                              </div>
-                            </th>
-                            <th rowspan="2" class="wd-8 text-center"> Action</th>
-                          </tr>
-                        </ng-template>
+                      <div class="col-md-10">
+                        <div class="mb-0">
+                          <h3 class="font-14 text-purple font-bold" *ngIf="valueUpdationThrough == 'NRQ'">NRQ Types
+                          </h3>
+                          <h3 class="font-14 text-purple font-bold" *ngIf="valueUpdationThrough == 'SDM'">SDM </h3>
+                        </div>
+                        <p-table [value]="users1">
 
-                        <ng-template pTemplate="body" let-user1>
-                          <tr class="p-selectable-row">
-                            <td class="text-center"></td>
-                            <td>
-                              <input type="text" [(ngModel)]="nonSalaryName" [ngModelOptions]="{standalone: true}"  class="form-control">
-                            </td>
-                            <td>
-                              <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryNature" [ngModelOptions]="{standalone: true}">
-                                <option value="Select">Select</option>
-                                <option>Rate </option>
-                                <option>Multiplier </option>
-                              </select>
-                            </td>
-                            <td>
-                              <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryRate" [ngModelOptions]="{standalone: true}">
-                                <option value="Select">Select</option>
-                                <option>1 </option>
-                                <option>1.5</option>
-                              </select>
-                            </td>
-                            <td>
-                              <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryMultiplier" [ngModelOptions]="{standalone: true}">
-                                <option value="Select">Select</option>
-                                <option>1</option>
-                                <option>1.5</option>
-                              </select>
-                            </td>
-                            <td>
-                              <span class="ml-1 mt-2"> 
-                                <i class="fa fa-plus-circle font-20 text-dark-green"
-                                  tooltip="Add" (click)="addNRQType()"></i></span>
-                              <!-- <span class="ml-1 mt-2"> <i class="fa fa-times font-20 text-red cursor-pointer"
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <th rowspan="2" class="wd-12 text-center">Sr. No.</th>
+                              <th rowspan="2" class="wd-12 text-center">
+                                <div class="p-d-flex p-jc-between p-ai-center">Name
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="TypeValues" pSortableColumn="TypeValues"></p-sortIcon>
+                                    <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th rowspan="2" class="wd-12 text-center">
+                                <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="TypeValues" pSortableColumn="TypeValues"></p-sortIcon>
+                                    <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th rowspan="2" class="wd-12 text-center">
+                                <div class="p-d-flex p-jc-between p-ai-center">Derived - Rate
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
+                                    <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th rowspan="2" class="wd-12 text-center">
+                                <div class="p-d-flex p-jc-between p-ai-center">Derived - Multiplier
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
+                                    <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th rowspan="2" class="wd-8 text-center"> Action</th>
+                            </tr>
+                          </ng-template>
+
+                          <ng-template pTemplate="body" let-user1>
+                            <tr class="p-selectable-row">
+                              <td class="text-center"></td>
+                              <td>
+                                <input type="text" [(ngModel)]="nonSalaryName" [ngModelOptions]="{standalone: true}"
+                                  class="form-control">
+                              </td>
+                              <td>
+                                <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryNature"
+                                  [ngModelOptions]="{standalone: true}">
+                                  <option value="Select">Select</option>
+                                  <option>Rate </option>
+                                  <option>Multiplier </option>
+                                </select>
+                              </td>
+                              <td>
+                                <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryRate"
+                                  [ngModelOptions]="{standalone: true}">
+                                  <option value="Select">Select</option>
+                                  <option>1 </option>
+                                  <option>1.5</option>
+                                </select>
+                              </td>
+                              <td>
+                                <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryMultiplier"
+                                  [ngModelOptions]="{standalone: true}">
+                                  <option value="Select">Select</option>
+                                  <option>1</option>
+                                  <option>1.5</option>
+                                </select>
+                              </td>
+                              <td>
+                                <span class="ml-1 mt-2">
+                                  <i class="fa fa-plus-circle font-20 text-dark-green" tooltip="Add"
+                                    (click)="addNRQType()"></i></span>
+                                <!-- <span class="ml-1 mt-2"> <i class="fa fa-times font-20 text-red cursor-pointer"
                                   tooltip="Cancel">
                                 </i>
                               </span> -->
-                            </td>
-                          </tr>
-                          <tr class="p-selectable-row" *ngFor="let data of nonSalaryOptionList; let index = index;">
-                            <td>{{index+1}}</td>
-                            <td>{{data.name}}</td>
-                            <td>{{data.nature}}</td>
-                            <td>{{data.derivedRate}}</td>
-                            <td>{{data.derivedmultipier}}</td>
+                              </td>
+                            </tr>
+                            <tr class="p-selectable-row" *ngFor="let data of nonSalaryOptionList; let index = index;">
+                              <td>{{index+1}}</td>
+                              <td>{{data.name}}</td>
+                              <td>{{data.nature}}</td>
+                              <td>{{data.derivedRate}}</td>
+                              <td>{{data.derivedmultipier}}</td>
+                              <td>
+                                <span class="ml-1 mt-2">
+                                  <span class="ml-1 mt-2">
+                                    <i class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel"
+                                      (click)="removeNRQType(index)">
+                                    </i>
+                                  </span>
+                                </span>  
+                              </td>
+                            </tr>
+                          </ng-template>
 
-                          </tr>
-                        </ng-template>
-
-                        <ng-template pTemplate="emptymessage">
-                          <tr>
-                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
-                                Available</span>
-                            </td>
-                          </tr>
-                        </ng-template>
-                      </p-table>
-                    </div>
-                    <br>
-                    <div class="row mt-15">
-                      <div class="col-12">
-                        <div class="float-right mb-15">
-                          <button type="submit" (click)="saveNonSalary()"
-                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                            tooltip="Save"><b>
-                              <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                          <button type="button"
-                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
-                            tooltip="Reset"><b>
-                              <i class="fa fa-refresh"></i></b> Reset</button>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                  Available</span>
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                      <br>
+                      <div class="row mt-15">
+                        <div class="col-12">
+                          <div class="float-right mb-15">
+                            <button type="submit" (click)="saveNonSalary()" *ngIf="!editFlag"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                              tooltip="Save"><b>
+                                <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                            <button type="submit" (click)="updateNonSalary()" *ngIf="editFlag"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                              tooltip="Save"><b>
+                                <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+                            <button type="button" (click)="resetNonSalary()"
+                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
+                              tooltip="Reset"><b>
+                                <i class="fa fa-refresh"></i></b> Reset</button>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                  </form>  
+                    </form>
                   </fieldset>
 
                   <br>
@@ -247,7 +268,7 @@
                       </tr>
                     </ng-template>
 
-                    <ng-template pTemplate="body" let-summary let-rowIndex = rowIndex>
+                    <ng-template pTemplate="body" let-summary let-rowIndex=rowIndex>
                       <tr class="p-selectable-row">
                         <td class="bg-color-light_gray text-center">{{rowIndex+1}}</td>
                         <td class="bg-color-light_gray">
@@ -263,14 +284,20 @@
                           {{summary.valueUpdationThrough}}
                         </td>
                         <td class="bg-color-light_gray">
-                          {{summary.nonSalaryOptionList.length}}
+                          <span *ngIf="summary.nonSalaryOptionList">{{summary.nonSalaryOptionList.length}}</span>
+                          <span *ngIf="!summary.nonSalaryOptionList">0</span>
                         </td>
-                        <td class="bg-color-light_gray text-center"><span class="ml-1 mt-2"><i
-                              class="fa fa-edit font-18 text-dark-green cursor-pointer" aria-hidden="true"></i></span>
-                          <span class="ml-1 mt-2"><i class="fa fa-eye font-18 text-blue cursor-pointer"
-                              aria-hidden="true"></i></span>
-                          <span class="ml-1 mt-2"><i class="fa fa-trash font-18 text-red cursor-pointer"
-                              aria-hidden="true"></i></span>
+                        <td class="bg-color-light_gray text-center">
+                          <span class="ml-1 mt-2">
+                            <i class="fa fa-edit font-18 text-dark-green cursor-pointer"
+                              (click)="editMasterData(summary)" aria-hidden="true"></i>
+                          </span>
+                          <span class="ml-1 mt-2">
+                            <i class="fa fa-eye font-18 text-blue cursor-pointer" (click)="viewMasterData(summary)"
+                              aria-hidden="true"></i>
+                          </span>
+                          <!-- <span class="ml-1 mt-2"><i class="fa fa-trash font-18 text-red cursor-pointer"
+                              aria-hidden="true"></i></span> -->
                         </td>
                       </tr>
                     </ng-template>
