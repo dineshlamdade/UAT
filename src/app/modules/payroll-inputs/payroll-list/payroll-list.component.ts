@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { QueryService } from '../../query/query.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
 
 
@@ -31,11 +32,13 @@ export class PayrollListComponent implements OnInit {
   public modalRef: BsModalRef;
   selectedEmployeeData: any = [];
   form:FormGroup;
-
-  constructor(private service: PayrollInputsService, private router: Router, private modalService: BsModalService,) { }
+  generationFormData: any;
+  constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService
+    ,public queryService :QueryService ) { }
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
+    this.addQueryGeneration();
   }
 
   public getAllEmployeeDetails(): void {
@@ -80,11 +83,30 @@ export class PayrollListComponent implements OnInit {
     localStorage.setItem('payrollListEmpData',JSON.stringify(this.selectedEmployeeData))
     this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
   }
-  smallpopup(querytemplate: TemplateRef<any>) {
+// ............................................Add Query....................................................
+  navigateToQuery(){
+    localStorage.setItem('queryListEmpData',JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/admin-query-generation'])
+  }
+  smallpopup(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
-      querytemplate,
+      template,
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
+
+  onBehalfAndSameContentRadioBtnclick(value)
+  {
+    alert(value)
+  }
+
+  addQueryGeneration(){ //post api for saving data
+   const formData  = new FormData();
+   this.queryService.addQueryGeneration(formData).subscribe(res =>
+    {
+     this.generationFormData = res.data.results;
+    })
+
+}
 
 }

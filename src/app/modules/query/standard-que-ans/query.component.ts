@@ -32,6 +32,11 @@ export class QueryComponent implements OnInit {
   allKeywords: any;
   isVisiblee:boolean=false;
   queryCode: any;
+  getKeywordsByIdData: any;
+  queAnsMasterId: any;
+  getKeywordsByTwoIdData: any;
+  // employeeMasterId: number;
+  employeeMasterId = 1;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,
     private alertService: AlertServiceService)
@@ -82,14 +87,14 @@ export class QueryComponent implements OnInit {
 
           this.queryForm.controls['active'].setValue(true);
           this.getAllData();
-        })
-    }else{
-      this.updateQuery();
-      this.queryForm.controls['active'].setValue(true);
-    }
-    this.queryForm.reset();
-    if (this.queryForm.invalid) {
-      return;
+              })
+          }else{
+            this.updateQuery();
+            this.queryForm.controls['active'].setValue(true);
+          }
+          this.queryForm.reset();
+          if (this.queryForm.invalid) {
+            return;
   }
   }
   getAllData()
@@ -97,8 +102,14 @@ export class QueryComponent implements OnInit {
      this.queryService.getAll().subscribe( res =>{
        this.queryListData = res.data.results;
       this.queryCode = this.queryListData[4].code + 1;
+      this.queryListData.forEach(element => {
+      this.queAnsMasterId = element.queAnsMasterId;
+      console.log("this.queAnsMasterId",this.queAnsMasterId)
+      });
      })
      this.queryForm.controls['code'].setValue(this.queryCode);
+     this.getKeywordsByTwoId(this.queAnsMasterId, this.employeeMasterId);
+
   }
   updateQuery()
   {
@@ -112,12 +123,17 @@ export class QueryComponent implements OnInit {
   }
   editQuery(query)
   {
+    console.log("query",query)
     this.editflag = true;
     this.queryForm.enable();
     this.queryForm.patchValue(query);
     this.isVisible =true;
     this.isShown = false;
     this.queryForm.controls['code'].disable();
+    this.getKeywordsById(query.queAnsMasterId);
+    this.queAnsMasterId = query.queAnsMasterId;
+
+
   }
   viewQuery(query)
   {
@@ -132,7 +148,6 @@ export class QueryComponent implements OnInit {
     this.queryForm.enable();
     this.queryForm.reset();
     this.queryForm.controls['active'].setValue(true);
-
   }
 cancel()
 {
@@ -151,6 +166,22 @@ getStandardKeywords(){
     this.keyword = res.data.results;
   })
 }
+
+getKeywordsById(queAnsMasterId){
+this.queryService.getKeywordsById(queAnsMasterId).subscribe(res =>{
+  this.getKeywordsByIdData = res.data.results;
+})
+}
+getKeywordsByTwoId(queAnsMasterId,employeeMasterId)
+{
+
+  this.queryService.getKeywordsByTwoId(this.queAnsMasterId,this.employeeMasterId).subscribe(res =>
+  {
+    this.getKeywordsByTwoIdData = res.data.results;
+  })
+}
+
+
 changeEvent($event) {
 
   if ($event.target.checked) {
@@ -230,3 +261,4 @@ editorConfig = {
 };
 
 }
+

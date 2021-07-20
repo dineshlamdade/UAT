@@ -31,6 +31,8 @@ export class DocumentViewerComponent implements OnInit {
   queryNumber: any;
   queryTypeCode: any;
   GetIterationdetailsbyQueryIDData2: any;
+  attachementData: any;
+  employeeData: any;
 
   constructor( private router: Router, private modalService: BsModalService,  public sanitizer: DomSanitizer,
     public queryService :QueryService ,) {
@@ -42,7 +44,7 @@ export class DocumentViewerComponent implements OnInit {
       let communicationFormData = JSON.parse(localStorage.getItem('GetIterationdetailsbyQueryIDData'))
       this.listDoc = communicationFormData.documents;
       this.queryGenerationEmpId = communicationFormData.queryGenerationEmpId;
-
+      this.refNumber = communicationFormData.refNumber;
       this.listDoc.forEach(element => {
         this.queryDocumentId = element.queryDocumentId;
       });
@@ -102,28 +104,24 @@ export class DocumentViewerComponent implements OnInit {
 // ..................API calling.............................................................
   getIterationdetailsbyQueryID(queryGenerationEmpId) //Get Iteration details by Query ID // for all table
 {
-  this.queryService.getIterationdetailsbyQueryID(this.queryGenerationEmpId).subscribe(res =>
+  this.documents =[];
+  this.queryService.getIterationdetailsbyQueryID(queryGenerationEmpId).subscribe(res =>
     {
       this.GetIterationdetailsbyQueryIDData = res.data.results;
-      this.GetIterationdetailsbyQueryIDData2 = res.data.results[0];
-      this.refNumber = this.GetIterationdetailsbyQueryIDData2.refNumber;
-      console.log("this.refNumber",this.refNumber);
-
-      console.log("GetIterationdetailsbyQueryIDData2",this.GetIterationdetailsbyQueryIDData2)
+      console.log('GetIterationdetailsbyQueryIDData',this.GetIterationdetailsbyQueryIDData)
       this.GetIterationdetailsbyQueryIDData.forEach(element => {
-        this.docData = element.documents;
-        // this.refNumber = element.refNumber;
-
+        this.documents.push(element.documents)
       });
-      this.docData.forEach(element => {
-      this.employeeCode = element.employeeCode;
-      this.empName = element.empName;
-      this.queryNumber = element.queryNumber;
-      this.queryTypeCode = element.queryTypeCode;
+      // this.documents = this.GetIterationdetailsbyQueryIDData.documents;
+      console.log("this.documents ",this.documents );
+      this.documents.forEach(element => {
 
-      // if(this.docData == !null){
-      // this.refNumber = element.refNumber;
-      //  }
+         element.forEach(ele => {
+          this.employeeCode = ele.employeeCode;
+          this.empName = ele.empName;
+          this.queryNumber = ele.queryNumber;
+          this.queryTypeCode = ele.queryTypeCode;
+         });
 
       });
 

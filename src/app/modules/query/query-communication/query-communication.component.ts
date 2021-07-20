@@ -610,9 +610,9 @@ this.feedbackRemark ='';
 }
 
 getInnerHTML(val){
-  if(this.GetIterationdetailsbyQueryIDData.queryDescription != null){
-    return val.replace(/(<([^>]+)>)/ig,'');
-  }
-  }
+if(this.GetIterationdetailsbyQueryIDData.queryDescription != null){
+  return val.replace(/(<([^>]+)>)/ig,'');
+}
+}
 
 };

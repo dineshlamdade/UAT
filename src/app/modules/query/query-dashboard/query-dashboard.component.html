@@ -492,7 +492,7 @@
                                                             </td>
 
                                                             <td > <label style="width: max-content;"
-                                                              class="form-lable mb-0 " ><p [innerHTML]="summary.queryDescription"></p></label>
+                                                              class="form-lable mb-0 " ><p [innerHTML]="summary.queryTypeDescription"></p></label>
                                                               <!-- <span class="a" [innerHTML]="summary.queryDescription"></span> -->
 
                                                             </td >
@@ -594,7 +594,7 @@
                                                                           <span >
                                                                               <i *ngIf="summary.status != 'Closed' && summary.status != 'Redirect'" class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(summary)" ></i>
                                                                               <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(summary)"></i>
-                                                                              <i *ngIf="summary.status != 'Closed' && summary.status != 'Redirect'"  class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="smallpopup4(deleteTemp)" ></i ></span>
+                                                                              <i *ngIf="summary.status != 'Closed' && summary.status != 'Redirect'"  class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="smallpopup4(deleteTemp,summary)" ></i ></span>
                                                                                 <!--  -->
                                                                         </td>
                                                         </tr>

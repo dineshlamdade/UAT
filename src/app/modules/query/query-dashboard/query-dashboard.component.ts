@@ -65,6 +65,7 @@ export class QueryDashboardComponent implements OnInit {
   queryGenerationEmpId: any;
   queryTypeMasterId: any;
   header: any[];
+  summaryqueryGenerationEmpId: any;
 
   constructor(public formBuilder : FormBuilder,public queryService :QueryService
     ,private alertService: AlertServiceService,private router: Router,
@@ -142,25 +143,29 @@ smallpopup(template: TemplateRef<any>) {
      );
    }
 
-   smallpopup2(querySubject: TemplateRef<any>,summary ) {
-    this.summarysubject = summary.subject;
-     this.modalRef = this.modalService.show(querySubject,
-       Object.assign({}, { class: 'gray modal-md' })
-     );
-   }
+  //  smallpopup2(querySubject: TemplateRef<any>,summary ) {
+  //   this.summarysubject = summary.subject;
+  //    this.modalRef = this.modalService.show(querySubject,
+  //      Object.assign({}, { class: 'gray modal-md' })
+  //    );
+  //  }
 
-   smallpopup3(subqueryDescription: TemplateRef<any>,summary ) {
-    this.summarysubquerydescription = summary.subQueryTypeDescription;
-     this.modalRef = this.modalService.show(subqueryDescription,
-       Object.assign({}, { class: 'gray modal-md' })
-     );
-   }
+  //  smallpopup3(subqueryDescription: TemplateRef<any>,summary ) {
+  //   this.summarysubquerydescription = summary.subQueryTypeDescription;
+  //    this.modalRef = this.modalService.show(subqueryDescription,
+  //      Object.assign({}, { class: 'gray modal-md' })
+  //    );
+  //  }
 
-   smallpopup4(deleteTemp: TemplateRef<any> ) {
+   smallpopup4(deleteTemp: TemplateRef<any> ,summary) {
     // this.summarysubquerydescription = summary.subQueryTypeCode;
+
      this.modalRef = this.modalService.show(deleteTemp,
        Object.assign({}, { class: 'gray modal-md' })
      );
+     this.summaryqueryGenerationEmpId = summary.queryGenerationEmpId;
+     console.log("this.summaryqueryGenerationEmpId",this.summaryqueryGenerationEmpId);
+
    }
   ngOnInit(): void {
 this.getAllQueryListSummary();
@@ -180,11 +185,7 @@ this.getAllQueryListSummary();
    this.queryService.getAllQueryList().subscribe(res =>
   {
     this.getAllQueryGenerationData = res.data.results;
-    // console.log(" this.getAllQueryGenerationData", this.getAllQueryGenerationData)
     this.summaryLength = this.getAllQueryGenerationData.length;
-    this.getAllQueryGenerationData.forEach(element => {
-      this.queryGenerationEmpId = element.queryGenerationEmpId;
-    });
   })
 }
 nevigateToCommunication(summary)
@@ -199,14 +200,15 @@ editQuery(summary){
 viewQuery(summary){
 
   localStorage.setItem('viewdashboardSummary',JSON.stringify(summary));
-  this.router.navigate(['/admin-query-generation'])
+  this.router.navigate(['/admin-query-generation']);
+
 }
 
 
 getDeleteById(queryGenerationEmpId) // delete the record from summary
 {
 
-        this.queryService.getDeleteById(this.queryGenerationEmpId).subscribe(res =>
+        this.queryService.getDeleteById(this.summaryqueryGenerationEmpId).subscribe(res =>
           {
             this.alertService.sweetalertMasterSuccess('Query Deleted Successfully', '' );
             this.getAllQueryListSummary();
@@ -218,8 +220,6 @@ getDeleteById(queryGenerationEmpId) // delete the record from summary
           //   }
           // }
           );
-
-
 }
 
  // .......................................Excel and PDF Code.................................................

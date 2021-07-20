@@ -97,7 +97,7 @@ export class QueryTypeMasterComponent implements OnInit {
         "Replayworkflow": new FormControl(""),
         "subQueryTypeCode": new FormControl(''),
         "subqueryTypedescription": new FormControl(null),
-        "remark": new FormControl(''),
+        "remark": new FormControl(true),
         "assignQATemplate1": new FormControl(''),
         "assignQATemplate2": new FormControl(''),
       }
@@ -119,7 +119,7 @@ export class QueryTypeMasterComponent implements OnInit {
         "listQueryAnsMappingReqDTO": new FormControl([]),
         "listQueryPriorityRequestDTO": new FormControl([]),
         "subQueryRequestDTO": new FormControl([]),
-        "remark": new FormControl(''),
+        "remark": new FormControl(true),
 
       }
     )
@@ -479,7 +479,8 @@ export class QueryTypeMasterComponent implements OnInit {
       this.priorityData.forEach(element => {
         this.getAlldataByIdforedit.listQueryPriorityResponseDTO.forEach(ele => {
           if (element.priorityType == ele.priorityType) {
-            element.defaultPriority = true;
+            // if(element.defaultPriority == true)
+            // element.defaultPriority = true;
             element.resolutionTime = ele.resolutionTime;
             element.autoClose = ele.autoClose;
 
@@ -801,7 +802,7 @@ export class QueryTypeMasterComponent implements OnInit {
           "priorityType": element.priorityType,
           "resolutionTime": element.resolutionTime,
           "autoClose": value,
-          "defaultPriority": '',
+          "defaultPriority": 0,
           "active": true
         })
       })
@@ -809,10 +810,10 @@ export class QueryTypeMasterComponent implements OnInit {
       this.listQueryPriorityRequestDTO.push({
         "queTypePriorityMasterId": 0,
         "queryTypeMasterId": 0,
-        "priorityType": prio.priorityType,
+        "priorityType": "",
         "resolutionTime": prio.resolutionTime,
         "autoClose": value,
-        "defaultPriority": '',
+        "defaultPriority": 0,
         "active": true
       })
     }
@@ -830,7 +831,7 @@ export class QueryTypeMasterComponent implements OnInit {
           "priorityType": element.priorityType,
           "resolutionTime": value,
           "autoClose": element.autoClose,
-          "defaultPriority": '',
+          "defaultPriority": 0,
           "active": true
         })
       })
@@ -838,10 +839,10 @@ export class QueryTypeMasterComponent implements OnInit {
       this.listQueryPriorityRequestDTO.push({
         "queTypePriorityMasterId": 0,
         "queryTypeMasterId": 0,
-        "priorityType": prio.priorityType,
+        "priorityType": "",
         "resolutionTime": value,
         "autoClose": prio.autoClose,
-        "defaultPriority": '',
+        "defaultPriority": 0,
         "active": true
       })
     }

@@ -96,6 +96,7 @@ export class AdminQuryGenerationComponent implements OnInit {
         "queryGenerationEmpId":new FormControl(0),
         "queryNumber":new FormControl(0),
         "employeeMasterId":new FormControl(1),//temp
+        "employeeMasterIdList":new FormControl([]),
         "onBehalfOfEmployee":new FormControl(false),
         "applicationModuleId":new FormControl(null,[Validators.required]),
         "queryTypeMasterId":new FormControl(null,[Validators.required]),
@@ -148,6 +149,7 @@ export class AdminQuryGenerationComponent implements OnInit {
        this.isSaveDraft = false;
        this.isSave = false;
        this.isReset = false;
+       this.hideEditTime = false;
     }
    }
 
@@ -193,7 +195,7 @@ this.queryService.getAllQueryList().subscribe(res =>
     // this.employeeMasterIdData = element.employeeMasterId;
     this.queryNumberData = element.queryNumber;
     this.employeeMasterId = element.employeeMasterId
-    console.log("getAllQueryListSummary",this.employeeMasterId )
+    // console.log("getAllQueryListSummary",this.employeeMasterId )
     });
     this.getEmpMasterDetails(this.employeeMasterIdData);
 
@@ -305,9 +307,9 @@ addQueryGeneration(){ //post api for saving data
         this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
 
         this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
+        console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
         this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
+        this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
         let data = []
         data.push(this.queryGenerationForm.value)
         let queryGenerationEmployeeData  = {

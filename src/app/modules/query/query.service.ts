@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { identifierModuleUrl } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
@@ -11,7 +12,9 @@ public apiUrl = environment.baseUrl8091;
 public apiUrl1 = environment.baseUrl8083;
 public apiUrl2 = environment.baseUrl8088;
 public apiUrl3 = environment.baseUrl8082;
+
 constructor(private http : HttpClient ) { }
+// .................................Standard que ans api.....................................................................
 
 public getAll()
 {
@@ -32,6 +35,14 @@ public getModuleName()
 public getStandardKeywords()
 {
   return this.http.get<any>(this.apiUrl + 'StandardKeyword/Global');
+}
+public getKeywordsById(id)
+{
+  return this.http.get<any>(this.apiUrl + 'QuestionAnswer/getById/' + id);
+}
+public getKeywordsByTwoId(queAnsMasterId,empId)
+{
+  return this.http.get<any>(this.apiUrl + 'QuestionAnswer/getTemplateDataById/'+queAnsMasterId+'/'+empId);
 }
 // .................................Query Type master api.....................................................................
 public getAllSummaryData()

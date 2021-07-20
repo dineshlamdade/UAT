@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmployeelistComponent } from './employeelist.component';
+import { FastentryNRAmtComponent } from './fastentry-nr-amt.component';
 
-describe('EmployeelistComponent', () => {
-  let component: EmployeelistComponent;
-  let fixture: ComponentFixture<EmployeelistComponent>;
+describe('FastentryNRAmtComponent', () => {
+  let component: FastentryNRAmtComponent;
+  let fixture: ComponentFixture<FastentryNRAmtComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmployeelistComponent ]
+      declarations: [ FastentryNRAmtComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmployeelistComponent);
+    fixture = TestBed.createComponent(FastentryNRAmtComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
