@@ -41,6 +41,8 @@ ENV NODE_OPTIONS="--max-old-space-size=8192"
 #RUN npm i @angular-devkit/build-angular@0.901.9
 
 RUN npm run build --prod --aot --outputHashing=all
+RUN apk add tzdata
+RUN cp /usr/share/zoneinfo/Asia/Calcutta /etc/localtime
 
 #Stage 2
 FROM nginx:alpine
