@@ -78,6 +78,15 @@ export class SdmStepperComponent implements OnInit {
   editTempFlag: boolean = false;
   sdmData: any;
   sdmMasterId: number;
+  sourceCombinationData: any;
+  sdmSourceCombinationListData: any;
+  srcCombLength: any;
+  derivedTypeData: any;
+  SelectedCount: any;
+  sourceFieldListData: any;
+  selectedSourceCombinationData: any = [];
+  derivedTableFieldsData: any;
+  fieldTypes: any[];
 
   constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, private toaster: ToastrService) {
 
@@ -138,6 +147,7 @@ export class SdmStepperComponent implements OnInit {
         break;
       }
       case 2: {
+        
         this.step2Submit()
         break;
       }
@@ -298,28 +308,56 @@ export class SdmStepperComponent implements OnInit {
    console.log("add: " + this.sourceValueId , this.sourceValueName)
   }
 
+  onSelectAllValueListDataValue(items){
+    items.forEach(element => {
+     this.sourceValueId.push(element.sourceValueId)
+     this.sourceValueName.push(element.sourceValueName)
+    });
+  }
+
   deSelectValueListDataValue(event){
-    console.log("before: " + this.sourceValueId , this.sourceValueName)
+    this.sourceValueName = []
+    let flag = false;
+    //console.log("before: " + this.sourceValueId , this.sourceValueName)
     this.sourceValueId.forEach((element,index) => {
       if(element == event.sourceValueId){
         let ind = index;
         this.sourceValueId.splice(ind,1)
+        flag = true
+      }
+
+      if(flag == true){
+        this.valueListData.forEach(element => {
+          this.sourceValueId.forEach(id => {
+            if(element.sourceValueId == id){
+              this.sourceValueName.push(element.sourceValueName)
+            }
+          });
+         
+        });
       }
     });
 
-    this.sourceValueName.forEach((element,index) => {
-      if(element.toString() == event.sourceValueName){
-        let ind = index;  
-        this.sourceValueName.splice(ind,1)
-      }
-    });
+    
+    
+    // this.sourceValueName.forEach((element,index) => {
+    //  let data = element.toString().split(',')
+    //  console.log(data)
+    //  data.forEach(ele => {
+    //   if(ele == event.sourceValueName){
+    //     let ind = index;  
+    //     this.sourceValueName.splice(ind,1)
+    //   }
+    //  });
+     
+    // });
 
     console.log("after: " + this.sourceValueId , this.sourceValueName)
   }
 
   addSource(){
     
-    if(!this.step1FormDisableFlag){
+    if(!this.step1FormDisableFlag && this.tempSourceTable.length < 5){
     this.tempSourceTable.push({
       'tableName': this.sourceMasterName,
       'fieldType':this.sourceFieldTypeName,
@@ -343,6 +381,9 @@ export class SdmStepperComponent implements OnInit {
     this.valuelist = []
     this.sourceValueId  = []
     this.sourceValueName = []
+    }
+    else{
+      alert("Limit is 5")
     }
   }
 
@@ -456,5 +497,93 @@ export class SdmStepperComponent implements OnInit {
     this.sdmService.SdmMasterDetails(this.sdmMasterId).subscribe(res =>{
       this.sdmData = res.data.results;
     })
+  }
+
+
+  sourceCombination(){
+    
+      this.sdmService.sourceCombination(9).subscribe(res =>{
+      this.sourceCombinationData = res.data.results[0];
+      this.sourceFieldListData = this.sourceCombinationData.sourceFieldList;
+      this.sdmSourceCombinationListData = this.sourceCombinationData.sdmSourceCombinationList;
+      this.srcCombLength = this.sdmSourceCombinationListData.length
+      this.SelectedCount = 0
+      this.sdmSourceCombinationListData.forEach(element => {
+        if(element.active){
+          this.SelectedCount= this.SelectedCount + 1
+        }  
+      });
+
+    })
+  }
+
+  selectSrcCombination(event, srcCombData){
+    let active;
+   if(event.checked){
+    this.SelectedCount = this.SelectedCount + 1
+    active  = true
+   }else{
+    this.SelectedCount = this.SelectedCount - 1
+    active = false
+   }
+   
+   if(this.selectedSourceCombinationData.length > 0){
+    this.selectedSourceCombinationData.forEach((element,index) => {
+      if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId){
+        let ind = index;
+        this.selectedSourceCombinationData.splice(ind,1,
+          {
+            "sdmSourceCombinationId":srcCombData.sdmSourceCombinationId,
+            "sdmMasterId":"9",
+            "active": active
+          })
+      }else{
+        this.selectedSourceCombinationData.push(
+          {
+            "sdmSourceCombinationId":srcCombData.sdmSourceCombinationId,
+            "sdmMasterId":"9",
+            "active": active
+          })
+      }
+    });
+   }else{
+    this.selectedSourceCombinationData.push(
+      {
+        "sdmSourceCombinationId":srcCombData.sdmSourceCombinationId,
+        "sdmMasterId":"9",
+        "active": active
+      })
+    }
+
+   console.log("selectedSourceCombinationData : " + JSON.stringify(this.selectedSourceCombinationData))
+  }
+
+  derivedType(){
+    this.sdmService.derivedType().subscribe(res =>{
+      this.derivedTypeData = res.data.results;
+      
+    })
+  }
+
+  sourceCombinationUpdate(){
+    this.sdmService.sourceCombinationUpdate(this.selectedSourceCombinationData).subscribe(res =>{
+        this.toaster.success("","Source Combination data updated successfully") 
+    })
+  }
+
+  derivedTablesFields(){
+    this.sdmService.derivedTablesFields().subscribe(res =>{
+      this.derivedTableFieldsData = res.data.results;
+    })
+  }
+
+  derivedTableNameChange(value){
+    this.fieldTypes = []
+this.derivedTableFieldsData.forEach(element => {
+  if(element.sourceObjectName == value){
+     this.fieldTypes.push(element)
+  }
+  
+});
   }
 }

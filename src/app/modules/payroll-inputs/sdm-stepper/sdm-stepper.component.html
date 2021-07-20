@@ -382,7 +382,7 @@
                                 <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 2"></span>
                                 <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 2"></span>
                                 <div class="col-sm-3">
-                                    <button class="stepbutton" (click)="abc(2)"
+                                    <button class="stepbutton" (click)="abc(2);sourceCombination();"
                                         style="border-radius: 51%;height: 69%;width: 20%;">
                                         <div *ngIf="stepperIndex > 2 then thenBlock2 else elseBlock2"></div>
                                         <ng-template #thenBlock2>
@@ -397,7 +397,7 @@
                                 <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 3"></span>
                                 <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 3"></span>
                                 <div class="col-sm-3">
-                                    <button class="stepbutton" (click)="abc(3)"
+                                    <button class="stepbutton" (click)="abc(3);derivedType();derivedTablesFields();"
                                         style="border-radius: 51%;height: 69%;width: 20%;">
                                         <div *ngIf="stepperIndex > 3 then thenBlock3 else elseBlock3"></div>
                                         <ng-template #thenBlock3>
@@ -412,7 +412,7 @@
                                 <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 4"></span>
                                 <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 4"></span>
                                 <div class="col-sm-3">
-                                    <button class="stepbutton" (click)="abc(4)"
+                                    <button class="stepbutton" (click)="abc(4);"
                                         style="border-radius: 51%;height: 69%;width: 20%;">
                                         <div *ngIf="stepperIndex > 4 then thenBlock4 else elseBlock4"></div>
                                         <ng-template #thenBlock4>
@@ -698,6 +698,7 @@
                                                                                 [ngModelOptions]="{standalone: true}"
                                                                                 (onSelect)="valueListDataValue($event)"
                                                                                 (onDeSelect)="deSelectValueListDataValue($event)"
+                                                                                (onSelectAll)="onSelectAllValueListDataValue($event)"
                                                                                 >
                                                                             </ng-multiselect-dropdown>
                                                                         </td>
@@ -830,8 +831,8 @@
 
                                         <div class="row">
                                             <div class="col-12">
-                                                <label class="form-label font-bold font-14">Total :(0)
-                                                    &nbsp;&nbsp;Selected Count :(0) </label>
+                                                <label class="form-label font-bold font-14">Total :({{srcCombLength}})
+                                                    &nbsp;&nbsp;Selected Count :({{SelectedCount}}) </label>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -842,9 +843,9 @@
 
 
                                                     <div class="table-responsive Custom_Table">
-                                                        <p-table [value]="users3" [paginator]="true" [rows]="10">
+                                                        <p-table [value]="sdmSourceCombinationListData" [paginator]="true" [rows]="10">
                                                             <ng-template pTemplate="header">
-                                                                <tr>
+                                                                <tr >
 
 
                                                                     <th rowspan="3" class="wd-2 text-center">
@@ -876,10 +877,10 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <th rowspan="2" class=" text-center">
+                                                                    <th rowspan="2" class=" text-center" *ngFor="let header of sourceFieldListData">
                                                                         <div
                                                                             class="p-d-flex p-jc-between p-ai-center text-center">
-                                                                            Payroll Area
+                                                                            {{header}}
 
 
                                                                             <div class="Sort_Filter_Position">
@@ -892,193 +893,44 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class=" text-center">
-                                                                        <div
-                                                                            class="p-d-flex p-jc-between p-ai-center text-center">
-                                                                            Department
-
-
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Department"
-                                                                                    pSortableColumn="Department">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="date"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
-                                                                        </div>
-                                                                    </th>
-                                                                    <th rowspan="2" class="text-center">
-                                                                        <div
-                                                                            class="p-d-flex p-jc-between p-ai-center text-center">
-                                                                            Grade
-
-
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Grade"
-                                                                                    pSortableColumn="Grade">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="date"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
-                                                                        </div>
-                                                                    </th>
-
-
-
-
                                                                 </tr>
-
-
-
                                                             </ng-template>
-                                                            <ng-template pTemplate="body" let-user1>
+                                                            <ng-template pTemplate="body" let-srcCombData>
                                                                 <tr class="p-selectable-row">
                                                                     <td class="text-center">
                                                                         <label
                                                                             class="custom-control custom-checkbox checkbox-center">
                                                                             <input type="checkbox"
                                                                                 class="custom-control-input"
-                                                                                name="select" />
+                                                                                [checked]="srcCombData.active == true"
+                                                                                (click)="selectSrcCombination($event.target,srcCombData)"
+                                                                                name="select"/>
                                                                             <span class="custom-control-label"></span>
                                                                         </label>
 
                                                                     </td>
-                                                                    <td class="text-center">
-                                                                        PA1
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        D1
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        G1
-                                                                    </td>
-
-
-
-                                                                </tr>
-
-                                                                <tr class="p-selectable-row">
-                                                                    <td class="text-center">
-                                                                        <label
-                                                                            class="custom-control custom-checkbox checkbox-center">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                name="select" />
-                                                                            <span class="custom-control-label"></span>
-                                                                        </label>
-
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        PA2
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        D1
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        G1
-                                                                    </td>
-
-
-                                                                </tr>
-
-                                                                <tr class="p-selectable-row">
-                                                                    <td class="text-center">
-                                                                        <label
-                                                                            class="custom-control custom-checkbox checkbox-center">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                name="select" />
-                                                                            <span class="custom-control-label"></span>
-                                                                        </label>
-
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        PA3
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        D1
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        G1
-                                                                    </td>
-
-
-
-                                                                </tr>
-                                                                <tr class="p-selectable-row">
-                                                                    <td class="text-center">
-                                                                        <label
-                                                                            class="custom-control custom-checkbox checkbox-center">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                name="select" />
-                                                                            <span class="custom-control-label"></span>
-                                                                        </label>
-
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        PA4
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        D1
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        G1
-                                                                    </td>
-
-
-
-                                                                </tr>
-                                                                <tr class="p-selectable-row">
-                                                                    <td class="text-center">
-                                                                        <label
-                                                                            class="custom-control custom-checkbox checkbox-center">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                name="select" />
-                                                                            <span class="custom-control-label"></span>
-                                                                        </label>
-
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        PA5
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        D1
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        G1
+                                                                    <td class="text-center" *ngFor="let header of sourceFieldListData">
+                                                                        <span *ngIf="header == 'PayrollArea'">{{srcCombData.payrollAreaId}}</span>
+                                                                        <span *ngIf="header == 'Establishment'">{{srcCombData.establishmentMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubLocation'">{{srcCombData.subLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'Location'">{{srcCombData.subLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'WorkLocation'">{{srcCombData.workLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'BusinessArea'">{{srcCombData.businessAreaMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubArea'">{{srcCombData.subAreaId}}</span>
+                                                                        <span *ngIf="header == 'StrategicBusinessUnit'">{{srcCombData.strategicBusinessUnitId}}</span>
+                                                                        <span *ngIf="header == 'Division'">{{srcCombData.divisionMasterId}}</span>
+                                                                        <span *ngIf="header == 'Department'">{{srcCombData.departmentMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubDepartment'">{{srcCombData.subDepartmentId}}</span>
+                                                                        <span *ngIf="header == 'CostCentre'">{{srcCombData.costCentreId}}</span>
+                                                                        <span *ngIf="header == 'SubCostCenter'">{{srcCombData.subCostCenterId}}</span>
+                                                                        <span *ngIf="header == 'ProfitCentre'">{{srcCombData.profitCentreMasterId}}</span>
+                                                                        <span *ngIf="header == 'Grade'">{{srcCombData.gradeMasterId}}</span>
+                                                                        <span *ngIf="header == 'Designation1'">{{srcCombData.designation1MasterId}}</span>
+                                                                        <span *ngIf="header == 'Designation2'">{{srcCombData.designation2MasterId}}</span>
                                                                     </td>
                                                                 </tr>
-                                                                <tr class="p-selectable-row">
-                                                                    <td class="text-center">
-                                                                        <label
-                                                                            class="custom-control custom-checkbox checkbox-center">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                name="select" />
-                                                                            <span class="custom-control-label"></span>
-                                                                        </label>
 
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        PA6
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        D1
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        G1
-                                                                    </td>
-                                                                </tr>
+                                                               
                                                             </ng-template>
 
                                                             <ng-template pTemplate="emptymessage">
@@ -1151,11 +1003,8 @@
                                                             <label class="form-label">Derived Type</label>
                                                             <select name="custom-select" class="form-control">
                                                                 <option value="Select">Select</option>
-                                                                <option >Amount
-                                                                </option>
-                                                                <option >% Percentage</option>
-                                                                <option >Job Field Type</option>
-                                                                <option >Not Applicable</option>
+                                                                <option value="{{derive.sdmDerivedTypeId}}" *ngFor="let derive of derivedTypeData">{{derive.derivedType}}</option>
+                                                                
                                                             </select>
 
                                                         </div>
@@ -1180,12 +1029,10 @@
                                                     <div class="row mt-10">
                                                         <div class="col-sm-3">
                                                             <label class="form-label">Table Name</label>
-                                                            <select name="custom-select" class="form-control">
+                                                            <select name="custom-select" class="form-control" (change)="derivedTableNameChange($event.target.value)">
                                                                 <option value="Select">Select</option>
-                                                                <option ></option>
-                                                                <option ></option>
-                                                                <option ></option>
-                                                                <option ></option>
+                                                                <option *ngFor=" let tableData of derivedTableFieldsData">{{tableData.sourceObjectName}}</option>
+                                                               
                                                             </select>
 
                                                         </div>
@@ -1194,8 +1041,8 @@
 
                                                             <select name="custom-select" class="form-control">
                                                                 <option value="Select">Select</option>
-                                                                <option >Service Period</option>
-                                                                <option >Max Amount Allowed</option>
+                                                                <option *ngFor="let field of fieldTypes">{{field.sourceObjectFieldName}}</option>
+                                                                <!-- <option >Max Amount Allowed</option> -->
                                                             </select>
 
                                                         </div>
