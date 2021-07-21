@@ -64,7 +64,7 @@ export class SavePHGGlobal {
   globalHeadGroupDefinitionName: string;
   attributeGroupName: string;
   description: string;
-  //  headMasters:any[];
+  attributeGroupId : number;
   countryId: number;
   headMasters: headDetail[];
   removedHeadGroupIdList: any[];

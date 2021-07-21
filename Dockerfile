@@ -42,10 +42,13 @@ ENV NODE_OPTIONS="--max-old-space-size=5120"
 
 RUN npm run build --prod --aot --outputHashing=all
 
+
 #Stage 2
 FROM nginx:alpine
 COPY --from=web app/mysite.conf /etc/nginx/conf.d/default.conf
 COPY --from=web app/dist/ /srv/mysite/
 COPY --from=web app/ssl/ /etc/ssl/
+RUN apk add tzdata
+RUN cp /usr/share/zoneinfo/Asia/Calcutta /etc/localtime
 EXPOSE 80
 EXPOSE 443
