@@ -373,6 +373,19 @@
                                               <button type="button" tooltip="field level"
                                                 class="custom_button custom_btn bg-color-purple btn-labeled btn-labeled-left mr-10"
                                                 (click)="onSelectFieldLevel(template1,submenu)">Field Level </button>
+
+                                               
+                                                        <div *ngFor="let smenu of submenu.childItems">
+                                                          <li class="rup" id="{{smenu.menuName}}"
+                                                            style="margin-left:-55px;">
+  
+                                                            <button type="button" tooltip="field level"
+                                                            class="custom_button custom_btn bg-color-purple btn-labeled btn-labeled-left mr-10"
+                                                            (click)="onSelectFieldLevel(template1,smenu)">Field Level </button>
+  
+                                                          </li>
+                                                        </div>
+                                                    
                                             </li>
                                             <br>
                                           </div>
@@ -1061,9 +1074,6 @@
                 </div>
               </td>
               <td class="text-center">
-                <!-- <input type="checkbox" name="fieldcheckRead" [checked]="isCheckedReadFields || isChecked || fields.allFlag" [disabled]="viewFlag"
-                 (click)="checkUncheckReadSelectedFieldLevel(fields,$event.target)">
-                read  -->
                 <div class="">
                     <a class="p-0 d-flex">
                         <label class="custom-control custom-checkbox ">
@@ -1071,8 +1081,8 @@
                               <div>
                                     <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                         <input type="checkbox" name="websitecheckMenuMainRead"
-                                            [checked]="isChecked || isCheckedReadFields || fields.readFlag || fields.allFlag || fields.readAccess  " [disabled]="viewFlag"
-                                             (click)="checkeUncheckSingleReadFields(fieldmenu,$event.target)" />
+                                            [checked]="isChecked || isCheckedReadFields || fields.readFlag || fields.allFlag " [disabled]="viewFlag"
+                                             (click)="checkeUncheckSingleReadFields(fields,$event.target)" />
                                      </li>
                                 </div>
                             </ul>
@@ -1081,9 +1091,7 @@
                 </div>
             </td>
             <td class="text-center">
-              <!-- <input type="checkbox" name="fieldcheckWrite" [checked]="isCheckedWriteFields || isChecked || fields.allFlag" [disabled]="viewFlag"
-               (click)="checkUncheckWriteSelectedFieldLevel(fields,$event.target)">
-              write  -->
+            
               <div class="">
                   <a class="p-0 d-flex">
                       <label class="custom-control custom-checkbox ">
@@ -1091,7 +1099,8 @@
                             <div>
                                   <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                       <input type="checkbox" name="websitecheckMenuMainWrite"
-                                          [checked]="isChecked || isCheckedWriteFields || fields.writeFlag || fields.allFlag" [disabled]="viewFlag" (click)="checkeUncheckSingleWriteFields(fieldmenu,$event.target)" />
+                                          [checked]="isChecked || isCheckedWriteFields || fields.writeFlag || fields.allFlag"
+                                           [disabled]="viewFlag" (click)="checkeUncheckSingleWriteFields(fields,$event.target)" />
                                    </li>
                               </div>
                           </ul>
@@ -1100,9 +1109,6 @@
               </div>
           </td>
           <td class="text-center">
-            <!-- <input type="checkbox" name="fieldcheckModify" [checked]="isCheckedModifyFields || isChecked || fields.allFlag" [disabled]="viewFlag"
-             (click)="checkUncheckModifySelectedFieldLevel(fields,$event.target)">
-            Modify  -->
             <div class="">
                 <a class="p-0 d-flex">
                     <label class="custom-control custom-checkbox ">
@@ -1110,7 +1116,8 @@
                           <div>
                                 <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                     <input type="checkbox" name="websitecheckMenuMainModify"
-                                        [checked]="isChecked || isCheckedModifyFields || fields.writeFlag || fields.allFlag" [disabled]="viewFlag" (click)="checkeUncheckSingleModifyFields(fieldmenu,$event.target)" />
+                                        [checked]="isChecked || isCheckedModifyFields || fields.modifyFlag || fields.allFlag"
+                                         [disabled]="viewFlag" (click)="checkeUncheckSingleModifyFields(fields,$event.target)" />
                                  </li>
                             </div>
                         </ul>
@@ -1119,9 +1126,6 @@
             </div>
         </td>
         <td class="text-center">
-          <!-- <input type="checkbox" name="fieldcheckHide" [checked]="isCheckedHideFields || isChecked || fields.allFlag" [disabled]="viewFlag"
-           (click)="checkUncheckhideSelectedFieldLevel(fields,$event.target)"> -->
-          <!-- Hide -->
           <div class="">
               <a class="p-0 d-flex">
                   <label class="custom-control custom-checkbox ">
@@ -1130,7 +1134,7 @@
                               <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                   <input type="checkbox" name="websitecheckMenuMainHide"
                                       [checked]="isChecked || isCheckedHideFields || fields.HideFlag || fields.allFlag" [disabled]="viewFlag"
-                                       (click)="checkeUncheckSingleHideFields(submenu,$event.target)" />
+                                       (click)="checkeUncheckSingleHideFields(fields,$event.target)" />
                                </li>
                           </div>
                       </ul>
