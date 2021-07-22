@@ -60,7 +60,22 @@ export class NonRecurringQtyService {
 
   /** Get Schedule popup data - schedule tab */
   NonSalaryTransactionScheduleRemarkHistorybyScheduleId(data):Observable<any>{
-    return this.HttpClient.get<any>(this.apiUrl + `NonSalaryTransactionScheduleRemarkHistory/NonSalaryTransactionScheduleRemarkHistorybyScheduleId`);
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionScheduleRemarkHistory/NonSalaryTransactionScheduleRemarkHistorybyScheduleId`,data);
+  }
+
+  /** Update schedule - schedule tab */
+  NonRecurringSalaryScheduleupdateById(data):Observable<any>{
+    return this.HttpClient.put<any>(this.apiUrl + `NonSalaryTransactionSchedule/updateById`,data);
+  }
+
+  /** Get Salary transaction data  - Transaction tab */
+  NonRecurringTransactionGroupAPIEmpwise(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupAPIAllEmp`,data);   
+  }
+
+  /** Save salary transaction - Transaction tab */
+  NonSalaryTransactionGroup(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup`,data);   
   }
   
 }
