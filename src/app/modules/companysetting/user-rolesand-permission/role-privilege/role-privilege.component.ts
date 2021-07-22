@@ -237,7 +237,7 @@ export class RolePrivilegeComponent implements OnInit {
                   'userGroupId': element.userRoleDetail.userGroupId,
                   'groupName': element.userRoleDetail.groupName,
                   'rolePrivilegeMatrixId': element.rolePrivilegeMatrixId,
-                 // 'fieldLeveleAccessMatrixId': element.fieldLeveleAccessMatrixId,
+                  'fieldLeveleAccessMatrixId': element.fieldLeveleAccessMatrixId,
                   'globalCompanyMasterId': element.globalCompanyMasterId,
                   'companyGroupMasterId': element.userRoleDetail.companyGroupMasterId,
                   'companyGroupName': element.userRoleDetail.companyGroupName,
