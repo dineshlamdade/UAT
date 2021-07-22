@@ -38,7 +38,7 @@
 
                                             <br>
                                             <div class="table-responsive Custom_Table">
-                                                <p-table [value]="users1">
+                                                <p-table [value]="sdmSummeryData"  [paginator]="true" [rows]="10">
                                                     <ng-template pTemplate="header">
                                                         <tr>
 
@@ -204,54 +204,24 @@
                                                             </th>
                                                         </tr>
                                                     </ng-template>
-                                                    <ng-template pTemplate="body" let-user1>
+                                                    <ng-template pTemplate="body" let-summery let-rowIndex="rowIndex">
                                                         <tr class="p-selectable-row">
 
 
 
-                                                            <td class="text-center">1</td>
-                                                            <td class="text-center">SDM 1</td>
-                                                            <td class="text-center"> For Financial Master </td>
+                                                            <td class="text-center">{{rowIndex+1}}</td>
+                                                            <td class="text-center"></td>
+                                                            <td class="text-center">{{summery.sdmDescription}}</td>
 
 
+                                                            <td class="text-center">{{summery.sdmName}}</td>
                                                             <td class="text-center"> </td>
-                                                            <td class="text-center">Department </td>
                                                             <td class="text-center"> </td>
                                                             <td class="text-center"> </td>
                                                             <td class="text-center"> </td>
                                                             <td class="text-center"></td>
-                                                            <td class="text-center"> Yes</td>
-                                                            <td class="text-center"> 3 </td>
-
-
-                                                            <td class="text-center">
-
-                                                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                                                    tooltip="Edit"></i>&nbsp;
-                                                                <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                                                                    tooltip="View"></i>&nbsp;
-                                                                <i class="fa fa-trash font-16 text-red cursor-pointer"
-                                                                    tooltip="View"></i>
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr class="p-selectable-row">
-
-
-
-                                                            <td class="text-center">2</td>
-                                                            <td class="text-center">SDM 2</td>
-                                                            <td class="text-center"> For Loan </td>
-
-
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center">Grade </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> Payroll Area</td>
-                                                            <td class="text-center"> No </td>
-                                                            <td class="text-center"> 4 </td>
+                                                            <td class="text-center"></td>
+                                                            <td class="text-center"></td>
 
 
                                                             <td class="text-center">
@@ -266,67 +236,6 @@
 
                                                         </tr>
 
-                                                        <tr class="p-selectable-row">
-
-
-
-                                                            <td class="text-center">3</td>
-                                                            <td class="text-center">SDM 3</td>
-                                                            <td class="text-center"> For Workflow </td>
-
-
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> SBU </td>
-                                                            <td class="text-center"> Cycle </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> 5 </td>
-
-
-                                                            <td class="text-center">
-
-                                                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                                                    tooltip="Edit"></i>&nbsp;
-                                                                <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                                                                    tooltip="View"></i>&nbsp;
-                                                                <i class="fa fa-trash font-16 text-red cursor-pointer"
-                                                                    tooltip="View"></i>
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr class="p-selectable-row">
-
-
-
-                                                            <td class="text-center">4</td>
-                                                            <td class="text-center">SDM 4</td>
-                                                            <td class="text-center"> For Leave </td>
-
-
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center">LeaveArea </td>
-                                                            <td class="text-center"> Grade</td>
-                                                            <td class="text-center"> Department </td>
-                                                            <td class="text-center"> SBU </td>
-                                                            <td class="text-center"> Emp.Status
-                                                            </td>
-                                                            <td class="text-center"> No </td>
-                                                            <td class="text-center"> 5 </td>
-
-
-                                                            <td class="text-center">
-
-                                                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                                                    tooltip="Edit"></i>&nbsp;
-                                                                <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                                                                    tooltip="View"></i>&nbsp;
-                                                                <i class="fa fa-trash font-16 text-red cursor-pointer"
-                                                                    tooltip="View"></i>
-                                                            </td>
-
-                                                        </tr>
                                                     </ng-template>
                                                     <ng-template pTemplate="emptymessage">
                                                         <tr>
@@ -397,7 +306,7 @@
                                 <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 3"></span>
                                 <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 3"></span>
                                 <div class="col-sm-3">
-                                    <button class="stepbutton" (click)="abc(3);derivedType();derivedTablesFields();"
+                                    <button class="stepbutton" (click)="abc(3);derivedType();derivedTablesFields();KeywordMasterDetails();"
                                         style="border-radius: 51%;height: 69%;width: 20%;">
                                         <div *ngIf="stepperIndex > 3 then thenBlock3 else elseBlock3"></div>
                                         <ng-template #thenBlock3>
@@ -657,7 +566,7 @@
                                                                             [(ngModel)]="tablevalue"
                                                                             [ngModelOptions]="{standalone: true}"
                                                                             
-                                                                                (change)="fieldTypeList($event.target.value)">
+                                                                                (change)="fieldTypeList($event.target.value,1)">
                                                                                 <option>Select Table Value</option>
                                                                                 <option
                                                                                     *ngFor="let table of tableListData"
@@ -975,33 +884,31 @@
                                     </div>
 
                                     <div *ngSwitchCase="3" [@slideInOut]>
-
+                                        <form [formGroup]="sdmFormStep3">
                                         <div class="row mt-37">
-
+                                           
                                             <div class="col-12">
+                                               
                                                 <fieldset>
                                                     <legend>Derived</legend>
 
                                                     <div class="row mt-10">
                                                         <div class="col-sm-3">
                                                             <label class="form-label"> Derived Name</label>
-                                                            <input type="text" class="form-control" placeholder="">
+                                                            <input  formControlName="derivedName" type="text" class="form-control" placeholder="">
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <label class="form-label">Module</label>
-                                                            <select name="custom-select" class="form-control">
+                                                            <select  name="custom-select" class="form-control" formControlName="moduleIdList" (change)="getSelectedDerivedModule($event.target.value)">
                                                                 <option value="Select">Select</option>
-                                                                <option >
-                                                                </option>
-                                                                <option ></option>
-                                                                <option ></option>
-                                                                <option ></option>
+                                                                <option *ngFor="let mod of moduleData" value="{{mod.applicationModuleId}}">{{mod.applicationModuleName}}</option>
+                                                               
                                                             </select>
 
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <label class="form-label">Derived Type</label>
-                                                            <select name="custom-select" class="form-control">
+                                                            <select  name="custom-select" class="form-control" formControlName="sdmDerivedTypeId" (change)="getDerivedType($event.target.value)">
                                                                 <option value="Select">Select</option>
                                                                 <option value="{{derive.sdmDerivedTypeId}}" *ngFor="let derive of derivedTypeData">{{derive.derivedType}}</option>
                                                                 
@@ -1011,12 +918,10 @@
                                                         <div class="col-sm-3">
                                                             <label class="form-label">Percentage (%) of
                                                             </label>
-                                                            <select name="custom-select" class="form-control">
+                                                            <select  name="custom-select" class="form-control" formControlName="percentageOf">
                                                                 <option value="Select">Select</option>
-                                                                <option > </option>
-                                                                <option ></option>
-                                                                <option ></option>
-                                                                <option > </option>
+                                                                <option *ngFor="let key of keywordData">{{key.keywordName}}</option>
+                                                               
                                                             </select>
 
                                                         </div>
@@ -1029,7 +934,7 @@
                                                     <div class="row mt-10">
                                                         <div class="col-sm-3">
                                                             <label class="form-label">Table Name</label>
-                                                            <select name="custom-select" class="form-control" (change)="derivedTableNameChange($event.target.value)">
+                                                            <select name="custom-select" class="form-control" [(ngModel)]="derivedTableName" [ngModelOptions]="{standalone : true}" (change)="derivedTableNameChange($event.target.value)">
                                                                 <option value="Select">Select</option>
                                                                 <option *ngFor=" let tableData of derivedTableFieldsData">{{tableData.sourceObjectName}}</option>
                                                                
@@ -1039,9 +944,9 @@
                                                         <div class="col-sm-3">
                                                             <label class="form-label">Field Name</label>
 
-                                                            <select name="custom-select" class="form-control">
+                                                            <select  name="custom-select" class="form-control" (change)="derivedFiedName($event.target.value)"  formControlName="sdmDerivedTableId">
                                                                 <option value="Select">Select</option>
-                                                                <option *ngFor="let field of fieldTypes">{{field.sourceObjectFieldName}}</option>
+                                                                <option *ngFor="let field of fieldTypes" value="{{field.sdmDerivedTableId}}">{{field.sourceObjectFieldName}}</option>
                                                                 <!-- <option >Max Amount Allowed</option> -->
                                                             </select>
 
@@ -1049,6 +954,7 @@
 
 
                                                     </div>
+                                                    
                                                     <br>
 
                                                     <br>
@@ -1063,16 +969,17 @@
                                                                 <textarea type="text"></textarea>
                                                             </div>
                                                             <div class="float-right ">
-                                                                <button type="submit"
+                                                                <button [disabled]="sdmFormStep3.invalid" (click)="addsaveDerived()" type="submit"
+                                                                [ngClass]="{'disabled-btn-bg-green' : sdmFormStep3.invalid,'btn-bg-green': !sdmFormStep3.invalid}"
                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                                                     tooltip="Add"><b>
                                                                         <i class="fa fa-plus"></i></b>
                                                                     Add</button>&nbsp;
 
 
-                                                                <button type="button" tooltip="Next"
+                                                                <!-- <button type="button" tooltip="Next"
                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left">
-                                                                    <b><i class="fa fa-refresh"></i></b> Next</button>
+                                                                    <b><i class="fa fa-refresh"></i></b> Next</button> -->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1085,7 +992,7 @@
                                                             <div class="card">
 
                                                                 <div class="table-responsive Custom_Table">
-                                                                    <p-table [value]="users1" [paginator]="true"
+                                                                    <p-table [value]="tempDerivedTable" [paginator]="true"
                                                                         [rows]="10">
                                                                         <ng-template pTemplate="header">
                                                                             <tr>
@@ -1232,89 +1139,29 @@
                                                                             </tr>
 
                                                                         </ng-template>
-                                                                        <ng-template pTemplate="body" let-user1>
+                                                                        <ng-template pTemplate="body" let-data let-rowIndex = rowIndex>
                                                                             <tr class="p-selectable-row">
-                                                                                <td class="text-center">1 </td>
+                                                                                <td class="text-center">{{rowIndex + 1}} </td>
 
                                                                                 <td class="text-center">
-                                                                                    Derived 1
+                                                                                    {{data.derivedName}}
                                                                                 </td>
 
                                                                                 <td class="text-center">
-
+                                                                                   {{data.moduleIdList}}
                                                                                 </td>
                                                                                 <td>
-
+                                                                                {{data.sdmDerivedTypeId}}
                                                                                 </td>
                                                                                 <td>
-
+                                                                                    {{data.percentageOf}}
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    Value
-                                                                                </td>
-
-                                                                                <td>
-
-
-
-                                                                                </td>
-                                                                            </tr>
-
-                                                                            <tr class="p-selectable-row">
-                                                                                <td class="text-center">2 </td>
-
-                                                                                <td class="text-center">
-                                                                                    Derived 2
-                                                                                </td>
-
-                                                                                <td class="text-center">
-
-                                                                                </td>
-                                                                                <td>
-
-                                                                                </td>
-                                                                                <td>
-
+                                                                                    {{data.sdmDerivedTableId}}
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    Percentage (%) of
-
+                                                                                    {{data.sourceObjectName}}
                                                                                 </td>
-
-
-                                                                                <td>
-
-                                                                                </td>
-
-                                                                            </tr>
-
-                                                                            <tr class="p-selectable-row">
-                                                                                <td class="text-center">3 </td>
-
-                                                                                <td class="text-center">
-                                                                                    Derived 3
-                                                                                </td>
-
-                                                                                <td class="text-center">
-
-                                                                                </td>
-                                                                                <td class="text-center">
-
-                                                                                </td>
-                                                                                <td class="text-center">
-
-                                                                                </td>
-                                                                                <td class="text-center">
-                                                                                    Job field type
-
-                                                                                </td>
-
-                                                                                <td>
-
-                                                                                </td>
-
-
-
                                                                             </tr>
 
                                                                         </ng-template>
@@ -1350,7 +1197,10 @@
                                                                 tooltip="Previous"><b>
                                                                     <i class="fa fa-angle-double-left"></i></b>
                                                                 Previous</button>&nbsp;
-                                                            <button type="submit" (click)="next()"
+                                                                <!-- next(); -->
+                                                            <button type="submit" (click)="saveDerived();"
+                                                            [disabled]="saveDerivedData.length == 0"
+                                                            [ngClass]="{'disabled-btn-bg-green' : saveDerivedData.length == 0,'btn-bg-green': saveDerivedData.length > 0}"
                                                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                                                 tooltip="Save"><b>
                                                                     <i class="fa fa-floppy-o"></i></b>
@@ -1376,7 +1226,9 @@
 
                                                 </fieldset>
                                             </div>
+                                      
                                         </div>
+                                        </form>
                                     </div>
 
                                     <div *ngSwitchCase="4" [@slideInOut]>

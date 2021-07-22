@@ -77,7 +77,7 @@ export class SdmStepperComponent implements OnInit {
   editTempIndex: any = -1;
   editTempFlag: boolean = false;
   sdmData: any;
-  sdmMasterId: number;
+  sdmMasterId: number = 9;
   sourceCombinationData: any;
   sdmSourceCombinationListData: any;
   srcCombLength: any;
@@ -87,6 +87,16 @@ export class SdmStepperComponent implements OnInit {
   selectedSourceCombinationData: any = [];
   derivedTableFieldsData: any;
   fieldTypes: any[];
+  sdmSummeryData: any;
+  sdmFormStep3: FormGroup;
+  derivedMasterData: any;
+  keywordData: any;
+  saveDerivedData: any = [];
+  tempDerivedTable: any = [];
+  derivedTypeName: any;
+  derivedTableName: any;
+  derivedModuleName: any = [];
+  sourceObjectName: any;
 
   constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, private toaster: ToastrService) {
 
@@ -102,6 +112,17 @@ export class SdmStepperComponent implements OnInit {
     "sdmSourceMasterFieldValueMappingDetailList": new FormControl([]),
     })
 
+
+    this.sdmFormStep3 = this.formBuilder.group({
+    "sdmDerivedMasterId": new FormControl("0"),
+    "derivedName": new FormControl("",Validators.required),
+    "sdmDerivedTypeId": new FormControl("",Validators.required),
+    "sdmMasterId": new FormControl(""),
+    "sdmDerivedTableId": new FormControl("",Validators.required),
+    "percentageOf": new FormControl("",Validators.required),
+    "moduleIdList": new FormControl([],Validators.required),
+    })
+
     if(localStorage.getItem('sdmFormStep1') != null){
       let data = JSON.parse(localStorage.getItem('sdmFormStep1'))
       this.sdmFormStep1.patchValue(data)
@@ -113,6 +134,7 @@ export class SdmStepperComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.sdmSummery();
     this.valueListData = [];
     this.users1 = [
       { SrNo: '1', DerivedName: 'grp', Module: 'AAA', TableName: 'B', FieldName: 'Hold', DerivedType: 'C', JobFieldType: 'D', Percentageof: 'E' },
@@ -234,7 +256,7 @@ export class SdmStepperComponent implements OnInit {
               if(element.sourceTableId == ele.sourceMasterId){
                 this.sourceMasterName = ele.sourceObjectName
                 let val: any = ele.sourceMasterId + ','+ele.sourceObjectName
-                this.fieldTypeList(val)
+                this.fieldTypeList(val, 0)
               }
               this.sourceValueId = element.sourceValueIdList
             });    
@@ -245,14 +267,14 @@ export class SdmStepperComponent implements OnInit {
     )
   }
 
-  fieldTypeList(value){
+  fieldTypeList(value, flag){
     let val = value.split(',')
     this.sourceMasterId = val[0]
     this.sourceMasterName = val[1]
     this.sdmService.fieldTypeList(this.sourceMasterId).subscribe(
       res => {
         this.fieldTypeData = res.data.results;
-        if(this.step1FormDisableFlag){
+        if(this.step1FormDisableFlag && flag == 0){
             this.fieldTypeData.forEach(ele => {
               this.sdmSourceMasterFieldValueMappingDetailList.forEach(element => {
                 if(element.sourceFieldId == ele.sourceFieldId){
@@ -357,7 +379,7 @@ export class SdmStepperComponent implements OnInit {
 
   addSource(){
     
-    if(!this.step1FormDisableFlag && this.tempSourceTable.length < 5){
+    if(this.tempSourceTable.length < 5){
     this.tempSourceTable.push({
       'tableName': this.sourceMasterName,
       'fieldType':this.sourceFieldTypeName,
@@ -488,12 +510,18 @@ export class SdmStepperComponent implements OnInit {
         this.sdmFormStep1.controls['sdmName'].disable();
         //this.sdmFormStep1.disable();
         localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
+
+        this.sdmMasterId = res.data.results[0].sdmMasterId;
+        this.sdmMasterId = 9
+        // alert(this.sdmMasterId)
+        this.sourceCombination();
+        this.SdmMasterDetails();
     })
   }
 
 
   SdmMasterDetails(){
-    this.sdmMasterId= 9;
+    //this.sdmMasterId= 9;
     this.sdmService.SdmMasterDetails(this.sdmMasterId).subscribe(res =>{
       this.sdmData = res.data.results;
     })
@@ -502,7 +530,7 @@ export class SdmStepperComponent implements OnInit {
 
   sourceCombination(){
     
-      this.sdmService.sourceCombination(9).subscribe(res =>{
+      this.sdmService.sourceCombination(this.sdmMasterId).subscribe(res =>{
       this.sourceCombinationData = res.data.results[0];
       this.sourceFieldListData = this.sourceCombinationData.sourceFieldList;
       this.sdmSourceCombinationListData = this.sourceCombinationData.sdmSourceCombinationList;
@@ -534,14 +562,14 @@ export class SdmStepperComponent implements OnInit {
         this.selectedSourceCombinationData.splice(ind,1,
           {
             "sdmSourceCombinationId":srcCombData.sdmSourceCombinationId,
-            "sdmMasterId":"9",
+            "sdmMasterId": this.sdmMasterId,
             "active": active
           })
       }else{
         this.selectedSourceCombinationData.push(
           {
             "sdmSourceCombinationId":srcCombData.sdmSourceCombinationId,
-            "sdmMasterId":"9",
+            "sdmMasterId":this.sdmMasterId,
             "active": active
           })
       }
@@ -550,7 +578,7 @@ export class SdmStepperComponent implements OnInit {
     this.selectedSourceCombinationData.push(
       {
         "sdmSourceCombinationId":srcCombData.sdmSourceCombinationId,
-        "sdmMasterId":"9",
+        "sdmMasterId":this.sdmMasterId,
         "active": active
       })
     }
@@ -574,16 +602,91 @@ export class SdmStepperComponent implements OnInit {
   derivedTablesFields(){
     this.sdmService.derivedTablesFields().subscribe(res =>{
       this.derivedTableFieldsData = res.data.results;
+      
     })
   }
 
   derivedTableNameChange(value){
     this.fieldTypes = []
-this.derivedTableFieldsData.forEach(element => {
-  if(element.sourceObjectName == value){
-     this.fieldTypes.push(element)
+    this.derivedTableName = value
+      this.derivedTableFieldsData.forEach(element => {
+      if(element.sourceObjectName == value){
+        this.fieldTypes =element.sourceObjectFieldNameList
+      }  
+    });
   }
-  
-});
+
+
+  sdmSummery(){
+    this.sdmService.sdmSummery(1).subscribe(res =>{
+      this.sdmSummeryData = res.data.results;
+      
+    })
+  }
+
+  getSelectedDerivedModule(applicationModuleId){
+    this.moduleData.forEach(element => {
+      if(element.applicationModuleId == applicationModuleId){
+        this.derivedModuleName.push(element.applicationModuleName)
+      }
+    });
+  }
+
+  getDerivedType(sdmDerivedTypeId){
+    this.derivedTypeData.forEach(element => {
+      if(element.sdmDerivedTypeId == sdmDerivedTypeId){
+        this.derivedTypeName = element.derivedType
+      }
+    });
+  }
+
+  derivedFiedName(sdmDerivedTableId){
+    console.log("this.fieldTypes: "+ JSON.stringify(this.fieldTypes))
+    this.fieldTypes.forEach(element => {
+      if(element.sdmDerivedTableId == sdmDerivedTableId){
+        this.sourceObjectName = element.sourceObjectFieldName
+      }
+    });
+  }
+
+  addsaveDerived(){
+    this.sdmFormStep3.controls['moduleIdList'].setValue([parseInt(this.sdmFormStep3.controls['moduleIdList'].value)])
+    this.sdmFormStep3.controls['sdmDerivedMasterId'].setValue(0)
+    this.sdmFormStep3.controls['sdmMasterId'].setValue(this.sdmMasterId)
+
+    this.saveDerivedData.push(this.sdmFormStep3.value)
+
+
+    let controls = this.sdmFormStep3.controls
+    this.tempDerivedTable.push({
+      "derivedName": controls['derivedName'].value,
+      "sdmDerivedTypeId": this.derivedTypeName,
+      "sourceObjectName": this.sourceObjectName,
+      "sdmDerivedTableId": this.derivedTableName,
+      "percentageOf":controls['percentageOf'].value,
+      "moduleIdList": this.derivedModuleName.toString(),
+    })
+
+   this.sdmFormStep3.reset()
+   this.derivedTableName = ""
+  }
+
+  saveDerived(){
+    this.sdmService.saveDerived(this.saveDerivedData).subscribe(res =>{
+        this.toaster.success("","Derived data saved successfully.")
+        //this.sdmFormStep1.controls['sdmName'].disable();
+        this.sdmFormStep3.reset();
+        
+        //this.derivedMasterData = res.data.results;
+       
+    })
+  }
+
+
+  KeywordMasterDetails(){
+    this.sdmService.KeywordMasterDetails().subscribe(res =>{
+      this.keywordData = res.data.results;
+      
+    })
   }
 }

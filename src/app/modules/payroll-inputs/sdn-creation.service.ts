@@ -8,8 +8,14 @@ import { Observable } from 'rxjs';
 })
 export class SdnCreationService {
   url = environment.baseUrl8083;
+  url1 = environment.baseUrl8084
   constructor(private HttpClient: HttpClient) { 
 
+  }
+
+  //  (Summery)
+  sdmSummery(sdmMasterId) : Observable<any> {
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/`+ sdmMasterId);
   }
 
   // 1st tab api (Source)
@@ -60,5 +66,15 @@ export class SdnCreationService {
   // 3rd tab api (Derived)
   derivedTablesFields():Observable<any>{
     return this.HttpClient.get<any>(this.url + `source-derived-matrix/derived/tables-fields/`);
+  }
+
+  // 3rd tab api (Derived)
+  saveDerived(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `source-derived-matrix/derived-master/`,data);
+  }
+
+  // 3rd tab api (Derived)
+  KeywordMasterDetails():Observable<any>{
+    return this.HttpClient.get<any>(this.url1 + `KeywordMasterDetails`);
   }
 }
