@@ -33,6 +33,8 @@ export class PayrollListComponent implements OnInit {
   selectedEmployeeData: any = [];
   form:FormGroup;
   generationFormData: any;
+  onBehalfValue: any;
+  sameContentValue: any;
   constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService
     ,public queryService :QueryService ) { }
 
@@ -95,18 +97,24 @@ export class PayrollListComponent implements OnInit {
     );
   }
 
-  onBehalfAndSameContentRadioBtnclick(value)
-  {
-    alert(value)
-  }
+
 
   addQueryGeneration(){ //post api for saving data
-   const formData  = new FormData();
-   this.queryService.addQueryGeneration(formData).subscribe(res =>
-    {
-     this.generationFormData = res.data.results;
-    })
+    let data ={
+      'onBehalf':this.onBehalfValue,
+      'sameContent':this.sameContentValue
+    }
+localStorage.setItem('emlpoyeeSelectionData',JSON.stringify(data))
+
 
 }
+onBehalf(value)
+{
+this.onBehalfValue = value;
+}
 
+sameContent(value)
+{
+this.sameContentValue = value;
+}
 }

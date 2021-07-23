@@ -208,13 +208,13 @@
                                                                       <label
                                                                           class="custom-control custom-radio custom-control-inline">
                                                                           <input type="radio" class="custom-control-input"
-                                                                              id="BehalfOfEmployee"  name="querydata1">
+                                                                              id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('yes')">
                                                                           <span class="custom-control-label">Yes</span>
                                                                       </label>
                                                                       <label
                                                                           class="custom-control custom-radio custom-control-inline">
                                                                           <input type="radio" class="custom-control-input"
-                                                                              id="BehalfOfEmployee"  name="querydata1">
+                                                                              id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('no')">
                                                                           <span class="custom-control-label">No</span>
                                                                       </label>
                                                                   </span>
@@ -227,13 +227,13 @@
                                                                       <label
                                                                           class="custom-control custom-radio custom-control-inline ">
                                                                           <input type="radio" class="custom-control-input"
-                                                                              id="sameContent"  name="querydata2">
+                                                                              id="sameContent"  name="querydata2" (click)="sameContent('yes')">
                                                                           <span class="custom-control-label">Yes</span>
                                                                       </label>
                                                                       <label
                                                                           class="custom-control custom-radio custom-control-inline">
                                                                           <input type="radio" class="custom-control-input"
-                                                                               id="sameContent"  name="querydata2">
+                                                                               id="sameContent"  name="querydata2" (click)="sameContent('no')">
                                                                           <span class="custom-control-label">No</span>
                                                                       </label></span>
                                                               </div>
@@ -244,8 +244,8 @@
                                           </div>
                                       </div>
                                       <div class="modal-footer">
-                                          <button type="button" tooltip="Button" (click)="modalRef.hide();
-                                          onBehalfAndSameContentRadioBtnclick($event.target.value)"
+                                          <button type="button" tooltip="Ok" (click)="modalRef.hide();addQueryGeneration()
+                                         "
                                               [routerLink]="['/admin-query-generation']"
                                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"><b><i
                                                       class="fa fa-thumbs-up"></i></b> Ok</button>

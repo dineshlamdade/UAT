@@ -91,13 +91,13 @@ export class QueryTypeMasterComponent implements OnInit {
         "priorityRequired": new FormControl("1"),
         "replyWorkflowId": new FormControl(null),
         "forwardWorkFlowId": new FormControl(0),
-        "autoCloseTimeforNopriority": new FormControl('13:15'),
+        "autoCloseTimeforNopriority": new FormControl(''),
         "resolutionTimeforNopriority": new FormControl(''),
         "active": new FormControl(true),
         "Replayworkflow": new FormControl(""),
         "subQueryTypeCode": new FormControl(''),
         "subqueryTypedescription": new FormControl(null),
-        "remark": new FormControl(true),
+        // "remark": new FormControl(true),
         "assignQATemplate1": new FormControl(''),
         "assignQATemplate2": new FormControl(''),
       }
@@ -113,13 +113,13 @@ export class QueryTypeMasterComponent implements OnInit {
         "priorityRequired": new FormControl("1"),
         "replyWorkflowId": new FormControl(0),
         "forwardWorkFlowId": new FormControl(0),
-        "autoCloseTimeforNopriority": new FormControl('13:15'),
+        "autoCloseTimeforNopriority": new FormControl(''),
         "resolutionTimeforNopriority": new FormControl(''),
         "active": new FormControl(true),
         "listQueryAnsMappingReqDTO": new FormControl([]),
         "listQueryPriorityRequestDTO": new FormControl([]),
         "subQueryRequestDTO": new FormControl([]),
-        "remark": new FormControl(true),
+        // "remark": new FormControl(true),
 
       }
     )
@@ -140,32 +140,32 @@ export class QueryTypeMasterComponent implements OnInit {
     this.priorityData = [{ //static data used.
       'id': 1,
       'priorityType': 'Urgent',
-      'resolutionTime': 24,
-      'autoClose': 240,
+      'resolutionTime': '24:00',
+      'autoClose': '24:00',
     },
     {
       'id': 2,
       'priorityType': 'High',
-      'resolutionTime': 48,
-      'autoClose': 240,
+      'resolutionTime': '48:00',
+      'autoClose': '24:00',
     },
     {
       'id': 3,
       'priorityType': 'Medium',
-      'resolutionTime': 60,
-      'autoClose': 240,
+      'resolutionTime':' 60:00',
+      'autoClose': '24:00',
     },
     {
       'id': 4,
       'priorityType': 'Low',
-      'resolutionTime': 72,
-      'autoClose': 240,
+      'resolutionTime': '72:00',
+      'autoClose': '24:00',
     }
 
     ]
     this.priorityData2 = [{
-      'resolutionTime': 24,
-      'autoClose': 240,
+      'resolutionTime': '24:00',
+      'autoClose': '24:00',
 
     }]
   }
@@ -327,6 +327,7 @@ export class QueryTypeMasterComponent implements OnInit {
     // for(let i=0; i<this.AssignQNATemplate.length; i++){
     this.subQueryRequestDTO.push(
       {
+        "remark":true,
         "subQueTypeMasterId": 0,
         "queryTypeMasterId": 0,
         "subqueryTypedescription": this.querytypeForm.controls['subqueryTypedescription'].value,
@@ -488,10 +489,15 @@ export class QueryTypeMasterComponent implements OnInit {
         });
       })
       this.priorityData2.forEach(element => {
-        this.getAlldataByIdforedit.listQueryPriorityResponseDTO.forEach(ele => {
-          element.resolutionTime = ele.resolutionTime,
-            element.autoClose = ele.autoClose
-        });
+        if(this.getAlldataByIdforedit.resolutionTimeforNopriority != null){
+        element.resolutionTime = this.getAlldataByIdforedit.resolutionTimeforNopriority;
+        element.autoClose = this.getAlldataByIdforedit.autoCloseTimeforNopriority;
+      }
+
+        // this.getAlldataByIdforedit.listQueryPriorityResponseDTO.forEach(ele => {
+        //   element.resolutionTime = ele.resolutionTime,
+        //     element.autoClose = ele.autoClose
+        // });
       })
       // this.priorityData2 = this.getAlldataByIdforedit.listQueryPriorityResponseDTO;
       let multiSelectValue = this.querytypeForm.controls['assignQATemplate2'].setValue(this.AssignQNATemplate);
@@ -539,6 +545,7 @@ export class QueryTypeMasterComponent implements OnInit {
 
   addQueryType() // main post api to save all form data .
   {
+    // alert((this.querytypeForm.controls['priorityRequired'].value));
     let listQueryAnsMappingReqDTO = [
       {
         "queryTypeQueAnsMappingId": 0,
@@ -554,7 +561,7 @@ export class QueryTypeMasterComponent implements OnInit {
 
     this.finalForm.controls['priorityRequired'].setValue(parseInt(this.querytypeForm.controls['priorityRequired'].value))
     this.finalForm.controls['forwardWorkFlowId'].setValue(parseInt(this.querytypeForm.controls['forwardWorkFlowId'].value));
-    this.finalForm.controls['replyWorkflowId'].setValue(parseInt(this.querytypeForm.controls['replyWorkflowId'].value));
+    this.finalForm.controls['replyWorkflowId'].setValue(1);
     this.finalForm.controls['listQueryAnsMappingReqDTO'].setValue(listQueryAnsMappingReqDTO);
     this.finalForm.controls['subQueryRequestDTO'].setValue(this.subQueryRequestDTO);
     this.finalForm.controls['listQueryPriorityRequestDTO'].setValue(this.listQueryPriorityRequestDTO);
@@ -572,18 +579,18 @@ export class QueryTypeMasterComponent implements OnInit {
       // this.listQueryPriorityRequestDTO =[];
       // this.subQueryRequestDTO = [];
     }
-      // ,error => {
-      //   if(error.error.status.code == '409'){
-      //     this.toster.error("",error.error.status.message);
-      //   }
-      // }
+      ,error => {
+        if(error.error.status.code == '400'){
+          this.alertService.sweetalertWarning("Duplicate Query Description Already Present !");
+        }
+      }
     );
     this.reset();
 
   }
 
-  queryTypeQueAnsMappingId: number;
-  queAnsMasterId: number;
+  queryTypeQueAnsMappingId: number= 0;
+  queAnsMasterId: number = 0;
 
   updateQueryType()   //update all form
   {
@@ -597,13 +604,14 @@ export class QueryTypeMasterComponent implements OnInit {
     ]
     this.finalForm.patchValue(this.querytypeForm.value);
     this.finalForm.controls['applicationModuleId'].setValue(parseInt(this.querytypeForm.controls['applicationModuleId'].value));
-    // this.finalForm.controls['assignQATemplate1'].setValue(parseInt(this.querytypeForm.controls['assignQATemplate1'].value));
-    // this.finalForm.controls['assignQATemplate2'].setValue(parseInt(this.querytypeForm.controls['assignQATemplate2'].value));
-
-    this.finalForm.controls['priorityRequired'].setValue(parseInt(this.querytypeForm.controls['priorityRequired'].value))
+    this.finalForm.controls['priorityRequired'].setValue(parseInt(this.querytypeForm.controls['priorityRequired'].value));
     this.finalForm.controls['forwardWorkFlowId'].setValue(parseInt(this.querytypeForm.controls['forwardWorkFlowId'].value));
     this.finalForm.controls['replyWorkflowId'].setValue(parseInt(this.querytypeForm.controls['replyWorkflowId'].value));
     this.finalForm.controls['listQueryAnsMappingReqDTO'].setValue(listQueryAnsMappingReqDTO);
+
+    // this.finalForm.controls['queryTypeQueAnsMappingId'].setValue(this.querytypeForm.controls['listQueryAnsMappingReqDTO'].value);
+    // this.finalForm.controls['queAnsMasterId'].setValue(this.querytypeForm.controls['queAnsMasterId'].value);
+
     this.finalForm.controls['subQueryRequestDTO'].setValue(this.subQueryRequestDTO);
     this.finalForm.controls['listQueryPriorityRequestDTO'].setValue(this.listQueryPriorityRequestDTO);
 
@@ -794,6 +802,9 @@ export class QueryTypeMasterComponent implements OnInit {
   /**auto close time focus out - 2nd table */
   resolutionEvent(value, prio) {
     this.priortynoautoclose = value;
+    this.querytypeForm.controls['autoCloseTimeforNopriority'].setValue(value);
+    this.finalForm.controls['autoCloseTimeforNopriority'].setValue(value);
+
     if (this.listQueryPriorityRequestDTO.length > 0) {
       this.listQueryPriorityRequestDTO.forEach((element, index) => {
         this.listQueryPriorityRequestDTO.splice(0,1,{
@@ -823,6 +834,9 @@ export class QueryTypeMasterComponent implements OnInit {
   /**resolution time focus out - 2nd table */
   resolutionEvent1(value, prio) {
     this.priortynoresolutiontime = value;
+    this.querytypeForm.controls['resolutionTimeforNopriority'].setValue(value);
+    this.finalForm.controls['resolutionTimeforNopriority'].setValue(value);
+
     if (this.listQueryPriorityRequestDTO.length > 0) {
       this.listQueryPriorityRequestDTO.forEach((element, index) => {
         this.listQueryPriorityRequestDTO.splice(0,1,{

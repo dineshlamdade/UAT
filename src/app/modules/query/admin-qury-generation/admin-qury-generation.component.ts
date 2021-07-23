@@ -40,8 +40,6 @@ export class AdminQuryGenerationComponent implements OnInit {
   public urlSafe: SafeResourceUrl;
   documentList: any = [];
 
-  // public Index: number;
-
   perticularEmpDetails: any;
   employeeMasterIdData: any;
   subQueryData: any;
@@ -85,6 +83,11 @@ export class AdminQuryGenerationComponent implements OnInit {
   querySubject: any;
   queryDesc: any;
   viewDoc: File[];
+  emplData: any;
+  index: number;
+  selectedEmployee: any;
+  emlpoyeeSelectionData: any;
+  employeeListId: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
@@ -96,8 +99,11 @@ export class AdminQuryGenerationComponent implements OnInit {
         "queryGenerationEmpId":new FormControl(0),
         "queryNumber":new FormControl(0),
         "employeeMasterId":new FormControl(1),//temp
+
         "employeeMasterIdList":new FormControl([]),
-        "onBehalfOfEmployee":new FormControl(false),
+        "onBehalfOfEmployee":new FormControl(true),
+        "sameContentForAllEmp":new FormControl(false),
+
         "applicationModuleId":new FormControl(null,[Validators.required]),
         "queryTypeMasterId":new FormControl(null,[Validators.required]),
         "subQueTypeMasterId":new FormControl(0),
@@ -151,7 +157,48 @@ export class AdminQuryGenerationComponent implements OnInit {
        this.isReset = false;
        this.hideEditTime = false;
     }
+
+
+    /******************************** Same NR */
+    if(localStorage.getItem('queryListEmpData') != null){
+      this.employeeListId = []
+      this.emplData = JSON.parse(localStorage.getItem('queryListEmpData'))
+      this.emplData.forEach(element => {
+        this.employeeListId.push(element.employeeMasterId)
+      });
+      this.index =0
+      this.selectedEmployee = this.emplData[this.index]
+      this.employeeMasterId = this.selectedEmployee.employeeMasterId
+      this.getEmpMasterDetails(this.employeeMasterId);
+    }
+
+    if(localStorage.getItem('emlpoyeeSelectionData') != null){
+      this.emlpoyeeSelectionData = JSON.parse(localStorage.getItem('emlpoyeeSelectionData'))
+      // this.isnext = true;
+      this.isPrevious = true;
+      this.isSaveNext = true;
+      this.isSaveDraftNext = true;
+      this.isSave = false;
+      this.isSaveDraft = false;
+    }
    }
+
+   nextRecord(){
+    //  alert()
+     this.index = this.index + 1;
+     this.selectedEmployee = this.emplData[this.index];
+     this.employeeMasterId = this.selectedEmployee.employeeMasterId;
+     console.log("selectedEmployee",this.selectedEmployee)
+     this.getEmpMasterDetails(this.employeeMasterId);
+
+   }
+   priviousRecord(){
+    this.index = this.index - 1;
+    this.selectedEmployee = this.emplData[this.index];
+    this.employeeMasterId = this.selectedEmployee.employeeMasterId;
+    this.getEmpMasterDetails(this.employeeMasterId);
+
+  }
 
   ngOnInit(): void {
     this.getModuleName();
@@ -240,8 +287,6 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
           this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
         }
       });
-
-
     })
   }
 
@@ -301,6 +346,12 @@ queryTempChange(value)
 }
 
 addQueryGeneration(){ //post api for saving data
+
+  if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes')
+  {
+  this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
+  // this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('true');
+
       if(this.listDoc.length == 0){
         this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
         this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
@@ -309,7 +360,9 @@ addQueryGeneration(){ //post api for saving data
         this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
         console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
         this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-        this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
+        this.queryGenerationForm.controls['employeeMasterId'].setValue(0);
+        // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
+
         let data = []
         data.push(this.queryGenerationForm.value)
         let queryGenerationEmployeeData  = {
@@ -335,6 +388,7 @@ addQueryGeneration(){ //post api for saving data
           }
   //   }
   // })
+}
 
 }
 
@@ -345,7 +399,7 @@ updateQueryGeneration(value) //put api for update data
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
+  this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
 
   if(value == 'Save'){
     this.queryGenerationForm.controls['status'].setValue('Save');
@@ -466,7 +520,8 @@ this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
 
 getEmpMasterDetails(employeeMasterIdData)// temp id is used
 {
-  this.queryService.getEmpMasterDetails(60).subscribe(res =>
+  // alert(employeeMasterIdData)
+  this.queryService.getEmpMasterDetails(employeeMasterIdData).subscribe(res =>
     {
       this.perticularEmpDetails = res.data.results[0][0];
     })

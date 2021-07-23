@@ -108,7 +108,7 @@ export class QueryComponent implements OnInit {
       });
      })
      this.queryForm.controls['code'].setValue(this.queryCode);
-     this.getKeywordsByTwoId(this.queAnsMasterId, this.employeeMasterId);
+    //  this.getKeywordsByTwoId(this.queAnsMasterId, this.employeeMasterId);
 
   }
   updateQuery()
@@ -172,14 +172,14 @@ this.queryService.getKeywordsById(queAnsMasterId).subscribe(res =>{
   this.getKeywordsByIdData = res.data.results;
 })
 }
-getKeywordsByTwoId(queAnsMasterId,employeeMasterId)
-{
+// getKeywordsByTwoId(queAnsMasterId,employeeMasterId)
+// {
 
-  this.queryService.getKeywordsByTwoId(this.queAnsMasterId,this.employeeMasterId).subscribe(res =>
-  {
-    this.getKeywordsByTwoIdData = res.data.results;
-  })
-}
+//   this.queryService.getKeywordsByTwoId(this.queAnsMasterId,this.employeeMasterId).subscribe(res =>
+//   {
+//     this.getKeywordsByTwoIdData = res.data.results;
+//   })
+// }
 
 
 changeEvent($event) {
