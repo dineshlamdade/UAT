@@ -369,11 +369,11 @@
         <a href="javascript:void(0)" (click)="isCollapsedpayrollinput = !isCollapsedpayrollinput" [attr.aria-expanded]="!isCollapsedpayrollinput" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
               class="icon-credit-card"></i><span>Payroll Inputs</span></a>
         <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedpayrollinput" [isAnimated]="true">
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
             [routerLink]="['/PayrollInputs/Payroll-List']" href="javascript:void(0)">
             <span>Payroll</span></a>
           </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
             [routerLink]="['/PayrollInputs/attendance']" href="javascript:void(0)">
             <span>Attendance</span></a>
           </li>
@@ -387,11 +387,11 @@
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/workflow/master']"><span>Master</span></a></li>
           <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/workflow/workflowMaster']"><span>Master 2</span></a></li> -->
           <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/workflow/workflowMastere']"><span>Master 3</span></a></li> -->
-         
+
           <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/workflow/master']"><span>Master</span></a></li> -->
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/workflow/practicePrimeNG']"><span>Master 2</span></a></li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/workflow/practiceAngular']"><span>Master 3</span></a></li>
-         
+
       </ul>
   </li>
 
@@ -489,7 +489,7 @@
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/80C-PensionPlan']"><span>PensionPlan</span></a></li>
-                
+
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/80C-SukanyaSamriddhiScheme']"><span>SukanyaSamriddhiScheme</span></a>
@@ -545,7 +545,7 @@
               class="submenu text-ellipsis"
               [routerLink]="['/investment/80C-EmployeesNPS80CCD1']"><span>EmployeesNPS80CCD1</span></a>
           </li>
-             
+
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
                   class="submenu text-ellipsis"
                   [routerLink]="['/investment/80C-EmployeeContributionToProvidentFund_PF']"><span>EmployeeContributionToProvidentFund_PF</span></a>
@@ -754,6 +754,10 @@
               Creation</a>
           </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+            [routerLink]="['/companysetting/pay-roll-structure']" href="javascript:void(0)">Pay Roll Structure
+          </a>
+        </li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/companysetting/attribute-dependency']" href="javascript:void(0)">Attribute Dependency</a>
           </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
@@ -774,7 +778,7 @@
             <a class="submenu" [routerLink]="['/userDashboard']" href="javascript:void(0)">userDashboard
           </a>
     </li>
-             
+
             </ul>
           </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
@@ -842,7 +846,7 @@
           <i class="fa fa-money" aria-hidden="true"></i>
           <span>Loan Master</span>
       </a>
-    </li> 
+    </li>
 
       <li
         [routerLinkActive]="['active']"
@@ -873,7 +877,7 @@
         aria-hidden="true"></i><span>{{subMenu.menuName}}</span></a>
            <ul *ngFor = "let subMenus of subMenu.childItems" class="collapse" id="collapseBasic" [collapse]="isCollapsedDynamicMenu" [isAnimated]="true">
              <li ><a class="submenu" routerLink="{{'/'+subMenus.routerLink}}"
-               
+
                   href="javascript:void(0)"><span>{{subMenus.menuName}}</span></a>
                  </li>
            </ul>
@@ -881,7 +885,7 @@
     </ul>
   </li>
 
- 
+
 </ul>
 
   </nav>
