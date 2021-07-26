@@ -77,5 +77,15 @@ export class NonRecurringQtyService {
   NonSalaryTransactionGroup(data):Observable<any>{
     return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup`,data);   
   }
+
+  /** deviation calculate - save transaction */
+  NonRecurringTransactionGrouprangeValidation(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGrouprangeValidation`,data);   
+  }
+
+  /** get edit data for selected non salar id - transaction tab */
+  NonRecurringTransactionGroupAPIbyId(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupHistoryAPI_ID`,data);     
+  }
   
 }

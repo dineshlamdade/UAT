@@ -662,6 +662,23 @@
                                                                                         <th rowspan="2">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
+                                                                                                Head Name
+                                                                                                <div
+                                                                                                    class="Sort_Filter_Position">
+                                                                                                    <p-sortIcon
+                                                                                                        field="headtype">
+                                                                                                    </p-sortIcon>
+                                                                                                    <p-columnFilter
+                                                                                                        field="headtype"
+                                                                                                        display="menu"
+                                                                                                        class="p-ml-auto">
+                                                                                                    </p-columnFilter>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </th>
+                                                                                        <th rowspan="2">
+                                                                                            <div
+                                                                                                class="p-d-flex p-jc-between p-ai-center">
                                                                                                 Head Type
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
@@ -694,8 +711,6 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
-                                                                                        <th rowspan="2" class="wd-1">
-                                                                                        </th>
                                                                                         <th rowspan="2" class="wd-5">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
@@ -717,14 +732,14 @@
                                                                                         <th rowspan="2" class="wd-8">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
-                                                                                                Frequency
+                                                                                                UOM
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
-                                                                                                        field="Frequency">
+                                                                                                        field="uom">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        field="Frequency"
+                                                                                                        field="uom"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
 
@@ -732,6 +747,25 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
+                                                                                        <th rowspan="2" class="wd-8">
+                                                                                            <div
+                                                                                                class="p-d-flex p-jc-between p-ai-center">
+                                                                                                Frequency
+                                                                                                <div
+                                                                                                    class="Sort_Filter_Position">
+                                                                                                    <p-sortIcon
+                                                                                                        field="frequency">
+                                                                                                    </p-sortIcon>
+                                                                                                    <p-columnFilter
+                                                                                                        field="frequency"
+                                                                                                        display="menu"
+                                                                                                        class="p-ml-auto">
+
+                                                                                                    </p-columnFilter>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </th>
+                                                                                        
                                                                                         <th rowspan="2" class="wd-10">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
@@ -742,7 +776,6 @@
                                                                                                         field="FromDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        type="date"
                                                                                                         field="FromDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -754,7 +787,7 @@
                                                                                         <th rowspan="2" class="wd-8">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
-                                                                                                Type
+                                                                                                Transaction Type
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
@@ -779,7 +812,6 @@
                                                                                                         field="Nooftrans">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        type="numeric"
                                                                                                         field="Nooftrans"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -798,7 +830,6 @@
                                                                                                         field="ToDate">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        type="date"
                                                                                                         field="ToDate"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -807,19 +838,16 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
-                                                                                        <th rowspan="2" class="wd-10">
-                                                                                            Clawback </th>
                                                                                         <th rowspan="2" class="wd-8">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
-                                                                                                Opening Amount
+                                                                                                Opening Quantity
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
                                                                                                         field="openingval">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        type="numeric"
                                                                                                         field="openingval"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -831,14 +859,13 @@
                                                                                         <th rowspan="2" class="wd-8">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
-                                                                                                Closing Amount
+                                                                                                Closing Quantity
                                                                                                 <div
                                                                                                     class="Sort_Filter_Position">
                                                                                                     <p-sortIcon
                                                                                                         field="closingamt">
                                                                                                     </p-sortIcon>
                                                                                                     <p-columnFilter
-                                                                                                        type="numeric"
                                                                                                         field="closingamt"
                                                                                                         display="menu"
                                                                                                         class="p-ml-auto">
@@ -849,8 +876,7 @@
                                                                                         </th>
                                                                                         <th rowspan="2" class="wd-10">
                                                                                             Remark </th>
-                                                                                        <th rowspan="2" class="wd-8">
-                                                                                            Status </th>
+
                                                                                         <th rowspan="2"></th>
                                                                                     </tr>
                                                                                 </ng-template>

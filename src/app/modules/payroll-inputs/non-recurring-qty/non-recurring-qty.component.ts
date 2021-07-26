@@ -111,7 +111,7 @@ export class NonRecurringQtyComponent implements OnInit {
 	repeatModeData: any;
 	deviationcount: any = 0;
 	repeatcount:any = 0;
-	nonRecurringTransactionGroupDeviationList: any[] = [];
+	nonsalaryTransactionGroupDeviationList: any[] = [];
 	devationRemarkText: any = '';
 	selectedDeviationdata: any;
 	repeatRemarkText: any;
@@ -351,9 +351,9 @@ export class NonRecurringQtyComponent implements OnInit {
 
 		const formData = new FormData();
 
-		formData.append('nonRecurringTransactionGroupId', this.selectedEmpData[index].nonRecurringTransactionGroupId)
+		formData.append('nonSalaryTransactionGroupId', this.selectedEmpData[index].nonSalaryTransactionGroupId)
 
-		this.nonRecService.NonRecurringTransactionGroupAPIbyId(formData).subscribe(
+		this.nonRecQtyService.NonRecurringTransactionGroupAPIbyId(formData).subscribe(
 			res => {
 				this.NonRecurringTransactionGroupAPIbyIdData = res.data.results;
 				let transactionData = this.NonRecurringTransactionGroupAPIbyIdData[0]
@@ -551,7 +551,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			"deviationStatus":this.selectedDeviationdata.status,
 			"deviationAmountLimit":this.selectedDeviationdata.deviationAmountLimit
 		}
-		this.nonRecurringTransactionGroupDeviationList.push(obj)
+		this.nonsalaryTransactionGroupDeviationList.push(obj)
 	}
 
 	/** update single transaction */
@@ -594,7 +594,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			"refferedEmpId": this.refralemployeeMasterId,
 			"refferedpayrollAreaCode": this.refPayrolArea,
 			"approveStatus": "Pending",
-			"nonRecurringTransactionGroupDeviationList":this.nonRecurringTransactionGroupDeviationList
+			"nonsalaryTransactionGroupDeviationList":this.nonsalaryTransactionGroupDeviationList
 		}]
 
 		console.log("Data is: " + JSON.stringify(data))
@@ -839,7 +839,7 @@ export class NonRecurringQtyComponent implements OnInit {
 					let ind = index;
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
-						"nonSalaryDetailId": element.headMasterId,
+						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
@@ -848,13 +848,13 @@ export class NonRecurringQtyComponent implements OnInit {
 						"fromDate": element.fromDate,
 						"transactionsType": this.selectedTransactionType,
 						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": element.toDate,
+						"toDate": todate,
 						"quantity": element.quantity,
             "uom": element.uom,
             "type":element.type,
 						"remark": element.remark,
 						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
+						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
 
 					})
 				} else {
@@ -872,13 +872,13 @@ export class NonRecurringQtyComponent implements OnInit {
               "fromDate": data.fromDate,
               "transactionsType": this.selectedTransactionType,
               "numberOfTransactions": data.numberOfTransactions,
-              "toDate": data.toDate,
+              "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
               "type":data.headDescription,
               "remark": data.remark,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList":[]
 
 						})
 					}
@@ -896,13 +896,13 @@ export class NonRecurringQtyComponent implements OnInit {
         "fromDate": data.fromDate,
         "transactionsType": this.selectedTransactionType,
         "numberOfTransactions": data.numberOfTransactions,
-        "toDate": data.toDate,
+        "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
         "type":data.headDescription,
         "remark": data.remark,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList":[]
 
 			})
 		}
@@ -940,7 +940,7 @@ export class NonRecurringQtyComponent implements OnInit {
 					let ind = index;
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
-						"nonSalaryDetailId": element.headMasterId,
+						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
@@ -949,19 +949,19 @@ export class NonRecurringQtyComponent implements OnInit {
 						"fromDate": this.selectedFromDateForSave,
 						"transactionsType": this.selectedTransactionType,
 						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": element.toDate,
+						"toDate": todate,
 						"quantity": element.quantity,
             "uom": element.uom,
             "type":element.type,
 						"remark": element.remark,
 						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
+						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
 
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
 					if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryOptionlist[0].nonSalaryDetailId) { return; }
-					else {
+          else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
               "nonSalaryDetailId": data.nonSalaryOptionlist[0].nonSalaryDetailId,
@@ -973,13 +973,13 @@ export class NonRecurringQtyComponent implements OnInit {
               "fromDate": this.selectedFromDateForSave,
               "transactionsType": this.selectedTransactionType,
               "numberOfTransactions": data.numberOfTransactions,
-              "toDate": data.toDate,
+              "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
               "type":data.headDescription,
               "remark": data.remark,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList":[]
 
 						})
 					}
@@ -997,13 +997,13 @@ export class NonRecurringQtyComponent implements OnInit {
         "fromDate": this.selectedFromDateForSave,
         "transactionsType": this.selectedTransactionType,
         "numberOfTransactions": data.numberOfTransactions,
-        "toDate": data.toDate,
+        "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
         "type":data.headDescription,
         "remark": data.remark,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList":[]
 
 			})
 		}
@@ -1058,7 +1058,7 @@ export class NonRecurringQtyComponent implements OnInit {
 					let ind = index;
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
-						"nonSalaryDetailId": element.headMasterId,
+						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
@@ -1067,13 +1067,13 @@ export class NonRecurringQtyComponent implements OnInit {
 						"fromDate": element.fromDate,
 						"transactionsType": this.selectedTransactionType,
 						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": element.toDate,
+						"toDate": todate,
 						"quantity": element.quantity,
             "uom": element.uom,
             "type":element.type,
 						"remark": element.remark,
 						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
+						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
 
 					})
 				} else {
@@ -1091,13 +1091,13 @@ export class NonRecurringQtyComponent implements OnInit {
               "fromDate": data.fromDate,
               "transactionsType": this.selectedTransactionType,
               "numberOfTransactions": data.numberOfTransactions,
-              "toDate": data.toDate,
+              "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
               "type":data.headDescription,
               "remark": data.remark,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList":[]
 
 						})
 					}
@@ -1115,13 +1115,13 @@ export class NonRecurringQtyComponent implements OnInit {
         "fromDate": data.fromDate,
         "transactionsType": this.selectedTransactionType,
         "numberOfTransactions": data.numberOfTransactions,
-        "toDate": data.toDate,
+        "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
         "type":data.headDescription,
         "remark": data.remark,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList":[]
 
 			})
 		}
@@ -1151,7 +1151,7 @@ export class NonRecurringQtyComponent implements OnInit {
 					let ind = index;
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
-						"nonSalaryDetailId": element.headMasterId,
+						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
@@ -1166,7 +1166,7 @@ export class NonRecurringQtyComponent implements OnInit {
             "type":element.type,
 						"remark": element.remark,
 						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
+						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
 
 					})
 				} else {
@@ -1190,7 +1190,7 @@ export class NonRecurringQtyComponent implements OnInit {
               "type":data.headDescription,
               "remark": data.remark,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList":[]
 
 						})
 					}
@@ -1214,7 +1214,7 @@ export class NonRecurringQtyComponent implements OnInit {
         "type":data.headDescription,
         "remark": data.remark,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList":[]
 
 			})
 		}
@@ -1243,7 +1243,7 @@ export class NonRecurringQtyComponent implements OnInit {
 					let ind = index;
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
-						"nonSalaryDetailId": element.headMasterId,
+						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
@@ -1252,13 +1252,13 @@ export class NonRecurringQtyComponent implements OnInit {
 						"fromDate": element.fromDate,
 						"transactionsType": this.selectedTransactionType,
 						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": element.toDate,
+						"toDate": todate,
 						"quantity": element.quantity,
             "uom": element.uom,
             "type":element.type,
 						"remark": value,
 						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
+						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
 
 					})
 				} else {
@@ -1276,13 +1276,13 @@ export class NonRecurringQtyComponent implements OnInit {
               "fromDate": data.fromDate,
               "transactionsType": this.selectedTransactionType,
               "numberOfTransactions": data.numberOfTransactions,
-              "toDate": data.toDate,
+              "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
               "type":data.headDescription,
               "remark": value,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList":[]
 
 						})
 					}
@@ -1300,13 +1300,13 @@ export class NonRecurringQtyComponent implements OnInit {
         "fromDate": data.fromDate,
         "transactionsType": this.selectedTransactionType,
         "numberOfTransactions": data.numberOfTransactions,
-        "toDate": data.toDate,
+        "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
         "type":data.headDescription,
         "remark": value,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList":[]
 
 			})
 		}
@@ -1329,37 +1329,37 @@ export class NonRecurringQtyComponent implements OnInit {
 		}
 
 		
-			// if(this.selectedFromDateForSave != ''){
-			// 	let inputdata = {
-			// 		"employeeMasterId":this.selectedEmployeeMasterId,
-			// 		"headMasterId": data.headId,
-			// 		"payrollAreaId":"1",
-			// 		"amount": value,
-			// 		"fromDate": this.selectedFromDateForSave
-			// 	}
+			if(this.selectedFromDateForSave != ''){
+				let inputdata = {
+					"employeeMasterId":this.selectedEmployeeMasterId,
+					"nonSalaryDetailId": data.nonSalaryOptionlist[0].nonSalaryDetailId,
+					"payrollAreaId":"1",
+					"amount": value,
+					"fromDate": this.selectedFromDateForSave
+				}
 					
-			// 	this.deviationModeData = []
-			// 		this.repeatModeData = []
-			// 		this.deviationData = []
-			// 		this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
-			// 			let resp : any = res;
-			// 				resp.forEach(element => {
-			// 					if(element.status != 'No Deviation'){
-			// 						this.deviationData.push(element)
-			// 					}
-			// 				});
-			// 			this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
-			// 			this.deviationData.forEach(element => {
-			// 				if(element.mode == 'Deviation'){
-			// 					this.deviationModeData.push(element)
-			// 					this.deviationcount = this.deviationModeData.length
-			// 				}else if(element.mode == 'Repeat'){
-			// 					this.repeatModeData.push(element)
-			// 					this.repeatcount = this.repeatModeData.length
-			// 				}
-			// 			});
-			// 		})
-			// }	
+				this.deviationModeData = []
+					this.repeatModeData = []
+					this.deviationData = []
+					this.nonRecQtyService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
+						let resp : any = res;
+							resp.forEach(element => {
+								if(element.status != 'No Deviation'){
+									this.deviationData.push(element)
+								}
+							});
+						this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].deviationCount = this.deviationData.length
+						this.deviationData.forEach(element => {
+							if(element.mode == 'Deviation'){
+								this.deviationModeData.push(element)
+								this.deviationcount = this.deviationModeData.length
+							}else if(element.mode == 'Repeat'){
+								this.repeatModeData.push(element)
+								this.repeatcount = this.repeatModeData.length
+							}
+						});
+					})
+			}	
 		
 			
 
@@ -1370,7 +1370,7 @@ export class NonRecurringQtyComponent implements OnInit {
 					let ind = index;
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
-						"nonSalaryDetailId": element.headMasterId,
+						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
@@ -1379,13 +1379,13 @@ export class NonRecurringQtyComponent implements OnInit {
 						"fromDate": element.fromDate,
 						"transactionsType": this.selectedTransactionType,
 						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": element.toDate,
+						"toDate": todate,
 						"quantity": parseInt(value),
             "uom": element.uom,
             "type":element.type,
 						"remark": element.remark,
 						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
+						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
 
 					})
 				} else {
@@ -1403,13 +1403,13 @@ export class NonRecurringQtyComponent implements OnInit {
               "fromDate": data.fromDate,
               "transactionsType": this.selectedTransactionType,
               "numberOfTransactions": data.numberOfTransactions,
-              "toDate": data.toDate,
+              "toDate": todate,
               "quantity": parseInt(value),
               "uom": data.uom,
               "type":data.headDescription,
               "remark": data.remark,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList":[]
 
 						})
 					}
@@ -1427,13 +1427,13 @@ export class NonRecurringQtyComponent implements OnInit {
         "fromDate": data.fromDate,
         "transactionsType": this.selectedTransactionType,
         "numberOfTransactions": data.numberOfTransactions,
-        "toDate": data.toDate,
+        "toDate": todate,
         "quantity": parseInt(value),
         "uom": data.uom,
         "type":data.headDescription,
         "remark": data.remark,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList":[]
 
 			})
 		}
@@ -1458,13 +1458,14 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
 		}
 		let length = 0
-		if (this.saveTransactionData.length > 0) {
+
+    if (this.saveTransactionData.length > 0) {
 			this.saveTransactionData.forEach((element, index) => {
-				if (element.headMasterId == data.headId) {
+				if (element.nonSalaryDetailId ==  data.nonSalaryOptionlist[0].nonSalaryDetailId) {
 					let ind = index;
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
-						"headMasterId": element.headMasterId,
+						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
@@ -1474,51 +1475,36 @@ export class NonRecurringQtyComponent implements OnInit {
 						"transactionsType": this.selectedTransactionType,
 						"numberOfTransactions": element.numberOfTransactions,
 						"toDate": todate,
-						"amount": element.amount,
+						"quantity": element.quantity,
+            "uom": element.uom,
+            "type":element.type,
 						"remark": element.remark,
 						"createdBy": "rahul",
-						"clawbackApplicableAt": element.clawbackApplicableAt,
-						"clawbackInputType": element.clawbackInputType,
-						"clawbackPeriod": element.clawbackPeriod,
-						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate,
-						"executeSDM": element.executeSDM,
-						"refferedEmpId": element.refferedEmpId,
-						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
-						"approveStatus": "Pending",
-						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
 
 					})
 				} else {
-					length = this.saveTransactionData.length - 1;
-					if (parseInt(this.saveTransactionData[length].headMasterId) == parseInt(data.headId)) { return; }
+					let length = this.saveTransactionData.length - 1;
+					if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryOptionlist[0].nonSalaryDetailId) { return; }
 					else {
-						console.log("here in else")
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
-							"headMasterId": data.headId,
-							"standardName": data.headDescription,
-							"payrollAreaId": "1",
-							"payrollAreaCode": this.selectedPayrollArea,
-							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
-							"fromDate": data.fromdate,
-							"transactionsType": this.selectedTransactionType,
-							"numberOfTransactions": data.numberOfTransactions,
-							"toDate": todate,
-							"amount": data.openingAmount,
-							"remark": value,
-							"createdBy": "rahul",
-							"clawbackApplicableAt": "",
-							"clawbackInputType": "",
-							"clawbackPeriod": 0,
-							"clawbackUnit": "",
-							"clawbackDate": "",
-							"executeSDM": data.executeSDM,
-							"refferedEmpId": this.refralemployeeMasterId,
-							"refferedpayrollAreaCode": this.refPayrolArea,
-							"approveStatus": "Pending",
-							"nonRecurringTransactionGroupDeviationList":[]
+              "nonSalaryDetailId": data.nonSalaryOptionlist[0].nonSalaryDetailId,
+              "standardName": data.standardName,
+              "payrollAreaId": "1",
+              "payrollAreaCode": data.payrollArea,
+              "onceEvery": data.onceEvery,
+              "frequency": value,
+              "fromDate": data.fromDate,
+              "transactionsType": this.selectedTransactionType,
+              "numberOfTransactions": data.numberOfTransactions,
+              "toDate": todate,
+              "quantity": data.quantity,
+              "uom": data.uom,
+              "type":data.headDescription,
+              "remark": data.remark,
+              "createdBy": "rahul",
+              "nonsalaryTransactionGroupDeviationList":[]
 
 						})
 					}
@@ -1526,33 +1512,27 @@ export class NonRecurringQtyComponent implements OnInit {
 			});
 		} else {
 			this.saveTransactionData.push({
-				"employeeMasterId": this.selectedEmployeeMasterId,
-				"headMasterId": data.headId,
-				"standardName": data.headDescription,
-				"payrollAreaId": "1",
-				"payrollAreaCode": this.selectedPayrollArea,
-				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
-				"fromDate": data.fromdate,
-				"transactionsType": this.selectedTransactionType,
-				"numberOfTransactions": data.numberOfTransactions,
-				"toDate": todate,
-				"amount": data.openingAmount,
-				"remark": value,
-				"createdBy": "rahul",
-				"clawbackApplicableAt": "",
-				"clawbackInputType": "",
-				"clawbackPeriod": 0,
-				"clawbackUnit": "",
-				"clawbackDate": "",
-				"executeSDM": data.executeSDM,
-				"refferedEmpId": this.refralemployeeMasterId,
-				"refferedpayrollAreaCode": this.refPayrolArea,
-				"approveStatus": "Pending",
-				"nonRecurringTransactionGroupDeviationList":[]
+        "employeeMasterId": this.selectedEmployeeMasterId,
+        "nonSalaryDetailId": data.nonSalaryOptionlist[0].nonSalaryDetailId,
+        "standardName": data.standardName,
+        "payrollAreaId": "1",
+        "payrollAreaCode": data.payrollArea,
+        "onceEvery": data.onceEvery,
+        "frequency": value,
+        "fromDate": data.fromDate,
+        "transactionsType": this.selectedTransactionType,
+        "numberOfTransactions": data.numberOfTransactions,
+        "toDate": todate,
+        "quantity": data.quantity,
+        "uom": data.uom,
+        "type":data.headDescription,
+        "remark": data.remark,
+        "createdBy": "rahul",
+        "nonsalaryTransactionGroupDeviationList":[]
 
 			})
 		}
+
 		console.log("frequency: " + JSON.stringify(this.saveTransactionData))
 
 	}
@@ -1571,13 +1551,15 @@ export class NonRecurringQtyComponent implements OnInit {
 		if (this.selectedFromDate == '') {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
 		}
-		if (this.saveTransactionData.length > 0) {
+
+
+    if (this.saveTransactionData.length > 0) {
 			this.saveTransactionData.forEach((element, index) => {
-				if (element.headMasterId == data.headId) {
+				if (element.nonSalaryDetailId ==  data.nonSalaryOptionlist[0].nonSalaryDetailId) {
 					let ind = index;
 					this.saveTransactionData.splice(ind, 1, {
 						"employeeMasterId": this.selectedEmployeeMasterId,
-						"headMasterId": element.headMasterId,
+						"nonSalaryDetailId": element.nonSalaryDetailId,
 						"standardName": element.standardName,
 						"payrollAreaId": "1",
 						"payrollAreaCode": element.payrollAreaCode,
@@ -1587,50 +1569,36 @@ export class NonRecurringQtyComponent implements OnInit {
 						"transactionsType": this.selectedTransactionType,
 						"numberOfTransactions": parseInt(value),
 						"toDate": todate,
-						"amount": element.amount,
+						"quantity": element.quantity,
+            "uom": element.uom,
+            "type":element.type,
 						"remark": element.remark,
 						"createdBy": "rahul",
-						"clawbackApplicableAt": element.clawbackApplicableAt,
-						"clawbackInputType": element.clawbackInputType,
-						"clawbackPeriod": element.clawbackPeriod,
-						"clawbackUnit": element.clawbackUnit,
-						"clawbackDate": element.clawbackDate,
-						"executeSDM": element.executeSDM,
-						"refferedEmpId": element.refferedEmpId,
-						"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
-						"approveStatus": "Pending",
-						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
+						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
 
 					})
 				} else {
 					let length = this.saveTransactionData.length - 1;
-					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+					if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryOptionlist[0].nonSalaryDetailId) { return; }
 					else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
-							"headMasterId": data.headId,
-							"standardName": data.headDescription,
-							"payrollAreaId": "1",
-							"payrollAreaCode": this.selectedPayrollArea,
-							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
-							"fromDate": data.fromdate,
-							"transactionsType": this.selectedTransactionType,
-							"numberOfTransactions": parseInt(value),
-							"toDate": todate,
-							"amount": data.openingAmount,
-							"remark": data.remark,
-							"createdBy": "rahul",
-							"clawbackApplicableAt": "",
-							"clawbackInputType": "",
-							"clawbackPeriod": 0,
-							"clawbackUnit": "",
-							"clawbackDate": "",
-							"executeSDM": data.executeSDM,
-							"refferedEmpId": this.refralemployeeMasterId,
-							"refferedpayrollAreaCode": this.refPayrolArea,
-							"approveStatus": "Pending",
-							"nonRecurringTransactionGroupDeviationList":[]
+              "nonSalaryDetailId": data.nonSalaryOptionlist[0].nonSalaryDetailId,
+              "standardName": data.standardName,
+              "payrollAreaId": "1",
+              "payrollAreaCode": data.payrollArea,
+              "onceEvery": data.onceEvery,
+              "frequency": data.frequency,
+              "fromDate": data.fromDate,
+              "transactionsType": this.selectedTransactionType,
+              "numberOfTransactions": parseInt(value),
+              "toDate": todate,
+              "quantity": data.quantity,
+              "uom": data.uom,
+              "type":data.headDescription,
+              "remark": data.remark,
+              "createdBy": "rahul",
+              "nonsalaryTransactionGroupDeviationList":[]
 
 						})
 					}
@@ -1638,33 +1606,27 @@ export class NonRecurringQtyComponent implements OnInit {
 			});
 		} else {
 			this.saveTransactionData.push({
-				"employeeMasterId": this.selectedEmployeeMasterId,
-				"headMasterId": data.headId,
-				"standardName": data.headDescription,
-				"payrollAreaId": "1",
-				"payrollAreaCode": this.selectedPayrollArea,
-				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
-				"fromDate": data.fromdate,
-				"transactionsType": this.selectedTransactionType,
-				"numberOfTransactions": data.numberOfTransactions,
-				"toDate": todate,
-				"amount": data.openingAmount,
-				"remark": data.remark,
-				"createdBy": "rahul",
-				"clawbackApplicableAt": "",
-				"clawbackInputType": "",
-				"clawbackPeriod": 0,
-				"clawbackUnit": "",
-				"clawbackDate": "",
-				"executeSDM": data.executeSDM,
-				"refferedEmpId": this.refralemployeeMasterId,
-				"refferedpayrollAreaCode": this.refPayrolArea,
-				"approveStatus": "Pending",
-				"nonRecurringTransactionGroupDeviationList":[]
+        "employeeMasterId": this.selectedEmployeeMasterId,
+        "nonSalaryDetailId": data.nonSalaryOptionlist[0].nonSalaryDetailId,
+        "standardName": data.standardName,
+        "payrollAreaId": "1",
+        "payrollAreaCode": data.payrollArea,
+        "onceEvery": data.onceEvery,
+        "frequency": data.frequency,
+        "fromDate": data.fromDate,
+        "transactionsType": this.selectedTransactionType,
+        "numberOfTransactions": parseInt(value),
+        "toDate": todate,
+        "quantity": data.quantity,
+        "uom": data.uom,
+        "type":data.headDescription,
+        "remark": data.remark,
+        "createdBy": "rahul",
+        "nonsalaryTransactionGroupDeviationList":[]
 
 			})
 		}
+
 		console.log("No Of transaction: " + JSON.stringify(this.saveTransactionData))
 	}
 
@@ -1704,7 +1666,7 @@ export class NonRecurringQtyComponent implements OnInit {
 	deviationRemark(remark, deviationdata){
        this.devationRemarkText = remark;
 	   this.selectedDeviationdata = deviationdata
-	//    console.log(JSON.stringify(this.selectedDeviationdata) + " :this.selectedDeviationdata")
+	   console.log(JSON.stringify(this.selectedDeviationdata) + " :this.selectedDeviationdata")
 	}
 
 	/**save repeat remark data */
@@ -1729,36 +1691,29 @@ export class NonRecurringQtyComponent implements OnInit {
 			"deviationStatus":this.selectedDeviationdata.status,
 			"deviationAmountLimit":this.selectedDeviationdata.deviationAmountLimit
 		}
-		this.nonRecurringTransactionGroupDeviationList.push(obj)
+		this.nonsalaryTransactionGroupDeviationList.push(obj)
 		
 		this.saveTransactionData.forEach((element, index) => {
-			if (element.headMasterId == selectedDevData.headId) {
+      if (element.nonSalaryDetailId ==  selectedDevData.nonSalaryOptionlist[0].nonSalaryDetailId) {
 				let ind = index;
 				this.saveTransactionData.splice(ind, 1, {
 					"employeeMasterId": this.selectedEmployeeMasterId,
-					"headMasterId": element.headMasterId,
-					"standardName": element.standardName,
-					"payrollAreaId": "1",
-					"payrollAreaCode": element.payrollAreaCode,
-					"onceEvery": element.onceEvery,
-					"frequency": element.frequency,
-					"fromDate": element.fromDate,
-					"transactionsType": this.selectedTransactionType,
-					"numberOfTransactions": element.numberOfTransactions,
-					"toDate": element.toDate,
-					"amount": element.amount,
-					"remark": element.remark,
-					"createdBy": "rahul",
-					"clawbackApplicableAt": element.clawbackApplicableAt,
-					"clawbackInputType": element.clawbackInputType,
-					"clawbackPeriod": element.clawbackPeriod,
-					"clawbackUnit": element.clawbackUnit,
-					"clawbackDate": element.clawbackDate,
-					"executeSDM": element.executeSDM,
-					"refferedEmpId": element.refferedEmpId,
-					"refferedpayrollAreaCode": element.refferedpayrollAreaCode,
-					"approveStatus": "Pending",
-					"nonRecurringTransactionGroupDeviationList":this.nonRecurringTransactionGroupDeviationList
+						"nonSalaryDetailId": element.nonSalaryDetailId,
+						"standardName": element.standardName,
+						"payrollAreaId": "1",
+						"payrollAreaCode": element.payrollAreaCode,
+						"onceEvery": element.onceEvery,
+						"frequency": element.frequency,
+						"fromDate": element.fromDate,
+						"transactionsType": this.selectedTransactionType,
+						"numberOfTransactions": element.numberOfTransactions,
+						"toDate": element.toDate,
+						"quantity": element.quantity,
+            "uom": element.uom,
+            "type":element.type,
+						"remark": element.remark,
+						"createdBy": "rahul",
+					"nonsalaryTransactionGroupDeviationList":this.nonsalaryTransactionGroupDeviationList
 
 				})
 			} 
