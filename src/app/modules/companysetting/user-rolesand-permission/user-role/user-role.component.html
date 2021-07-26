@@ -42,10 +42,16 @@
                             formControlName="roleName" >
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control" name="roleDescription" rows="1" placeholder="Content.." 
+                            <!-- <label class="form-label">Description</label> -->
+                            <!-- <textarea class="form-control" name="roleDescription" rows="1" placeholder="Content.." 
                             [ngClass]="{'is-invalid' : form.get('roleDescription').status == 'INVALID'}"
-                            formControlName="roleDescription"> </textarea>
+                            formControlName="roleDescription"> </textarea> -->
+
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" placeholder="Enter Description" name="roleDescription"
+                            [ngClass]="{'is-invalid' : form.get('roleDescription').status == 'INVALID'}"
+                            [maxlength]="50"
+                             formControlName="roleDescription">
 
                         </div>
                        

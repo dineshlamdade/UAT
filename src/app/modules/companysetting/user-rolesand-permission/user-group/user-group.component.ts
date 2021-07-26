@@ -38,6 +38,8 @@ export class UserGroupComponent implements OnInit {
     private service: UserRolesPermissionService,
     private formBuilder: FormBuilder,
     private alertService: AlertServiceService,private authService: AuthService) {
+
+      
       this.form = this.formBuilder.group({
         createdBy: new FormControl(''),
         lastModifiedBy: new FormControl(''),
@@ -49,8 +51,8 @@ export class UserGroupComponent implements OnInit {
         userGroupId:new FormControl(''),
         userRoleId:new FormControl(''),
         companyId:new FormControl(''),
-        companyName: new FormControl(null, Validators.required),
-        companyGroupName: new FormControl(null, Validators.required),
+        companyName: new FormControl(''),
+        companyGroupName: new FormControl(''),
         groupName: new FormControl(null, Validators.required),
         groupDescription: new FormControl(null, Validators.required),
         default:new FormControl(''),
@@ -73,14 +75,11 @@ export class UserGroupComponent implements OnInit {
         this.summaryPage();
       })
       
-      
+      this.deactivateRemark(); 
      }
 
   ngOnInit(): void {
   
-
- this.deactivateRemark(); 
-
  }
  // --------------- Deactivate the Remark -------------------
  deactivateRemark() {
@@ -118,7 +117,7 @@ export class UserGroupComponent implements OnInit {
         "companyGroupMasterIds": this.companyMasterData,
         "remark": null,
         "active": true,
-        "default": false
+        "default": this.form.controls['default'].value,
     }
       console.log(JSON.stringify(data));
       this.service.postUserGroupData(data).subscribe(res => {
@@ -141,9 +140,13 @@ export class UserGroupComponent implements OnInit {
 editUserGroup(summary){
   this.userGroupId=summary.userGroupId
    this.form.patchValue(summary)
+   
    this.isSaveAndReset = false;
     this.showButtonSaveAndReset = true;
     this.form.enable();
+    this.form.get('groupName').disable();
+    //this.form.controls['default'].setValue(true);
+    this.form.controls['default'].setValue(summary.default);
 
 //this.form.reset();
 

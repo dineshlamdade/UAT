@@ -394,11 +394,7 @@
                                     </a>
                                   </div>
                                 </td>
-                                <!-- <td>
-              <button type="button" tooltip="field level"
-              class="custom_button custom_btn bg-color-purple btn-labeled btn-labeled-left mr-10" 
-              (click)="onSelectFieldLevel(template1)">Field Level </button>             
-            </td> -->
+                                
                               </tr>
 
                             </tbody>
@@ -501,7 +497,7 @@
                             </tr>
                           </ng-template>
                           <ng-template pTemplate="body" let-menuSummary let-rowIndex="rowIndex">
-                            <!-- <pre>{{menuSummary}}</pre> -->
+                            <!-- <pre>{{menuSummary | json}}</pre> -->
                             <tr class="p-selectable-row">
                               <td class="text-center">
                                 {{rowIndex + 1}}

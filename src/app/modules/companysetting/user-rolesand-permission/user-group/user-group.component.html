@@ -10,15 +10,19 @@
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" placeholder="Enter Name" 
                             [ngClass]="{'is-invalid' : form.get('groupName').status == 'INVALID'}"
-                            
-                            onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
+                            [maxlength]="25"
+                            onkeypress="return /[0-9a-zA-Z_%-]/i.test(event.key)"
                              formControlName="groupName">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" name="example-textarea-input"
+                            <input type="text" class="form-control" placeholder="Enter Description" 
                             [ngClass]="{'is-invalid' : form.get('groupDescription').status == 'INVALID'}"
-                             formControlName="groupDescription"  rows="1" placeholder="Content.."> </textarea>
+                            [maxlength]="50"
+                             formControlName="groupDescription">
+                            <!-- <textarea class="form-control" name="example-textarea-input"
+                            [ngClass]="{'is-invalid' : form.get('groupDescription').status == 'INVALID'}"
+                             formControlName="groupDescription"  rows="1" placeholder="Content.."> </textarea> -->
 
                         </div>
                         <div class="col-md-3">
@@ -32,7 +36,9 @@
                     <div class="row mt-10">
                         <div class="col-md-3">
                             <label class="custom-control custom-checkbox checkbox-center mt-30">
-                             <input type="checkbox" formControlName="default"   class="custom-control-input" name="default" [value]="false"/>
+                             <input type="checkbox" formControlName="default"   class="custom-control-input"
+                              name="default" [value]="false"
+                              [ngClass]="{'is-invalid' : form.get('default').status == 'INVALID'}"/>
                              <span class="custom-control-label">Default</span>
                                          </label>
                         </div>
@@ -40,7 +46,8 @@
                             <label class="custom-control custom-checkbox custom-control-inline mt-30">
                             <input formControlName="active" type="checkbox" class="custom-control-input"
                             name="active" [value]="true?1:0"  value="option1"  checked
-                               (change)="deactivateRemark()">
+                               (change)="deactivateRemark()"
+                               [ngClass]="{'is-invalid' : form.get('active').status == 'INVALID'}">
                             <span class="custom-control-label">Active </span>
                             </label>
                          </div>
@@ -58,8 +65,8 @@
                     <ng-container *ngIf="showButtonSaveAndReset">
                         <ng-container *ngIf="isSaveAndReset; else newDeb">
                             <button type="submit"  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                            tooltip="Save" (click)="save()" [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}"
-                          >
+                           tooltip="Save" (click)="save()" [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}"
+                         >
                          <b><i class="fa fa-floppy-o"></i></b> Save</button>
        
                          <button type="button" tooltip="Reset" (click)="cancelView()"
@@ -166,25 +173,46 @@
 
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group mt-20">
-
-                            <div class="input-group">
-                               <!-- // <input type="text" class="form-control" placeholder="Search for..." [(ngModel)]="data"> -->
-                                <input class="form-control-sm" type="text" name="search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" autocomplete="off"
-            placeholder=" &#61442; Search" >
-                                <!-- <span class="input-group-append"><button class="btn btn-bg-green" type="button" >Go!</button></span> -->
-                            </div>
-                        </div>
+                        <div class="input-icon mb-3">
+                            <span class="p-input-icon-left p-ml-auto">
+                              <i
+                                class="pi pi-search"
+                                style="top: 9px !important"
+                              ></i>
+                              <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                  dt1.filterGlobal(
+                                    $event.target.value,
+                                    'contains'
+                                  )
+                                "
+                                placeholder="Search keyword"
+                              />
+                            </span>
+                          </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <p-table [value]="assignGroupData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                        <p-table #dt1 [value]="assignGroupData" [paginator]="true" [rows]="10"
+                         [showCurrentPageReport]="true"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          totalRecords={{assignGroupData.length}}
+                          [rowsPerPageOptions]="[10,25,50,100,200]"
+                        [globalFilterFields]="[
+                                  'companyGroupCode',
+                                  'shortName',
+                                  'companyGroupName',
+                                 
+                                ]">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th class="wd-10 text-center">
                                         <label class="custom-control custom-checkbox checkbox-center" >
-                                        <input type="checkbox"   class="custom-control-input" name="select"/> <span class="custom-control-label"></span>
+                                        <input type="checkbox"   class="custom-control-input" name="select"/> 
+                                        <span class="custom-control-label"></span>
                                   </label>
 
                                     </th>
@@ -192,8 +220,8 @@
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                             Group Code &nbsp;
                                             <div class="Sort_Filter_Position d-flex ">
-                                                <p-sortIcon field="grupcode" pSortableColumn="grupcode"></p-sortIcon>
-                                                <p-columnFilter field="grupcode" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                <p-sortIcon field="companyGroupCode" pSortableColumn="companyGroupCode"></p-sortIcon>
+                                                <p-columnFilter field="companyGroupCode" display="menu" class="p-ml-auto"></p-columnFilter>
                                             </div>
                                         </div>
                                     </th>
@@ -201,8 +229,8 @@
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                             Short Name &nbsp;&nbsp;
                                             <div class="Sort_Filter_Position d-flex ">
-                                                <p-sortIcon field="shrtname" pSortableColumn="shrtname"></p-sortIcon>
-                                                <p-columnFilter field="shrtname" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
+                                                <p-columnFilter field="shortName" display="menu" class="p-ml-auto"></p-columnFilter>
                                             </div>
                                         </div>
                                     </th>
@@ -210,8 +238,8 @@
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                             Group Name &nbsp;&nbsp;
                                             <div class="Sort_Filter_Position d-flex ">
-                                                <p-sortIcon field="grupname" pSortableColumn="grupname"></p-sortIcon>
-                                                <p-columnFilter field="grupname" display="menu" class="p-ml-auto">
+                                                <p-sortIcon field="companyGroupName" pSortableColumn="companyGroupName"></p-sortIcon>
+                                                <p-columnFilter field="companyGroupName" display="menu" class="p-ml-auto">
 
                                                 </p-columnFilter>
                                             </div>
@@ -224,7 +252,8 @@
                                 <tr class="p-selectable-row">
                                     <td class="text-center">
                                         <label class="custom-control custom-checkbox checkbox-center">
-                                      <input type="checkbox" [checked]="assigndata.active"  class="custom-control-input" name="select" (click)="assignuserGrpData(assigndata)" /> <span class="custom-control-label"></span>
+                                      <input type="checkbox" [checked]="assigndata.active"  class="custom-control-input" name="select" 
+                                      (click)="assignuserGrpData(assigndata)" /> <span class="custom-control-label"></span>
                                       </label>
 
                                     </td>
@@ -277,23 +306,49 @@
                         <div class="form-group mt-20">
 
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-append"><button class="btn btn-bg-green" type="button">Go!</button></span>
+                                  <div class="input-icon mb-3">
+                                <span class="p-input-icon-left p-ml-auto">
+                                    <i
+                                      class="pi pi-search"
+                                      style="top: 9px !important"
+                                    ></i>
+                                    <input
+                                      pInputText
+                                      type="text"
+                                      (input)="
+                                        dt1.filterGlobal(
+                                          $event.target.value,
+                                          'contains'
+                                        )
+                                      "
+                                      placeholder="Search keyword"
+                                    />
+                                  </span>
+                                  </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <p-table [value]="Grplistdata" [paginator]="true" appendTo="body" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [scrollable]="true" scrollHeight="200px">
-                            <ng-template pTemplate="header">
+                        <p-table  #dt1 [value]="Grplistdata" [paginator]="true" [rows]="10"
+                                  [showCurrentPageReport]="true"
+                                  (sortFunction)="customSort($event)"
+                                  [customSort]="true" [pageLinks]="5"
+                                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                  totalRecords={{Grplistdata.length}}
+                                   [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
+                                  'companyGroupName'
+                                 
+                                ]">
+                                <ng-template pTemplate="header">
                                 <tr>
                                     <th class="wd-25">
                                         <div class="p-d-flex  p-ai-center">
                                             Group Name &nbsp;
                                             <div class="Sort_Filter_Position d-flex">
-                                                <p-sortIcon field="grupcode" pSortableColumn="grupcode"></p-sortIcon>
-                                                <p-columnFilter field="grupcode" display="menu" class="p-ml-auto" appendTo="body"></p-columnFilter>
+                                                <p-sortIcon field="companyGroupName" pSortableColumn="companyGroupName"></p-sortIcon>
+                                                <p-columnFilter field="companyGroupName" display="menu" class="p-ml-auto" appendTo="body"></p-columnFilter>
                                             </div>
                                         </div>
                                     </th>
