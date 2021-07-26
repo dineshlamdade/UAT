@@ -77,4 +77,20 @@ export class SdnCreationService {
   KeywordMasterDetails():Observable<any>{
     return this.HttpClient.get<any>(this.url1 + `KeywordMasterDetails`);
   }
+
+  // 4th tab api (Matrix)
+  derivedMaster(sdmMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/derived-master/`+ sdmMasterId);
+  }
+
+  // 4th tab api (Matrix)
+  combinationMatrix(sdmMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/`+ sdmMasterId);
+  }
+
+  // 4th tab api (Matrix)
+  saveMatrix(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `source-derived-matrix/combination-matrix/`,data);
+  }
+  
 }

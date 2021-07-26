@@ -44,17 +44,17 @@ const routes: Routes = [
         
       },
       {
-        path:   'sdm',
-        component:  SdmComponent,
+        path:   'sdm-creation',
+        component:  SdmStepperComponent,
         data: { title: ':: DelziaHR :: SDM Creation' },
         
       },
-      {
-        path:   'sdm-stepper',
-        component:  SdmStepperComponent,
-        data: { title: ':: DelziaHR :: SDM Stepper' },
+      // {
+      //   path:   'sdm-stepper',
+      //   component:  SdmStepperComponent,
+      //   data: { title: ':: DelziaHR :: SDM Stepper' },
         
-      },
+      // },
     ],
   },
 ];

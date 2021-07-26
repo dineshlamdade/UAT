@@ -321,7 +321,7 @@
                                 <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 4"></span>
                                 <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 4"></span>
                                 <div class="col-sm-3">
-                                    <button class="stepbutton" (click)="abc(4);"
+                                    <button class="stepbutton" (click)="sourceCombination();abc(4);derivedMaster();combinationMatrix();"
                                         style="border-radius: 51%;height: 69%;width: 20%;">
                                         <div *ngIf="stepperIndex > 4 then thenBlock4 else elseBlock4"></div>
                                         <ng-template #thenBlock4>
@@ -381,10 +381,10 @@
                                                                 <td>{{summary.loanDescription}}
                                                                 </td>
                                                                 <!-- <td class="wd-20">
-                                              <span tooltip="{{summary.accountHolderName}}">
-                                                {{summary.accountHolderName}}
-                                              </span>
-                                            </td> -->
+                                                                    <span tooltip="{{summary.accountHolderName}}">
+                                                                        {{summary.accountHolderName}}
+                                                                    </span>
+                                                                </td> -->
                                                                 <td>
                                                                     <span>
                                                                         {{summary.recoveryMethod}}
@@ -962,11 +962,11 @@
 
                                                         <div class="col-12">
                                                             <div class="float-left d-flex justify-content">
-                                                                <input type="checkbox" />&nbsp;
+                                                                <input formControlName="active" type="checkbox" />&nbsp;
                                                                 <label
                                                                     class="form-label margin-right:30px;">Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                                 <label class="form-label">Remark</label>&nbsp;
-                                                                <textarea type="text"></textarea>
+                                                                <textarea formControlName="sdmDerivedMasterRemark" type="text"></textarea>
                                                             </div>
                                                             <div class="float-right ">
                                                                 <button [disabled]="sdmFormStep3.invalid" (click)="addsaveDerived()" type="submit"
@@ -1206,7 +1206,7 @@
                                                                     <i class="fa fa-floppy-o"></i></b>
                                                                 Save</button>&nbsp;
 
-                                                            <button type="submit"
+                                                            <button type="submit" (click)=resetsdmForm3();
                                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                                 tooltip="Reset"><b>
                                                                     <i class="fa fa-refresh"></i></b>
@@ -1241,16 +1241,14 @@
                                                     <label class="form-label mb-0  mt-2 float-left">Derived
                                                         Name</label>&nbsp;
                                                     <select name="custom-select" class="form-control"
-                                                        style="width:100px;">
+                                                        style="width:100px;" (change)="onChangeDriveName($event.target.value)">
                                                         <option value="Select">Select</option>
-                                                        <option >D1 </option>
-                                                        <option >D2</option>
-                                                        <option >D3</option>
-                                                        <option >D4</option>
+                                                        <option *ngFor="let derivedData of derivedMastersData">{{derivedData.derivedName}}</option>
+                                                       
                                                     </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <label class="form-label mb-0 mt-2">Derived Type</label>
                                                     &nbsp;&nbsp;&nbsp; <span
-                                                        style="margin-right: 20px;margin-top: 7px;font-size: 13px;">Value</span>
+                                                        style="margin-right: 20px;margin-top: 7px;font-size: 13px;">{{deriType}}</span>
 
                                                 </div>
                                                 <div class="float-right d-flex justify-content-end">
@@ -1306,7 +1304,7 @@
                                                 <div class="card">
 
                                                     <div class="table-responsive Custom_Table">
-                                                        <p-table [value]="users2" [paginator]="true" [rows]="10"
+                                                        <p-table [value]="users1" [paginator]="true" [rows]="10"
                                                             (sortFunction)="customSort($event)" [customSort]="true">
                                                             <ng-template pTemplate="header">
                                                                 <tr>
@@ -1351,9 +1349,9 @@
                                                                     </th>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th rowspan="2" class=" text-center">
+                                                                    <th rowspan="2" class=" text-center" *ngFor="let header of sourceFieldListData">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
-                                                                            Payroll
+                                                                            {{header}}
                                                                             <div class="Sort_Filter_Position">
                                                                                 <p-sortIcon field="Payroll"
                                                                                     pSortableColumn="Payroll">
@@ -1365,32 +1363,7 @@
                                                                         </div>
                                                                     </th>
 
-                                                                    <th rowspan="2" class=" text-center">
-                                                                        <div class="p-d-flex p-jc-between p-ai-center">
-                                                                            Grade
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Grade"
-                                                                                    pSortableColumn="Grade">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="date"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
-                                                                        </div>
-                                                                    </th>
-                                                                    <th rowspan="2" class=" text-center">
-                                                                        <div class="p-d-flex p-jc-between p-ai-center">
-                                                                            Department
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Department"
-                                                                                    pSortableColumn="Department">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="date"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
-                                                                        </div>
-                                                                    </th>
+                                                                  
 
 
                                                                     <th rowspan="2" class="text-center">
@@ -1469,28 +1442,43 @@
 
 
                                                             </ng-template>
-                                                            <ng-template pTemplate="body" let-User2>
-                                                                <tr class="p-selectable-row">
-                                                                    <td>PA_01
-
+                                                            
+                                                            <ng-template pTemplate="body">
+                                                                <tr class="p-selectable-row" *ngFor="let srcCombData of sdmSourceCombinationListData; let rowIndex = index;">
+                                                                    <td *ngFor="let header of sourceFieldListData">
+                                                                        <span *ngIf="header == 'PayrollArea'">{{srcCombData.payrollAreaId}}</span>
+                                                                        <span *ngIf="header == 'Establishment'">{{srcCombData.establishmentMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubLocation'">{{srcCombData.subLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'Location'">{{srcCombData.subLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'WorkLocation'">{{srcCombData.workLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'BusinessArea'">{{srcCombData.businessAreaMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubArea'">{{srcCombData.subAreaId}}</span>
+                                                                        <span *ngIf="header == 'StrategicBusinessUnit'">{{srcCombData.strategicBusinessUnitId}}</span>
+                                                                        <span *ngIf="header == 'Division'">{{srcCombData.divisionMasterId}}</span>
+                                                                        <span *ngIf="header == 'Department'">{{srcCombData.departmentMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubDepartment'">{{srcCombData.subDepartmentId}}</span>
+                                                                        <span *ngIf="header == 'CostCentre'">{{srcCombData.costCentreId}}</span>
+                                                                        <span *ngIf="header == 'SubCostCenter'">{{srcCombData.subCostCenterId}}</span>
+                                                                        <span *ngIf="header == 'ProfitCentre'">{{srcCombData.profitCentreMasterId}}</span>
+                                                                        <span *ngIf="header == 'Grade'">{{srcCombData.gradeMasterId}}</span>
+                                                                        <span *ngIf="header == 'Designation1'">{{srcCombData.designation1MasterId}}</span>
+                                                                        <span *ngIf="header == 'Designation2'">{{srcCombData.designation2MasterId}}</span> 
                                                                     </td>
-                                                                    <td>G1 </td>
-                                                                    <td> Finance</td>
                                                                     <td>
 
                                                                         <input type="text" class="form-control"
-                                                                            placeholder="" value="1">
+                                                                            placeholder="" [value]="selectedIndex == rowIndex ? sourceRangeFrom : '' " (focusout)="sourceRangeFromData($event.target.value,rowIndex,srcCombData)">
                                                                     </td>
                                                                     <td>
 
                                                                         <input type="text" class="form-control"
-                                                                            placeholder="" value="10,000.00">
+                                                                            placeholder="" [value]="selectedIndex == rowIndex ? sourceRangeTo : '' "  (focusout)="sourceRangeToData($event.target.value)">
 
 
                                                                     </td>
                                                                     <td>
                                                                         <input type="text" class="form-control"
-                                                                            placeholder="" value="10,000.00">
+                                                                            placeholder="" [value]="selectedIndex == rowIndex ? applicableValue : '' " (focusout)="applicableValueData($event.target.value)">
 
                                                                     </td>
 
@@ -1510,6 +1498,9 @@
                                                                                     <input data-provide="datepicker"
                                                                                         data-date-autoclose="true"
                                                                                         class="form-control"
+                                                                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                                        [value]="selectedIndex == rowIndex ? derivedFromDate : '' "
+                                                                                        (bsValueChange)="derivedFromDateData($event)"
                                                                                         placeholder="Date" bsDatepicker>
                                                                                 </div>
                                                                             </div>
@@ -1528,7 +1519,10 @@
                                                                                 </div>
                                                                                 <input data-provide="datepicker"
                                                                                     data-date-autoclose="true"
+                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                                                                                     class="form-control"
+                                                                                    [value]="selectedIndex == rowIndex ? derivedToDate : '' "
+                                                                                    (bsValueChange)="derivedToDateData($event)"
                                                                                     placeholder="Date" bsDatepicker>
                                                                             </div>
                                                                         </div>
@@ -1539,290 +1533,47 @@
 
                                                                     <td class="text-center">
 
-
-                                                                    </td>
-                                                                </tr>
-
-                                                                <tr class="p-selectable-row">
-                                                                    <td>PA_01
-                                                                    </td>
-                                                                    <td>G1 </td>
-                                                                    <td>HR</td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value=" 10,001">
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="p-d-inline-flex">
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="" value=" 15,000.00">
-
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value=" 175">
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <div class="p-d-inline-flex">
-                                                                            <span (click)="copyDateFromTableRow()"><i
-                                                                                    class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
-                                                                            <div
-                                                                                class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                                <div class="input-group">
-                                                                                    <div class="input-group-prepend">
-                                                                                        <span class="input-group-text">
-                                                                                            <i
-                                                                                                class="fa fa-calendar"></i>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <input data-provide="datepicker"
-                                                                                        data-date-autoclose="true"
-                                                                                        class="form-control"
-                                                                                        placeholder="Date" bsDatepicker>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-
-                                                                    <td>
-
-
-                                                                        <div
-                                                                            class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="fa fa-calendar"></i>
-                                                                                    </span>
-                                                                                </div>
-                                                                                <input data-provide="datepicker"
-                                                                                    data-date-autoclose="true"
-                                                                                    class="form-control"
-                                                                                    placeholder="Date" bsDatepicker>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </td>
-                                                                    <td class="text-center">
-
-
-                                                                    </td>
-                                                                </tr>
-
-                                                                <tr class="p-selectable-row">
-                                                                    <td>PA_01
-                                                                    </td>
-                                                                    <td>G1 </td>
-                                                                    <td> Production</td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value=" ">
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value=" ">
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value=" ">
-
-
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <div class="p-d-inline-flex">
-                                                                            <span (click)="copyDateFromTableRow()"><i
-                                                                                    class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
-                                                                            <div
-                                                                                class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                                <div class="input-group">
-                                                                                    <div class="input-group-prepend">
-                                                                                        <span class="input-group-text">
-                                                                                            <i
-                                                                                                class="fa fa-calendar"></i>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <input data-provide="datepicker"
-                                                                                        data-date-autoclose="true"
-                                                                                        class="form-control"
-                                                                                        placeholder="Date" bsDatepicker>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-
-                                                                    <td>
-
-
-                                                                        <div
-                                                                            class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="fa fa-calendar"></i>
-                                                                                    </span>
-                                                                                </div>
-                                                                                <input data-provide="datepicker"
-                                                                                    data-date-autoclose="true"
-                                                                                    class="form-control"
-                                                                                    placeholder="Date" bsDatepicker>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </td>
-                                                                    <td class="text-center">
-
-                                                                        <i class="fa fa-eye font-18 text-blue cursor-pointer"
+                                                                        <!-- <i class="fa fa-eye font-18 text-blue cursor-pointer"
                                                                             tooltip="View"
                                                                             (click)=" extralargepopup(template)">
-                                                                        </i>&nbsp;
+                                                                        </i>&nbsp; -->
                                                                         <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
-                                                                            tooltip="Add">
+                                                                            tooltip="Add" (click)="addMatrixData(srcCombData,rowIndex)">
                                                                         </i>
                                                                     </td>
                                                                 </tr>
 
-                                                                <tr class="p-selectable-row">
-                                                                    <td>PA_01 </td>
-
-                                                                    <td>G2 </td>
-                                                                    <td> HR</td>
-                                                                    <td>
-
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value="1">
+                                                                <tr class="p-selectable-row text-center" *ngFor="let data of tempMatrixData;let i = index;">
+                                                                    <td *ngFor="let header of sourceFieldListData">
+                                                                        <span *ngIf="header == 'PayrollArea'">{{data.selectedCombData.payrollAreaId}}</span>
+                                                                        <span *ngIf="header == 'Establishment'">{{data.selectedCombData.establishmentMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubLocation'">{{data.selectedCombData.subLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'Location'">{{data.selectedCombData.subLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'WorkLocation'">{{data.selectedCombData.workLocationMasterId}}</span>
+                                                                        <span *ngIf="header == 'BusinessArea'">{{data.selectedCombData.businessAreaMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubArea'">{{data.selectedCombData.subAreaId}}</span>
+                                                                        <span *ngIf="header == 'StrategicBusinessUnit'">{{data.selectedCombData.strategicBusinessUnitId}}</span>
+                                                                        <span *ngIf="header == 'Division'">{{data.selectedCombData.divisionMasterId}}</span>
+                                                                        <span *ngIf="header == 'Department'">{{data.selectedCombData.departmentMasterId}}</span>
+                                                                        <span *ngIf="header == 'SubDepartment'">{{data.selectedCombData.subDepartmentId}}</span>
+                                                                        <span *ngIf="header == 'CostCentre'">{{data.selectedCombData.costCentreId}}</span>
+                                                                        <span *ngIf="header == 'SubCostCenter'">{{data.selectedCombData.subCostCenterId}}</span>
+                                                                        <span *ngIf="header == 'ProfitCentre'">{{data.selectedCombData.profitCentreMasterId}}</span>
+                                                                        <span *ngIf="header == 'Grade'">{{data.selectedCombData.gradeMasterId}}</span>
+                                                                        <span *ngIf="header == 'Designation1'">{{data.selectedCombData.designation1MasterId}}</span>
+                                                                        <span *ngIf="header == 'Designation2'">{{data.selectedCombData.designation2MasterId}}</span>   
                                                                     </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value="10,000.00">
-
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value="0">
-                                                                    </td>
-
-
-                                                                    <td>
-                                                                        <div class="p-d-inline-flex">
-                                                                            <span (click)="copyDateFromTableRow()"><i
-                                                                                    class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
-                                                                            <div
-                                                                                class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                                <div class="input-group">
-                                                                                    <div class="input-group-prepend">
-                                                                                        <span class="input-group-text">
-                                                                                            <i
-                                                                                                class="fa fa-calendar"></i>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <input data-provide="datepicker"
-                                                                                        data-date-autoclose="true"
-                                                                                        class="form-control"
-                                                                                        placeholder="Date" bsDatepicker>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-
-                                                                    <td>
-
-
-                                                                        <div
-                                                                            class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="fa fa-calendar"></i>
-                                                                                    </span>
-                                                                                </div>
-                                                                                <input data-provide="datepicker"
-                                                                                    data-date-autoclose="true"
-                                                                                    class="form-control"
-                                                                                    placeholder="Date" bsDatepicker>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </td>
-                                                                    <td class="text-center">
-
-
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="p-selectable-row">
-                                                                    <td>PA_01
-                                                                    </td>
-                                                                    <td>G2 </td>
-                                                                    <td> Production</td>
-                                                                    <td>
-
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value="1">
-                                                                    </td>
-
-
-                                                                    <td>
-                                                                        <div class="p-d-inline-flex">
-                                                                            <input type="text" class="form-control"
-                                                                                placeholder="& Above">
-
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="" value="0">
-                                                                    </td>
-
-                                                                    <td class="">
-                                                                        <div class="d-flex">
-                                                                            <span (click)="copyDateFromTableRow()"><i
-                                                                                    class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
-                                                                            <div
-                                                                                class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                                <div class="input-group">
-                                                                                    <div class="input-group-prepend">
-                                                                                        <span class="input-group-text">
-                                                                                            <i
-                                                                                                class="fa fa-calendar"></i>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <input data-provide="datepicker"
-                                                                                        data-date-autoclose="true"
-                                                                                        class="form-control"
-                                                                                        placeholder="Date" bsDatepicker>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-
-                                                                    <td>
-
-
-                                                                        <div
-                                                                            class="form-group mb-0  mt-1 SMDatepickerWidth">
-                                                                            <div class="input-group">
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="fa fa-calendar"></i>
-                                                                                    </span>
-                                                                                </div>
-                                                                                <input data-provide="datepicker"
-                                                                                    data-date-autoclose="true"
-                                                                                    class="form-control"
-                                                                                    placeholder="Date" bsDatepicker>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </td>
-                                                                    <td class="text-center">
-
-                                                                    </td>
-
-                                                                </tr>
+                                                                    <td>{{data.sourceRangeFrom}}</td>
+                                                                    <td>{{data.sourceRangeTo}}</td>
+                                                                    <td>{{data.applicableValue}}</td>
+                                                                    <td>{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}</td>
+                                                                    <td>{{data.derivedToDate | date: 'dd-MMM-yyyy'}}</td>
+                                                                    <td></td>
+                                                                 </tr>
+                                                              
 
                                                             </ng-template>
+                                                       
                                                             <ng-template pTemplate="emptymessage">
                                                                 <tr>
                                                                     <td colspan="15"
@@ -1854,7 +1605,7 @@
                                                             <i class="fa fa-angle-double-left"></i></b>
                                                         Previous</button>&nbsp;
 
-                                                    <button type="submit" (click)="next()"
+                                                    <button type="submit" (click)="saveMatrix()"
                                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                                         tooltip="Save"><b>
                                                             <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;

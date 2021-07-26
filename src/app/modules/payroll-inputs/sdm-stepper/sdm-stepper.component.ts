@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { SdnCreationService } from '../sdn-creation.service';
 import { ToastrService } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -97,8 +98,21 @@ export class SdmStepperComponent implements OnInit {
   derivedTableName: any;
   derivedModuleName: any = [];
   sourceObjectName: any;
+  derivedMastersData: any;
+  combinationMatrixData: any;
+  deriType: any;
+  matrixDerivedMasterId: any;
+  saveMatrixData: any = [];
+  sourceRangeFrom: any = '';
+  sourceRangeTo: any = '';
+  derivedFromDate: any = '';
+  derivedToDate: any = '';
+  applicableValue: any = '';
+  selectedIndex: any = -1;
+  selectedCombData: any;
+  tempMatrixData: any = [];
 
-  constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, private toaster: ToastrService) {
+  constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, private toaster: ToastrService,private datepipe: DatePipe) {
 
     this.sdmFormStep1 = this.formBuilder.group({
       "sdmMasterId": new FormControl(""),
@@ -121,6 +135,8 @@ export class SdmStepperComponent implements OnInit {
     "sdmDerivedTableId": new FormControl("",Validators.required),
     "percentageOf": new FormControl("",Validators.required),
     "moduleIdList": new FormControl([],Validators.required),
+    "active": new FormControl([],Validators.required),
+    "sdmDerivedMasterRemark": new FormControl([],Validators.required),
     })
 
     if(localStorage.getItem('sdmFormStep1') != null){
@@ -671,6 +687,10 @@ export class SdmStepperComponent implements OnInit {
    this.derivedTableName = ""
   }
 
+  resetsdmForm3(){
+    this.sdmFormStep3.reset();
+  }
+
   saveDerived(){
     this.sdmService.saveDerived(this.saveDerivedData).subscribe(res =>{
         this.toaster.success("","Derived data saved successfully.")
@@ -687,6 +707,125 @@ export class SdmStepperComponent implements OnInit {
     this.sdmService.KeywordMasterDetails().subscribe(res =>{
       this.keywordData = res.data.results;
       
+    })
+  }
+
+  derivedMaster(){
+    this.sdmService.derivedMaster(this.sdmMasterId).subscribe(res =>{
+      this.derivedMastersData = res.data.results;
+      
+    })
+  }
+
+  onChangeDriveName(value){
+    this.derivedMastersData.forEach(element => {
+      if(element.derivedName == value){
+        this.deriType = element.derivedType;
+        this.matrixDerivedMasterId = element.sdmDerivedMasterId
+      }
+    });
+  }
+
+  combinationMatrix(){
+    this.sourceCombination();
+    // this.sdmService.combinationMatrix(this.sdmMasterId).subscribe(res =>{
+    //   this.combinationMatrixData = res.data.results;
+    //   this.combinationMatrixData.forEach(element => {
+    //     this.sdmSourceCombinationListData.forEach(ele => {
+    //       if(element.sdmSourceCombinationId == ele.sdmSourceCombinationId){
+    //         element.payrollAreaId = ele.payrollAreaId,
+    //         element.establishmentMasterId = ele.establishmentMasterId,
+    //         element.subLocationMasterId = ele.subLocationMasterId,
+    //         element.workLocationMasterId = ele.workLocationMasterId,
+    //         element.businessAreaMasterId = ele.businessAreaMasterId,
+    //         element.subAreaId = ele.subAreaId,
+    //         element.strategicBusinessUnitId = ele.strategicBusinessUnitId,
+    //         element.divisionMasterId = ele.divisionMasterId,
+    //         element.departmentMasterId = ele.departmentMasterId,
+    //         element.subDepartmentId = ele.subDepartmentId,
+    //         element.costCentreId = ele.costCentreId,
+    //         element.subCostCenterId = ele.subCostCenterId,
+    //         element.profitCentreMasterId = ele.profitCentreMasterId,
+    //         element.gradeMasterId = ele.gradeMasterId,
+    //         element.designation1MasterId = ele.designation1MasterId,
+    //         element.designation2MasterId = ele.designation2MasterId,
+    //         element.createdBy = ele.createdBy,
+    //         element.lastModifiedBy = ele.lastModifiedBy,
+    //         element.createDateTime = ele.createDateTime,
+    //         element.lastModifiedDateTime = ele.lastModifiedDateTime
+    //       }
+    //     });
+        
+    //   });
+      
+    //   console.log(this.combinationMatrixData);
+    // })
+  }
+
+  sourceRangeFromData(value,index,srcCombData){
+    // console.log("srcCombData: "+ JSON.stringify(srcCombData))
+    this.sourceRangeFrom = value
+    this.selectedIndex = index;
+    this.selectedCombData = srcCombData
+  }
+
+  sourceRangeToData(value){
+    this.sourceRangeTo = value
+  }
+
+  applicableValueData(value){
+    this.applicableValue = value
+  }
+
+  derivedFromDateData(value){
+    this.derivedFromDate = this.datepipe.transform(new Date(value), 'yyyy-MM-dd')
+  }
+
+  derivedToDateData(value){
+    this.derivedToDate = this.datepipe.transform(new Date(value), 'yyyy-MM-dd')
+  }
+
+  addMatrixData(sdmcombination,rowIndex){
+    this.saveMatrixData.push({
+      "sdmCombinationId":"0",
+      "sdmMasterId": this.sdmMasterId,
+      "sdmDerivedMasterId": this.matrixDerivedMasterId,
+      "sdmSourceCombinationId":sdmcombination.sdmSourceCombinationId,
+      "sourceRangeFrom": this.sourceRangeFrom,
+      "sourceRangeTo":this.sourceRangeTo,
+      "derivedFromDate": this.derivedFromDate,
+      "derivedToDate":this.derivedToDate,
+      "applicableValue": this.applicableValue
+    })
+
+    this.tempMatrixData.push({
+      "sdmCombinationId":"0",
+      "sdmMasterId": this.sdmMasterId,
+      "sdmDerivedMasterId": this.matrixDerivedMasterId,
+      "sdmSourceCombinationId":sdmcombination.sdmSourceCombinationId,
+      "sourceRangeFrom": this.sourceRangeFrom,
+      "sourceRangeTo":this.sourceRangeTo,
+      "derivedFromDate": this.derivedFromDate,
+      "derivedToDate":this.derivedToDate,
+      "applicableValue": this.applicableValue,
+      'selectedCombData':this.selectedCombData
+    })
+
+   console.log("this.saveMatrixData: "+ JSON.stringify(this.saveMatrixData)) 
+
+   this.sourceRangeFrom = ''
+   this.sourceRangeTo = ''
+   this.derivedFromDate = ''
+   this.derivedToDate = ''
+   this.applicableValue = ''
+  }
+
+
+  saveMatrix(){
+    this.sdmService.saveMatrix(this.saveMatrixData).subscribe(res =>{
+     this.toaster.success("","Matrix data saved successfully")
+     this.saveMatrixData = []
+     this.tempMatrixData = []
     })
   }
 }
