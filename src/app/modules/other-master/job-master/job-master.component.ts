@@ -9,12 +9,15 @@ import { SortEvent } from 'primeng/api';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BankMasterAtCompanyService } from '../bank-master-at-company/bank-master-at-company.service';
 import { JobMasterService } from './job-master.service';
+import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
 @Component( {
   selector: 'app-job-master',
   templateUrl: './job-master.component.html',
   styleUrls: ['./job-master.component.scss'],
 } )
 export class JobMasterComponent implements OnInit {
+  isJobMasterTableVisible: boolean = false;
+  selectedCompanyId: number;
   id: number;
   type: string;
   summaryType: string;
@@ -60,11 +63,15 @@ export class JobMasterComponent implements OnInit {
   public enableCheckAll = false;
   public enableCompanyCheckAll = false;
   public mappedJobMastersToCompany: Array<any> = [];
+  public companyCopyDataList: Array<any> = [];
+    public mappedJobMastersToCompanyInMaster: Array<any> = [];
+
   public excelEmployeeList: Array<any> = [];
   public getAllMappingDetailListNew: Array<any> = [];
 
   public tableDataList = [];
   public companyAssignTableList = [];
+  public companyAssignTableListDummy = [];
   // public tableDataList1 = [];
   public selectedCheckBox = [];
   public selectedCompanyListCheckBox = [];
@@ -74,6 +81,7 @@ export class JobMasterComponent implements OnInit {
   public checkedList: any;
   public masterSelected: boolean;
   public Index: number;
+  public selectedJobMaster = null;
   public jobMasterList = [
     // { value: 'All', postUrl: '', putUrl: '', deleteUrl: '' },
     // { value: 'Business Area', postUrl: 'job-master/', putUrl: 'business-area-master/update', deleteUrl: 'business-area-master/', postMappingToCompany: 'business-area-master-mapping/map-all', deleteMapping: 'business-area-master-mapping/' },
@@ -95,7 +103,10 @@ export class JobMasterComponent implements OnInit {
   ];
 
   public viewMode = false;
-  constructor( private formBuilder: FormBuilder, private datePipe: DatePipe, private modalService: BsModalService, private jobMasterService: JobMasterService, private alertService: AlertServiceService, private bankMasterAtCompanyService: BankMasterAtCompanyService ) {
+  assignJobMasterId: number;
+  excelData: any;
+  selectedJobId: number;
+  constructor( private formBuilder: FormBuilder,  private excelservice: ExcelService, private datePipe: DatePipe, private modalService: BsModalService, private jobMasterService: JobMasterService, private alertService: AlertServiceService, private bankMasterAtCompanyService: BankMasterAtCompanyService ) {
     this.form = this.formBuilder.group( {
       jobMasterType: new FormControl( 'All' ),
       masterCode: new FormControl( '', Validators.required ),
@@ -110,7 +121,8 @@ export class JobMasterComponent implements OnInit {
     this.formAssignment = this.formBuilder.group( {
       groupCompanyId: new FormControl( 'All' ),
       companyName: new FormControl( 'All', Validators.required ),
-      // jobMasterType: new FormControl( ''),
+      company: new FormControl( 'All' )
+            // jobMasterType: new FormControl( ''),
       // jobMasterId: new FormControl( ''),
       // isActive: new FormControl( '' ),
       // jobMasterValueId: new FormControl( '' ),
@@ -129,6 +141,8 @@ export class JobMasterComponent implements OnInit {
     this.getAllOtheMappingDetails ();
     this.tableDataList = [];
     this.refreshHtmlTable ();
+    this.getCompanyName ();
+    this.getCopyCompany();
     // this.getAllJobMasters();
 
     // this.jobMasterService.get( 'business-area-master/details' ).subscribe( ( res ) => {
@@ -141,24 +155,23 @@ export class JobMasterComponent implements OnInit {
 
 
     this.bankMasterAtCompanyService.getGroupCompanyDetails().subscribe( ( res ) => {
-      console.log( 'bank company', res );
       this.companyListResponse = res.data.results;
+      console.log( 'companyListResponseList', res );
       let i = 0;
       res.data.results.forEach( ( element ) => {
         if ( element.companyActive == true ) {
           const obj = {
-            // id: i++,
-            // groupCompanyId: element.groupCompanyId,
-            // companyName: element.companyName,
-            // companyActive: element.groupCompanyId,
-            // isSelected: false,
+            id: i++,
+            groupCompanyId: element.groupCompanyId,
+            companyName: element.companyName,
+            companyActive: element.groupCompanyId,
+            isSelected: false,
 
-            label: element.companyName,
-            value: element.groupCompanyId,
+            // label: element.companyName,
+            // value: element.groupCompanyId,
           };
           // this.groupCompanyDetailsList.push( { id: element.groupCompanyId, itemName: element.companyName } );
           this.summaryCompanyHtmlDataList.push( obj );
-          this.groupCompanyDetailsList.push( obj );
           this.summaryCompanyHtmlDataList1.push( obj );
         }
       } );
@@ -201,6 +214,33 @@ export class JobMasterComponent implements OnInit {
 
     // this.getAllOtheMappingDetails();
   }
+
+  // Company Name  Bind in Assign table
+
+  getCompanyName(){
+    this.bankMasterAtCompanyService.getGroupCompanyDetails().subscribe( ( res ) => {
+      this.companyListResponse = res.data.results;
+      console.log( 'companyListResponseList', res );
+      let i = 0;
+      res.data.results.forEach( ( element ) => {
+        if ( element.companyActive == true ) {
+          const obj = {
+            label: element.companyName,
+            value: element.groupCompanyId,
+          };
+          this.groupCompanyDetailsList.push( obj );
+        }
+      } );
+    } );
+  }
+
+  getCopyCompany(){
+    this.jobMasterService.getAllCopyFrom().subscribe((res) => {
+      this.companyCopyDataList = res.data.results;
+      console.log("companyCopyDataList", this.companyCopyDataList);
+  })
+
+  }
   getJobMasterDropDownListAssign(){
     this.jobMasterService.get('all-othermasters-mapping/details').subscribe((res) => {
       this.getAllJobMappingsList = res.data.results;
@@ -237,7 +277,118 @@ export class JobMasterComponent implements OnInit {
   }
 
 
+  // Sort and Excel
+//Job Master Excel
+  exportApprovalSummaryAsExcel(): void {
+    this.excelData = [];
+    if(this.tableDataList.length>0){
+     // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+     //this.employeeList =  this.tableDataList;
+     this.tableDataList.forEach((element) => {
+      let obj = {
+        jobMasterType: element.jobMasterType,
+        masterCode: element.masterCode,
+        masterDescription: element.masterDescription,
+
+      };
+      this.excelData.push(obj);
+    });
+      console.log('this.employeeList::', this.employeeList);
+
+    } else{
+      this.employeeList.forEach((element) => {
+        let obj = {
+
+          jobMasterType: element.jobMasterType,
+           masterCode: element.masterCode,
+           masterDescription: element.masterDescription,
+        };
+        this.excelData.push(obj);
+      });
+    }
+
+    this.excelservice.exportAsExcelFile(
+      this.excelData,
+      'Job-Master-Summary'
+    );
+  }
+
+  //Mapping Execl
+  exportApprovalSummaryAsExcelMapping(): void {
+    this.excelData = [];
+    if(this.getAllMappingDetailListNew.length>0){
+     // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+     //this.employeeList =  this.getAllMappingDetailListNew;
+     this.getAllMappingDetailListNew.forEach((element) => {
+      let obj = {
+        jobMasterType: element.jobMasterType,
+        masterCode: element.masterCode,
+        masterDescription: element.masterDescription,
+        companyName : element.companyName,
+        toDate:  new Date(element.toDate),
+       fromDate: new Date(element.fromDate),
+      };
+      this.excelData.push(obj);
+    });
+      console.log('this.employeeList::', this.employeeList);
+
+    } else{
+      this.employeeList.forEach((element) => {
+        let obj = {
+
+          jobMasterType: element.jobMasterType,
+           masterCode: element.masterCode,
+           masterDescription: element.masterDescription,
+           companyName : element.companyName,
+           toDate:  new Date(element.toDate),
+          fromDate: new Date(element.fromDate),
+        };
+        this.excelData.push(obj);
+      });
+    }
+
+    this.excelservice.exportAsExcelFile(
+      this.excelData,
+      'Job-Master-Summary'
+    );
+  }
+
+
   customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null) result = -1;
+      else if (value1 != null && value2 == null) result = 1;
+      else if (value1 == null && value2 == null) result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+        result = value1.localeCompare(value2);
+      else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+
+      return event.order * result;
+    });
+  }
+
+  customSort2(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null) result = -1;
+      else if (value1 != null && value2 == null) result = 1;
+      else if (value1 == null && value2 == null) result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+        result = value1.localeCompare(value2);
+      else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+
+      return event.order * result;
+    });
+  }
+
+  customSort3(event: SortEvent) {
     event.data.sort((data1, data2) => {
       let value1 = data1[event.field];
       let value2 = data2[event.field];
@@ -291,6 +442,7 @@ export class JobMasterComponent implements OnInit {
     // this.tableDataList1 = [];
     this.summaryHtmlDataList = [];
     this.masterGridDataList = [];
+    this.form.get( 'isActive' ).setValue( true );
   }
   // saveBusinessAreaMasterMapping() {
   //   const saveData = ({
@@ -355,6 +507,7 @@ export class JobMasterComponent implements OnInit {
 
   // Save Comp Master Assign
   saveJobMasterMapping() {
+
       if ( this.mappedJobMastersToCompany.length > 0 ) {
         this.jobMasterService.postMapping(this.mappedJobMastersToCompany).subscribe(
           (res: any) => {
@@ -369,10 +522,34 @@ export class JobMasterComponent implements OnInit {
           this.alertService.sweetalertError( error['error']['status']['messsage'] );
         } );
         this.companyAssignTableList = [];
+        this.companyAssignTableListDummy = [];
 
         this.formAssignment.reset();
       }
     }
+
+      // Save Comp Master in Job Master Table
+  saveJobMasterMappingInMaster() {
+      if ( this.mappedJobMastersToCompanyInMaster.length > 0 ) {
+        this.jobMasterService.postMapping(this.mappedJobMastersToCompanyInMaster).subscribe(
+          (res: any) => {
+          if ( res.data.results.length !== 0 ) {
+            this.modalRef.hide();
+            this.alertService.sweetalertMasterSuccess( res.status.messsage, '' );
+            this.getAllOtheMappingDetails();
+            this.refreshHtmlTable();
+          } else {
+            this.alertService.sweetalertWarning( res.status.messsage );
+          }
+        }, ( error: any ) => {
+          this.alertService.sweetalertError( error['error']['status']['messsage'] );
+        } );
+        this.summaryCompanyHtmlDataList = [];
+
+        // this.formAssignment.reset();
+      }
+    }
+
 
   viewJobMaster(data) {
     console.log(data)
@@ -405,7 +582,6 @@ export class JobMasterComponent implements OnInit {
     // this.form.patchValue(this.tableDataList[data]);
   }
 
-
   cancelView() {
     this.onSelectJobMaster( 'All' );
     this.form.get( 'isActive' ).setValue( true );
@@ -416,7 +592,7 @@ export class JobMasterComponent implements OnInit {
     this.summaryHtmlDataList.forEach( x => x.isChecked = false );
     this.tableDataList.forEach( x => x.isChecked = false );
     this.enableCheckAll = false;
-    console.log( 'in reset' );
+    // console.log( 'in reset' );
     this.checks = false;
     this.editedRecordIndex = 0;
     this.isEditMode = false;
@@ -429,10 +605,8 @@ export class JobMasterComponent implements OnInit {
       masterCode: '',
       masterDescription: '',
     } )
+    this.onSelectJobMaster( 'All' );
   }
-
-
-
 //Assign  Edit And Update
 
   viewJobMasterAssign(data) {
@@ -443,23 +617,42 @@ export class JobMasterComponent implements OnInit {
     this.isUpdateModeComp = false;
     // this.hideFormControl = true;
     this.formAssignment.patchValue(data);
-    this.companyAssignTableList
+    this.companyAssignTableList;
     this.formAssignment.disable();
   }
 
 
 
   editUpdateDataAssign(data){
-
     this.formAssignment.enable();
     console.log("data", data)
     this.isUpdateModeComp = true;
     this.isViewModeComp = false;
     this.isEditModeComp = true;
     window.scrollTo( 0, 0 );
-    this.formAssignment.patchValue(data);
+    this.formAssignment.patchValue({companyName: data.groupCompanyId});
+    this.onCompanySelect(data.groupCompanyId);
+    this.companyAssignTableListDummy = [];
+    this.companyAssignTableListDummy.push(data);
   }
 
+  // editUpdateDataAssign(data){
+  //   this.formAssignment.enable();
+  //   console.log("data", data)
+  //   this.isUpdateModeComp = true;
+  //   this.isViewModeComp = false;
+  //   this.isEditModeComp = true;
+  //   window.scrollTo( 0, 0 );
+  //   this.formAssignment.patchValue({companyName: data.groupCompanyId});
+  //   this.onCompanySelect(data.groupCompanyId);
+  //   this.companyAssignTableListDummy = [];
+  //   this.companyAssignTableListDummy.push(data);
+  // }
+
+
+  resetAssignment() {
+
+  }
 
   cancelViewAssign() {
     this.refreshHtmlTable();
@@ -862,70 +1055,6 @@ export class JobMasterComponent implements OnInit {
       console.log("jobMasterId", this.form.jobMasterId)
   }
 
-  onCheckboxChangeMasterSummary( evt: any, id: number, jobMasterType?: string, masterCode?: string ) {
-    // this.enableCheckAll = false;
-    // console.log(evt);
-    // console.log(evt.target.checked);
-    console.log( 'check Box', this.checks );
-    // console.log(id);
-    if ( id == -1 ) {
-      console.log( 'id == -1::' );
-      if ( evt.target.checked == true ) {
-        this.checks = false;
-        this.enableCheckAll = false;
-        this.selectedCheckBox = [];
-        this.enableCheckAll = true;
-
-        // this.tableDataList.forEach( x => x.isChecked = true && x.active == false );
-
-
-        for ( let i = 0; i < this.tableDataList.length; i++ ) {
-          if ( this.tableDataList[i].isActive == 1 ) {
-            this.selectedCheckBox.push( this.tableDataList[i] );
-            this.tableDataList[i].isChecked = true;
-
-          }
-        }
-      } else {
-        for ( let i = 0; i < this.tableDataList.length; i++ ) {
-          if ( this.tableDataList[i].isActive == 1 ) {
-            this.tableDataList[i].isChecked = false;
-          }
-        }
-        this.checks = false;
-        this.enableCheckAll = false;
-        this.selectedCheckBox = [];
-      }
-    } else {
-      let findIndexOfTableDataList = this.tableDataList.findIndex( o => o.jobMasterType == jobMasterType && o.masterCode == masterCode );
-      let findIndexOfSummaryHtmlDataListList = this.summaryHtmlDataList.findIndex( o => o.jobMasterType == jobMasterType && o.masterCode == masterCode );
-      //console.log( 'indexe find is', findIndex );
-      if ( evt.target.checked == true ) {
-        console.log( 'xxxxxxxxx' );
-        // this.summaryHtmlDataList[findIndex].isChecked = true;
-        this.tableDataList[findIndexOfTableDataList].isChecked = true;
-        this.summaryHtmlDataList[findIndexOfSummaryHtmlDataListList].isChecked = true;
-        this.checks = false;
-
-
-        console.log( 'chceck this', this.tableDataList );
-        this.selectedCheckBox.push( this.tableDataList[findIndexOfTableDataList] );
-        console.log( 'this.tableDataList[findIndex]', this.tableDataList[findIndexOfTableDataList] );
-      } else if ( evt.target.checked === false ) {
-        //   this.summaryHtmlDataList[findIndex].isChecked = false;
-        this.tableDataList[findIndexOfTableDataList].isChecked = false;
-        this.summaryHtmlDataList[findIndexOfSummaryHtmlDataListList].isChecked = false;
-        this.checks = false;
-        console.log( 'in removing section' );
-        this.selectedCheckBox.splice( this.tableDataList[findIndexOfTableDataList], 1 );
-        console.log( 'this.summaryHtmlDataList[findIndex]', this.tableDataList[findIndexOfTableDataList] );
-      } else {
-        console.log( 'something error' );
-      }
-    }
-    console.log( this.selectedCheckBox );
-
-  }
 
 
   deactiveActiveCheckBox() {
@@ -1463,17 +1592,54 @@ export class JobMasterComponent implements OnInit {
   //   }
   //   this.getCheckedItemList();
   // }
+  // Check Box Job Master Company Mapping
 
-   // -------- Select Employee For Approval in checkbox selection---------------------
+  onCheckJobMasterTable(checkValue, element): void {
+    if (checkValue) {
+      const data = {
+        jobMasterValueId: this.selectedJobMaster.jobMasterValueId,
+        groupCompanyId: element.groupCompanyId,
+        fromDate: this.datePipe.transform(element.fromDate, "dd-MMM-yyyy"),
+        toDate: this.datePipe.transform(element.toDate, "dd-MMM-yyyy")
+      };
+      this.mappedJobMastersToCompanyInMaster.push(data);
+      // this.employeeList.filter((employee)=>employee.jobMasterValueId==element.jobMasterValueId).forEach((excelEmploee)=>{
+      //   this.excelEmployeeList.push(excelEmploee);
+      // });
+    } else {
+      const index = this.mappedJobMastersToCompanyInMaster.indexOf((p) => (p.jobMasterValueId = element.jobMasterValueId));
+      this.mappedJobMastersToCompanyInMaster.splice(index, 1);
+      // this.excelEmployeeList.splice(index, 1);
+    }
+  }
+
+
+  updateFromDateMaster(eventDate, jobMasterId) {
+    this.getAllMappingDetailListNew.forEach(element => {
+      if (element.jobMasterValueId == jobMasterId) {
+        element.fromDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
+
+      }
+    });
+  }
+
+  updateToDateMaster(eventDate, jobMasterId) {
+    this.getAllMappingDetailListNew.forEach(element => {
+      if (element.jobMasterValueId == jobMasterId) {
+        element.toDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
+      }
+    });
+  }
+
+   // --------CheckBox Select Employee For Approval in checkbox selection---------------------
+
    onCheckJobMaster(checkValue, element): void {
-
-
     if (checkValue) {
       const data = {
         jobMasterValueId: element.jobMasterValueId,
         groupCompanyId: parseInt(this.formAssignment.controls.companyName.value),
-        fromDate: element.fromDate,
-        toDate: element.toDate
+        fromDate: this.datePipe.transform(element.fromDate, "dd-MMM-yyyy"),
+        toDate: this.datePipe.transform(element.toDate, "dd-MMM-yyyy")
       };
       this.mappedJobMastersToCompany.push(data);
       // this.employeeList.filter((employee)=>employee.jobMasterValueId==element.jobMasterValueId).forEach((excelEmploee)=>{
@@ -1487,7 +1653,7 @@ export class JobMasterComponent implements OnInit {
   }
 
   updateFromDate(eventDate, jobMasterId) {
-    this.companyAssignTableList.forEach(element => {
+    this.companyAssignTableListDummy.forEach(element => {
       if (element.jobMasterValueId == jobMasterId) {
         element.fromDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
 
@@ -1496,7 +1662,7 @@ export class JobMasterComponent implements OnInit {
   }
 
   updateToDate(eventDate, jobMasterId) {
-    this.companyAssignTableList.forEach(element => {
+    this.companyAssignTableListDummy.forEach(element => {
       if (element.jobMasterValueId == jobMasterId) {
         element.toDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
       }
@@ -1551,7 +1717,7 @@ export class JobMasterComponent implements OnInit {
             fromDate: new Date(element.fromDate),
 
           };
-          // this.summaryAllOtherMappingDetailsList.push( obj );
+          this.summaryAllOtherMappingDetailsList.push( obj );
           this.getAllMappingDetailListNew.push( obj );
 
           // this.tableDataList.push(obj);
@@ -1640,5 +1806,125 @@ export class JobMasterComponent implements OnInit {
   //     Object.assign( {}, { class: 'gray modal-xl' } ) );
   // }
 
+
+  UploadModal4( template: TemplateRef<any>, element  ) {
+    this.selectedJobMaster = element;
+    const newArray = this.getAllMappingDetailListNew.filter( e => e.jobMasterValueId == this.selectedJobMaster.jobMasterValueId );
+    console.log("assignJobMasterId",this.assignJobMasterId);
+    this.checksCompany = false;
+    this.enableCompanyCheckAll = false;
+    this.selectedCompanyListCheckBox = [];
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign( {}, { class: 'gray modal-lg' } ),
+    );
+    this.getAllOtheMappingDetails();
+  }
+
+
+  mappedMatchingJobMasters(element) {
+      return (element.groupCompanyId == this.selectedCompanyId);
+  }
+
+  onCompanySelect(companyId) {
+    this.isJobMasterTableVisible = false;
+    this.selectedCompanyId = parseInt(companyId);
+    if (companyId != 'All') {
+      this.isJobMasterTableVisible = true;
+      this.companyAssignTableListDummy = [];
+      // tableDataList     upper
+      //  getAllMappingDetailListNew                 lower
+      const newArray = this.getAllMappingDetailListNew.filter( e => e.groupCompanyId == this.selectedCompanyId );
+      console.log("companyAssignTableListDummy", this.companyAssignTableListDummy);
+      if (newArray.length > 0) {
+        newArray.forEach(element => {
+          this.companyAssignTableList.forEach(arrayElement => {
+            if (element.jobMasterValueId != arrayElement.jobMasterValueId) {
+              this.companyAssignTableListDummy.push(arrayElement);
+            }
+          });
+        });
+      } else {
+        this.companyAssignTableListDummy = this.companyAssignTableList;
+      }
+
+      console.log("companyAssignTableListDummy" , this.companyAssignTableListDummy);
+    }
+  }
+
+  onCheckboxChangeMasterSummary( evt: any, id: number, masterType?: string, masterCode?: string ) {
+    // this.enableCheckAll = false;
+    // console.log(evt);
+    // console.log(evt.target.checked);
+    console.log( 'check Box', this.checks );
+    // console.log(id);
+    if ( id == -1 ) {
+      console.log( 'id == -1::' );
+      if ( evt.target.checked == true ) {
+        this.checks = false;
+        this.enableCheckAll = false;
+        this.selectedCheckBox = [];
+        this.enableCheckAll = true;
+
+        // this.tableDataList.forEach( x => x.isChecked = true && x.active == false );
+
+
+        // for ( let i = 0; i < this.tableDataList.length; i++ ) {
+        //   if ( this.tableDataList[i].isActive == 1 ) {
+        //     this.selectedCheckBox.push( this.tableDataList[i] );
+        //     this.tableDataList[i].isChecked = true;
+
+        //   }
+        // }
+      } else {
+        // for ( let i = 0; i < this.tableDataList.length; i++ ) {
+        //   if ( this.tableDataList[i].isActive == 1 ) {
+        //     this.tableDataList[i].isChecked = false;
+        //   }
+        // }
+        // this.checks = false;
+        // this.enableCheckAll = false;
+        // this.selectedCheckBox = [];
+      }
+    } else {
+      // let findIndexOfTableDataList = this.tableDataList.findIndex( o => o.masterType == masterType && o.masterCode == masterCode );
+      // let findIndexOfSummaryHtmlDataListList = this.summaryHtmlDataList.findIndex( o => o.masterType == masterType && o.masterCode == masterCode );
+      // //console.log( 'indexe find is', findIndex );
+      // if ( evt.target.checked == true ) {
+      //   console.log( 'xxxxxxxxx' );
+      //   // this.summaryHtmlDataList[findIndex].isChecked = true;
+      //   this.tableDataList[findIndexOfTableDataList].isChecked = true;
+      //   this.summaryHtmlDataList[findIndexOfSummaryHtmlDataListList].isChecked = true;
+      //   this.checks = false;
+
+
+      //   console.log( 'chceck this', this.tableDataList );
+      //   this.selectedCheckBox.push( this.tableDataList[findIndexOfTableDataList] );
+      //   console.log( 'this.tableDataList[findIndex]', this.tableDataList[findIndexOfTableDataList] );
+      // } else if ( evt.target.checked === false ) {
+      //   //   this.summaryHtmlDataList[findIndex].isChecked = false;
+      //   this.tableDataList[findIndexOfTableDataList].isChecked = false;
+      //   this.summaryHtmlDataList[findIndexOfSummaryHtmlDataListList].isChecked = false;
+      //   this.checks = false;
+      //   console.log( 'in removing section' );
+      //   this.selectedCheckBox.splice( this.tableDataList[findIndexOfTableDataList], 1 );
+      //   console.log( 'this.summaryHtmlDataList[findIndex]', this.tableDataList[findIndexOfTableDataList] );
+      // } else {
+      //   console.log( 'something error' );
+      // }
+    }
+    console.log( this.selectedCheckBox );
+
+  }
+
+
+
+  // UploadModal1( template: TemplateRef<any>, jobMasterValueId: number ) {
+  //   this.deletedjobMasterId = jobMasterValueId;
+  //   this.deleteModalRef = this.modalService.show(
+  //     template,
+  //     Object.assign( {}, { class: 'gray modal-md' } )
+  //   );
+  // }
 
 }
