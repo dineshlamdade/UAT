@@ -77,6 +77,7 @@ export class QueryTypeMasterComponent implements OnInit {
   listSubQueryAnsMappingResponseDTO: any = [];
   priortynoresolutiontime: any;
   priortynoautoclose: any;
+  selectedItem: any;
   constructor(public formBuilder: FormBuilder, public queryService: QueryService,
     private alertService: AlertServiceService) {
 
@@ -202,7 +203,7 @@ export class QueryTypeMasterComponent implements OnInit {
   radioButtonChanged(event) {
     let radioValue = event.target['value'];
     if (radioValue == 0) {
-      this.ishidden = false;
+      this.ishidden = true;
       this.subquerview = false;
       this.querytypeForm.controls['subqueryTypedescription'].clearValidators();
       this.subQueryRequestDTO = [];
@@ -518,6 +519,10 @@ export class QueryTypeMasterComponent implements OnInit {
           this.selectedModule = element.applicationModuleName;
         }
       });
+
+
+      // this.selectedItem =  this.selectedItem.concat(this.queryListData[0].value);
+
       this.getAll();
       console.log(JSON.stringify(this.querySubQuerySummary));
     });
@@ -581,7 +586,7 @@ export class QueryTypeMasterComponent implements OnInit {
     }
       ,error => {
         if(error.error.status.code == '400'){
-          this.alertService.sweetalertWarning("Duplicate Query Description Already Present !");
+          this.alertService.sweetalertWarning(" Query Description Already Present !");
         }
       }
     );
@@ -682,8 +687,9 @@ export class QueryTypeMasterComponent implements OnInit {
     this.querytypeForm.controls['subQueryTypeCode'].setValue(query.subQuerCode);
     // 'subqueryTypedescription':this.querytypeForm.controls['subqueryTypedescription'].value,
     this.querytypeForm.controls['subqueryTypedescription'].setValue(query.subqueryTypedescription);
-    this.querytypeForm.controls['assignQATemplate2'].setValue(query.assignQATemplate2);
+    // this.querytypeForm.controls['assignQATemplate2'].setValue(query.assignQATemplate2[0].queAnsMasterId);
     console.log("!!!!!!!!!!!!!!!!", query);
+
     this.editQueryIndex = index;
 
   }
@@ -768,7 +774,7 @@ export class QueryTypeMasterComponent implements OnInit {
     this.isAddTempQuery = true;
     this.isUpdateTempQuery = false;
     this.getPriorityData();
-    // this.querytypeForm.controls[''].setValue(this.listSubQueryAnsMappingResponseDTO.queAnsMasterId);
+    // this.querytypeForm.controls['assignQATemplate2'].setValue(this.selectedItem);
     // console.log('listSubQueryAnsMappingResponseDTO');
 
   }

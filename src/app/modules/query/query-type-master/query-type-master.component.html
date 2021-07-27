@@ -144,6 +144,7 @@
                         </ng-multiselect-dropdown> -->
                         <p-multiSelect  [options]="queryListData" class="multiselect-custom"
                         [showHeader]="true" [disabled]="viewFlag"
+                       [id]="'queAnsMasterId'"
                         (onChange)="onItemSubQuerySelect($event)"
                         (onSelectAll)="onSelectAllSubQuery($event)"
                         [disabled]="viewFlag" [virtualScroll]="true"

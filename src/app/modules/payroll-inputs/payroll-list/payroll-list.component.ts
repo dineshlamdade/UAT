@@ -85,6 +85,7 @@ export class PayrollListComponent implements OnInit {
     localStorage.setItem('payrollListEmpData',JSON.stringify(this.selectedEmployeeData))
     this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
   }
+
 // ............................................Add Query....................................................
   navigateToQuery(){
     localStorage.setItem('queryListEmpData',JSON.stringify(this.selectedEmployeeData))
@@ -97,15 +98,12 @@ export class PayrollListComponent implements OnInit {
     );
   }
 
-
-
   addQueryGeneration(){ //post api for saving data
     let data ={
       'onBehalf':this.onBehalfValue,
       'sameContent':this.sameContentValue
     }
 localStorage.setItem('emlpoyeeSelectionData',JSON.stringify(data))
-
 
 }
 onBehalf(value)

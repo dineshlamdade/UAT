@@ -112,7 +112,7 @@
                                          (click)="smallpopup(template)" [routerLink]="['/admin-query-generation']"
                                             [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
                                             [disabled]="selectedEmployeeData.length == 0">
-                                            <i class="fa fa-plus-circle"> Add Query</i>
+                                            <i class="fa fa-plus-circle"> Query</i>
                                         </button>
                                     </div>
                                 </div>
@@ -248,7 +248,7 @@
                                          "
                                               [routerLink]="['/admin-query-generation']"
                                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"><b><i
-                                                      class="fa fa-thumbs-up"></i></b> Ok</button>
+                                                      class="fa fa-angle-double-right"></i></b> Proceed</button>
                                           <button type="button" tooltip="Cancel" (click)="modalRef.hide()"
                                               data-dismiss="modal" aria-label="Close"
                                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i
