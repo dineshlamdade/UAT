@@ -38,3 +38,28 @@ export class PayrollAreaRequestModel {
     ){}
 
 } 
+
+export class disbursementDTO{
+    payrollAreaInformationId:any;
+      employeeBankInfoId:any;
+      modeOfPayment: any;
+      bankName:any;
+      bankDropList: Array<bankName>;
+      ifsc:any;
+      ifscList: Array<IFSC> ;
+      accountNo: any;
+      accountNoList:Array<accountList> ;
+      nameAsPerBank: any;
+      percentageOfNetPay: any;
+      amount: any;
+      priority: any;
+}
+export class bankName{
+    bankName:any;
+}
+export class IFSC{
+    ifsc:any;
+}
+export class accountList{
+    accountNo:any;
+}

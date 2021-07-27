@@ -1,10 +1,8 @@
-
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <form  [formGroup]="form" #formDirective="ngForm"
-                (ngSubmit)="addBankInfo(form,formDirective)" method="post" novalidate>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="addBankInfo(form,formDirective)" method="post"
+                novalidate>
                 <div class="card-body p-0">
 
                     <div class="col-12 mt-10">
@@ -17,21 +15,25 @@
 
                                 <div class="col-sm-3">
                                     <label class="form-label">Area</label>
-                                    <select name="payrollAreaCode" class="form-control" [ngClass]="{ 'is-invalid': form.get('payrollAreaCode').touched && form.get('payrollAreaCode').errors }" formControlName='payrollAreaCode'
-                                    (change)="payrollAreaChange()">
+                                    <select name="payrollAreaCode" class="form-control"
+                                        [ngClass]="{ 'is-invalid': form.get('payrollAreaCode').touched && form.get('payrollAreaCode').errors }"
+                                        formControlName='payrollAreaCode' (change)="payrollAreaChange()">
                                         <option value=""> Select</option>
-                                        <option *ngFor="let list of payrollList" [value]="list.payrollAreaCode"> 
+                                        <option *ngFor="let list of payrollList" [value]="list.payrollAreaCode">
                                             {{list.payrollAreaCode}} </option>
-                                       
+
                                     </select>
                                 </div>
 
                                 <div class="col-sm-3">
                                     <label class="form-label">Type of Payment</label>
-                                    <select name="typeOfPayment" class="form-control" fromControlName="typeOfPayment"  [ngClass]="{ 'is-invalid': form.get('typeOfPayment').touched && form.get('typeOfPayment').errors }"  (change)="typeOfPaymentChange()">
+                                    <select name="typeOfPayment" class="form-control" formControlName="typeOfPayment"
+                                        [ngClass]="{ 'is-invalid': form.get('typeOfPayment').touched && form.get('typeOfPayment').errors }"
+                                        (change)="typeOfPaymentChange()">
                                         <option value=""> Select</option>
-                                        <option *ngFor="let type of typeOfPaymentList" [value]="type"> {{type}} </option>
-                                      
+                                        <option *ngFor="let type of typeOfPaymentList" [value]="type.value"> {{type.value}}
+                                        </option>
+
                                     </select>
 
                                 </div>
@@ -44,8 +46,9 @@
                                                 <i class="fa fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input data-provide="datepicker" data-date-autoclose="true" formControlName="fromDate" class="form-control"
-                                        [minDate]="formMinDate" placement="center"  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                        <input data-provide="datepicker" data-date-autoclose="true"
+                                            formControlName="fromDate" class="form-control" [minDate]="formMinDate"
+                                            placement="center" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                             placeholder="Date" bsDatepicker>
                                     </div>
 
@@ -58,9 +61,9 @@
                                                 <i class="fa fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control" formControlName="toDate"
-                                        [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" placement="center"
-                                            placeholder="Date" bsDatepicker>
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                            formControlName="toDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                            placement="center" placeholder="Date" bsDatepicker>
                                     </div>
 
                                 </div>
@@ -72,10 +75,11 @@
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-3">
                                     <label class="form-label">Copy From</label>
-                                    <select name="copyFromPayrollArea" class="form-control" formControlName="copyFromPayrollArea">
+                                    <select name="copyFromPayrollArea" class="form-control" (change)="copyFromChange()"
+                                        formControlName="copyFromPayrollArea">
                                         <option value=""> Select</option>
-                                        <option *ngFor="let copy of copyFromPayrollAreaList">{{copy.name}} </option>
-                                       
+                                        <option *ngFor="let copy of copyFromPayrollAreaList" [value]="copy.code">{{copy.code}}</option>
+
                                     </select>
                                 </div>
 
@@ -83,162 +87,219 @@
                             <br>
                             <br>
 
-                            
+
                             <div class="row" formArrayName="pfFormArray">
                                 <div class="col-md-12">
                                     <p-table [value]="users1">
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th rowspan="2" class="wd-2 text-center">Sr. No.</th>
-                                                <th rowspan="2" class="wd-6 text-center">
+                                                <th rowspan="2" class="wd-8 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center">Mode of Payment
-                                                        <div class="Sort_Filter_Position">
+                                                        <!-- <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="PayrollArea"
                                                                 pSortableColumn="PayrollArea"></p-sortIcon>
                                                             <p-columnFilter type="text" field="name" display="menu"
                                                                 class="p-ml-auto">
                                                             </p-columnFilter>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </th>
-                                                <th rowspan="2" class="wd-6 text-center">
+                                                <th rowspan="2" class="wd-10 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center"> Bank Name
-                                                        <div class="Sort_Filter_Position">
+                                                        <!-- <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="Description"
                                                                 pSortableColumn="Description"></p-sortIcon>
                                                             <p-columnFilter type="text" field="Desc" display="menu"
                                                                 class="p-ml-auto">
                                                             </p-columnFilter>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </th>
                                                 <th rowspan="2" class="wd-12 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center"
                                                         style="margin-left: 20px;">IFSC / SWIFT
-                                                        <div class="Sort_Filter_Position">
+                                                        <!-- <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="Type" pSortableColumn="Type">
                                                             </p-sortIcon>
                                                             <p-columnFilter type="date" field="date" display="menu"
                                                                 class="p-ml-auto"> </p-columnFilter>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </th>
                                                 <th rowspan="2" class="wd-8 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center"> Account No.
 
-                                                        <div class="Sort_Filter_Position">
+                                                        <!-- <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="PrimaryArea"
                                                                 pSortableColumn="PrimaryArea"></p-sortIcon>
                                                             <p-columnFilter field="status" matchMode="equals"
                                                                 display="menu" class="p-ml-auto"></p-columnFilter>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </th>
                                                 <th rowspan="2" class="wd-8 text-center">
                                                     <div class="p-d-flex justify-content-center p-ai-center">Payee Name
-                                                        <div class="Sort_Filter_Position">
+                                                        <!-- <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="FromDate" pSortableColumn="FromDate">
                                                             </p-sortIcon>
                                                             <p-columnFilter field="activity" display="menu"
                                                                 class="p-ml-auto">
                                                             </p-columnFilter>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </th>
-                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-8 text-center">
+
+
+                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-10 text-center">
+                                                    <div class="p-d-flex justify-content-center p-ai-center">Type
+                                                        <!-- <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="FromDate" pSortableColumn="FromDate">
+                                                            </p-sortIcon>
+                                                            <p-columnFilter field="activity" display="menu"
+                                                                class="p-ml-auto">
+                                                            </p-columnFilter> -->
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </th>
+
+                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-6 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center">% Net Pay
-                                                        <div class="Sort_Filter_Position">
+                                                        <!-- <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="ToDate" pSortableColumn="ToDate">
                                                             </p-sortIcon>
                                                             <p-columnFilter field="activity" display="menu"
                                                                 class="p-ml-auto">
                                                             </p-columnFilter>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </th>
                                                 <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-8 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center">Amount
-                                                        <div class="Sort_Filter_Position">
+                                                        <!-- <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="ToDate" pSortableColumn="ToDate">
                                                             </p-sortIcon>
                                                             <p-columnFilter field="activity" display="menu"
                                                                 class="p-ml-auto">
                                                             </p-columnFilter>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </th>
-                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-8 text-center">
+                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-6 text-center">
                                                     <div class="p-d-flex p-jc-between p-ai-center">Priority
-                                                        <div class="Sort_Filter_Position">
+                                                        <!-- <div class="Sort_Filter_Position">
                                                             <p-sortIcon field="ToDate" pSortableColumn="ToDate">
                                                             </p-sortIcon>
                                                             <p-columnFilter field="activity" display="menu"
                                                                 class="p-ml-auto">
                                                             </p-columnFilter>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </th>
 
 
-                                                <th  *ngIf="multiBankingAllowed" rowspan="2" class="wd-4 text-center"> Action </th>
+                                                <th *ngIf="multiBankingAllowed" rowspan="2" class="wd-4 text-center">
+                                                    Action </th>
 
                                             </tr>
 
                                         </ng-template>
-                                        <ng-template pTemplate="body"  let-rowIndex="rowIndex">
-                                            <tr class="p-selectable-row"   *ngFor="let summary of pfArray.controls; index as i" [formGroupName]="i">
+                                        <ng-template pTemplate="body" let-rowIndex="rowIndex">
+                                            <tr class="p-selectable-row"
+                                                *ngFor="let summary of pfArray.controls; index as i"
+                                                [formGroupName]="i">
                                                 <td class="text-center">{{i+1}}</td>
                                                 <td scope="row">
-                                                    <select name="modeOfPayment"  class="form-control" (change)="modeOfPaymentChange()" formControlName="modeOfPayment">
+                                                    <select name="modeOfPayment" class="form-control"
+                                                        (change)="modeOfPaymentChange(i)"
+                                                        formControlName="modeOfPayment">
                                                         <option value=""> Select</option>
-                                                        <option  *ngFor="let mode of modeOfPaymentList" [value]="mode">{{mode}}</option>
+                                                        <option *ngFor="let mode of modeOfPaymentList" [value]="mode.value">
+                                                            {{mode.value}}</option>
                                                     </select>
                                                 </td>
                                                 <td scope="row">
-                                                    <select name="bankName"   class="form-control" formControlName="bankName"  (change)="ifscSelect(i)">
+                                                    <select name="bankName" class="form-control"
+                                                        formControlName="bankName"
+                                                        (change)="ifscSelect(i);validateNetPercent(i)">
                                                         <option value="">Select</option>
-                                                        <option  *ngFor="let bank of bankList" > {{bank.bankName}}</option>
+                                                        <option *ngFor="let bank of summary.get('bankDropList').value"
+                                                            [value]="bank.bankname"> {{bank.bankname}}</option>
                                                     </select>
                                                 </td>
                                                 <!-- let bank of summary.get('ifscList').controls -->
-                                                <td scope="row"  >
-                                                    <select name="ifsc" class="form-control" formControlName="ifsc" (change)="accountSelect(i)">
+                                                <td scope="row">
+                                                    <select name="ifsc" class="form-control" formControlName="ifsc"
+                                                        (change)="accountSelect(i)">
                                                         <option value=""> Select</option>
-                                                        <option *ngFor="let bank of summary.get('ifscList').value"> {{bank.ifsc}}</option>
-                                                        
+                                                        <option *ngFor="let ifs of summary.get('ifscList').value"
+                                                            [value]="ifs.ifsc"> {{ifs.ifsc}}</option>
+
                                                     </select>
                                                 </td>
                                                 <td scope="row">
-                                                    <select name="accountNo" class="form-control" formControlName="accountNo">
-                                                        <option value=""> Select</option>
-                                                        <option *ngFor="let bank of summary.get('accountNoList').value"> {{bank.accountNo}}</option>
-                                                  
+                                                    <select name="accountNo" class="form-control" (change)="validateAccountNo(i)" 
+                                                        formControlName="accountNo">
+                                                        <option value="" > Select</option>
+                                                        <option *ngFor="let data of summary.get('accountNoList').value"
+                                                            [value]="data.accountNo" > {{data.accountNo}}  
+                                                        </option>
+                                                        <i class="fa fa-eye-slash  font-18 text-blue cursor-pointer"
+                                                        aria-hidden="true" style="overflow: visible"></i>    
                                                     </select>
+                                                   
                                                 </td>
                                                 <td scope="row">
-                                                    <input type="text" class="form-control"  formControlName="nameAsPerBank" >
+                                                    <input type="text" class="form-control"
+                                                        formControlName="nameAsPerBank">
+                                                </td>
+                                                <!-- <td *ngIf="multiBankingAllowed">
+                                                    <label class="custom-switch">
+                                                        <input type="checkbox" name="custom-switch-checkbox"
+                                                            class="custom-switch-input"
+                                                            (change)="percentOrAmount($event.currentTarget.checked,i)"
+                                                            
+                                                            formControlName="percentActive">
+                                                        <span class="custom-switch-description"
+                                                            value="percentOfNetPay"><b>% of Net Pay</b></span>&nbsp;&nbsp;
+                                                        <span class="custom-switch-indicator"></span>
+                                                        <span class="custom-switch-description"
+                                                            value="amount"><b>Amount</b></span>
+                                                    </label>
+
+                                                </td> -->
+
+
+                                                <td  *ngIf="multiBankingAllowed">
+                                                    <select name="percentActive" class="form-control" formControlName="percentActive"
+                                                        (change)="percentOrAmount(type,i)">
+                                                        <option value=""> Select</option>
+                                                        <option *ngFor="let type of typeList"
+                                                            [value]="type"> {{type}}</option>
+
+                                                    </select>
                                                 </td>
                                                 <td *ngIf="multiBankingAllowed" scope="row">
-                                                    <input type="text" class="form-control"  formControlName="percentNetpay"
-                                                     (keyup)="percentageTotal()">
+                                                    <input type="text" class="form-control text-right"
+                                                        formControlName="percentageOfNetPay" (keyup)="percentageTotal()"
+                                                        (keypress)="keyPress($event)">
                                                 </td>
 
                                                 <td *ngIf="multiBankingAllowed" scope="row">
-                                                    <input type="text" class="form-control" formControlName="amount"
-                                                     (keyup)="amountTotal()">
+                                                    <input type="text" class="form-control text-right" formControlName="amount"
+                                                        (keyup)="amountTotal()" (keypress)="keyPress($event)" >
                                                 </td>
 
 
-                                                <td  *ngIf="multiBankingAllowed" scope="row">
-                                                    <input type="text" class="form-control">
+                                                <td *ngIf="multiBankingAllowed" scope="row">
+                                                    <input type="text" class="form-control" formControlName="priority">
                                                 </td>
 
                                                 <td *ngIf="multiBankingAllowed" scope="row">
-
-                                                    <i class="fa fa-times  font-18 text-red cursor-pointer" (click)="deleteRow()"
-                                                        aria-hidden="true"></i>&nbsp;
-                                                    <i  class="fa fa-plus-circle font-18 text-dark-green cursor-pointer" (click)="addRow()"
-                                                        aria-hidden="true"></i>&nbsp;
+                                                    <i *ngIf="i>0 && i==pfArray.controls.length-1" class="fa fa-times  font-18 text-red cursor-pointer"
+                                                    (click)="deleteRow()" aria-hidden="true"></i>&nbsp;
+                                                <i *ngIf="i==0" class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
+                                                    (click)="addRow()" aria-hidden="true"></i>&nbsp;
                                                 </td>
                                             </tr>
                                             <!-- <tr class="p-selectable-row">
@@ -258,8 +319,7 @@
 
                                                 </td>
                                                 <td>
-                                                    ***********29 <i
-                                                        class="fa fa-eye-slash  font-18 text-blue cursor-pointer"
+                                                    ***********29 <i class="fa fa-eye-slash  font-18 text-blue cursor-pointer"
                                                         aria-hidden="true"></i>
                                                 </td>
                                                 <td>
@@ -357,20 +417,23 @@
                                                 </td>
                                             </tr> -->
 
-                                            <!-- <tr class="p-selectable-row table-light-color">
+                                            <tr *ngIf="multiBankingAllowed" class="p-selectable-row table-light-color">
 
-                                                <td colspan="6" class="text-bold text-right ">Total
+                                                <td colspan="7" class="text-bold text-right ">Total
 
                                                 </td>
-                                                <td class="text-center text-bold">{{percentageTotal()}}</td>
-                                                <td class="text-center text-bold">40,000</td>
-                                                <td colspan="2"></td>
+                                                <td class="text-right text-bold">{{percentageTotal()}}</td>
+                                                <td class="text-right text-bold">{{amountTotal() | number: '1.2-2'}}</td>
+                                                <td colspan="2">
+
+                                                    
+                                                </td>
 
 
 
-                                            </tr> -->
+                                            </tr>
                                         </ng-template>
-                                        <ng-template *ngIf="multiBankingAllowed" pTemplate="footer">
+                                        <!-- <ng-template pTemplate="footer">
                                             <tr>
                                                 
                                                 <td colspan="6"class="text-bold text-right ">Total</td>
@@ -378,9 +441,9 @@
                                                 <td class="text-center text-bold">{{amtTotal}}</td>
                                                 <td colspan="2"></td>
                                             </tr>
-                                        </ng-template>
+                                        </ng-template> -->
                                         <ng-template pTemplate="emptymessage">
-                                            <tr>    
+                                            <tr>
                                                 <td colspan="15" class="font-14 font500 text-center text-red"><span>No
                                                         Data
                                                         Available</span>
@@ -394,14 +457,14 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mb-15">
-                                    <button type="submit"
+                                    <button type="submit" *ngIf="!viewFlag" [disabled]="form.invalid"
                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                        tooltip="Save"><b>
+                                        [ngClass]="{'disabled-btn-bg-green' : form.invalid }" tooltip="Save"><b>
                                             <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                                    <button type="button"
+                                    <button type="button" *ngIf="!viewFlag" (click)="resetForm()"
                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
-                                        tooltip="Reset"><b>
-                                            <i class="fa fa-refresh"></i></b> Reset</button>
+                                        tooltip="Reset" ><b>
+                                            <i class="fa fa-refresh" ></i></b> Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -411,10 +474,11 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <p-table  [value]="disbursmentSummary"  [paginator]="true" [rows]="10"  (sortFunction)="customSort($event)" [customSort]="true"
-                                [showCurrentPageReport]="true"
-                                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                   [rowsPerPageOptions]="[10,25,50,100,200]" >
+                                <p-table [value]="disbursmentSummary" [paginator]="true" [rows]="10"
+                                    (sortFunction)="customSort($event)" [customSort]="true"
+                                    [showCurrentPageReport]="true"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    [rowsPerPageOptions]="[10,25,50,100,200]">
                                     <ng-template pTemplate="header">
                                         <tr>
                                             <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
@@ -433,9 +497,10 @@
                                             <th rowspan="2" class="wd-8 text-center">
                                                 <div class="p-d-flex p-jc-between p-ai-center">Type of Payment
                                                     <div class="Sort_Filter_Position">
-                                                        <p-sortIcon field="typeOfPayment" pSortableColumn="Type"></p-sortIcon>
-                                                        <p-columnFilter type="typeOfPayment" field="typeOfPayment" display="menu"
-                                                            class="p-ml-auto"> </p-columnFilter>
+                                                        <p-sortIcon field="typeOfPayment" pSortableColumn="Type">
+                                                        </p-sortIcon>
+                                                        <p-columnFilter type="typeOfPayment" field="typeOfPayment"
+                                                            display="menu" class="p-ml-auto"> </p-columnFilter>
                                                     </div>
                                                 </div>
                                             </th>
@@ -456,8 +521,8 @@
                                                     <div class="Sort_Filter_Position">
                                                         <p-sortIcon field="fromDate" pSortableColumn="fromDate">
                                                         </p-sortIcon>
-                                                        <p-columnFilter field="fromDate" matchMode="equals" display="menu"
-                                                            class="p-ml-auto"></p-columnFilter>
+                                                        <p-columnFilter field="fromDate" matchMode="equals"
+                                                            display="menu" class="p-ml-auto"></p-columnFilter>
                                                     </div>
                                                 </div>
                                             </th>
@@ -466,8 +531,7 @@
                                                     <div class="Sort_Filter_Position">
                                                         <p-sortIcon field="toDate" pSortableColumn="toDate">
                                                         </p-sortIcon>
-                                                        <p-columnFilter field="toDate" display="menu"
-                                                            class="p-ml-auto">
+                                                        <p-columnFilter field="toDate" display="menu" class="p-ml-auto">
                                                         </p-columnFilter>
                                                     </div>
                                                 </div>
@@ -485,34 +549,34 @@
                                     <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                         <tr class="p-selectable-row">
                                             <td class="bg-color-light_gray text-center"><label
-                                                class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
-                                
-                                                <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                                                    class="form-lable mb-0 text-center">{{rowIndex+1}}</label></td>
+
+                                            <td class="bg-color-light_gray"><label class="form-lable mb-0"
                                                     tooltip="{{user1.Area}}">{{user1.Area}}</label></td>
-                                                    
-                                                    <td class="bg-color-light_gray"><label class="form-lable mb-0"
-                                                        tooltip="{{user1.typeOfPayment}}">{{user1.typeOfPayment}}</label>
-                                                    </td>
-                                
-                                                    <td class="bg-color-light_gray"><label class="form-lable mb-0"
-                                                        tooltip="{{user1.totalEntries}}">{{user1.totalEntries}}</label>
-                                                    </td>
-                                          
-                                                    <td class="bg-color-light_gray"><label class="form-lable mb-0"
-                                                        tooltip="{{user1.fromDate}}">{{user1.fromDate}}</label>
-                                                    </td>
-                                                    <td class="bg-color-light_gray"><label class="form-lable mb-0"
-                                                        tooltip="{{user1.toDate}}">{{user1.toDate}}</label>
-                                                    </td>
-                                                    <td>
-                                                <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" (click)="addRow()"
-                                                    aria-hidden="true"></i>&nbsp;
-                                                <i class="fa fa-eye font-18 text-blue cursor-pointer" (click)="deleteRow()"
-                                                    aria-hidden="true"></i>&nbsp;
+
+                                            <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                                                    tooltip="{{user1.typeOfPayment}}">{{user1.typeOfPayment}}</label>
+                                            </td>
+
+                                            <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                                                    tooltip="{{user1.totalEntries}}">{{user1.totalEntries}}</label>
+                                            </td>
+
+                                            <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                                                    tooltip="{{user1.fromDate}}">{{user1.fromDate}}</label>
+                                            </td>
+                                            <td class="bg-color-light_gray"><label class="form-lable mb-0"
+                                                    tooltip="{{user1.toDate}}">{{user1.toDate}}</label>
+                                            </td>
+                                            <td>
+                                                <i class="fa fa-edit  font-18 text-dark-green cursor-pointer"
+                                                    (click)="updateData(user1)" aria-hidden="true"></i>&nbsp;
+                                                <i class="fa fa-eye font-18 text-blue cursor-pointer"
+                                                    (click)="viewDAta(user1)" aria-hidden="true"></i>&nbsp;
 
                                             </td>
                                         </tr>
-                                       
+
                                     </ng-template>
                                     <ng-template pTemplate="emptymessage">
                                         <tr>
@@ -529,4 +593,4 @@
 
                 </div> <!-- card body -->
             </form>
-            </div>
+        </div>

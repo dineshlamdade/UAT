@@ -28,6 +28,14 @@ export class PayrollAreaInformationService {
   }))
   }
 
+  postBankInfo(data){
+    return this.httpClient.post(environment.baseUrl8082+ 
+      'payrollBankMapping/',data,{headers:{ 'X-TenantId': 'PaysquareDefault'}})
+      .pipe(map((res:any)=>{
+        return res;
+      }))
+  }
+
 
   putPayrollAreaInfoForm(PayrollAreaSummaryGridData){
 
@@ -134,4 +142,7 @@ export class PayrollAreaInformationService {
       return res;
     }))
   }
+
+
+
 }

@@ -1,8 +1,12 @@
+
 import { DatePipe } from '@angular/common';
 import { newArray } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { setValue } from '@ngneat/transloco';
+import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { familyAddressDetailRequestDTO } from '../../family-information/family-information.model';
+import { bankName } from '../payroll-area-information.model';
 import { PayrollAreaInformationService } from '../payroll-area-information.service';
 
 interface users1 {
@@ -22,6 +26,10 @@ interface dataIfsc {
 }
 interface dataAccount {
   accountNo;
+}
+interface dataBankDrop {
+ employeeBankInfoId;
+  bankname;
 }
 
 interface bank {
@@ -49,17 +57,28 @@ export class DisbursementsComponent implements OnInit {
   disbursmentSummary: Array<any>;
   multiBankingAllowed: any = false;
   ifscCurrent: Array<any> = [];
-  typeOfPaymentList: Array<any> = 'Salary,Payroll Reimbursement'.split(',');
-  modeOfPaymentList: Array<any> = 'Bank Transfer,Cheque,Cash,DD'.split(',');
-  copyFromPayrollAreaList: any[];
+  typeOfPaymentList: Array<any> =[]// 'Salary,Payroll Reimbursement'.split(',');
+  modeOfPaymentList: Array<any> = []//'Bank Transfer,Cheque,Cash,DD'.split(',');
+  typeList = '% of Net Pay,Amount'.split(',');
+  copyFromPayrollAreaList: Array<any>=[];
   bankList: any;
   companyId: any;
-  payData : any;
-
+  payData: Array<any> = [];
+  disbursmentList: Array<any> = [];
+  asignedPayrollList: Array<any> = [];
+  viewFlag: boolean;
+  updateFlag: boolean;
+  filteredBankData: Array<any> = [];
+  addButtonFlag: boolean;
+  fullName: string;
+  payrollAreas: Array<any>=[];
+  companySetting: any;
+  copyFrom: boolean;
 
   constructor(public datepipe: DatePipe,
     private formBuilder: FormBuilder,
-    private payrollService: PayrollAreaInformationService
+    private payrollService: PayrollAreaInformationService,
+    private CommonDataService: SharedInformationService
   ) { }
 
   ngOnInit(): void {
@@ -70,13 +89,144 @@ export class DisbursementsComponent implements OnInit {
     ];
     this.employeeMasterId = localStorage.getItem('employeeMasterId')
     this.payrollService.getPayrollAreaDetails().subscribe(res => {
-      this.payData = res.data.results[0];
-      console.log('payData',this.payData)
+      this.payData = res.data.results;
+
     });
     this.getInitialData();
 
   }
   getInitialData() {
+    this.getForm();
+    this.multiBankingAllowed=false;
+    this.pfArrayPush();
+    this.pfArray.disable();
+
+
+
+    this.disbursmentList=[];
+    this.payrollService.getDisbursementDetails(this.employeeMasterId).subscribe(res => {
+      this.disbursmentList = res.data.results[0];
+      
+      console.log('disbursementList', this.disbursmentList)
+
+//       var groupByPayrollAreaCode={};
+// const datea = this.disbursmentList.forEach(function (a){
+//   groupByPayrollAreaCode [a.payrollAreaCode] =  [a.payrollAreaCode] || [];
+//   groupByPayrollAreaCode [a.payrollAreaCode].push({
+//     fromDate : a.payFromDate , typeOfPayment : a.typeOfPayment
+//      })
+// })
+
+// console.log('groupByPayrollAreaCode',groupByPayrollAreaCode);
+
+      //distinct payrollArea entries
+      this.payrollAreas = [];
+      this.copyFromPayrollAreaList=[];
+      //payrollAreas = this.disbursmentList.reduce((a,b)=>a == b);
+     // console.log('reduce',payrollAreas);
+      for (var len = this.disbursmentList.length, i = 0; i < len; ++i) {
+        var payrollAreaInformationId = this.disbursmentList[i].payrollAreaInformationId;
+
+      //const groupBy = (key,arr) => arr.reduce((acc,val)=>({...acc}),{})
+
+
+
+
+
+        if (this.payrollAreas.indexOf(payrollAreaInformationId) > -1) continue;
+        this.payrollAreas.push(payrollAreaInformationId);
+        this.typeOfPaymentList.forEach(element => {
+         this.copyFromPayrollAreaList.push({ element : this.disbursmentList[i].payrollAreaCode })
+        })
+      }
+console.log('copyFrom',this.copyFromPayrollAreaList);
+
+
+      var typeAreas = [];
+      for (var len = this.disbursmentList.length, i = 0; i < len; ++i) {
+        var typeOfPaymentId = this.disbursmentList[i].typeOfPayment;
+
+        if (typeAreas.indexOf(typeOfPaymentId) > -1) continue;
+        typeAreas.push(typeOfPaymentId);
+      }
+
+      var dateAreas = [];
+      for (var len = this.disbursmentList.length, i = 0; i < len; ++i) {
+        var dateId = this.disbursmentList[i].payFromDate;
+
+        if (dateAreas.indexOf(dateId) > -1) continue;
+        dateAreas.push(dateId);
+      }
+
+      console.log(typeAreas);
+      //create summary to display summary
+
+      this.disbursmentSummary = [];
+      let payLength = this.payrollAreas.length;
+      for (let i = 0; i < payLength; i++) {
+        let typeLength = typeAreas.length;
+        for (let j = 0; j < typeLength; j++) {
+          let dateLength = dateAreas.length;
+          for (let k = 0; k < dateLength; k++) {
+            let obj = this.disbursmentList.find(a => a.payrollAreaInformationId == this.payrollAreas[i] && a.typeOfPayment == typeAreas[j] && a.payFromDate == dateAreas[k]);
+            if (obj) {
+              this.disbursmentSummary.push({
+                Area: obj.payrollAreaCode,
+                typeOfPayment: obj.typeOfPayment,
+                totalEntries: this.disbursmentList.filter(a => a.payrollAreaInformationId == this.payrollAreas[i] && a.typeOfPayment == typeAreas[j] && a.payFromDate == dateAreas[k]).length,
+                fromDate: obj.payFromDate,
+                toDate: obj.payToDate
+              })
+            }
+          }
+        }
+      } 
+      //sord by todate desc
+      this.disbursmentSummary.sort((x,y)=>new Date(x.toDate)<new Date(y.toDate)?1:-1);
+
+      console.log(this.disbursmentSummary)
+       // copyFromList 
+             for (let i = 0; i < this.disbursmentList.length; i++){  
+              var payrollAreaInformationId = this.disbursmentList[i].payrollAreaInformationId;
+              if (this.copyFromPayrollAreaList.indexOf(payrollAreaInformationId) > -1) continue;  
+            this.copyFromPayrollAreaList.push({ 
+              payrollAreaInformationId :payrollAreaInformationId,     
+             code :this.disbursmentList[i].payrollAreaCode +"-"+ this.disbursmentList[i].typeOfPayment
+         }) 
+     console.log('copyFromList',this.copyFromPayrollAreaList)
+    }  
+  
+    }
+    , (error: any) => {
+      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+    })
+    
+
+
+    this.payrollService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+      this.payrollList = res.data.results[0];
+      this.asignedPayrollList = res.data.results[0];
+      // if (this.disbursmentList.length > 0) {
+      //   this.payrollList = this.payrollList.filter(ar => !this.disbursmentList.find(rm => (rm.payrollAreaInformationId === ar.payrollAreaInformationId)))
+      // }
+    })
+
+    //  this.getData();
+    this.payrollService.getBankAccountDetails(this.employeeMasterId).subscribe(res => {
+      this.bankList = res.data.results[0];
+      //get only unique values from 
+      var result = Object.values(this.bankList.reduce((r, e) => (r[e.employeeBankInfoId + '|' + e.bankName] = {employeeBankInfoId: e.employeeBankInfoId, bankName: e.bankName}, r), {}))
+      console.log('bankData',this.bankList);
+     // var result = Object.values(this.bankList.reduce((r, e) => (r[e.employeeBankInfoId + '|' + e.bankName] = {employeeBankInfoId: e.employeeBankInfoId, bankName: e.bankName}, r), {}))
+      console.log('results',result)
+
+
+
+    })
+
+  }
+
+  getForm() {
     this.form = this.formBuilder.group({
 
 
@@ -85,148 +235,186 @@ export class DisbursementsComponent implements OnInit {
       fromDate: new FormControl(''),
       toDate: new FormControl(''),
       copyFromPayrollArea: new FormControl(''),
+
       pfFormArray: new FormArray([]),
     });
 
+  }
+
+  pfArrayPush() {
     this.pfArray.push(this.formBuilder.group({
+      employeeBankMapPayAreaId: new FormControl(''),
       payrollAreaInformationId: new FormControl(''),
       employeeBankInfoId: new FormControl(''),
-      modeOfPayment: [''],
-      bankName: [''],
-      ifsc: [''],
-      ifscList: new FormArray([]),
-      accountNo: [''],
-      accountNoList: new FormArray([]),
-      nameAsPerBank: [''],
-      percentNetpay: [''],
-      amount: [''],
-      priority: ['']
+      modeOfPayment: new FormControl(''),
+      bankName: new FormControl(''),
+      bankDropList: new FormArray([this.createBankList()]),
+      ifsc: new FormControl(''),
+      ifscList: new FormArray([this.createIfscList()]),
+      accountNo: new FormControl(''),
+      accountNoList: new FormArray([this.createAccountList()]),
+      nameAsPerBank: new FormControl(''),
+      percentActive : new FormControl('% of Net Pay'),
+      isPercentOfNetPay:new FormControl(true),
+      percentageOfNetPay: new FormControl(0),
+      amount: new FormControl({value:0,disabled: true}),
+      priority: new FormControl('')
     }));
-
-
-    this.ifscData.push(this.formBuilder.group({
-      ifsc: ['']
-    }));
-    this.accountData.push(this.formBuilder.group({
-      accountNo: ['']
-    }));
-
-
-    this.payrollService.getDisbursementDetails(this.employeeMasterId).subscribe(res => {
-      let disbursmentList = res.data.results[0];
-      console.log('disbursementList', disbursmentList)
-
-      //distinct payrollArea entries
-      var payrollAreas = [];
-      for (var len = disbursmentList.length, i = 0; i < len; ++i) {
-        var payrollAreaInformationId = disbursmentList[i].payrollAreaInformationId;
-        if (payrollAreas.indexOf(payrollAreaInformationId) > -1) continue;
-        payrollAreas.push(payrollAreaInformationId);
-      }
-      //create summary to display summary
-
-      this.disbursmentSummary = [];
-      let arrLength = payrollAreas.length;
-      for (let i = 0; i < arrLength; i++) {
-        let obj = disbursmentList.find(a => a.payrollAreaInformationId == payrollAreas[i]);
-
-        this.disbursmentSummary.push({
-          Area: obj.payrollAreaCode,
-          typeOfPayment: obj.typeOfPayment,
-          totalEntries: disbursmentList.filter(a => a.payrollAreaInformationId == payrollAreas[i]).length,
-          fromDate: obj.payFromDate,
-          toDate: obj.payToDate
-        })
-      } console.log(this.disbursmentSummary)
-    })
-
-    this.payrollService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-      this.payrollList = res.data.results[0];
-      console.log('AssignedPayrollList',this.payrollList);
-    })
-
-  //  this.getData();
-
+   
   }
+
 
   // getData() {
   //   //to get assigned payroll area detials to employee
-   
 
-    
+
+
 
   //   this.getFormData();
   // }
-  getFormData(){
+  getFormData() {
     ///get companySetting to multibankingallowed
     this.payrollService.getCompanySetting(this.companyId).subscribe(res => {
-      const location = res.data.results.find(a => a.companySetting === 'isMultiBankingAllowed');
+      this.companySetting = res.data.results[0];
+
+      //multibankking allowed or not from database
+      const location = this.companySetting.filter(a => a.companySetting.toLowerCase() === 'ismultibankingallowed');
       console.log(location)
-      if (location.value == 'Yes') { this.multiBankingAllowed = true }
+      if (location[0].value == 'Yes') { this.multiBankingAllowed = true }
       else {
         this.multiBankingAllowed = false
       }
-      console.log('value', this.multiBankingAllowed);
+      //modeOfPaymentList from database
+      this.modeOfPaymentList= this.companySetting.filter(a=>a.companySetting.toLowerCase() == 'paymentmode');
+       
+      
+      //typeOfPaymentlist from database
+      this.typeOfPaymentList =  this.companySetting.filter(a=>a.companySetting.toLowerCase() == 'typeofpayments');
+
+      //set default payment type if only one
+     if(this.typeOfPaymentList.length==1){
+       const defaultPaymentType = this.typeOfPaymentList[0].value;
+       this.form.get('typeOfPayment').setValue(defaultPaymentType);
+       this.typeOfPaymentChange();
+     }
     })
-
-    //fetch discbursement details for summary and to fill pfarray
-   
-
-    //summary end
-
-    //gett bank account details
-
-    this.payrollService.getBankAccountDetails(this.employeeMasterId).subscribe(res => {
-      this.bankList = res.data.results[0];
-      console.log(this.bankList);
-
-    })
-
-    this.copyFromPayrollAreaList = [];
+//commented for check copyFrom
+    // this.copyFromPayrollAreaList=  this.disbursmentList.length>0?this.disbursmentList:[];
 
   }
-  
-  // addIfsc() {
-  //   const control = <FormArray>this.pfArray.get('ifscList');
-  //   control.push(this.ifscL);
-  // } 
 
-  payrollAreaChange(){
-this.pfArray.reset();
-const location= this.payData.find(a=>a.payrollAreaCode===this.form.get('payrollAreaCode'));
-this.companyId=location.companyId;
+
+  createBankList() {
+    return this.formBuilder.group({
+      bankname: null
+    })
+  }
+  createAccountList() {
+    return this.formBuilder.group({
+      accountNo: null
+    })
+  }
+  createIfscList() {
+    return this.formBuilder.group({
+      ifsc: null
+    })
+  }
+
+  payrollAreaChange() {
+
+    //pfFormArray: new FormArray([])
+    this.resetFormPayrollChange();
+    console.log('type after reset', this.pfArray)
+    const location = this.payData.find(a => a.payrollAreaCode == this.form.get('payrollAreaCode').value);
+    this.companyId = location.companyId;
+    const payId = this.payrollList.find(a => a.payrollAreaId === location.payrollAreaId);
+    this.pfArray.get([0]).get('payrollAreaInformationId').patchValue(payId.payrollAreaInformationId)
     this.getFormData();
+
+    const copyFromList = this.disbursmentList.filter(a=>a.payrollAreaCode === location.payrollAreaCode && a.multibankingAllowed === location.multibankingAllowed);
+    console.log('copyfromList-pchange',copyFromList)
   }
 
-  typeOfPaymentChange(){
-   const payCode = this.form.get('payrollAreaCode').value;
-   const selectedPayCode = this.payrollList.find(a=>a.payrollAreaCode===payCode);
-   this.form.get('fromDate').setValue(selectedPayCode.payrollAreaFromDate);
-   this.form.get('toDate').setValue(selectedPayCode.payrollAreaToDate);
+  resetFormPayrollChange() {
+    this.pfArray.clear();
+    this.pfArrayPush();
+    this.pfArray.disable();
+    this.form.get('typeOfPayment').reset();
+    this.form.get('fromDate').reset();
+    this.form.get('toDate').reset();
   }
 
+  typeOfPaymentChange() {
 
+  const type  = this.form.get('typeOfPayment').value;
+  const payCode = this.form.get('payrollAreaCode').value;
+const len = this.disbursmentList.length;
+//for checking the type is already available with the same type
+if(len>0){
+for ( let i=0 ; i<len ; i++){
+  if(this.disbursmentList[i].typeOfPayment==type && this.disbursmentList[i].payrollAreaCode == payCode ){
+    this.CommonDataService.sweetalertError("This type is already Available for "+payCode+"");
+    this.form.get('typeOfPayment').reset();
+    break;
+  }
+}
+}
+
+
+    this.pfArray.enable();
+    const selectedPayCode = this.payrollList.find(a => a.payrollAreaCode === payCode);
+    this.form.get('fromDate').setValue(selectedPayCode.payrollAreaFromDate);
+    this.form.get('toDate').setValue(selectedPayCode.payrollAreaToDate);
+  }
+
+  validateAccountNo(index){
+   const accNo = this.pfArray.get([index]).get('accountNo').value;
+   const arr = this.pfArray.getRawValue();
+const finalArr = arr.filter(a=>a.accountNo==accNo);
+    // const arrlength = finalArr.length;
+
+    
+    // for(let j=0; j<finalArr.length;j++){
+
+     if(finalArr.length>1) this.CommonDataService.sweetalertError("This Account No is Already selected");
+    // }
+   
+  }
 
   ifscSelect(index) {
     this.resetForBank(index);
     const bank = this.pfArray.value[index];
     const bankName = bank.bankName;
     const bankData = this.bankList.filter(a => a.bankName === bankName)
-    this.pfArray.get([index]).get('employeeBankInfoId').setValue(bankData.employeeBankInfoId);
+    this.pfArray.get([index]).get('employeeBankInfoId').setValue(bankData[0].employeeBankInfoId);
     const obj2: Array<dataIfsc> = [];
 
     //insert data into ifscList 
+    const obj: Array<dataIfsc> = [];
     for (let i = 0; i < bankData.length; i++) {
-      const obj = { ifsc: bankData[i].bankIFSC };
-      obj2.push(obj)
-      if (i != 0) { this.addIfscList(); }
+
+      obj.push({ ifsc: bankData[i].bankIFSC });
     }
-    this.pfArray.get([index]).get('ifscList').patchValue(obj2);
+    this.pfArray.get([index]).get('ifscList').patchValue(obj);
 
+    if (bankData.length == 1) {
+      const obj2: Array<dataAccount> = [];
+      for (let i = 0; i < bankData.length; i++) {
+        obj2.push({ accountNo: bankData[i].accountNo });
+      }
+      this.pfArray.get([index]).get('accountNoList').patchValue(obj2);
 
+      this.pfArray.get([index]).patchValue({
+        accountNo: bankData[0].accountNo,
+        ifsc: bankData[0].bankIFSC,
+        nameAsPerBank: bankData[0].nameAsPerBank
+      });
 
-    // this.pfArray.get([index]).get('ifscList').setValue(bankData.bankIFSC);
-    // this.pfArray.get([index]).get('accountNoList').setValue(bankData.accountNo);
+      // this.pfArray.get([index]).get('ifsc').setValue(bankData.bankIfsc);
+      // this.pfArray.get([index]).get('accountNo').setValue(bankData.accountNo);
+      // this.pfArray.get([index]).get('nameAsPerBank').setValue(bankData.nameAsPerBank);
+    }
+
 
     // this.pfArray.get([index]).get('ifsc').setValue(bankData.bankIFSC);
     // this.pfArray.get([index]).get('accountNo').setValue(bankData.accountNo);
@@ -236,49 +424,132 @@ this.companyId=location.companyId;
 
   addBankInfo(form, formDirective) {
 
+
+   
     const k = [];
     let pfArrayLength = this.pfArray.length;
+    if (this.multiBankingAllowed == false) {
+      this.pfArray.get([0]).get('percentageOfNetPay').setValue(100)
+    }
+    let payrollInfoId = this.payrollList.find(a=>a.payrollAreaCode== (this.form.get('payrollAreaCode').value));
     for (let i = 0; i < pfArrayLength; i++) {
-      k.push({
-        //  payrollAreainformationId:this.form.get('areaId').value,
-
-        payrollAreaInformationId: this.form.get('payrollAreaInformationId').value,
-
-        payFromDate: this.datepipe.transform(this.form.get('fromDate').value, "dd-MMM-yyyy"),
-        payToDate: this.datepipe.transform(this.form.get('toDate').value, "dd-MMM-yyyy"),
-        employeeBankInfoId: this.pfArray.get([i]).get('employeeBankInfoId').value,
-        modeOfPayment: this.pfArray.get([i]).get('modeOfPayment').value,
-        percentNetPay: this.pfArray.get([i]).get('percentNetpay').value,
-        amount: this.pfArray.get([i]).get('amount').value,
-        priority: this.pfArray.get([i]).get('priority').value
-      })
+      if(this.copyFrom==true){
+     
+        k.push({
+          //  payrollAreainformationId:this.form.get('areaId').value,
+         
+          employeeBankMapPayAreaId: '',
+          payrollAreaInformationId :payrollInfoId.payrollAreaInformationId,
+         // payrollAreaInformationId: this.pfArray.get([0]).get('payrollAreaInformationId').value,
+          employeeMasterId: this.employeeMasterId,
+          typeOfPayment: this.form.get('typeOfPayment').value,
+          payFromDate: this.datepipe.transform(this.form.get('fromDate').value, "dd-MMM-yyyy"),
+          payToDate: this.datepipe.transform(this.form.get('toDate').value, "dd-MMM-yyyy"),
+          employeeBankInfoId: this.pfArray.get([i]).get('employeeBankInfoId').value,
+          paymentMode: this.pfArray.get([i]).get('modeOfPayment').value,
+          percentageOfNetPay: this.pfArray.get([i]).get('percentageOfNetPay').value,
+          isPercentOfNetPay:this.pfArray.get([i]).get('isPercentOfNetPay').value,
+          amount: this.pfArray.get([i]).get('amount').value,
+          priority: this.pfArray.get([i]).get('priority').value
+        })
+      }else{
+        k.push({
+          //  payrollAreainformationId:this.form.get('areaId').value,
+         
+          employeeBankMapPayAreaId: this.pfArray.get([i]).get('employeeBankMapPayAreaId').value,
+          payrollAreaInformationId: payrollInfoId.payrollAreaInformationId,
+          employeeMasterId: this.employeeMasterId,
+          typeOfPayment: this.form.get('typeOfPayment').value,
+          payFromDate: this.datepipe.transform(this.form.get('fromDate').value, "dd-MMM-yyyy"),
+          payToDate: this.datepipe.transform(this.form.get('toDate').value, "dd-MMM-yyyy"),
+          employeeBankInfoId: this.pfArray.get([i]).get('employeeBankInfoId').value,
+          paymentMode: this.pfArray.get([i]).get('modeOfPayment').value,
+          percentageOfNetPay: this.pfArray.get([i]).get('percentageOfNetPay').value,
+          isPercentOfNetPay:this.pfArray.get([i]).get('isPercentOfNetPay').value,
+          amount: this.pfArray.get([i]).get('amount').value,
+          priority: this.pfArray.get([i]).get('priority').value
+        })
+      }
+     
+     
     }
     console.log(k);
+    this.payrollService.postBankInfo(k).subscribe(res => {
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+
+      const resData = res.data.results[0];
+      this.getInitialData();
+    }, (error: any) => {
+      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+    })
   }
 
-  modeOfPaymentChange() {
-    if (this.bankList.length == 1) {
+  modeOfPaymentChange(i) {
+     let mode = this.pfArray.get([i]).get('modeOfPayment').value.toLowerCase();
+     this.pfArray.get([i]).get('amount').setValue(0);
+     this.pfArray.get([i]).get('amount').disable({onlySelf: true});
+       if(mode =='cash' || mode =='demand draft' || mode== 'cheque'){
+      this.resetForPaymentMode(i);
+      this.DisableForOtherType(i);
+      this.fullName = localStorage.getItem('fullName');
+      this.pfArray.get([i]).get('nameAsPerBank').patchValue(this.fullName);
+    }else{
+
+    this.resetForPaymentMode(i);
+    this.enableForPaymentMode(i);
+    //olet list = this.pfArray.value;
+
+    // console.log(list);
+   /// this.pfArray.get([i]).get('priority').patchValue(i + 1);
+    let obj2: Array<dataBankDrop> = [];
+    let usedbankData: Array<any> = [];
+    let list = this.pfArray.value;
+
+    this.filteredBankData = this.bankList.filter(ar => !list.find(rm => (rm.employeeBankInfoId === ar.employeeBankInfoId)))
+    for (let j = 0; j < this.filteredBankData.length; j++) {
+      const obj = { 
+        employeeBankInfoId : this.filteredBankData[j].employeeBankInfoId,
+        bankname: this.filteredBankData[j].bankName };
+      obj2.push(obj)
+      if (j > 0) { this.addbankDropList(i) }
+    }
+
+    console.log(obj2);
+    this.pfArray.get([i]).get('bankDropList').patchValue(obj2);
+    
+    if (this.filteredBankData.length == 1) {
+     
       const objIfscList: Array<dataIfsc> = [];
       const objAccountList: Array<dataAccount> = [];
-      const objIfsc = { ifsc: this.bankList[0].bankIFSC };
-      objIfscList.push(objIfsc);
-      const objAccount = { accountNo: this.bankList[0].accountNo };
-      objAccountList.push(objAccount);
-      this.pfArray.get([0]).get('ifscList').patchValue(objIfscList);
-      this.pfArray.get([0]).get('accountNoList').patchValue(objAccountList);
-      
+     
+      objIfscList.push({ ifsc: this.filteredBankData[0].bankIFSC });
+     
+      objAccountList.push({ accountNo: this.filteredBankData[0].accountNo });
+      this.pfArray.get([i]).get('ifscList').patchValue(objIfscList);
+      this.pfArray.get([i]).get('accountNoList').patchValue(objAccountList);
+      console.log('accList', this.pfArray.get([0]).get('accountNoList').value)
 
+      const obj1 = {
+        bankName: this.filteredBankData[0].bankName,
+        employeeBankInfoId: this.filteredBankData[0].employeeBankInfoId,
 
-      const obj = {
-        bankName: this.bankList[0].bankName,
-        employeeBankInfoId: this.bankList[0].employeeBankInfoId,
-        ifsc: this.bankList[0].bankIFSC,
-        accountNo: this.bankList[0].accountNo,
         //   accountNoList:this.bankList[0].accountNo,
-        nameAsPerBank: this.bankList[0].nameAsPerBank
+        nameAsPerBank: this.filteredBankData[0].nameAsPerBank
       };
-      this.pfArray.get([0]).patchValue(obj);
+      this.pfArray.get([i]).patchValue(obj1);
     }
+  }
+  }
+
+  validateNetPercent(i) {
+    this.pfArray.get([i]).get('percentageOfNetPay').setValidators([Validators.required]);
+
+    //   this.pfArray.controls.get([i]).controls.percentageOfNetPay.updateValueAndValidity();
+
+    this.pfArray.get([i]).get('amount').setValidators([Validators.required]);
+
+    //  this.pfArray.controls.get([i]).controls.amount.updateValueAndValidity();
+
 
   }
   accountSelect(index) {
@@ -292,24 +563,46 @@ this.companyId=location.companyId;
     for (let i = 0; i < bankData.length; i++) {
       const obj = { accountNo: bankData[i].accountNo };
       obj2.push(obj)
-      if (i != 0) { this.addIfscList(); }
+      if (i > 0) { this.addAccountNoList(index) }
     }
     this.pfArray.get([index]).get('accountNoList').patchValue(obj2);
-    if (bankData.nameAsPerBank !== "") this.pfArray.get([index]).get('nameAsPerBank').setValue(bankData.nameAsPerBank);
-    console.log(this.pfArray.get([index]).get('accountNoList'))
+    if (bankData[0].nameAsPerBank !== "") {
+      this.pfArray.get([index]).get('nameAsPerBank').setValue(bankData[0].nameAsPerBank);
+    }
+    //console.log(this.pfArray.get([index]).get('accountNoList'))
   }
 
   percentageTotal() {
-    let data = this.form.get('pfFormArray').value
+    let data = this.pfArray.getRawValue();
     let sum: number = 0;
-    data.forEach(a => sum += parseInt(a.percentNetpay, 10));
+    data.forEach(a => sum += parseInt(a.percentageOfNetPay==""?0:a.percentageOfNetPay, 10));
     this.percentTotal = sum;
+    if (sum > 100) {
+      this.CommonDataService.sweetalertError("Percentage should be less than or equal to 100%");
+      let lastValue = this.pfArray.get([data.length - 1]).get('percentageOfNetPay').value;
+      this.pfArray.get([data.length - 1]).get('percentageOfNetPay').patchValue(0);
+      this.percentTotal = this.percentTotal - lastValue;
+    }
+  
+      return sum===NaN?0:sum;
+
+  }
+
+  keyPress(event: any) {
+
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
   amountTotal() {
-    let data = this.form.get('pfFormArray').value
+    let data = this.pfArray.getRawValue();
     let sum: number = 0;
-    data.forEach(a => sum += parseInt(a.amount, 10));
+    data.forEach(a => sum += parseInt(a.amount==""?0:a.amount, 10));
     this.amtTotal = sum;
+    return sum===NaN?0:sum;
   }
 
   percentValidate(event) {
@@ -320,40 +613,77 @@ this.companyId=location.companyId;
     console.log(j);
     this.pfArray.removeAt(j);
   }
-  get pfArray() { return this.f.pfFormArray as FormArray; }
 
-  get ifscData() { return this.f.pfFormArray.get([0]).get('ifscList') as FormArray }
-  get accountData() { return this.f.pfFormArray.get([0]).get('accountNoList') as FormArray }
+
+  get pfArray() { return this.f.pfFormArray as FormArray; }
   get f() { return this.form.controls; }
 
-  addIfscList() {
-    this.ifscData.push(this.formBuilder.group({
-      ifsc: ['']
-    }));
+  addIfscList(i) {
+    const control = <FormArray>this.pfArray.get([i]).get('ifscList');
+    control.push(this.createIfscList());
+
   }
 
-  addAccountNoList() {
-    this.accountData.push(this.formBuilder.group({
-      account: ['']
-    }));
+  addAccountNoList(i) {
+    const control = <FormArray>this.pfArray.get([i]).get('accountNoList');
+    control.push(this.createAccountList());
+
   }
+  addbankDropList(i) {
+    const control = <FormArray>this.pfArray.get([i]).get('bankDropList');
+    control.push(this.createBankList());
+
+  }
+  removebankDropList(i) {
+    const control = <FormArray>this.pfArray.get([i]).get('bankDropList');
+    control.removeAt(i);
+
+  }
+
 
   addRow() {
     this.pfArray.push(this.formBuilder.group({
-      payrollAreaInformationId: [],
-      employeeBankInfoId: [],
-      modeOfPayment: [''],
-      bankName: [''],
-      ifsc: [''],
-      ifscList:[''],
-      accountNo: [''],
-      accountNoList:[''],
-      payeeName: [''],
-      percentNetpay: [''],
-      amount: [''],
-      priority: [''],
+      employeeBankMapPayAreaId: new FormControl(''),
+      payrollAreaInformationId: new FormControl(''),
+      employeeBankInfoId: new FormControl(''),
+      modeOfPayment: new FormControl(''),
+      bankName: new FormControl(''),
+      bankDropList: new FormArray([this.createBankList()]),
+      ifsc: new FormControl(''),
+      ifscList: new FormArray([this.createIfscList()]),
+      accountNo: new FormControl(''),
+      accountNoList: new FormArray([this.createAccountList()]),
+      nameAsPerBank: new FormControl(''),
+      percentActive:new FormControl('% of Net Pay'),
+      isPercentOfNetPay:new FormControl(true),
+      percentageOfNetPay: new FormControl(0),
+      amount: new FormControl({value:0,disabled: true}),
+      priority: new FormControl(''),
     }));
+
   }
+
+  resetForPaymentMode(indexx) {
+     this.pfArray.get([indexx]).get('bankName').reset();
+     this.pfArray.get([indexx]).get('bankDropList').reset();
+     this.pfArray.get([indexx]).get('employeeBankInfoId').reset();
+     this.pfArray.get([indexx]).get('ifsc').reset();
+     this.pfArray.get([indexx]).get('ifscList').reset();
+     this.pfArray.get([indexx]).get('accountNo').reset();
+     this.pfArray.get([indexx]).get('accountNoList').reset();
+    this.pfArray.get([indexx]).get('nameAsPerBank').reset();
+
+  }
+  enableForPaymentMode(indexx) {
+    this.pfArray.get([indexx]).get('bankName').enable();
+    this.pfArray.get([indexx]).get('bankDropList').enable();
+    this.pfArray.get([indexx]).get('employeeBankInfoId').enable();
+    this.pfArray.get([indexx]).get('ifsc').enable();
+    this.pfArray.get([indexx]).get('ifscList').enable();
+    this.pfArray.get([indexx]).get('accountNo').enable();
+    this.pfArray.get([indexx]).get('accountNoList').enable();
+   this.pfArray.get([indexx]).get('nameAsPerBank').enable();
+ }
 
   resetForBank(indexx) {
 
@@ -371,5 +701,157 @@ this.companyId=location.companyId;
     this.pfArray.controls[indexx].get('accountNo').reset();
     this.pfArray.controls[indexx].get('accountNoList').reset();
     this.pfArray.controls[indexx].get('nameAsPerBank').reset();
+  }
+
+  DisableForOtherType(i){
+this.pfArray.get([i]).get('bankName').disable();
+this.pfArray.get([i]).get('accountNo').disable();
+this.pfArray.get([i]).get('ifsc').disable();
+  }
+
+  viewDAta(event) {
+    window.scrollTo(0, 0);
+    this.viewFlag = true;
+
+    //  console.log(event)
+    let showSummary = this.disbursmentList.filter(element => element.payrollAreaCode === event.Area && element.typeOfPayment === event.typeOfPayment && element.payFromDate === event.fromDate);
+    console.log(showSummary);
+    const payroll = showSummary[0].payrollAreaCode
+    this.payrollList = this.asignedPayrollList.filter(a => a.payrollAreaCode === payroll)
+    const location = this.payData.find(a => a.payrollAreaCode == payroll);
+    this.companyId = location.companyId;
+    this.patchValues(showSummary);
+    this.form.disable();
+  }
+  updateData(event) {
+    window.scrollTo(0, 0);
+    // this.updateFlag = true;
+    this.viewFlag = false;
+    let showSummary = this.disbursmentList.filter(element => element.payrollAreaCode === event.Area && element.typeOfPayment === event.typeOfPayment && element.payFromDate === event.fromDate);
+    const payroll = showSummary[0].payrollAreaCode
+    this.payrollList = this.asignedPayrollList.filter(a => a.payrollAreaCode === payroll)
+    const location = this.payData.find(a => a.payrollAreaCode == payroll);
+    this.companyId = location.companyId;
+   this.typeOfPaymentList = this.typeOfPaymentList.filter(a => a.value === event.typeOfPayment)
+
+    this.patchValues(showSummary);
+
+  }
+
+  patchValues(data) {
+    //this.form.reset();
+
+    // to reset only pfArrays values
+    if(this.copyFrom==false){
+    this.getForm();
+    this.getFormData();
+    }
+     this.form.setControl('pfFormArray', new FormArray([]));
+   //// this.multiBankingAllowed = true;
+     this.multiBankingAllowed = data[0].multibankingAllowed;
+
+    // if (data[0].multibankingAllowed == true) { this.multiBankingAllowed = true }
+    // else {
+    //   this.multiBankingAllowed = false
+    // }
+if(this.copyFrom==false){
+    this.form.patchValue({
+      payrollAreaCode: data[0].payrollAreaCode,
+      typeOfPayment: data[0].typeOfPayment,
+      fromDate: data[0].payFromDate,
+      toDate: data[0].payToDate
+    })
+  }
+    for (let j = 0; j < data.length; j++) {
+      this.pfArrayPush();
+      const ob1 = [];
+      ob1.push({ accountNo: data[j].accountNo })
+      this.pfArray.get([j]).get('accountNoList').patchValue(ob1)
+      console.log('ob1AccountNoList', ob1)
+
+     
+
+      const ob2 = [];
+      ob2.push({ ifsc: data[j].ifsc })
+      this.pfArray.get([j]).get('ifscList').patchValue(ob2)
+
+      this.filteredBankData = this.bankList;
+      const ob3 = [];//.filter(ar => !list.find(rm => (rm.employeeBankInfoId === ar.employeeBankInfoId)))
+      for (let i = 0; i < this.filteredBankData.length; i++) {
+        const obj = {
+          employeeBankInfoId : this.filteredBankData[i].employeeBankInfoId,
+           bankname: this.filteredBankData[i].bankName };
+        ob3.push(obj)
+        if (i > 0) { this.addbankDropList(j) }
+      }
+      //  const ob3 = [];
+      // ob3.push({ bankname: data[j].bankName })
+      this.pfArray.get([j]).get('bankDropList').patchValue(ob3)
+
+
+      const obj3 = [];
+      this.pfArray.get([j]).patchValue({
+        modeOfPayment: data[j].paymentMode,
+        bankName: data[j].bankName,
+        payrollAreaInformationId: data[j].payrollAreaInformationId,
+        employeeBankMapPayAreaId: data[j].employeeBankMapPayAreaId,
+        employeeBankInfoId: data[j].employeeBankInfoId,
+        ifsc: data[j].ifsc,
+        accountNo: data[j].accountNo,
+        nameAsPerBank: data[j].nameAsPerbank,
+        percentageOfNetPay: data[j].percentageOfNetPay,
+        isPercentOfNetPay:data[j].isPercentOfNetPay,
+        amount: data[j].amount,
+        priority: data[j].priority
+      })
+      
+    
+    }
+
+    console.log(this.form.value)
+  }
+
+
+  
+  percentOrAmount(type,i) {
+     console.log('toggleselectdd',i)    
+     if(type=='% of Net Pay'){
+      this.pfArray.get([i]).get('percentageOfNetPay').setValue(0);
+       this.pfArray.get([i]).get('percentageOfNetPay').disable();
+       this.pfArray.get([i]).get('amount').enable();
+       this.pfArray.get([i]).get('isPercentOfNetPay').setValue(false);
+       let maxArray:Array<any> =[];
+       maxArray= this.pfArray.value;
+     let maxPrio = Math.max.apply(Math, maxArray.map(function(o) { return o.priority; })) 
+     let maxPriority = maxPrio==NaN ? 0:maxPrio;
+      this.pfArray.get([i]).get('priority').patchValue(maxPriority+1)
+     }else {
+   
+      this.pfArray.get([i]).get('amount').reset();
+      this.pfArray.get([i]).get('amount').setValue(0);
+      this.pfArray.get([i]).get('priority').reset();
+      this.pfArray.get([i]).get('amount').disable();
+      this.pfArray.get([i]).get('percentageOfNetPay').setValue(0);
+      this.pfArray.get([i]).get('isPercentOfNetPay').setValue(true);
+      this.pfArray.get([i]).get('percentageOfNetPay').enable();
+     }
+    
+  }
+
+  resetForm(){
+ 
+    this.form.reset();
+    this.multiBankingAllowed=false;
+    this.form.setControl('pfFormArray', new FormArray([]));
+  }
+
+  copyFromChange(){
+    this.copyFrom = true;
+   let copy = this.form.get('copyFromPayrollArea').value;
+    const copyData  = this.copyFromPayrollAreaList.find(a=>a.code==copy);
+
+    const patchData = this.disbursmentList.filter(a=>a.payrollAreaInformationId == copyData.payrollAreaInformationId)
+    this.patchValues(patchData);
+
   }
 }
