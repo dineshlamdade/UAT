@@ -87,5 +87,10 @@ export class NonRecurringQtyService {
   NonRecurringTransactionGroupAPIbyId(data):Observable<any>{
     return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupHistoryAPI_ID`,data);     
   }
+
+  /** Update transaction - transaction tab */
+  attendanceInputAPIRecordsUI(data):Observable<any>{
+    return this.HttpClient.put<any>(this.apiUrl + `NonSalaryTransactionGroup/updateById/`  , data);
+  }
   
 }

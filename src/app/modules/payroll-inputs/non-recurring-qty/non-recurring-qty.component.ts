@@ -330,6 +330,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.NonRecurringTransactionGroupAPIbyId(this.index)
 
 			this.PayrollAreaByPayrollAreaCode(this.selectedEmpData[this.index].payrollArea.payrollAreaCode)
+			console.log("this.selectedEmpData[this.index]: "+ JSON.stringify(this.selectedEmpData[this.index]))
 		} else {
 			this.toaster.warning("", "Please select atleast one employee")
 		}
@@ -360,19 +361,19 @@ export class NonRecurringQtyComponent implements OnInit {
 				this.selectedTransactionType = transactionData.transactionsType
 				this.onceEvery = transactionData.onceEvery
 				this.updateNoOfTransaction = transactionData.numberOfTransactions
-				this.openingAmount = transactionData.amount
+				this.openingAmount = transactionData.quantity
 				if (transactionData.remark == null) {
 					this.remark = ''
 				} else {
 					this.remark = transactionData.remark
 				}
-				this.standardName = transactionData.payrollHeadMaster.standardName
-				this.headMasterId = transactionData.payrollHeadMaster.headMasterId
+				this.standardName = transactionData.standardName
+				// this.headMasterId = transactionData.payrollHeadMaster.headMasterId
 				this.selectedFromDate = this.datepipe.transform(new Date(transactionData.fromDate), 'yyyy-MM-dd') + ' 00:00:00'
-				this.selectedApplicableAt = transactionData.clawbackApplicableAt
-				this.selectedClawbackInputType = transactionData.clawbackInputType
-				this.clawbackperiod = transactionData.clawbackPeriod
-				this.clawbackFrequency = transactionData.clawbackUnit
+				// this.selectedApplicableAt = transactionData.clawbackApplicableAt
+				// this.selectedClawbackInputType = transactionData.clawbackInputType
+				// this.clawbackperiod = transactionData.clawbackPeriod
+				// this.clawbackFrequency = transactionData.clawbackUnit
 				this.updatefrequency = transactionData.frequency
 
 				if (transactionData.executeSDM == null) {
@@ -570,31 +571,27 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.selectedFromDate = this.selectedEmpData[this.index].fromDate
 		}
 		let data = [{
-			"employeeMasterId": this.selectedEmpData[this.index].employeeMasterId,
-			"headMasterId": parseInt(this.headMasterId),
-			"standardName": this.standardName,
-			"payrollAreaId": this.selectedEmpData[this.index].payrollArea.payrollAreaId.toString(),
+
+			"employeeMasterId": this.selectedEmployeeMasterId,
+			"nonSalaryDetailId": this.selectedEmpData[this.index].nonSalaryDTO.nonSalaryDetailId,
+			"standardName": this.selectedEmpData[this.index].standardName,
+			"payrollAreaId": "1",
 			"payrollAreaCode": this.selectedEmpData[this.index].payrollArea.payrollAreaCode,
-			"onceEvery": parseInt(this.onceEvery),
+			"onceEvery": this.onceEvery,
 			"frequency": this.updatefrequency,
 			"fromDate": this.selectedFromDate,
 			"transactionsType": this.selectedTransactionType,
-			"numberOfTransactions": parseInt(this.updateNoOfTransaction),
+			"numberOfTransactions": this.updateNoOfTransaction,
 			"toDate": todate,
-			"amount": parseFloat(this.openingAmount),
-			"nonRecurringTransactionGroupId": this.selectedEmpData[this.index].nonRecurringTransactionGroupId,
+			"quantity": parseInt(this.openingAmount),
+			"uom": this.selectedEmpData[this.index].uom,
+			"type":this.selectedEmpData[this.index].type,
 			"remark": this.remark,
 			"createdBy": "rahul",
-			"clawbackApplicableAt": this.selectedApplicableAt,
-			"clawbackInputType": this.selectedClawbackInputType,
-			"clawbackPeriod": this.clawbackperiod,
-			"clawbackUnit": this.clawbackFrequency,
-			"clawbackDate": this.clawbackDate,
-			"executeSDM": this.executeSDM,
-			"refferedEmpId": this.refralemployeeMasterId,
-			"refferedpayrollAreaCode": this.refPayrolArea,
-			"approveStatus": "Pending",
+			"nonSalaryTransactionGroupId":this.nonSalaryTransactionGroupId,
 			"nonsalaryTransactionGroupDeviationList":this.nonsalaryTransactionGroupDeviationList
+
+			
 		}]
 
 		console.log("Data is: " + JSON.stringify(data))
@@ -606,7 +603,7 @@ export class NonRecurringQtyComponent implements OnInit {
 
 		console.log("data: "+ JSON.stringify(data))
 
-		this.nonRecService.attendanceInputAPIRecordsUI(data, this.selectedEmpData[this.index].nonRecurringTransactionGroupId).subscribe(
+		this.nonRecQtyService.attendanceInputAPIRecordsUI(data).subscribe(
 			res => {
 				this.toaster.success('', 'Transaction data updated sucessfully')
 				if (this.selectedEmpData.length == 1) {
@@ -1381,8 +1378,8 @@ export class NonRecurringQtyComponent implements OnInit {
 						"numberOfTransactions": element.numberOfTransactions,
 						"toDate": todate,
 						"quantity": parseInt(value),
-            "uom": element.uom,
-            "type":element.type,
+						"uom": element.uom,
+						"type":element.type,
 						"remark": element.remark,
 						"createdBy": "rahul",
 						"nonsalaryTransactionGroupDeviationList":element.nonsalaryTransactionGroupDeviationList
