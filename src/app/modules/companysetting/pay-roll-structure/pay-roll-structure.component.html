@@ -9,6 +9,21 @@
           <div class="col-12">
             <div class="card">
               <div class="card-body p-0">
+                <div class="mb-0" *ngIf="currentStep=='step1'" >
+                  <h3 class="font-14 text-purple font-bold">Assign PHG</h3>&nbsp;
+                 </div>
+
+                 <div class="mb-0" *ngIf="currentStep=='step2'" >
+                  <h3 class="font-14 text-purple font-bold">Assign E/D Heads</h3>&nbsp;
+                 </div>
+
+                 <div class="mb-0" *ngIf="currentStep=='step3'" >
+                  <h3 class="font-14 text-purple font-bold">Assign Attribute Groups</h3>&nbsp;
+                 </div>
+
+                 <div class="mb-0" *ngIf="currentStep=='step4'" >
+                  <h3 class="font-14 text-purple font-bold">Assign Attributes</h3>&nbsp;
+                 </div>
 
                 <div class="rup" style="margin-top: -30px;">
                   <!--stepper indexes open-->
@@ -32,7 +47,7 @@
                     <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 2"></span>
                     <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 2"></span>
                     <div class="col-sm-3">
-                      <button class="stepbutton" (click)="abc(2)">
+                      <button class="stepbutton">
                         <div *ngIf="stepperIndex > 2 then thenBlock2 else elseBlock2"></div>
                         <ng-template #thenBlock2>
                           <i class="fa fa-check font-18 font-bold"></i>
@@ -47,7 +62,7 @@
                     <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 3"></span>
                     <div class="col-sm-3">
                       <!-- style="background-color: #713f93;" -->
-                      <button class="stepbutton" (click)="abc(3)">
+                      <button class="stepbutton">
                         <div *ngIf="stepperIndex > 3 then thenBlock3 else elseBlock3"></div>
                         <ng-template #thenBlock3>
                           <i class="fa fa-check font-18 font-bold"></i>
@@ -65,7 +80,7 @@
                     <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 4"></span>
                     <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 4"></span>
                     <div class="col-sm-3">
-                      <button class="stepbutton" (click)="abc(4)">
+                      <button class="stepbutton">
                         <div *ngIf="stepperIndex > 4 then thenBlock4 else elseBlock4"></div>
                         <ng-template #thenBlock4>
                           <i class="fa fa-check"></i>
@@ -96,12 +111,8 @@
 
                  <!--- Assign PHG -->
                 <div *ngIf="currentStep=='step1'">   <br>
-                  <div class="mb-0">
-                    <h3 class="font-14 text-purple font-bold"> Assign PHG</h3>&nbsp;
-                  </div>
-                <form class="card" roll="form" [formGroup]="pHGForm" (ngSubmit)="savePHG()" method="post">
-                  <!-- #form="ngForm" -->
-                  <div>
+                <form class="card" roll="form" [formGroup]="pHGForm"  defaultLabel="Select PHG Group" (ngSubmit)="savePHG()" method="post">
+               <div>
                     <div class="row d-flex"
                       style="border: 1px solid #ccc; background-color: #fff;padding-top: 25px ;padding-bottom:25px;border-radius:2px;">
                       <div class="ml-2 pl-1 pr-0">
@@ -109,24 +120,14 @@
                           Group <span class="text-red"></span></label>
                       </div>
                       <div class="col-2">
-                        <p-multiSelect formControlName="companyGroupCode" (onChange)='OnSelectionfamilyMemberGroup()'
-                          [options]="allGroupAndDescriptionList" optionLabel="name">
+                        <p-multiSelect formControlName="companyGroupCode" (onChange)='OnChangeSelectionGroup()'
+                          [options]="allGroupAndDescriptionList" optionLabel="name"  [ngClass]="{'is-invalid' : pHGForm.get('companyGroupCode').status == 'INVALID'}" >
                         </p-multiSelect>
                       </div>
-                      <!-- <div class="col-1">
-                    <button class="btn btn-icon" type="submit"><span class="fe fe-search"
-                        style="font-size: 20px;"></span></button>
-                  </div> -->
-                      <!-- <span > -->
                       <div class="ml-2 pl-1 pr-0" *ngIf="isVisible">
                         <label class="form-label mt-2">
                           Group Description<span class="text-red"></span></label>
                       </div>
-
-                      <!-- <div class="col-2">
-                    <input type="text" class="form-control" value="">
-                  </div> -->
-
                       <div class="col-2" *ngIf="isVisible">
                         <input type="text" formControlName="companyGroupName" class="form-control"
                           placeholder="Company Group Name"
@@ -134,19 +135,19 @@
                       </div>
                       <!-- </span> -->
 
-                      <div class="ml-2 pl-1 pr-0">
+                      <!-- <div class="ml-2 pl-1 pr-0">
                         <label class="form-label mt-2 pl-10">Copy From</label>
                       </div>
 
                       <div class="col-2">
 
-                        <select name="Select" formControlName="companyGroupName" class="form-control">
+                        <select name="Select"  class="form-control">
                           <option value="Select"> Select </option>
                           <option value=""> </option>
                           <option value=""> </option>
                         </select>
 
-                      </div>
+                      </div> -->
                     </div>
 
                   </div>
@@ -197,22 +198,6 @@
                           List : <span class="font-14 text-dark-green">({{selectedUser2.length}})</span></label>
                       </div>
                     </div>
-                    <!--
-                  <div class="row">
-                    <div class="col-md-6">
-                      <span class="form-label font-14 text-purple font-bold">Total Head:
-                        <span class="font-14 text-dark-green">({{listOfPHG.length}})</span>
-                      </span>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="float-right">
-                        <span class=" form-label font-14 text-purple font-bold"> &nbsp;&nbsp; Selected Head:
-                          &nbsp;
-                          <span class="font-14 text-dark-green">({{listOfPHG.length}})</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div> -->
 
                     <div class="row">
 
@@ -223,9 +208,9 @@
 
                           <div class="table-responsive Custom_Table">
                             <!-- <p-table [value]="users2" [paginator]="true" [rows]="10"> -->
-
+                              <!-- sortField="headGroupDefinitionId" sortOrder="1" -->
                             <p-table [value]="listOfPHG" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                              [pageLinks]="5" (onPage)="paginate($event)"
+                              [pageLinks]="5" (onPage)="paginate($event)" [sortField]="headGroupDefinitionId"
                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                               totalRecords={{listOfPHG.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
                               <ng-template pTemplate="header">
@@ -340,10 +325,6 @@
                                 </tr>
 
                               </ng-template>
-                              <!-- <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                              <tr (click)="RowSelectedtargetProducts(user1, rowIndex);" [class.active]="user1.isHighlight"
-                                (dblclick)="doubleClickOnLeftTable(user1)"
-                                [ngClass]="{'outofstock':user1.isHighlight == true}"> -->
 
                               <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                 <tr (click)="RowSelectedtargetProducts(user1, rowIndex);"
@@ -372,18 +353,19 @@
                     <div class="row mt-15 float-right">
 
                       <div class="float-right ">
-
-                        <button type="submit"
+                        <!-- *ngIf="showSaveButton" -->
+                        <button type="submit" [disabled]="pHGForm.invalid"
                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                          tooltip="Save"><b>
+                          tooltip="Save"
+                          [ngClass]="{'disabled-btn-bg-green' : pHGForm.invalid,'btn-bg-green': !pHGForm.invalid}"><b>
                             <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
 
-                        <button type="submit"
+                        <button type="button" (click)="resetPHGForm()"
                           class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                           tooltip="Reset"><b>
                             <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
 
-                        <button type="button" tooltip="Next"
+                        <button type="button" tooltip="Next" (click)="resetPHGForm()"
                           class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" tooltip="Clear">
                           <b><i class="fa fa-times"></i></b> Clear</button>
                       </div>
@@ -394,11 +376,8 @@
                 </form>
                 </div>
 
-                <!-- komal Assign H/D  -->
-                <div *ngIf="currentStep=='step2'">   <br>
-                  <div class="mb-0">
-                    <h3 class="font-14 text-purple font-bold"> Assign E/D Heads</h3>&nbsp;
-                  </div>
+                <!-- Step 2 Assign H/D  -->
+                <div *ngIf="currentStep=='step2'"> <br>
                 <form class="card" roll="form" [formGroup]="formED" (ngSubmit)="saveED()" method="post">
                   <!-- #form="ngForm" -->
                   <div>
@@ -409,49 +388,35 @@
                           Group <span class="text-red"></span></label>
                       </div>
                       <div class="col-2">
-                        <!-- <p-multiSelect formControlName="companyGroupCode"
-                          [options]="allGroupListGetEDList" optionLabel="name">
-                        </p-multiSelect> -->
-                        <input type="text" class="form-control" disabled [(ngModel)]="allGroupListGetEDList[0]">
-                        <!-- <textarea class="form-control">
-                          <span *ngFor="let item of allGroupListGetEDList"> {{ item.code }}</span>
-                        </textarea>
-                         -->
+                        <p-multiSelect formControlName="companyGroupCode" defaultLabel="Selected PHG"
+                          [options]="allGroupListGetEDList" optionLabel="name"  optionDisabled="inactive">
+                        </p-multiSelect>
                       </div>
-                      <!-- <div class="col-1">
-                    <button class="btn btn-icon" type="submit"><span class="fe fe-search"
-                        style="font-size: 20px;"></span></button>
-                  </div> -->
-                      <!-- <span > -->
                       <div class="ml-2 pl-1 pr-0" *ngIf="isVisible">
                         <label class="form-label mt-2" >
                           Group Description<span class="text-red"></span></label>
                       </div>
-
-                      <!-- <div class="col-2">
-                    <input type="text" class="form-control" value="">
-                  </div> -->
-
                       <div class="col-2" *ngIf="isVisible">
-                        <input type="text" formControlName="companyGroupName" disabled  [(ngModel)] = "groupDescription"  class="form-control"
-                          placeholder="Company Group Name"
-                          [ngClass]="{'is-invalid' : formED.get('companyGroupName').status == 'INVALID'}">
+                        <input type="text"  disabled  class="form-control"
+                           value="{{getGroupDiscription }}">
                       </div>
-                      <!-- </span> -->
 
+
+                      <!-- </span> -->
+<!--
                       <div class="ml-2 pl-1 pr-0">
                         <label class="form-label mt-2 pl-10">Copy From</label>
                       </div>
 
                       <div class="col-2">
 
-                        <select name="Select" formControlName="companyGroupName" class="form-control">
+                        <select name="Select" class="form-control">
                           <option value="Select"> Select </option>
                           <option value=""> </option>
                           <option value=""> </option>
-                        </select>
+                        </select> -->
 
-                      </div>
+                      <!-- </div> -->
                     </div>
 
                   </div>
@@ -520,50 +485,15 @@
                   </div> -->
 
                     <div class="row">
-
                       <div class="col-4">
-
-
                         <div class="card" style="margin-left:70px;">
-
                           <div class="table-responsive Custom_Table">
-                            <!-- <p-table [value]="users2" [paginator]="true" [rows]="10"> -->
-
                             <p-table [value]="listOfAssignEDHeadsList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                               [pageLinks]="5" (onPage)="paginate($event)"
                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                               totalRecords={{listOfAssignEDHeadsList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
                               <ng-template pTemplate="header">
-                                <!-- <tr>
-                                  <th rowspan="1" class="wd-15">
-                                    <div class="p-d-flex p-jc-between p-ai-center">
-                                      Code
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="headGroupDefinitionName"
-                                          pSortableColumn="headGroupDefinitionName">
-                                        </p-sortIcon>
-                                        <p-columnFilter field="headGroupDefinitionName" display="menu"
-                                          class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
-                                    </div>
-                                  </th>
-                                  <th rowspan="2" class="wd-12 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">Description
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
-                                        <p-columnFilter type="description" field="description" display="menu"
-                                          class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
-                                    </div>
-                                  </th>
-
-                                </tr> -->
-
                                 <tr>
-
-
                                   <th rowspan="2" class="wd-12 text-center">
                                     <div class="p-d-flex p-jc-between p-ai-center"> Code
                                       <div class="Sort_Filter_Position">
@@ -602,8 +532,6 @@
                                       </div>
                                   </th>
                                 </tr>
-
-
                               </ng-template>
                               <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                 <tr (click)="RowSelectedED(user1, rowIndex);" [class.active]="user1.isHighlight"
@@ -613,7 +541,6 @@
                                   <td>{{user1.standardName}} </td>
                                   <td>{{user1.headNature}} </td>
                                 </tr>
-
                               </ng-template>
                               <ng-template pTemplate="emptymessage">
                                 <tr>
@@ -624,16 +551,11 @@
                               </ng-template>
                             </p-table>
                           </div>
-
-
-
                         </div>
-
                       </div>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
                       <div class="col-1">
                         <div class="row">
                           <div class="col-md-12 mt-50">
@@ -645,63 +567,25 @@
                               "></i></button>
                           </div>
                         </div>
-
-
                       </div>
-
                       <div class="col-4">
                         <div class="card" style="margin-right:-40px;">
-
                           <div class="table-responsive Custom_Table">
-                            <!-- <p-table [value]="users2" [paginator]="true" [rows]="10">
-                             -->
                             <p-table [value]="targetProductsED" [paginator]="true" [rows]="10"
                               [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                               totalRecords={{targetProductsED.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
-
                               <ng-template pTemplate="header">
-                                <!-- <tr>
-
-
-                                  <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center text-center">Code
-
-
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="Code" pSortableColumn="Code"></p-sortIcon>
-                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
-                                    </div>
-                                  </th>
-
-                                  <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">Description
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="Description" pSortableColumn="Description"></p-sortIcon>
-                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
-                                    </div>
-                                  </th>
-
-                                </tr> -->
-                                <tr>
-
-
+                                 <tr>
                                   <th rowspan="2" class="wd-12 text-center">
                                     <div class="p-d-flex p-jc-between p-ai-center text-center">Code
-
-
-                                      <div class="Sort_Filter_Position">
+                                     <div class="Sort_Filter_Position">
                                         <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
                                         <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
                                         </p-columnFilter>
                                       </div>
                                     </div>
                                   </th>
-
                                   <th rowspan="2" class="wd-12 text-center">
                                     <div class="p-d-flex p-jc-between p-ai-center">Standard Name
                                       <div class="Sort_Filter_Position">
@@ -722,11 +606,6 @@
                                   </th>
                                 </tr>
                               </ng-template>
-                              <!-- <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                              <tr (click)="RowSelectedtargetProducts(user1, rowIndex);" [class.active]="user1.isHighlight"
-                                (dblclick)="doubleClickOnLeftTable(user1)"
-                                [ngClass]="{'outofstock':user1.isHighlight == true}"> -->
-
                               <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                 <tr (click)="RowSelectedtargetProductsED(user1, rowIndex);"
                                   (dblclick)="doubleClickOnRightTableED(user1)"
@@ -753,9 +632,9 @@
 
                     </div>
                     <div class="row mt-15 float-right">
-
+                      <!-- (click)="goToPreviousStep('step1')" (click)="ChangeStepper(2)" -->
                       <div class="float-right ">
-                        <button type="button" (click)="goToPreviousStep('step1')"
+                        <button type="button" (click)="goToPreviousStep('step1'); ChangeStepper(1)"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                         tooltip="Previous"><b>
                           <i class="fa fa-angle-double-left"></i></b> Previous</button>&nbsp;
@@ -781,219 +660,120 @@
                 </form>
                 </div>
 
-                <!-- Assign Attribute Groups-->
-                <div *ngIf="currentStep=='step3'">
-                <div class="mb-0">
-                  <h3 class="font-14 text-purple font-bold">Assign Attribute Groups
+                <!-- Step 3 Assign Attribute Groups-->
+                <div *ngIf="currentStep=='step3'">   <br>
+                <form class="card" roll="form" [formGroup]="aTTGroupForm" (ngSubmit)="saveAttGroup()" method="post">
+                  <!-- #form="ngForm" -->
+                  <div>
+                    <div class="row d-flex"
+                      style="border: 1px solid #ccc; background-color: #fff;padding-top: 25px ;padding-bottom:25px;border-radius:2px;">
+                      <div class="ml-2 pl-1 pr-0">
+                        <label class="form-label mt-2">
+                          Group <span class="text-red"></span></label>
+                      </div>
+                      <div class="col-2">
+                        <p-multiSelect formControlName="companyGroupCode" defaultLabel="Selected PHG"
+                        [options]="allGroupListGetEDList" optionLabel="name"  optionDisabled="inactive">
+                      </p-multiSelect>
+                      </div>
+                      <div class="ml-2 pl-1 pr-0" *ngIf="isVisible">
+                        <label class="form-label mt-2">
+                          Group Description<span class="text-red"></span></label>
+                      </div>
+                      <div class="col-2" *ngIf="isVisible">
+                        <input type="text" disabled  class="form-control"
+                           value="{{getGroupDiscription }}">
+                      </div>
+                      <!-- <div class="ml-2 pl-1 pr-0">
+                        <label class="form-label mt-2 pl-10">Copy From</label>
+                      </div>
+                      <div class="col-2">
+                        <select name="Select"  class="form-control">
+                          <option value="Select"> Select </option>
+                          <option value=""> </option>
+                          <option value=""> </option>
+                        </select> -->
 
-                  </h3>&nbsp;
-
-
-                </div>
-
-                <div class="row d-flex"
-                  style="border: 1px solid #ccc; background-color: #fff;padding-top: 25px ;padding-bottom:25px;border-radius:2px;">
-
-
-
-                  <div class="ml-2 pl-1 pr-0">
-                    <label class="form-label mt-2">
-                      Group Code<span class="text-red"></span></label>
-
-                  </div>
-
-                  <div class="col-2">
-                    <input type="text" class="form-control" value="" disabled>
-                  </div>
-
-                  <div class="col-1">
-                    <button class="btn btn-icon font-20" type="submit"><span class="fe fe-search"></span></button>
-                  </div>
-                  <div class="ml-2 pl-1 pr-0">
-                    <label class="form-label mt-2">
-                      Group Description<span class="text-red"></span></label>
-
-                  </div>
-                  <div class="col-2">
-                    <input type="text" class="form-control" value="" disabled>
-                  </div>
-
-
-                </div>
-                <br>
-                <div [@slideInOut]>
-
-
-                  <div class="row">
-                    <div class="col-4">
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<label
-                        class="text-purple font-bold font-14 text-center"
-                        style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Source
-                      </label>
-                    </div>
-                    <div class="col-3">
-                    </div>
-                    <div class="col-4"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      <label class="text-purple font-bold font-14"
-                        style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Destination
-                      </label>
-                    </div>
-                  </div>
-
-
-                  <div class="row">
-                    <div class="col-4" style="margin-left:70px;">
-                      <label class="form-label font-bold font-14">Total List : 0 &nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
-                        List : 0 </label>
+                      <!-- </div> -->
                     </div>
 
-                    <div class="col-1"></div>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="col-4" style="margin-right:50px;">
-                      <label class="form-label font-bold font-14">Total List : 0 &nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
-                        List : 0 </label>
-                    </div>
                   </div>
+                  <br>
+                  <br>
 
-                  <div class="row">
-
-                    <div class="col-4">
-
-                      <div class="card" style="margin-left:70px;">
-
-                        <div class="table-responsive Custom_Table">
-                          <p-table [value]="users2" [paginator]="true" [rows]="10">
-                            <ng-template pTemplate="header">
-                              <tr>
-
-
-                                <th rowspan="2" class="wd-12 text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center text-center">Code
-
-
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="Code" pSortableColumn="Code"></p-sortIcon>
-                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                      </p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-
-                                <th rowspan="2" class="wd-12 text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center">Description
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="Description" pSortableColumn="Description"></p-sortIcon>
-                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                      </p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-
-                              </tr>
-
-                            </ng-template>
-                            <ng-template pTemplate="body" let-user1>
-                              <tr class="p-selectable-row">
-                                <td>
-                                  Code 1
-                                </td>
-                                <td>
-                                  Attribute Group 1
-                                </td>
-
-                              </tr>
-                              <tr class="p-selectable-row">
-                                <td>
-                                  Code 2
-                                </td>
-                                <td>
-                                  Attribute Group 2
-                                </td>
-
-                              </tr>
-                              <tr class="p-selectable-row">
-                                <td>
-                                  Code 3
-                                </td>
-                                <td>
-                                  Attribute Group 3
-                                </td>
-
-                              </tr>
+                  <!--stepper indexes exit-->
+                  <div [@slideInOut]>
+                    <div class="row">
+                      <div class="col-4">
+                        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<label
+                          class="text-purple font-bold font-14 text-center"
+                          style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Source
+                        </label>
+                      </div>
+                      <div class="col-3">
+                      </div>
+                      <div class="col-4"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="text-purple font-bold font-14"
+                          style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Destination
+                        </label>
+                      </div>
+                    </div>
 
 
+                    <div class="row">
+                      <div class="col-4" style="margin-left:70px;">
+                        <label class="form-label font-14 text-purple font-bold">Total List :
+                          <span class="font-14 text-dark-green">({{listOfAttGroupList.length}})</span>
 
-
-
-                            </ng-template>
-                            <ng-template pTemplate="emptymessage">
-                              <tr>
-                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
-                                    Available</span>
-                                </td>
-                              </tr>
-                            </ng-template>
-                          </p-table>
-                        </div>
-
-
-
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
+                          List : <span class="font-14 text-dark-green">({{selectedUserAttGroup.length}})</span></label>
                       </div>
 
-                    </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="col-1">
-                      <div class="row">
-                        <div class="col-md-12 mt-50">
-                          <button type="button" class="btn"><i class="fa fa-chevron-right
-                              "></i></button>
-                        </div>
-                        <div class="col-md-12 mt-10">
-                          <button type="button" class="btn"><i class="fa fa-chevron-left
-                              "></i></button>
-                        </div>
+                      <div class="col-1"></div>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <div class="col-4" style="margin-right:50px;">
+                        <label class=" form-label font-14 text-purple font-bold">Total List :
+                          <span
+                            class="font-14 text-dark-green">({{targetProductsAttGroupList.length}})</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
+                          List : <span class="font-14 text-dark-green">({{selectedUser2AttGroup.length}})</span></label>
                       </div>
-
-
                     </div>
-
-                    <div class="col-4">
-                      <div class="card" style="margin-right:-40px;">
-                        <div class="">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="card" style="margin-left:70px;">
                           <div class="table-responsive Custom_Table">
-                            <p-table [value]="users2" [paginator]="true" [rows]="10">
+                            <p-table [value]="listOfAttGroupList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                              [pageLinks]="5" (onPage)="paginate($event)"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              totalRecords={{listOfAttGroupList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
                               <ng-template pTemplate="header">
                                 <tr>
-
-
-                                  <th rowspan="2" class="wd-4 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center text-center">Code
-
-
+                                  <th rowspan="1" class="wd-15">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Code
                                       <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="Code" pSortableColumn="Code"></p-sortIcon>
-                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                        <p-sortIcon field="name"
+                                          pSortableColumn="name">
+                                        </p-sortIcon>
+                                        <p-columnFilter field="name" display="menu"
+                                          class="p-ml-auto">
                                         </p-columnFilter>
                                       </div>
                                     </div>
                                   </th>
-
-                                  <th rowspan="2" class="wd-4 text-center">
+                                  <th rowspan="2" class="wd-12 text-center">
                                     <div class="p-d-flex p-jc-between p-ai-center">Description
                                       <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="Description" pSortableColumn="Description"></p-sortIcon>
-                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                        <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                        <p-columnFilter type="description" field="description" display="menu"
+                                          class="p-ml-auto">
                                         </p-columnFilter>
                                       </div>
                                     </div>
@@ -1002,36 +782,13 @@
                                 </tr>
 
                               </ng-template>
-                              <ng-template pTemplate="body" let-user1>
-                                <tr class="p-selectable-row">
-                                  <td>
-                                    Code4
-                                  </td>
-                                  <td>
-                                    Attribute Group 4
-                                  </td>
-
+                              <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                                <tr (click)="RowSelectedAttGroup(user1, rowIndex);" [class.active]="user1.isHighlight"
+                                  (dblclick)="doubleClickOnLeftTableAttGroup(user1)"
+                                  [ngClass]="{'outofstock':user1.isHighlight == true}">
+                                  <td>{{user1.name}} </td>
+                                  <td>{{user1.description}} </td>
                                 </tr>
-                                <tr class="p-selectable-row">
-                                  <td>
-                                    Code 5
-                                  </td>
-                                  <td>
-                                    Attribute Group 5
-                                  </td>
-
-                                </tr>
-                                <tr class="p-selectable-row">
-                                  <td>
-                                    Code 6
-                                  </td>
-                                  <td>
-                                    Attribute Group 6
-                                  </td>
-
-                                </tr>
-
-
 
                               </ng-template>
                               <ng-template pTemplate="emptymessage">
@@ -1045,242 +802,40 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                  </div>
-                  <div class="row mt-15 float-right">
-
-                    <div class="float-right ">
-                      <button type="submit"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                        tooltip="Previous"><b>
-                          <i class="fa fa-angle-double-left"></i></b> Previous</button>&nbsp;
-                      <button type="submit"
-                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                        tooltip="Save"><b>
-                          <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-
-                      <button type="submit"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                        tooltip="Reset"><b>
-                          <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
-
-                      <button type="button" tooltip="Next"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" tooltip="Clear">
-                        <b><i class="fa fa-times"></i></b> Clear</button>
-                    </div>
-
-                  </div>
-                </div>
-                </div>
-
-                <!--  Assign Attributes-->
-                <div *ngIf="currentStep=='step4'">
-                <div class="row d-flex"
-                  style="border: 1px solid #ccc; background-color: #fff;padding-top: 25px ;padding-bottom:25px;border-radius:2px;">
-
-
-                  <div class="ml-2 pl-1 pr-0">
-                    <label class="form-label mt-2">
-                      Group Code<span class="text-red"></span></label>
-                  </div>
-                  <div class="col-2">
-                    <input type="text" class="form-control" value="" disabled>
-                  </div>
-                  <div class="col-1">
-                    <button class="btn btn-icon font-20" type="submit"><span class="fe fe-search"></span></button>
-                  </div>
-                  <div class="ml-2 pl-1 pr-0">
-                    <label class="form-label mt-2">
-                      Group Description<span class="text-red"></span></label>
-
-                  </div>
-                  <div class="col-2">
-                    <input type="text" class="form-control" value="" disabled>
-                  </div>
-
-
-                </div>
-                <br>
-                <div [@slideInOut]>
-
-                  <div class="row">
-                    <div class="col-4">
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<label
-                        class="text-purple font-bold font-14 text-center"
-                        style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Source
-                      </label>
-                    </div>
-                    <div class="col-3">
-                    </div>
-                    <div class="col-4"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      <label class="text-purple font-bold font-14"
-                        style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Destination
-                      </label>
-                    </div>
-                  </div>
-
-
-                  <div class="row">
-                    <div class="col-4" style="margin-left:70px;">
-                      <label class="form-label font-bold font-14">Total List : 0 &nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
-                        List : 0 </label>
-                    </div>
-
-                    <div class="col-1"></div>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="col-4" style="margin-right:50px;">
-                      <label class="form-label font-bold font-14">Total List : 0 &nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
-                        List : 0 </label>
-                    </div>
-                  </div>
-
-
-
-                  <div class="row">
-
-                    <div class="col-4">
-
-                      <div class="card" style="margin-left:70px;">
-
-                        <div class="table-responsive Custom_Table">
-                          <p-table [value]="users3" [paginator]="true" [rows]="10">
-                            <ng-template pTemplate="header">
-                              <tr>
-
-
-                                <th rowspan="2" class="wd-12 text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center text-center">Code
-
-
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="Code" pSortableColumn="Code"></p-sortIcon>
-                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                      </p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-
-                                <th rowspan="2" class="wd-12 text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center">Description
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="Code" pSortableColumn="Code"></p-sortIcon>
-                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                      </p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-                                <th rowspan="2" class="wd-12 text-center">
-                                  <div class="p-d-flex p-jc-between p-ai-center">Nature
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="Code" pSortableColumn="Code"></p-sortIcon>
-                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                      </p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-                              </tr>
-
-                            </ng-template>
-                            <ng-template pTemplate="body" let-user1>
-                              <tr class="p-selectable-row">
-                                <td> Code 1
-                                </td>
-                                <td> Attribute Number 1
-                                </td>
-                                <td> Formula
-                                </td>
-                              </tr>
-
-                              <tr class="p-selectable-row">
-                                <td> Code 2
-                                </td>
-                                <td> Attribute Number 2
-                                </td>
-                                <td> List
-                                </td>
-                              </tr>
-
-                              <tr class="p-selectable-row">
-                                <td> Code 3
-                                </td>
-                                <td> Attribute Number 3
-                                </td>
-                                <td> SDM
-                                </td>
-                              </tr>
-
-
-
-
-
-
-
-                            </ng-template>
-                            <ng-template pTemplate="emptymessage">
-                              <tr>
-                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
-                                    Available</span>
-                                </td>
-                              </tr>
-                            </ng-template>
-                          </p-table>
-                        </div>
-
-
-
-                      </div>
-
-                    </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="col-1">
-                      <div class="row">
-                        <div class="col-md-12 mt-50">
-                          <button type="button" class="btn"><i class="fa fa-chevron-right
-                                "></i></button>
-                        </div>
-                        <div class="col-md-12 mt-10">
-                          <button type="button" class="btn"><i class="fa fa-chevron-left
-                                "></i></button>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <div class="col-1">
+                        <div class="row">
+                          <div class="col-md-12 mt-50">
+                            <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusgAttGroup()"><i class="fa fa-chevron-right
+                              "></i></button>
+                          </div>
+                          <div class="col-md-12 mt-10">
+                            <button type="button" class="btn btn-sm bg-teal-400" (click)="righttablePusgAttGroup()"><i class="fa fa-chevron-left
+                              "></i></button>
+                          </div>
                         </div>
                       </div>
-
-
-                    </div>
-
-                    <div class="col-4">
-                      <div class="card" style="margin-right:-40px;">
-                        <div class="">
+                      <div class="col-4">
+                        <div class="card" style="margin-right:-40px;">
                           <div class="table-responsive Custom_Table">
-                            <p-table [value]="users3" [paginator]="true" [rows]="10">
+                            <p-table [value]="targetProductsAttGroupList" [paginator]="true" [rows]="10"
+                              [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              totalRecords={{targetProductsAttGroupList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
                               <ng-template pTemplate="header">
                                 <tr>
-
-
-                                  <th rowspan="2" class="wd-12 text-center">
+                                  <th rowspan="2" class="wd-4 text-center">
                                     <div class="p-d-flex p-jc-between p-ai-center text-center">Code
-
-
                                       <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="Code" pSortableColumn="Code"></p-sortIcon>
+                                        <p-sortIcon field="id" pSortableColumn="id"></p-sortIcon>
                                         <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
                                         </p-columnFilter>
                                       </div>
                                     </div>
                                   </th>
-
-                                  <th rowspan="2" class="wd-12 text-center">
+                                  <th rowspan="2" class="wd-4 text-center">
                                     <div class="p-d-flex p-jc-between p-ai-center">Description
                                       <div class="Sort_Filter_Position">
                                         <p-sortIcon field="Description" pSortableColumn="Description"></p-sortIcon>
@@ -1289,51 +844,15 @@
                                       </div>
                                     </div>
                                   </th>
-                                  <th rowspan="2" class="wd-12 text-center">
-                                    <div class="p-d-flex p-jc-between p-ai-center">Nature
-                                      <div class="Sort_Filter_Position">
-                                        <p-sortIcon field="Nature" pSortableColumn="Nature"></p-sortIcon>
-                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                        </p-columnFilter>
-                                      </div>
-                                    </div>
-                                  </th>
                                 </tr>
-
                               </ng-template>
-                              <ng-template pTemplate="body" let-user1>
-                                <tr class="p-selectable-row">
-                                  <td> Code 4
-                                  </td>
-                                  <td> Attribute Number 1
-                                  </td>
-                                  <td> Formula
-                                  </td>
+                              <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                                <tr (click)="RowSelectedtargetProductsAttGroup(user1, rowIndex);"
+                                  (dblclick)="doubleClickOnRightTableAttGroup(user1)"
+                                  [ngClass]="{'outofstock':user1.isHighlightright == true}">
+                                  <td>{{user1.name}} </td>
+                                  <td>{{user1.description}} </td>
                                 </tr>
-
-                                <tr class="p-selectable-row">
-                                  <td> Code 5
-                                  </td>
-                                  <td> Attribute Number 2
-                                  </td>
-                                  <td> List
-                                  </td>
-                                </tr>
-
-                                <tr class="p-selectable-row">
-                                  <td> Code 6
-                                  </td>
-                                  <td> Attribute Number 3
-                                  </td>
-                                  <td> SDM
-                                  </td>
-                                </tr>
-
-
-
-
-
-
                               </ng-template>
                               <ng-template pTemplate="emptymessage">
                                 <tr>
@@ -1344,36 +863,306 @@
                               </ng-template>
                             </p-table>
                           </div>
+
                         </div>
                       </div>
+
                     </div>
+                    <div class="row mt-15 float-right">
 
-                  </div>
-                  <div class="row mt-15 float-right">
-
-                    <div class="float-right ">
-                      <button type="submit"
+                      <div class="float-right ">
+                        <button type="button" (click)="goToPreviousStep('step2'); ChangeStepper(2)"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                         tooltip="Previous"><b>
                           <i class="fa fa-angle-double-left"></i></b> Previous</button>&nbsp;
-                      <button type="submit"
-                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                        tooltip="Save"><b>
-                          <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
+                        <button type="submit"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                          tooltip="Save"><b>
+                            <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
+                        <button type="submit"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                          tooltip="Reset"><b>
+                            <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+                        <button type="button" tooltip="Next"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" tooltip="Clear">
+                          <b><i class="fa fa-times"></i></b> Clear</button>
+                      </div>
 
 
-                      <button type="submit"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                        tooltip="Reset"><b>
-                          <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
-
-                      <button type="button" tooltip="Next"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" tooltip="Clear">
-                        <b><i class="fa fa-times"></i></b> Clear</button>
                     </div>
                   </div>
+                </form>
                 </div>
-                </div>
+
+                <!--  Assign Attributes Step 4 -->
+
+                <div *ngIf="currentStep=='step4'"> <br>
+                  <form class="card" roll="form" [formGroup]="formAttribute" (ngSubmit)="saveAttribute()" method="post">
+                    <!-- #form="ngForm" -->
+                    <div>
+                      <div class="row d-flex"
+                        style="border: 1px solid #ccc; background-color: #fff;padding-top: 25px ;padding-bottom:25px;border-radius:2px;">
+                        <div class="ml-2 pl-1 pr-0">
+                          <label class="form-label mt-2">
+                            Group <span class="text-red"></span></label>
+                        </div>
+                        <div class="col-2">
+                          <p-multiSelect formControlName="companyGroupCode" defaultLabel="Selected PHG"
+                          [options]="allGroupListGetEDList" optionLabel="name"  optionDisabled="inactive">
+                        </p-multiSelect>
+                        </div>
+                        <div class="ml-2 pl-1 pr-0" *ngIf="isVisible">
+                          <label class="form-label mt-2" >
+                            Group Description<span class="text-red"></span></label>
+                        </div>
+                        <div class="col-2" *ngIf="isVisible">
+                          <input type="text" disabled  class="form-control"
+                             value="{{getGroupDiscription }}">
+                        </div>
+                        <!-- </span> -->
+
+                        <!-- <div class="ml-2 pl-1 pr-0">
+                          <label class="form-label mt-2 pl-10">Copy From</label>
+                        </div>
+
+                        <div class="col-2">
+
+                          <select name="Select" class="form-control">
+                            <option value="Select"> Select </option>
+                            <option value=""> </option>
+                            <option value=""> </option>
+                          </select> -->
+
+                        <!-- </div> -->
+                      </div>
+
+                    </div>
+                    <br>
+                    <br>
+
+                    <!--stepper indexes exit-->
+                    <div [@slideInOut]>
+                      <div class="row">
+                        <div class="col-4">
+                          &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<label
+                            class="text-purple font-bold font-14 text-center"
+                            style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Source
+                          </label>
+                        </div>
+                        <div class="col-3">
+                        </div>
+                        <div class="col-4"> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                          <label class="text-purple font-bold font-14"
+                            style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Destination
+                          </label>
+                        </div>
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-4" style="margin-left:70px;">
+                          <label class="form-label font-14 text-purple font-bold">Total List :
+                            <span class="font-14 text-dark-green">({{AssignAttributeList.length}})</span>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
+                            List : <span class="font-14 text-dark-green">({{selectedUserAttribute.length}})</span></label>
+                        </div>
+
+                        <div class="col-1"></div>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="col-4" style="margin-right:50px;">
+                          <label class=" form-label font-14 text-purple font-bold">Total List :
+                            <span
+                              class="font-14 text-dark-green">({{targetProductsAttributeList.length}})</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
+                            List : <span class="font-14 text-dark-green">({{selectedUser2Attribute.length}})</span></label>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="card" style="margin-left:70px;">
+                            <div class="table-responsive Custom_Table">
+                              <p-table [value]="AssignAttributeList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                                [pageLinks]="5" (onPage)="paginate($event)"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                totalRecords={{AssignAttributeList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+                                <ng-template pTemplate="header">
+                                  <tr>
+                                    <th rowspan="2" class="wd-12 text-center">
+                                      <div class="p-d-flex p-jc-between p-ai-center"> Code
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="code"
+                                            pSortableColumn="code">
+                                          </p-sortIcon>
+                                          <p-columnFilter field="code" display="menu"
+                                            class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
+
+                                    <th rowspan="2" class="wd-12 text-center">
+                                      <div class="p-d-flex p-jc-between p-ai-center">Discription
+                                          <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="description"
+                                              pSortableColumn="description">
+                                            </p-sortIcon>
+                                            <p-columnFilter field="description" display="menu"
+                                              class="p-ml-auto">
+                                            </p-columnFilter>
+                                          </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2" class="wd-12 text-center">
+                                      <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                          <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="attributeNature"
+                                              pSortableColumn="attributeNature">
+                                            </p-sortIcon>
+                                            <p-columnFilter field="attributeNature" display="menu"
+                                              class="p-ml-auto">
+                                            </p-columnFilter>
+                                          </div>
+                                        </div>
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                                  <tr (click)="RowSelectedAttribute(user1, rowIndex);" [class.active]="user1.isHighlight"
+                                    (dblclick)="doubleClickOnLeftTableAttribute(user1)"
+                                    [ngClass]="{'outofstock':user1.isHighlight == true}">
+                                    <td>{{user1.code}} </td>
+                                    <td>{{user1.description}} </td>
+                                    <td>{{user1.attributeNature}} </td>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                  <tr>
+                                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                        Available</span>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </div>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="col-1">
+                          <div class="row">
+                            <div class="col-md-12 mt-50">
+                              <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusgAttribute()"><i class="fa fa-chevron-right
+                                "></i></button>
+                            </div>
+                            <div class="col-md-12 mt-10">
+                              <button type="button" class="btn btn-sm bg-teal-400" (click)="righttablePusgAttribute()"><i class="fa fa-chevron-left
+                                "></i></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="card" style="margin-right:-40px;">
+                            <div class="table-responsive Custom_Table">
+                              <p-table [value]="targetProductsAttributeList" [paginator]="true" [rows]="10"
+                                [showCurrentPageReport]="true" [pageLinks]="5" (onPage)="paginate($event)"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                totalRecords={{targetProductsAttributeList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+                                <ng-template pTemplate="header">
+                                   <tr>
+                                    <th rowspan="2" class="wd-12 text-center">
+                                      <div class="p-d-flex p-jc-between p-ai-center text-center">Code
+                                       <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
+                                    <th rowspan="2" class="wd-12 text-center">
+                                      <div class="p-d-flex p-jc-between p-ai-center">Discription
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
+                                    <th rowspan="2" class="wd-12 text-center">
+                                      <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="attributeNature" pSortableColumn="attributeNature"></p-sortIcon>
+                                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                                  <tr (click)="RowSelectedtargetProductsAttribute(user1, rowIndex);"
+                                    (dblclick)="doubleClickOnRightTableAttribute(user1)"
+                                    [ngClass]="{'outofstock':user1.isHighlightright == true}">
+
+                                    <td>{{user1.code}} </td>
+                                    <td>{{user1.description}} </td>
+                                    <td>{{user1.attributeNature}} </td>
+                                  </tr>
+
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                  <tr>
+                                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                        Available</span>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="row mt-15 float-right">
+                        <!-- (click)="goToPreviousStep('step1')" (click)="ChangeStepper(2)" -->
+                        <div class="float-right ">
+                          <button type="button" (click)="goToPreviousStep('step3'); ChangeStepper(3)"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                          tooltip="Previous"><b>
+                            <i class="fa fa-angle-double-left"></i></b> Previous</button>&nbsp;
+
+                          <button type="submit"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                            tooltip="Save"><b>
+                              <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
+                          <button type="submit"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                            tooltip="Reset"><b>
+                              <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+                          <button type="button" tooltip="Next"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" tooltip="Clear">
+                            <b><i class="fa fa-times"></i></b> Clear</button>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </form>
+                  </div>
               </div>
             </div>
           </div>

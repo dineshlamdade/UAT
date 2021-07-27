@@ -44,7 +44,7 @@ const routes: Routes = [
     data: { title: ':: Epic :: Company Settings' }
   },
   {
-    path: 'attribute-global',
+    path: 'attribute-group',
     component: AttributeGlobalComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
@@ -107,11 +107,11 @@ const routes: Routes = [
     component: DeclarationFormComponent,
     data: { title: 'Declaration-Message :: Company Setting' }
   },
-  {
-    path: 'attribute-global',
-    component: AttributeGlobalComponent,
-    data: { title: ':: Epic :: Company Setting' }
-  },
+  // {
+  //   path: 'attribute-global',
+  //   component: AttributeGlobalComponent,
+  //   data: { title: ':: Epic :: Company Setting' }
+  // },
   {
     path: 'attribute-dependency',
     component: AttributeDependencyComponent,
@@ -121,8 +121,7 @@ const routes: Routes = [
     path: 'pay-roll-structure',
     component: PayRollStructureComponent,
     data: { title: ':: Epic :: Company Setting' }
-  },
-
+  }
 ];
 
 @NgModule( {

@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { CompanySettingsService } from './../company-settings.service';
 import { Component, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
@@ -99,6 +100,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   HighlightRight: any;
   originalSourceProductList = [];
   multiSelectDropDownData = [];
+  attributeNature: any;
 
   constructor(
     private modalService: BsModalService,
@@ -141,6 +143,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       description: new FormControl( '', Validators.required ),
       attributeNature: new FormControl( '', Validators.required ),
       copyTo: new FormControl( '' ),
+      attributeGroupId : new FormControl( '' )
     } );
 
     this.form = this.formBuilder.group( {
@@ -333,9 +336,16 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.beforeSavePHGName1 = event.target.value;
   }
   onChangeAttributeGroupDropDown( event ) {
-
-    this.AttGrpName = event.target.value;
+   const toSelect = this.attributeGroupList.find(element => element.name == this.payrollHeadGroupCreationForm.get('attributeNature').value);
+   this.attributeNature = toSelect.name;
+   this.attributeGroupId = toSelect.id;
+   this.payrollHeadGroupCreationForm.get('attributeGroupId').setValue(toSelect.id);
+     //  this.payrollHeadGroupCreationForm.get('name').setValue(toSelect.name);
+  //    this.payrollHeadGroupCreationForm.get('id').setValue(toSelect.id);
+  //  this.AttGrpName = event.target.value;
+    // this.attributeGroupId = event.target.value;
     console.log( this.AttGrpName );
+    console.log( this.attributeGroupId );
   }
   RowSelected( u: any, ind: number ) {
     this.HighlightRow = ind;
@@ -523,7 +533,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       }
       this.viewSaveButton = false;
     }, ( error ) => {
-      if ( error.status == 404 ) {
+      if ( error.status == 400 ) {
         this.alertService.sweetalertError( error["error"]["status"]["message"] );
         this.getAllAttributeListByAttGroup( u.headGroupIds );
         this.viewSaveButton = true;
@@ -814,6 +824,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       addAttributeCreation.headMasters.push( headDetail );
     } );
     addAttributeCreation.globalHeadGroupDefinitionName = this.payrollHeadGroupCreationForm.value.headGroupDefinitionName;
+    addAttributeCreation.attributeGroupId = this.payrollHeadGroupCreationForm.value.attributeGroupId;
     addAttributeCreation.description = this.payrollHeadGroupCreationForm.value.description;
     addAttributeCreation.attributeGroupName = this.payrollHeadGroupCreationForm.value.attributeNature;
     addAttributeCreation.countryId = 1;
@@ -821,7 +832,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     addAttributeCreation.isActive = true;
     console.log( JSON.stringify( addAttributeCreation ) );
     if ( this.viewupdateButton == false ) {
-
+//Post by Anant
       this.companySettingsService.AddPayrollHeadGroupAtGlobal( addAttributeCreation ).subscribe( ( res: any ) => {
         console.log( res.data.results[0].headGroupDefinitionId );
         addAttributeCreation.headMasters = [];
