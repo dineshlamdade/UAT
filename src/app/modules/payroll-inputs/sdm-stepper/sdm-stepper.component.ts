@@ -78,7 +78,7 @@ export class SdmStepperComponent implements OnInit {
   editTempIndex: any = -1;
   editTempFlag: boolean = false;
   sdmData: any;
-  sdmMasterId: number = 9;
+  sdmMasterId: any = 0;
   sourceCombinationData: any;
   sdmSourceCombinationListData: any;
   srcCombLength: any;
@@ -111,6 +111,7 @@ export class SdmStepperComponent implements OnInit {
   selectedIndex: any = -1;
   selectedCombData: any;
   tempMatrixData: any = [];
+  addbtnflag: boolean = false;
 
   constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, private toaster: ToastrService,private datepipe: DatePipe) {
 
@@ -147,6 +148,10 @@ export class SdmStepperComponent implements OnInit {
       this.step1FormDisableFlag = true;
       this.sourceTableList()
     }
+
+    if(localStorage.getItem('sdmMasterId') !=  null){
+      this.sdmMasterId = localStorage.getItem('sdmMasterId')
+    }
   }
   
   ngOnInit() {
@@ -166,32 +171,38 @@ export class SdmStepperComponent implements OnInit {
     ];
   }
 
-  editSummary() { }
+  editSummaryData(data){
+    this.sdmMasterId = data.sdmMasterId
+    this.stepperIndex = 1
+    this.summeryFlag = ! this.summeryFlag;
+    if(this.summeryFlag == true){
+      this.applicationModule()
+      this.sourceTableList()
+    }
+  }
+
   viewSummary() { }
 
-  abc(value){
+  getStepper(value){
   this.stepperIndex = value
   }
 
   previous() {
+    // alert(this.stepperIndex)
     this.stepperIndex = this.stepperIndex - 1;
   }
 
   next() {
-    switch (this.stepperIndex) {
-      case 1: {
-        // this.step1Submit()
-        this.saveSourceDerivedMatrix();
-        break;
-      }
-      case 2: {
-        
-        this.step2Submit()
-        break;
-      }
-      default:
-        break;
-    }
+    // switch (this.stepperIndex) {
+    //   case 1: {
+    //     break;
+    //   }
+    //   case 2: {
+    //     break;
+    //   }
+    //   default:
+    //     break;
+    // }
     this.stepperIndex = this.stepperIndex + 1
 
   }
@@ -526,9 +537,9 @@ export class SdmStepperComponent implements OnInit {
         this.sdmFormStep1.controls['sdmName'].disable();
         //this.sdmFormStep1.disable();
         localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
-
         this.sdmMasterId = res.data.results[0].sdmMasterId;
-        this.sdmMasterId = 9
+        localStorage.setItem('sdmMasterId', this.sdmMasterId)
+        // this.sdmMasterId = 9
         // alert(this.sdmMasterId)
         this.sourceCombination();
         this.SdmMasterDetails();
@@ -767,22 +778,48 @@ export class SdmStepperComponent implements OnInit {
     this.sourceRangeFrom = value
     this.selectedIndex = index;
     this.selectedCombData = srcCombData
+
+    if(this.sourceRangeFrom != '' && this.sourceRangeTo != '' &&  this.derivedFromDate != '' && this.derivedToDate != '' && this.applicableValue != ''){
+      this.addbtnflag = true
+    }else{
+      this.addbtnflag = false
+    }
   }
 
   sourceRangeToData(value){
     this.sourceRangeTo = value
+    if(this.sourceRangeFrom != '' && this.sourceRangeTo != '' &&  this.derivedFromDate != '' && this.derivedToDate != '' && this.applicableValue != ''){
+      this.addbtnflag = true
+    }else{
+      this.addbtnflag = false
+    }
   }
 
   applicableValueData(value){
     this.applicableValue = value
+    if(this.sourceRangeFrom != '' && this.sourceRangeTo != '' &&  this.derivedFromDate != '' && this.derivedToDate != '' && this.applicableValue != ''){
+      this.addbtnflag = true
+    }else{
+      this.addbtnflag = false
+    }
   }
 
   derivedFromDateData(value){
-    this.derivedFromDate = this.datepipe.transform(new Date(value), 'yyyy-MM-dd')
+    this.derivedFromDate = this.datepipe.transform(new Date(value), 'dd-MMM-yyyy')
+    if(this.sourceRangeFrom != '' && this.sourceRangeTo != '' &&  this.derivedFromDate != '' && this.derivedToDate != '' && this.applicableValue != ''){
+      this.addbtnflag = true
+    }else{
+      this.addbtnflag = false
+    }
   }
 
   derivedToDateData(value){
-    this.derivedToDate = this.datepipe.transform(new Date(value), 'yyyy-MM-dd')
+    this.derivedToDate = this.datepipe.transform(new Date(value), 'dd-MMM-yyyy')
+    if(this.sourceRangeFrom != '' && this.sourceRangeTo != '' &&  this.derivedFromDate != '' && this.derivedToDate != '' && this.applicableValue != ''){
+      this.addbtnflag = true
+    }else{
+      this.addbtnflag = false
+    }
   }
 
   addMatrixData(sdmcombination,rowIndex){
@@ -793,8 +830,8 @@ export class SdmStepperComponent implements OnInit {
       "sdmSourceCombinationId":sdmcombination.sdmSourceCombinationId,
       "sourceRangeFrom": this.sourceRangeFrom,
       "sourceRangeTo":this.sourceRangeTo,
-      "derivedFromDate": this.derivedFromDate,
-      "derivedToDate":this.derivedToDate,
+      "derivedFromDate": this.datepipe.transform(new Date(this.derivedFromDate), 'yyyy-MM-dd'),
+      "derivedToDate": this.datepipe.transform(new Date(this.derivedToDate), 'yyyy-MM-dd'),
       "applicableValue": this.applicableValue
     })
 
@@ -805,8 +842,8 @@ export class SdmStepperComponent implements OnInit {
       "sdmSourceCombinationId":sdmcombination.sdmSourceCombinationId,
       "sourceRangeFrom": this.sourceRangeFrom,
       "sourceRangeTo":this.sourceRangeTo,
-      "derivedFromDate": this.derivedFromDate,
-      "derivedToDate":this.derivedToDate,
+      "derivedFromDate": this.datepipe.transform(new Date(this.derivedFromDate), 'yyyy-MM-dd'),
+      "derivedToDate":this.datepipe.transform(new Date(this.derivedToDate), 'yyyy-MM-dd'),
       "applicableValue": this.applicableValue,
       'selectedCombData':this.selectedCombData
     })
@@ -818,6 +855,8 @@ export class SdmStepperComponent implements OnInit {
    this.derivedFromDate = ''
    this.derivedToDate = ''
    this.applicableValue = ''
+   this.addbtnflag = false
+   this.selectedIndex = -1
   }
 
 
