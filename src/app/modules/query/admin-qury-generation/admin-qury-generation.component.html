@@ -120,7 +120,7 @@
                       <div class="col-md-3">
                         <label class="form-label">Sub-Query Type</label>
                         <select formControlName="subQueTypeMasterId" class="form-control"
-                       >
+                        (change)="gettempdatafromsubquery($event.target.value)" >
                        <!-- (change)="gettempdatafromsubquery($event.target.value)" -->
                           <option [ngValue]="0" selected>Select</option>
                           <option *ngFor="let module of subQueryData" value="{{module.subQueTypeMasterId}}">
@@ -352,13 +352,12 @@
                 <div class="row mt-25">
                   <div class="col-md-12">
                     <div class="float-right">
-
                       <button type="button" tooltip="Previous" *ngIf="isPrevious" (click)="priviousRecord()"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"
-                        [disabled]="employeeListId.length == 1 || employeeListId == 0"
-                         [ngClass]="{'disabled-btn-bg-green' : employeeListId.length == 1 || employeeListId == 0}">
-                        <b><i class="fa fa-angle-double-left"></i></b> Previous
-                      </button>
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                        [disabled]="employeeListId.length == 1 || index == 0"
+                         [ngClass]="{'disabled-btn-bg-green' : employeeListId.length == 1 || index == 0}">
+                        <b><i class="fa fa-angle-double-left"  aria-hidden="true"></i></b> Previous
+                      </button>&nbsp;
 
                       <button type="button" tooltip="Save Draft & Next" *ngIf="isSaveDraftNext" (click)="queryGenerationFormSubmit('Draft');nextRecord()"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
@@ -400,7 +399,7 @@
                         [disabled]="!queryGenerationForm.valid" *ngIf="isUpdate "
                         (click)="updateQueryGeneration('Save')"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
-                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button>
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button>&nbsp;
 
                       <button type="submit" tooltip="Update"
                         class="custom_button custom_btn btn-labeled btn-labeled-left"
@@ -415,8 +414,8 @@
 
                       <button type="button" tooltip="Next" *ngIf="isnext" (click)="nextRecord()"
 
-                      [disabled]="employeeListId.length == 1 || (employeeListId.length-1) == employeeListId"
-                      [ngClass]="{'disabled-btn-bg-green' : employeeListId.length == 1 || (employeeListId.length-1) == employeeListId}"
+                      [disabled]="employeeListId.length == 1 || (employeeListId.length-1) == index"
+                      [ngClass]="{'disabled-btn-bg-green' : employeeListId.length == 1 || (employeeListId.length-1) == index}"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-angle-double-right"></i></b> Next
                       </button>

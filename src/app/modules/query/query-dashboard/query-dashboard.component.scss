@@ -132,22 +132,18 @@ background-clip: border-box;
 }
 
 .a {
-  // white-space: nowrap!important;
-  // width: 100%;
+  white-space:pre-wrap!important;
   height:40px;
   overflow: hidden;
   text-overflow: ellipsis;
-  // border: 1px solid #000000;
+
+  // white-space: nowrap;
+  //   overflow: hidden;
+  //   text-overflow: ellipsis;
 }
 
-.a:hover {
-  overflow: visible;
-  // white-space: wrap;
-  // height: auto;
-
-  overflow: visible;
-  // width: 100%;
-  // height: 100%;
-  white-space: nowrap !important;
-}
+// .a:hover {
+//   overflow: visible;
+//   white-space: nowrap !important;
+// }
 

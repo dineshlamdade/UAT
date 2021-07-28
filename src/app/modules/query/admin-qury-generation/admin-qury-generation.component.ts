@@ -51,9 +51,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   queryNumberData: any;
   listDoc: any = [];
   editQuerySummaery: any;
-
   employeeMasterId: any;
-
   addQuerywithDocsData: any;
   queryTempData: any;
   listSubQA: any;
@@ -67,7 +65,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   ListOfDocuments:any;
   documents: any;
 // ...........for single query btns.........................................
-   isSaveDraft:boolean=true;
+  isSaveDraft:boolean=true;
   isPrevious:boolean=false;
   isSaveDraftNext:boolean=false;
   isSaveNext:boolean=false;
@@ -129,7 +127,7 @@ export class AdminQuryGenerationComponent implements OnInit {
        this.queryGenerationForm.controls['queAnsMasterId'].setValue(formdata.queAnsMasterId);
        this.queryGenerationForm.controls['priority'].setValue(formdata.priority);
        this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(formdata.subQueTypeMasterId);
-
+      //  this.editflag = true;
        if(formdata.status == 'Draft'){
         this.isUpdateDraft = true;
         this.isUpdate = false;
@@ -346,16 +344,16 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
   }
 
 
-  // gettempdatafromsubquery(value){
+  gettempdatafromsubquery(value){
 
-  //   this.subQueryData.forEach(element => {
+    this.subQueryData.forEach(element => {
 
-  //      this.templatedata = element.listSubQA
-  //     console.log(" this.templatedata", this.templatedata)
+       this.templatedata = element.listSubQA
+      console.log(" this.templatedata", this.templatedata)
 
 
-  //   });
-  // }
+    });
+  }
 moduleChange(value) // when module is changed then template also changed.
 {
   this.selectedModuleId = value;

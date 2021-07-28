@@ -136,30 +136,13 @@ smallpopup(template: TemplateRef<any>) {
 
   smallpopup1(queryDescription: TemplateRef<any>,summary ) {
     this.summarydescription = summary.queryDescription;
-    // this.queryTypeMasterId = summary.queryTypeMasterId;
-    // console.log("summary",summary)
+    this.summarysubject = summary.subject;
      this.modalRef = this.modalService.show(queryDescription,
        Object.assign({}, { class: 'gray modal-md' })
      );
    }
 
-  //  smallpopup2(querySubject: TemplateRef<any>,summary ) {
-  //   this.summarysubject = summary.subject;
-  //    this.modalRef = this.modalService.show(querySubject,
-  //      Object.assign({}, { class: 'gray modal-md' })
-  //    );
-  //  }
-
-  //  smallpopup3(subqueryDescription: TemplateRef<any>,summary ) {
-  //   this.summarysubquerydescription = summary.subQueryTypeDescription;
-  //    this.modalRef = this.modalService.show(subqueryDescription,
-  //      Object.assign({}, { class: 'gray modal-md' })
-  //    );
-  //  }
-
    smallpopup4(deleteTemp: TemplateRef<any> ,summary) {
-    // this.summarysubquerydescription = summary.subQueryTypeCode;
-
      this.modalRef = this.modalService.show(deleteTemp,
        Object.assign({}, { class: 'gray modal-md' })
      );
