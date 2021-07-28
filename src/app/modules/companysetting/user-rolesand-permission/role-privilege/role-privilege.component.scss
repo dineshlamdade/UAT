@@ -55,4 +55,11 @@
  
   text-align: right;
 }
-  
+.my-registertable{
+  height: 500px;
+}
+.table-responsive.Custom_Table.my-registertable::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+  transition: .3s background;
+}

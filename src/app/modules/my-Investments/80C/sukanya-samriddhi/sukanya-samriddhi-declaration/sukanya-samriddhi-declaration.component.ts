@@ -1020,6 +1020,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     this.alertService.sweetalertError(
       'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
+    this.receiptAmount = '0.00';
+    return false;
   } else if (receiptAmount_ > globalSelectedAmount_) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);

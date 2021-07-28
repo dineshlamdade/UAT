@@ -688,7 +688,11 @@ export class TaxsavingMfMasterComponent implements OnInit {
     this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+    this.urlArray = [];
     this.isCancel = false;
+    this.form.get('accountHolderName').setValue('Aishwarya Malviya');
+    this.form.get('relationship').setValue('Self');
   }
 
   UploadModal(template: TemplateRef<any>) {
