@@ -53,7 +53,7 @@ console.log('Supplimentary  cylece',this.supplementaryForm.value);
 const periodNameList =this.cycleNameList.filter(element=>element.periodId==this.supplementaryForm.value.periodName)
 console.log('period name list is',periodNameList[0].periodName)
 const data = [{
-  businessCycleId:2796,
+  businessCycleId:this.cycleNameList.find(x=>x.id==this.supplementaryForm.get('periodId').value),
   
   periodName:periodNameList[0].periodName,
   //headMasterIds:this.headMasterIds,
@@ -158,7 +158,7 @@ console.log('data is',data);
   })
 }
 onUpdate(){
-  debugger;
+//debugger;
 //   const periodNameList =this.cycleNameList.filter(element=>element.periodId== this.supplementaryForm.controls['periodName'])
 // console.log('period name list is',periodNameList[0].periodName)
 const data = [{
@@ -195,12 +195,14 @@ editData(data){
   this.getCycleNameById(data.businessCycleDefinition.id);
   this.editFormFlag =true;
   this.viewFormFlag = false;
+ // this.supplementaryForm.reset();
   this.supplementaryForm.enable();
  // this.supplementaryForm.patchValue(data);
    this.supplementaryForm.controls['periodName'].patchValue(data.periodId);
   this.supplementaryForm.controls['cycleName'].setValue(data.periodName);
-  this.supplementaryForm.controls['startDate'].patchValue(data.fromDate);
-  this.supplementaryForm.controls['endDate'].patchValue(data.toDate);
+  //this.supplementaryForm.controls['cycleName'].patchValue(data.cycleName);
+  this.supplementaryForm.controls['startDate'].patchValue(new Date(data.fromDate));
+  this.supplementaryForm.controls['endDate'].patchValue(new Date(data.toDate));
   this.supplementaryForm.controls['remark'].patchValue(data.remark);
   let cycleDef = this.cycleDefinitionList.find(el => el.id === data.businessCycleDefinition.id);
     if (cycleDef) {
@@ -223,8 +225,8 @@ viewData(data){
   this.supplementaryForm.patchValue(data);
   this.supplementaryForm.controls['periodName'].patchValue(data.periodId);
   this.supplementaryForm.controls['cycleName'].setValue(data.periodName);
-  this.supplementaryForm.controls['startDate'].patchValue(data.fromDate);
-  this.supplementaryForm.controls['endDate'].patchValue(data.toDate);
+  this.supplementaryForm.controls['startDate'].patchValue(new Date(data.fromDate));
+  this.supplementaryForm.controls['endDate'].patchValue(new Date(data.toDate));
   this.supplementaryForm.controls['remark'].patchValue(data.remark);
   let cycleDef = this.cycleDefinitionList.find(el => el.id === data.businessCycleDefinition.id);
     if (cycleDef) {

@@ -57,7 +57,7 @@
                                             data-provide="datepicker" data-date-autoclose="true"
                                             class="form-control" (bsValueChange)="setPolicyEndDate()"
                                             placeholder="" bsDatepicker formControlName = "startDate"
-                                            [(ngModel)]="startDate"
+                                            [maxDate]="today" disabled
                                             [ngClass]="{'is-invalid' : adhocForm.get('startDate').status == 'INVALID'}"
                                            >
                                     </div>
@@ -74,7 +74,7 @@
                             data-provide="datepicker" data-date-autoclose="true"
                             class="form-control" (bsValueChange)="setPolicyEndDate()"
                             placeholder="" bsDatepicker formControlName = "endDate"
-                            [(ngModel)]="endDate"
+                           [maxDate]="today" disabled
                             [ngClass]="{'is-invalid' : adhocForm.get('endDate').status == 'INVALID'}"
                            >
                     </div>

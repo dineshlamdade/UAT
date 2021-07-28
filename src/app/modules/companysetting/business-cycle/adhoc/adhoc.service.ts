@@ -36,7 +36,8 @@ export class AdhocService{
 
     /**get summary data */
     getSummaryData():Observable<any>{
-        return this.http.get(this.apiUrl+`business-cycle/cycle-definition-getAll`);
+        //return this.http.get(this.apiUrl+`business-cycle/cycle-definition-getAll`);
+        return this.http.get(this.apiUrl+`business-cycle/AdhocCycle/`);
     }
 
 

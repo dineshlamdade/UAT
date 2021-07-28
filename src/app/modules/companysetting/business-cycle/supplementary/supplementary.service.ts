@@ -25,6 +25,7 @@ export class SupplementaryService{
         /**get summary data */
         getSummaryData():Observable<any>{
             return this.http.get(this.apiUrl+`business-cycle/SuppCycle/`);
+           // return this.http.get(this.apiUrl+`business-cycle/cycle-definition-getAll`);
         }
 
         saveSupplementaryCycle(data):Observable<any>{

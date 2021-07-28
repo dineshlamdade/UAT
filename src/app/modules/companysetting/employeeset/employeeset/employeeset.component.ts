@@ -81,6 +81,7 @@ export class EmployeesetComponent implements OnInit {
       //.employeeList = []
       this.serviceListData = [];
       this.employeesetForm.reset();
+      this.hideRemarkDiv2 = false;
     }),
     error => {
       if(error.error.status.code == '400'){
