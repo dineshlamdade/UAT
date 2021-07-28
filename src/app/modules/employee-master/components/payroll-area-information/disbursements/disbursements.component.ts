@@ -106,7 +106,7 @@ export class DisbursementsComponent implements OnInit {
     this.disbursmentList=[];
     this.payrollService.getDisbursementDetails(this.employeeMasterId).subscribe(res => {
       this.disbursmentList = res.data.results[0];
-      
+      if(this.disbursmentList != undefined){
       console.log('disbursementList', this.disbursmentList)
 
 //       var groupByPayrollAreaCode={};
@@ -195,7 +195,7 @@ console.log('copyFrom',this.copyFromPayrollAreaList);
          }) 
      console.log('copyFromList',this.copyFromPayrollAreaList)
     }  
-  
+      }
     }
     , (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
@@ -255,7 +255,7 @@ console.log('copyFrom',this.copyFromPayrollAreaList);
       accountNoList: new FormArray([this.createAccountList()]),
       nameAsPerBank: new FormControl(''),
       percentActive : new FormControl('% of Net Pay'),
-      isPercentOfNetPay:new FormControl(true),
+      percentOfNetPay:new FormControl(true),
       percentageOfNetPay: new FormControl(0),
       amount: new FormControl({value:0,disabled: true}),
       priority: new FormControl('')
@@ -331,8 +331,8 @@ console.log('copyFrom',this.copyFromPayrollAreaList);
     this.pfArray.get([0]).get('payrollAreaInformationId').patchValue(payId.payrollAreaInformationId)
     this.getFormData();
 
-    const copyFromList = this.disbursmentList.filter(a=>a.payrollAreaCode === location.payrollAreaCode && a.multibankingAllowed === location.multibankingAllowed);
-    console.log('copyfromList-pchange',copyFromList)
+    // const copyFromList = this.disbursmentList.filter(a=>a.payrollAreaCode === location.payrollAreaCode && a.multibankingAllowed === location.multibankingAllowed);
+    // console.log('copyfromList-pchange',copyFromList)
   }
 
   resetFormPayrollChange() {
@@ -348,7 +348,7 @@ console.log('copyFrom',this.copyFromPayrollAreaList);
 
   const type  = this.form.get('typeOfPayment').value;
   const payCode = this.form.get('payrollAreaCode').value;
-const len = this.disbursmentList.length;
+const len = this.disbursmentList!=undefined ?  this.disbursmentList.length:0;
 //for checking the type is already available with the same type
 if(len>0){
 for ( let i=0 ; i<len ; i++){
@@ -376,8 +376,10 @@ const finalArr = arr.filter(a=>a.accountNo==accNo);
     
     // for(let j=0; j<finalArr.length;j++){
 
-     if(finalArr.length>1) this.CommonDataService.sweetalertError("This Account No is Already selected");
-    // }
+     if(finalArr.length>1) {
+      this.pfArray.get([index]).get('accountNo').reset();
+       this.CommonDataService.sweetalertError("This Account No is Already selected");
+     }
    
   }
 
@@ -448,8 +450,12 @@ const finalArr = arr.filter(a=>a.accountNo==accNo);
           employeeBankInfoId: this.pfArray.get([i]).get('employeeBankInfoId').value,
           paymentMode: this.pfArray.get([i]).get('modeOfPayment').value,
           percentageOfNetPay: this.pfArray.get([i]).get('percentageOfNetPay').value,
-          isPercentOfNetPay:this.pfArray.get([i]).get('isPercentOfNetPay').value,
+          percentOfNetPay:this.pfArray.get([i]).get('percentOfNetPay').value,
           amount: this.pfArray.get([i]).get('amount').value,
+          bankName:this.pfArray.get([i]).get('bankName').value,
+          bankIFSC:this.pfArray.get([i]).get('ifsc').value,
+          accountNo:this.pfArray.get([i]).get('accountNo').value,
+          nameAsPerBank:this.pfArray.get([i]).get('nameAsPerBank').value,
           priority: this.pfArray.get([i]).get('priority').value
         })
       }else{
@@ -465,8 +471,12 @@ const finalArr = arr.filter(a=>a.accountNo==accNo);
           employeeBankInfoId: this.pfArray.get([i]).get('employeeBankInfoId').value,
           paymentMode: this.pfArray.get([i]).get('modeOfPayment').value,
           percentageOfNetPay: this.pfArray.get([i]).get('percentageOfNetPay').value,
-          isPercentOfNetPay:this.pfArray.get([i]).get('isPercentOfNetPay').value,
+          percentOfNetPay:this.pfArray.get([i]).get('percentOfNetPay').value,
           amount: this.pfArray.get([i]).get('amount').value,
+          bankName:this.pfArray.get([i]).get('bankName').value,
+          bankIFSC:this.pfArray.get([i]).get('ifsc').value,
+          accountNo:this.pfArray.get([i]).get('accountNo').value,
+          nameAsPerBank:this.pfArray.get([i]).get('nameAsPerBank').value,
           priority: this.pfArray.get([i]).get('priority').value
         })
       }
@@ -655,7 +665,7 @@ const finalArr = arr.filter(a=>a.accountNo==accNo);
       accountNoList: new FormArray([this.createAccountList()]),
       nameAsPerBank: new FormControl(''),
       percentActive:new FormControl('% of Net Pay'),
-      isPercentOfNetPay:new FormControl(true),
+      percentOfNetPay:new FormControl(true),
       percentageOfNetPay: new FormControl(0),
       amount: new FormControl({value:0,disabled: true}),
       priority: new FormControl(''),
@@ -800,7 +810,7 @@ if(this.copyFrom==false){
         accountNo: data[j].accountNo,
         nameAsPerBank: data[j].nameAsPerbank,
         percentageOfNetPay: data[j].percentageOfNetPay,
-        isPercentOfNetPay:data[j].isPercentOfNetPay,
+        percentOfNetPay:data[j].percentOfNetPay,
         amount: data[j].amount,
         priority: data[j].priority
       })
@@ -819,7 +829,7 @@ if(this.copyFrom==false){
       this.pfArray.get([i]).get('percentageOfNetPay').setValue(0);
        this.pfArray.get([i]).get('percentageOfNetPay').disable();
        this.pfArray.get([i]).get('amount').enable();
-       this.pfArray.get([i]).get('isPercentOfNetPay').setValue(false);
+       this.pfArray.get([i]).get('percentOfNetPay').setValue(false);
        let maxArray:Array<any> =[];
        maxArray= this.pfArray.value;
      let maxPrio = Math.max.apply(Math, maxArray.map(function(o) { return o.priority; })) 
@@ -832,7 +842,7 @@ if(this.copyFrom==false){
       this.pfArray.get([i]).get('priority').reset();
       this.pfArray.get([i]).get('amount').disable();
       this.pfArray.get([i]).get('percentageOfNetPay').setValue(0);
-      this.pfArray.get([i]).get('isPercentOfNetPay').setValue(true);
+      this.pfArray.get([i]).get('percentOfNetPay').setValue(true);
       this.pfArray.get([i]).get('percentageOfNetPay').enable();
      }
     

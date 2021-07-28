@@ -223,8 +223,8 @@
                                                         formControlName="bankName"
                                                         (change)="ifscSelect(i);validateNetPercent(i)">
                                                         <option value="">Select</option>
-                                                        <option *ngFor="let bank of summary.get('bankDropList').value"
-                                                            [value]="bank.bankname"> {{bank.bankname}}</option>
+                                                        <option *ngFor="let bank of summary.get('bankDropList').value "
+                                                            [value]="bank.bankname "> {{bank.bankname}}</option>
                                                     </select>
                                                 </td>
                                                 <!-- let bank of summary.get('ifscList').controls -->
@@ -242,11 +242,11 @@
                                                         formControlName="accountNo">
                                                         <option value="" > Select</option>
                                                         <option *ngFor="let data of summary.get('accountNoList').value"
-                                                            [value]="data.accountNo" > {{data.accountNo}}  
+                                                            [value]="data.accountNo" > {{data.accountNo}}   <i class="fa fa-eye-slash  font-18 text-blue cursor-pointer"
+                                                            aria-hidden="true" style="overflow: visible"></i> 
                                                         </option>
-                                                        <i class="fa fa-eye-slash  font-18 text-blue cursor-pointer"
-                                                        aria-hidden="true" style="overflow: visible"></i>    
-                                                    </select>
+                                                         
+                                                    </select> 
                                                    
                                                 </td>
                                                 <td scope="row">
@@ -297,7 +297,7 @@
 
                                                 <td *ngIf="multiBankingAllowed" scope="row">
                                                     <i *ngIf="i>0 && i==pfArray.controls.length-1" class="fa fa-times  font-18 text-red cursor-pointer"
-                                                    (click)="deleteRow()" aria-hidden="true"></i>&nbsp;
+                                                    (click)="deleteRow(i)" aria-hidden="true"></i>&nbsp;
                                                 <i *ngIf="i==0" class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
                                                     (click)="addRow()" aria-hidden="true"></i>&nbsp;
                                                 </td>
