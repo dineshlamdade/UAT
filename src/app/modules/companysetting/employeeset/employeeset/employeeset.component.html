@@ -18,16 +18,32 @@
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                         <label class="form-label">Emp. Set Name</label>
                         <input type="text" class="form-control" formControlName = "employeeSetName"
-                        [ngClass]="{'is-invalid' : employeesetForm.get('employeeSetName').status == 'INVALID'}">
+                        maxlength="25"
+                          (keypress)="keyPressAlphaNumericWithCharacters($event)" placeholder="Enter area set name"
+                          [ngClass]="{'is-invalid' : employeesetForm.get('employeeSetName').status == 'INVALID'}">
+                        <!-- <small id="areaHelp" class="form-text text-muted errorMessageP"
+                          *ngIf="!employeesetForm.valid &&employeesetForm.touched && employeesetForm.get('employeeSetName').errors?.required">
+                          Name is required
+                        </small> -->
+                        <!-- <small id="areaHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.pattern">
+                          Name not valid
+                        </small> -->
+                        <!-- <small id="areaHelp" class="form-text text-muted errorMessageP"
+                          *ngIf="!employeesetForm.valid &&employeesetForm.touched && employeesetForm.get('employeeSetName').errors?.maxlength">
+                          Name can be max 25 characters long.
+                        </small> -->
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
 
                         <label class="form-label">Emp. Code</label>
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
                         <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
-                          (onChange)="getEmployeeMasterId($event)" [placeholder]="'Select Emp code'" formControlName = "empList"
+                           [(ngModel)] = "employeeList"
+                          [placeholder]="'Select Emp code'" formControlName = "empList"
+                          (onChange)="getArea(employeeList,$event)" 
                           [ngClass]="{'is-invalid' : employeesetForm.get('empList').status == 'INVALID'}">
                         </p-multiSelect>
+                        <!-- (onChange)="getEmployeeMasterId($event)" -->
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
                         <div class="form-group">
@@ -58,7 +74,7 @@
                     <div class="row mt-20">
                       <div class="col-md-3 form-group">
                         <label class="custom-control custom-checkbox custom-control-inline pl-45">
-                          <input autocomplete="off" type="checkbox" class="custom-control-input" name="example-inline-checkbox1" checked
+                          <input autocomplete="off" type="checkbox" class="custom-control-input" name="example-inline-checkbox1" [checked] = '!hideRemarkDiv2'
                             (change)="changeEvent2($event)" readonly />
                           <span class="custom-control-label">Active </span>
                         </label>
@@ -68,7 +84,7 @@
                         <textarea autocomplete="off" class="form-control" rows="2" 
                         placeholder="Enter Remark" formControlName = "remark"
                         [ngClass]="{'is-invalid' : employeesetForm.get('remark').status == 'INVALID'}"
-                        [required]="hideRemarkDiv1">
+                        [required]="hideRemarkDiv2">
                         </textarea>
                       </div>
                     </div>
@@ -81,15 +97,25 @@
                       <div class="float-right mb-15">
                         <button type="submit"
                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                          tooltip="Save" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag" (click)="onSubmit()"><b>
+                          tooltip="Save" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag" (click)="onSubmit()"
+                          [disabled] = "employeesetForm.invalid"
+                          [ngClass]="{'disabled-btn-bg-green' : employeesetForm.invalid, 'btn-bg-green': !employeesetForm.invalid }"><b>
                             <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
                         <button type="submit"
                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                           tooltip="Update" tooltip="Update" *ngIf="editFormFlag && !viewFormFlag"
-                          (click)="onUpdate()"><b>
+                          (click)="onUpdate()"  [disabled] = "employeesetForm.invalid"
+                          [ngClass]="{'disabled-btn-bg-green' : employeesetForm.invalid, 'btn-bg-green': !employeesetForm.invalid }"><b>
                             <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+
+                            <button type="button" *ngIf="viewFormFlag || editFormFlag" (click)="formReset()"
+                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                            Cancel</button>
+
                         <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
-                          tooltip="Reset" (click)="formReset()"><b>
+                          tooltip="Reset" (click)="formReset()" *ngIf="!viewFormFlag && !editFormFlag"><b>
                             <i class="fa fa-refresh"></i></b> Reset</button>
                       </div>
                     </div>
@@ -103,7 +129,8 @@
                   </div>
                   <div class="row">
                     <div class="col-md-8">
-                      <p-table [value]="summaryData">
+                      <p-table [value]="summaryData" [paginator]="true" [rows]="10"
+                       [rowsPerPageOptions]="[10,25,50,100,200]">
                         <ng-template pTemplate="header">
                           <tr>
                             <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
@@ -111,8 +138,8 @@
                             <th rowspan="2" class="wd-8 text-center">
                               <div class="p-d-flex p-jc-between p-ai-center">Emp. Set Name
                                 <div class="Sort_Filter_Position">
-                                  <p-sortIcon field="Description" pSortableColumn="Description"></p-sortIcon>
-                                  <p-columnFilter type="text" field="Desc" display="menu" class="p-ml-auto">
+                                  <p-sortIcon field="employeeSetName" pSortableColumn="employeeSetName"></p-sortIcon>
+                                  <p-columnFilter type="text" field="employeeSetName" display="menu" class="p-ml-auto">
                                   </p-columnFilter>
                                 </div>
                               </div>
@@ -120,8 +147,8 @@
                             <th rowspan="2" class="wd-8 text-center">
                               <div class="p-d-flex p-jc-between p-ai-center">No. of Emp.
                                 <div class="Sort_Filter_Position">
-                                  <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
-                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                  <p-sortIcon field="employeeSetMasterDetailsList.length" pSortableColumn="employeeSetMasterDetailsList.length"></p-sortIcon>
+                                  <p-columnFilter field="employeeSetMasterDetailsList.length" display="menu" class="p-ml-auto">
                                   </p-columnFilter>
                                 </div>
                               </div>
@@ -142,7 +169,7 @@
 
                             </td>
                             <td>
-                             {{data.numberOfArea}}
+                             {{data.employeeSetMasterDetailsList.length}}
 
                             </td>
                             

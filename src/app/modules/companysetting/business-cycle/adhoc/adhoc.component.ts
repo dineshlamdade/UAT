@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AdhocService } from './adhoc.service';
 import { AnyCnameRecord } from 'node:dns';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
+//import { AlertServiceService } from '../../../core/services/alert-service.service';
 
 @Component({
   selector: 'app-adhoc',
@@ -26,7 +28,7 @@ export class AdhocComponent implements OnInit {
   adhocForm : FormGroup;
   cycleNameList: Array<any> = [];  
   @ViewChild( 'adhocForm' ) form: NgForm;
-  adhocCycleList: any;
+  adhocCycleList: any = [];
   activeHeadList: Array<any> = [];
   summarydata: Array<any> = [];
   editFormFlag: boolean = false;
@@ -49,27 +51,33 @@ export class AdhocComponent implements OnInit {
   selctedCycleName: any;
   selectedPeriodName: any;
   adhocCycleListNew: any;
+  headMasterIds: Array<any> = [];
 
   
 
-  constructor(public adhocService : AdhocService,public toaster : ToastrService) {
+  constructor(public adhocService : AdhocService,public toaster : ToastrService,
+    public alertService : AlertServiceService) {
     this.adhocForm = new FormGroup({
      
-      businessCycleDefinitionId : new FormControl(''),
+      businessCycleDefinitionId : new FormControl('',[Validators.required]),
       businessCycleId : new FormControl(''),
-      periodName : new FormControl(''),
+      periodName : new FormControl('',[Validators.required]),
+      periodId : new FormControl(''),
+      remark : new FormControl(''),
+      arrear : new FormControl(true),
+      headMasterIds : new FormControl([]),
       fromDate : new FormControl(''),
       toDate : new FormControl(''),
-      remark : new FormControl(''),
-      arrear : new FormControl(''),
-      headMasterIds : new FormControl(''),
       cycleName : new FormControl(''),
       headNature : new FormControl(''), 
       startDate : new FormControl(''),
-      endDate : new FormControl('')
+      endDate : new FormControl(''),
+      copyFrom : new FormControl(''),
+     
      // adhocCycleName : new FormControl('')
-
+    
     })
+    
    }
 
   ngOnInit(): void {
@@ -80,24 +88,59 @@ export class AdhocComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.adhocForm.value);
-    this.adhocService.saveAdhocCycle(this.adhocForm.value).subscribe((res)=>{
-    this.toaster.success('',"Adhoc cycle saved successfully");
+    
+    console.log('Adhoc cylece',this.adhocForm.value);
+    console.log('Adhoc cylece',this.targetProducts);
+    this.targetProducts.forEach(element=>{
+      this.headMasterIds.push(element.headMasterId)
+    })
+    const periodNameList =this.cycleNameList.filter(element=>element.periodId==this.adhocForm.value.periodName)
+    console.log('period name list is',periodNameList[0].periodName)
+    const data = [{
+      businessCycleId:2790,
+      
+      periodName:periodNameList[0].periodName,
+      headMasterIds:this.headMasterIds,
+      arrear:this.adhocForm.value.arrear,
+      remark:this.adhocForm.value.remark
+    }]
+    console.log('data is',data);
+    this.adhocService.saveAdhocCycle(data).subscribe((res)=>{
+
+    //this.toaster.success('',"Adhoc cycle saved successfully");
+    this.alertService.sweetalertMasterSuccess('','Adhoc cycle saved successfully');
+
     this.getSummaryData();
     this.cycleNameList = [];
     this.adhocForm.reset();
-
     this.editFormFlag = false;
     this.viewFormFlag = false;
     })
-
+    this.headMasterIds = [];
     
   }
 
   
   onUpdate(){
-      this.adhocService.updateData(this.adhocForm.value).subscribe((res)=>{
-      this.toaster.success('',"Updated successfully");
+    console.log('Adhoc cylece',this.adhocForm.value);
+    console.log('Adhoc cylece',this.targetProducts);
+    this.targetProducts.forEach(element=>{
+      this.headMasterIds.push(element.headMasterId)
+    })
+    const periodNameList =this.cycleNameList.filter(element=>element.periodId==this.adhocForm.value.periodName)
+    console.log('period name list is',periodNameList[0].periodName)
+    const data = [{
+      businessCycleId:2790,
+      
+      periodName:periodNameList[0].periodName,
+      headMasterIds:this.headMasterIds,
+      arrear:this.adhocForm.value.arrear,
+      remark:this.adhocForm.value.remark
+    }]
+    console.log('data is',data);
+      this.adhocService.updateData(data).subscribe((res)=>{
+      //this.toaster.success('',"Updated successfully");
+      this.alertService.sweetalertMasterSuccess('','Adhoc cycle updated successfully');
       this.getSummaryData();
       this.cycleNameList = [];
       this.adhocForm.reset();
@@ -105,6 +148,8 @@ export class AdhocComponent implements OnInit {
       this.viewFormFlag = false;
     })
 
+    this.headMasterIds = [];
+    
   }
 
 
@@ -178,6 +223,7 @@ export class AdhocComponent implements OnInit {
   }
 
   onChangeCycle(periodId : any){
+    debugger;
     if(periodId == ''){
       this.adhocForm.patchValue({
         toDate : ''   
@@ -192,7 +238,8 @@ export class AdhocComponent implements OnInit {
         //console.log(ele.businessCycleDefinition)
         if(ele.periodId == periodId){
           this.selectedPeriodName = ele.periodName
-          this.businessCycleDefinition = ele.businessCycleDefinition.businessYearDefinition
+          // this.businessCycleDefinition = ele.businessCycleDefinition.businessYearDefinition
+          this.businessCycleDefinition = ele
           console.log(this.businessCycleDefinition)
          
         }
@@ -205,10 +252,14 @@ export class AdhocComponent implements OnInit {
         }
       });
       this.periodName = this.selectedPeriodName+'-A&W'+i
+      // this.adhocCycleList.push({
+      //   'periodName': this.periodName,
+      //   'periodId':0
+      // });
       console.log(this.periodName)
     // console.log("this.businessCycleDefinition: " + JSON.stringify(this.businessCycleDefinition))
    this.adhocForm.controls['cycleName'].setValue(this.periodName)
-   this.adhocForm.controls['startDate'].setValue(new Date(this.businessCycleDefinition.fromDate))
+   this.adhocForm.controls['startDate'].setValue((this.businessCycleDefinition.fromDate))
    this.adhocForm.controls['endDate'].setValue(new Date(this.businessCycleDefinition.toDate))
       // this.adhocForm.controls['fromDate'].setValue(new Date(this.businessCycleDefinition.fromDate))
       // this.adhocForm.controls['toDate'].setValue(new Date(this.businessCycleDefinition.toDate))
@@ -342,17 +393,46 @@ export class AdhocComponent implements OnInit {
 
 
   editAreaSet(data){
+    console.log('result is',data);
+    this.getCycleNameById(data.businessCycleDefinition.id);
     this.editFormFlag =true;
     this.viewFormFlag = false;
     this.adhocForm.enable();
+    
     this.adhocForm.patchValue(data);
+
+ // this.adhocForm.get['businessCycleId'].setValue(data.businessCycleId);
+ this.adhocForm.controls['periodName'].patchValue(data.periodId);
+  this.adhocForm.controls['cycleName'].setValue(data.periodName);
+  this.adhocForm.controls['startDate'].patchValue(data.fromDate);
+  this.adhocForm.controls['endDate'].patchValue(data.toDate);
+  this.adhocForm.controls['remark'].patchValue(data.remark);
+ let cycleDef = this.cycleDefifitionList.find(el => el.id === data.businessCycleDefinition.id);
+    if (cycleDef) {
+      this.adhocForm.controls['businessCycleDefinitionId'].patchValue(cycleDef.id);
+    }
+    
 }
 
 viewAreaSet(data){
+  this.getCycleNameById(data.businessCycleDefinition.id);
     this.editFormFlag =false;
     this.viewFormFlag = true;
     this.adhocForm.disable();
     this.adhocForm.patchValue(data);
+    this.adhocForm.controls['periodName'].patchValue(data.periodId);
+  this.adhocForm.controls['cycleName'].setValue(data.periodName);
+  this.adhocForm.controls['startDate'].patchValue(data.fromDate);
+  this.adhocForm.controls['endDate'].patchValue(data.toDate);
+  this.adhocForm.controls['remark'].patchValue(data.remark);
+ let cycleDef = this.cycleDefifitionList.find(el => el.id === data.businessCycleDefinition.id);
+    if (cycleDef) {
+      this.adhocForm.controls['businessCycleDefinitionId'].patchValue(cycleDef.id);
+    }
+    // let cycleNm = this.cycleNameList.find(el => el.periodId === data.businessCycleDefinition.periodId);
+    // if (cycleNm) {
+    //   this.adhocForm.controls['periodId'].patchValue(cycleNm.periodId);
+    // }
 }  
 
   setPolicyEndDate(){}

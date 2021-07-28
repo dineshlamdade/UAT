@@ -9,6 +9,12 @@ import { Observable } from "rxjs";
   })
 
   export class EmployeesetService{
+    sweetalertError(arg0: string) {
+      throw new Error('Method not implemented.');
+    }
+    sweetalertMasterSuccess(arg0: string) {
+      throw new Error('Method not implemented.');
+    }
     public apiUrl = environment.baseUrl8084;
     constructor(private http : HttpClient){}
 
@@ -24,7 +30,8 @@ import { Observable } from "rxjs";
 
     /**get summary data */
     getSummaryData():Observable<any>{
-      return this.http.get<any>(this.apiUrl+ `EmployeeMaster/SummaryData`);
+     //return this.http.get<any>(this.apiUrl+ `EmployeeMaster/SummaryData`);
+     return this.http.get(this.apiUrl+`EmployeeMaster/getAllEmployeeSet`);
     }
 
     saveEmployeeSet(data):Observable<any>{

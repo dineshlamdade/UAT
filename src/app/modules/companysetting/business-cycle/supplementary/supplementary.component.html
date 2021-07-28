@@ -6,8 +6,8 @@
           <div class="card">
             <div class="card-body">
 
-              <form class="card" role="form" formGroup="AttributeCreationForm" (ngSubmit)="addAttributeCreation()"
-                method="post" novalidate>
+              <form class="card" role="form" [formGroup]="supplementaryForm"
+               >
      <fieldset>
 <legend>Primary Cycle</legend>
 
@@ -15,26 +15,36 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Cycle Definition</label>
                   <div class="input-group">
-                      <select class="form-control">
-                          <option>Select</option>
-                          <option value=""> Weekly </option>
+                      <select class="form-control" formControlName = "businessCycleDefinitionId"
+                      (change) ="getCycleNameById($event.target.value)" >
+                        <option selected value=''>Select </option>
+                        <option *ngFor="let Cycle of cycleDefinitionList" [value]="Cycle.id">
+                          {{Cycle.cycleName}}
+                          </option>
+                          <!-- <option>Select</option> -->
+                          <!-- <option value=""> Weekly </option>
                           <option value="">By Weekly</option>
                           <option value="">Monthly</option>
                           <option value="">Semi Monthly</option>
-                          <option value="">Adhoc</option>
+                          <option value="">Adhoc</option> -->
                       </select>
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Cycle Name</label>
                   <div class="input-group">
-                      <select class="form-control">
-                          <option>Select</option>
-                          <option value=""> APR 2020 </option>
+                      <select class="form-control" (change)="onChangeCycle($event.target.value)"
+                      formControlName = "periodName">
+                        <option selected value=''>Select </option>
+                        <option *ngFor="let Cycle of cycleNameList" [value]="Cycle.periodId">
+                          {{Cycle.periodName}}
+                          </option>
+                          <!-- <option>Select</option> -->
+                          <!-- <option value=""> APR 2020 </option>
                           <option value="">MAY 2020</option>
                           <option value="">JUNE 2020</option>
                           <option value="">JUL 202</option>
-                      
+                       -->
                       </select>
                   </div>
                 </div>
@@ -48,7 +58,7 @@
                                       <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                           data-provide="datepicker" data-date-autoclose="true"
                                           class="form-control" (bsValueChange)="setPolicyEndDate()"
-                                          placeholder="" bsDatepicker
+                                          placeholder="" bsDatepicker formControlName = "startDate"
                                           [maxDate]="today" disabled>
                                   </div>
                               </div>
@@ -63,7 +73,7 @@
                       <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                           data-provide="datepicker" data-date-autoclose="true"
                           class="form-control" (bsValueChange)="setPolicyEndDate()"
-                          placeholder="" bsDatepicker
+                          placeholder="" bsDatepicker formControlName = "endDate"
                           [maxDate]="today" disabled>
                   </div>
                 </div>
@@ -100,13 +110,13 @@
                   <label class="form-label">Supp. Cycle Name
                   </label>
                   <div class="input-group">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" formControlName = "cycleName">
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                     <label class="form-label">Remark</label>
                     <div class="input-group">
-                        <textarea value=""></textarea>
+                        <textarea value="" formControlName = "remark"></textarea>
                     </div>
                   </div>
                 </div>
@@ -133,19 +143,28 @@
                 <div class="row mt-15">
                   <div class="col-12">
                     <div class="float-right mb-15">
-                      <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForminvalid"
-                        ngClass="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
-                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
-                            class="fa fa-floppy-o"></i></b>
-                        Save</button>
+                      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
+                      (click)="onSubmit()" [disabled] = "supplementaryForm.invalid"
+                      [ngClass]="{'disabled-btn-bg-green' : supplementaryForm.invalid, 'btn-bg-green': !supplementaryForm.invalid }"><b>
+                       <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                       
+                      <!-- <span *ngIf="!hideUpdate"> -->
+                       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Update" *ngIf="editFormFlag && !viewFormFlag"
+                       (click)="onUpdate()"><b>
+                        <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+                      <!-- </span> -->
+                      <!-- <button type="button" (click)="ResetAttributeCreation()" *ngIf="!viewCancelButton"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                        tooltip="Save"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                        Save</button> -->
                       <!--     [disabled]="CycleDefinationForm.invalid" [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}" -->
 
-                      <button type="button" (click)="CancelAttributeCreation()" *ngIf="viewCancelButton"
+                      <button type="button" (click)="formReset()"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                        tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                        tooltip="Cancel" *ngIf="viewFormFlag || editFormFlag"><b><i class="fa fa-times" aria-hidden="true"></i></b>
                         Cancel</button>
 
-                      <button type="button" (click)="ResetAttributeCreation()" *ngIf="!viewCancelButton"
+                      <button type="button" (click)="formReset()" *ngIf="!viewFormFlag && !editFormFlag"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
                         tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
                         Reset</button>
@@ -162,7 +181,8 @@
                       Summary
                     </div>
                     <div class="">
-                        <p-table [value]="users1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                        <p-table [value]="summarydata" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="[10,25,50,100,200]">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th rowspan="2" >
@@ -173,8 +193,8 @@
                                         Supp. Cycle Name
 
                                           <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="name"></p-sortIcon>
-                                              <p-columnFilter type="text" field="name" display="menu"
+                                              <p-sortIcon field="periodName"></p-sortIcon>
+                                              <p-columnFilter type="text" field="periodName" display="menu"
                                                   class="p-ml-auto"></p-columnFilter>
                                           </div>
                                       </div>
@@ -184,8 +204,8 @@
                                       <div class="p-d-flex p-jc-between p-ai-center ml-50">
                                      Primary Cycle
                                           <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="name"></p-sortIcon>
-                                              <p-columnFilter type="text" field="name" display="menu"
+                                              <p-sortIcon field="businessCycleDefinition.cycleName"></p-sortIcon>
+                                              <p-columnFilter type="text" field="businessCycleDefinition.cycleName" display="menu"
                                                   class="p-ml-auto"></p-columnFilter>
                                           </div>
                                       </div>
@@ -197,8 +217,8 @@
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                           Remark
                                           <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="date"></p-sortIcon>
-                                              <p-columnFilter type="date" field="date" display="menu"
+                                              <p-sortIcon field="remark"></p-sortIcon>
+                                              <p-columnFilter type="text" field="remark" display="menu"
                                                   class="p-ml-auto"></p-columnFilter>
                                           </div>
                                       </div>
@@ -207,8 +227,8 @@
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                     Lock Status
                                         <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="date"></p-sortIcon>
-                                            <p-columnFilter type="date" field="date" display="menu"
+                                            <p-sortIcon field="locked"></p-sortIcon>
+                                            <p-columnFilter type="text" field="locked" display="menu"
                                                 class="p-ml-auto"></p-columnFilter>
                                         </div>
                                     </div>
@@ -232,8 +252,8 @@
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                       Name
                                         <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="name"></p-sortIcon>
-                                            <p-columnFilter type="text" field="name" display="menu"
+                                            <p-sortIcon field="periodName"></p-sortIcon>
+                                            <p-columnFilter type="text" field="periodName" display="menu"
                                                 class="p-ml-auto"></p-columnFilter>
                                         </div>
                                     </div>
@@ -243,26 +263,28 @@
   
   
   
-                            <ng-template pTemplate="body" let-user1>
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                                 <tr class="p-selectable-row">
-                                    <td class="bg-color-light_gray">1</td>
+                                    <td class="bg-color-light_gray">{{rowIndex+1}}</td>
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.headtype}}</label>
+                                            class="form-lable mb-0">{{user1.periodName}}</label>
   
                                     </td>
   
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                            class="form-lable mb-0">{{user1.businessCycleDefinition.cycleName}}</label></td>
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.openingval}}</label></td>
+                                            class="form-lable mb-0">{{user1.periodName}}</label></td>
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                                            class="form-lable mb-0">{{user1.remark}}</label></td>
                                              
                                     <td class="bg-color-light_gray"><label
-                                                class="form-lable mb-0">Lock</label></td> 
+                                                class="form-lable mb-0">{{user1.locked}}</label></td> 
                                           <td class="bg-color-light_gray">
-                                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"></i>&nbsp;
-                                              <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" 
+                                              (click)="editData(user1)"aria-hidden="true"></i>&nbsp;
+                                              <i class="fa fa-eye font-18 text-blue cursor-pointer" 
+                                              (click)="viewData(user1)" aria-hidden="true"></i>&nbsp;
                                               <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
                                           </td>
                                 </tr>

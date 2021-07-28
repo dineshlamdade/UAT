@@ -10,6 +10,7 @@ import { Observable } from "rxjs";
 
 export class AreasetService{
 public apiUrl = environment.baseUrl8084;
+  sweetalertWarning: any;
     constructor(private http : HttpClient){}
 
     /** Get Service list for area set */
@@ -23,8 +24,9 @@ public apiUrl = environment.baseUrl8084;
     }
 
     /**get Summary data */
-    getSummaryData(){
-        return this.http.get<any>(this.apiUrl+ `Areamaster/SummaryData/`);
+    getSummaryData():Observable<any>{
+       return this.http.get<any>(this.apiUrl+ `Areamaster/getAllAreaMasters`);
+      // return this.http.get(this.apiUrl+`Areamaster/SummaryData`)
     }
 
     /**save areaset */
