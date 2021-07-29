@@ -31,7 +31,7 @@
                                         [ngClass]="{ 'is-invalid': form.get('typeOfPayment').touched && form.get('typeOfPayment').errors }"
                                         (change)="typeOfPaymentChange()">
                                         <option value=""> Select</option>
-                                        <option *ngFor="let type of typeOfPaymentList" [value]="type.value"> {{type.value}}
+                                        <option *ngFor="let type of typeOfPaymentList" [value]="type.typeOfPayment"> {{type.typeOfPayment}}
                                         </option>
 
                                     </select>
@@ -214,8 +214,8 @@
                                                         (change)="modeOfPaymentChange(i)"
                                                         formControlName="modeOfPayment">
                                                         <option value=""> Select</option>
-                                                        <option *ngFor="let mode of modeOfPaymentList" [value]="mode.value">
-                                                            {{mode.value}}</option>
+                                                        <option *ngFor="let mode of modeOfPaymentList" [value]="mode.modeOfPayment">
+                                                            {{mode.modeOfPayment}}</option>
                                                     </select>
                                                 </td>
                                                 <td scope="row">
@@ -242,12 +242,12 @@
                                                         formControlName="accountNo">
                                                         <option value="" > Select</option>
                                                         <option *ngFor="let data of summary.get('accountNoList').value"
-                                                            [value]="data.accountNo" > {{data.accountNo}}   <i class="fa fa-eye-slash  font-18 text-blue cursor-pointer"
-                                                            aria-hidden="true" style="overflow: visible"></i> 
+                                                            [value]="data.accountNo" > {{data.accountNo}}  
                                                         </option>
-                                                         
+                                                        <i class="fa fa-eye-slash  font-18 text-blue cursor-pointer"
+                                                        aria-hidden="true" ></i> 
                                                     </select> 
-                                                   
+                                                    
                                                 </td>
                                                 <td scope="row">
                                                     <input type="text" class="form-control"
@@ -272,7 +272,7 @@
 
                                                 <td  *ngIf="multiBankingAllowed">
                                                     <select name="percentActive" class="form-control" formControlName="percentActive"
-                                                        (change)="percentOrAmount(type,i)">
+                                                        (change)="percentOrAmount(i)">
                                                         <option value=""> Select</option>
                                                         <option *ngFor="let type of typeList"
                                                             [value]="type"> {{type}}</option>
