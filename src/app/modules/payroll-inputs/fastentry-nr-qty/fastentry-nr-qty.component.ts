@@ -3,6 +3,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { NonRecurringAmtService } from '../non-recurring-amt.service';
+import { NonRecurringQtyService } from '../non-recurring-qty.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class FastentryNrQtyComponent implements OnInit {
   selectedFrequency: any = 'Monthly';
   selectedTransactionType: any = 'NoOfTransaction';
   selectedNoOfTransaction: any = 1;
-  headMasterId: any = null;
+  nonSalaryDetailId: any = null;
   tableData: any[];
   selectedClawBack: any;
   selectedAmount: any;
@@ -56,7 +57,7 @@ export class FastentryNrQtyComponent implements OnInit {
   selectedApplicableAt: any;
   selectedTransactionClawback: any;
   selectedClawbackRowIndex: any;
-  nonRecurringTransactionGroupDeviationList: any = [];
+  nonsalaryTransactionGroupDeviationList: any = [];
   deviationModeData: any[];
   repeatModeData: any[];
   deviationData: any[];
@@ -66,10 +67,15 @@ export class FastentryNrQtyComponent implements OnInit {
   repeatRemarkText: any;
   selectedDeviationdata: any;
   devationRemarkText: any;
+  summaryData: any;
+  headerMasterId: any = null;
+  nonSalaryOptionList: any;
+  type: any;
 
   constructor(private datepipe: DatePipe,
-    private nonRecService: NonRecurringAmtService,
+    private nonrecqtyservice: NonRecurringQtyService,
     private payrollservice: PayrollInputsService,
+    private nonRecService:NonRecurringAmtService,
     private modalService: BsModalService,
     private toaster: ToastrService) {
     this.headData = [
@@ -86,7 +92,14 @@ export class FastentryNrQtyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getEmployeeList()
+    this.getEmployeeList();
+    this.getMasterSummaryData()
+  }
+
+  getMasterSummaryData() {
+    this.nonrecqtyservice.NonRecurringnonsalary().subscribe(res => {
+      this.summaryData = res.data.results
+    })
   }
 
   getEmployeeList() {
@@ -157,10 +170,24 @@ export class FastentryNrQtyComponent implements OnInit {
   }
 
   getSelectedHead(headid) {
-    this.headMasterId = headid
+    this.nonSalaryDetailId = parseInt(headid)
+    this.summaryData.forEach(ele => {
+      if (ele.nonSalaryDetailId == headid) {
+        this.headDescription = ele.code
+        this.nonSalaryOptionList = ele.nonSalaryOptionList
+      }
+    })
+  }
+
+  getSelectedHeadType(type){
+    this.type = type;
+  }
+
+  getEDHeader(id){
+    this.headerMasterId = id
     this.headData.forEach(ele => {
-      if (ele.headMasterId == headid) {
-        this.headDescription = ele.displayName
+      if (ele.headMasterId == id) {
+        //this.headDescription = ele.displayName
       }
     })
   }
@@ -205,7 +232,7 @@ export class FastentryNrQtyComponent implements OnInit {
     this.selectedEmployeeData.forEach(element => {
       this.saveTransactionData.push({
         "employeeMasterId": element.employeeMasterId,
-        "nonSalaryDetailId": this.headMasterId,
+        "nonSalaryDetailId": this.nonSalaryDetailId,
         "standardName": this.headDescription,
         "payrollAreaId": "1",
         "payrollAreaCode": this.selectedPayrollArea,
@@ -216,9 +243,11 @@ export class FastentryNrQtyComponent implements OnInit {
         "numberOfTransactions": parseInt(this.saveNumberTransaction),
         "toDate": this.saveToDate,
         "quantity": this.saveAmount,
+         "type":this.type,
         "remark": this.saveRemark,
+        "uom":"MM",
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList": []
       })
     })
   }
@@ -241,41 +270,40 @@ export class FastentryNrQtyComponent implements OnInit {
       todate = this.saveToDate;
     }
 
-    if(data.executeSDM != 'YES' || data.executeSDM != 'Yes' || data.executeSDM != 'yes')
-		{
-			if(this.selectedFromDate != ''){
-				let inputdata = {
-					"employeeMasterId":data.employeeMasterId,
-					"nonSalaryDetailId": data.nonSalaryDetailId,
-					"payrollAreaId":"1",
-					"quantity": value,
-					"fromDate": this.selectedFromDate
-				}
-					
-				this.deviationModeData = []
-					this.repeatModeData = []
-					this.deviationData = []
-					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
-						// this.deviationData = res 
-						let resp : any = res;
-							resp.forEach(element => {
-								if(element.status != 'No Deviation'){
-									this.deviationData.push(element)
-								}
-							});
-						data.deviationCount = this.deviationData.length
-						this.deviationData.forEach(element => {
-							if(element.mode == 'Deviation'){
-								this.deviationModeData.push(element)
-								this.deviationcount = this.deviationModeData.length
-							}else if(element.mode == 'Repeat'){
-								this.repeatModeData.push(element)
-								this.repeatcount = this.repeatModeData.length
-							}
-						});
-					})
-			}	
-		}
+    if (data.executeSDM != 'YES' || data.executeSDM != 'Yes' || data.executeSDM != 'yes') {
+      if (this.selectedFromDate != '') {
+        let inputdata = {
+          "employeeMasterId": data.employeeMasterId,
+          "nonSalaryDetailId": data.nonSalaryDetailId,
+          "payrollAreaId": "1",
+          "quantity": value,
+          "fromDate": this.selectedFromDate
+        }
+
+        this.deviationModeData = []
+        this.repeatModeData = []
+        this.deviationData = []
+        this.nonrecqtyservice.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res => {
+          // this.deviationData = res 
+          let resp: any = res;
+          resp.forEach(element => {
+            if (element.status != 'No Deviation') {
+              this.deviationData.push(element)
+            }
+          });
+          data.deviationCount = this.deviationData.length
+          this.deviationData.forEach(element => {
+            if (element.mode == 'Deviation') {
+              this.deviationModeData.push(element)
+              this.deviationcount = this.deviationModeData.length
+            } else if (element.mode == 'Repeat') {
+              this.repeatModeData.push(element)
+              this.repeatcount = this.repeatModeData.length
+            }
+          });
+        })
+      }
+    }
 
     if (this.saveTransactionData.length > 0) {
       this.saveTransactionData.forEach((element, index) => {
@@ -294,13 +322,14 @@ export class FastentryNrQtyComponent implements OnInit {
             "numberOfTransactions": element.numberOfTransactions,
             "toDate": todate,
             "quantity": parseInt(value),
+            "type": element.type,
             "remark": element.remark,
             "createdBy": "rahul",
-            "nonRecurringTransactionGroupDeviationList":[]
+            "nonsalaryTransactionGroupDeviationList": []
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].headMasterId == data.nonSalaryDetailId) { return; }
+          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
           else {
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
@@ -316,8 +345,9 @@ export class FastentryNrQtyComponent implements OnInit {
               "toDate": todate,
               "quantity": parseInt(value),
               "remark": data.remark,
+              "type":data.type,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList": []
             })
           }
         }
@@ -337,8 +367,9 @@ export class FastentryNrQtyComponent implements OnInit {
         "toDate": todate,
         "quantity": parseInt(value),
         "remark": data.remark,
+        "type":data.type,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList": []
       })
     }
   }
@@ -372,14 +403,14 @@ export class FastentryNrQtyComponent implements OnInit {
             "toDate": todate,
             "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
+            "type": element.type,
             "remark": value,
             "createdBy": "rahul",
-            "nonRecurringTransactionGroupDeviationList":[]
+            "nonsalaryTransactionGroupDeviationList": []
           })
         } else {
           let length = this.saveTransactionData.length - 1;
-          if (this.saveTransactionData[length].headMasterId == data.nonSalaryDetailId) { return; }
+          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
           else {
             this.saveTransactionData.push({
               "employeeMasterId": data.employeeMasterId,
@@ -395,10 +426,10 @@ export class FastentryNrQtyComponent implements OnInit {
               "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
+              "type": data.type,
               "remark": value,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList": []
             })
           }
         }
@@ -418,10 +449,10 @@ export class FastentryNrQtyComponent implements OnInit {
         "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
+        "type": data.type,
         "remark": value,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList": []
       })
     }
   }
@@ -456,10 +487,10 @@ export class FastentryNrQtyComponent implements OnInit {
             "toDate": element.toDate,
             "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
+            "type": element.type,
             "remark": element.remark,
             "createdBy": "rahul",
-            "nonRecurringTransactionGroupDeviationList":[]
+            "nonsalaryTransactionGroupDeviationList": []
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -481,10 +512,10 @@ export class FastentryNrQtyComponent implements OnInit {
               "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
+              "type": data.type,
               "remark": data.remark,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList": []
             })
           }
         }
@@ -504,10 +535,10 @@ export class FastentryNrQtyComponent implements OnInit {
         "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
+        "type": data.type,
         "remark": data.remark,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList": []
       })
     }
   }
@@ -541,10 +572,10 @@ export class FastentryNrQtyComponent implements OnInit {
             "toDate": todate,
             "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
+            "type": element.type,
             "remark": element.remark,
             "createdBy": "rahul",
-            "nonRecurringTransactionGroupDeviationList":[]
+            "nonsalaryTransactionGroupDeviationList": []
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -566,10 +597,10 @@ export class FastentryNrQtyComponent implements OnInit {
               "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
+              "type": data.type,
               "remark": data.remark,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList": []
             })
           }
         }
@@ -589,10 +620,10 @@ export class FastentryNrQtyComponent implements OnInit {
         "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
+        "type": data.type,
         "remark": data.remark,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList": []
       })
     }
   }
@@ -626,10 +657,10 @@ export class FastentryNrQtyComponent implements OnInit {
             "toDate": todate,
             "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
+            "type": element.type,
             "remark": element.remark,
             "createdBy": "rahul",
-            "nonRecurringTransactionGroupDeviationList":[]
+            "nonsalaryTransactionGroupDeviationList": []
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -651,10 +682,11 @@ export class FastentryNrQtyComponent implements OnInit {
               "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
+              "type": data.type,
               "remark": data.remark,
+              // "type":data.type,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList": []
             })
           }
         }
@@ -674,10 +706,11 @@ export class FastentryNrQtyComponent implements OnInit {
         "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
+        "type": data.type,
         "remark": data.remark,
+        // "type":data.type,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList": []
       })
     }
   }
@@ -724,10 +757,10 @@ export class FastentryNrQtyComponent implements OnInit {
             "toDate": todate,
             "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
+            "type": element.type,
             "remark": element.remark,
             "createdBy": "rahul",
-            "nonRecurringTransactionGroupDeviationList":[]
+            "nonsalaryTransactionGroupDeviationList": []
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -749,10 +782,11 @@ export class FastentryNrQtyComponent implements OnInit {
               "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
+              "type": data.type,
               "remark": data.remark,
+              // "type":data.type,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList": []
             })
           }
         }
@@ -772,10 +806,11 @@ export class FastentryNrQtyComponent implements OnInit {
         "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
+        "type": data.type,
         "remark": data.remark,
+        // "type":data.type,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList": []
       })
     }
   }
@@ -809,10 +844,10 @@ export class FastentryNrQtyComponent implements OnInit {
             "toDate": todate,
             "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
+            "type": element.type,
             "remark": element.remark,
             "createdBy": "rahul",
-            "nonRecurringTransactionGroupDeviationList":[]
+            "nonsalaryTransactionGroupDeviationList": []
           })
         } else {
           let length = this.saveTransactionData.length - 1;
@@ -834,10 +869,11 @@ export class FastentryNrQtyComponent implements OnInit {
               "toDate": todate,
               "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
+              "type": data.type,
               "remark": data.remark,
+              // "type":data.type,
               "createdBy": "rahul",
-              "nonRecurringTransactionGroupDeviationList":[]
+              "nonsalaryTransactionGroupDeviationList": []
             })
           }
         }
@@ -857,499 +893,510 @@ export class FastentryNrQtyComponent implements OnInit {
         "toDate": todate,
         "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
+        "type": data.type,
         "remark": data.remark,
+        // "type":data.type,
         "createdBy": "rahul",
-        "nonRecurringTransactionGroupDeviationList":[]
+        "nonsalaryTransactionGroupDeviationList": []
       })
     }
   }
 
-   /** edit deviation popup */
-	editdeviationPopupOpen(editdeviationPopup: TemplateRef<any>, data, rowindex){
-		if(data.deviationCount > 0){
-			this.modalRef = this.modalService.show(
-				editdeviationPopup,
-				Object.assign({}, {
-					class: 'gray modal-xl'
-				})
-			);
-			this.selectedDevData = data;
-		}
-	}
+  /** edit deviation popup */
+  editdeviationPopupOpen(editdeviationPopup: TemplateRef<any>, data, rowindex) {
+    if (data.deviationCount > 0) {
+      this.modalRef = this.modalService.show(
+        editdeviationPopup,
+        Object.assign({}, {
+          class: 'gray modal-xl'
+        })
+      );
+      this.selectedDevData = data;
+    }
+  }
 
   /** save deviation remark data */
-	deviationRemark(remark, deviationdata){
+  deviationRemark(remark, deviationdata) {
     this.devationRemarkText = remark;
     this.selectedDeviationdata = deviationdata
   }
 
   /**save repeat remark data */
-	repeatRemark(remark,remarkdata){
-		this.repeatRemarkText = remark;
-		this.selectedDeviationdata = remarkdata
-	}
+  repeatRemark(remark, remarkdata) {
+    this.repeatRemarkText = remark;
+    this.selectedDeviationdata = remarkdata
+  }
 
-  updateDeviationRepeatData(selectedDevData){
-		let remark = ''
-		if(this.selectedDeviationdata.mode == 'Deviation'){
-			remark = this.devationRemarkText
-		}else{
-			remark = this.repeatRemarkText
-		}
+  updateDeviationRepeatData(selectedDevData) {
+    let remark = ''
+    if (this.selectedDeviationdata.mode == 'Deviation') {
+      remark = this.devationRemarkText
+    } else {
+      remark = this.repeatRemarkText
+    }
 
-		let obj = {
-			"deviationAmount":this.selectedDeviationdata.deviationAmount,
-			"mode": this.selectedDeviationdata.mode,
-			"deviationType": this.selectedDeviationdata.deviationType,
-			"deviationRemark":remark,
-			"deviationStatus":this.selectedDeviationdata.status,
-			"deviationAmountLimit":this.selectedDeviationdata.deviationAmountLimit
-		}
-		this.nonRecurringTransactionGroupDeviationList.push(obj)
-	}
+    let obj = {
+      "deviationAmount": this.selectedDeviationdata.deviationAmount,
+      "mode": this.selectedDeviationdata.mode,
+      "deviationType": this.selectedDeviationdata.deviationType,
+      "deviationRemark": remark,
+      "deviationStatus": this.selectedDeviationdata.status,
+      "deviationAmountLimit": this.selectedDeviationdata.deviationAmountLimit
+    }
+    this.nonsalaryTransactionGroupDeviationList.push(obj)
+  }
 
   /** Get Applcable At selected Value */
-	getSelectedApplicable(value, data) {
-		this.selectedApplicableAt = value
-		this.selectedClawbackInputType = ""
-		this.clawbackperiod = 0;
-		this.clawbackDate = "";
-		this.clawbackFrequency = ""
-		let todate = "";
-		if (this.selectedTransactionType == 'NoOfTransaction') {
-			todate = ""
-		} else if (this.selectedTransactionType == 'Perpetual') {
-			todate = '9999-12-31 00:00:00'
-		} else {
-			todate = this.saveToDate;
-		}
-		
-		if (this.saveTransactionData.length > 0) {
-			this.saveTransactionData.forEach((element, index) => {
-				if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
-					let ind = index;
-					this.saveTransactionData.splice(ind, 1, {
-						"employeeMasterId": data.employeeMasterId,
-						"nonSalaryDetailId": element.nonSalaryDetailId,
-						"standardName": element.standardName,
-						"payrollAreaId": "1",
-						"payrollAreaCode": element.payrollAreaCode,
-						"onceEvery": element.onceEvery,
-						"frequency": element.frequency,
-						"fromDate": element.fromDate,
-						"transactionsType": this.selectedTransactionType,
-						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": todate,
-						"quantity": element.quantity,
-            "uom": element.uom,
-			        "type":element.type,
-						"remark": element.remark,
-						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
-					})
-				} else {
-					let length = this.saveTransactionData.length - 1;
-					if (this.saveTransactionData[length].headMasterId == data.nonSalaryDetailId) { return; }
-					else {
-						this.saveTransactionData.push({
-							"employeeMasterId": data.employeeMasterId,
-							"nonSalaryDetailId": data.nonSalaryDetailId,
-							"standardName": data.headDescription,
-							"payrollAreaId": "1",
-							"payrollAreaCode": this.selectedPayrollArea,
-							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
-							"fromDate": data.fromdate,
-							"transactionsType": this.selectedTransactionType,
-							"numberOfTransactions": data.numberOfTransactions,
-							"toDate": todate,
-							"quantity": data.quantity,
-              "uom": data.uom,
-			"type":data.type,
-							"remark": data.remark,
-							"createdBy": "rahul",
-							"nonRecurringTransactionGroupDeviationList":[]
-						})
-					}
-				}
-			});
-		} else {
-			this.saveTransactionData.push({
-				"employeeMasterId": data.employeeMasterId,
-				"nonSalaryDetailId": data.nonSalaryDetailId,
-				"standardName": data.headDescription,
-				"payrollAreaId": "1",
-				"payrollAreaCode": this.selectedPayrollArea,
-				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
-				"fromDate": data.fromdate,
-				"transactionsType": this.selectedTransactionType,
-				"numberOfTransactions": data.numberOfTransactions,
-				"toDate": todate,
-				"quantity": data.quantity,
-        "uom": data.uom,
-			"type":data.type,
-				"remark": data.remark,
-				"createdBy": "rahul",
-				"nonRecurringTransactionGroupDeviationList":[]
-			})
-		}
-		console.log("Applicable at: " + JSON.stringify(this.saveTransactionData))
-	}
+  getSelectedApplicable(value, data) {
+    this.selectedApplicableAt = value
+    this.selectedClawbackInputType = ""
+    this.clawbackperiod = 0;
+    this.clawbackDate = "";
+    this.clawbackFrequency = ""
+    let todate = "";
+    if (this.selectedTransactionType == 'NoOfTransaction') {
+      todate = ""
+    } else if (this.selectedTransactionType == 'Perpetual') {
+      todate = '9999-12-31 00:00:00'
+    } else {
+      todate = this.saveToDate;
+    }
 
-	/** Get Input Type selected Value */
-	getSelectedInputType(value, data) {
-		this.selectedClawbackInputType = value
-		this.clawbackperiod = 0;
-		this.clawbackDate = "";
-		this.clawbackFrequency = ""
-		let todate = "";
-		if (this.selectedTransactionType == 'NoOfTransaction') {
-			todate = ""
-		} else if (this.selectedTransactionType == 'Perpetual') {
-			todate = '9999-12-31 00:00:00'
-		} else {
-			todate = this.saveToDate;
-		}
-		
-		if (this.saveTransactionData.length > 0) {
-			this.saveTransactionData.forEach((element, index) => {
-				if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
-					let ind = index;
-					this.saveTransactionData.splice(ind, 1, {
-						"employeeMasterId": data.employeeMasterId,
-						"nonSalaryDetailId": element.nonSalaryDetailId,
-						"standardName": element.standardName,
-						"payrollAreaId": "1",
-						"payrollAreaCode": element.payrollAreaCode,
-						"onceEvery": element.onceEvery,
-						"frequency": element.frequency,
-						"fromDate": element.fromDate,
-						"transactionsType": this.selectedTransactionType,
-						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": todate,
-						"quantity": element.quantity,
+    if (this.saveTransactionData.length > 0) {
+      this.saveTransactionData.forEach((element, index) => {
+        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+          let ind = index;
+          this.saveTransactionData.splice(ind, 1, {
+            "employeeMasterId": data.employeeMasterId,
+            "nonSalaryDetailId": element.nonSalaryDetailId,
+            "standardName": element.standardName,
+            "payrollAreaId": "1",
+            "payrollAreaCode": element.payrollAreaCode,
+            "onceEvery": element.onceEvery,
+            "frequency": element.frequency,
+            "fromDate": element.fromDate,
+            "transactionsType": this.selectedTransactionType,
+            "numberOfTransactions": element.numberOfTransactions,
+            "toDate": todate,
+            "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
-						"remark": element.remark,
-						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
-					})
-				} else {
-					let length = this.saveTransactionData.length - 1;
-					if (this.saveTransactionData[length].headMasterId == data.nonSalaryDetailId) { return; }
-					else {
-						this.saveTransactionData.push({
-							"employeeMasterId": data.employeeMasterId,
-							"nonSalaryDetailId": data.nonSalaryDetailId,
-							"standardName": data.headDescription,
-							"payrollAreaId": "1",
-							"payrollAreaCode": this.selectedPayrollArea,
-							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
-							"fromDate": data.fromdate,
-							"transactionsType": this.selectedTransactionType,
-							"numberOfTransactions": data.numberOfTransactions,
-							"toDate": todate,
-							"quantity": data.quantity,
+            "type": element.type,
+            "remark": element.remark,
+            "createdBy": "rahul",
+            "nonsalaryTransactionGroupDeviationList": element.nonsalaryTransactionGroupDeviationList
+          })
+        } else {
+          let length = this.saveTransactionData.length - 1;
+          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
+          else {
+            this.saveTransactionData.push({
+              "employeeMasterId": data.employeeMasterId,
+              "nonSalaryDetailId": data.nonSalaryDetailId,
+              "standardName": data.headDescription,
+              "payrollAreaId": "1",
+              "payrollAreaCode": this.selectedPayrollArea,
+              "onceEvery": data.onceEvery,
+              "frequency": data.frequency,
+              "fromDate": data.fromdate,
+              "transactionsType": this.selectedTransactionType,
+              "numberOfTransactions": data.numberOfTransactions,
+              "toDate": todate,
+              "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
-							"remark": data.remark,
-							"createdBy": "rahul",
-							"nonRecurringTransactionGroupDeviationList":[]
-						})
-					}
-				}
-			});
-		} else {
-			this.saveTransactionData.push({
-				"employeeMasterId": data.employeeMasterId,
-				"nonSalaryDetailId": data.nonSalaryDetailId,
-				"standardName": data.headDescription,
-				"payrollAreaId": "1",
-				"payrollAreaCode": this.selectedPayrollArea,
-				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
-				"fromDate": data.fromdate,
-				"transactionsType": this.selectedTransactionType,
-				"numberOfTransactions": data.numberOfTransactions,
-				"toDate": todate,
-				"quantity": data.quantity,
+              "type": data.type,
+              "remark": data.remark,
+              // "type":data.type,
+              "createdBy": "rahul",
+              "nonsalaryTransactionGroupDeviationList": []
+            })
+          }
+        }
+      });
+    } else {
+      this.saveTransactionData.push({
+        "employeeMasterId": data.employeeMasterId,
+        "nonSalaryDetailId": data.nonSalaryDetailId,
+        "standardName": data.headDescription,
+        "payrollAreaId": "1",
+        "payrollAreaCode": this.selectedPayrollArea,
+        "onceEvery": data.onceEvery,
+        "frequency": data.frequency,
+        "fromDate": data.fromdate,
+        "transactionsType": this.selectedTransactionType,
+        "numberOfTransactions": data.numberOfTransactions,
+        "toDate": todate,
+        "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
-				"remark": data.remark,
-				"createdBy": "rahul",
-				"nonRecurringTransactionGroupDeviationList":[]
-			})
-		}
-		console.log("input type: " + JSON.stringify(this.saveTransactionData))
-	}
+        "type": data.type,
+        "remark": data.remark,
+        // "type":data.type,
+        "createdBy": "rahul",
+        "nonsalaryTransactionGroupDeviationList": []
+      })
+    }
+    console.log("Applicable at: " + JSON.stringify(this.saveTransactionData))
+  }
+
+  /** Get Input Type selected Value */
+  getSelectedInputType(value, data) {
+    this.selectedClawbackInputType = value
+    this.clawbackperiod = 0;
+    this.clawbackDate = "";
+    this.clawbackFrequency = ""
+    let todate = "";
+    if (this.selectedTransactionType == 'NoOfTransaction') {
+      todate = ""
+    } else if (this.selectedTransactionType == 'Perpetual') {
+      todate = '9999-12-31 00:00:00'
+    } else {
+      todate = this.saveToDate;
+    }
+
+    if (this.saveTransactionData.length > 0) {
+      this.saveTransactionData.forEach((element, index) => {
+        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+          let ind = index;
+          this.saveTransactionData.splice(ind, 1, {
+            "employeeMasterId": data.employeeMasterId,
+            "nonSalaryDetailId": element.nonSalaryDetailId,
+            "standardName": element.standardName,
+            "payrollAreaId": "1",
+            "payrollAreaCode": element.payrollAreaCode,
+            "onceEvery": element.onceEvery,
+            "frequency": element.frequency,
+            "fromDate": element.fromDate,
+            "transactionsType": this.selectedTransactionType,
+            "numberOfTransactions": element.numberOfTransactions,
+            "toDate": todate,
+            "quantity": element.quantity,
+            "uom": element.uom,
+            "type": element.type,
+            "remark": element.remark,
+            "createdBy": "rahul",
+            "nonsalaryTransactionGroupDeviationList": element.nonsalaryTransactionGroupDeviationList
+          })
+        } else {
+          let length = this.saveTransactionData.length - 1;
+          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
+          else {
+            this.saveTransactionData.push({
+              "employeeMasterId": data.employeeMasterId,
+              "nonSalaryDetailId": data.nonSalaryDetailId,
+              "standardName": data.headDescription,
+              "payrollAreaId": "1",
+              "payrollAreaCode": this.selectedPayrollArea,
+              "onceEvery": data.onceEvery,
+              "frequency": data.frequency,
+              "fromDate": data.fromdate,
+              "transactionsType": this.selectedTransactionType,
+              "numberOfTransactions": data.numberOfTransactions,
+              "toDate": todate,
+              "quantity": data.quantity,
+              "uom": data.uom,
+              "type": data.type,
+              "remark": data.remark,
+              // "type":data.type,
+              "createdBy": "rahul",
+              "nonsalaryTransactionGroupDeviationList": []
+            })
+          }
+        }
+      });
+    } else {
+      this.saveTransactionData.push({
+        "employeeMasterId": data.employeeMasterId,
+        "nonSalaryDetailId": data.nonSalaryDetailId,
+        "standardName": data.headDescription,
+        "payrollAreaId": "1",
+        "payrollAreaCode": this.selectedPayrollArea,
+        "onceEvery": data.onceEvery,
+        "frequency": data.frequency,
+        "fromDate": data.fromdate,
+        "transactionsType": this.selectedTransactionType,
+        "numberOfTransactions": data.numberOfTransactions,
+        "toDate": todate,
+        "quantity": data.quantity,
+        "uom": data.uom,
+        "type": data.type,
+        "remark": data.remark,
+        // "type":data.type,
+        "createdBy": "rahul",
+        "nonsalaryTransactionGroupDeviationList": []
+      })
+    }
+    console.log("input type: " + JSON.stringify(this.saveTransactionData))
+  }
 
   /** Clawback Popup Show */
-	ViewClawbackpopup(template4: TemplateRef<any>, data, rowindex) {
-		this.modalRef = this.modalService.show(
-			template4,
-			Object.assign({}, {
-				class: 'gray modal-lg'
-			})
-		);
-		this.selectedTransactionClawback = data;
-		this.selectedClawbackRowIndex = rowindex;
-	}
+  ViewClawbackpopup(template4: TemplateRef<any>, data, rowindex) {
+    this.modalRef = this.modalService.show(
+      template4,
+      Object.assign({}, {
+        class: 'gray modal-lg'
+      })
+    );
+    this.selectedTransactionClawback = data;
+    this.selectedClawbackRowIndex = rowindex;
+  }
 
-	/**get clawback period */
-	crawBackPeriod(value, data) {
-		this.clawbackperiod = parseInt(value)
-		let todate = "";
-		if (this.selectedTransactionType == 'NoOfTransaction') {
-			todate = ""
-		} else if (this.selectedTransactionType == 'Perpetual') {
-			todate = '9999-12-31 00:00:00'
-		} else {
-			todate = this.saveToDate;
-		}
-		
-		if (this.saveTransactionData.length > 0) {
-			this.saveTransactionData.forEach((element, index) => {
-				if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
-					let ind = index;
-					this.saveTransactionData.splice(ind, 1, {
-						"employeeMasterId": data.employeeMasterId,
-						"nonSalaryDetailId": element.nonSalaryDetailId,
-						"standardName": element.standardName,
-						"payrollAreaId": "1",
-						"payrollAreaCode": element.payrollAreaCode,
-						"onceEvery": element.onceEvery,
-						"frequency": element.frequency,
-						"fromDate": element.fromDate,
-						"transactionsType": this.selectedTransactionType,
-						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": todate,
-						"quantity": element.quantity,
+  /**get clawback period */
+  crawBackPeriod(value, data) {
+    this.clawbackperiod = parseInt(value)
+    let todate = "";
+    if (this.selectedTransactionType == 'NoOfTransaction') {
+      todate = ""
+    } else if (this.selectedTransactionType == 'Perpetual') {
+      todate = '9999-12-31 00:00:00'
+    } else {
+      todate = this.saveToDate;
+    }
+
+    if (this.saveTransactionData.length > 0) {
+      this.saveTransactionData.forEach((element, index) => {
+        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+          let ind = index;
+          this.saveTransactionData.splice(ind, 1, {
+            "employeeMasterId": data.employeeMasterId,
+            "nonSalaryDetailId": element.nonSalaryDetailId,
+            "standardName": element.standardName,
+            "payrollAreaId": "1",
+            "payrollAreaCode": element.payrollAreaCode,
+            "onceEvery": element.onceEvery,
+            "frequency": element.frequency,
+            "fromDate": element.fromDate,
+            "transactionsType": this.selectedTransactionType,
+            "numberOfTransactions": element.numberOfTransactions,
+            "toDate": todate,
+            "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
-						"remark": element.remark,
-						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
-					})
-				} else {
-					let length = this.saveTransactionData.length - 1;
-					if (this.saveTransactionData[length].headMasterId == data.nonSalaryDetailId) { return; }
-					else {
-						this.saveTransactionData.push({
-							"employeeMasterId": data.employeeMasterId,
-							"nonSalaryDetailId": data.nonSalaryDetailId,
-							"standardName": data.headDescription,
-							"payrollAreaId": "1",
-							"payrollAreaCode": this.selectedPayrollArea,
-							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
-							"fromDate": data.fromdate,
-							"transactionsType": this.selectedTransactionType,
-							"numberOfTransactions": data.numberOfTransactions,
-							"toDate": todate,
-							"quantity": data.quantity,
+            "type": element.type,
+            "remark": element.remark,
+            "createdBy": "rahul",
+            "nonsalaryTransactionGroupDeviationList": element.nonsalaryTransactionGroupDeviationList
+          })
+        } else {
+          let length = this.saveTransactionData.length - 1;
+          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
+          else {
+            this.saveTransactionData.push({
+              "employeeMasterId": data.employeeMasterId,
+              "nonSalaryDetailId": data.nonSalaryDetailId,
+              "standardName": data.headDescription,
+              "payrollAreaId": "1",
+              "payrollAreaCode": this.selectedPayrollArea,
+              "onceEvery": data.onceEvery,
+              "frequency": data.frequency,
+              "fromDate": data.fromdate,
+              "transactionsType": this.selectedTransactionType,
+              "numberOfTransactions": data.numberOfTransactions,
+              "toDate": todate,
+              "quantity": data.quantity,
               "uom": data.uom,
-			        "type":data.type,
-							"remark": data.remark,
-							"createdBy": "rahul",
-							"nonRecurringTransactionGroupDeviationList":[]
-						})
-					}
-				}
-			});
-		} else {
-			this.saveTransactionData.push({
-				"employeeMasterId": data.employeeMasterId,
-				"nonSalaryDetailId": data.nonSalaryDetailId,
-				"standardName": data.headDescription,
-				"payrollAreaId": "1",
-				"payrollAreaCode": this.selectedPayrollArea,
-				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
-				"fromDate": data.fromdate,
-				"transactionsType": this.selectedTransactionType,
-				"numberOfTransactions": data.numberOfTransactions,
-				"toDate": todate,
-				"quantity": data.quantity,
+              "type": data.type,
+              "remark": data.remark,
+              // "type":data.type,
+              "createdBy": "rahul",
+              "nonsalaryTransactionGroupDeviationList": []
+            })
+          }
+        }
+      });
+    } else {
+      this.saveTransactionData.push({
+        "employeeMasterId": data.employeeMasterId,
+        "nonSalaryDetailId": data.nonSalaryDetailId,
+        "standardName": data.headDescription,
+        "payrollAreaId": "1",
+        "payrollAreaCode": this.selectedPayrollArea,
+        "onceEvery": data.onceEvery,
+        "frequency": data.frequency,
+        "fromDate": data.fromdate,
+        "transactionsType": this.selectedTransactionType,
+        "numberOfTransactions": data.numberOfTransactions,
+        "toDate": todate,
+        "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
-				"remark": data.remark,
-				"nonRecurringTransactionGroupDeviationList":[]
-			})
-		}
-		console.log("clawback period: " + JSON.stringify(this.saveTransactionData))
-	}
+        "type": data.type,
+        "remark": data.remark,
+        // "type":data.type,
+        "nonsalaryTransactionGroupDeviationList": []
+      })
+    }
+    console.log("clawback period: " + JSON.stringify(this.saveTransactionData))
+  }
 
-	/**Get Clawback Frequency selected value */
-	getClawbackFrequency(value, data) {
-		this.clawbackFrequency = value
-		let todate = "";
-		if (this.selectedTransactionType == 'NoOfTransaction') {
-			todate = ""
-		} else if (this.selectedTransactionType == 'Perpetual') {
-			todate = '9999-12-31 00:00:00'
-		} else {
-			todate = this.saveToDate;
-		}
-		
-		if (this.saveTransactionData.length > 0) {
-			this.saveTransactionData.forEach((element, index) => {
-				if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
-					let ind = index;
-					this.saveTransactionData.splice(ind, 1, {
-						"employeeMasterId": data.employeeMasterId,
-						"nonSalaryDetailId": element.nonSalaryDetailId,
-						"standardName": element.standardName,
-						"payrollAreaId": "1",
-						"payrollAreaCode": element.payrollAreaCode,
-						"onceEvery": element.onceEvery,
-						"frequency": element.frequency,
-						"fromDate": element.fromDate,
-						"transactionsType": this.selectedTransactionType,
-						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": todate,
-						"quantity": element.quantity,
+  /**Get Clawback Frequency selected value */
+  getClawbackFrequency(value, data) {
+    this.clawbackFrequency = value
+    let todate = "";
+    if (this.selectedTransactionType == 'NoOfTransaction') {
+      todate = ""
+    } else if (this.selectedTransactionType == 'Perpetual') {
+      todate = '9999-12-31 00:00:00'
+    } else {
+      todate = this.saveToDate;
+    }
+
+    if (this.saveTransactionData.length > 0) {
+      this.saveTransactionData.forEach((element, index) => {
+        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+          let ind = index;
+          this.saveTransactionData.splice(ind, 1, {
+            "employeeMasterId": data.employeeMasterId,
+            "nonSalaryDetailId": element.nonSalaryDetailId,
+            "standardName": element.standardName,
+            "payrollAreaId": "1",
+            "payrollAreaCode": element.payrollAreaCode,
+            "onceEvery": element.onceEvery,
+            "frequency": element.frequency,
+            "fromDate": element.fromDate,
+            "transactionsType": this.selectedTransactionType,
+            "numberOfTransactions": element.numberOfTransactions,
+            "toDate": todate,
+            "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
-						"remark": element.remark,
-						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
-					})
-				} else {
-					let length = this.saveTransactionData.length - 1;
-					if (this.saveTransactionData[length].headMasterId == data.nonSalaryDetailId) { return; }
-					else {
-						this.saveTransactionData.push({
-							"employeeMasterId": data.employeeMasterId,
-							"nonSalaryDetailId": data.nonSalaryDetailId,
-							"standardName": data.headDescription,
-							"payrollAreaId": "1",
-							"payrollAreaCode": this.selectedPayrollArea,
-							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
-							"fromDate": data.fromdate,
-							"transactionsType": this.selectedTransactionType,
-							"numberOfTransactions": data.numberOfTransactions,
-							"toDate": todate,
-							"quantity": data.quantity,
+            "type": element.type,
+            "remark": element.remark,
+            "createdBy": "rahul",
+            "nonsalaryTransactionGroupDeviationList": element.nonsalaryTransactionGroupDeviationList
+          })
+        } else {
+          let length = this.saveTransactionData.length - 1;
+          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
+          else {
+            this.saveTransactionData.push({
+              "employeeMasterId": data.employeeMasterId,
+              "nonSalaryDetailId": data.nonSalaryDetailId,
+              "standardName": data.headDescription,
+              "payrollAreaId": "1",
+              "payrollAreaCode": this.selectedPayrollArea,
+              "onceEvery": data.onceEvery,
+              "frequency": data.frequency,
+              "fromDate": data.fromdate,
+              "transactionsType": this.selectedTransactionType,
+              "numberOfTransactions": data.numberOfTransactions,
+              "toDate": todate,
+              "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
-							"remark": data.remark,
-							"createdBy": "rahul",
-							"nonRecurringTransactionGroupDeviationList":[]
-						})
-					}
-				}
-			});
-		} else {
-			this.saveTransactionData.push({
-				"employeeMasterId": data.employeeMasterId,
-				"nonSalaryDetailId": data.nonSalaryDetailId,
-				"standardName": data.headDescription,
-				"payrollAreaId": "1",
-				"payrollAreaCode": this.selectedPayrollArea,
-				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
-				"fromDate": data.fromdate,
-				"transactionsType": this.selectedTransactionType,
-				"numberOfTransactions": data.numberOfTransactions,
-				"toDate": todate,
-				"quantity": data.quantity,
+              "type": data.type,
+              "remark": data.remark,
+              // "type":data.type,
+              "createdBy": "rahul",
+              "nonsalaryTransactionGroupDeviationList": []
+            })
+          }
+        }
+      });
+    } else {
+      this.saveTransactionData.push({
+        "employeeMasterId": data.employeeMasterId,
+        "nonSalaryDetailId": data.nonSalaryDetailId,
+        "standardName": data.headDescription,
+        "payrollAreaId": "1",
+        "payrollAreaCode": this.selectedPayrollArea,
+        "onceEvery": data.onceEvery,
+        "frequency": data.frequency,
+        "fromDate": data.fromdate,
+        "transactionsType": this.selectedTransactionType,
+        "numberOfTransactions": data.numberOfTransactions,
+        "toDate": todate,
+        "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
-				"remark": data.remark,
-				"createdBy": "rahul",
-				"nonRecurringTransactionGroupDeviationList":[]
-			})
-		}
-		console.log("clawback frequency: " + JSON.stringify(this.saveTransactionData))
+        "type": data.type,
+        "remark": data.remark,
+        // "type":data.type,
+        "createdBy": "rahul",
+        "nonsalaryTransactionGroupDeviationList": []
+      })
+    }
+    console.log("clawback frequency: " + JSON.stringify(this.saveTransactionData))
 
-	}
+  }
 
-	/**Get clawback date */
-	getClawbackDate(value, data) {
-		let todate = "";
-		if (this.selectedTransactionType == 'NoOfTransaction') {
-			todate = ""
-		} else if (this.selectedTransactionType == 'Perpetual') {
-			todate = '9999-12-31 00:00:00'
-		} else {
-			todate = this.saveToDate;
-		}
-		
-		if (this.saveTransactionData.length > 0) {
-			this.saveTransactionData.forEach((element, index) => {
-				if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
-					let ind = index;
-					this.saveTransactionData.splice(ind, 1, {
-						"employeeMasterId": element.employeeMasterId,
-						"nonSalaryDetailId": element.nonSalaryDetailId,
-						"standardName": element.standardName,
-						"payrollAreaId": "1",
-						"payrollAreaCode": element.payrollAreaCode,
-						"onceEvery": element.onceEvery,
-						"frequency": element.frequency,
-						"fromDate": element.fromDate,
-						"transactionsType": this.selectedTransactionType,
-						"numberOfTransactions": element.numberOfTransactions,
-						"toDate": todate,
-						"quantity": element.quantity,
+  /**Get clawback date */
+  getClawbackDate(value, data) {
+    let todate = "";
+    if (this.selectedTransactionType == 'NoOfTransaction') {
+      todate = ""
+    } else if (this.selectedTransactionType == 'Perpetual') {
+      todate = '9999-12-31 00:00:00'
+    } else {
+      todate = this.saveToDate;
+    }
+
+    if (this.saveTransactionData.length > 0) {
+      this.saveTransactionData.forEach((element, index) => {
+        if (element.nonSalaryDetailId == data.nonSalaryDetailId) {
+          let ind = index;
+          this.saveTransactionData.splice(ind, 1, {
+            "employeeMasterId": element.employeeMasterId,
+            "nonSalaryDetailId": element.nonSalaryDetailId,
+            "standardName": element.standardName,
+            "payrollAreaId": "1",
+            "payrollAreaCode": element.payrollAreaCode,
+            "onceEvery": element.onceEvery,
+            "frequency": element.frequency,
+            "fromDate": element.fromDate,
+            "transactionsType": this.selectedTransactionType,
+            "numberOfTransactions": element.numberOfTransactions,
+            "toDate": todate,
+            "quantity": element.quantity,
             "uom": element.uom,
-			        "type":element.type,
-						"remark": element.remark,
-						"createdBy": "rahul",
-						"nonRecurringTransactionGroupDeviationList":element.nonRecurringTransactionGroupDeviationList
-					})
-				} else {
-					let length = this.saveTransactionData.length - 1;
-					if (this.saveTransactionData[length].headMasterId == data.nonSalaryDetailId) { return; }
-					else {
-						this.saveTransactionData.push({
-							"employeeMasterId": data.employeeMasterId,
-							"nonSalaryDetailId": data.nonSalaryDetailId,
-							"standardName": data.headDescription,
-							"payrollAreaId": "1",
-							"payrollAreaCode": this.selectedPayrollArea,
-							"onceEvery": data.onceEvery,
-							"frequency": data.frequency,
-							"fromDate": data.fromdate,
-							"transactionsType": this.selectedTransactionType,
-							"numberOfTransactions": data.numberOfTransactions,
-							"toDate": todate,
-							"quantity": data.quantity,
+            "type": element.type,
+            "remark": element.remark,
+            "createdBy": "rahul",
+            "nonsalaryTransactionGroupDeviationList": element.nonsalaryTransactionGroupDeviationList
+          })
+        } else {
+          let length = this.saveTransactionData.length - 1;
+          if (this.saveTransactionData[length].nonSalaryDetailId == data.nonSalaryDetailId) { return; }
+          else {
+            this.saveTransactionData.push({
+              "employeeMasterId": data.employeeMasterId,
+              "nonSalaryDetailId": data.nonSalaryDetailId,
+              "standardName": data.headDescription,
+              "payrollAreaId": "1",
+              "payrollAreaCode": this.selectedPayrollArea,
+              "onceEvery": data.onceEvery,
+              "frequency": data.frequency,
+              "fromDate": data.fromdate,
+              "transactionsType": this.selectedTransactionType,
+              "numberOfTransactions": data.numberOfTransactions,
+              "toDate": todate,
+              "quantity": data.quantity,
               "uom": data.uom,
-			"type":data.type,
-							"remark": data.remark,
-							"createdBy": "rahul",
-							"nonRecurringTransactionGroupDeviationList":[]
-						})
-					}
-				}
-			});
-		} else {
-			this.saveTransactionData.push({
-				"employeeMasterId": data.employeeMasterId,
-				"nonSalaryDetailId": data.nonSalaryDetailId,
-				"standardName": data.headDescription,
-				"payrollAreaId": "1",
-				"payrollAreaCode": this.selectedPayrollArea,
-				"onceEvery": data.onceEvery,
-				"frequency": data.frequency,
-				"fromDate": data.fromdate,
-				"transactionsType": this.selectedTransactionType,
-				"numberOfTransactions": data.numberOfTransactions,
-				"toDate": todate,
-				"quantity": data.quantity,
+              "type": data.type,
+              "remark": data.remark,
+              // "type":data.type,
+              "createdBy": "rahul",
+              "nonsalaryTransactionGroupDeviationList": []
+            })
+          }
+        }
+      });
+    } else {
+      this.saveTransactionData.push({
+        "employeeMasterId": data.employeeMasterId,
+        "nonSalaryDetailId": data.nonSalaryDetailId,
+        "standardName": data.headDescription,
+        "payrollAreaId": "1",
+        "payrollAreaCode": this.selectedPayrollArea,
+        "onceEvery": data.onceEvery,
+        "frequency": data.frequency,
+        "fromDate": data.fromdate,
+        "transactionsType": this.selectedTransactionType,
+        "numberOfTransactions": data.numberOfTransactions,
+        "toDate": todate,
+        "quantity": data.quantity,
         "uom": data.uom,
-			"type":data.type,
-				"remark": data.remark,
-				"createdBy": "rahul",
-				"nonRecurringTransactionGroupDeviationList":[]
-			})
-		}
-	}
+        "type": data.type,
+        "remark": data.remark,
+        // "type":data.type,
+        "createdBy": "rahul",
+        "nonsalaryTransactionGroupDeviationList": []
+      })
+    }
+  }
 
   getEmployeeName(employeecode) {
     this.employeeData.forEach(element => {
@@ -1368,7 +1415,7 @@ export class FastentryNrQtyComponent implements OnInit {
       "employeeMasterId": data.employeeMasterId,
       "employeeCode": data.employeeCode,
       "employeeName": data.employeeName,
-      "nonSalaryDetailId": this.headMasterId,
+      "nonSalaryDetailId": this.nonSalaryDetailId,
       "standardName": this.headDescription,
       "payrollAreaId": "1",
       "payrollAreaCode": this.selectedPayrollArea,
@@ -1397,7 +1444,7 @@ export class FastentryNrQtyComponent implements OnInit {
 
   saveFastEntries() {
     console.log("this.saveTransactionData: " + JSON.stringify(this.saveTransactionData))
-    this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
+    this.nonrecqtyservice.NonSalaryTransactionGroup(this.saveTransactionData).subscribe(
       res => {
         this.toaster.success("", "Transaction Saved Successfully")
         this.saveTransactionData = [];
@@ -1408,7 +1455,7 @@ export class FastentryNrQtyComponent implements OnInit {
   }
 
   saveAndClearFastEntries() {
-    this.nonRecService.NonRecurringTransactionGroup(this.saveTransactionData).subscribe(
+    this.nonrecqtyservice.NonSalaryTransactionGroup(this.saveTransactionData).subscribe(
       res => {
         this.toaster.success("", "Transaction Saved Successfully")
         this.saveTransactionData = [];
@@ -1417,7 +1464,7 @@ export class FastentryNrQtyComponent implements OnInit {
         this.selectedFrequency = 'Monthly';
         this.selectedTransactionType = 'NoOfTransaction';
         this.selectedNoOfTransaction = 1;
-        this.headMasterId = null
+        this.nonSalaryDetailId = null
         this.tableData = [];
         this.selectedClawBack = ''
         this.selectedAmount = ''
@@ -1453,7 +1500,7 @@ export class FastentryNrQtyComponent implements OnInit {
     this.selectedFrequency = 'Monthly';
     this.selectedTransactionType = 'NoOfTransaction';
     this.selectedNoOfTransaction = 1;
-    this.headMasterId = null
+    this.nonSalaryDetailId = null
     this.tableData = [];
     this.selectedClawBack = ''
     this.selectedAmount = ''

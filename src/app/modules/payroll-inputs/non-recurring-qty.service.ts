@@ -90,7 +90,7 @@ export class NonRecurringQtyService {
 
   /** Update transaction - transaction tab */
   attendanceInputAPIRecordsUI(data):Observable<any>{
-    return this.HttpClient.put<any>(this.apiUrl + `NonSalaryTransactionGroup/updateById/`  , data);
+    return this.HttpClient.put<any>(this.apiUrl + `NonSalaryTransactionGroup/updateById/`, data);
   }
   
 }

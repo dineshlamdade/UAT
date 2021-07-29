@@ -16,8 +16,8 @@ export class NonRecurringQtyMasterComponent implements OnInit {
   nonSalaryName: any = ''
   users1: { head: string; nature: string; }[];
   nonSalaryNature: any;
-  nonSalaryRate: any;
-  nonSalaryMultiplier: any;
+  nonSalaryRate: any = 0;
+  nonSalaryMultiplier: any = 0;
   valueUpdationThrough: string = 'NRQ';
   valueUpdateflag: boolean = true;
   editFlag: boolean = false;
@@ -57,15 +57,20 @@ export class NonRecurringQtyMasterComponent implements OnInit {
       {
         "name": this.nonSalaryName,
         "nature": this.nonSalaryNature,
-        "rate": 0.0,
-        "multipier": 0.0,
-        "derivedRate": this.nonSalaryRate,
-        "derivedmultipier": this.nonSalaryMultiplier,
+        "rate": this.nonSalaryRate,
+        "multipier": this.nonSalaryMultiplier,
+        "derivedRate": 0.0,
+        "derivedmultipier": 0.0,
         "isActive": 1
       }
     )
 
     this.masterForm.controls['nonSalaryOptionList'].setValue(this.nonSalaryOptionList)
+
+    this.nonSalaryName = ''
+    // this.nonSalaryNature = ''
+    this.nonSalaryRate = 0
+    this.nonSalaryMultiplier = 0
   }
 
   removeNRQType(index) {
@@ -88,10 +93,12 @@ export class NonRecurringQtyMasterComponent implements OnInit {
   }
 
   saveNonSalary() {
+    this.masterForm.removeControl('nonSalaryDetailId')
     this.masterForm.controls['unit'].setValue('HR')
     this.masterForm.controls['valueUpdationThrough'].setValue(this.valueUpdationThrough)
     this.masterForm.controls['createdBy'].setValue('rahul')
     this.masterForm.controls['isActive'].setValue(1)
+    this.masterForm.controls['sdmName'].setValue('')
     let data = [this.masterForm.value]
     this.nonrecqtyservice.nonsalary(data).subscribe(
       res => {
@@ -111,6 +118,10 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     this.viewFlag = false;
     this.masterForm.enable()
     this.nonSalaryOptionList = []
+    this.nonSalaryName = ''
+    this.nonSalaryNature = ''
+    this.nonSalaryRate = 0
+    this.nonSalaryMultiplier = 0
   }
 
   editMasterData(data) {

@@ -15,8 +15,7 @@
                                     <div class="row mt-10">
                                         <div class="col-sm-3">
                                             <label class="form-label"> E/D Head</label>
-                                            <select name="payrollarea" class="form-control input-icon"
-                                                (change)="getSelectedHead($event.target.value)">
+                                            <select name="payrollarea" class="form-control input-icon" (change)="getEDHeader($event.target.value)">
                                                 <option value="null"> Select </option>
                                                 <option *ngFor="let head of headData" value="{{head.headMasterId}}"
                                                     [selected]="headMasterId == head.headMasterId">
@@ -29,13 +28,15 @@
                                             <select name="payrollarea" class="form-control input-icon"
                                                 (change)="getSelectedHead($event.target.value)">
                                                 <option value="null"> Select </option>
+                                                <option *ngFor="let data of summaryData" value="{{data.nonSalaryDetailId}}">{{data.code}}</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="form-label"> Type </label>
                                             <select name="payrollarea" class="form-control input-icon"
-                                                (change)="getSelectedHead($event.target.value)">
+                                                (change)="getSelectedHeadType($event.target.value)">
                                                 <option value="null"> Select </option>
+                                                <option *ngFor="let data of nonSalaryOptionList">{{data.name}}</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-3">
@@ -275,11 +276,12 @@
                                                                         <button type="submit"
                                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mt-3"
                                                                             tooltip="Go" (click)="getAllSelectedData()"
-                                                                            [ngClass]="{'disabled-btn-bg-green' : (headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
+                                                                            >
+                                                                            <!-- [ngClass]="{'disabled-btn-bg-green' : (headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
                                                                                                 || selectedFrequency == ''}"
                                                                             [disabled]="(headMasterId == null || headMasterId == '') || selectedPayrollArea == '' || selectedOnceEvery == ''
                                                                                                 || selectedFrequency == ''
-                                                                                                ">
+                                                                                                " -->
                                                                             <b><i class="fa fa-arrow-right"></i></b> Go
                                                                         </button>&nbsp;
                                                                         <button type="button"
@@ -418,7 +420,7 @@
                                         </div>
                                     </th>
                                     <!-- <th rowspan="2" class="wd-2 text-center"></th> -->
-                                    <th rowspan="2" class="wd-3 text-center"> Action </th>
+                                    <th rowspan="2" class="wd-2 text-center"> Action </th>
                                     <th rowspan="2" class="wd-2 text-center"></th>
                                 </tr>
 

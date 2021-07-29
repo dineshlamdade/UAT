@@ -28,8 +28,8 @@
                           <label class="form-label">E/D Head Code</label>
                           <select name="custom-select" formControlName="headOfPayment" class="form-control">
                             <option value="Select">Select</option>
-                            <option value="34"> Head1</option>
-                            <option value="49"> Head2</option>
+                            <option value="34"> CanteenDeduction</option>
+                            <option value="53"> OverTime_Test</option>
                           </select>
                         </div>
                         <div class="col-sm-3">
@@ -95,8 +95,8 @@
                                   </div>
                                 </div>
                               </th>
-                              <th rowspan="2" class="wd-12 text-center">
-                                <div class="p-d-flex p-jc-between p-ai-center">Derived - Rate
+                              <th rowspan="2" class="wd-12 text-center" *ngIf="nonSalaryNature == 'rate' && valueUpdationThrough == 'NRQ'">
+                                <div class="p-d-flex p-jc-between p-ai-center">Rate
                                   <div class="Sort_Filter_Position">
                                     <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
                                     <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
@@ -104,8 +104,26 @@
                                   </div>
                                 </div>
                               </th>
-                              <th rowspan="2" class="wd-12 text-center">
-                                <div class="p-d-flex p-jc-between p-ai-center">Derived - Multiplier
+                              <th rowspan="2" class="wd-12 text-center" *ngIf="nonSalaryNature == 'rate' && valueUpdationThrough == 'SDM'">
+                                <div class="p-d-flex p-jc-between p-ai-center">Derived Rate
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
+                                    <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th rowspan="2" class="wd-12 text-center" *ngIf="nonSalaryNature == 'multiplier' && valueUpdationThrough == 'NRQ'">
+                                <div class="p-d-flex p-jc-between p-ai-center">Multiplier
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
+                                    <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th rowspan="2" class="wd-12 text-center" *ngIf="nonSalaryNature == 'multiplier' && valueUpdationThrough == 'SDM'">
+                                <div class="p-d-flex p-jc-between p-ai-center">Derived Multiplier
                                   <div class="Sort_Filter_Position">
                                     <p-sortIcon field="RateInput " pSortableColumn="RateInput"></p-sortIcon>
                                     <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
@@ -128,25 +146,29 @@
                                 <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryNature"
                                   [ngModelOptions]="{standalone: true}">
                                   <option value="Select">Select</option>
-                                  <option>Rate </option>
-                                  <option>Multiplier </option>
+                                  <option value="rate">Rate </option>
+                                  <option value="multiplier">Multiplier </option>
                                 </select>
                               </td>
-                              <td>
-                                <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryRate"
+                              <td *ngIf="nonSalaryNature == 'rate'">
+                                <!-- <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryRate"
                                   [ngModelOptions]="{standalone: true}">
                                   <option value="Select">Select</option>
                                   <option>1 </option>
                                   <option>1.5</option>
-                                </select>
+                                </select> -->
+                                <input class="form-control" [(ngModel)]="nonSalaryRate"
+                                [ngModelOptions]="{standalone: true}">
                               </td>
-                              <td>
-                                <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryMultiplier"
+                              <td *ngIf="nonSalaryNature == 'multiplier'">
+                                <!-- <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryMultiplier"
                                   [ngModelOptions]="{standalone: true}">
                                   <option value="Select">Select</option>
                                   <option>1</option>
                                   <option>1.5</option>
-                                </select>
+                                </select> -->
+                                <input class="form-control" [(ngModel)]="nonSalaryMultiplier"
+                                [ngModelOptions]="{standalone: true}">
                               </td>
                               <td>
                                 <span class="ml-1 mt-2">
@@ -162,14 +184,16 @@
                               <td>{{index+1}}</td>
                               <td>{{data.name}}</td>
                               <td>{{data.nature}}</td>
-                              <td>{{data.derivedRate}}</td>
-                              <td>{{data.derivedmultipier}}</td>
+                              <td *ngIf="data.nature == 'rate' && valueUpdationThrough == 'NRQ'">{{data.rate}}</td>
+                              <td *ngIf="data.nature == 'multiplier' && valueUpdationThrough == 'NRQ'">{{data.multipier}}</td>
+                              <td *ngIf="data.nature == 'rate' && valueUpdationThrough == 'SDM'">{{data.derivedRate}}</td>
+                              <td *ngIf="data.nature == 'multiplier' && valueUpdationThrough == 'SDM'">{{data.derivedmultipier}}</td>
                               <td>
                                 <span class="ml-1 mt-2">
                                   <span class="ml-1 mt-2">
-                                    <i class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel"
+                                    <!-- <i class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel"
                                       (click)="removeNRQType(index)">
-                                    </i>
+                                    </i> -->
                                   </span>
                                 </span>  
                               </td>

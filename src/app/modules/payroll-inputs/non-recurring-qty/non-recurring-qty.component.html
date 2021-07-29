@@ -223,7 +223,7 @@
                                                                         <th class="wd-5">
                                                                             <div
                                                                                 class="p-d-flex p-jc-between p-ai-center">
-                                                                                Value
+                                                                                Quantity
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon
                                                                                         field="payrollHeadMaster.displayName">
@@ -890,7 +890,7 @@
                                                                                         <td class="bg-color-light_gray">
                                                                                             <label
                                                                                                 class="form-lable mb-0 text-link"
-                                                                                                (click)="viewTransaction(template1,data)">{{data.nonSalaryDTO.discription}}</label>
+                                                                                                (click)="viewTransaction(template1,data)">{{selectedStandardName}}</label>
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray">
                                                                                             <label
@@ -1135,6 +1135,7 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
+                                                                                        <th rowspan="2"></th>
                                                                                         <th rowspan="2" class="wd-5">
                                                                                             <div
                                                                                                 class="p-d-flex p-jc-between p-ai-center">
@@ -1326,6 +1327,16 @@
                                                                                             <label
                                                                                                 class="form-lable mb-0">{{data.headDescription}}</label>
                                                                                             &nbsp;&nbsp;&nbsp;
+
+                                                                                        </td>
+                                                                                        <td class="bg-color-light_gray" *ngIf="data.nonSalaryOptionlist">
+                                                                                            <!-- <pre>{{data.nonSalaryOptionlist | json}}</pre> -->
+                                                                                            <select 
+                                                                                                class="form-control custom-select wd-100"
+                                                                                                (change)="getSelectedType($event.target.value,data)">
+                                                                                                <option value="">Select</option>
+                                                                                                <option *ngFor="let type of data.nonSalaryOptionlist" value="{{type.name}},{{type.nonSalaryDetailId}}"> {{type.name}}</option>
+                                                                                            </select>    
 
                                                                                         </td>
                                                                                         <td>
@@ -2555,7 +2566,7 @@
                                     <tr>
                                         <th class="wd-10 font700">Once Every</th>
                                         <th class="wd-10 font700">Frequency</th>
-                                        <th class="wd-10 font700">Value</th>
+                                        <th class="wd-10 font700">Quantity</th>
                                         <th class="wd-10 font700">From Date</th>
                                         <th class="wd-8 font700">Type</th>
                                         <th class="wd-10 font700">UOM</th>
@@ -2663,7 +2674,7 @@
                                     <tr>
                                         <th class="wd-10 font700">Once Every</th>
                                         <th class="wd-10 font700">Frequency</th>
-                                        <th class="wd-10 font700">Value</th>
+                                        <th class="wd-10 font700">Quantity</th>
                                         <th class="wd-10 font700">From Date</th>
                                         <th class="wd-8 font700">Type</th>
                                         <th class="wd-10 font700">UOM</th>
@@ -2782,7 +2793,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Date</th>
-                                        <th>Value</th>
+                                        <th>Quantity</th>
                                         <th>Amount</th>
                                     </tr>
                                 </thead>
@@ -2998,7 +3009,7 @@
                                         <th class="wd-15 font700">Discard</th>
                                         <th class="wd-15 font700">Reschdule Date</th>
                                         <th class="wd-20 font700">Remark </th>
-                                        <th class="wd-20 font700">Updated Date</th>
+                                        <th class="wd-20 font700">Updated Date Time</th>
                                         <th class="wd-15 font700">Updated By</th>
                                     </tr>
                                 </thead>
@@ -3023,7 +3034,7 @@
                                                 [value]="data.resheduleDate | date: 'dd-MMM-yyyy'" disabled>
                                         </td>
                                         <td><input type="text" class="form-control" [value]="data.remark" disabled></td>
-                                        <td><input type="text" class="form-control" [value]="data.createdDateTime"
+                                        <td><input type="text" class="form-control" value="{{data.createDateTime | date:'dd-MMM-yyyy hh:mm a'}}"
                                                 disabled></td>
                                         <td><input type="text" class="form-control" [value]="data.createdBy" disabled>
                                         </td>
