@@ -56,8 +56,9 @@
                                   </div>
                               </div>
                             </form>
-                              <div class="row pull-right mt-10">
-                                <div class="col-sm-12 pull-right">
+                              <div class="row mt-10">
+                                <div class="col-sm-12 ">
+                                 <div class="float-right">
                                   <div *ngIf="isEditMode == false">
                                     <button type="submit" [disabled]="form.invalid"
                                       class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
@@ -87,13 +88,9 @@
                                   </div>
                                 </div>
                               </div>
-                              <br>
-                              <br>
-                              <br>
-                              <div class="col-md-12 mt-10">
-
-                                <!-- <span class="font-14 text-purple font-bold">Summary</span> -->
-
+                              </div>
+                              <div row class="row mt-10">
+                              <div class="col-md-12 ">
                                 <div class="justify-content-end p-d-inline-flex float-right">
                                   <div class="input-icon mb-3">
                                     <span class="p-input-icon-left p-ml-auto">
@@ -116,27 +113,25 @@
                                   </div>
                                     &nbsp;
                                     <i class="fa fa-file-excel-o fa-2x mr-2 pointer-cursor" (click)="exportApprovalSummaryAsExcel()"></i>
-
                                 </div>
                               </div>
-                              <!-- <div class="row">
-                                <div class="col-md-12"> -->
+                              </div>
                                   <div class="row">
                                     <div class="col-md-12">
                                       <div class="cycle-table mt-4">
                                         <h3 class="font-14 text-purple font-bold">Summary</h3>
                                 <p-table  #dt1 [value]="tableDataList" [paginator]="true" [rows]="10"
-                                [showCurrentPageReport]="true"
-                                (sortFunction)="customSort3($event)"
-                                [customSort3]="true"
-                                 [pageLinks]="5"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                totalRecords={{tableDataList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
-                                [globalFilterFields]="[
-                                'jobMasterType',
-                                'masterCode',
-                                'masterDescription'
-                              ]">
+                                    [showCurrentPageReport]="true"
+                                    (sortFunction)="customSort3($event)"
+                                    [customSort3]="true"
+                                    [pageLinks]="5"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    totalRecords={{tableDataList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                                    [globalFilterFields]="[
+                                    'jobMasterType',
+                                    'masterCode',
+                                    'masterDescription'
+                                  ]">
 
 
                                 <ng-template pTemplate="header">
@@ -153,7 +148,7 @@
                                         </div>
                                       </div>
                                     </th>
-                                    <th rowspan="1" class="wd-27 text-center">
+                                    <th rowspan="1" class="wd-25 text-center">
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                         Code
                                         <div class="Sort_Filter_Position">
@@ -163,7 +158,7 @@
                                       </div>
                                     </th>
 
-                                    <th rowspan="1" class="wd-19 text-center">
+                                    <th rowspan="1" class="wd-16 text-center">
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                         Description
                                         <div class="Sort_Filter_Position">
@@ -172,7 +167,7 @@
                                         </div>
                                       </div>
                                     </th>
-                                    <th rowspan="1" class="wd-12 text-center">
+                                    <th rowspan="1" class="wd-14 text-center">
                                       <div class="p-d-flex p-jc-center p-ai-center">
                                         Action
                                       </div>
@@ -196,18 +191,17 @@
                                       (click)="viewJobMaster(user1)">
                                         <i class="fa fa-eye font-18 text-blue cursor-pointer"></i></button>
                                       <button type="button" class="btn btn-icon" tooltip="Edit"
-
                                        (click)="editUpdateDataJobMaster(user1)">
                                        <i class="fa fa-edit font-18 text-dark-green cursor-pointer"></i></button>
-                                        <!-- (click)="ConfirmationDialog(confirmdialog, summary.jobMasterValueId,summary.jobMasterType,'master-summary')" -->
-                                        <i class="fa fa-trash font-16 text-red cursor-pointer"
-                                        (click)="UploadModal1(template22,user1.jobMasterValueId);"
-                                        tooltip="Delete"></i>&nbsp;
-                                        <i class="fa fa-adn font-16 text-dark-green cursor-pointer" tooltip="Assign to company"
-                                        (click)="UploadModal4(template1, user1)"></i>
-
-
+                                        <button type="button" class="btn btn-icon" tooltip="Delete" *ngIf="!user1.isCheckedTruefalse"
+                                        (click)="UploadModal1(template22,user1.jobMasterValueId)">
+                                        <i class="fa fa-trash font-18 text-red cursor-pointer"></i> </button>
+                                        <button type="button" class="btn btn-icon" tooltip="Assign to company" *ngIf="!user1.isCheckedTruefalse"
+                                        (click)="UploadModal4(template1, user1)">
+                                        <i class="fa fa-adn font-18 text-dark-green cursor-pointer" ></i>
+                                      </button>
                                     </td>
+
                                     <!-- *ngIf="user1.attributeNatureLongForm == 'List'" -->
                                   </tr>
                                 </ng-template>
@@ -259,12 +253,10 @@
                                       </option>
                                     </select>
                                   </div>
-
                                 </div>
                                 </form>
-                              <br>
-                              <br>
-                              <div class="col-md-12 mt-10" *ngIf="isJobMasterTableVisible">
+                                <div class="row mt-10" *ngIf="isJobMasterTableVisible">
+                                <div class="col-md-12">
                                 <div class="justify-content-end p-d-inline-flex float-right">
                                  <div class="input-icon mb-3">
                                     <span class="p-input-icon-left p-ml-auto">
@@ -278,22 +270,17 @@
                                         (input)="
                                           dt2.filterGlobal(
                                             $event.target.value,
-                                            'contains'
-                                          )
-                                        "
-                                        placeholder="Search keyword"
-                                      />
+                                            'contains')"placeholder="Search keyword"/>
                                     </span>
                                   </div>
                                   &nbsp;
                                   <i class="fa fa-file-excel-o  font-28 text-dark-green cursor-pointer"
-                                    tooltip="Export To Excel" (click)="exportApprovalSummaryAsExcelMapping()"></i>
+                                    tooltip="Export To Excel" (click)="exportApprovalSummaryAsExcelCompanyTable()"></i>
                                 </div>
+                               </div>
                               </div>
-                              <br>
-                              <br>
 
-                              <div class="row" *ngIf="isJobMasterTableVisible">
+                              <div class="row mt-10" *ngIf="isJobMasterTableVisible">
                                 <div class="col-md-12">
                                   <p-table #dt2 [value]="companyAssignTableListDummy" [paginator]="true" [rows]="10"
                                  [showCurrentPageReport]="true"
@@ -307,6 +294,10 @@
                                   'masterCode',
                                   'masterDescription'
                                 ]">
+
+                                <!-- user1.jobMasterType
+                                user1.masterCode
+                                user1.masterDescription -->
                                     <ng-template pTemplate="header">
                                       <tr>
 
@@ -455,8 +446,9 @@
                                 </div>
                               </div>
                               <br>
-                                <div class="row pull-right mt-10" *ngIf="isJobMasterTableVisible">
-                              <div class="col-sm-12 pull-right">
+                                <div class="row mt-10" *ngIf="isJobMasterTableVisible">
+                              <div class="col-sm-12 ">
+                                <div class="float-right">
                                 <div *ngIf="isEditMode == false">
                                   <button type="submit" [disabled]="mappedJobMastersToCompany.length == 0"
                                     class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
@@ -487,10 +479,9 @@
                                 </div>
                               </div>
                               </div>
-                              <br>
-                              <br>
-                              <br>
-                              <div class="col-md-12 mt-10">
+                             </div>
+                             <div class="row mt-10">
+                              <div class="col-md-12">
 
                                 <span class="font-14 text-purple font-bold">Summary</span>
 
@@ -521,6 +512,7 @@
 
                                 </div>
                               </div>
+                             </div>
                                  <p-table  #dt3 [value]="getAllMappingDetailListNew" [paginator]="true" [rows]="10"
                                 [showCurrentPageReport]="true"
                                 (sortFunction)="customSort2($event)"
@@ -845,11 +837,11 @@
                                       </span>
                                     </div>
                                     <input data-provide="datepicker" data-date-autoclose="true"
-                                    (ngModelChange)="updateFromDateMaster(i, $event, item.jobMasterValueId)"
 
+                                    [(ngModel)]="item.fromDate"
                                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                     class="form-control" placeholder="Date" bsDatepicker>
-                                    <!-- [(ngModel)]="item.fromDate" -->
+                                    <!-- (ngModelChange)="updateFromDateMaster(i, $event)" -->
                                   </div>
                                 </div>
                               </div>
@@ -866,11 +858,11 @@
                                   <!-- <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                     placeholder="Date" bsDatepicker> -->
                                     <input data-provide="datepicker" data-date-autoclose="true"
-                                    (ngModelChange)="updateToDateMaster(i, $event, item.jobMasterValueId)"
 
+                                    [(ngModel)]="item.toDate"
                                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                     class="form-control" placeholder="Date" bsDatepicker>
-                                    <!-- [(ngModel)]="item.toDate" -->
+                                    <!-- (ngModelChange)="updateToDateMaster(i, $event)" -->
                                 </div>
                               </div>
                             </td>
@@ -896,7 +888,7 @@
         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
         <b><i class="fa  fa-refresh"></i></b> Reset</button> -->
         &nbsp;
-    <button type="button" tooltip="Reset" (click)="modalRef.hide()"
+    <button type="button" tooltip="Reset" (click)="closeModule()"
       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
       <b><i class="fa  fa-times"></i></b> Close</button>
   </div>
