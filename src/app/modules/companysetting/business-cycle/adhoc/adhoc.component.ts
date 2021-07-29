@@ -92,17 +92,17 @@ export class AdhocComponent implements OnInit {
   }
 
   onSubmit(){
-    
+    debugger
     console.log('Adhoc cylece',this.adhocForm.value);
     console.log('Adhoc cylece',this.targetProducts);
     this.targetProducts.forEach(element=>{
       this.headMasterIds.push(element.headMasterId)
     })
-    const periodNameList =this.cycleNameList.filter(element=>element.periodId==this.adhocForm.value.periodName)
+    const periodNameList = this.cycleNameList.filter(element=>element.periodId == this.adhocForm.value.periodName)
     console.log('period name list is',periodNameList[0].periodName)
     const data = [{
-      businessCycleId:2790,
-      
+     // businessCycleId:2790,
+      businessCycleId:this.cycleNameList.find(x=>x.id==this.adhocForm.get('periodId').value),
       periodName:periodNameList[0].periodName,
       headMasterIds:this.headMasterIds,
       arrear:this.adhocForm.value.arrear,
@@ -114,7 +114,7 @@ export class AdhocComponent implements OnInit {
     }]
     console.log('data is',data);
     this.adhocService.saveAdhocCycle(data).subscribe((res)=>{
-
+    // console.log('result is adhoc',res);
     //this.toaster.success('',"Adhoc cycle saved successfully");
     this.alertService.sweetalertMasterSuccess('','Adhoc cycle saved successfully');
 
@@ -405,7 +405,7 @@ export class AdhocComponent implements OnInit {
 
   editAreaSet(data){
     console.log('result is',data);
-    this.getCycleNameById(data.businessCycleDefinition.id);
+  this.getCycleNameById(data.businessCycleDefinition.id);
     this.editFormFlag =true;
     this.viewFormFlag = false;
     this.adhocForm.enable();
@@ -413,8 +413,8 @@ export class AdhocComponent implements OnInit {
     this.adhocForm.patchValue(data);
 
  // this.adhocForm.get['businessCycleId'].setValue(data.businessCycleId);
-  this.adhocForm.controls['periodName'].patchValue(data.periodId);
-  this.adhocForm.controls['cycleName'].setValue(data.periodName);
+this.adhocForm.controls['periodName'].patchValue(data.periodId);
+ this.adhocForm.controls['cycleName'].setValue(data.periodName);
   this.adhocForm.controls['startDate'].patchValue(new Date(data.fromDate));
   this.adhocForm.controls['endDate'].patchValue(new Date(data.toDate));
   this.adhocForm.controls['fromDate'].patchValue(new Date(data.fromDate));
@@ -424,6 +424,10 @@ export class AdhocComponent implements OnInit {
     if (cycleDef) {
       this.adhocForm.controls['businessCycleDefinitionId'].patchValue(cycleDef.id);
     }
+    // let cylcenm = this.cycleNameList.find(el => el.periodId === data.businessCycleDefinition.periodId);
+    // if (cylcenm) {
+    //   this.adhocForm.controls['periodName'].patchValue(cylcenm.periodId);
+    // }
     
 }
 

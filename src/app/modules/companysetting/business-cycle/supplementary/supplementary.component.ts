@@ -11,6 +11,7 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 })
 export class SupplementaryComponent implements OnInit {
   cycleDefinitionList: Array<any> = [];
+  periodNameList: Array<any> = [];
   supplementaryForm : FormGroup;
   cycleNameList:  Array<any> = [];
   selctedCycleName: any;
@@ -49,12 +50,16 @@ export class SupplementaryComponent implements OnInit {
 
  onSubmit(){
 //alert("hi")
+
 console.log('Supplimentary  cylece',this.supplementaryForm.value);
-const periodNameList =this.cycleNameList.filter(element=>element.periodId==this.supplementaryForm.value.periodName)
+//debugger
+const periodNameList = this.cycleNameList.filter(element=>element.periodId == this.supplementaryForm.value.periodName)
 console.log('period name list is',periodNameList[0].periodName)
 const data = [{
-  businessCycleId:this.cycleNameList.find(x=>x.id==this.supplementaryForm.get('periodId').value),
-  
+businessCycleId:this.cycleNameList.find(x=>x.id==this.supplementaryForm.get('periodId').value),
+//businessCycleId:2790,
+//businessCycleId : this.supplementaryForm.value.id,
+ //periodName:this.supplementaryForm.value.periodName
   periodName:periodNameList[0].periodName,
   //headMasterIds:this.headMasterIds,
   supplimentary:this.supplementaryForm.value.supplimentary,
@@ -159,12 +164,12 @@ console.log('data is',data);
 }
 onUpdate(){
 //debugger;
-//   const periodNameList =this.cycleNameList.filter(element=>element.periodId== this.supplementaryForm.controls['periodName'])
-// console.log('period name list is',periodNameList[0].periodName)
+const periodNameList =this.cycleNameList.filter(element=>element.periodId == this.supplementaryForm.value.periodName)
+ console.log('period name list is',periodNameList[0].periodName)
 const data = [{
   businessCycleId:2796,
-  
-  periodName:this.supplementaryForm.controls['periodName'].value,
+  periodName:periodNameList[0].periodName,
+ //periodName:this.supplementaryForm.controls['periodId'].value,
   //headMasterIds:this.headMasterIds,
   supplimentary:this.supplementaryForm.value.supplimentary,
   remark:this.supplementaryForm.value.remark
@@ -184,7 +189,7 @@ console.log('data is',data);
 formReset(){
   this.supplementaryForm.reset();
  
-   //this.cycleNameList = [];
+   this.cycleNameList = [];
     this.editFormFlag = false;
     this.viewFormFlag = false;
     this.supplementaryForm.enable();  

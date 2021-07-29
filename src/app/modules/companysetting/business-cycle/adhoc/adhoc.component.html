@@ -514,8 +514,8 @@
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                           Count of Heads
                                           <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="date"></p-sortIcon>
-                                              <p-columnFilter type="date" field="date" display="menu"
+                                              <p-sortIcon field="headCount"></p-sortIcon>
+                                              <p-columnFilter type="text" field="headCount" display="menu"
                                                   class="p-ml-auto"></p-columnFilter>
                                           </div>
                                       </div>
@@ -559,8 +559,8 @@
         <div class="p-d-flex p-jc-between p-ai-center">
           Name
             <div class="Sort_Filter_Position">
-                <p-sortIcon field="businessCycleDefinition.cycleName"></p-sortIcon>
-                <p-columnFilter type="text" field="businessCycleDefinition.cycleName" display="menu"
+                <p-sortIcon field="oldPeriodName"></p-sortIcon>
+                <p-columnFilter type="text" field="oldPeriodName" display="menu"
                     class="p-ml-auto"></p-columnFilter>
             </div>
         </div>
@@ -585,11 +585,11 @@
                                     <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0">{{user1.businessCycleDefinition.cycleName}}</label></td>
                                             <td class="bg-color-light_gray"><label
-                                              class="form-lable mb-0">{{user1.periodName}}</label></td>
+                                              class="form-lable mb-0">{{user1.oldPeriodName}}</label></td>
                                       <td class="bg-color-light_gray"><label
                                               class="form-lable mb-0">{{user1.arrear?'Yes':'No'}}</label></td>
                                       <td class="bg-color-light_gray"><label
-                                              class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                                              class="form-lable mb-0">{{user1.headCount}}</label></td>
                                               <td class="bg-color-light_gray"><label
                                                   class="form-lable mb-0">{{user1.remark}}</label></td>
                                                   
