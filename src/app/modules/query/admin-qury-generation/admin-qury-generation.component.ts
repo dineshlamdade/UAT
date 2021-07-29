@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { TemplateRef} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CKEditorModule } from 'ckeditor4-angular';
-// import { ToastrService } from 'ngx-toastr';
 import { QueryService } from '../query.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
-// import Swal from 'sweetalert2/src/sweetalert2.js'
+import { AuthService } from '../../auth/auth.service';
+
 
 @Component({
   selector: 'app-admin-qury-generation',
@@ -87,10 +87,11 @@ export class AdminQuryGenerationComponent implements OnInit {
   emlpoyeeSelectionData: any;
   employeeListId: any;
   templatedata: any;
+  userData: unknown;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
-    private modalService: BsModalService, )
+    private modalService: BsModalService,private authService: AuthService)
 
     {
     this.queryGenerationForm = this.formBuilder.group(
@@ -113,6 +114,7 @@ export class AdminQuryGenerationComponent implements OnInit {
         "queryRootCause":new FormControl(null),
         "status":new FormControl('save'),
     })
+
 
     if(localStorage.getItem('dashboardSummary')!= null){
 
@@ -171,6 +173,8 @@ export class AdminQuryGenerationComponent implements OnInit {
 
       this.employeeMasterId = this.selectedEmployee.employeeMasterId
       this.getEmpMasterDetails(this.employeeMasterId);
+      localStorage.removeItem('queryListEmpData')
+
     }
 
     if(localStorage.getItem('emlpoyeeSelectionData') != null){
@@ -197,6 +201,8 @@ export class AdminQuryGenerationComponent implements OnInit {
       this.isSave = false;
       this.isSaveDraft = false;
     }
+    localStorage.removeItem('emlpoyeeSelectionData')
+
     }
    }
 
@@ -327,6 +333,7 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
           element.listSubQueryTypeData.forEach(element => {
             element.listSubQA.forEach(element => {
               this.listQAData.push(element)
+
             });
 
             // console.log("this.listQAData", this.listQAData);
@@ -347,10 +354,10 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
   gettempdatafromsubquery(value){
 
     this.subQueryData.forEach(element => {
-
+      if(element.subQueTypeMasterId == value){
        this.templatedata = element.listSubQA
       console.log(" this.templatedata", this.templatedata)
-
+      }
 
     });
   }
@@ -934,7 +941,7 @@ this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
       })
 }
 
-getEmpMasterDetails(employeeMasterId)// temp id is used
+getEmpMasterDetails(employeeMasterId)
 {
   // alert(employeeMasterIdData)
 // employeeMasterIdData = 60;

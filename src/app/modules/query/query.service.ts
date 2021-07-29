@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,17 @@ public apiUrl = environment.baseUrl8091;
 public apiUrl1 = environment.baseUrl8083;
 public apiUrl2 = environment.baseUrl8088;
 public apiUrl3 = environment.baseUrl8082;
+  // authservice: any;
 
-constructor(private http : HttpClient ) { }
+
+constructor(private http : HttpClient ,private authService: AuthService) { }
+
+getEmpMasterDetails(id) {
+  let token = this.authService.getJwtToken()
+  const headers = new HttpHeaders()
+   .set('X-Authorization', token);
+  return this.http.get<any>(this.apiUrl3 + 'employee-fin-details/' + id ,{ headers: headers }  );
+  }
 // .................................Standard que ans api.....................................................................
 
 public getAll()
@@ -107,10 +117,10 @@ public getDeleteById(id)
 {
   return this.http.delete<any>(this.apiUrl + 'QueryGeneration/' +id);
 }
-public getEmpMasterDetails(id)
-{
-  return this.http.get<any>(this.apiUrl3 + 'employee-fin-details/' +id);
-}
+// public getEmpMasterDetails(id)
+// {
+//   return this.http.get<any>(this.apiUrl3 + 'employee-fin-details/' +id );
+// }
 public addQuerywithDocs(data)
 {
   return this.http.post<any>(this.apiUrl + 'QueryGeneration',data);
@@ -156,4 +166,5 @@ public getIterationdetailsbyQueryID(id)
   //  public getAllEmployeeDetails() {
   //   return this.http.get<any>(this.apiUrl3 + '/employee-master')
   //   }
+
 }

@@ -208,12 +208,14 @@
                                                                       <label
                                                                           class="custom-control custom-radio custom-control-inline">
                                                                           <input type="radio" class="custom-control-input"
+
                                                                               id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('yes')">
                                                                           <span class="custom-control-label">Yes</span>
                                                                       </label>
                                                                       <label
                                                                           class="custom-control custom-radio custom-control-inline">
                                                                           <input type="radio" class="custom-control-input"
+
                                                                               id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('no')">
                                                                           <span class="custom-control-label">No</span>
                                                                       </label>
@@ -226,13 +228,13 @@
                                                                           Content For All Employee</label>
                                                                       <label
                                                                           class="custom-control custom-radio custom-control-inline ">
-                                                                          <input type="radio" class="custom-control-input"
+                                                                          <input type="radio" class="custom-control-input" [disabled]='sameContentViewFlag'
                                                                               id="sameContent"  name="querydata2" (click)="sameContent('yes')">
                                                                           <span class="custom-control-label">Yes</span>
                                                                       </label>
                                                                       <label
                                                                           class="custom-control custom-radio custom-control-inline">
-                                                                          <input type="radio" class="custom-control-input"
+                                                                          <input type="radio" class="custom-control-input"  [disabled]='sameContentViewFlag'
                                                                                id="sameContent"  name="querydata2" (click)="sameContent('no')">
                                                                           <span class="custom-control-label">No</span>
                                                                       </label></span>

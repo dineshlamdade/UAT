@@ -146,7 +146,7 @@
                           (change)="queryTempChange($event.target.value)"
                           [ngClass]="{'is-invalid': queryGenerationForm.get('queAnsMasterId').status == 'INVALID'}">
                           <option [ngValue]="null" selected>Select</option>
-                          <option *ngFor="let module of listQAData " value="{{module.queAnsMasterId}}">
+                          <option *ngFor="let module of templatedata " value="{{module.queAnsMasterId}}">
                             {{module.questionDescription}}</option>
                         </select>
 

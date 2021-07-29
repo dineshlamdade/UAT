@@ -35,6 +35,7 @@ export class PayrollListComponent implements OnInit {
   generationFormData: any;
   onBehalfValue: any;
   sameContentValue: any;
+  sameContentViewFlag:boolean = false;
   constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService
     ,public queryService :QueryService ) { }
 
@@ -79,6 +80,16 @@ export class PayrollListComponent implements OnInit {
   /** get selected employee data */
   getSelectedEmployee(user){
     this.selectedEmployeeData.push(user)
+
+    if(this.selectedEmployeeData.length == 1){
+      if(this.onBehalfValue = 'yes'){
+        this.sameContentViewFlag = true;
+      }
+     }else{
+       this.sameContentViewFlag = false;
+
+     }
+
   }
 
   navigateToNRAmt(){
@@ -109,10 +120,12 @@ localStorage.setItem('emlpoyeeSelectionData',JSON.stringify(data))
 onBehalf(value)
 {
 this.onBehalfValue = value;
+
 }
 
 sameContent(value)
 {
 this.sameContentValue = value;
+
 }
 }
