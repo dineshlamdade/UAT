@@ -78,7 +78,7 @@ export class SdmStepperComponent implements OnInit {
   editTempIndex: any = -1;
   editTempFlag: boolean = false;
   sdmData: any;
-  sdmMasterId: any = 0;
+  sdmMasterId: any = null;
   sourceCombinationData: any;
   sdmSourceCombinationListData: any;
   srcCombLength: any;
@@ -112,6 +112,10 @@ export class SdmStepperComponent implements OnInit {
   selectedCombData: any;
   tempMatrixData: any = [];
   addbtnflag: boolean = false;
+  matrixData: any;
+  derivedactive: boolean = true;
+  ModuledropdownSettings:any;
+  selectedSDMModule: any = [];
 
   constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, private toaster: ToastrService,private datepipe: DatePipe) {
 
@@ -136,8 +140,8 @@ export class SdmStepperComponent implements OnInit {
     "sdmDerivedTableId": new FormControl("",Validators.required),
     "percentageOf": new FormControl("",Validators.required),
     "moduleIdList": new FormControl([],Validators.required),
-    "active": new FormControl([],Validators.required),
-    "sdmDerivedMasterRemark": new FormControl([],Validators.required),
+    "active": new FormControl(true,Validators.required),
+    "sdmDerivedMasterRemark": new FormControl(""),
     })
 
     if(localStorage.getItem('sdmFormStep1') != null){
@@ -147,6 +151,10 @@ export class SdmStepperComponent implements OnInit {
       // this.sdmFormStep1.disable()
       this.step1FormDisableFlag = true;
       this.sourceTableList()
+      if(localStorage.getItem('tempsdmFormStep1') != null){
+        let tempdata = JSON.parse(localStorage.getItem('tempsdmFormStep1'))
+          this.tempSourceTable = tempdata
+        }
     }
 
     if(localStorage.getItem('sdmMasterId') !=  null){
@@ -224,6 +232,7 @@ export class SdmStepperComponent implements OnInit {
 
   step2Submit() {
     console.log(this.sourceArray)
+    this.sourceCombinationUpdate();
   }
 
   public modalRef: BsModalRef;
@@ -269,10 +278,44 @@ export class SdmStepperComponent implements OnInit {
     this.sdmService.applicationModule().subscribe(
       res => {
         this.moduleData = res.data.results;
+
+        this.ModuledropdownSettings = {
+          singleSelection: false,
+          idField: 'applicationModuleId',
+          textField: 'applicationModuleName',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 3,
+          allowSearchFilter: true
+        };
       }
     )
   }
 
+
+  moduleSelectDataValue(event){
+    this.selectedSDMModule.push(event.applicationModuleId)
+    this.sdmFormStep1.controls['moduleIdList'].setValue(this.selectedSDMModule)
+
+    console.log("data: " + this.selectedSDMModule)
+  }
+
+  deModuleSelectValueListDataValue(event){
+    this.moduleData.forEach((element,index) => {
+      if(element.applicationModuleId == event.applicationModuleId){
+        let ind = index;
+        this.selectedSDMModule.splice(ind,1)
+      }
+    });
+    this.sdmFormStep1.controls['moduleIdList'].setValue(this.selectedSDMModule)
+  }
+
+  onModuleSelectAllValueListDataValue(event){
+    event.forEach(element => {
+      this.selectedSDMModule.push(element.applicationModuleId)
+    });
+    this.sdmFormStep1.controls['moduleIdList'].setValue(this.selectedSDMModule)
+  }
   sourceTableList(){
     this.sdmService.sourceTableList().subscribe(
       res => {
@@ -309,12 +352,6 @@ export class SdmStepperComponent implements OnInit {
                 }
               });
             });
-
-            this.tempSourceTable.push({
-              'tableName': this.sourceMasterName,
-              'fieldType':this.sourceFieldTypeName,
-              'valueId':this.sourceValueId.toString()
-            })
         } 
       }
     )
@@ -424,6 +461,8 @@ export class SdmStepperComponent implements OnInit {
     })
 
     this.sdmFormStep1.controls['sdmSourceMasterFieldValueMappingDetailList'].setValue(this.sdmSourceMasterFieldValueMappingDetailList)
+    localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
+    localStorage.setItem('tempsdmFormStep1',JSON.stringify(this.tempSourceTable))
 
     this.tablevalue = ""
     this.fieldtypevalue = ""
@@ -522,28 +561,53 @@ export class SdmStepperComponent implements OnInit {
  
   removeSource(index){
     this.tempSourceTable.splice(index,1)
+    this.sdmSourceMasterFieldValueMappingDetailList.splice(index,1)
+    this.sdmFormStep1.controls['sdmSourceMasterFieldValueMappingDetailList'].setValue(this.sdmSourceMasterFieldValueMappingDetailList)
     this.step1FormDisableFlag = false;
     this.valuelist = []
     this.sourceValueId  = []
     this.sourceValueName = []
     this.editTempFlag = false;
+    localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
+    localStorage.setItem('tempsdmFormStep1',JSON.stringify(this.tempSourceTable))
+
   }
 
   saveSourceDerivedMatrix(){
-    this.sdmFormStep1.controls['moduleIdList'].setValue([parseInt(this.sdmFormStep1.controls['moduleIdList'].value)])
+    // this.sdmFormStep1.controls['moduleIdList'].setValue([parseInt(this.sdmFormStep1.controls['moduleIdList'].value)])
     this.sdmFormStep1.controls['sdmMasterId'].setValue(0)
-    this.sdmService.saveSourceDerivedMatrix(this.sdmFormStep1.value).subscribe(res =>{
+
+    if(this.sdmMasterId == null ){
+      this.sdmService.saveSourceDerivedMatrix(this.sdmFormStep1.value).subscribe(res =>{
         this.toaster.success("","SDM data saved successfully.")
         this.sdmFormStep1.controls['sdmName'].disable();
-        //this.sdmFormStep1.disable();
         localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
         this.sdmMasterId = res.data.results[0].sdmMasterId;
         localStorage.setItem('sdmMasterId', this.sdmMasterId)
+        this.sdmFormStep1.reset();
         // this.sdmMasterId = 9
         // alert(this.sdmMasterId)
         this.sourceCombination();
         this.SdmMasterDetails();
+        this.selectedSDMModule = []
     })
+    }else{
+      this.sdmFormStep1.controls['sdmMasterId'].setValue(this.sdmMasterId)
+      this.sdmService.saveSourceDerivedMatrix(this.sdmFormStep1.value).subscribe(res =>{
+        this.toaster.success("","SDM data saved successfully.")
+        this.sdmFormStep1.controls['sdmName'].disable();
+        localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
+        this.sdmMasterId = res.data.results[0].sdmMasterId;
+        localStorage.setItem('sdmMasterId', this.sdmMasterId)
+        this.sdmFormStep1.reset();
+        // this.sdmMasterId = 9
+        // alert(this.sdmMasterId)
+        this.sourceCombination();
+        this.SdmMasterDetails();
+        this.selectedSDMModule = []
+    })
+    }
+   
   }
 
 
@@ -651,12 +715,22 @@ export class SdmStepperComponent implements OnInit {
     })
   }
 
+  getDerivedActive(event){
+    if(event.checked){
+      this.derivedactive = true;
+    }else{
+      this.derivedactive = false
+    }
+  }
+
   getSelectedDerivedModule(applicationModuleId){
     this.moduleData.forEach(element => {
       if(element.applicationModuleId == applicationModuleId){
-        this.derivedModuleName.push(element.applicationModuleName)
+        this.derivedModuleName =element.applicationModuleName
       }
     });
+
+    
   }
 
   getDerivedType(sdmDerivedTypeId){
@@ -677,6 +751,7 @@ export class SdmStepperComponent implements OnInit {
   }
 
   addsaveDerived(){
+    this.sdmFormStep3.controls['active'].setValue(this.derivedactive)
     this.sdmFormStep3.controls['moduleIdList'].setValue([parseInt(this.sdmFormStep3.controls['moduleIdList'].value)])
     this.sdmFormStep3.controls['sdmDerivedMasterId'].setValue(0)
     this.sdmFormStep3.controls['sdmMasterId'].setValue(this.sdmMasterId)
@@ -696,10 +771,12 @@ export class SdmStepperComponent implements OnInit {
 
    this.sdmFormStep3.reset()
    this.derivedTableName = ""
+   this.derivedactive = true
   }
 
   resetsdmForm3(){
     this.sdmFormStep3.reset();
+    this.derivedactive = true;
   }
 
   saveDerived(){
@@ -865,6 +942,16 @@ export class SdmStepperComponent implements OnInit {
      this.toaster.success("","Matrix data saved successfully")
      this.saveMatrixData = []
      this.tempMatrixData = []
+
+     this.getMatrixData();
+    //  localStorage.clear()
     })
+  }
+
+
+  getMatrixData(){
+    this.sdmService.combinationMatrix(this.sdmMasterId).subscribe(res =>{
+      this.matrixData = res.data.results;
+     })
   }
 }

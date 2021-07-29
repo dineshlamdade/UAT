@@ -207,9 +207,9 @@
                                                     <ng-template pTemplate="body" let-summery let-rowIndex="rowIndex">
                                                         <tr class="p-selectable-row">
                                                             <td class="text-center">{{rowIndex+1}}</td>
-                                                            <td class="text-center"></td>
-                                                            <td class="text-center">{{summery.sdmDescription}}</td>
                                                             <td class="text-center">{{summery.sdmName}}</td>
+                                                            <td class="text-center">{{summery.sdmDescription}}</td>
+                                                            <td class="text-center"></td>
                                                             <td class="text-center"> </td>
                                                             <td class="text-center"> </td>
                                                             <td class="text-center"> </td>
@@ -422,14 +422,26 @@
                                                             Module<span class="text-red"></span></label>
                                                     </div>
                                                     <div class="col-2">
-                                                        <select name="custom-select" class="form-control"
+                                                        <!-- <select name="custom-select" class="form-control"
                                                             formControlName="moduleIdList">
                                                             <option>Select Module</option>
                                                             <option *ngFor="let module of moduleData"
                                                                 [value]="module.applicationModuleId">
                                                                 {{module.applicationModuleName}}</option>
 
-                                                        </select>
+                                                        </select> -->
+
+                                                        <ng-multiselect-dropdown
+                                                       
+                                                        [placeholder]="'Select Module'"
+                                                        [settings]="ModuledropdownSettings"
+                                                        [data]="moduleData"
+                                                        (onSelect)="moduleSelectDataValue($event)"
+                                                        (onDeSelect)="deModuleSelectValueListDataValue($event)"
+                                                        (onSelectAll)="onModuleSelectAllValueListDataValue($event)">
+                                                    </ng-multiselect-dropdown>
+
+                                                        
                                                     </div>
 
                                                     <div class="ml-2 pl-1 pr-0">
@@ -961,13 +973,13 @@
                                                         <div class="row mt-15">
                                                             <div class="col-12">
                                                                 <div class="float-left d-flex justify-content">
-                                                                    <input formControlName="active"
+                                                                    <input (click)="getDerivedActive($event.target)" [checked]="derivedactive"
                                                                         type="checkbox" />&nbsp;
                                                                     <label
                                                                         class="form-label margin-right:30px;">Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                                     <label class="form-label">Remark</label>&nbsp;
                                                                     <textarea formControlName="sdmDerivedMasterRemark"
-                                                                        type="text"></textarea>
+                                                                        type="text" [required]="!derivedactive"></textarea>
                                                                 </div>
                                                                 <div class="float-right ">
                                                                     <button [disabled]="sdmFormStep3.invalid"
@@ -1199,7 +1211,7 @@
                                                                     tooltip="Save"><b>
                                                                         <i class="fa fa-floppy-o"></i></b>
                                                                     Save</button>&nbsp;
-                                                                <button type="button" (click)="getStepper(3);next();sourceCombination();derivedMaster();combinationMatrix();"
+                                                                <button type="button" (click)="getStepper(3);next();sourceCombination();derivedMaster();combinationMatrix();getMatrixData()"
                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                                     tooltip="Next"><b>
                                                                     <i class="fa fa-angle-double-right"></i></b>Next</button>&nbsp;
@@ -1292,7 +1304,7 @@
                                                             (sortFunction)="customSort($event)" [customSort]="true">
                                                             <ng-template pTemplate="header">
                                                                 <tr>
-                                                                    <th colspan="3" class="wd-16 text-center">
+                                                                    <th colspan="{{sourceFieldListData.length}}" class="wd-16 text-center">
                                                                         <div class="p-d-flex p-jc-between p-ai-center text-center"
                                                                             style="margin-left: 120px;">Source
                                                                         </div>
@@ -1616,47 +1628,156 @@
                                                             </ng-template>
                                                         </p-table>
                                                     </div>
+                                                    
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mt-15 float-right">
-                                            <div class="row mt-15 float-right">
-                                                <div class="float-right ">
-                                                    <button type="submit" (click)="getStepper(4);previous();sourceCombination();derivedMaster();combinationMatrix();"
-                                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                                                        tooltip="Previous"><b>
-                                                            <i class="fa fa-angle-double-left"></i></b>
-                                                        Previous</button>&nbsp;
-                                                    <button type="submit" (click)="saveMatrix()"
-                                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                        tooltip="Save"><b>
-                                                            <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-                                                    <button type="submit"
-                                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
-                                                        tooltip="Reset"><b>
-                                                            <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
-                                                </div>
+
+                                           
+                                            <div class="col-md-12 mt-15 float-right" style="margin-bottom: 50px;">
+                                                    <div class="float-right">
+                                                        <button type="submit" (click)="getStepper(4);previous();sourceCombination();derivedMaster();combinationMatrix();"
+                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                                            tooltip="Previous"><b>
+                                                                <i class="fa fa-angle-double-left"></i></b>
+                                                            Previous</button>&nbsp;
+                                                        <button type="submit" (click)="saveMatrix()"
+                                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                            tooltip="Save"><b>
+                                                                <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                                                        <button type="submit"
+                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                                                            tooltip="Reset"><b>
+                                                                <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+                                                    </div>
                                             </div>
+
+                                            
+                                            <div class="col-md-12 m-0 p-0">
+                                                <p-table [value]="matrixData" [paginator]="true" [rows]="10">
+                                                    <ng-template pTemplate="header">
+                                                        <tr>
+
+
+
+                                                            <th  class="wd-8 text-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center">Sr. No.
+
+                                                                    <div class="Sort_Filter_Position">
+                                                                        <p-sortIcon field="date"></p-sortIcon>
+                                                                        <p-columnFilter type="date" field="date"
+                                                                            display="menu" class="p-ml-auto">
+                                                                        </p-columnFilter>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+
+                                                            <th  class="wd-8 text-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center">Location
+
+                                                                    <div class="Sort_Filter_Position">
+                                                                        <p-sortIcon field="date"></p-sortIcon>
+                                                                        <p-columnFilter type="date" field="date"
+                                                                            display="menu" class="p-ml-auto">
+                                                                        </p-columnFilter>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+
+
+
+
+                                                            <th  class="wd-8 text-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                                                    Service Age From
+
+                                                                    <div class="Sort_Filter_Position">
+                                                                        <p-sortIcon field="date"></p-sortIcon>
+                                                                        <p-columnFilter type="date" field="date"
+                                                                            display="menu" class="p-ml-auto">
+                                                                        </p-columnFilter>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+
+
+
+                                                            <th  class="wd-8 text-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center"> Service Age To
+
+                                                                    <div class="Sort_Filter_Position">
+                                                                        <p-sortIcon field="date"></p-sortIcon>
+                                                                        <p-columnFilter type="date" field="date"
+                                                                            display="menu" class="p-ml-auto">
+                                                                        </p-columnFilter>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+
+                                                            <th class="wd-8 text-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center"
+                                                                    style="margin-left: 200px;">Derived Value
+
+
+                                                                </div>
+                                                            </th>
+                                                            <th class="wd-8 text-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center">Date Range(From Date)
+                                                                    <div class="Sort_Filter_Position">
+                                                                        <p-sortIcon field="date"></p-sortIcon>
+                                                                        <p-columnFilter type="date" field="date"
+                                                                            display="menu" class="p-ml-auto">
+                                                                        </p-columnFilter>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+                                                            <th  class="wd-8 text-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center">Date Range(To Date)
+
+                                                                    <div class="Sort_Filter_Position">
+                                                                        <p-sortIcon field="date"></p-sortIcon>
+                                                                        <p-columnFilter type="date" field="date"
+                                                                            display="menu" class="p-ml-auto">
+                                                                        </p-columnFilter>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+
+                                                        </tr>
+                                                       
+                                                    </ng-template>
+                                                    <ng-template pTemplate="body" let-matrixSummery let-rowIndex="rowIndex">
+                                                        <tr class="p-selectable-row">
+                                                            <td class="text-center">{{rowIndex+1}}</td>
+                                                            <td class="text-center"></td>
+                                                            <td class="text-center">{{matrixSummery.sourceRangeFrom}}</td>
+                                                            <td class="text-center">{{matrixSummery.sourceRangeTo}}</td>
+                                                            <td class="text-center">{{matrixSummery.applicableValue}}</td>
+                                                            <td class="text-center">{{matrixSummery.derivedFromDate | date: 'dd-MMM-yyyy'}}</td>
+                                                            <td class="text-center">{{matrixSummery.derivedToDate | date: 'dd-MMM-yyyy'}}</td>
+                                                            
+                                                        </tr>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="emptymessage">
+                                                        <tr>
+                                                            <td colspan="15"
+                                                                class="font-14 font500 text-center text-red"><span>No
+                                                                    Data
+                                                                    Available</span>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-template>
+                                                </p-table>
+                                            </div>
+                                            
                                         </div>
+                                      
                                     </div>
 
                                     <div *ngSwitchDefault>Saved Successfully<i class="fa-check-circle"></i></div>
                                 </div>
                             </div>
 
-                            <!-- <div class="row mt-15">
-                                <div class="col-12">
-                                    <div class="float-right mb-15">
-                                        <button (click)="previous()"
-                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
-                                            <b><i class="fa fa-previous"></i></b>Previous</button> &nbsp;
-
-                                        <button (click)="next()"
-                                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
-                                            <b><i class="fa fa-forward"></i></b>Next</button> &nbsp;
-                                    </div>
-                                </div>
-                            </div> -->
+                           
                         </div>
                     </div>
                 </div>
