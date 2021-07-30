@@ -1,107 +1,117 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
-  <title>:: DelziaHR :: Home</title>
-  <base href="/">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/primeng/10.0.3/resources/themes/saga-green/theme.min.css" /> -->
+    <title>:: DelziaHR :: Home</title>
+    <base href="/" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/primeng/10.0.3/resources/themes/saga-green/theme.min.css" /> -->
 
-  <!-- Bootstrap Core and vandor -->
-  <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css" />
+    <!-- Bootstrap Core and vandor -->
+    <link
+      rel="stylesheet"
+      href="/assets/plugins/bootstrap/css/bootstrap.min.css"
+    />
 
-  <!-- Plugins css -->
-  <link rel="stylesheet" href="/assets/plugins/charts-c3/c3.min.css" />
+    <!-- Plugins css -->
+    <link rel="stylesheet" href="/assets/plugins/charts-c3/c3.min.css" />
 
-  <!-- Core css -->
-  <link rel="stylesheet"  href="/assets/css/main.css" />
-  <link rel="stylesheet" href="/assets/css/theme2.css" />
-  <link rel="stylesheet" href="/assets/css/primeicons.css" />
-  <link rel="stylesheet" href="/assets/css/sagaGreenPrimeNG.css" />
-  <!-- <link rel="stylesheet" href="/assets/css/primeng.min.css" /> -->
-  <!-- <link rel="stylesheet" href="../node_modules/ng-drag-drop/style.css" /> -->
+    <!-- Core css -->
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/theme2.css" />
+    <link rel="stylesheet" href="/assets/css/primeicons.css" />
+    <link rel="stylesheet" href="/assets/css/sagaGreenPrimeNG.css" />
+    <!-- <link rel="stylesheet" href="/assets/css/primeng.min.css" /> -->
+    <!-- <link rel="stylesheet" href="../node_modules/ng-drag-drop/style.css" /> -->
 
+    <style>
+      .HideDiv {
+        display: none !important;
+      }
 
-  <style>
-    .HideDiv {
-      display: none !important;
-    }
+      .ShowDiv {
+        display: block !important;
+      }
 
-    .ShowDiv {
-      display: block !important;
-    }
+      .overlay {
+        background-color: rgba(23, 25, 28, 0.5);
+        position: fixed;
+        cursor: pointer;
+        display: none;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+      }
 
-    .overlay {
-      background-color: rgba(23, 25, 28, 0.5);
-      position: fixed;
-      cursor: pointer;
-      display: none;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10;
-    }
+      .overlay.open {
+        display: block;
+      }
 
-    .overlay.open {
-      display: block;
-    }
+      .sidebar-scroll {
+        height: calc(100vh - 65px);
+        overflow: auto;
+      }
 
-    .sidebar-scroll {
-      height: calc(100vh - 65px);
-      overflow: auto;
-    }
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
 
-    ::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
+      .sticky-top {
+        width: calc(100% - 280px);
+        position: fixed;
+      }
 
-    .sticky-top {
-      width: calc(100% - 280px);
-      position: fixed;
-    }
-
-    .marginTop {
-      margin-top: 7.1% !important;
-    }
-  </style>
-  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+      .marginTop {
+        margin-top: 7.1% !important;
+      }
+    </style>
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
-</head>
+  </head>
 
-<body>
-  <div id="body" class="font-montserrat">
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper">
-      <div class="loader">
+  <body>
+    <div id="body" class="font-montserrat">
+      <!-- Page Loader -->
+      <div class="page-loader-wrapper">
+        <div class="loader"></div>
+      </div>
+      <div id="main_content">
+        <app-root></app-root>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+        <script>
+          $(".toggle-password").on("click", function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            let input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+              input.attr("type", "text");
+            } else {
+              input.attr("type", "password");
+            }
+          });
+        </script>
       </div>
     </div>
-    <div id="main_content">
-      <app-root></app-root>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-      <script>
-        $('.toggle-password').on('click', function () {
-          $(this).toggleClass('fa-eye fa-eye-slash');
-          let input = $($(this).attr('toggle'));
-          if (input.attr('type') == 'password') {
-            input.attr('type', 'text');
-          }
-          else {
-            input.attr('type', 'password');
-          }
-        });
-      </script>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>
