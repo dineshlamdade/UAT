@@ -90,7 +90,7 @@
             </div>
 
             <div class="col-sm-6 col-md-3">
-              <label class="form-label">Premium Amount</label>
+              <label class="form-label">Premium Amount Test</label>
               <p-inputNumber class="p-inputright" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"
                              min="0"></p-inputNumber>
               <!-- <p-inputNumber class="align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
@@ -279,11 +279,11 @@
                     <th scope="row"><span tooltip="2">2</span></th>
                     <td><span tooltip="Receipt for Stamp Duty & Registration Charges"></span>Policy Document/Bank Statement/Reciept
                     </td>
-      
+
                     <td><span *ngFor="let item of PremiumFileArray" class="text-orange" tooltip="{{item.name}},"><i
                       class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                       <div class="col-md-12" *ngFor="let doc of PremiumurlArray; let i = index">
-                  
+
                         <div *ngIf="doc.documentType=='Policy Document/Bank Statement/Reciept'" class="labelbox" placement="top" tooltip="{{ doc.PremiumurlArray}}">
                           <i class="fa fa-paperclip text-orange" (click)="docViewer(template3,i)"></i> &nbsp;
                           {{ doc.fileName }}
