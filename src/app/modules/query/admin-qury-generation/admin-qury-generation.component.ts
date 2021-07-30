@@ -87,7 +87,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   emlpoyeeSelectionData: any;
   employeeListId: any;
   templatedata: any;
-  userData: unknown;
+  userData: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService , private alertService: AlertServiceService
     ,private router: Router,public sanitizer: DomSanitizer,
@@ -98,7 +98,7 @@ export class AdminQuryGenerationComponent implements OnInit {
     {
         "queryGenerationEmpId":new FormControl(0),
         "queryNumber":new FormControl(0),
-        "employeeMasterId":new FormControl(1),//temp
+        "employeeMasterId":new FormControl(),//temp
 
         "employeeMasterIdList":new FormControl([]),
         "onBehalfOfEmployee":new FormControl(true),
@@ -114,6 +114,10 @@ export class AdminQuryGenerationComponent implements OnInit {
         "queryRootCause":new FormControl(null),
         "status":new FormControl('save'),
     })
+
+    this.userData = this.authService.getprivileges()
+      console.log("userData::", this.userData);
+      this.employeeMasterId = this.userData.UserDetails.employeeMasterId
 
 
     if(localStorage.getItem('dashboardSummary')!= null){
@@ -201,7 +205,7 @@ export class AdminQuryGenerationComponent implements OnInit {
       this.isSave = false;
       this.isSaveDraft = false;
     }
-    localStorage.removeItem('emlpoyeeSelectionData')
+    localStorage.clear();
 
     }
    }
@@ -437,7 +441,6 @@ addQueryGeneration(){ //post api for saving data
         {
 
         this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
-        // this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('true');
 
             if(this.listDoc.length == 0){
               this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
@@ -452,7 +455,6 @@ addQueryGeneration(){ //post api for saving data
               this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('yes');
               // this.queryGenerationForm.controls['priority'].setValue('Low');
 
-              // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
               let data = []
               data.push(this.queryGenerationForm.value)
@@ -615,7 +617,46 @@ addQueryGeneration(){ //post api for saving data
 
         }
       }
+else{
+      alert();
+      if(this.listDoc.length == 0){
+        alert('1')
+        this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
+        this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
+        this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
 
+        this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
+        console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
+        this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
+        this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
+        // this.queryGenerationForm.controls['priority'].setValue('Low');
+
+        // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
+
+        let data = []
+        data.push(this.queryGenerationForm.value)
+        let queryGenerationEmployeeData  = {
+          "queryRequestDTO": data
+          }
+          const formData  = new FormData();
+          formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
+          this.queryService.addQueryGeneration(formData).subscribe(res =>
+          {
+            this.addQueryGenerationData = res.data.results;
+            console.log(JSON.stringify(this.addQueryGenerationData));
+
+            this.getAllQueryListSummary();
+
+            this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
+            // this.router.navigate(['/admin-dashboard']);
+         this.queryGenerationForm.controls['queryDescription'].reset();
+
+            this.reset();
+          })
+          }else{
+            this.addQuerywithDocs();
+          }
+        }
 }
 
 updateQueryGeneration(value) //put api for update data
@@ -626,7 +667,7 @@ updateQueryGeneration(value) //put api for update data
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-  this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
+  this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
 
   if(value == 'Save'){
     this.queryGenerationForm.controls['status'].setValue('Save');
@@ -862,7 +903,7 @@ else{
   this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-  this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
+  this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
 
     let data = []
     data.push(this.queryGenerationForm.value)
@@ -872,7 +913,7 @@ else{
       console.log(JSON.stringify(queryGenerationEmployeeData));
       const formData  = new FormData();
       formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
-      this.employeeMasterId = 1;
+      this.employeeMasterId = this.employeeMasterId;
       console.log("employeeMasterId",this.employeeMasterId)
       for (const queryDoc of this.listDoc) {
         formData.append('queryDocs', queryDoc,this.employeeMasterId + queryDoc.name);
@@ -893,6 +934,41 @@ else{
       })
     }
     }
+    else{
+      this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
+      this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
+      this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
+      this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
+      this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
+
+        let data = []
+        data.push(this.queryGenerationForm.value)
+        let queryGenerationEmployeeData  = {
+          "queryRequestDTO": data,
+          }
+          console.log(JSON.stringify(queryGenerationEmployeeData));
+          const formData  = new FormData();
+          formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
+          this.employeeMasterId = this.employeeMasterId;
+          console.log("employeeMasterId",this.employeeMasterId)
+          for (const queryDoc of this.listDoc) {
+            formData.append('queryDocs', queryDoc,this.employeeMasterId + queryDoc.name);
+          }
+          formData.forEach((value, key) => {
+            console.log(key,' ', value);
+          });
+          this.queryService.addQuerywithDocs(formData).subscribe(res =>
+          {
+            this.addQueryGenerationData = res.data.results;
+            this.alertService.sweetalertMasterSuccess('Query Generated Successfully', '' );
+            this.queryGenerationForm.controls['queryDescription'].reset();
+            // this.router.navigate(['/admin-dashboard']);
+
+            this.getAllQueryListSummary();
+            this.reset();
+
+          })
+        }
 }
 
 
@@ -903,7 +979,7 @@ updateQuerywithDoc(value)
   this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
   this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
 
-this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
+this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
 // this.queryGenerationForm.controls['status'].setValue('Draft');
   if(value == 'Save'){
     this.queryGenerationForm.controls['status'].setValue('Save');
@@ -918,7 +994,7 @@ this.queryGenerationForm.controls['employeeMasterId'].setValue(1);
     console.log(JSON.stringify(queryGenerationEmployeeData));
     const formData  = new FormData();
     formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
-    this.employeeMasterId = 1;
+    // this.employeeMasterId = 1;
     console.log("employeeMasterId",this.employeeMasterId)
     for (const queryDoc of this.listDoc) {
       formData.append('queryDocs', queryDoc,this.employeeMasterId + queryDoc.name);

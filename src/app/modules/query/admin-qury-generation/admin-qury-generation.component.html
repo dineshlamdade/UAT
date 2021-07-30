@@ -378,16 +378,13 @@
                         [disabled]="!queryGenerationForm.valid"
                         [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
 
-                        <!-- [disabled]="!queryGenerationForm.valid && employeeListId.length == 1 || (employeeListId.length-1) == index"
-                        [ngClass]="{'disabled-btn-bg-green' :
-                        queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid  && employeeListId.length == 1 || (employeeListId.length-1) == index}" -->
 
                         <b><i class="fa fa-save"></i></b> Save & Next</button>
 
                       <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" *ngIf="isSave"
                         [routerLink]="['/admin-query-generation']" tooltip="Save"
-                        [disabled]="!queryGenerationForm.valid" (click)="queryGenerationFormSubmit('Save')"
-                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}">
+                        [disabled]="!queryGenerationForm.valid || employeeListId.length == 1 || (employeeListId.length-1) == index" (click)="queryGenerationFormSubmit('Save')"
+                        [ngClass]="{'disabled-btn-bg-green' : queryGenerationForm.invalid ||  employeeListId.length == 1 || (employeeListId.length-1) == index,'btn-bg-green': !queryGenerationForm.invalid }">
                         <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
 
                       <button type="button" tooltip="Reset" *ngIf="isReset" (click)="reset()"

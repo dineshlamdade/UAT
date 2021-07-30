@@ -41,7 +41,7 @@ export class PayrollListComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
-    this.addQueryGeneration();
+    // this.addQueryGeneration();
   }
 
   public getAllEmployeeDetails(): void {
