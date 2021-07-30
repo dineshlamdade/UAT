@@ -292,16 +292,18 @@
 
 
                                                 <td *ngIf="multiBankingAllowed" scope="row">
-                                                    <input type="text" class="form-control" formControlName="priority">
+                                                    <input (keyup)="validatePriority(i)"  type="text" class="form-control" formControlName="priority">
                                                 </td>
 
                                                 <td *ngIf="multiBankingAllowed" scope="row">
-                                                    <i *ngIf="i>0 && i==pfArray.controls.length-1" class="fa fa-times  font-18 text-red cursor-pointer"
+                                                    <i *ngIf="i==i" class="fa fa-times  font-18 text-red cursor-pointer"
                                                     (click)="deleteRow(i)" aria-hidden="true"></i>&nbsp;
-                                                <i *ngIf="i==0" class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
+                                                <i *ngIf="i==pfArray.controls.length-1" class="fa fa-plus-circle font-18 text-dark-green cursor-pointer"
                                                     (click)="addRow()" aria-hidden="true"></i>&nbsp;
                                                 </td>
                                             </tr>
+                                            <!-- pfArray.controls.length-1 -->
+                                            <!-- i>0 &&  -->
                                             <!-- <tr class="p-selectable-row">
                                                 <td class="text-center">2</td>
                                                 <td>

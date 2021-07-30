@@ -60,7 +60,7 @@ export class DisbursementsComponent implements OnInit {
   ifscCurrent: Array<any> = [];
   typeOfPaymentList: Array<any> =[]// 'Salary,Payroll Reimbursement'.split(',');
   modeOfPaymentList: Array<any> = []//'Bank Transfer,Cheque,Cash,DD'.split(',');
-  typeList = '% of Net Pay,Amount'.split(',');
+  typeList = '% Net Pay,Amount'.split(',');
   copyFromPayrollAreaList: Array<any>=[];
   bankList: any;
   companyId: any;
@@ -729,6 +729,18 @@ for ( let i=0 ; i<len ; i++){
     this.pfArray.controls[indexx].get('nameAsPerBank').reset();
   }
 
+  validatePriority(i){
+  //   const prio= this.pfArray.controls[i].get('priority').value;
+
+  //   let data = this.pfArray.getRawValue();
+  //   const availablePriority = data.forEach(a => a.priority == prio)
+  //  if(availablePriority){
+  //   this.CommonDataService.sweetalertError("Duplicate Priority");
+  //  }
+
+    
+  }
+
   DisableForOtherType(i){
 this.pfArray.get([i]).get('bankName').disable();
 this.pfArray.get([i]).get('accountNo').disable();
@@ -761,7 +773,7 @@ this.pfArray.get([i]).get('ifsc').disable();
    this.typeOfPaymentList = this.typeOfPaymentList.filter(a => a.value === event.typeOfPayment)
 
     this.patchValues(showSummary);
-
+   
   }
 
   patchValues(data) {
@@ -841,7 +853,8 @@ if(this.copyFrom==false  || this.copyFrom==undefined){
     
   
   }
-
+  this.form.get('payrollAreaCode').disable();
+  this.form.get('typeOfPayment').disable()
   console.log(this.form.value)
   }, 1000);
  
