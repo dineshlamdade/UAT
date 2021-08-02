@@ -2,7 +2,7 @@ import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 
 import jspdf from 'jspdf';
-import * as _html2canvas from "html2canvas";
+import * as _html2canvas from 'html2canvas';
 const html2canvas: any = _html2canvas;
 
 import {
@@ -38,7 +38,7 @@ import { PreviousEmployerService } from '../../previousemployer/previousemployer
 @Component({
   selector: 'app-previousemployerdeclaration',
   templateUrl: './previousemployerdeclaration.component.html',
-  styleUrls: ['./previousemployerdeclaration.component.scss']
+  styleUrls: ['./previousemployerdeclaration.component.scss'],
 })
 export class PreviousemployerdeclarationComponent implements OnInit {
   @Input() public previousEmployerName: string;
@@ -141,7 +141,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   public editrentRecieptArray: File[] = [];
   public masterfilesArray: File[] = [];
 
-
   public receiptAmount: string;
   public receiptDate: Date;
   public selectedInstitution: string;
@@ -184,6 +183,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   imgFile: any = '';
   imageFile: any;
+  proofId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -240,8 +240,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.enableCheckboxFlag3 = false;
     this.declarationService = new DeclarationService();
 
-   
-
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
         this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
@@ -255,8 +253,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
-
- 
 
   // ------- On declaration page get API call for All Institutions added into Master-------
   declarationPage() {
@@ -280,21 +276,22 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.previousEmployerService.getPreviousEmployerNameList().subscribe((res) => {
-      console.log('this.getInstitutionListWithPolicyNo::', res);
-      this.transactionInstitutionListWithPolicies = res.data.results[0];
+    this.previousEmployerService
+      .getPreviousEmployerNameList()
+      .subscribe((res) => {
+        console.log('this.getInstitutionListWithPolicyNo::', res);
+        this.transactionInstitutionListWithPolicies = res.data.results[0];
 
-      res.data.results[0].forEach((element) => {
-        console.log('element:', element);
-        const obj = {
-          label: element,
-          value: element,
-        };
-        console.log('obj:', obj);
-        this.previousEmployerTransactionDetailList.push(obj);
-
+        res.data.results[0].forEach((element) => {
+          console.log('element:', element);
+          const obj = {
+            label: element,
+            value: element,
+          };
+          console.log('obj:', obj);
+          this.previousEmployerTransactionDetailList.push(obj);
+        });
       });
-    });
   }
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionInstName(previousEmployer: any) {
@@ -312,7 +309,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('transactionPolicyList', (this.transactionPolicyList = []));
 
     this.transactionPolicyList.push(data);
-   
 
     if (previousEmployer == 'All') {
       this.grandTabStatus = true;
@@ -357,7 +353,10 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       this.transactionDetail[j].previousEmployerTransactionDetailList[i].isECS
     ); */
     if (checked) {
-      if (this.transactionDetail[j].previousEmployerTransactionDetailList[i].isECS === 1) {
+      if (
+        this.transactionDetail[j].previousEmployerTransactionDetailList[i]
+          .isECS === 1
+      ) {
         this.transactionDetail[j].previousEmployerTransactionDetailList[
           i
         ].actualAmount = data.declaredAmountPerMonth;
@@ -369,7 +368,6 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           this.transactionDetail[j].previousEmployerTransactionDetailList[i]
             .actualAmount
         );
-       
       } else {
         this.transactionDetail[j].previousEmployerTransactionDetailList[
           i
@@ -391,8 +389,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmountPerMonth);
-    } else 
-    {
+    } else {
       formatedActualAmount = Number(
         this.transactionDetail[j].previousEmployerTransactionDetailList[
           i
@@ -403,7 +400,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       this.transactionDetail[j].previousEmployerTransactionDetailList[
         i
       ].actualAmount = this.numberFormat.transform(0);
-     // this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate = null;
+      // this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate = null;
       /*  this.transactionDetail[j].previousEmployerTransactionDetailList[i]; */
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
@@ -418,12 +415,14 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
-    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualAmount.toString().replace(/,/g, '')
-      );
-    });
+    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach(
+      (element) => {
+        // console.log(element.actualAmount.toString().replace(',', ""));
+        this.actualTotal += Number(
+          element.actualAmount.toString().replace(/,/g, '')
+        );
+      }
+    );
     this.transactionDetail[j].actualTotal = this.actualTotal;
 
     if (this.uploadGridData.length) {
@@ -438,13 +437,13 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     summary: {
       /*   previousEmployerName: any; */
       declaredAmountPerMonth: number;
-   //   paymentDate: Date;
+      //   paymentDate: Date;
       actualTotal: any;
       /*    dueDate: Date; */
     },
     i: number,
-    j: number ) 
-  {
+    j: number
+  ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmountPerMonth);
 
@@ -463,14 +462,16 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.declarationTotal = 0;
     // this.declaredAmountPerMonth=0;
 
-    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach((element) => {
-      // console.log(element.declaredAmountPerMonth.toString().replace(',', ""));
-      this.declarationTotal += Number(
-        element.declaredAmountPerMonth.toString().replace(/,/g, '')
-      );
-      // console.log(this.declarationTotal);
-      // this.declaredAmountPerMonth+=Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach(
+      (element) => {
+        // console.log(element.declaredAmountPerMonth.toString().replace(',', ""));
+        this.declarationTotal += Number(
+          element.declaredAmountPerMonth.toString().replace(/,/g, '')
+        );
+        // console.log(this.declarationTotal);
+        // this.declaredAmountPerMonth+=Number(element.actualAmount.toString().replace(',', ""));
+      }
+    );
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
@@ -481,7 +482,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     summary: {
       /*   previousEmployerName: any; */
       declaredAmountPerMonth: number;
-  //    paymentDate: Date;
+      //    paymentDate: Date;
       actualTotal: any;
       /*   dueDate: Date; */
     },
@@ -533,7 +534,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     summary: {
       /*     previousEmployerName: any; */
       declaredAmountPerMonth: number;
-   //   paymentDate: Date;
+      //   paymentDate: Date;
       actualAmount: number;
       /*    dueDate: any; */
     },
@@ -548,7 +549,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     summary: {
       /*      previousEmployerName: any; */
       declaredAmountPerMonth: number;
-    //  paymentDate: Date;
+      //  paymentDate: Date;
       actualAmount: number;
       /*      dueDate: any; */
     },
@@ -567,7 +568,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     summary: {
       /*   previousEmployerName: any; */
       declaredAmountPerMonth: number;
-     // paymentDate: Date;
+      // paymentDate: Date;
       actualAmount: number;
       /*     dueDate: Date; */
     },
@@ -605,14 +606,16 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualAmount.toString().replace(/,/g, '')
-      );
-      // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.transactionDetail[j].previousEmployerTransactionDetailList.forEach(
+      (element) => {
+        // console.log(element.actualAmount.toString().replace(',', ""));
+        this.actualTotal += Number(
+          element.actualAmount.toString().replace(/,/g, '')
+        );
+        // console.log(this.actualTotal);
+        // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+      }
+    );
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
     // this.transactionDetail[j].actualAmount = this.actualAmount;
@@ -625,7 +628,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     summary: {
       /*   previousEmployerName: any; */
       declaredAmountPerMonth: number;
-     /// paymentDate: Date;
+      /// paymentDate: Date;
       remark: any;
       actualAmount: number;
       /*    dueDate: Date; */
@@ -703,7 +706,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       houseRentalMasterId: number;
       toDate: Date;
       fromDate: Date;
-    //  paymentDate: Date;
+      //  paymentDate: Date;
       actualAmount: any;
       declaredAmountPerMonth: any;
       remark: any;
@@ -724,7 +727,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.declarationService.actualAmount = null;
     this.declarationService.fromDate = null;
     this.declarationService.toDate = null;
-   // this.declarationService.paymentDate = null;
+    // this.declarationService.paymentDate = null;
     this.declarationService.remark;
     this.declarationService.transactionStatus = 'Pending';
     /*this.declarationService.transactionStatus = null; */
@@ -755,13 +758,20 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   // -------- Delete Row--------------
   deleteRow(j: number) {
     const rowCount =
-      this.transactionDetail[j].previousEmployerTransactionDetailList.length - 1;
+      this.transactionDetail[j].previousEmployerTransactionDetailList.length -
+      1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].previousEmployerTransactionDetailList.length == 1) {
+    if (
+      this.transactionDetail[j].previousEmployerTransactionDetailList.length ==
+      1
+    ) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].previousEmployerTransactionDetailList.splice(rowCount, 1);
+      this.transactionDetail[j].previousEmployerTransactionDetailList.splice(
+        rowCount,
+        1
+      );
       return true;
     }
   }
@@ -770,7 +780,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     summary: {
       toDate: Date;
       fromDate: Date;
-     // paymentDate: Date;
+      // paymentDate: Date;
       actualAmount: any;
       declaredAmountPerMonth: any;
     },
@@ -814,7 +824,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     this.tabIndex = 0;
     this.transactionDetail.forEach((element) => {
       element.previousEmployerTransactionDetailList.forEach((element) => {
-      /*   element.paymentDate = this.datePipe.transform(
+        /*   element.paymentDate = this.datePipe.transform(
           element.paymentDate,
           'yyyy-MM-dd'
         ); */
@@ -833,7 +843,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-       /*  this.transactionDetail.forEach((element) => {
+        /*  this.transactionDetail.forEach((element) => {
           element.previousEmployerTransactionDetailList.forEach((element) => {
             element.paymentDate = new Date(element.paymentDate);
           });
@@ -907,11 +917,20 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     }
     console.log('this.transactionDetail::....', this.transactionDetail);
 
-    const parentsDelete = this.transactionDetail[0].previousEmployerTransactionDetailList[0];
-/*   const parentsDelete = this.previousEmployerTransactionDetailList[0]; */
-        delete parentsDelete.proofSubmissionId;
+    // const parentsDelete = this.transactionDetail[0].previousEmployerTransactionDetailList[0];
+    /*   const parentsDelete = this.previousEmployerTransactionDetailList[0]; */
+    // delete parentsDelete.proofSubmissionId;
 
-  /*   this.transactionDetail.forEach((element) => {
+    this.transactionDetail.forEach((element) => {
+      this.proofId = element.previousEmployerTransactionDetailList;
+      console.log('element:::..............', element);
+      this.proofId.forEach((element) => {
+        delete element.proofSubmissionId;
+        console.log('element:::..............', element);
+      });
+    });
+
+    /*   this.transactionDetail.forEach((element) => {
       element.previousEmployerTransactionDetailList.forEach((innerElement) => {
         if (innerElement.declaredAmountPerMonth !== null) {
           innerElement.declaredAmountPerMonth =
@@ -950,19 +969,22 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     console.log('this.receiptDate::', this.receiptDate);
     console.log(this.transactionDetail[0]);
-    console.log(",,,,,,,,,,,,,,,,,,,,",this.previousEmployerTransactionDetailList)
+    console.log(
+      ',,,,,,,,,,,,,,,,,,,,',
+      this.previousEmployerTransactionDetailList
+    );
 
     this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       //proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
-    proofSubmissionId: '',
-    previousEmployerMasterDetailId : '1',
-     // previousEmployerMasterDetailId: this.transactionDetail[0].previousEmployerMasterDetailId,
+      proofSubmissionId: '',
+      previousEmployerMasterDetailId: '1',
+      // previousEmployerMasterDetailId: this.transactionDetail[0].previousEmployerMasterDetailId,
       previousEmployerTransactionDetailList:this.transactionDetail[0].previousEmployerTransactionDetailList,
-      previousEmployerTransactionDetailIds: this.uploadGridData,     
+      previousEmployerTransactionDetailIds: this.uploadGridData,
       receiptAmount: this.receiptAmount,
-      electricVehicleLoanMasterId: this.transactionDetail[0].electricVehicleLoanMasterId,
-    
+      electricVehicleLoanMasterId:
+        this.transactionDetail[0].electricVehicleLoanMasterId,
     };
     console.log('data::', data);
     this.previousEmployerService
@@ -971,7 +993,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         console.log(res);
         if (res.data.results.length > 0) {
           this.transactionDetail =
-            res.data.results[0].previousEmployerTransactionDetailList;
+            res.data.results[0].previousEmployerTransactionDetailList[0];
           this.documentDetailList = res.data.results[0].documentInformationList;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -986,20 +1008,22 @@ export class PreviousemployerdeclarationComponent implements OnInit {
               element.previousEmployerTransactionDetailList.length
             );
 
-            element.previousEmployerTransactionDetailList.forEach((innerElement) => {
-              
-             /*  if (innerElement.paymentDate !== null) {
+            element.previousEmployerTransactionDetailList.forEach(
+              (innerElement) => {
+                /*  if (innerElement.paymentDate !== null) {
                 innerElement.paymentDate = new Date(innerElement.paymentDate);
               } */
 
-              innerElement.declaredAmountPerMonth = this.numberFormat.transform(
-                innerElement.declaredAmountPerMonth
-              );
+                innerElement.declaredAmountPerMonth =
+                  this.numberFormat.transform(
+                    innerElement.declaredAmountPerMonth
+                  );
 
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
-              );
-            });
+                innerElement.actualAmount = this.numberFormat.transform(
+                  innerElement.actualAmount
+                );
+              }
+            );
           });
 
           this.alertService.sweetalertMasterSuccess(
@@ -1011,7 +1035,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
         }
       });
     this.receiptAmount = '0.00';
-    this.rentReciept= [];
+    this.rentReciept = [];
     this.globalSelectedAmount = '0.00';
   }
 
@@ -1082,16 +1106,18 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-        // console.log(this.urlArray);      
+        // console.log(this.urlArray);
         this.editTransactionUpload.forEach((element) => {
-          element.previousEmployerTransactionDetailList.forEach((innerElement) => {
-            innerElement.declaredAmountPerMonth = this.numberFormat.transform(
-              innerElement.declaredAmountPerMonth
-            );
-            innerElement.actualAmount = this.numberFormat.transform(
-              innerElement.actualAmount
-            );
-          });
+          element.previousEmployerTransactionDetailList.forEach(
+            (innerElement) => {
+              innerElement.declaredAmountPerMonth = this.numberFormat.transform(
+                innerElement.declaredAmountPerMonth
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+            }
+          );
         });
         // console.log('converted:: ', this.urlArray);
       });
@@ -1099,18 +1125,20 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
   // -----------Common Function for filter to call API---------------
   getTransactionFilterPreviousEmployerData(PreviousEmployer: String) {
-
     console.log('this.PreviousEmployer::', PreviousEmployer);
 
     this.previousEmployerService
       .getTransactionFilterPreviousEmployerData(PreviousEmployer)
       .subscribe((res) => {
+        console.log('getTransactionFilterPreviousEmployerData:::', res);
 
-        console.log("getTransactionFilterPreviousEmployerData:::",res);
+        this.transactionDetail =
+          res.data.results[0].previousEmployerTransactionDetailList;
 
-        this.transactionDetail = res.data.results[0].previousEmployerTransactionDetailList;
-
-        console.log("previousEmployerTransactionDetailList::",this.transactionDetail)
+        console.log(
+          'previousEmployerTransactionDetailList::',
+          this.transactionDetail
+        );
 
         this.documentDetailList = res.data.results[0].documentInformationList;
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
@@ -1124,7 +1152,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           this.initialArrayIndex.push(
             element.previousEmployerTransactionDetailList.length
           );
-/* 
+          /* 
           element.previousEmployerTransactionDetailList.forEach((innerElement) => {
             if (innerElement.paymentDate !== null) {
               innerElement.paymentDate = new Date(innerElement.paymentDate);
@@ -1173,21 +1201,21 @@ export class PreviousemployerdeclarationComponent implements OnInit {
           'yyyy-MM-dd'
         );
 
-       /*  const paymentDate = this.datePipe.transform(
+        /*  const paymentDate = this.datePipe.transform(
           innerElement.paymentDate,
           'yyyy-MM-dd'
         ); */
 
         /* innerElement.receiptAmount = receiptAmount; */
-       // innerElement.paymentDate = paymentDate;
+        // innerElement.paymentDate = paymentDate;
         innerElement.fromDate = fromDate;
         innerElement.toDate = toDate;
-     //   innerElement.paymentDate = paymentDate;
+        //   innerElement.paymentDate = paymentDate;
         this.uploadGridData.push(innerElement.houseRentalTransactionDetailId);
       });
     });
 
-   /*  this.editTransactionUpload.forEach((element) => {
+    /*  this.editTransactionUpload.forEach((element) => {
       element.previousEmployerTransactionDetailList.forEach((innerElement) => {
         const paymentDate = this.datePipe.transform(
           innerElement.paymentDate,
@@ -1201,11 +1229,12 @@ export class PreviousemployerdeclarationComponent implements OnInit {
 
     const data = {
       proofSubmissionId: this.editProofSubmissionId,
-      previousEmployerTransactionDetailList: this.editTransactionUpload[0].previousEmployerTransactionDetailList,
+      previousEmployerTransactionDetailList:
+        this.editTransactionUpload[0].previousEmployerTransactionDetailList,
       previousEmployerTransactionDetailIds: this.uploadGridData,
-    //  documentRemark: this.documentRemark,
+      //  documentRemark: this.documentRemark,
       receiptAmount: this.editReceiptAmount,
-    
+
       receiptDate: Date,
     };
     console.log('uploadUpdateTransaction data::', data);
@@ -1236,7 +1265,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
               element.previousEmployerTransactionDetailList.length
             );
 
-           /*  element.previousEmployerTransactionDetailList.forEach((innerElement) => {
+            /*  element.previousEmployerTransactionDetailList.forEach((innerElement) => {
               if (innerElement.paymentDate !== null) {
                 innerElement.paymentDate = new Date(innerElement.paymentDate);
               }
@@ -1272,7 +1301,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('edit Data:: ', res);
 
-   /*      this.urlArray =
+        /*      this.urlArray =
           res.data.results[0].documentInformationList[0].documentDetailList;
         this.urlArray.forEach((element) => {
           element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -1287,7 +1316,7 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   setDateOfPayment(
     summary: {
       declaredAmountPerMonth: number;
-     // paymentDate: Date;
+      // paymentDate: Date;
       actualAmount: number;
       toDate: Date;
       fromDate: Date;
@@ -1299,16 +1328,17 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('i::', i);
     console.log('j::', j);
     console.log('summary::', summary);
-  //  this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate = summary.paymentDate;
-    console.log(
-   //   this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate
-    );
+    //  this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate = summary.paymentDate;
+    console
+      .log
+      //   this.transactionDetail[j].previousEmployerTransactionDetailList[i].paymentDate
+      ();
   }
 
   setToDate(
     summary: {
       declaredAmountPerMonth: number;
-     // paymentDate: Date;
+      // paymentDate: Date;
       actualAmount: number;
       toDate: Date;
       fromDate: Date;
@@ -1322,13 +1352,15 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('summary::', summary);
     this.transactionDetail[j].previousEmployerTransactionDetailList[i].toDate =
       summary.toDate;
-    console.log(this.transactionDetail[j].previousEmployerTransactionDetailList[i].toDate);
+    console.log(
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i].toDate
+    );
   }
 
   setFromDate(
     summary: {
       declaredAmountPerMonth: number;
-     // paymentDate: Date;
+      // paymentDate: Date;
       actualAmount: number;
       toDate: Date;
       fromDate: any;
@@ -1340,24 +1372,26 @@ export class PreviousemployerdeclarationComponent implements OnInit {
     console.log('i::', i);
     console.log('j::', j);
     console.log('summary::', summary);
-    this.transactionDetail[j].previousEmployerTransactionDetailList[i].fromDate =
-      summary.fromDate;
+    this.transactionDetail[j].previousEmployerTransactionDetailList[
+      i
+    ].fromDate = summary.fromDate;
     console.log(
-      this.transactionDetail[j].previousEmployerTransactionDetailList[i].fromDate
+      this.transactionDetail[j].previousEmployerTransactionDetailList[i]
+        .fromDate
     );
   }
   setDateOfPaymentInEditCase(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-    //  paymentDate: Date;
+      //  paymentDate: Date;
       actualAmount: number;
       dueDate: any;
     },
     i: number,
     j: number
   ) {
-   // this.editTransactionUpload[j].previousEmployerTransactionDetailList[i].paymentDate =  summary.paymentDate;
+    // this.editTransactionUpload[j].previousEmployerTransactionDetailList[i].paymentDate =  summary.paymentDate;
     /* console.log(
       this.editTransactionUpload[j].previousEmployerTransactionDetailList[i].paymentDate
     ); */
@@ -1366,28 +1400,28 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
   }
 
   previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
   }
 
   docViewer(template1: TemplateRef<any>, documentDetailList: any) {
-    console.log("documentDetailList::", documentDetailList)
+    console.log('documentDetailList::', documentDetailList);
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
       template1,
-      Object.assign({}, { class: 'gray modal-xl' }),
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
 
@@ -1395,43 +1429,39 @@ export class PreviousemployerdeclarationComponent implements OnInit {
   download() {
     console.log('hi');
     let data = document.getElementById('htmlData');
-    html2canvas(data).then(canvas => {
-      console.log(canvas)
+    html2canvas(data).then((canvas) => {
+      console.log(canvas);
       // Few necessary setting options
       const imgWidth = 208;
-     const pageHeight = 295
-      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
       const heightLeft = imgHeight;
 
-      const contentDataURL = canvas.toDataURL('image/png')
+      const contentDataURL = canvas.toDataURL('image/png');
       // A4 size page of PDF
       const pdf = new jspdf('p', 'mm', 'a4');
       const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
       // Generated PDF
       pdf.save('FORM.12B.pdf');
-    },700);
-    
+    }, 700);
   }
 
   onImageChange(e) {
     const reader = new FileReader();
-    
-    if(e.target.files && e.target.files.length) {
+
+    if (e.target.files && e.target.files.length) {
       const [file] = e.target.files;
       reader.readAsDataURL(file);
-    
+
       reader.onload = () => {
         this.imgFile = reader.result as string;
-        
-   
       };
     }
   }
-  getImageFile(imagefile : any){
+  getImageFile(imagefile: any) {
     this.imageFile = imagefile;
-}
-
+  }
 }
 
 class DeclarationService {
