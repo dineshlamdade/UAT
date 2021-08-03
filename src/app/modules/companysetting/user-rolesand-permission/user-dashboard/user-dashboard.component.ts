@@ -82,7 +82,8 @@ export class UserDashboardComponent implements OnInit {
   employeeMasterId: any;
   saveAssignData: any = [];
   asignRoleSummary: any;
-  
+  loading: boolean = true;
+
   page: any=1;
   size: any=10;
   selectedUserGroupId: any;
@@ -188,7 +189,7 @@ export class UserDashboardComponent implements OnInit {
     this.dropdownSettings = {};
     this.dropdownList = [];
 
-
+    this.loading = false;
    // this.getSummaryDataByCompany()
 
   }
@@ -799,15 +800,17 @@ this.roleName = roleid
 
   paginate(event) {
     console.log(JSON.stringify(event));
+    
     //event.first: Index of first record being displayed 
     //event.rows: Number of rows to display in new page 
     //event.page: Index of the new page 
     //event.pageCount: Total number of pages 
     
-    let pageIndex = event.first/event.rows + 1 // Index of the new page if event.page not defined.
+   let pageIndex = event.first/event.rows + 1 // Index of the new page if event.page not defined.
     
-   this.page = pageIndex;
-   this.getSummaryDataByCompany()
+  this.page = pageIndex;
+  this.getSummaryDataByCompany()
+   
   }
  
 employeeDetailsSummary(){

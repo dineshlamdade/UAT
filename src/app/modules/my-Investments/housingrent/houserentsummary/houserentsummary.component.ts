@@ -85,12 +85,16 @@ export class HouserentsummaryComponent implements OnInit {
     const data = {
       propertyHouseName: propertyName,
       tabIndex: this.tabIndex,
-      canEdit: mode == 'edit' ? true : false,
+      //canEdit: mode == 'edit' ? true : false,
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
     };
     this.propertyName = propertyName;
     console.log('propertyName::', propertyName);
   console.log('propertyName::', propertyName);
     this.myEvent.emit(data);
+    this.grandTabStatus = true;
+   
   }
 
   // ---------------------Summary ----------------------

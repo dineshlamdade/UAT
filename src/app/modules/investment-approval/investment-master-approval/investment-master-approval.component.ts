@@ -82,6 +82,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   };
   public remarkValidation: boolean = false;
   public approvedDisabled: boolean = true;
+  public documentRemarkValidation: boolean = false;
 
   constructor(
     private investmentMasterApprovalService: InvestmentMasterApprovalService,
@@ -384,16 +385,24 @@ export class InvestmentMasterApprovalComponent implements OnInit {
       return;
     }
 
+    console.log("status::", status);
+    console.log("status::", status == 'Discarded');
     if (status == 'Discarded') {
       this.documentList.forEach((doc) => {
+        console.log("doc.statusRemark::", doc.statusRemark);
         if (doc.statusRemark == '' || doc.statusRemark == undefined) {
-          this.alertService.sweetalertWarning(
-            'Please give Remark for Rejected Document'
-          );
-          return;
+         this.documentRemarkValidation = true;
         }
       });
     }
+    if(this.documentRemarkValidation){
+      this.alertService.sweetalertWarning(
+        'Please give Remark for Discarded Document'
+      );
+      this.documentRemarkValidation = false;
+      return;
+    }
+
     this.documentList.forEach((doc) => {
       doc.documentStatus = status;
     });
@@ -435,6 +444,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         this.documentList = [];
       });
     this.remarkValidation = false;
+    this.approvedDisabled =true;
   }
 
   //-------- For selecting Document For Approval Or Discard ----------
@@ -477,12 +487,22 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   //----------- On change Document Remark --------------------------
   public onChangeDocumentRemark(docDetail, event) {
     console.log('event.target.value::', event.target.value);
-    const index =
+    if(this.documentList.length>0){
+      const index =
+      this.documentList.indexOf((doc)=>doc.documentInformationId=docDetail.documentInformationId);
+    console.log('index::', index);
+
+    this.documentList[index].statusRemark =
+      event.target.value;
+    } else {
+      const index =
       this.masterInfo.masterDetail.documentDetailList.indexOf(docDetail);
     console.log('index::', index);
 
     this.masterInfo.masterDetail.documentDetailList[index].statusRemark =
       event.target.value;
+    }
+
   }
 
   @HostListener('window:scroll', [])

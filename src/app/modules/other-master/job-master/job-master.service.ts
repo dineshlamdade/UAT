@@ -21,7 +21,7 @@ export class JobMasterService {
       }));
   }
 
-  //komal // Get Drop Down list
+// Get Drop Down list
   getAllJobMasters() {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
@@ -46,16 +46,7 @@ export class JobMasterService {
         return res;
       }));
   }
-  // getAllOtherMasterDetails() {
-  //   const headers = new HttpHeaders()
-  //     .set('content-type', 'application/json')
-  //     .set('X-TenantId', 'PaysquareDefault');
 
-  //   return this._HTTP.get(environment.baseUrl8083 + 'all-other-masters/details', { 'headers': headers })
-  //     .pipe(map((res: any) => {
-  //       return res;
-  //     }));
-  // }
   // get all master
   getAllOtherMasterDetails() {
     const headers = new HttpHeaders()
@@ -84,7 +75,6 @@ export class JobMasterService {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('X-TenantId', 'PaysquareDefault');
-
     return this._HTTP.get(environment.baseUrl8083 + 'companymaster/getAllAtGroup', { 'headers': headers })
       .pipe(map((res: any) => {
         return res;
@@ -92,16 +82,15 @@ export class JobMasterService {
   }
 //Get All Mappings
 
-  getAllOtheMappingDetails() {
-    const headers = new HttpHeaders()
-      .set('content-type', 'application/json')
-      .set('X-TenantId', 'PaysquareDefault');
-
-    return this._HTTP.get(environment.baseUrl8083 + 'job-master-mapping/', { 'headers': headers })
-      .pipe(map((res: any) => {
-        return res;
-      }));
-  }
+  // getAllOtheMappingDetails() {
+  //   const headers = new HttpHeaders()
+  //     .set('content-type', 'application/json')
+  //     .set('X-TenantId', 'PaysquareDefault');
+  //   return this._HTTP.get(environment.baseUrl8083 + 'job-master-mapping/', { 'headers': headers })
+  //     .pipe(map((res: any) => {
+  //       return res;
+  //     }));
+  // }
 
 
   postMapping(data) {
@@ -124,27 +113,16 @@ export class JobMasterService {
         return res;
       }));
   }
-  // delete(Id: number, path: string) {
-  //   const headers = new HttpHeaders()
-  //     .set('content-type', 'application/json')
-  //     .set('X-TenantId', 'PaysquareDefault');
-  //   return this._HTTP.delete(environment.baseUrl8083 + path + Id, { headers: headers })
-  //     .pipe(map((res: any) => {
-  //       return res;
-  //     }));
-  // }
 
-
-  delete(Id: number,) {
+    delete( id: number) {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.delete(environment.baseUrl8083 + 'job-master-value/' + Id, { headers: headers })
+    return this._HTTP.delete(environment.baseUrl8083 + 'job-master-value/' + id, { headers: headers })
       .pipe(map((res: any) => {
         return res;
       }));
   }
-
 
   deleteMapping(Id: number,) {
     const headers = new HttpHeaders()
@@ -155,5 +133,20 @@ export class JobMasterService {
         return res;
       }));
   }
+
+  // Company Assignment
+
+  getAllOtheMappingDetails() {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get(environment.baseUrl8083 + 'job-master-mapping/', { 'headers': headers })
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+
+
+
 
 }
