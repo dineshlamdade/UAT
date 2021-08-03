@@ -182,7 +182,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		} else {
 			if (this.selectedEmpData.length > 0) {
 				this.selectedEmpData.forEach((element, index) => {
-					if (element.employeeMasterId == summeryData.employeeMasterId) {
+					if (element.nonSalaryTransactionGroupId == summeryData.nonSalaryTransactionGroupId) {
 						let ind = index;
 						this.selectedEmpData.splice(ind, 1);
 					}
@@ -2029,8 +2029,10 @@ export class NonRecurringQtyComponent implements OnInit {
 				this.toaster.success("", "Transaction Schedule updated successfully")
 				if (this.editScheduleFlag) {
 					this.NonRecurringTransactionScheduleEMP()
+					this.updateScheduleData = []
 				} else {
 					this.getAllScheduleData()
+					this.updateScheduleData = []
 				}
 			}
 		)
@@ -2086,77 +2088,87 @@ export class NonRecurringQtyComponent implements OnInit {
 
 	SummaryexportAsXLSX(): void {
 		this.excelData = [];
+		let headers = []
+		headers = ["Emp. Code","Emp. Name","Payroll Area","NR Qty Head","Type","Group Id","Once Every","Frequency","Quantity","UOM","From Date","To Date","Remark","Approval Status","Created By","Created Date"]
 		this.summeryData.forEach(element => {
 			let obj = {
 				"Emp. Code": element.employeeMasterResponseDTO.employeeCode,
 				"Emp. Name": element.employeeMasterResponseDTO.fullName,
-				"Payroll Area": element.payrollArea.payrollAreaCode,
-				"Head": element.payrollHeadMaster.displayName,
-				"Group Id": element.nonRecurringTransactionGroupId,
+				"Payroll Area": element.payrollAreaCode,
+				"NR Qty Head": element.nonSalaryDTO.code,
+				"Type": element.type,
+				"Group Id": element.nonSalaryTransactionGroupId,
 				"Once Every": element.onceEvery,
 				"Frequency": element.frequency,
-				"Amount": element.amount,
+				"Quantity": element.quantity,
+				"UOM": element.uom,
 				"From Date": element.fromDate,
 				"To Date": element.toDate,
 				"Remark": element.remark,
-				"Approval Status": '',
+				"Approval Status": 'Pending',
 				"Created By": element.createdBy,
 				"Created Date": element.createDateTime
 			}
 			this.excelData.push(obj)
 		});
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary');
+		this.excelservice.exportAsExcelFilewithHeaders(this.excelData, 'NonRecurring-Quantity-Summary','NonRecurring-Quantity-Summary',headers);
 	}
 
 
 	AllScheduleExportAsXLSX(): void {
 		this.excelData = [];
+		let headers = []
+		headers = ["Emp. Code","Emp. Name","Payroll Area","NR Qty Head","Group Id","Schedule Id","Schedule Date","Schedule Date","Quantity","Schedule Amount","Processed Amount","Balance Amount","Processing Cycle","Created By","Created Date"]
 		this.AllNonRecurringTransactionScheduledData.forEach(element => {
 			let obj = {
 				"Emp. Code": element.employeeMasterResponseDTO.employeeCode,
 				"Emp. Name": element.employeeMasterResponseDTO.fullName,
 				"Payroll Area": element.payrollArea.payrollAreaCode,
-				"Head": element.payrollHeadMaster.displayName,
-				"Group Id": element.nonRecurringTransactionGroupId,
-				"Schedule Id": element.nonRecurringTransactionScheduleId,
+				"Head": element.head,
+				"Group Id": element.nonSalaryTransactionGroupId,
+				"Schedule Id": element.nonSalaryTransactionScheduleId,
 				"Schedule Date": this.datepipe.transform(element.transactionDate, 'dd-MMM-yyyy'),
+				"Quantity": element.quantity,
 				"Schedule Amount": element.transactionAmount,
 				"Processed Amount": element.processedAmount,
 				"Balance Amount": element.transactionAmount,
 				"Processing Cycle": element.cycleName,
-				"ClawBack Date": this.datepipe.transform(element.clawbackDate, 'dd-MMM-yyyy'),
 				"Created By": element.createdBy,
 				"Created Date": element.createDateTime
 			}
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.AllNonRecurringTransactionScheduledData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-All-Schedules');
+		this.excelservice.exportAsExcelFilewithHeaders(this.excelData, 'NonRecurring-Quantity-All-Schedules','NonRecurring-Quantity-All-Schedules',headers);
 	}
 
 
 	ScheduleExportAsXLSX(): void {
 		this.excelData = [];
+		let headers = []
+		headers = ["Emp. Code","Emp. Name","Payroll Area","NR Qty Head","Group Id","Schedule Id","Schedule Date","Schedule Date","Quantity","Schedule Amount","Processed Amount","Balance Amount","Processing Cycle","Created By","Created Date"]
 		this.NonRecurringTransactionScheduleEMPdData.forEach(element => {
 			let obj = {
 				"Emp. Code": this.selectedEmpData[this.index].employeeMasterResponseDTO.employeeCode,
 				"Emp. Name": this.selectedEmpData[this.index].employeeMasterResponseDTO.fullName,
 				"Payroll Area": this.selectedEmpData[this.index].payrollArea.payrollAreaCode,
-				"Head": this.selectedEmpData[this.index].payrollHeadMaster.displayName,
-				"Group Id": element.nonRecurringTransactionGroupId,
-				"Schedule Id": element.nonRecurringTransactionScheduleId,
+				"NR Qty Head": this.selectedEmpData[this.index].nonSalaryDTO.description,
+				"Group Id": element.nonSalaryTransactionGroupId,
+				"Schedule Id": element.nonSalaryTransactionScheduleId,
 				"Schedule Date": this.datepipe.transform(element.transactionDate, 'dd-MMM-yyyy'),
+				"Quantity": element.quantity,
 				"Schedule Amount": element.transactionAmount,
 				"Processed Amount": element.processedAmount,
 				"Balance Amount": element.transactionAmount,
 				"Processing Cycle": element.cycleName,
-				"ClawBack Date": this.datepipe.transform(element.clawbackDate, 'dd-MMM-yyyy'),
 				"Created By": element.createdBy,
 				"Created Date": element.createDateTime
 			}
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.NonRecurringTransactionScheduleEMPdData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Schedules');
+		//this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Quantity-Schedules');
+		this.excelservice.exportAsExcelFilewithHeaders(this.excelData, 'NonRecurring-Quantity-Schedules','NonRecurring-Quantity-Schedules',headers);
+
 	}
 }

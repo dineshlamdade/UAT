@@ -79,4 +79,10 @@ export class PayrollListComponent implements OnInit {
     this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
   }
 
+  navigateToNRQty(){
+    localStorage.setItem('payrollListEmpData',JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Non-Recurring-qty'])
+  }
+
+
 }

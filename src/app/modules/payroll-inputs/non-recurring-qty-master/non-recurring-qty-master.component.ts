@@ -22,6 +22,8 @@ export class NonRecurringQtyMasterComponent implements OnInit {
   valueUpdateflag: boolean = true;
   editFlag: boolean = false;
   viewFlag: boolean = false;
+  natureData: any[];
+  getNatureValue: any;
 
   constructor(private nonrecqtyservice: NonRecurringQtyService, private toaster: ToastrService) {
     this.masterForm = new FormGroup({
@@ -37,6 +39,15 @@ export class NonRecurringQtyMasterComponent implements OnInit {
       "createdBy": new FormControl('rahul'),
       "nonSalaryOptionList": new FormControl([])
     })
+
+    this.natureData = [{
+      id :'rate',
+      name:'Rate'
+    },
+    {
+      id :'multiplier',
+      name:'Multiplier'
+    }]
   }
 
   ngOnInit(): void {
@@ -49,6 +60,18 @@ export class NonRecurringQtyMasterComponent implements OnInit {
   getMasterSummaryData() {
     this.nonrecqtyservice.NonRecurringnonsalary().subscribe(res => {
       this.summaryData = res.data.results
+    })
+  }
+
+  getNatureData(value){
+    this.getNatureValue = value
+    this.natureData.forEach((ele,index) =>{
+      if(ele.id == value){
+        
+      }else{
+        let ind = index
+        this.natureData.splice(index,1)
+      }
     })
   }
 
@@ -108,6 +131,7 @@ export class NonRecurringQtyMasterComponent implements OnInit {
         this.editFlag = false;
         this.viewFlag = false;
         this.nonSalaryOptionList = []
+        this.resetNonSalary()
       }
     )
   }
@@ -122,6 +146,15 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     this.nonSalaryNature = ''
     this.nonSalaryRate = 0
     this.nonSalaryMultiplier = 0
+    this.natureData = []
+    this.natureData = [{
+      id :'rate',
+      name:'Rate'
+    },
+    {
+      id :'multiplier',
+      name:'Multiplier'
+    }]
   }
 
   editMasterData(data) {

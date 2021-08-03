@@ -88,6 +88,7 @@
                                     </div>
                                     <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-bg-green"
+                                        (click)="navigateToNRQty()"
                                             [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
                                             [disabled]="selectedEmployeeData.length == 0">
                                             <i class="fa fa-plus-circle"> Non-Recurring Quantity</i>

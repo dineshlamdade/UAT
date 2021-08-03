@@ -29,7 +29,7 @@
                           <select name="custom-select" formControlName="headOfPayment" class="form-control">
                             <option value="Select">Select</option>
                             <option value="34"> CanteenDeduction</option>
-                            <option value="53"> OverTime_Test</option>
+                            <option value="51"> OverTime_Test</option>
                           </select>
                         </div>
                         <div class="col-sm-3">
@@ -42,7 +42,13 @@
                       <div class="row">
                         <div class="col-sm-3">
                           <label class="form-label">UOM</label>
-                          <input type="text" class="form-control" formControlName="unit" disabled>
+                          <!-- <input type="text" class="form-control" formControlName="unit" disabled> -->
+                          <select name="custom-select" class="form-control" formControlName="unit">
+                            <option value="Select">Select</option>
+                            <option>Hours</option>
+                            <option>Days</option>
+                            <option>Units</option>
+                          </select>
                         </div>
                         <div class="col-sm-3">
                           <label class="form-label">Value Updation Through</label>
@@ -58,7 +64,7 @@
                           <label class="form-label">SDM</label>
                           <select name="custom-select" class="form-control" formControlName="sdmName">
                             <option value="Select">Select</option>
-                            <option></option>
+                            <option>SDM1</option>
                           </select>
                         </div>
                       </div>
@@ -144,10 +150,11 @@
                               </td>
                               <td>
                                 <select name="custom-select" class="form-control" [(ngModel)]="nonSalaryNature"
-                                  [ngModelOptions]="{standalone: true}">
+                                  [ngModelOptions]="{standalone: true}" (change)="getNatureData($event.target.value)">
                                   <option value="Select">Select</option>
-                                  <option value="rate">Rate </option>
-                                  <option value="multiplier">Multiplier </option>
+                                  <option *ngFor="let data of natureData" value="{{data.id}}">{{data.name}}</option>
+                                  <!-- <option value="rate">Rate </option>
+                                  <option value="multiplier">Multiplier </option> -->
                                 </select>
                               </td>
                               <td *ngIf="nonSalaryNature == 'rate'">
@@ -188,12 +195,12 @@
                               <td *ngIf="data.nature == 'multiplier' && valueUpdationThrough == 'NRQ'">{{data.multipier}}</td>
                               <td *ngIf="data.nature == 'rate' && valueUpdationThrough == 'SDM'">{{data.derivedRate}}</td>
                               <td *ngIf="data.nature == 'multiplier' && valueUpdationThrough == 'SDM'">{{data.derivedmultipier}}</td>
-                              <td>
-                                <span class="ml-1 mt-2">
+                              <td >
+                                <span class="ml-1 mt-2" *ngIf="!editFlag">
                                   <span class="ml-1 mt-2">
-                                    <!-- <i class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel"
+                                    <i class="fa fa-times font-20 text-red cursor-pointer" tooltip="Cancel"
                                       (click)="removeNRQType(index)">
-                                    </i> -->
+                                    </i>
                                   </span>
                                 </span>  
                               </td>
