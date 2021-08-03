@@ -37,8 +37,8 @@
                         <div class="col-md-3">
                             <label class="custom-control custom-checkbox checkbox-center mt-30">
                              <input type="checkbox" formControlName="default"   class="custom-control-input"
-                              name="default" [value]="false"
-                              [ngClass]="{'is-invalid' : form.get('default').status == 'INVALID'}"/>
+                              name="default" 
+ />
                              <span class="custom-control-label">Default</span>
                                          </label>
                         </div>
@@ -94,7 +94,9 @@
         <div class="row mb-10">
             <div class="col-md-8">
                 <p-table [value]="userGridData" [(selection)]="selecteduserGridData" dataKey="id" styleClass="p-datatable-userGridData" [rowHover]="true"
-                [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                totalRecords={{userGridData.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
                     <ng-template pTemplate="header" >
                         <tr>
                             <th class="wd-10 text-center">
@@ -164,6 +166,7 @@
         <div class="card mb-0">
             <div class="card-body">
                 <div class="row clearfix">
+                   
                     <div class="col-md-4">
                         <label class="form-label">User Group</label>
                         <input type="text" class="form-control" [(ngModel)]="userGroupName" disabled>
@@ -173,7 +176,10 @@
 
                     </div>
                     <div class="col-md-4">
-                        <div class="input-icon mb-3">
+                        <div class="form-group mt-20">
+
+                            <div class="input-group">
+                                  <div class="input-icon mb-3">
                             <span class="p-input-icon-left p-ml-auto">
                               <i
                                 class="pi pi-search"
@@ -191,7 +197,9 @@
                                 placeholder="Search keyword"
                               />
                             </span>
-                          </div>
+                         </div>
+                         </div>
+                         </div>
                     </div>
                 </div>
                 <div class="row">
@@ -211,11 +219,14 @@
                                 <tr>
                                     <th class="wd-10 text-center">
                                         <label class="custom-control custom-checkbox checkbox-center" >
-                                        <input type="checkbox"   class="custom-control-input" name="select"/> 
+                                        <input type="checkbox"  (change) ="selectAll($event.target)"  class="custom-control-input" name="select"/> 
                                         <span class="custom-control-label"></span>
                                   </label>
 
                                     </th>
+                                    <!-- <th style="width: 3rem">
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                      </th> -->
                                     <th class="wd-25">
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                             Group Code &nbsp;
@@ -248,15 +259,21 @@
 
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-assigndata | filter:searchText>
+                            <ng-template pTemplate="body" let-assigndata let-rowIndex="rowIndex">
                                 <tr class="p-selectable-row">
                                     <td class="text-center">
                                         <label class="custom-control custom-checkbox checkbox-center">
                                       <input type="checkbox" [checked]="assigndata.active"  class="custom-control-input" name="select" 
-                                      (click)="assignuserGrpData(assigndata)" /> <span class="custom-control-label"></span>
+                                      (click)="assignuserGrpData($event.target,assigndata)"
+                                       /> <span class="custom-control-label"></span>
                                       </label>
 
                                     </td>
+                                    <!-- <td>
+                                        <p-tableCheckbox [value]="assigndata" 
+                                        (click)="assignuserGrpData(e.checked,assigndata)" #e>
+                                      </p-tableCheckbox>
+                                      </td> -->
                                     <td>{{assigndata.companyGroupCode}}</td>
                                     <td>{{assigndata.shortName}}</td>
                                     <td>{{assigndata.companyGroupName}}</td>
@@ -381,6 +398,6 @@ Available</span>
     </div>
     <div class="modal-footer">
         <!-- <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-3"><b><i class="fa fa-save"></i></b> Save</button> -->
-        <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" (click)="modalRef.hide()">close</button>
+        <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" (click)="modalRef.hide()"><b><i class="fa fa-save"></i></b>Close</button>
     </div>
 </ng-template>

@@ -32,6 +32,9 @@ export class UserGroupComponent implements OnInit {
   employeeMasterId: any;
   companyGroupMasterId: any;
   companyMasterData: any[]=[];
+  assigndata: any = [];
+  selectedAssignData: any[];
+  selectedAllFlag: boolean = false;
  // userData: unknown;
 
   constructor(private modalService: BsModalService,
@@ -146,7 +149,9 @@ editUserGroup(summary){
     this.form.enable();
     this.form.get('groupName').disable();
     //this.form.controls['default'].setValue(true);
-    this.form.controls['default'].setValue(summary.default);
+    // this.form.controls['default'].setValue(summary.default);
+    
+
 
 //this.form.reset();
 
@@ -168,6 +173,7 @@ viewUserGroup(summary){
     this.form.reset();
     this.form.controls['active'].setValue(true);
     this.form.patchValue(summary);
+    this.form.controls['default'].setValue(summary.default);
 
     this.form.disable();
   }
@@ -210,29 +216,81 @@ this.modalRef = this.modalService.show(
               "active": ele.active
             })
            }
-        })
-        
+          
+        })  
       }
     });
   }
-  assignuserGrpData(assigndata){
-   this.asginUserGroup=[assigndata.companyGroupMasterId];
-  // this.companyMasterData  = []
-   this.companyGroupMasterId.forEach(element => {
-     if(element == assigndata.companyGroupMasterId){
-      this.companyMasterData.push(
-        {
-          "userGroupId": this.userGroupId,
-          "companyGroupMasterId":element,
-          "active": true
+  // assignuserGrpData(assigndata){
+  //  this.asginUserGroup=[assigndata.companyGroupMasterId];
+  // // this.companyMasterData  = []
+  //  this.companyGroupMasterId.forEach(element => {
+  //    if(element == assigndata.companyGroupMasterId){
+  //     this.companyMasterData.push(
+  //       {
+  //         "userGroupId": this.userGroupId,
+  //         "companyGroupMasterId":element,
+  //         "active": true
       
+  //     })
+  //    }
+     
+  //  });
+  //  console.log("selected company data: "+ JSON.stringify(this.companyMasterData))
+  // }
+
+// /* When clicked on checkedbox summary page/
+assignuserGrpData(event, assigndata) {
+    this.asginUserGroup=[assigndata.companyGroupMasterId];
+		if (event.checked) {
+			this.companyMasterData.push(assigndata)
+		} else {
+			if (this.companyMasterData.length > 0) {
+				this.companyMasterData.forEach((element, index) => {
+					if (element.companyGroupMasterId == assigndata.companyGroupMasterId) {
+						let ind = index;
+						this.companyMasterData.splice(ind, 1);
+					}
+				});
+			} else {
+				this.companyMasterData = []
+			}
+		}
+		 console.log("selectedEmpData:", JSON.stringify(this.companyMasterData))
+	}
+
+  
+  selectAll(event) {
+    console.log("selectAlll",this.selectedAllFlag)
+		this.companyMasterData = [];
+		 if (event.checked){
+      
+			this.selectedAllFlag = true;
+      console.log("notselectAlll",this.selectedAllFlag)
+			 this.assignGroupData.forEach(element =>{
+       // element.active =  true;
+        this.companyMasterData.push(
+          {
+            "userGroupId": this.userGroupId,
+            "companyGroupMasterId":element,
+            "active": true
+           })
+        
+
       })
      }
-     
-   });
-
-   console.log("selected company data: "+ JSON.stringify(this.companyMasterData))
-  }
+     else{
+      this.selectedAllFlag = false;
+      console.log("notselectAlll",this.selectedAllFlag)
+			this.companyMasterData = []
+     }
+    
+		// } else {
+		// 	this.selectedAllFlag = false;
+		// 	this.companyMasterData = []
+		// }
+		 console.log("selectedALLLLLLEmpData:", this.companyMasterData)
+	}
 
   saveAssignGroupData(){
     {

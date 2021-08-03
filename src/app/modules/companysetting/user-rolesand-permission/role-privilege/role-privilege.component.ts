@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { RolePrivilegeService } from './role-privilege.service';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
@@ -142,8 +142,8 @@ export class RolePrivilegeComponent implements OnInit {
          createdDateTime: new FormControl(''),
          lastModifiedBy: new FormControl(''),
          lastModifiedDateTime: new FormControl(''),
-         userName: new FormControl(''),
-         roleName: new FormControl(''),
+         userName: new FormControl(),
+         roleName: new FormControl(null, Validators.required),
 
 
       })
@@ -2057,7 +2057,7 @@ export class RolePrivilegeComponent implements OnInit {
 
 
    getSelectedRole() {
-      this.getApplicationMenus();
+     // this.getApplicationMenus();
       // this.getRolePrivilegeSummaryByUserRoleId();
    }
 
@@ -2385,7 +2385,7 @@ export class RolePrivilegeComponent implements OnInit {
                      "formFieldId": fieldmenu.formFieldId,
                      "hide": ele.hide,
                      "readAccess": true,
-                     "writeAccess": ele.modifyAccess,
+                     "writeAccess": ele.writeAccess,
                      "modifyAccess": ele.modifyAccess,
                      "isActive": true
                   })
@@ -2401,7 +2401,7 @@ export class RolePrivilegeComponent implements OnInit {
    }
 
 
-   /** single Fields checked uncheked read */
+   /** single Fields checked uncheked write */
    checkeUncheckSingleWriteFields(fieldmenu, event) {
 
       // console.log("fieldmenu: " + JSON.stringify(fieldmenu))
@@ -2496,15 +2496,15 @@ export class RolePrivilegeComponent implements OnInit {
 
          if (this.SelectedDataFields.length > 0) {
             this.SelectedDataFields.forEach((fieldLevelPrivilegeData, index) => {
-               if (fieldLevelPrivilegeData.applicationMenusId == fieldmenu.applicationMenusId) {
+               if (fieldLevelPrivilegeData.formFieldId == fieldmenu.formFieldId) {
                   let ind = index;
                   this.SelectedDataFields.splice(ind, 1, {
                      // "rolePrivilegeMatrixId":fieldLevelPrivilegeData.rolePrivilegeMatrixId,
                      "fieldLeveleAccessMatrixId": fieldLevelPrivilegeData.fieldLeveleAccessMatrixId,
                      "formFieldId": fieldmenu.formFieldId,
-                     "hide": 0,
-                     "readAccess": false,
-                     "writeAccess": false,
+                     "hide": fieldLevelPrivilegeData.hide,
+                     "readAccess": fieldLevelPrivilegeData.readAccess,
+                     "writeAccess": fieldLevelPrivilegeData.writeAccess,
                      "modifyAccess": true,
                      "isActive": true
                   })
@@ -2536,7 +2536,7 @@ export class RolePrivilegeComponent implements OnInit {
             })
          }
          this.fieldAllMasterData.forEach((ele: any, index) => {
-            if (ele.applicationMenuId == fieldmenu.parentMenuId) {
+            if (ele.formFieldId == fieldmenu.parentMenuId) {
 
                if (ele.childItems != null) {
                   ele.childItems.forEach(element => {
@@ -2548,6 +2548,7 @@ export class RolePrivilegeComponent implements OnInit {
                }
             }
          });
+
 
 
       } else {
@@ -2570,14 +2571,7 @@ export class RolePrivilegeComponent implements OnInit {
                });
 
             }
-            if (ele.childItems != null) {
-               ele.childItems.forEach(element => {
-                  if (element.applicationMenuId == fieldmenu.applicationMenuId) {
-                     element.modifyFlag = false
-                     element.modifyAccess = false
-                  }
-               })
-            }
+           
          })
       }
 
@@ -2589,16 +2583,17 @@ export class RolePrivilegeComponent implements OnInit {
 
          if (this.SelectedDataFields.length > 0) {
             this.SelectedDataFields.forEach((fieldLevelPrivilegeData, index) => {
-               if (fieldLevelPrivilegeData.applicationMenusId == fieldmenu.applicationMenusId) {
+
+               if (fieldLevelPrivilegeData.formFieldId == fieldmenu.formFieldId) {
                   let ind = index;
                   this.SelectedDataFields.splice(ind, 1, {
-                     //  "rolePrivilegeMatrixId":fieldLevelPrivilegeData.rolePrivilegeMatrixId,
+                     // "rolePrivilegeMatrixId":fieldLevelPrivilegeData.rolePrivilegeMatrixId,
                      "fieldLeveleAccessMatrixId": fieldLevelPrivilegeData.fieldLeveleAccessMatrixId,
                      "formFieldId": fieldmenu.formFieldId,
-                     "hide": 0,
-                     "readAccess": false,
-                     "writeAccess": false,
-                     "modifyAccess": false,
+                     "hide":0,
+                     "readAccess": fieldLevelPrivilegeData.readAccess,
+                     "writeAccess": fieldLevelPrivilegeData.writeAccess,
+                     "modifyAccess": fieldLevelPrivilegeData.modifyAccess,
                      "isActive": true
                   })
                } else {
@@ -2645,36 +2640,30 @@ export class RolePrivilegeComponent implements OnInit {
 
       } else {
          this.fieldAllMasterData.forEach((ele: any) => {
-            if (ele.applicationMenuId == fieldmenu.parentMenuId) {
-               this.SelectedDataFields.forEach((item, index) => {
-                  if (item.menuId == fieldmenu.parentMenuId) {
-                     let ind = index;
-                     this.SelectedData.splice(ind, 1, {
-                        //  "rolePrivilegeMatrixId":fieldmenu.rolePrivilegeMatrixId,
-                        "fieldLeveleAccessMatrixId": fieldmenu.fieldLeveleAccessMatrixId,
-                        "formFieldId": fieldmenu.formFieldId,
-                        "hide": ele.hide,
-                        "readAccess": ele.readAccess,
-                        "writeAccess": ele.writeAccess,
-                        "modifyAccess": ele.modifyAccess,
-                        "isActive": true
-                     })
-                  }
-               });
-
-            }
-            if (ele.childItems != null) {
-               ele.childItems.forEach(element => {
-                  if (element.applicationMenuId == fieldmenu.applicationMenuId) {
-                     element.hideFlag = false
-                     element.hideAccess = false
-                  }
-               })
-            }
+            this.SelectedDataFields.forEach((item, index) => {
+               if (item.formFieldId == fieldmenu.formFieldId) {
+                  let ind = index;
+                  this.SelectedDataFields.splice(ind, 1, {
+                     // "rolePrivilegeMatrixId":fieldmenu.rolePrivilegeMatrixId,
+                     "fieldLeveleAccessMatrixId": fieldmenu.fieldLeveleAccessMatrixId,
+                     "formFieldId": fieldmenu.formFieldId,
+                     "hide": true,
+                     "readAccess": ele.readAccess,
+                     "writeAccess": ele.writeAccess,
+                     "modifyAccess": ele.modifyAccess,
+                     "isActive": true
+                  })
+               }
+            });
+          
          })
       }
 
    }
+
+
+
+
 
    onSelectFieldLevel(template1: TemplateRef<any>, menu) {
       this.modalRef = this.modalService.show(

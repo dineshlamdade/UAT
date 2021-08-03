@@ -19,7 +19,7 @@
                         <div class="col-md-3">
                             <label class="form-label">User Group</label>
                             <select name="groupName" class="form-control custom-select" formControlName="userGroupId"
-                            >
+                            [disabled]="butDisabled === 'disabled'" >
                             <option *ngFor="let groupName of groupNameList"
                             [value]="groupName.value">
                             {{groupName.label}}
@@ -62,7 +62,8 @@
                     <div class="row mt-10">
                         <div class="col-md-3">
                             <label class="custom-control custom-checkbox checkbox-center mt-30">
-                  <input type="checkbox"  class="custom-control-input" name="default"  /> <span class="custom-control-label">Default</span>
+                  <input type="checkbox"  class="custom-control-input" name="default" formControlName = "default"  /> 
+                  <span class="custom-control-label">Default</span>
                                          </label>
                         </div>
 
@@ -122,7 +123,10 @@
         </div>
         <div class="row mb-10">
             <div class="col-md-8">
-                <p-table [value]="masterGridData"  [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                <p-table [value]="masterGridData"  [paginator]="true" [rows]="10" 
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                totalRecords={{masterGridData.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
                     <ng-template pTemplate="header">
                         <tr>
                             <th class="wd-10 text-center">

@@ -39,6 +39,7 @@ export class UserRoleComponent implements OnInit {
   companyGroupName: any;
   comapnyGroupNamesData: any[];
   companyGroupMasterIdArray: any[];
+  butDisabled: string;
 
   constructor(private modalService: BsModalService,
     private service: UserRolesPermissionService,
@@ -83,7 +84,7 @@ export class UserRoleComponent implements OnInit {
       roleName: new FormControl(null, Validators.required),
       companyGroupMasterId: new FormControl(),
       roleDescription: new FormControl(null, Validators.required),
-      default: new FormControl(false),
+      default: new FormControl(''),
       active: new FormControl(true),
       remark: new FormControl(null),
 
@@ -152,6 +153,8 @@ onSelectCompanyName(companyGroupMasterId){
           this.onPageLoad();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
+         
+          this.form.reset();
 
         }
 
@@ -224,7 +227,7 @@ console.log(this.companyGroupMasterId);
 
 
   edit(summary, userGroupId: number) {
-
+  
     this.companyGroupMasterId =summary.companyGroupMasterId;
     this.groupNameList = []
     this.service.getUserGroupForRoleGroup(this.companyGroupMasterId).subscribe((res) => {
@@ -244,6 +247,8 @@ console.log(this.companyGroupMasterId);
    this.userGroupId = userGroupId;
   this.userGroupId=summary.userGroupId
    this.form.patchValue(summary)
+   this.form.controls['default'].setValue(summary.default);
+   this.form.get('roleName').disable();
    this.isSaveAndReset = false;
    this.showButtonSaveAndReset = true;
    this.form.enable();
@@ -254,14 +259,28 @@ console.log(this.companyGroupMasterId);
 
   }
   view(summary) {
-   
+    this.companyGroupMasterId =summary.companyGroupMasterId;
+    this.groupNameList = []
+    this.service.getUserGroupForRoleGroup(this.companyGroupMasterId).subscribe((res) => {
+      this.userGroupName = res.data.results;
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.groupName,
+          value: element.userGroupId,
+        };
+        this.groupNameList.push(obj);
+      });
+      console.log("groupName",this.groupNameList)
+    },(error)=>{console.log(error)},()=>{
+      
+    this.butDisabled = "";
     this.isSaveAndReset = false;
     this.showButtonSaveAndReset = false;
     this.form.reset();
     this.form.controls['active'].setValue(true);
     this.form.patchValue(summary);
      this.form.disable();
-
+    });
   }
   cancelView() {
     this.userRoleId = 0;

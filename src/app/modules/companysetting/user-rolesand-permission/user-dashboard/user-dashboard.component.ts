@@ -365,14 +365,8 @@ export class UserDashboardComponent implements OnInit {
       'roleName': '',
       'groupName': 'element.groupName'
      })
-
-   
-
-    console.log("Row Data is: "+ JSON.stringify(this.row))
-     
-  
-
-    }else{
+console.log("Row Data is: "+ JSON.stringify(this.row))
+     }else{
       this.saveAssignDatabyEmployee.forEach((element,index) => {
         if(element.globalUserMasterId == row.globalUserMasterId)
         {
@@ -638,12 +632,12 @@ viewSummary(template1:TemplateRef<any>,summarydata,globalUserMasterId) {
 
   
     this.service.employeeRoleAssignmentDashboard(this.subId).subscribe(res =>{
+      console.log(res.data)
         this.totalUsersCount = res.data.results[0].totalUsers
         this.activeUserCount = res.data.results[0].activeUsers
         this.lockUserCount = res.data.results[0].lockedUsers
         this.userGroupNameL =res.data.results[0].userGroups
         this.userRoleName = res.data.results[0].userRoles
-
         this.inactiveUserCount = res.data.results[0].deActiveUsers
     })
     
@@ -764,7 +758,7 @@ allGroupSelect(userGroupId) {
   this.summarydata = []
   summary.forEach(element => {
   if(element.userGroupId == this.selectedUserGroupId){
-  // console.log(element)
+   console.log(element)
    this.summarydata.push(element)  
 }
 
