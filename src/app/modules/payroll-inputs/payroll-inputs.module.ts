@@ -42,6 +42,8 @@ import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-num
 import { SdmComponent } from './sdm/sdm.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ChartsModule } from 'ng2-charts';
+import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
      NonRecurringDashboardComponent,
      TwoDigitDecimaNumberDirective,
      SdmComponent,
-     SdmStepperComponent
+     SdmStepperComponent,
+     EllipsisPipe
     ],
   imports: [
     CommonModule,
@@ -93,7 +96,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     InputTextModule,
     ProgressBarModule,
     PayrollInputsRoutingModule,
-   
+    ChartsModule
   ],
   providers: [ DatePipe],
   schemas: [

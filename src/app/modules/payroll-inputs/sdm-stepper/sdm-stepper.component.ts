@@ -5,8 +5,15 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { SdnCreationService } from '../sdn-creation.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import {EllipsisPipe} from './EllipsisPipe'
+import { ExcelserviceService } from '../../excel_service/excelservice.service';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 
+const EXCEL_TYPE =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+const EXCEL_EXTENSION = ".xlsx";
 
 @Component({
   selector: 'app-sdm-stepper',
@@ -116,18 +123,29 @@ export class SdmStepperComponent implements OnInit {
   derivedactive: boolean = true;
   ModuledropdownSettings:any;
   selectedSDMModule: any = [];
+  sdmForm1ActiveFlag: boolean = true;
+  moduleIdListd: any = '';
+  matrixTableData: any;
+  matrixsdmSourceCombinationList: any;
+  setPrevDisabled: boolean = false;
+  titleValue: string ='Source';
+  tempfieldType: any = [];
+  sourceValueCount: any;
+  excelData: any[];
+  header: any[];
 
-  constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, private toaster: ToastrService,private datepipe: DatePipe) {
+  constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, 
+    private toaster: ToastrService,private datepipe: DatePipe,private excelservice: ExcelserviceService) {
 
     this.sdmFormStep1 = this.formBuilder.group({
       "sdmMasterId": new FormControl(""),
     "groupCompanyId": new FormControl("1"),
-    "sdmName": new FormControl(""),
-    "sdmDescription": new FormControl(""),
-    "sourcePeriod": new FormControl(""),
-    "isActive": new FormControl("1"),
+    "sdmName": new FormControl("",Validators.required),
+    "sdmDescription": new FormControl("",Validators.required),
+    "sourcePeriod": new FormControl("",Validators.required),
+    "isActive": new FormControl("1",Validators.required),
     "sdmRemark": new FormControl(""),
-    "moduleIdList": new FormControl(""),
+    "moduleIdList": new FormControl("",Validators.required),
     "sdmSourceMasterFieldValueMappingDetailList": new FormControl([]),
     })
 
@@ -140,25 +158,32 @@ export class SdmStepperComponent implements OnInit {
     "sdmDerivedTableId": new FormControl("",Validators.required),
     "percentageOf": new FormControl("",Validators.required),
     "moduleIdList": new FormControl([],Validators.required),
-    "active": new FormControl(true,Validators.required),
+    "active": new FormControl(true),
     "sdmDerivedMasterRemark": new FormControl(""),
     })
 
-    if(localStorage.getItem('sdmFormStep1') != null){
-      let data = JSON.parse(localStorage.getItem('sdmFormStep1'))
-      this.sdmFormStep1.patchValue(data)
-      this.sdmSourceMasterFieldValueMappingDetailList = data.sdmSourceMasterFieldValueMappingDetailList
-      // this.sdmFormStep1.disable()
-      this.step1FormDisableFlag = true;
-      this.sourceTableList()
-      if(localStorage.getItem('tempsdmFormStep1') != null){
-        let tempdata = JSON.parse(localStorage.getItem('tempsdmFormStep1'))
-          this.tempSourceTable = tempdata
-        }
-    }
 
     if(localStorage.getItem('sdmMasterId') !=  null){
       this.sdmMasterId = localStorage.getItem('sdmMasterId')
+      if(localStorage.getItem('sdmFormStep1') != null){
+        let data = JSON.parse(localStorage.getItem('sdmFormStep1'))
+        this.sdmFormStep1.patchValue(data)
+        this.sdmSourceMasterFieldValueMappingDetailList = data.sdmSourceMasterFieldValueMappingDetailList
+        // this.sdmFormStep1.disable()
+        this.step1FormDisableFlag = true;
+        this.sourceTableList()
+        this.applicationModule()
+  
+        if(localStorage.getItem('tempsdmFormStep1') != null){
+          let tempdata = JSON.parse(localStorage.getItem('tempsdmFormStep1'))
+            this.tempSourceTable = tempdata
+          }   
+
+          if(localStorage.getItem('tempDerivedTable') != null){
+            let tempDerivedTableData = JSON.parse(localStorage.getItem('tempDerivedTable'))
+            this.tempDerivedTable = tempDerivedTableData
+          }
+      }
     }
   }
   
@@ -193,11 +218,37 @@ export class SdmStepperComponent implements OnInit {
 
   getStepper(value){
   this.stepperIndex = value
+
+  if(value == 0){
+    this.titleValue = 'Source'
+  }
+  if(value == 1){
+    this.titleValue = 'Source Combination'
+  }
+  if(value == 2){
+    this.titleValue = 'Derived'
+  }
+  if(value == 3){
+    this.titleValue = 'Matrix'
+  }
   }
 
   previous() {
     // alert(this.stepperIndex)
     this.stepperIndex = this.stepperIndex - 1;
+    
+    if(this.stepperIndex == 1){
+      this.titleValue = 'Source'
+    }
+    if(this.stepperIndex == 2){
+      this.titleValue = 'Source Combination'
+    }
+    if(this.stepperIndex == 3){
+      this.titleValue = 'Derived'
+    }
+    if(this.stepperIndex == 4){
+      this.titleValue = 'Matrix'
+    }
   }
 
   next() {
@@ -279,6 +330,23 @@ export class SdmStepperComponent implements OnInit {
       res => {
         this.moduleData = res.data.results;
 
+        if(localStorage.getItem('sdmFormStep1') != null){
+          let data = JSON.parse(localStorage.getItem('sdmFormStep1'))
+          let d :any;
+            data.moduleIdList.forEach(element => {
+              this.moduleData.forEach(ele => {
+                if(element == ele.applicationModuleId){
+                  d =[{
+                      'applicationModuleId': ele.applicationModuleId,
+                      'applicationModuleName': ele.applicationModuleName
+                  }]         
+                }
+              });
+            });
+            console.log(d)
+            this.moduleIdListd = d
+            //this.sdmFormStep1.controls['moduleIdList'].setValue(d)
+        }
         this.ModuledropdownSettings = {
           singleSelection: false,
           idField: 'applicationModuleId',
@@ -296,8 +364,20 @@ export class SdmStepperComponent implements OnInit {
   moduleSelectDataValue(event){
     this.selectedSDMModule.push(event.applicationModuleId)
     this.sdmFormStep1.controls['moduleIdList'].setValue(this.selectedSDMModule)
-
-    console.log("data: " + this.selectedSDMModule)
+    let d : any = [];
+    this.selectedSDMModule.forEach(element => {
+      this.moduleData.forEach(ele => {
+        if(element == ele.applicationModuleId){
+          d.push({
+              'applicationModuleId': ele.applicationModuleId,
+              'applicationModuleName': ele.applicationModuleName
+          })         
+        }
+      });
+    });
+      
+    this.moduleIdListd = d
+    //console.log("data: " + this.selectedSDMModule)
   }
 
   deModuleSelectValueListDataValue(event){
@@ -308,6 +388,19 @@ export class SdmStepperComponent implements OnInit {
       }
     });
     this.sdmFormStep1.controls['moduleIdList'].setValue(this.selectedSDMModule)
+    let d : any = [];
+    this.selectedSDMModule.forEach(element => {
+      this.moduleData.forEach(ele => {
+        if(element == ele.applicationModuleId){
+          d.push({
+              'applicationModuleId': ele.applicationModuleId,
+              'applicationModuleName': ele.applicationModuleName
+          })         
+        }
+      });
+    });
+      
+    this.moduleIdListd = d
   }
 
   onModuleSelectAllValueListDataValue(event){
@@ -315,6 +408,19 @@ export class SdmStepperComponent implements OnInit {
       this.selectedSDMModule.push(element.applicationModuleId)
     });
     this.sdmFormStep1.controls['moduleIdList'].setValue(this.selectedSDMModule)
+    let d : any = [];
+    this.selectedSDMModule.forEach(element => {
+      this.moduleData.forEach(ele => {
+        if(element == ele.applicationModuleId){
+          d.push({
+              'applicationModuleId': ele.applicationModuleId,
+              'applicationModuleName': ele.applicationModuleName
+          })         
+        }
+      });
+    });
+      
+    this.moduleIdListd = d
   }
   sourceTableList(){
     this.sdmService.sourceTableList().subscribe(
@@ -344,6 +450,14 @@ export class SdmStepperComponent implements OnInit {
     this.sdmService.fieldTypeList(this.sourceMasterId).subscribe(
       res => {
         this.fieldTypeData = res.data.results;
+        this.tempfieldType.forEach(ele => {
+          this.fieldTypeData.forEach((element,index) => {
+              if(element.sourceFieldId == ele){
+                let ind= index;
+                  this.fieldTypeData.splice(ind,1);
+              }
+            });  
+        });
         if(this.step1FormDisableFlag && flag == 0){
             this.fieldTypeData.forEach(ele => {
               this.sdmSourceMasterFieldValueMappingDetailList.forEach(element => {
@@ -364,7 +478,7 @@ export class SdmStepperComponent implements OnInit {
     this.sourceFieldTypeName = value[2]
     this.sdmService.valuesList(this.sourceTableId,this.sourceFieldId).subscribe(
       res => {
-        this.valueListData = res.data.results;
+       this.valueListData = res.data.results;
         // res.data.results.forEach(element => {
         //   this.valueListData.push({
         //     'label':element.sourceValueName,
@@ -387,6 +501,8 @@ export class SdmStepperComponent implements OnInit {
   }
 
   valueListDataValue(event){
+
+    console.log("event data: "+ event)
    // this.sourceValueId.push(event.itemValue)
    
    this.sourceValueId.push(event.sourceValueId)
@@ -460,8 +576,18 @@ export class SdmStepperComponent implements OnInit {
         "sourceValueIdList": this.sourceValueId   
     })
 
+    
+    if (this.sourceValueName.length > 0) {
+      this.sourceValueCount = this.sourceValueName.length
+      //alert(this.sourceValueName.length)
+    }
+    // return this.sourceValueId;
+
     this.sdmFormStep1.controls['sdmSourceMasterFieldValueMappingDetailList'].setValue(this.sdmSourceMasterFieldValueMappingDetailList)
-    localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
+
+   
+    
+  // localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
     localStorage.setItem('tempsdmFormStep1',JSON.stringify(this.tempSourceTable))
 
     this.tablevalue = ""
@@ -471,8 +597,16 @@ export class SdmStepperComponent implements OnInit {
     this.sourceValueName = []
     }
     else{
-      alert("Limit is 5")
+      this.toaster.success("","Can not exceed source more then 5")
     }
+    this.fieldTypeData.forEach((element,index) => {
+      if(element.sourceFieldId == this.sourceFieldId){
+        let ind= index;
+          this.fieldTypeData.splice(ind,1);
+      }
+    });
+
+    this.tempfieldType.push(this.sourceFieldId)
   }
 
   editSource(data,index){
@@ -584,7 +718,7 @@ export class SdmStepperComponent implements OnInit {
         localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
         this.sdmMasterId = res.data.results[0].sdmMasterId;
         localStorage.setItem('sdmMasterId', this.sdmMasterId)
-        this.sdmFormStep1.reset();
+        //this.sdmFormStep1.reset();
         // this.sdmMasterId = 9
         // alert(this.sdmMasterId)
         this.sourceCombination();
@@ -599,7 +733,7 @@ export class SdmStepperComponent implements OnInit {
         localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
         this.sdmMasterId = res.data.results[0].sdmMasterId;
         localStorage.setItem('sdmMasterId', this.sdmMasterId)
-        this.sdmFormStep1.reset();
+        //this.sdmFormStep1.reset();
         // this.sdmMasterId = 9
         // alert(this.sdmMasterId)
         this.sourceCombination();
@@ -774,6 +908,11 @@ export class SdmStepperComponent implements OnInit {
    this.derivedactive = true
   }
 
+  resetSdmForm1(){
+    this.sdmFormStep1.reset();
+    this.valueListData = ''
+  }
+
   resetsdmForm3(){
     this.sdmFormStep3.reset();
     this.derivedactive = true;
@@ -784,7 +923,7 @@ export class SdmStepperComponent implements OnInit {
         this.toaster.success("","Derived data saved successfully.")
         //this.sdmFormStep1.controls['sdmName'].disable();
         this.sdmFormStep3.reset();
-        
+        localStorage.setItem('tempDerivedTable',JSON.stringify(this.tempDerivedTable))
         //this.derivedMasterData = res.data.results;
        
     })
@@ -936,15 +1075,17 @@ export class SdmStepperComponent implements OnInit {
    this.selectedIndex = -1
   }
 
-
+  
   saveMatrix(){
     this.sdmService.saveMatrix(this.saveMatrixData).subscribe(res =>{
      this.toaster.success("","Matrix data saved successfully")
      this.saveMatrixData = []
      this.tempMatrixData = []
-
+     this.setPrevDisabled = true;
      this.getMatrixData();
-    //  localStorage.clear()
+
+    //   localStorage.clear()
+    //  this.summeryFlag = false
     })
   }
 
@@ -953,5 +1094,88 @@ export class SdmStepperComponent implements OnInit {
     this.sdmService.combinationMatrix(this.sdmMasterId).subscribe(res =>{
       this.matrixData = res.data.results;
      })
+  }
+
+  getMatrixTableData(){
+    this.sdmService.getMatrixData(this.sdmMasterId).subscribe(res =>{
+      this.matrixTableData = res.data.results[0].sourceFieldList;
+      this.matrixsdmSourceCombinationList = res.data.results[0].sdmSourceCombinationList
+     })
+  }
+
+  sdm1FormActive(event){
+  if(event.checked){
+    this.sdmForm1ActiveFlag = true;
+  }
+  else{
+    this.sdmForm1ActiveFlag = false;
+  }
+
+  this.sdmFormStep1.controls['isActive'].setValue(this.sdmForm1ActiveFlag)
+  }
+
+  
+  excelDownload(tableID, filename = '') {
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableID);
+    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    document.getElementById(tableID).style.border = "1px solid black";
+    // Specify file name
+    filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+    // Create download link element
+    downloadLink = document.createElement("a");
+
+    document.body.appendChild(downloadLink);
+
+    if (navigator.msSaveOrOpenBlob) {
+      var blob = new Blob(['\ufeff', tableHTML], {
+        type: dataType
+      });
+      navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      // Create a link to the file
+      downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+      // Setting the file name
+      downloadLink.download = filename;
+
+      //triggering the function
+      downloadLink.click();
+    }
+  }
+
+  /**
+   * Create Excel File Functionality
+   * @param json
+   * @param excelFileName
+   */
+   exportAsExcelFile(json: any[], excelFileName: string): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { data: worksheet },
+      SheetNames: ["data"]
+    };
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array"
+    });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+
+  /**
+   * Save Excel File
+   * @param buffer
+   * @param fileName
+   */
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    saveAs(
+      data,
+      fileName + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+    );
   }
 }

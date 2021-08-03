@@ -91,6 +91,10 @@ export class SdnCreationService {
   // 4th tab api (Matrix)
   saveMatrix(data):Observable<any>{
     return this.HttpClient.post<any>(this.url + `source-derived-matrix/combination-matrix/`,data);
-  }
-  
+  } 
+
+  // 4th tab api (Matrix) table
+  getMatrixData(sdmMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/source-combination/`+ sdmMasterId);
+  }   
 }
