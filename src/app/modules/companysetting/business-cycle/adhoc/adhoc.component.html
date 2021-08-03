@@ -14,7 +14,7 @@
                     <label class="form-label">Cycle Definition</label>
                     <div class="input-group">
                         <select class="form-control" formControlName = "businessCycleDefinitionId"
-                        (change) ="getCycleNameById($event.target.value)"
+                        (change) ="getCycleNameById($event.target.value)" 
                         [ngClass]="{'is-invalid' : adhocForm.get('businessCycleDefinitionId').status == 'INVALID'}">
                        
                         <option selected value=''>Select </option>
@@ -26,14 +26,15 @@
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3  form-group">
-                    <label class="form-label">Cycle</label>
-                    <div class="input-group">
+                    <label class="form-label">Cycle </label>
+                    <div class="input-group" *ngIf="adhocForm.controls.businessCycleDefinitionId.value == ''">
                         <select class="form-control" formControlName = "periodName" 
                          (change)="onChangeCycle($event.target.value)"
+                         disabled
                          [ngClass]="{'is-invalid' : adhocForm.get('periodName').status == 'INVALID'}"
                         >
                             <!-- <option>Select</option> -->
-                            <!-- <option value=""> APR 2020 </option>
+                            <!-- <option value=""> APR 2020 </option> 
                             <option value="">MAY 2020</option>
                             <option value="">JUNE 2020</option>
                             <option value="">JUL 202</option> -->
@@ -45,6 +46,24 @@
                         
                         </select>
                     </div>
+                    <div class="input-group" *ngIf="adhocForm.controls.businessCycleDefinitionId.value != ''">
+                      <select class="form-control" formControlName = "periodName" 
+                       (change)="onChangeCycle($event.target.value)"
+                       [ngClass]="{'is-invalid' : adhocForm.get('periodName').status == 'INVALID'}"
+                      >
+                          <!-- <option>Select</option> -->
+                          <!-- <option value=""> APR 2020 </option> 
+                          <option value="">MAY 2020</option>
+                          <option value="">JUNE 2020</option>
+                          <option value="">JUL 202</option> -->
+                          <option selected value=''>Select </option>
+                      <option *ngFor="let Cycle of cycleNameList" [value]="Cycle.periodId">
+                     {{Cycle.periodName}}
+                     </option>
+                      
+                      
+                      </select>
+                  </div>
                   </div>
                  <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Start Date</label>
@@ -57,7 +76,7 @@
                                             data-provide="datepicker" data-date-autoclose="true"
                                             class="form-control" (bsValueChange)="setPolicyEndDate()"
                                             placeholder="" bsDatepicker formControlName = "startDate"
-                                            [maxDate]="today" disabled
+                                            [maxDate]="today" disabled 
                                             [ngClass]="{'is-invalid' : adhocForm.get('startDate').status == 'INVALID'}"
                                            >
                                     </div>
@@ -74,8 +93,9 @@
                             data-provide="datepicker" data-date-autoclose="true"
                             class="form-control" (bsValueChange)="setPolicyEndDate()"
                             placeholder="" bsDatepicker formControlName = "endDate"
-                           [maxDate]="today" disabled
-                            [ngClass]="{'is-invalid' : adhocForm.get('endDate').status == 'INVALID'}"
+                           [maxDate]="today"disabled
+                           [ngClass]="{'is-invalid' : adhocForm.get('endDate').status == 'INVALID'}"
+                           
                            >
                     </div>
                   </div>
@@ -109,7 +129,7 @@
                 <div class="col-sm-6 col-md-3 form-group">
                   <label class="form-label">Cycle Name</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" formControlName = "cycleName"
+                    <input type="text" class="form-control" formControlName = "cycleName" disabled
                     [ngClass]="{'is-invalid' : adhocForm.get('cycleName').status == 'INVALID'}">
                   </div>
                 </div>
@@ -124,7 +144,10 @@
                         data-provide="datepicker" data-date-autoclose="true"
                         class="form-control" (bsValueChange)="setPolicyEndDate()"
                         placeholder="" bsDatepicker
-                        [maxDate]="today" formControlName = "fromDate"
+                        
+                       [minDate]="minStartDate"
+                       [maxDate]="maxStartDate"
+                        formControlName = "fromDate"
                         [ngClass]="{'is-invalid' : adhocForm.get('fromDate').status == 'INVALID'}">
                 </div>
                 </div>
@@ -139,7 +162,8 @@
                                           data-provide="datepicker" data-date-autoclose="true"
                                           class="form-control" (bsValueChange)="setPolicyEndDate()"
                                           placeholder="" bsDatepicker formControlName = "toDate"
-                                          [maxDate]="today"
+                                          [minDate]="minStartDate"
+                                           [maxDate]="maxStartDate"
                                           [ngClass]="{'is-invalid' : adhocForm.get('toDate').status == 'INVALID'}"
                                           >
                                   </div>
@@ -147,6 +171,7 @@
               <div class="col-sm-6 col-md-3 form-group">
                                 <label class="form-label">Copy From</label>
                                 <select class="form-control" formControlName = "copyFrom"
+                                 (change)="onChangeCopyFrom()"
                                 [ngClass]="{'is-invalid' : adhocForm.get('copyFrom').status == 'INVALID'}">
                                     <!-- <option>Select</option> -->
                                     <!-- <option value=""> Cycle 1 </option>
@@ -171,16 +196,74 @@
 
                    <div class="row">
                     <div class="col-5">
-                    <label for="" class="text-purple">Source</label>
-                    <span for="" class="text-purple" style="margin-left: 250px;">Count({{activeHeadList?.length}})</span>
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<label
+                        class="text-purple font-bold font-14 text-center"
+                        style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Source
+                      </label>
+                    <!-- <label for="" class="text-purple">Source</label>
+                    <span for="" class="text-purple" style="margin-left: 250px;">Count({{activeHeadList?.length}})</span> -->
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="col-1"> </div>
                 <div class="col-5">
-                    <label for="" class="text-purple">Destination</label>
-                    <span for="" class="mr-33  text-purple" style="margin-left: 230px;">Count({{targetProducts?.length}})</span>
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  <label
+                    class="text-purple font-bold font-14 text-center"
+                    style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Destination
+                  </label>
+                    <!-- <label for="" class="text-purple">Destination</label>
+                    <span for="" class="mr-33  text-purple" style="margin-left: 230px;">Count({{targetProducts?.length}})</span> -->
                 </div>
                 </div> 
+
+                <!-- <div class="row">
+                
+                  <div class="col-5">
+                    <label class="form-label font-bold font-14 text-purple">Total List :{{activeHeadList?.length}} &nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="margin-right:-20px;">Selected
+                        List :{{selectedUser?.length}} </span></label>
+                  </div>
+
+                  <div class="col-1"></div>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="col-5">
+                    <label class="form-label font-bold font-14 text-purple"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      Total List :{{targetProducts?.length}} &nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
+                      List :{{selectedUser2?.length}} </label>
+                  </div>
+                  
+                  </div>
+
+                  
+                -->
+
+                <div class="row">
+                  <div class="col-5">
+                    <label for="" class="text-purple font-bold font-14">Total List :{{activeHeadList?.length}}</label>
+                    <span for="" class="text-purple  font-bold font-14" style="margin-left: 250px;">Selected
+                      List :{{selectedUser?.length}}</span>
+                  </div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="col-1"> </div>
+                  <div class="col-5">
+                    <label for="" class="text-purple font-bold font-14">Total List :{{targetProducts?.length}}</label>
+                    <span for="" class="mr-33  text-purple font-bold font-14" style="margin-left: 250px;">Selected
+                      List :{{selectedUser2?.length}} </span>
+                  </div>
+                </div>
+
                <div class="row">
                
                 <div class="col-5">
@@ -268,19 +351,21 @@
                 </div>
            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="col-1" *ngIf="!viewupdateButton">                                
-                        <div class="row">
-                        <div class="col-md-12 mt-50">
-                        <button type="button" class="btn" (click)="lefttablePusg()"><i class="fa fa-chevron-right
+                        <div class="row mt-150">
+                        <div class="col-md-12 mt-10">
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="lefttablePusg()"><i class="fa fa-chevron-right
                             "></i></button>
                         </div>
                         <div class="col-md-12 mt-10">
-                        <button type="button" class="btn" (click)="righttablePusg()"><i class="fa fa-chevron-left
+                        <button type="button" class="btn btn-sm bg-teal-400" (click)="righttablePusg()"><i class="fa fa-chevron-left
                             "></i></button>
                         </div>
                         </div>
                         
                   
                  </div>
+
+                 
 
                 <div class="col-5">
                     <div class="card">            
@@ -579,9 +664,9 @@
                                     </td>
   
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.fromDate}}</label></td>
+                                            class="form-lable mb-0">{{user1.fromDate | date: 'dd-MMM-yyyy'}}</label></td>
                                     <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.toDate}}</label></td>
+                                            class="form-lable mb-0">{{user1.toDate | date: 'dd-MMM-yyyy'}}</label></td>
                                     <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0">{{user1.businessCycleDefinition.cycleName}}</label></td>
                                             <td class="bg-color-light_gray"><label
@@ -594,7 +679,7 @@
                                                   class="form-lable mb-0">{{user1.remark}}</label></td>
                                                   
                                           <td class="bg-color-light_gray text-center"><label
-                                            class="form-lable mb-0">{{user1.locked}}</label></td>
+                                            class="form-lable mb-0">{{user1.locked?'Yes':'No'}}</label></td>
                                               <!-- <i class="fa fa-lock font-18 " aria-hidden="true"></i></td> -->
                                           <td class="bg-color-light_gray">
                                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"
@@ -636,3 +721,13 @@
       </div>
     </div>
  
+<!-- 
+    data-provide="datepicker"
+                                                                                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                                                data-date-autoclose="true"
+                                                                                                placeholder="Date"
+                                                                                                bsDatepicker
+                                                                                                value="{{data.todate}}"
+                                                                                                class="form-control wd-120"
+                                                                                                [minDate]="startdate"
+                                                                                                [maxDate]="endDate" -->

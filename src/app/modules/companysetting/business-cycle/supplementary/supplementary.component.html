@@ -34,7 +34,9 @@
                   <label class="form-label">Cycle Name</label>
                   <div class="input-group">
                       <select class="form-control" (change)="onChangeCycle($event.target.value)"
-                      formControlName = "periodName">
+                      formControlName = "periodName" 
+                   [disabled] = "businessCycleDefinitionId == ''"
+                      [ngClass]="{'is-invalid' : supplementaryForm.get('periodName').status == 'INVALID'}">
                         <option selected value=''>Select </option>
                         <option *ngFor="let Cycle of cycleNameList" [value]="Cycle.periodId">
                           {{Cycle.periodName}}
@@ -110,7 +112,7 @@
                   <label class="form-label">Supp. Cycle Name
                   </label>
                   <div class="input-group">
-                    <input type="text" class="form-control" formControlName = "cycleName">
+                    <input type="text" class="form-control" formControlName = "cycleName" disabled>
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
@@ -252,8 +254,8 @@
                                     <div class="p-d-flex p-jc-between p-ai-center">
                                       Name
                                         <div class="Sort_Filter_Position">
-                                            <p-sortIcon field="periodName"></p-sortIcon>
-                                            <p-columnFilter type="text" field="periodName" display="menu"
+                                            <p-sortIcon field="oldPeriodName"></p-sortIcon>
+                                            <p-columnFilter type="text" field="oldPeriodName" display="menu"
                                                 class="p-ml-auto"></p-columnFilter>
                                         </div>
                                     </div>
@@ -279,7 +281,7 @@
                                             class="form-lable mb-0">{{user1.remark}}</label></td>
                                              
                                     <td class="bg-color-light_gray"><label
-                                                class="form-lable mb-0">{{user1.locked}}</label></td> 
+                                                class="form-lable mb-0">{{user1.locked?'Yes':'No'}}</label></td> 
                                           <td class="bg-color-light_gray">
                                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" 
                                               (click)="editData(user1)"aria-hidden="true"></i>&nbsp;

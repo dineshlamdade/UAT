@@ -56,7 +56,7 @@ export class EmployeesetComponent implements OnInit {
    this.empService.saveEmployeeSet(this.employeesetForm.value).subscribe((res : any)=>{
      
    // this.toaster.success('','Employee set saved successfully');
-   this.alertService.sweetalertMasterSuccess('','Employee set saved successfully');
+   this.alertService.sweetalertMasterSuccess('Success','Employee Set Saved Successfully');
    //this.employeeList = [];
     this.getSummaryData();
     this.employeesetForm.controls['empList'].setValue([]);
@@ -66,7 +66,7 @@ export class EmployeesetComponent implements OnInit {
    },error => {
     if(error.error.status.code == '400'){
       //this.toaster.error('', 'Duplicate Area Set Name' );
-       this.alertService.sweetalertError('Dulicate emplyeeset')
+       this.alertService.sweetalertError('Duplicate Employeeset')
     }
   }
    )
@@ -76,7 +76,7 @@ export class EmployeesetComponent implements OnInit {
   onUpdate() {
     this.empService.updateData(this.employeesetForm.value).subscribe((res=>{
      // this.toaster.success('',"Employee set updated successfully");
-     this.alertService.sweetalertMasterSuccess('','Employee set updated successfully');
+     this.alertService.sweetalertMasterSuccess('Success','Employee Set Updated Successfully');
       this.getSummaryData();
       //.employeeList = []
       this.serviceListData = [];
@@ -86,7 +86,7 @@ export class EmployeesetComponent implements OnInit {
     error => {
       if(error.error.status.code == '400'){
         //this.toaster.success( 'Duplicate Area Set Name' );
-        this.alertService.sweetalertError('Dulicate employeeset');
+       this.alertService.sweetalertError('Dulicate employeeset');
 
       }
     })

@@ -105,7 +105,7 @@ export class AreasetComponent implements OnInit {
           console.log(res);
          
           this.summaryData = res.data.results;
-          this.alertService.sweetalertMasterSuccess('','Area set saved successfully');
+          this.alertService.sweetalertMasterSuccess('Success','Area Set Saved Successfully');
 
        // this.toaster.success('','Area set saved succefully');
         this.areaList = [];
@@ -135,7 +135,7 @@ export class AreasetComponent implements OnInit {
   onUpdate(){
       this.areasetService.updateAreaSet(this.areasetForm.value).subscribe((res)=>{
       //this.toaster.success('','Area set updated succefully');
-      this.alertService.sweetalertMasterSuccess('','Employee set updated successfully');
+      this.alertService.sweetalertMasterSuccess('Success','Area Set Updated Successfully');
       this.getSummaryData();
       this.areasetForm.reset();
       this.areaList = [];

@@ -10,6 +10,7 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
   styleUrls: ['./supplementary.component.scss']
 })
 export class SupplementaryComponent implements OnInit {
+  show :boolean = true;
   cycleDefinitionList: Array<any> = [];
   periodNameList: Array<any> = [];
   supplementaryForm : FormGroup;
@@ -23,6 +24,8 @@ export class SupplementaryComponent implements OnInit {
   viewFormFlag: boolean = false;
   businessCycleDefinitionId: any;
   public hideUpdate : boolean = false;
+  supplimentary: any;
+  periodId: any;
   constructor(public supplementaryService : SupplementaryService,public fb : FormBuilder,public taoster:ToastrService,
     public alertService : AlertServiceService) { 
     this.supplementaryForm = new FormGroup({
@@ -41,11 +44,14 @@ export class SupplementaryComponent implements OnInit {
       endDate : new FormControl('')
 
     })
+    
   }
 
   ngOnInit(): void {
     this.getAllCycleDefinition();
     this.getSummaryData();
+
+    
   }
 
  onSubmit(){
@@ -53,10 +59,11 @@ export class SupplementaryComponent implements OnInit {
 
 console.log('Supplimentary  cylece',this.supplementaryForm.value);
 //debugger
-const periodNameList = this.cycleNameList.filter(element=>element.periodId == this.supplementaryForm.value.periodName)
+const periodNameList = this.cycleNameList.filter(element=>element.periodId == this.supplementaryForm.get('periodName').value)
 console.log('period name list is',periodNameList[0].periodName)
+let period = this.cycleNameList.find(x=>x.periodId==this.supplementaryForm.get('periodName').value)
 const data = [{
-businessCycleId:this.cycleNameList.find(x=>x.id==this.supplementaryForm.get('periodId').value),
+businessCycleId:period.id,
 //businessCycleId:2790,
 //businessCycleId : this.supplementaryForm.value.id,
  //periodName:this.supplementaryForm.value.periodName
@@ -69,7 +76,7 @@ console.log('data is',data);
 //console.log(this.supplementaryForm.value)
   this.supplementaryService.saveSupplementaryCycle(data).subscribe((res)=>{
    // this.taoster.success('','Saved successfully');
-   this.alertService.sweetalertMasterSuccess('','Supp cycle saved successfully');
+   this.alertService.sweetalertMasterSuccess('Success','Supplementary Cycle Saved Successfully');
 
     this.getSummaryData();
     this.cycleNameList = [];
@@ -99,8 +106,17 @@ console.log('data is',data);
     this.supplementaryService.getCycleNameById(id).subscribe((res)=>{
       this.cycleNameList = res.data.results;
       console.log( this.cycleNameList)
+      if(this.editFormFlag){
+        this.supplementaryForm.controls['periodName'].setValue(this.periodId);
+      }
     })
     console.log("this.cycleNameList:" + this.cycleNameList);
+    this.cycleNameList = [];
+    //clear the text
+    this.supplementaryForm.controls.periodName.reset();
+   this.supplementaryForm.controls.cycleName.reset();
+   this.supplementaryForm.controls.startDate.reset();
+   this.supplementaryForm.controls.endDate.reset();
   }
 
 
@@ -159,30 +175,36 @@ console.log('data is',data);
     this.supplementaryService.getSummaryData().subscribe((res)=>{
     console.log("result check",res);
     this.summarydata = res.data.results;
-    console.log(this.summarydata);
+    console.log('summary datas',this.summarydata);
   })
 }
 onUpdate(){
-//debugger;
-const periodNameList =this.cycleNameList.filter(element=>element.periodId == this.supplementaryForm.value.periodName)
- console.log('period name list is',periodNameList[0].periodName)
+  //debugger;
+let periodNameList =this.cycleNameList.filter(element=>element.periodId == this.supplementaryForm.get('periodName').value)
+// console.log('period name list is',periodNameList[0].periodName)
+ let period = this.cycleNameList.find(x=>x.periodId==this.supplementaryForm.get('periodName').value)
+ console.log('id is',period);
 const data = [{
-  businessCycleId:2796,
-  periodName:periodNameList[0].periodName,
+  
+  businessCycleId: this.businessCycleDefinitionId,
+  //businessCycleId:2796,
+  periodName: this.periodName,
+  //periodName:periodNameList[0].periodName,
  //periodName:this.supplementaryForm.controls['periodId'].value,
   //headMasterIds:this.headMasterIds,
-  supplimentary:this.supplementaryForm.value.supplimentary,
-  remark:this.supplementaryForm.value.remark
+  supplimentary:this.supplimentary,
+  remark:this.supplementaryForm.controls['remark'].value
 }]
 console.log('data is',data);
   this.supplementaryService.updateData(data).subscribe((res)=>{
   //this.taoster.success('','Updated');
-  this.alertService.sweetalertMasterSuccess('','Supp cycle updated successfully');
+  this.alertService.sweetalertMasterSuccess('Success','Supplementary Cycle Updated Successfully');
 
   this.getSummaryData();
   this.cycleNameList = [];
   this.editFormFlag = false;
    this.viewFormFlag = false;
+   this.supplementaryForm.reset()
   })
 }
 
@@ -193,6 +215,9 @@ formReset(){
     this.editFormFlag = false;
     this.viewFormFlag = false;
     this.supplementaryForm.enable();  
+    this.supplementaryForm.controls.startDate.disable()
+    this.supplementaryForm.controls.endDate.disable()
+    this.supplementaryForm.controls.cycleName.disable()
 }
 editData(data){
  // debugger;
@@ -202,8 +227,13 @@ editData(data){
   this.viewFormFlag = false;
  // this.supplementaryForm.reset();
   this.supplementaryForm.enable();
+ this.businessCycleDefinitionId=data.id;
+ this.periodName=data.periodName;
+ this.supplimentary=data.supplimentary;
+ this.periodId = data.periodId
  // this.supplementaryForm.patchValue(data);
-   this.supplementaryForm.controls['periodName'].patchValue(data.periodId);
+  this.supplementaryForm.controls['periodName'].patchValue(data.periodId);
+  // this.supplementaryForm.controls['periodName'].setValue(data.periodId);
   this.supplementaryForm.controls['cycleName'].setValue(data.periodName);
   //this.supplementaryForm.controls['cycleName'].patchValue(data.cycleName);
   this.supplementaryForm.controls['startDate'].patchValue(new Date(data.fromDate));
@@ -213,6 +243,14 @@ editData(data){
     if (cycleDef) {
       this.supplementaryForm.controls['businessCycleDefinitionId'].patchValue(cycleDef.id);
     }
+
+    this.supplementaryForm.controls['businessCycleDefinitionId'].disable();
+    this.supplementaryForm.controls['periodName'].disable();
+    this.supplementaryForm.controls['cycleName'].disable();
+    this.supplementaryForm.controls['startDate'].disable();
+    this.supplementaryForm.controls['endDate'].disable();
+
+
     // let cycleNm = this.cycleNameList.find(el => el.periodId === data.businessCycleDefinition.periodId);
     // if (cycleNm) {
     //   this.supplementaryForm.controls['periodId'].patchValue(cycleNm.periodId);
@@ -229,6 +267,7 @@ viewData(data){
   this.supplementaryForm.disable();
   this.supplementaryForm.patchValue(data);
   this.supplementaryForm.controls['periodName'].patchValue(data.periodId);
+  this.supplementaryForm.controls['periodName'].setValue(data.periodId);
   this.supplementaryForm.controls['cycleName'].setValue(data.periodName);
   this.supplementaryForm.controls['startDate'].patchValue(new Date(data.fromDate));
   this.supplementaryForm.controls['endDate'].patchValue(new Date(data.toDate));
