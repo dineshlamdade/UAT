@@ -17,7 +17,7 @@
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 form-group">
                         <label class="form-label">Area Set Name</label>
                         <input type="text" class="form-control" formControlName="areaSetName" maxlength="25"
-                          (keypress)="keyPressAlphaNumericWithCharacters($event)" placeholder="Enter area set name"
+                          (keypress)="keyPressAlphaNumericWithCharacters($event)" placeholder="Enter Area Set Name"
                           [ngClass]="{'is-invalid' : areasetForm.get('areaSetName').status == 'INVALID'}">
                         <!-- <small id="areaHelp" class="form-text text-muted errorMessageP"
                           *ngIf="!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.required">
@@ -40,7 +40,7 @@
 
                       <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                         <fieldset>
-                          <legend>Service</legend>
+                          <legend>Service Selection</legend>
                           <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                             <div class="form-group ">
 
@@ -67,14 +67,15 @@
                           <legend>Area Selection </legend>
 
                           <div class="row">
-
+                            <!-- [(ngModel)]="areaList"  -->
                             <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                               <div class="form-group ">
 
                                 <label class="form-label">Area</label>
                                 <p-multiSelect [options]="areaListData" class="multiselect-custom"
-                                  [virtualScroll]="true" 
-                                  [placeholder]="'Select Area'" [(ngModel)]="areaList" 
+                                  [virtualScroll]="true" formControlName = ""
+                                  [placeholder]="'Select Area'" 
+                                  [(ngModel)]="areaList" 
                                   [ngModelOptions]="{standalone: true}" 
                                  (onChange)="getArea(areaList,$event)"
                                  >
@@ -172,9 +173,10 @@
                       [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid || areaList.length == 0, 'btn-bg-green': !areasetForm.invalid}"><b>
                       
                       <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;  -->
+                      <!-- [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid || areaList.length == 0, 'btn-bg-green': !areasetForm.invalid}" -->
+                      <!-- [disabled] = "areasetForm.invalid"  -->
                       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
-                      [disabled] = "areasetForm.invalid" (click)="onSubmit()"
-                      [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid || areaList.length == 0, 'btn-bg-green': !areasetForm.invalid}"><b>
+                     (click)="onSubmit()"><b>
                       
                       <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp; 
                           <!-- [disabled] = "areasetForm.invalid" 
@@ -236,7 +238,7 @@
                             </th>
 
 
-                            <th rowspan="2" class="wd-4 text-center"> Action </th>
+                            <th rowspan="2" class="wd-4"> Action </th>
 
                           </tr>
 
@@ -261,6 +263,8 @@
                                 aria-hidden="true" (click)="editAreaSet(data)"></i>&nbsp;
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
                                 (click)="viewAreaSet(data)" aria-hidden="true"></i>&nbsp;
+                                <i class="fa fa-trash font-18 text-red cursor-pointer"
+                               aria-hidden="true" tooltip="Delete"></i>&nbsp;
 
                             </td>
                           </tr>

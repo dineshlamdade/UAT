@@ -144,7 +144,8 @@
                         data-provide="datepicker" data-date-autoclose="true"
                         class="form-control" (bsValueChange)="setPolicyEndDate()"
                         placeholder="" bsDatepicker
-                        
+                        (ngModelChange)="onFromDateChange()"
+
                        [minDate]="minStartDate"
                        [maxDate]="maxStartDate"
                         formControlName = "fromDate"
@@ -192,7 +193,12 @@
                <br>
                <fieldset>
                    <legend>Heads</legend>
-                   
+                   <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                    <input autocomplete="off" type="checkbox" class="custom-control-input"
+                      name="example-inline-checkbox1" checked
+                      formControlName = "arrear" />
+                    <span class="custom-control-label">Arrear </span>
+                  </label>
 
                    <div class="row">
                     <div class="col-5">
@@ -454,12 +460,12 @@
         </fieldset>
         <br>
         <div class="float-left d-flex justify-content ml-20">
-          <label class="custom-control custom-checkbox custom-control-inline pl-45">
+          <!-- <label class="custom-control custom-checkbox custom-control-inline pl-45">
             <input autocomplete="off" type="checkbox" class="custom-control-input"
               name="example-inline-checkbox1" checked
               formControlName = "arrear" />
             <span class="custom-control-label">Arrear </span>
-          </label>
+          </label> -->
         <!-- <input type="checkbox" checked class="mt-2" formControlName = "arrear">&nbsp; -->
         <!-- <label class="form-label formGroup mt-2 margin-right:30px;">Arrear</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
         <label class="form-label formGroup">Remark</label>&nbsp;
@@ -678,15 +684,16 @@
                                               <td class="bg-color-light_gray"><label
                                                   class="form-lable mb-0">{{user1.remark}}</label></td>
                                                   
-                                          <td class="bg-color-light_gray text-center"><label
+                                          <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0">{{user1.locked?'Yes':'No'}}</label></td>
+                                            <!-- <i [ngClass]="['fa', user.IsActive ? 'fa-lock' : 'fa-unlock']" aria-hidden="true"></i> -->
                                               <!-- <i class="fa fa-lock font-18 " aria-hidden="true"></i></td> -->
-                                          <td class="bg-color-light_gray">
-                                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"
+                                          <td class="bg-color-light_gray text-center">
+                                              <i *ngIf="!user1.locked" class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"
                                               tooltip="Edit" aria-hidden="true" (click)="editAreaSet(user1)"></i>&nbsp;
                                               <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"
                                               tooltip="View" (click)="viewAreaSet(user1)"></i>&nbsp;
-                                              <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                              <i *ngIf="!user1.locked" class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
                                           </td>
                                 </tr>
   

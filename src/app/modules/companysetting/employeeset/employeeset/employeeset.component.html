@@ -19,7 +19,7 @@
                         <label class="form-label">Emp. Set Name</label>
                         <input type="text" class="form-control" formControlName = "employeeSetName"
                         maxlength="25"
-                          (keypress)="keyPressAlphaNumericWithCharacters($event)" placeholder="Enter area set name"
+                          (keypress)="keyPressAlphaNumericWithCharacters($event)" placeholder="Enter Employee Set Name"
                           [ngClass]="{'is-invalid' : employeesetForm.get('employeeSetName').status == 'INVALID'}">
                         <!-- <small id="areaHelp" class="form-text text-muted errorMessageP"
                           *ngIf="!employeesetForm.valid &&employeesetForm.touched && employeesetForm.get('employeeSetName').errors?.required">
@@ -38,8 +38,8 @@
                         <label class="form-label">Emp. Code</label>
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
                         <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
-                           [(ngModel)] = "employeeList"
-                          [placeholder]="'Select Emp code'" formControlName = "empList"
+                           [(ngModel)] = "employeeList" [filter]="true" 
+                          [placeholder]="'Select Emp. code'" formControlName = "empList"
                           (onChange)="getArea(employeeList,$event)" 
                           [ngClass]="{'is-invalid' : employeesetForm.get('empList').status == 'INVALID'}">
                         </p-multiSelect>
@@ -155,7 +155,7 @@
                             </th>
 
 
-                            <th rowspan="2" class="wd-4 text-center"> Action </th>
+                            <th rowspan="2" class="wd-4"> Action </th>
 
                           </tr>
 
@@ -183,6 +183,7 @@
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
                               (click) = "viewEmployeeSet(data)"
                                 aria-hidden="true"></i>&nbsp;
+                                <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
 
                             </td>
                           </tr>

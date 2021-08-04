@@ -50,4 +50,8 @@ export class AdhocService{
     updateData(data):Observable<any>{
         return this.http.put<any>(this.apiUrl+ `business-cycle/update/`, data);
     }
+
+    deleteData(id : number):Observable<any>{
+        return this.http.delete<any>(this.apiUrl + `business-cycle/soft-delete/`+id)
+    }
 }

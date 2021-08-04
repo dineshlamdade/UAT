@@ -116,6 +116,36 @@
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
+                  <label class="form-label">From Date</label>
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text"><i
+                                  class="fa fa-calendar"></i></span>
+                      </div>
+                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                          data-provide="datepicker" data-date-autoclose="true"
+                          class="form-control" (bsValueChange)="setPolicyEndDate()"
+                          placeholder="" bsDatepicker formControlName = "fromDate"
+                          [maxDate]="today" disabled>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label class="form-label">To Date</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i
+                                class="fa fa-calendar"></i></span>
+                    </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                        data-provide="datepicker" data-date-autoclose="true"
+                        class="form-control" (bsValueChange)="setPolicyEndDate()"
+                        placeholder="" bsDatepicker formControlName = "toDate"
+                        [maxDate]="today" disabled>
+                </div>
+            </div>
+
+
+                <div class="col-sm-6 col-md-3">
                     <label class="form-label">Remark</label>
                     <div class="input-group">
                         <textarea value="" formControlName = "remark"></textarea>
@@ -201,6 +231,7 @@
                                           </div>
                                       </div>
                                   </th>
+                                  
                                  
                                   <th colspan="2">
                                       <div class="p-d-flex p-jc-between p-ai-center ml-50">
@@ -213,7 +244,7 @@
                                       </div>
                                   </th>
                                
-                                 
+                                  
                                              
                                   <th rowspan="2" >
                                       <div class="p-d-flex p-jc-between p-ai-center">
@@ -245,6 +276,8 @@
                                           </div>
                                       </div>
                                   </th>
+                                  
+                                 
                                 </tr>
                                 <tr>
                                   <th rowspan="2" class="wd-10">

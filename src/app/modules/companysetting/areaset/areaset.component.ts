@@ -45,7 +45,9 @@ export class AreasetComponent implements OnInit {
   selectedUser2: any[];
   selectedUser: any[];
 
-  areaList : any[];
+  areaList : Array<any>=[];
+  row: any;
+  data: any;
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
     private toaster : ToastrService, private primengConfig: PrimeNGConfig,
     public alertService : AlertServiceService) { 
@@ -59,7 +61,7 @@ export class AreasetComponent implements OnInit {
       serviceName : new FormControl(''),
       numberOfArea : new FormControl(''),
       isActive : new FormControl(1),
-
+      areaList : new FormControl(''),
       areaSetMasterDetailsList: new FormControl([]) 
     })
     //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;   
@@ -80,7 +82,7 @@ export class AreasetComponent implements OnInit {
   ngOnInit(): void {
      this.getServiceList();
      this.getSummaryData();
-
+    
   //    this.cities = [
   //     {name: 'New York', code: 'NY'},
   //     {name: 'Rome', code: 'RM'},
@@ -90,7 +92,12 @@ export class AreasetComponent implements OnInit {
   // ];
   }
 
-
+  // deleteRow(x){
+  //   var delBtn = confirm(" Do you want to delete ?");
+  //   if ( delBtn == true ) {
+  //     this.data.splice(x, 1 );
+  //   }   
+  // } 
 
   /**save and submit data also add data*/
   onSubmit(){
@@ -109,11 +116,13 @@ export class AreasetComponent implements OnInit {
 
        // this.toaster.success('','Area set saved succefully');
         this.areaList = [];
+        this.areaListData = [];
         this.getSummaryData();
         
         this.areasetForm.reset();
+      //  this.areasetForm.controls['areaList'].reset();
      
-        this.areaListData = [];
+      
         
         this.editFormFlag = false;
         this.viewFormFlag = false;
@@ -122,6 +131,7 @@ export class AreasetComponent implements OnInit {
         if(error.error.status.code == '400'){
           //this.toaster.success( 'Duplicate Area Set Name' );
           this.alertService.sweetalertError('Dulicate Areaset');
+          this.areasetForm.controls['areaSetName'].reset();
 
         }
       }
@@ -166,6 +176,7 @@ formReset(){
       this.viewFormFlag = false;
       this.areasetForm.enable();    
       this.hideRemarkDiv2 = false;
+      //this.areasetForm.get("areaSetMasterDetailsList").setValue([]);
       //this.areasetForm.get('isActive').setValue(1);
 }
 
@@ -311,6 +322,7 @@ let datatest = []
     this.areasetForm.controls['areaSetMasterDetailsList'].setValue(this.areaMaster);
   }
   
+
 
 }
 

@@ -55,7 +55,7 @@ export class AdhocComponent implements OnInit {
   adhocCycleListNew: any;
   headMasterIds: Array<any> = [];
   minStartDate: any;
-  maxStartDate: Date;
+  maxStartDate: any;
   editData: any;
   periodId: any;
  // fromtDate: string;
@@ -145,6 +145,7 @@ export class AdhocComponent implements OnInit {
     this.targetProducts.forEach(element=>{
       this.headMasterIds.push(element.headMasterId)
     })
+
     const periodNameList =this.cycleNameList.filter(element=>element.periodId==this.adhocForm.get('periodName').value);
     //console.log('period name list is',periodNameList[0].periodName)
     let period = this.cycleNameList.find(x=>x.periodId==this.adhocForm.get('periodName').value)
@@ -167,6 +168,7 @@ export class AdhocComponent implements OnInit {
       this.adhocService.updateData(data).subscribe((res)=>{
       //this.toaster.success('',"Updated successfully");
       this.alertService.sweetalertMasterSuccess('Success','Adhoc Cycle Updated Successfully');
+      this.adhocForm.controls['copyFrom'].enable();
       this.getSummaryData();
       this.targetProducts = [];
       this.cycleNameList = [];
@@ -263,9 +265,9 @@ export class AdhocComponent implements OnInit {
   console.log('value is',value);
   this.targetProducts=[];
   this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
-  
+ // this.activeHeadList = this.activeHeadList.filter(ar => !this.targetProducts.find(rm => rm.headMasterId == ar.headMasterId ))
 // this.targetProducts.push({
-
+//this.adhocForm.reset()
 // })
   }
 
@@ -466,6 +468,12 @@ export class AdhocComponent implements OnInit {
 
   }
 
+  onFromDateChange(){
+     
+     this.adhocForm.get('toDate').patchValue((this.adhocForm.get('fromDate').value));
+
+  }
+
 
   editAreaSet(data){
     console.log('result is',data);
@@ -478,9 +486,9 @@ export class AdhocComponent implements OnInit {
 
 
     this.businessCycleDefinitionId=data.id;
- this.periodName=data.oldPeriodName;
+   this.periodName=data.periodName;
 // this.supplimentary=data.supplimentary;
- this.periodId = data.periodId
+  this.periodId = data.periodId
  // this.adhocForm.get['businessCycleId'].setValue(data.businessCycleId);
  this.adhocForm.controls['periodName'].patchValue(data.periodId);
  this.adhocForm.controls['cycleName'].setValue(data.periodName);
@@ -489,7 +497,7 @@ export class AdhocComponent implements OnInit {
   this.adhocForm.controls['startDate'].patchValue(new Date(from.fromDate));
  // const to =new Date( this.cycleNameList.find(a=>a.periodId==data.periodId)[0].toDate);
   this.adhocForm.controls['endDate'].patchValue(new Date(from.toDate));
- }, 100);
+ }, 1000);
  
   this.adhocForm.controls['fromDate'].patchValue(new Date(data.fromDate));
   this.adhocForm.controls['toDate'].patchValue(new Date(data.toDate));
@@ -501,7 +509,7 @@ export class AdhocComponent implements OnInit {
     }
 
     //copy from
-    let period = this.adhocCycleList.find(x=>x.periodId== data.periodId) 
+    let period = this.adhocCycleList.find(x=>x.id== data.id) 
     if(period.awphgname != null){
       const value = period.awphgname.split(',');
     let copyHeadMaster = [];
@@ -523,6 +531,7 @@ export class AdhocComponent implements OnInit {
      this.adhocForm.controls['cycleName'].disable();
      this.adhocForm.controls['startDate'].disable();
      this.adhocForm.controls['endDate'].disable();
+     this.adhocForm.controls['copyFrom'].disable();
    //  this.adhocForm.controls['fromDate'].disable();
     // this.adhocForm.controls['toDate'].disable();
      
@@ -567,7 +576,7 @@ viewAreaSet(data){
     // }
 
     //copy from
-    let period = this.adhocCycleList.find(x=>x.periodId== data.periodId) 
+    let period = this.adhocCycleList.find(x=>x.id== data.id) 
     const value = period.awphgname.split(',');
     let copyHeadMaster = [];
     value.forEach(element => {
@@ -582,6 +591,14 @@ viewAreaSet(data){
     this.activeHeadList = this.activeHeadList.filter(ar => !this.targetProducts.find(rm => rm.headMasterId == ar.headMasterId ))
 
 }  
+
+deleteData(id){
+  console.log('deleted id id',id);
+  this.adhocService.deleteData(id).subscribe((res)=>{
+    this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+    this.getAllCycleDefinition();
+  })
+}
 
   setPolicyEndDate(){}
  
