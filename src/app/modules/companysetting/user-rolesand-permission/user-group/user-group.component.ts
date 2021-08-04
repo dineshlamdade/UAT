@@ -34,7 +34,8 @@ export class UserGroupComponent implements OnInit {
   companyMasterData: any[]=[];
   assigndata: any = [];
   selectedAssignData: any[];
-  selectedAllFlag: boolean = false;
+  
+  selectAllGroupFlag: boolean = false;
  // userData: unknown;
 
   constructor(private modalService: BsModalService,
@@ -240,57 +241,117 @@ this.modalRef = this.modalService.show(
   // }
 
 // /* When clicked on checkedbox summary page/
-assignuserGrpData(event, assigndata) {
-    this.asginUserGroup=[assigndata.companyGroupMasterId];
-		if (event.checked) {
-			this.companyMasterData.push(assigndata)
-		} else {
-			if (this.companyMasterData.length > 0) {
-				this.companyMasterData.forEach((element, index) => {
-					if (element.companyGroupMasterId == assigndata.companyGroupMasterId) {
-						let ind = index;
-						this.companyMasterData.splice(ind, 1);
-					}
-				});
-			} else {
-				this.companyMasterData = []
-			}
-		}
-		 console.log("selectedEmpData:", JSON.stringify(this.companyMasterData))
-	}
+// assignuserGrpData(event, assigndata) {
+//     this.asginUserGroup=[assigndata.companyGroupMasterId];
+// 		if (event.checked) {
+// 			this.companyMasterData.push(assigndata)
+// 		} else {
+// 			if (this.companyMasterData.length > 0) {
+// 				this.companyMasterData.forEach((element, index) => {
+// 					if (element.companyGroupMasterId == assigndata.companyGroupMasterId) {
+// 						let ind = index;
+// 						this.companyMasterData.splice(ind, 1);
+// 					}
+// 				});
+// 			} else {
+// 				this.companyMasterData = []
+// 			}
+// 		}
+// 		 console.log("selectedEmpData:", JSON.stringify(this.companyMasterData))
+// 	}
+
+  assignuserGrpData(assigndata,event){
+    // console.log("assigndata : "+ JSON.stringify(assigndata))
+    if(event.checked){
+      this.asginUserGroup=[assigndata.companyGroupMasterId];
+      // this.companyMasterData  = []
+       this.companyGroupMasterId.forEach(element => {
+         if(element == assigndata.companyGroupMasterId){
+          this.companyMasterData.push(
+            {
+              "userGroupId": this.userGroupId,
+              "companyGroupMasterId":element,
+              "active": true
+          
+          })
+         }
+         
+       });
+    }else{
+      if(this.companyMasterData.length > 0){
+        this.companyMasterData.forEach((element,index) => {
+         if(element.companyGroupMasterId == assigndata.companyGroupMasterId){
+           let ind = index;
+           this.companyMasterData.splice(ind,1)
+         }
+        })
+      }else{
+        this.companyMasterData = []
+      }
+     
+    }
+   
+
+   console.log("selected company data: "+ JSON.stringify(this.companyMasterData))
+  }
+  resetAssignGroup(){
+    this.companyMasterData = []
+  }
 
   
-  selectAll(event) {
-    console.log("selectAlll",this.selectedAllFlag)
-		this.companyMasterData = [];
-		 if (event.checked){
+  // selectAll(event) {
+  //   console.log("selectAlll",this.selectedAllFlag)
+	// 	this.companyMasterData = [];
+	// 	 if (event.checked){
       
-			this.selectedAllFlag = true;
-      console.log("notselectAlll",this.selectedAllFlag)
-			 this.assignGroupData.forEach(element =>{
-       // element.active =  true;
+	// 		this.selectedAllFlag = true;
+  //     console.log("notselectAlll",this.selectedAllFlag)
+	// 		 this.assignGroupData.forEach(element =>{
+  //      // element.active =  true;
+  //       this.companyMasterData.push(
+  //         {
+  //           "userGroupId": this.userGroupId,
+  //           "companyGroupMasterId":element,
+  //           "active": true
+  //          })
+        
+
+  //     })
+  //    }
+  //    else{
+  //     this.selectedAllFlag = false;
+  //     console.log("notselectAlll",this.selectedAllFlag)
+	// 		this.companyMasterData = []
+  //    }
+    
+	// 	// } else {
+	// 	// 	this.selectedAllFlag = false;
+	// 	// 	this.companyMasterData = []
+	// 	// }
+	// 	 console.log("selectedALLLLLLEmpData:", this.companyMasterData)
+	// }
+  selectAll(event){
+    // assignGroupData
+    if(event.checked){
+      this.assignGroupData.forEach((element,index)=>{
         this.companyMasterData.push(
           {
             "userGroupId": this.userGroupId,
-            "companyGroupMasterId":element,
+            "companyGroupMasterId":element.companyGroupMasterId,
             "active": true
-           })
         
-
+        })
       })
-     }
-     else{
-      this.selectedAllFlag = false;
-      console.log("notselectAlll",this.selectedAllFlag)
-			this.companyMasterData = []
-     }
-    
-		// } else {
-		// 	this.selectedAllFlag = false;
-		// 	this.companyMasterData = []
-		// }
-		 console.log("selectedALLLLLLEmpData:", this.companyMasterData)
-	}
+
+      this.selectAllGroupFlag = true;
+    }
+    else{
+      this.companyMasterData = []
+      this.selectAllGroupFlag = false;
+    } 
+
+    console.log("selected all company data: "+ JSON.stringify(this.companyMasterData))
+  }
 
   saveAssignGroupData(){
     {
