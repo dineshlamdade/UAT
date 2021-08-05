@@ -133,6 +133,10 @@ export class SdmStepperComponent implements OnInit {
   sourceValueCount: any;
   excelData: any[];
   header: any[];
+  copyFromFlag: boolean = false;
+  selectedFromDateForSave: any;
+  selectedToDateForSave: any;
+  copyToFlag: boolean = false;
 
   constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, 
     private toaster: ToastrService,private datepipe: DatePipe,private excelservice: ExcelserviceService) {
@@ -194,10 +198,15 @@ export class SdmStepperComponent implements OnInit {
       { SrNo: '1', DerivedName: 'grp', Module: 'AAA', TableName: 'B', FieldName: 'Hold', DerivedType: 'C', JobFieldType: 'D', Percentageof: 'E' },
 
     ];
+    
     this.users2 = [
-      { Source: '1', Derived: 'grp', DateRange: 'AAA', Action: 'B' },
-
+      { headId: 1 ,Payroll: 'PA1', Grade: 'G1', Department: 'IT', From: '1', To: 10000, Value: '1',fromDate:'',toDate:'' },
+      
+{headId: 2 , Payroll: 'PA1', Grade: 'grp', Department: 'Dep1', From: '0', To: 1000, Value: '1' ,fromDate:'',toDate:''},
+{ headId: 3 ,Payroll: 'PA1', Grade: 'G2', Department: 'Dep2', From: '10', To: 100000, Value: '1',fromDate:'',toDate:'' },
+{headId: 4 , Payroll: 'PA1', Grade: 'G3', Department: 'Dep3', From: '1000', To: 100000, Value: '1',fromDate:'' ,toDate:''},
     ];
+
     this.users3 = [
       { Select: '1', PayrollArea: 'grp', Department: 'AAA', Grade: 'B', SBU: 'rsg', Status: 'gdf' },
 
@@ -1113,6 +1122,34 @@ export class SdmStepperComponent implements OnInit {
 
   this.sdmFormStep1.controls['isActive'].setValue(this.sdmForm1ActiveFlag)
   }
+
+
+  getFromDateForSave(event,data,index){
+   this.selectedFromDateForSave = event
+  }
+
+  getToDateForSave(event,data,index){
+    this.selectedToDateForSave = event
+   }
+
+  /** Copy To From Date TO All */
+	copyFromDateToAll(data,index) {
+		this.copyFromFlag = !this.copyFromFlag
+		if (!this.copyFromFlag) {
+      
+			this.users2.forEach(element =>{
+        if (parseInt(element.headId) == parseInt(data.headId)) {
+          // alert('here')
+					element.fromDate = this.selectedFromDateForSave
+          element.toDate = this.selectedToDateForSave
+          this.copyFromFlag = true
+				}
+      })
+		}else{
+      this.toaster.warning("From Date copied!")
+    }
+	}
+
 
   
   excelDownload(tableID, filename = '') {

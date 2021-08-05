@@ -52,19 +52,11 @@
 
 
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">Sr. No.
-
-                                                                    <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="date"></p-sortIcon>
-                                                                        <p-columnFilter type="date" field="date"
-                                                                            display="menu" class="p-ml-auto">
-                                                                        </p-columnFilter>
-                                                                    </div>
-                                                                </div>
+                                                                Sr. No.
                                                             </th>
 
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">Code
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">Code
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -79,7 +71,7 @@
 
 
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">
                                                                     Description
 
                                                                     <div class="Sort_Filter_Position">
@@ -94,7 +86,7 @@
 
 
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">Module
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">Module
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -107,13 +99,13 @@
 
                                                             <th colspan="5" class="wd-8 text-center">
                                                                 <div class="p-d-flex p-jc-between p-ai-center"
-                                                                    style="margin-left: 200px;">Source
+                                                                    style="margin-left: 330px;">Source
 
 
                                                                 </div>
                                                             </th>
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">Range
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-35">Range
                                                                     applicable
 
 
@@ -126,7 +118,7 @@
                                                                 </div>
                                                             </th>
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">No. of
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-35">No. of
                                                                     Derived
 
                                                                     <div class="Sort_Filter_Position">
@@ -155,7 +147,7 @@
                                                         </tr>
                                                         <tr>
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">1
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">1
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -166,7 +158,7 @@
                                                                 </div>
                                                             </th>
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">2
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">2
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -177,7 +169,7 @@
                                                                 </div>
                                                             </th>
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">3
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">3
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -188,7 +180,7 @@
                                                                 </div>
                                                             </th>
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">4
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">4
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -199,7 +191,7 @@
                                                                 </div>
                                                             </th>
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center">5
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">5
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -498,7 +490,7 @@
 
                                                     <div class="col-10">
                               
-                                                      <p-table [value]="users1" [paginator]="true" [rows]="50" style="height: 100%"
+                                                      <p-table [value]="users1" [paginator]="true" [rows]="50" 
                                                       
                                                       [showCurrentPageReport]="true"
                                                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -506,22 +498,14 @@
                                                       >
                                                         <ng-template pTemplate="header">
                                                           <tr>
-                              
+                                                           
                               
                                                             <th rowspan="2" class=" text-center">
-                                                              <div class="p-d-flex p-jc-between p-ai-center text-center">
-                                                                <span style="text-align: center !important;">Sr. No.</span>
-                              
-                                                                <div class="Sort_Filter_Position">
-                                                                  <p-sortIcon field="SrNo" pSortableColumn="SrNo"></p-sortIcon>
-                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
-                                                                  </p-columnFilter>
-                                                                </div>
-                                                              </div>
+                                                              Sr. No.
                                                             </th>
                               
                                                             <th rowspan="2" class="text-center">
-                                                              <div class="p-d-flex p-jc-between p-ai-center">Table Name
+                                                              <div class="p-d-flex p-jc-between p-ai-center" style="margin-left: 169px;">Table Name
                                                                 <div class="Sort_Filter_Position">
                                                                   <p-sortIcon field="TableName" pSortableColumn="TableName"></p-sortIcon>
                                                                   <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
@@ -530,7 +514,7 @@
                                                               </div>
                                                             </th>
                                                             <th rowspan="2" class="text-center">
-                                                              <div class="p-d-flex p-jc-between p-ai-center">Field Type
+                                                              <div class="p-d-flex p-jc-between p-ai-center ml-90">Field Type
                                                                 <div class="Sort_Filter_Position">
                                                                   <p-sortIcon field="FieldType" pSortableColumn="FieldType"></p-sortIcon>
                                                                   <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
@@ -539,7 +523,7 @@
                                                               </div>
                                                             </th>
                                                             <th rowspan="2" class="text-center">
-                                                              <div class="p-d-flex p-jc-between p-ai-center">Values
+                                                              <div class="p-d-flex p-jc-between p-ai-center ml-75">Values
                                                                 <div class="Sort_Filter_Position">
                                                                   <p-sortIcon field="Values" pSortableColumn="Values"></p-sortIcon>
                                                                   <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
@@ -634,7 +618,7 @@
                                                           <td class="text-center">
                                                               {{temp.fieldType}}
                                                           </td>
-                                                          <td class="text-center">
+                                                          <td class="text-center"  [tooltip]="temp.valueId.toString()">
                                                               {{temp.valueId.toString() | ellipsis}}
                                                           </td>
                                                           <td class="text-center">
@@ -774,25 +758,12 @@
                                                             <ng-template pTemplate="header">
                                                                 <tr>
                                                                     <th rowspan="3" class="wd-2 text-center">
-                                                                        <div
-                                                                            class="p-d-flex p-jc-between p-ai-center text-center">
-                                                                            Select
-
-
-                                                                            <div class="Sort_Filter_Position">
-                                                                                <p-sortIcon field="Select"
-                                                                                    pSortableColumn="Select">
-                                                                                </p-sortIcon>
-                                                                                <p-columnFilter type="date" field="date"
-                                                                                    display="menu" class="p-ml-auto">
-                                                                                </p-columnFilter>
-                                                                            </div>
-                                                                        </div>
-                                                                    </th>
+                                                                        Select
+                                                                     </th>
 
                                                                     <th colspan="5" class="wd-6 text-center">
                                                                         <div class="p-d-flex p-jc-between p-ai-center"
-                                                                            style="margin-left: 200px;">Source
+                                                                            style="margin-left: 330px;">Source
                                                                             Fields
 
 
@@ -1044,27 +1015,12 @@
                                                                                 <tr>
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
-                                                                                        <div
-                                                                                            class="p-d-flex p-jc-between p-ai-center text-center">
-                                                                                            Sr. No.
-                                                                                            <div
-                                                                                                class="Sort_Filter_Position">
-                                                                                                <p-sortIcon field="SrNo"
-                                                                                                    pSortableColumn="SrNo">
-                                                                                                </p-sortIcon>
-                                                                                                <p-columnFilter
-                                                                                                    type="date"
-                                                                                                    field="date"
-                                                                                                    display="menu"
-                                                                                                    class="p-ml-auto">
-                                                                                                </p-columnFilter>
-                                                                                            </div>
-                                                                                        </div>
+                                                                                        Sr. No.
                                                                                     </th>
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
                                                                                         <div
-                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            class="p-d-flex p-jc-between p-ai-center ml-65">
                                                                                             Derived Name
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
@@ -1084,7 +1040,7 @@
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
                                                                                         <div
-                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            class="p-d-flex p-jc-between p-ai-center ml-75">
                                                                                             Module
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
@@ -1104,7 +1060,7 @@
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
                                                                                         <div
-                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            class="p-d-flex p-jc-between p-ai-center ml-75">
                                                                                             Derived Type
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
@@ -1124,7 +1080,7 @@
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
                                                                                         <div
-                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            class="p-d-flex p-jc-between p-ai-center ml-55">
                                                                                             Percentage (%) of
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
@@ -1145,7 +1101,7 @@
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
                                                                                         <div
-                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            class="p-d-flex p-jc-between p-ai-center ml-75">
                                                                                             Table Name
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
@@ -1165,7 +1121,7 @@
                                                                                     <th rowspan="2"
                                                                                         class="wd-12 text-center">
                                                                                         <div
-                                                                                            class="p-d-flex p-jc-between p-ai-center">
+                                                                                            class="p-d-flex p-jc-between p-ai-center ml-75">
                                                                                             Field Name
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
@@ -1335,7 +1291,7 @@
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="table-responsive Custom_Table">
-                                                        <p-table [value]="users1" [paginator]="true" [rows]="10"
+                                                        <!-- <p-table [value]="users1" [paginator]="true" [rows]="10"
                                                             (sortFunction)="customSort($event)" [customSort]="true"
                                                             [showCurrentPageReport]="true"
                                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -1591,10 +1547,7 @@
 
                                                                     <td class="text-center">
 
-                                                                        <!-- <i class="fa fa-eye font-18 text-blue cursor-pointer"
-                                                                            tooltip="View"
-                                                                            (click)=" extralargepopup(template)">
-                                                                        </i>&nbsp; -->
+                                                                       
                                                                         <i [style.opacity]="addbtnflag && selectedIndex == rowIndex ? null : '0.6 '"
                                                                             [ngClass]="{'cursor-pointer': addbtnflag && selectedIndex == rowIndex, 'cursorStyle': selectedIndex != rowIndex }"
                                                                             class="fa fa-plus-circle font-18 text-dark-green  "
@@ -1665,7 +1618,218 @@
                                                                     </td>
                                                                 </tr>
                                                             </ng-template>
-                                                        </p-table>
+                                                        </p-table> -->
+
+
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                        <p-table [value]="users2" [paginator]="true" [rows]="10" (sortFunction)="customSort($event)"
+                                                        [customSort]="true">
+                                                        <ng-template pTemplate="header">
+                                                          <tr>
+                            
+                                                            <th colspan="3" class="wd-16 text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center text-center"
+                                                                style="margin-left: 120px;">Source
+                                                              </div>
+                                                            </th>
+                            
+                                                            <th colspan="2" class="wd-21 text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:100px;">Service Age
+                            
+                            
+                                                              </div>
+                                                            </th>
+                                                            <th colspan="1" class="wd-6 text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center">Derived
+                            
+                                                              </div>
+                                                            </th>
+                                                            <th colspan="2" class="wd-8 text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:140px;">Date Range
+                                                                <div class="Sort_Filter_Position">
+                                                                  <p-sortIcon field="Payroll" pSortableColumn="Payroll"></p-sortIcon>
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                            
+                                                            <th rowspan="3" class="wd-4 text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center">
+                                                                Action
+                                                              </div>
+                                                            </th>
+                                                          </tr>
+                                                          <tr>
+                                                            <th rowspan="2" class=" text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center">Payroll
+                                                                <div class="Sort_Filter_Position">
+                                                                  <p-sortIcon field="Payroll" pSortableColumn="Payroll"></p-sortIcon>
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                            
+                                                            <th rowspan="2" class=" text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center">Grade
+                                                                <div class="Sort_Filter_Position">
+                                                                  <p-sortIcon field="Grade" pSortableColumn="Grade"></p-sortIcon>
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                                                            <th rowspan="2" class=" text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center">Department
+                                                                <div class="Sort_Filter_Position">
+                                                                  <p-sortIcon field="Department" pSortableColumn="Department"></p-sortIcon>
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                            
+                            
+                                                            <th rowspan="2" class="text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center"> From
+                                                                <div class="Sort_Filter_Position">
+                                                                  <p-sortIcon field="DateRange" pSortableColumn="DateRange"></p-sortIcon>
+                            
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                                                            <th rowspan="2" class=" text-center ">
+                                                              <div class="p-d-flex p-jc-between p-ai-center" style="margin-left: 70px;"> To
+                                                                <div class="Sort_Filter_Position">
+                                                                  <p-sortIcon field="DateRange" pSortableColumn="DateRange"></p-sortIcon>
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                            
+                                                            <th rowspan="2" class=" text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center">Value
+                                                                <div class="Sort_Filter_Position">
+                                                                  <p-sortIcon field="Value" pSortableColumn="Value"></p-sortIcon>
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                            
+                                                            <th rowspan="2" class="text-center">
+                                                              <div class="p-d-flex p-jc-between p-ai-center">From Date
+                                                                <div class="Sort_Filter_Position">
+                            
+                                                                  <p-sortIcon field="FromDate" pSortableColumn="FromDate"></p-sortIcon>
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                                                            <th rowspan="2" class=" text-center ">
+                                                              <div class="p-d-flex p-jc-between p-ai-center">To Date
+                                                                <div class="Sort_Filter_Position">
+                                                                  <p-sortIcon field="ToDate" pSortableColumn="ToDate"></p-sortIcon>
+                                                                  <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                                                  </p-columnFilter>
+                                                                </div>
+                                                              </div>
+                                                            </th>
+                            
+                            
+                            
+                                                          </tr>
+                            
+                            
+                                                        </ng-template>
+                                                        <ng-template pTemplate="body" let-User2 let-rowIndex = rowIndex>
+                                                          <tr class="p-selectable-row">
+                                                            <td>{{User2.Payroll}}</td>
+                                                            <td>{{User2.Grade}} </td>
+                                                            <td> {{User2.Department}}</td>
+                                                            <td>
+                            
+                                                              <input type="text" class="form-control" placeholder="" value="{{User2.From}}">
+                                                            </td>
+                                                            <td>
+                            
+                                                              <input type="text" class="form-control" placeholder="" value="{{User2.To}}">
+                            
+                            
+                                                            </td>
+                                                            <td>
+                                                              <input type="text" class="form-control" placeholder="" value="{{User2.Value}}">
+                            
+                                                            </td>
+                            
+                                                            <td class="p-d-inline-flex">
+                                                              <div class="p-d-inline-flex">
+                                                                <span ><i (click)="copyFromDateToAll(User2,rowIndex);" style="cursor: pointer;"
+                                                                    class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                                                                <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                                  <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                      <span class="input-group-text">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                      </span>
+                                                                    </div>
+                                                                    <input data-provide="datepicker"
+                                                                    value="{{User2.fromDate | date :'dd-MMM-yyyy'}}"
+                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                    (bsValueChange)="getFromDateForSave($event,data,rowIndex)"
+                                                                     data-date-autoclose="true" class="form-control"
+                                                                      placeholder="Date" bsDatepicker>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </td>
+                            
+                                                            <td>
+                            
+                                                              <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                                <div class="input-group">
+                                                                  <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                      <i class="fa fa-calendar"></i>
+                                                                    </span>
+                                                                  </div>
+                                                                  <input data-provide="datepicker" data-date-autoclose="true" 
+                                                                  class="form-control"
+                                                                  value="{{User2.toDate | date :'dd-MMM-yyyy'}}"
+                                                                  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                  (bsValueChange)="getToDateForSave($event,data,rowIndex)"
+                                                                    placeholder="Date" bsDatepicker>
+                                                                </div>
+                                                              </div>
+                            
+                                                            </td>
+                            
+                            
+                            
+                                                            <td class="text-center">
+                            
+                            
+                                                            </td>
+                                                          </tr>
+                            
+                                                        
+                                                        </ng-template>
+                                                        <ng-template pTemplate="emptymessage">
+                                                          <tr>
+                                                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                                                Available</span>
+                                                            </td>
+                                                          </tr>
+                                                        </ng-template>
+                                                      </p-table>
                                                     </div>
                                                     
                                                 </div>
