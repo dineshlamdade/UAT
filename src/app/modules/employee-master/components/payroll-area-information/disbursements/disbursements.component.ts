@@ -109,7 +109,7 @@ export class DisbursementsComponent implements OnInit {
     this.payrollService.getDisbursementDetails(this.employeeMasterId).subscribe(res => {
       this.disbursmentList = res.data.results[0];
       if (this.disbursmentList != undefined) {
-        console.log('disbursementList1', this.disbursmentList)
+      
 
 
 
@@ -125,7 +125,7 @@ export class DisbursementsComponent implements OnInit {
           this.payrollAreas.push(payrollAreaInformationId);
 
         }
-        console.log('payrollAreas', this.payrollAreas);
+     
 
 
         this.typeAreas = [];
@@ -152,7 +152,7 @@ export class DisbursementsComponent implements OnInit {
           dateAreas.push(dateId);
         }
 
-        console.log(this.typeAreas);
+       
         //create summary to display summary
 
         this.disbursmentSummary = [];
@@ -203,9 +203,9 @@ export class DisbursementsComponent implements OnInit {
       this.bankList = res.data.results[0];
       //get only unique values from 
       var result = Object.values(this.bankList.reduce((r, e) => (r[e.employeeBankInfoId + '|' + e.bankName] = { employeeBankInfoId: e.employeeBankInfoId, bankName: e.bankName }, r), {}))
-      console.log('bankData', this.bankList);
+   
       // var result = Object.values(this.bankList.reduce((r, e) => (r[e.employeeBankInfoId + '|' + e.bankName] = {employeeBankInfoId: e.employeeBankInfoId, bankName: e.bankName}, r), {}))
-      console.log('results', result)
+     
 
 
 
@@ -267,7 +267,7 @@ export class DisbursementsComponent implements OnInit {
 
       //multibankking allowed or not from database
       const location = this.companySetting.filter(a => a.companySetting.toLowerCase() === 'ismultibankingallowed');
-      console.log(location)
+     
       if (location[0].value == 'Yes') { this.multiBankingAllowed = true }
       else {
         this.multiBankingAllowed = false
@@ -319,7 +319,7 @@ export class DisbursementsComponent implements OnInit {
 
     //pfFormArray: new FormArray([])
     this.resetFormPayrollChange();
-    console.log('type after reset', this.pfArray)
+   
     const location = this.payData.find(a => a.payrollAreaCode == this.form.get('payrollAreaCode').value);
     this.companyId = location.companyId;
     const payId = this.payrollList.find(a => a.payrollAreaId === location.payrollAreaId);
@@ -327,10 +327,7 @@ export class DisbursementsComponent implements OnInit {
     this.getFormData();
     this.copyFromList();
    
-    // copyFromList 
-    
-    // const copyFromList = this.disbursmentList.filter(a=>a.payrollAreaCode === location.payrollAreaCode && a.multibankingAllowed === location.multibankingAllowed);
-    // console.log('copyfromList-pchange',copyFromList)
+
   }
 
   copyFromList(){
@@ -517,7 +514,7 @@ export class DisbursementsComponent implements OnInit {
 
 
     }
-    console.log(k);
+
     this.payrollService.postBankInfo(k).subscribe(res => {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
@@ -544,10 +541,7 @@ export class DisbursementsComponent implements OnInit {
 
       this.resetForPaymentMode(i);
       this.enableForPaymentMode(i);
-      //olet list = this.pfArray.value;
-
-      // console.log(list);
-      /// this.pfArray.get([i]).get('priority').patchValue(i + 1);
+ 
       let obj2: Array<dataBankDrop> = [];
       let usedbankData: Array<any> = [];
       let list = this.pfArray.value;
@@ -567,7 +561,6 @@ export class DisbursementsComponent implements OnInit {
 
 
 
-      console.log('bankList obj 2', obj2);
       this.pfArray.get([i]).get('bankDropList').patchValue(obj2);
 
       if (this.filteredBankData.length == 1) {
@@ -591,6 +584,7 @@ export class DisbursementsComponent implements OnInit {
         };
         this.pfArray.get([i]).patchValue(obj1);
       }
+      this.pfArray.get([i]).get('nameAsPerBank').disable();
     }
   }
 
@@ -622,7 +616,7 @@ export class DisbursementsComponent implements OnInit {
     if (bankData[0].nameAsPerBank !== "") {
       this.pfArray.get([index]).get('nameAsPerBank').setValue(bankData[0].nameAsPerBank);
     }
-    //console.log(this.pfArray.get([index]).get('accountNoList'))
+  
   }
 
   percentageTotal() {
@@ -663,7 +657,7 @@ export class DisbursementsComponent implements OnInit {
   }
 
   deleteRow(j: number) {
-    console.log(j);
+   
     this.pfArray.removeAt(j);
   }
 
@@ -766,7 +760,9 @@ export class DisbursementsComponent implements OnInit {
     // this.OrganizationForm.controls.subLocationFromDateControl.updateValueAndValidity();
     }
     let data = this.pfArray.getRawValue();
-    let priorityLength = data.filter(x=>x.priority > 0).length;
+   
+    //let selectedLength = this.pfArray.controls[i].get('percentActive').value;
+    let priorityLength = data.filter(x=>x.percentActive=='Amount').length;
     if(prio>priorityLength)
     {
       this.CommonDataService.sweetalertError("Priority should not be greater than amount entries");
@@ -775,7 +771,7 @@ export class DisbursementsComponent implements OnInit {
     
     for(let j=0 ; j<data.length;j++){
       if (j==i) continue;
-      if(data[j].priority == prio)
+      if(data[j].priority == prio && data[j].priority != '')
       {
        this.CommonDataService.sweetalertError("Duplicate Priority");
        this.pfArray.controls[i].get('priority').setValue('');
@@ -796,9 +792,9 @@ export class DisbursementsComponent implements OnInit {
     window.scrollTo(0, 0);
     this.viewFlag = true;
 
-    //  console.log(event)
+   
     let showSummary = this.disbursmentList.filter(element => element.payrollAreaCode === event.Area && element.typeOfPayment === event.typeOfPayment && element.payFromDate === event.fromDate);
-    console.log(showSummary);
+   
     const payroll = showSummary[0].payrollAreaCode
     this.payrollList = this.asignedPayrollList.filter(a => a.payrollAreaCode === payroll)
     const location = this.payData.find(a => a.payrollAreaCode == payroll);
@@ -850,7 +846,7 @@ export class DisbursementsComponent implements OnInit {
         const ob1 = [];
         ob1.push({ accountNo: data[j].accountNo })
         this.pfArray.get([j]).get('accountNoList').patchValue(ob1)
-        console.log('ob1AccountNoList', ob1)
+       
 
 
 
@@ -898,7 +894,7 @@ export class DisbursementsComponent implements OnInit {
       }
       this.form.get('payrollAreaCode').disable();
       this.form.get('typeOfPayment').disable()
-      console.log(this.form.value)
+     
     }, 1000);
 
   }
@@ -906,9 +902,10 @@ export class DisbursementsComponent implements OnInit {
 
 
   percentOrAmount(i) {
-    console.log('toggleselectdd', i)
+   
     let type = this.pfArray.get([i]).get('percentActive').value;
     if (type !== '% Net Pay') {
+      this.pfArray.get([i]).get('priority').enable();
       this.pfArray.get([i]).get('percentageOfNetPay').setValue(0);
       this.pfArray.get([i]).get('percentageOfNetPay').disable();
       this.pfArray.get([i]).get('amount').enable();
@@ -925,6 +922,7 @@ export class DisbursementsComponent implements OnInit {
       this.pfArray.get([i]).get('amount').setValue(0);
       this.pfArray.get([i]).get('priority').reset();
       this.pfArray.get([i]).get('amount').disable();
+      this.pfArray.get([i]).get('priority').disable();
       this.pfArray.get([i]).get('isAmt').setValue(false);
       this.pfArray.get([i]).get('percentageOfNetPay').setValue(0);
       this.pfArray.get([i]).get('percentOfNetPay').setValue(true);
