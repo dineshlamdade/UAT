@@ -3,7 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { EmployeesetService } from '../employeeset.service';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
-
+import { ExcelserviceService } from 'src/app/core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
+//import { ExcelserviceService } from  './../../core/services/excelservice.service';
 @Component({
   selector: 'app-employeeset',
   templateUrl: './employeeset.component.html',
@@ -13,8 +15,11 @@ export class EmployeesetComponent implements OnInit {
   employeesetForm: FormGroup;
   serviceListData: Array<any> = [];
   empData: any;
-  summaryData: Array<any> = [];empListt: any;
-;
+  summaryData: Array<any> = [];
+  empListt: any;
+  excelData: any;
+  header: any;
+
   employeeMasterId: number;
   serviceData: any;
   editFormFlag: boolean = false;
@@ -24,14 +29,16 @@ export class EmployeesetComponent implements OnInit {
   selectedemployeeMasterId: number;
   getdata: any;
   employeeList : any = [];
+  radioStatus: boolean;
 
   constructor(public empService: EmployeesetService, public fb: FormBuilder,public toaster : ToastrService,
-    public alertService : AlertServiceService) {
+    public alertService : AlertServiceService,private excelservice: ExcelserviceService) {
     this.employeesetForm = new FormGroup({
       employeeSetName : new FormControl('',[Validators.required,Validators.maxLength(25)]),
       empList : new FormControl('',Validators.required),
       remark : new FormControl(''),
       isActive : new FormControl(1),
+      empListRadio : new FormControl(''),
       employeeSetMasterId : new FormControl('')
     })
   }
@@ -51,6 +58,22 @@ export class EmployeesetComponent implements OnInit {
     }
   }
 
+  example($event) {
+    console.log($event.target.checked);
+   
+    if($event.target.checked){
+
+      this.radioStatus = false;
+    }
+    else{
+      this.radioStatus = true;
+    }
+ }
+  // checkEmpSet(event){
+  //   console.log('emplistradio',event);
+  //   this.employeesetForm.get('empListRadio').setValue(true)
+  // }
+
   onSubmit() {
    //console.log(this.employeesetForm.value)
    this.empService.saveEmployeeSet(this.employeesetForm.value).subscribe((res : any)=>{
@@ -66,7 +89,8 @@ export class EmployeesetComponent implements OnInit {
    },error => {
     if(error.error.status.code == '400'){
       //this.toaster.error('', 'Duplicate Area Set Name' );
-       this.alertService.sweetalertError('Duplicate Employeeset')
+       this.alertService.sweetalertError('Duplicate Employeeset');
+       this.employeesetForm.controls['employeeSetName'].reset();
     }
   }
    )
@@ -222,5 +246,71 @@ export class EmployeesetComponent implements OnInit {
     
   }
   
+
+  //Employee set Excel
+  exportApprovalSummaryAsExcel(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Emp.SetName", "No.Of Emp"];
+    this.excelData = [];
+    if(this.summaryData.length>0){
+     // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+     //this.employeeList =  this.tableDataList;
+     this.summaryData.forEach((element) => {
+      let obj = {
+        EmployeeSetName: element.employeeSetName,
+        NoOfEmp: element.employeeSetMasterDetailsList.length,
+        //masterDescription: element.masterDescription,
+      };
+      this.excelData.push(obj);
+    });
+      console.log('this.employeeList::', this.employeeList);
+    }
+    this.excelservice.exportAsExcelFile(this.excelData, this.header);
+
+  }
+  customSort3(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null) result = -1;
+      else if (value1 != null && value2 == null) result = 1;
+      else if (value1 == null && value2 == null) result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+        result = value1.localeCompare(value2);
+      else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+
+      return event.order * result;
+    });
+  }
+
   
 }
+
+
+
+// <i class="fa fa-file-excel-o fa-2x 
+// //Job Master Excel
+//   exportApprovalSummaryAsExcel(): void {
+//     this.excelData = [];
+//     this.header = []
+//     this.header =["jobMasterType", "masterCode", "masterDescription"];
+//     this.excelData = [];
+//     if(this.tableDataList.length>0){
+//      // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+//      //this.employeeList =  this.tableDataList;
+//      this.tableDataList.forEach((element) => {
+//       let obj = {
+//         jobMasterType: element.jobMasterType,
+//         masterCode: element.masterCode,
+//         masterDescription: element.masterDescription,
+//       };
+//       this.excelData.push(obj);
+//     });
+//       console.log('this.employeeList::', this.employeeList);
+//     }
+//     this.excelservice.exportAsExcelFile(this.excelData, 'Job-Master-Summary', 'Job-Master-Summary' ,this.header);
+
+  

@@ -26,6 +26,7 @@ export class SupplementaryComponent implements OnInit {
   public hideUpdate : boolean = false;
   supplimentary: any;
   periodId: any;
+  cycleLockList: any;
   constructor(public supplementaryService : SupplementaryService,public fb : FormBuilder,public taoster:ToastrService,
     public alertService : AlertServiceService) { 
     this.supplementaryForm = new FormGroup({
@@ -121,6 +122,11 @@ console.log('data is',data);
    this.supplementaryForm.controls.endDate.reset();
   }
 
+  // getByCycleLock(id){
+  //   this.supplementaryService.getByCycleLock(id).subscribe((res)=>{
+  //     this.cycleLockList = res.data.results;
+  //   })
+  // }
 
   onChangeCycle(periodId : any){
     if(periodId == ''){
@@ -242,8 +248,8 @@ editData(data){
   //this.supplementaryForm.controls['cycleName'].patchValue(data.cycleName);
   this.supplementaryForm.controls['startDate'].patchValue(new Date(data.fromDate));
   this.supplementaryForm.controls['endDate'].patchValue(new Date(data.toDate));
-  this.supplementaryForm.controls['fromDate'].patchValue(new Date(data.fromDate));
-  this.supplementaryForm.controls['toDate'].patchValue(new Date(data.toDate));
+//  this.supplementaryForm.controls['fromDate'].patchValue(new Date(data.fromDate));
+ // this.supplementaryForm.controls['toDate'].patchValue(new Date(data.toDate));
   this.supplementaryForm.controls['remark'].patchValue(data.remark);
   let cycleDef = this.cycleDefinitionList.find(el => el.id === data.businessCycleDefinition.id);
     if (cycleDef) {
@@ -255,8 +261,8 @@ editData(data){
     this.supplementaryForm.controls['cycleName'].disable();
     this.supplementaryForm.controls['startDate'].disable();
     this.supplementaryForm.controls['endDate'].disable();
-    this.supplementaryForm.controls['fromDate'].disable();
-    this.supplementaryForm.controls['toDate'].disable();
+  //  this.supplementaryForm.controls['fromDate'].disable();
+   // this.supplementaryForm.controls['toDate'].disable();
 
 
     // let cycleNm = this.cycleNameList.find(el => el.periodId === data.businessCycleDefinition.periodId);
@@ -289,6 +295,12 @@ viewData(data){
 }  
 
 
-
+deleteData(id){
+  console.log('deleted id id',id);
+  this.supplementaryService.deleteData(id).subscribe((res)=>{
+    this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+    this.getAllCycleDefinition();
+  })
+}
 
 }

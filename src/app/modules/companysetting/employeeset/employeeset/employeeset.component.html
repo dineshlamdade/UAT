@@ -38,11 +38,24 @@
                         <label class="form-label">Emp. Code</label>
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
                         <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
-                           [(ngModel)] = "employeeList" [filter]="true" 
-                          [placeholder]="'Select Emp. code'" formControlName = "empList"
-                          (onChange)="getArea(employeeList,$event)" 
+                           [(ngModel)] = "employeeList"
+                           optionLabel="" 
+                          [placeholder]="'Select Emp.code'" formControlName = "empList"
+                          (onChange)="getArea(employeeList,$event)" class="font-12 text-ellipsis mt-1"
+
                           [ngClass]="{'is-invalid' : employeesetForm.get('empList').status == 'INVALID'}">
                         </p-multiSelect>
+                        <!-- <input
+                                        pInputText
+                                        type="text"
+                                        (input)="
+                                          dt1.filterGlobal(
+                                            $event.target.value,
+                                            'contains'
+                                          )
+                                        "
+                                        placeholder="Search keyword"
+                                      /> -->
                         <!-- (onChange)="getEmployeeMasterId($event)" -->
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
@@ -50,8 +63,9 @@
                           <div class="form-group">
                             <div class="custom-controls-stacked">
                               <label class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="example- radios" value="option1"
-                                  (click)="ViewHistory(template4)" checked>
+                                <input type="radio" class="custom-control-input" name="example- radios" value="radioStatus"
+                                [checked]="radioStatus" (change)="example($event)"
+                                >
                                 <div class="custom-control-label"> Emp. List </div>
                               </label>
                             </div>
@@ -64,7 +78,24 @@
                       
                       </div>
 
-
+                      <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
+                        <div class="form-group">
+                          <div class="form-group">
+                           
+                            <label class="form-label"> Selected Employee List <br>
+                              <i class="fa fa-file-excel-o fa-2x mr-2 text-dark-green" style="cursor: pointer;"
+                              (click)="exportApprovalSummaryAsExcel()"></i>
+      
+                            </label>
+                           
+                          </div>
+                      
+                      
+                        </div>
+                      
+                      
+                      </div>
+                      
 
                     </div>
                   
@@ -130,7 +161,11 @@
                   <div class="row">
                     <div class="col-md-8">
                       <p-table [value]="summaryData" [paginator]="true" [rows]="10"
-                       [rowsPerPageOptions]="[10,25,50,100,200]">
+                       [rowsPerPageOptions]="[10,25,50,100,200]"
+                       (sortFunction)="customSort3($event)"
+                       [customSort3]="true">
+
+
                         <ng-template pTemplate="header">
                           <tr>
                             <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
@@ -183,7 +218,7 @@
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
                               (click) = "viewEmployeeSet(data)"
                                 aria-hidden="true"></i>&nbsp;
-                                <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true" tooltip = "Delete"></i>&nbsp;
 
                             </td>
                           </tr>

@@ -58,6 +58,7 @@ export class AdhocComponent implements OnInit {
   maxStartDate: any;
   editData: any;
   periodId: any;
+  activeHeadListCopy: any;
  // fromtDate: string;
 
   
@@ -236,6 +237,7 @@ export class AdhocComponent implements OnInit {
       this.adhocService.getActiveHead().subscribe((res)=>{
       this.activeHeadList = res.data.results;
       console.log(this.activeHeadList);
+      this.activeHeadListCopy = res.data.results;
     })
   }
 
@@ -251,6 +253,7 @@ export class AdhocComponent implements OnInit {
 
   //copyFrom code done
   onChangeCopyFrom(){
+    this.activeHeadList = this.activeHeadListCopy;
    // const selected = this.adhocForm.get('copyFrom').value;
     let period = this.adhocCycleList.find(x=>x.periodId== this.adhocForm.get('copyFrom').value) 
   //const location =   this.summarydata.filter(x=>x.periodName == period);
@@ -265,9 +268,10 @@ export class AdhocComponent implements OnInit {
   console.log('value is',value);
   this.targetProducts=[];
   this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
- // this.activeHeadList = this.activeHeadList.filter(ar => !this.targetProducts.find(rm => rm.headMasterId == ar.headMasterId ))
+ this.activeHeadList = this.activeHeadList.filter(ar => !this.targetProducts.find(rm => rm.headMasterId == ar.headMasterId ))
 // this.targetProducts.push({
 //this.adhocForm.reset()
+
 // })
   }
 

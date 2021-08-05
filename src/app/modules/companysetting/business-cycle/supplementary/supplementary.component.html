@@ -115,7 +115,7 @@
                     <input type="text" class="form-control" formControlName = "cycleName" disabled>
                   </div>
                 </div>
-                <div class="col-sm-6 col-md-3">
+                <!-- <div class="col-sm-6 col-md-3">
                   <label class="form-label">From Date</label>
                   <div class="input-group">
                       <div class="input-group-prepend">
@@ -128,8 +128,8 @@
                           placeholder="" bsDatepicker formControlName = "fromDate"
                           [maxDate]="today" disabled>
                   </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
+              </div> -->
+              <!-- <div class="col-sm-6 col-md-3">
                 <label class="form-label">To Date</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -142,7 +142,7 @@
                         placeholder="" bsDatepicker formControlName = "toDate"
                         [maxDate]="today" disabled>
                 </div>
-            </div>
+            </div> -->
 
 
                 <div class="col-sm-6 col-md-3">
@@ -231,6 +231,29 @@
                                           </div>
                                       </div>
                                   </th>
+
+                                  <th rowspan="2" >
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      From Date
+
+                                        <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="periodName"></p-sortIcon>
+                                            <p-columnFilter type="text" field="periodName" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th rowspan="2" >
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    To Date
+
+                                      <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="periodName"></p-sortIcon>
+                                          <p-columnFilter type="text" field="periodName" display="menu"
+                                              class="p-ml-auto"></p-columnFilter>
+                                      </div>
+                                  </div>
+                              </th>
                                   
                                  
                                   <th colspan="2">
@@ -305,6 +328,14 @@
                                             class="form-lable mb-0">{{user1.periodName}}</label>
   
                                     </td>
+                                    <td class="bg-color-light_gray"><label
+                                      class="form-lable mb-0">{{user1.fromDate  | date: 'dd-MMM-yyyy' }}</label>
+
+                              </td>
+                              <td class="bg-color-light_gray"><label
+                                class="form-lable mb-0">{{user1.toDate  | date: 'dd-MMM-yyyy'}}</label>
+
+                        </td>
   
                                     <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0">{{user1.businessCycleDefinition.cycleName}}</label></td>
@@ -313,14 +344,21 @@
                                     <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0">{{user1.remark}}</label></td>
                                              
-                                    <td class="bg-color-light_gray"><label
-                                                class="form-lable mb-0">{{user1.locked?'Yes':'No'}}</label></td> 
+                                    <td class="bg-color-light_gray text-center">
+                                      <!-- <label class="form-lable mb-0">{{user1.locked?'Yes':'No'}}</label> -->
+                                      <i class="fa fa-lock font-18" 
+                                            *ngIf="user1.locked"
+                                            aria-hidden="true"></i><i class="fa fa-unlock font-18" 
+                                            *ngIf="!user1.locked"
+                                            aria-hidden="true"></i>
+                                    </td> 
                                           <td class="bg-color-light_gray">
                                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" 
                                               (click)="editData(user1)"aria-hidden="true"></i>&nbsp;
                                               <i class="fa fa-eye font-18 text-blue cursor-pointer" 
                                               (click)="viewData(user1)" aria-hidden="true"></i>&nbsp;
-                                              <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                              <i class="fa fa-trash font-18 text-red cursor-pointer" 
+                                              (click)="deleteData(user1.id)" aria-hidden="true"></i>&nbsp;
                                           </td>
                                 </tr>
   

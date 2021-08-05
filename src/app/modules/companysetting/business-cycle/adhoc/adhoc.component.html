@@ -684,8 +684,12 @@
                                               <td class="bg-color-light_gray"><label
                                                   class="form-lable mb-0">{{user1.remark}}</label></td>
                                                   
-                                          <td class="bg-color-light_gray"><label
-                                            class="form-lable mb-0">{{user1.locked?'Yes':'No'}}</label></td>
+                                          <td class="bg-color-light_gray text-center">
+                                            <i class="fa fa-lock font-18" 
+                                            *ngIf="user1.locked"
+                                            aria-hidden="true"></i><i class="fa fa-unlock font-18" 
+                                            *ngIf="!user1.locked"
+                                            aria-hidden="true"></i></td>
                                             <!-- <i [ngClass]="['fa', user.IsActive ? 'fa-lock' : 'fa-unlock']" aria-hidden="true"></i> -->
                                               <!-- <i class="fa fa-lock font-18 " aria-hidden="true"></i></td> -->
                                           <td class="bg-color-light_gray text-center">
@@ -693,7 +697,7 @@
                                               tooltip="Edit" aria-hidden="true" (click)="editAreaSet(user1)"></i>&nbsp;
                                               <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"
                                               tooltip="View" (click)="viewAreaSet(user1)"></i>&nbsp;
-                                              <i *ngIf="!user1.locked" class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                              <i *ngIf="!user1.locked" (click)="deleteData(user1.id)" class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
                                           </td>
                                 </tr>
   

@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { AreasetService } from './areaset.service';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { SelectItem, PrimeNGConfig } from "primeng/api";
+import { ExcelserviceService } from 'src/app/core/services/excelservice.service';
+import { SortEvent } from 'primeng/api';
 import { element } from 'protractor';
 import { threadId } from 'node:worker_threads';
 //import { AlertServiceService } from '@src/app/core/services/alert-service.service';
@@ -44,7 +46,8 @@ export class AreasetComponent implements OnInit {
   sourceProducts: any[];
   selectedUser2: any[];
   selectedUser: any[];
-
+  excelData: any;
+  header: any;
   areaList : Array<any>=[];
   row: any;
   data: any;
@@ -115,7 +118,9 @@ export class AreasetComponent implements OnInit {
           this.alertService.sweetalertMasterSuccess('Success','Area Set Saved Successfully');
 
        // this.toaster.success('','Area set saved succefully');
-        this.areaList = [];
+        // this.areaList = [];
+        this.areasetForm.controls['areaList'].setValue([]);
+      this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
         this.areaListData = [];
         this.getSummaryData();
         
@@ -220,23 +225,30 @@ getAreaMasterId(e){
     console.log('service id is',serviceid);
        this.areaListData = [];
        this.areaList = [];
+       let areaCode = this.areasetForm.get('serviceMasterId').value;
       this.areasetService.getByServiceName(serviceid).subscribe(res =>{
      // this.areaListData = res.data.results;
      // console.log('result is',res);
       res.data.results[0].forEach(element => {
      //   console.log('Area element is',element.payrollAreaCode)
-        if(serviceid == 1){
-          this.areaListData.push({
-            label: element.payrollAreaCode, 
-            value: element.payrollAreaId
-        })
-        }else{
-             this.areaListData.push({
-          label: element.payrollArea.payrollAreaCode, 
-           value: element.payrollArea.payrollAreaId
-          })
+
+this.areaListData.push({
+  lable : element.areaCode+'AreaCode',
+  value : element.areaCode+'AreaId'
+})
+
+        // if(serviceid == 1){
+        //   this.areaListData.push({
+        //     label: element.payrollAreaCode, 
+        //     value: element.payrollAreaId
+        // })
+        // }else{
+        //      this.areaListData.push({
+        //   label: element.payrollArea.payrollAreaCode, 
+        //    value: element.payrollArea.payrollAreaId
+        //   })
           
-        }
+        // }
            console.log("this.areaListData: "+ this.areaListData)
            
       });
@@ -255,11 +267,19 @@ getAreaMasterId(e){
      // this.areasetForm.get('isActive').setValue(1);
       this.areasetForm.controls['serviceMasterId'].setValue(data.serviceMaster.serviceMasterId);
      this.getAreasetByService(data.serviceMaster.serviceMasterId);
-    this.areaList = [];
-      this.areaList = [{
-        label:'PA-Staff',
-        value:data.areaSetMasterDetailsList[0].areaCode
-      }]
+    let abc = [];
+      // this.areaList = [{
+      //   label:'PA-Staff',
+      //   value:data.areaSetMasterDetailsList[0].areaCode
+      // }]
+
+      data.areaSetMasterDetailsList.forEach(element => {
+        abc.push({
+         label : element.areaCode,
+           value : element.areaId 
+        })
+     });
+     this.areasetForm.controls['areaList'].setValue(abc)
 let datatest = []
     this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
       datatest.push(ele.areaId) 
@@ -320,7 +340,7 @@ let datatest = []
       "areaId":elm.itemValue
     })
     this.areasetForm.controls['areaSetMasterDetailsList'].setValue(this.areaMaster);
-  }
+   }
   
 
 
