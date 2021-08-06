@@ -25,13 +25,21 @@ import {TableModule} from 'primeng/table';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AdhocComponent } from './adhoc/adhoc.component';
+import { SupplementryCycleComponent } from './supplementry-cycle/supplementry-cycle.component';
+import { SummaryComponent } from './summary/summary.component';
+import { AreaComponent } from './area/area.component';
+// import { NewlockComponent } from './newlock/newlock.component';
 @NgModule({
   declarations: [
     LockComponent,
     BusinessYearComponent,
     CycleComponent,
     EmployeeComponent,
-    AdhocComponent
+    AdhocComponent,
+    AreaComponent,
+    SupplementryCycleComponent,
+    SummaryComponent,
+    // NewlockComponent
   ],
   imports: [
     CommonModule,

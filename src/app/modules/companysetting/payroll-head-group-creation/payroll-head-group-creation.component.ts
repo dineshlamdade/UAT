@@ -475,9 +475,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
 
     }, ( error ) => {
-      if ( error.status == 404 ) {
-        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      if ( error.status == 400 ) {
+        // this.alertService.sweetalertError( error["error"]["status"]["message"] );
         this.getAllAttributeListByAttGroup( headGroupIds );
+        // this.getAllAttributeListByAttGroup( u.headGroupIds );
         this.viewSaveButton = true;
       } else {
         this.alertService.sweetalertError( error["error"]["status"]["message"] );
@@ -534,7 +535,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       this.viewSaveButton = false;
     }, ( error ) => {
       if ( error.status == 400 ) {
-        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        // this.alertService.sweetalertError( error["error"]["status"]["message"] );
         this.getAllAttributeListByAttGroup( u.headGroupIds );
         this.viewSaveButton = true;
       } else {
