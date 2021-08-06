@@ -48,12 +48,12 @@ export class JobMasterComponent implements OnInit {
   modalRef2: BsModalRef;
   deleteModalRef: BsModalRef;
   deleteRowModal1: BsModalRef;
-
+  public financialYearStart: Date;
   public isSaveAndReset = true;
   public form: any = FormGroup;
   public formAssignment: any = FormGroup;
   public formAssign: any = FormGroup;
-
+  public paymentDetailMinDate: Date;
   public masterGridDataList = [];
   public editedRecordIndex = 0;
   public getAllMappingDetailList: any;
@@ -72,7 +72,7 @@ export class JobMasterComponent implements OnInit {
 
   public excelEmployeeList: Array<any> = [];
   public getAllMappingDetailListNew: Array<any> = [];
-
+  public financialYearStartDate: Date;
   public tableDataList = [];
   public companyAssignTableList = [];
   public companyAssignTableListDummy = [];
@@ -111,7 +111,11 @@ export class JobMasterComponent implements OnInit {
   // private excelservice: ExcelService,
   public viewMode = false;
   assignJobMasterId: number;
+
   excelData: any;
+  excelDataCompany: any;
+
+  excelDataMapping: any;
   selectedJobId: number;
   public EditMappedJobMaster = null;
   header: any;
@@ -121,7 +125,7 @@ export class JobMasterComponent implements OnInit {
       masterCode: new FormControl( '', Validators.required ),
       masterDescription: new FormControl( '', Validators.required ),
       jobMasterId: new FormControl(''),
-      isActive: new FormControl( '' ),
+      isActive: new FormControl( true ),
       jobMasterValueId: new FormControl( '' ),
       active: new FormControl( '' ),
     } );
@@ -219,7 +223,7 @@ export class JobMasterComponent implements OnInit {
             companyActive: element.groupCompanyId,
             isSelected: false,
             fromDate: null,
-            toDate: null
+            toDate: new Date( '31-Dec-9999' )
             // label: element.companyName,
             // value: element.groupCompanyId,
           };
@@ -375,54 +379,56 @@ export class JobMasterComponent implements OnInit {
 
   //Job Master Excel
   exportApprovalSummaryAsExcelMapping(): void {
-    this.excelData = [];
+    this.excelDataMapping = [];
     this.header = []
-    this.header =["jobMasterType", "masterCode", "masterDescription"];
-    this.excelData = [];
-    if(this.tableDataList.length>0){
+    this.header =["jobMasterType", "masterCode", "masterDescription", "fromDate", "toDate"];
+    this.excelDataMapping = [];
+    if(this.getAllMappingDetailListNew.length>0){
      // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
      //this.employeeList =  this.tableDataList;
-     this.tableDataList.forEach((element) => {
+     this.getAllMappingDetailListNew.forEach((element) => {
       let obj = {
         jobMasterType: element.jobMasterType,
         masterCode: element.masterCode,
         masterDescription: element.masterDescription,
         companyName : element.companyName,
-        toDate:  new Date(element.toDate),
-       fromDate: new Date(element.fromDate),
+        // fromDate: new Date(element.fromDate),
+        // toDate:  new Date(element.toDate),
+        // 'Submission Date': new Date(element.dateOfSubmission),
+        fromDate: element.fromDate,
+        toDate:  element.toDate,
       };
-      this.excelData.push(obj);
+      this.excelDataMapping.push(obj);
     });
-      console.log('this.employeeList::', this.employeeList);
+      console.log('this.excelDataMapping::', this.excelDataMapping);
     }
-    this.excelservice.exportAsExcelFile(this.excelData, 'Job-Master-Summary', 'Job-Master-Summary' ,this.header);
+    this.excelservice.exportAsExcelFile(this.excelDataMapping, 'Mapping-Job-Master-Summary', 'Mapping-Job-Master-Summary' ,this.header);
 
   }
 
 
    //Job Master Excel
    exportApprovalSummaryAsExcelCompanyTable(): void {
-    this.excelData = [];
+    this.excelDataCompany = [];
     this.header = []
-    this.header =["jobMasterType", "masterCode", "masterDescription"];
-    this.excelData = [];
-    if(this.tableDataList.length>0){
+    this.header =["jobMasterType", "masterCode", "masterDescription", "fromDate", "toDate"];
+    this.excelDataCompany = [];
+    if(this.companyAssignTableListDummy.length>0){
      // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
-     //this.employeeList =  this.tableDataList;
-     this.tableDataList.forEach((element) => {
+     //this.employeeList =  this.companyAssignTableListDummy;
+     this.companyAssignTableListDummy.forEach((element) => {
       let obj = {
         jobMasterType: element.jobMasterType,
         masterCode: element.masterCode,
         masterDescription: element.masterDescription,
-        companyName : element.companyName,
         toDate:  new Date(element.toDate),
-       fromDate: new Date(element.fromDate),
+        fromDate: new Date(element.fromDate),
       };
-      this.excelData.push(obj);
+      this.excelDataCompany.push(obj);
     });
-      console.log('this.employeeList::', this.employeeList);
+      console.log('this.excelDataCompany::', this.excelDataCompany);
     }
-    this.excelservice.exportAsExcelFile(this.excelData, 'Job-Master-Summary', 'Job-Master-Summary' ,this.header);
+    this.excelservice.exportAsExcelFile(this.excelDataCompany, 'Not-Assigned-Job-Master', 'Not-Assigned-Job-Master' ,this.header);
 
   }
 
@@ -482,7 +488,7 @@ export class JobMasterComponent implements OnInit {
           masterDescription: element.masterDescription,
           jobMasterType: element.jobMasterType,
           isActive: element.active,
-          toDate: null,
+          toDate: new Date( '31-Dec-9999' ),
           fromDate: null,
           isCheckedTruefalse: this.getAllMappingDetailListNew.find(x=>x.jobMasterValueId == element.jobMasterValueId)!=null ?true:false,
         };
@@ -494,9 +500,29 @@ export class JobMasterComponent implements OnInit {
 
         // this.tableDataList1.push( obj );
 
-      } );
-      console.log("companyAssignTableList", this.companyAssignTableList);
+      },
+      this.tableDataList.sort((x,y)=>x.jobMasterType > y.jobMasterType ? 1: -1)
+    );
+    //   console.log("companyAssignTableList", this.companyAssignTableList);
+    // var tableDataList: { age: number; }[] = [{ age: 10}, { age: 1 }, {age: 5}];
+      // this.tableDataList.sort((x,y)=>x.jobMasterType > y.jobMasterType ? 1: -1);
+      console.log("tableDataList", this.tableDataList);
     } );
+
+
+//     var sortedArray: { age: number; }[] = objectArray.sort((n1,n2) => {
+//     if (n1.age > n2.age) {
+//         return 1;
+//     }
+
+//     if (n1.age < n2.age) {
+//         return -1;
+//     }
+
+//     return 0;
+// });
+
+
 
 
     this.tableDataList = [];
@@ -595,6 +621,7 @@ export class JobMasterComponent implements OnInit {
         this.formAssignment.patchValue( {
           companyName: ''
         } );
+        this.form.get( 'isActive' ).setValue( true );
       }
     }
 
@@ -671,11 +698,12 @@ export class JobMasterComponent implements OnInit {
     this.isViewMode = false;
     this.isUpdateMode = false;
     this.hideFormControl = false;
-    this.form.get( 'isActive' ).setValue( true );
     this.form.reset();
+    this.form.get( 'isActive' ).setValue( true );
     this.form.patchValue( {
       jobMasterType: ''
     } );
+
   }
 
 
@@ -2102,5 +2130,41 @@ export class JobMasterComponent implements OnInit {
   this.companyDataInDetails();
 
   }
+
+    //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
+    setPaymentDetailToDate() {
+      this.paymentDetailMinDate = this.form.value.fromDate;
+      const from = this.datePipe.transform(
+        this.form.get('fromDate').value,
+        'yyyy-MM-dd'
+      );
+      const to = this.datePipe.transform(
+        this.form.get('toDate').value,
+        'yyyy-MM-dd'
+      );
+      if (from > to) {
+        this.form.controls.toDate.reset();
+      }
+    }
+
+    //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
+  checkFinancialYearStartDateWithPaymentDetailToDate() {
+    const to = this.datePipe.transform(
+      this.form.get('toDate').value,
+      'yyyy-MM-dd'
+    );
+    const financialYearStartDate = this.datePipe.transform(
+      this.financialYearStart,
+      'yyyy-MM-dd'
+    );
+    if (to < financialYearStartDate) {
+      //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
+      this.alertService.sweetalertWarning(
+        "Policy End Date can't be earlier that start of the Current Financial Year"
+      );
+      this.form.controls.toDate.reset();
+    }
+  }
+
 
 }
