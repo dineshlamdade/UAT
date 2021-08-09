@@ -30,6 +30,7 @@ export class EmployeesetComponent implements OnInit {
   getdata: any;
   employeeList : any = [];
   radioStatus: boolean;
+  primengConfig: any;
 
   constructor(public empService: EmployeesetService, public fb: FormBuilder,public toaster : ToastrService,
     public alertService : AlertServiceService,private excelservice: ExcelserviceService) {
@@ -46,6 +47,7 @@ export class EmployeesetComponent implements OnInit {
   ngOnInit(): void {
     this.getServiceList();
     this.getSummaryData();
+    //this.primengConfig.ripple = true;
   }
 
   changeEvent2($event) {
@@ -120,7 +122,7 @@ export class EmployeesetComponent implements OnInit {
   getEmployeeMasterId(e) {
     this.selectedemployeeMasterId = e.itemValue;
     this.empService.getByEmlpoyeeId(this.selectedemployeeMasterId).subscribe((res)=>{
-    //this.serviceListData = res.data.results;
+    this.serviceListData = res.data.results;
 
     
     console.log(res);
@@ -129,16 +131,17 @@ export class EmployeesetComponent implements OnInit {
   }
 
   getServiceList() {
-    this.empService.getServiceList().subscribe((res) => {
-      //this.serviceListData = res.data.results[0];
-     res.data.results[0].forEach(element => {
+    this.empService.getServiceList().subscribe((res:any) => {
+   // this.serviceListData = res.data.results[0];
+     res.data.results.forEach(element => {
         this.serviceListData.push({
           label : element.employeeCode,
-          value : element.employeeMasterId
+          value : element.employeeMasterId,
+          name : element.fullName
         })
         
       });
-      console.log(this.serviceListData);
+      console.log('service list data',this.serviceListData);
      
     })
   }
@@ -246,6 +249,16 @@ export class EmployeesetComponent implements OnInit {
     
   }
   
+  
+  deleteData(id){
+    this.empService.deleteData(id).subscribe((res)=>{
+     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+    //this.getServiceList();
+   this.ngOnInit()
+     
+   })
+
+  }
 
   //Employee set Excel
   exportApprovalSummaryAsExcel(): void {
@@ -253,17 +266,36 @@ export class EmployeesetComponent implements OnInit {
     this.header = []
     this.header =["Emp.SetName", "No.Of Emp"];
     this.excelData = [];
-    if(this.summaryData.length>0){
-     // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
-     //this.employeeList =  this.tableDataList;
-     this.summaryData.forEach((element) => {
-      let obj = {
-        EmployeeSetName: element.employeeSetName,
-        NoOfEmp: element.employeeSetMasterDetailsList.length,
-        //masterDescription: element.masterDescription,
-      };
-      this.excelData.push(obj);
-    });
+
+   let empname = this.employeesetForm.get('employeeSetName').value;
+   //console.log("employee list",this.employeeList)
+  // let emp = this.employeesetForm.get('empList').value
+  // console.log('empdata',emp)
+  // let empList= emp.split(',');
+
+   if(this.employeeList.length>0){
+  this.employeeList.forEach(element=>{
+    let empCode = this.serviceListData.find(x=>x.value==element)
+  let obj={  EmployeeSetName : empname,
+    employeeCode : empCode.label,
+  empName : empCode.name}
+    this.excelData.push(obj)
+ })
+ 
+
+  
+
+    // if(this.summaryData.length>0){
+    //  // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+    //  //this.employeeList =  this.tableDataList;
+    //  this.summaryData.forEach((element) => {
+    //   let obj = {
+    //     EmployeeSetName: element.employeeSetName,
+    //     NoOfEmp: element.employeeSetMasterDetailsList.length,
+    //     //masterDescription: element.masterDescription,
+    //   };
+      
+   // });
       console.log('this.employeeList::', this.employeeList);
     }
     this.excelservice.exportAsExcelFile(this.excelData, this.header);
@@ -285,6 +317,11 @@ export class EmployeesetComponent implements OnInit {
       return event.order * result;
     });
   }
+
+  search(value: string): void {
+    this.serviceListData = this.serviceListData.filter((val) => val.label.toLowerCase().includes(value));
+  }
+
 
   
 }

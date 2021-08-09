@@ -60,9 +60,9 @@ export class SupplementaryComponent implements OnInit {
 
 console.log('Supplimentary  cylece',this.supplementaryForm.value);
 //debugger
-const periodNameList = this.cycleNameList.filter(element=>element.periodId == this.supplementaryForm.get('periodName').value)
+const periodNameList = this.cycleLockList.filter(element=>element.periodId == this.supplementaryForm.get('periodName').value)
 console.log('period name list is',periodNameList[0].periodName)
-let period = this.cycleNameList.find(x=>x.periodId==this.supplementaryForm.get('periodName').value)
+let period = this.cycleLockList.find(x=>x.periodId==this.supplementaryForm.get('periodName').value)
 const data = [{
 businessCycleId:period.id,
 //businessCycleId:2790,
@@ -99,6 +99,13 @@ console.log('data is',data);
   }
 
   getCycleNameById(id){
+    
+    
+      this.supplementaryService.getByCycleLock(id).subscribe((res)=>{
+        this.cycleLockList = res.data.results;
+        console.log('Cycle lock list is',this.cycleLockList);
+      })
+    
     this.cycleNameList = [];
      this.cycleDefinitionList.forEach(ele =>{
       if(ele.id == id){
@@ -113,20 +120,20 @@ console.log('data is',data);
         this.supplementaryForm.controls['periodName'].setValue(this.periodId);
       }
     })
+    
     console.log("this.cycleNameList:" + this.cycleNameList);
     this.cycleNameList = [];
+    this.cycleLockList = []
     //clear the text
     this.supplementaryForm.controls.periodName.reset();
    this.supplementaryForm.controls.cycleName.reset();
    this.supplementaryForm.controls.startDate.reset();
    this.supplementaryForm.controls.endDate.reset();
+
+   
   }
 
-  // getByCycleLock(id){
-  //   this.supplementaryService.getByCycleLock(id).subscribe((res)=>{
-  //     this.cycleLockList = res.data.results;
-  //   })
-  // }
+  
 
   onChangeCycle(periodId : any){
     if(periodId == ''){
@@ -139,7 +146,9 @@ console.log('data is',data);
       //   toDate : this.cycleNameList[index].toDate
       // });
       let cycleName;
-      this.cycleNameList.forEach(ele =>{
+      let location = this.cycleLockList.find(a=>a.periodId==periodId);
+       const businessId= location.businessCycleDefinition.id;
+      this.cycleLockList.forEach(ele =>{
         //console.log(ele.businessCycleDefinition)
         if(ele.periodId == periodId){
           this.selectedPeriodName = ele.periodName
@@ -150,12 +159,14 @@ console.log('data is',data);
         }
       })
       let i = 1;
-      this.cycleNameList.forEach(element => {
+      this.cycleLockList.forEach(element => {
+     
         if(element.periodId == periodId){
           i = i+1
         }
       });
       this.periodName = this.selectedPeriodName+'-Supp'+i
+      console.log("cycle lock list",this.cycleLockList);
       console.log(this.periodName)
       this.supplementaryForm.controls['cycleName'].setValue(this.periodName)
       // let i = 1
@@ -170,8 +181,8 @@ console.log('data is',data);
   // this.supplementaryForm.controls['cycleName'].setValue(this.periodName)
    this.supplementaryForm.controls['startDate'].setValue(new Date(this.businessCycleDefinition.fromDate))
    this.supplementaryForm.controls['endDate'].setValue(new Date(this.businessCycleDefinition.toDate))
-      this.supplementaryForm.controls['fromDate'].setValue(new Date(this.businessCycleDefinition.fromDate))
-      this.supplementaryForm.controls['toDate'].setValue(new Date(this.businessCycleDefinition.toDate))
+    //  this.supplementaryForm.controls['fromDate'].setValue(new Date(this.businessCycleDefinition.fromDate))
+     // this.supplementaryForm.controls['toDate'].setValue(new Date(this.businessCycleDefinition.toDate))
       
       
 
@@ -188,9 +199,9 @@ console.log('data is',data);
 }
 onUpdate(){
   //debugger;
-let periodNameList =this.cycleNameList.filter(element=>element.periodId == this.supplementaryForm.get('periodName').value)
+let periodNameList =this.cycleLockList.filter(element=>element.periodId == this.supplementaryForm.get('periodName').value)
 // console.log('period name list is',periodNameList[0].periodName)
- let period = this.cycleNameList.find(x=>x.periodId==this.supplementaryForm.get('periodName').value)
+ let period = this.cycleLockList.find(x=>x.periodId==this.supplementaryForm.get('periodName').value)
  console.log('id is',period);
 const data = [{
   

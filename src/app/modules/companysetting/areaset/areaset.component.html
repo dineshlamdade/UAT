@@ -50,7 +50,7 @@
                                 formControlName="serviceMasterId"
                                 [ngClass]="{'is-invalid' : areasetForm.get('serviceMasterId').status == 'INVALID'}">
                                 <option>Select Service</option>
-                                <option *ngFor="let service of serviceListData" value="{{service.serviceMasterId}}">
+                                <option *ngFor="let service of serviceData" value="{{service.serviceMasterId}}">
                                   {{service.serviceName}}
                                 </option>
                               </select>
@@ -74,7 +74,7 @@
                                 <label class="form-label">Area</label>
                                 <p-multiSelect [options]="areaListData" class="multiselect-custom"
                                   [virtualScroll]="true" formControlName = "areaList"
-                                  [placeholder]="'Select Area'" 
+                                  [placeholder]="'Select Area'" resetFilterOnHide=true
                                   [(ngModel)]="areaList" 
                                   [ngModelOptions]="{standalone: true}" 
                                  (onChange)="getArea(areaList,$event)"
@@ -108,7 +108,8 @@
                                   <div class="custom-controls-stacked mb-2 ml-5">
                                     <label class="custom-control custom-radio">
                                       <input type="radio" class="custom-control-input" name="example- radios"
-                                        value="option1" (click)="ViewHistory(template4)" checked>
+                                        value="option1" (click)="ViewHistory(template4)"
+                                        [checked]="radioStatus" (change)="example($event)">
                                       <div class="custom-control-label"> Area List </div>
                                     </label>
                                   </div>
@@ -263,7 +264,7 @@
                                 aria-hidden="true" (click)="editAreaSet(data)"></i>&nbsp;
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
                                 (click)="viewAreaSet(data)" aria-hidden="true"></i>&nbsp;
-                                <i class="fa fa-trash font-18 text-red cursor-pointer"
+                                <i class="fa fa-trash font-18 text-red cursor-pointer" (click) = "deleteData(data.areaSetMasterId)"
                                aria-hidden="true" tooltip="Delete"></i>&nbsp;
 
                             </td>

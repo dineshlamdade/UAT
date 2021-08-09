@@ -38,8 +38,8 @@
                         <label class="form-label">Emp. Code</label>
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
                         <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
-                           [(ngModel)] = "employeeList"
-                           optionLabel="" 
+                           [(ngModel)] = "employeeList" resetFilterOnHide=true
+                           optionLabel=""
                           [placeholder]="'Select Emp.code'" formControlName = "empList"
                           (onChange)="getArea(employeeList,$event)" class="font-12 text-ellipsis mt-1"
 
@@ -83,8 +83,9 @@
                           <div class="form-group">
                            
                             <label class="form-label"> Selected Employee List <br>
-                              <i class="fa fa-file-excel-o fa-2x mr-2 text-dark-green" style="cursor: pointer;"
-                              (click)="exportApprovalSummaryAsExcel()"></i>
+                              <i class="fa fa-file-excel-o fa-2x mr-2 text-dark-green" 
+                              (click) = "exportApprovalSummaryAsExcel()" style="cursor: pointer;"
+                              ></i>
       
                             </label>
                            
@@ -163,8 +164,10 @@
                       <p-table [value]="summaryData" [paginator]="true" [rows]="10"
                        [rowsPerPageOptions]="[10,25,50,100,200]"
                        (sortFunction)="customSort3($event)"
-                       [customSort3]="true">
-
+                       [customSort3]="true"
+                     >
+                       <!-- (sortFunction)="customSort3($event)" -->
+                       <!-- [customSort3]="true" -->
 
                         <ng-template pTemplate="header">
                           <tr>
@@ -218,7 +221,9 @@
                               <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
                               (click) = "viewEmployeeSet(data)"
                                 aria-hidden="true"></i>&nbsp;
-                                <i class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true" tooltip = "Delete"></i>&nbsp;
+                                <i class="fa fa-trash font-18 text-red cursor-pointer" 
+                                (click) = "deleteData(data.employeeSetMasterId)" aria-hidden="true" 
+                               tooltip = "Delete"></i>&nbsp;
 
                             </td>
                           </tr>

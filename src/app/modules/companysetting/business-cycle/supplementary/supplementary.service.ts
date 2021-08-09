@@ -21,9 +21,9 @@ export class SupplementaryService{
         return this.http.get(this.apiUrl+`business-cycle/cycle/`+id)
     }
 
-    //   getByCycleLock(id):Observable<any>{
-    //       return this.http.get(this.apiUrl+`business-cycle/lock-cycle/`+id);
-    //   }
+      getByCycleLock(id):Observable<any>{
+          return this.http.get(this.apiUrl+`business-cycle/lock-cycle/`+id);
+      }
 
 
         /**get summary data */

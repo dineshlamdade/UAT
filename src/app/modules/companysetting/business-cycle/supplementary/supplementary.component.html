@@ -38,7 +38,7 @@
                    [disabled] = "businessCycleDefinitionId == ''"
                       [ngClass]="{'is-invalid' : supplementaryForm.get('periodName').status == 'INVALID'}">
                         <option selected value=''>Select </option>
-                        <option *ngFor="let Cycle of cycleNameList" [value]="Cycle.periodId">
+                        <option *ngFor="let Cycle of cycleLockList" [value]="Cycle.periodId">
                           {{Cycle.periodName}}
                           </option>
                           <!-- <option>Select</option> -->

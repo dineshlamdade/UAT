@@ -46,14 +46,20 @@ export class AreasetComponent implements OnInit {
   sourceProducts: any[];
   selectedUser2: any[];
   selectedUser: any[];
-  excelData: any;
-  header: any;
+
   areaList : Array<any>=[];
   row: any;
   data: any;
+  serviceData: any;
+  Area: any;
+  radioStatus: boolean;
+  excelData: any;
+  header: any;
+
+
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
     private toaster : ToastrService, private primengConfig: PrimeNGConfig,
-    public alertService : AlertServiceService) { 
+    public alertService : AlertServiceService,private excelservice: ExcelserviceService) { 
      
       
       this.areasetForm = new FormGroup({
@@ -80,6 +86,18 @@ export class AreasetComponent implements OnInit {
         this.hideRemarkDiv2 = true;
     }
   }
+
+  example($event) {
+    console.log($event.target.checked);
+   
+    if($event.target.checked){
+
+      this.radioStatus = false;
+    }
+    else{
+      this.radioStatus = true;
+    }
+ }
   
 
   ngOnInit(): void {
@@ -214,7 +232,15 @@ getAreaMasterId(e){
     // console.log(this.serviceListData);
       this.areasetService.getServiceList().subscribe(res =>{
       this.serviceListData = res.data.results[0];
-      console.log(this.serviceListData)
+      this.serviceData=[];
+      if(this.serviceListData.length >0){
+        this.serviceListData.forEach(element => {
+         this.serviceData.push({serviceMasterId : element.serviceMasterId,
+          serviceCode : element.serviceCode,
+          serviceName : element.serviceName})
+        });
+      }
+      console.log(this.serviceData)
    
       })
   }
@@ -225,35 +251,53 @@ getAreaMasterId(e){
     console.log('service id is',serviceid);
        this.areaListData = [];
        this.areaList = [];
-       let areaCode = this.areasetForm.get('serviceMasterId').value;
-      this.areasetService.getByServiceName(serviceid).subscribe(res =>{
-     // this.areaListData = res.data.results;
-     // console.log('result is',res);
-      res.data.results[0].forEach(element => {
-     //   console.log('Area element is',element.payrollAreaCode)
+       this.areasetService.getByServiceName(serviceid).subscribe((res)=>{
+      //  this.areaListData = res.data.results[0];
+        res.data.results[0].forEach(element => {
+          // if(serviceid){
+            this.areaListData.push({
+              label: element.areaCode, 
+              value: element.areaId
+          })
+         
+         
+         console.log('service master id data',this.areaListData)
+         
+       })
+    //   let location = this.serviceData.find(x=>x.serviceMasterId ==serviceid);
+    //    this.Area=location.serviceName;
+    //  console.log('areaSelected',this.Area)
 
-this.areaListData.push({
-  lable : element.areaCode+'AreaCode',
-  value : element.areaCode+'AreaId'
-})
 
-        // if(serviceid == 1){
-        //   this.areaListData.push({
-        //     label: element.payrollAreaCode, 
-        //     value: element.payrollAreaId
-        // })
-        // }else{
-        //      this.areaListData.push({
-        //   label: element.payrollArea.payrollAreaCode, 
-        //    value: element.payrollArea.payrollAreaId
-        //   })
-          
+
+
+      // this.areasetService.getByServiceName(serviceid).subscribe(res =>{
+    // this.areaListData = res.data.results;
+     //console.log('result is',res);
+    
+//         var areaCode= this.Area+'AreaCode';
+//      //   let str= JSON.parse(+areaCode);
+//         var areaId=this.Area+'AreaId';
+//         for(let i=0;i<res.data.results[0].length;i++){
+         
+//  let obj=res.data.results[0][i].areaCode;
+//  console.log(obj);
+//         }
+//           res.data.results[0].forEach(element => {
+//      //   console.log('Area element is',element.payrollAreaCode)
+// let areaCode=this.Area+'AreaCode';
+// let areaId=this.Area+'AreaId';
+//  let obj=element.areaCode;
+//   value:element.areaId})
+
+//this.areaListData.push(obj)
+
         // }
-           console.log("this.areaListData: "+ this.areaListData)
+          // console.log("this.areaListData: "+ this.areaListData)
            
       });
       
-    })
+  //  })
     
   }
 
@@ -341,7 +385,74 @@ let datatest = []
     })
     this.areasetForm.controls['areaSetMasterDetailsList'].setValue(this.areaMaster);
    }
+
+   deleteData(id){
+     this.areasetService.deleteData(id).subscribe((res)=>{
+      this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+      //this.getServiceList()
+      this.ngOnInit()
+     })
+
+   }
+
+   //Employee set Excel
+  exportApprovalSummaryAsExcel(): void {
+ this.excelData = [];
+this.header = []
+ this.header =["AreaSetName", "Service" ,'No.Of.Area'];
+this.excelData = [];
+
+let areaName = this.areasetForm.get('areaSetName').value;
+let serName = this.areasetForm.get('serviceMasterId').value;
+//    //console.log("employee list",this.employeeList)
+//   // let emp = this.employeesetForm.get('empList').value
+//   // console.log('empdata',emp)
+//   // let empList= emp.split(',');
+
+ // if(this.areaList.length>0){
+//   this.areaList.forEach(element=>{
+//    let areaCode = this.areaListData.find(x=>x.value==element)
+//   let obj={  AreaSetName : areaName,
+//     serviceName : serName,
+//   areacode : }
+   //this.excelData.push(obj)
+// })
+ 
+
   
+
+//     // if(this.summaryData.length>0){
+//     //  // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+//     //  //this.employeeList =  this.tableDataList;
+//     //  this.summaryData.forEach((element) => {
+//     //   let obj = {
+//     //     EmployeeSetName: element.employeeSetName,
+//     //     NoOfEmp: element.employeeSetMasterDetailsList.length,
+//     //     //masterDescription: element.masterDescription,
+//     //   };
+      
+//    // });
+//       console.log('this.employeeList::', this.employeeList);
+//     }
+//     this.excelservice.exportAsExcelFile(this.excelData, this.header);
+
+//   }
+//   customSort3(event: SortEvent) {
+//     event.data.sort((data1, data2) => {
+//       let value1 = data1[event.field];
+//       let value2 = data2[event.field];
+//       let result = null;
+
+//       if (value1 == null && value2 != null) result = -1;
+//       else if (value1 != null && value2 == null) result = 1;
+//       else if (value1 == null && value2 == null) result = 0;
+//       else if (typeof value1 === 'string' && typeof value2 === 'string')
+//         result = value1.localeCompare(value2);
+//       else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+
+//       return event.order * result;
+//     });
+ }
 
 
 }

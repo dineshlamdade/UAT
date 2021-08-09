@@ -20,7 +20,10 @@ public apiUrl = environment.baseUrl8084;
     
     /** Get Arealist by service */
     getByServiceName(serviceid):Observable<any>{
-        return this.http.get<any>(this.apiUrl+ `Areamaster/getByServiceName/`+serviceid)
+       // return this.http.get<any>(this.apiUrl+ `Areamaster/getByServiceName/`+serviceid)
+       // return this.http.get<any>(this.apiUrl+ `Areamaster/getAreaMastersById/`+serviceid)
+       return this.http.get<any>(this.apiUrl+ `Areamaster/ServiceMasterId/`+serviceid)
+
     }
 
     /**get Summary data */
@@ -39,5 +42,8 @@ public apiUrl = environment.baseUrl8084;
         return this.http.put<any>(this.apiUrl+ `Areamaster/Update`, data);
    }
 
+   deleteData(id:number):Observable<any>{
+     return this.http.delete<any>(this.apiUrl+`Areamaster/deleteById/`+id);
+   }
 
 }

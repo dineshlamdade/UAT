@@ -321,7 +321,7 @@ export class AdhocComponent implements OnInit {
 
       let i = 1
       this.adhocCycleList.forEach(element => {
-        if(element.periodId == periodId && element.businessCycleDefinitionId ==businessId){
+        if(element.periodId == periodId){
          // console.log('period id is',periodId)
           i = i+1
         }
