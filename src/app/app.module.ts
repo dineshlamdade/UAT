@@ -82,6 +82,7 @@ import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { InvestmentApprovalModule } from './modules/investment-approval/investment-approval.module';
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
+import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
 
 
 
@@ -153,7 +154,8 @@ import { ApprovedInvestmentModule } from './modules/approved-investment/approved
     LoanMasterModule,
     SignaturePadModule,
     InvestmentApprovalModule,
-    ApprovedInvestmentModule
+    ApprovedInvestmentModule,
+    FormulamasterModule
 
   ],
 

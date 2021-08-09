@@ -1,0 +1,289 @@
+<app-leftmenu></app-leftmenu>
+
+<div class="tabview-contents">
+
+
+
+    <div class="row mt-20">
+        <div class="col-md-12">
+            <fieldset>
+                <div class="row mt-20">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Code </label>
+                            <input type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                        <div class="form-group">
+                            <label class="form-label">Nature</label>
+                            <label class="custom-switch mt_5">
+                                <span class="form-label">E / D Head </span>&nbsp;&nbsp;
+                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                                <span class="custom-switch-indicator"></span>&nbsp;&nbsp;
+                                <span class="form-label">Formula </span>
+                            </label>
+
+                        </div>
+                    </div>
+                   
+
+                </div>
+
+                <div class="row mt-20">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">E / D Head  </label>
+                            <select class="form-control">
+                                <option>Select</option>
+                                <option value=""> </option>
+                                <option value=""> </option>
+                                <option value=""></option>
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Type</label>
+                            <select class="form-control">
+                                <option>Select</option>
+                                <option value="">Master </option>
+                                <option value="">Output</option>
+                                <option value="">Arrear</option>
+                                <option value="">Output + Arrear</option>
+                                <option value="">Projection</option>
+                                <option value="">YTD</option>
+                                <option value="">YTD + Projection</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                        <div class="form-group">
+                            <label class="form-label">Formula</label>
+                            <select class="form-control">
+                                <option>Select</option>
+                                <option value=""> </option>
+                                <option value=""> </option>
+                                <option value=""></option>
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                        <div class="form-group">
+                            <label class="form-label">Remark</label>
+                            <textarea class="form-control"></textarea>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </fieldset>
+
+        </div>
+        <br>
+
+
+        <div class="col-12">
+
+            <div class="row">
+
+                <div class="col-12 mt-20">
+                    <div class="float-right ">
+
+
+
+                        <button type="submit"
+                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                            tooltip="Save" [disabled]="loading">
+                            <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
+                            Save</button>
+
+
+                        <button type="button" tooltip="Reset"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                    class="fa  fa-refresh"></i></b> Reset</button>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="cycle-table mt-4">
+        <!-- <div class="cycle-value pt-20 pb-20 bg-color-light_gray">
+                            <h6 class="font-14">&nbsp; &nbsp;Total Records (10) &nbsp;&nbsp; Selected Records (10) <span
+                                    class="float-right">
+                                    <button type="submit"
+                                        class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                        tooltip="Hold" [disabled]="loading" (click)=" extralargepopup(template)">
+                                        <b><i class="fa fa-hand-paper-o" aria-hidden="true"></i></b>
+                                        Hold</button>&nbsp; <i
+                                        class="fa fa-file-excel-o font-34 text-dark-green  mr-10 float-right"
+                                        aria-hidden="true"></i></span></h6>
+                        </div> -->
+        <p-table [value]="users1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50]">
+            <ng-template pTemplate="header">
+                <tr style="text-align:center;">
+                    <th rowspan="1" class="wd-10">
+                        Sr. No.
+                    </th>
+                    <th rowspan="2"  class="wd-10">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Code
+                            <div class="Sort_Filter_Position">
+                                <p-sortIcon field="Code" pSortableColumn="Code"></p-sortIcon>
+                                <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                    <th rowspan="2"  class="wd-10">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Description
+                            <div class="Sort_Filter_Position">
+                                <p-sortIcon field="Desc" pSortableColumn="Desc"></p-sortIcon>
+                                <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                   
+                    <th rowspan="2"  class="wd-10">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Nature
+                            <div class="Sort_Filter_Position">
+                                <p-sortIcon field="Nature" pSortableColumn="Nature"></p-sortIcon>
+                                <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                    <th rowspan="2"  class="wd-10">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            E / D Head
+                            <div class="Sort_Filter_Position">
+                                <p-sortIcon field="EDHead" pSortableColumn="EDHead"></p-sortIcon>
+                                <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                    <th rowspan="2" class="wd-10">
+                        <div class="p-d-flex p-jc-between p-ai-center" >
+                            Type
+                            <div class="Sort_Filter_Position">
+                                <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                                <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                   
+
+                    <th rowspan="2" class="wd-10">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Formula
+                            <div class="Sort_Filter_Position">
+                                <p-sortIcon field="Formula" pSortableColumn="Formula"></p-sortIcon>
+                                <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                    <th rowspan="2" class="wd-10">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Pre-Defined
+
+                            <div class="Sort_Filter_Position">
+                                <p-sortIcon field="Remark" pSortableColumn="Remark"></p-sortIcon>
+                                <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                    <th rowspan="2" class="wd-10">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Remark
+                            <div class="Sort_Filter_Position">
+                                <p-sortIcon field="Remark" pSortableColumn="Remark"></p-sortIcon>
+                                <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
+                            </div>
+                        </div>
+                    </th>
+                   
+                    <th rowspan="2" class="text-center">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            Action
+
+                        </div>
+                    </th>
+                </tr>
+
+            </ng-template>
+
+
+
+            <ng-template pTemplate="body" let-user1>
+                <tr class="p-selectable-row">
+                    <td class="bg-color-light_gray"><label class="custom-control custom-checkbox checkbox-center"
+                            tooltip="Select All">
+                            <input type="checkbox" class="custom-control-input" name="select" /> <span
+                                class="custom-control-label"></span>
+                        </label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headtype}}</label>
+
+                    </td>
+
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.openingval}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.openingval}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.openingval}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.openingval}}</label></td>
+
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                            Available</span></td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+
+    </div>
+
+
+
+
+
+</div>

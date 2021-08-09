@@ -60,6 +60,12 @@ const routes: Routes = [
       './modules/payroll-inputs/payroll-inputs.module#PayrollInputsModule',
   },
 
+  {
+    path: 'formula',
+    loadChildren:
+      './modules/formulamaster/formulamaster.module#FormulamasterModule',
+  },
+
   { path: 'lms', loadChildren: './modules/lms/lms.module#LMSModule' },
   {
     path: 'workflow',
