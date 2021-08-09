@@ -183,14 +183,14 @@ uploadTransactionWithMultipleFiles(
     formData.append('declarationOfLandlordDocument', file);
   } */
   for (const file of files) {
-    formData.append('rentReciept', file);
+    formData.append('document', file);
   }
   /* 
   for (const file of files) {
     formData.append('declarationOfLandlordDocument', file);
   } */
  
-  formData.append('houseRentalTransaction', JSON.stringify(data));
+  formData.append('previousEmployerTransaction', JSON.stringify(data));
 
   console.log('formData', formData);
 
@@ -205,7 +205,7 @@ uploadTransactionWithMultipleFiles(
 }
 /* ==========srry============= */
 postEightyCDeclarationTransaction(data) {
-  return this._HTTP.post(this.apiUrl + 'houseRentalTransaction', data).pipe(
+  return this._HTTP.post(this.apiUrl + 'previousEmployerTransaction', data).pipe(
     map((res: any) => {
       return res;
     })
