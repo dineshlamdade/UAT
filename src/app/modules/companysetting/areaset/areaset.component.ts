@@ -10,6 +10,7 @@ import { ExcelserviceService } from 'src/app/core/services/excelservice.service'
 import { SortEvent } from 'primeng/api';
 import { element } from 'protractor';
 import { threadId } from 'node:worker_threads';
+import { ColumnFilterFormElement } from 'primeng/table';
 //import { AlertServiceService } from '@src/app/core/services/alert-service.service';
 // interface City {
 //   name: string,
@@ -61,8 +62,12 @@ export class AreasetComponent implements OnInit {
     private toaster : ToastrService, private primengConfig: PrimeNGConfig,
     public alertService : AlertServiceService,private excelservice: ExcelserviceService) { 
      
-      
-      this.areasetForm = new FormGroup({
+        this.getForm();
+    //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;   
+  }
+
+  getForm(){
+    this.areasetForm = new FormGroup({
       areaSetMasterId: new FormControl(''),
       areaSetName: new FormControl('',[Validators.required,Validators.maxLength(25)]),
       serviceMasterId: new FormControl('',[Validators.required]),
@@ -73,7 +78,7 @@ export class AreasetComponent implements OnInit {
       areaList : new FormControl(''),
       areaSetMasterDetailsList: new FormControl([]) 
     })
-    //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;   
+
   }
 
 
@@ -104,6 +109,8 @@ export class AreasetComponent implements OnInit {
      this.getServiceList();
      this.getSummaryData();
     
+    
+
   //    this.cities = [
   //     {name: 'New York', code: 'NY'},
   //     {name: 'Rome', code: 'RM'},
@@ -136,12 +143,14 @@ export class AreasetComponent implements OnInit {
           this.alertService.sweetalertMasterSuccess('Success','Area Set Saved Successfully');
 
        // this.toaster.success('','Area set saved succefully');
-        // this.areaList = [];
-        this.areasetForm.controls['areaList'].setValue([]);
-      this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
+        //this.areaList = [];
+        
+       this.areasetForm.controls['areaList'].setValue([]);
+       this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
+      
         this.areaListData = [];
         this.getSummaryData();
-        
+        this.getForm();
         this.areasetForm.reset();
       //  this.areasetForm.controls['areaList'].reset();
      
@@ -254,14 +263,31 @@ getAreaMasterId(e){
        this.areasetService.getByServiceName(serviceid).subscribe((res)=>{
       //  this.areaListData = res.data.results[0];
         res.data.results[0].forEach(element => {
-          // if(serviceid){
+           if(serviceid==1){
             this.areaListData.push({
-              label: element.areaCode, 
-              value: element.areaId
+              label: element.payrollAreaCode, 
+              value: element.payrollAreaId
           })
+        }else if(serviceid==2) {
+          this.areaListData.push({
+            label: element.leaveAreaCode, 
+            value: element.leaveAreaId
+        })
+        }else if(serviceid==5) {
+          this.areaListData.push({
+            label: element.attendanceAreaCode, 
+            value: element.attendanceAreaId
+        })
+        }
+        else if(serviceid==4) {
+          this.areaListData.push({
+            label: element.reimbursementAreaCode, 
+            value: element.reimbursementAreaId
+        })
+        }
+
          
          
-         console.log('service master id data',this.areaListData)
          
        })
     //   let location = this.serviceData.find(x=>x.serviceMasterId ==serviceid);
@@ -390,7 +416,7 @@ let datatest = []
      this.areasetService.deleteData(id).subscribe((res)=>{
       this.alertService.sweetalertMasterSuccess( res.status.message, '' );
       //this.getServiceList()
-      this.ngOnInit()
+      this.ngOnInit();
      })
 
    }
@@ -403,21 +429,26 @@ this.header = []
 this.excelData = [];
 
 let areaName = this.areasetForm.get('areaSetName').value;
+
 let serName = this.areasetForm.get('serviceMasterId').value;
+let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
 //    //console.log("employee list",this.employeeList)
 //   // let emp = this.employeesetForm.get('empList').value
 //   // console.log('empdata',emp)
 //   // let empList= emp.split(',');
 
- // if(this.areaList.length>0){
-//   this.areaList.forEach(element=>{
-//    let areaCode = this.areaListData.find(x=>x.value==element)
-//   let obj={  AreaSetName : areaName,
-//     serviceName : serName,
-//   areacode : }
-   //this.excelData.push(obj)
-// })
- 
+ if(this.areaList.length>0){
+  this.areaList.forEach(element=>{
+   let areaCode = this.areaListData.find(x=>x.value==element)
+   
+  let obj={ 
+     areaSetName : areaName,
+     serviceName :servName.serviceName,
+     areacode :areaCode.label 
+}
+   this.excelData.push(obj)
+})
+}
 
   
 
@@ -432,27 +463,34 @@ let serName = this.areasetForm.get('serviceMasterId').value;
 //     //   };
       
 //    // });
-//       console.log('this.employeeList::', this.employeeList);
+     console.log('this.areaList::', this.areaList);
 //     }
-//     this.excelservice.exportAsExcelFile(this.excelData, this.header);
+  this.excelservice.exportAsExcelFile(this.excelData, this.header);
 
-//   }
-//   customSort3(event: SortEvent) {
-//     event.data.sort((data1, data2) => {
-//       let value1 = data1[event.field];
-//       let value2 = data2[event.field];
-//       let result = null;
-
-//       if (value1 == null && value2 != null) result = -1;
-//       else if (value1 != null && value2 == null) result = 1;
-//       else if (value1 == null && value2 == null) result = 0;
-//       else if (typeof value1 === 'string' && typeof value2 === 'string')
-//         result = value1.localeCompare(value2);
-//       else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
-
-//       return event.order * result;
-//     });
  }
+
+
+  customSort3(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+      let result = null;
+
+      if (value1 == null && value2 != null) result = -1;
+      else if (value1 != null && value2 == null) result = 1;
+      else if (value1 == null && value2 == null) result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+        result = value1.localeCompare(value2);
+      else result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+
+      return event.order * result;
+    });
+
+
+
+  }
+  
+  
 
 
 }
@@ -462,4 +500,3 @@ let serName = this.areasetForm.get('serviceMasterId').value;
 
 
 
-//AreaSetMaster and AreaSetMasterDetails

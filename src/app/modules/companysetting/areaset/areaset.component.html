@@ -72,10 +72,10 @@
                               <div class="form-group ">
 
                                 <label class="form-label">Area</label>
-                                <p-multiSelect [options]="areaListData" class="multiselect-custom"
+                                <p-multiSelect [options]="areaListData" class="multiselect-custom" #multiselect
                                   [virtualScroll]="true" formControlName = "areaList"
                                   [placeholder]="'Select Area'" resetFilterOnHide=true
-                                  [(ngModel)]="areaList" 
+                                  [(ngModel)]="areaList"
                                   [ngModelOptions]="{standalone: true}" 
                                  (onChange)="getArea(areaList,$event)"
                                  >
@@ -118,6 +118,25 @@
 
 
                               </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
+                              <div class="form-group">
+                                <div class="form-group">
+                                 
+                                  <label class="form-label"> Selected Area List <br>
+                                    <i class="fa fa-file-excel-o fa-2x mr-2 text-dark-green" 
+                                    (click) = "exportApprovalSummaryAsExcel()"
+                                   style="cursor: pointer;"
+                                    ></i>
+            
+                                  </label>
+                                 
+                                </div>
+                            
+                            
+                              </div>
+                            
+                            
                             </div>
 
 
@@ -177,7 +196,8 @@
                       <!-- [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid || areaList.length == 0, 'btn-bg-green': !areasetForm.invalid}" -->
                       <!-- [disabled] = "areasetForm.invalid"  -->
                       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
-                     (click)="onSubmit()"><b>
+                     (click)="onSubmit()" [disabled] = "areasetForm.invalid"
+                     [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid, 'btn-bg-green': !areasetForm.invalid }"><b>
                       
                       <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp; 
                           <!-- [disabled] = "areasetForm.invalid" 
@@ -214,7 +234,9 @@
                   <div class="row">
                     <div class="col-md-8">
                       <p-table [value]="summaryData" [paginator]="true" [rows]="10"
-                        [rowsPerPageOptions]="[10,25,50,100,200]">
+                        [rowsPerPageOptions]="[10,25,50,100,200]"
+                        (sortFunction)="customSort3($event)"
+                        [customSort3]="true">
                         <ng-template pTemplate="header">
                           <tr>
                             <th rowspan="2" class="wd-6 text-center">Sr. No.</th>

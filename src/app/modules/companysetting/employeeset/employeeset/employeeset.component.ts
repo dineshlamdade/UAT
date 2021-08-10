@@ -5,6 +5,8 @@ import { EmployeesetService } from '../employeeset.service';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 import { ExcelserviceService } from 'src/app/core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map,debounceTime } from 'rxjs/operators';
 //import { ExcelserviceService } from  './../../core/services/excelservice.service';
 @Component({
   selector: 'app-employeeset',
@@ -31,6 +33,11 @@ export class EmployeesetComponent implements OnInit {
   employeeList : any = [];
   radioStatus: boolean;
   primengConfig: any;
+  private searchSubscribe;
+//  result: any;
+//  query: string;
+ // FilteredApplicationNames: any;
+ // search: (text$: Observable<string>) => Observable<any>;
 
   constructor(public empService: EmployeesetService, public fb: FormBuilder,public toaster : ToastrService,
     public alertService : AlertServiceService,private excelservice: ExcelserviceService) {
@@ -48,6 +55,13 @@ export class EmployeesetComponent implements OnInit {
     this.getServiceList();
     this.getSummaryData();
     //this.primengConfig.ripple = true;
+    // this.search = (text$: Observable<string>) => text$.pipe(
+    //   distinctUntilChanged(),
+    //    map(term => term.length < 2 ? []
+    //      : this.result.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    //  );
+
+    
   }
 
   changeEvent2($event) {
@@ -318,16 +332,30 @@ export class EmployeesetComponent implements OnInit {
     });
   }
 
-  search(value: string): void {
-    this.serviceListData = this.serviceListData.filter((val) => val.label.toLowerCase().includes(value));
-  }
-
+//  search(filterValue){
+//   //   this.serviceListData = this.serviceListData.filter((val) => val.employeeCode.toLowerCase().includes(value));
+//   this.serviceListData.filter(option => option.toLowerCase().includes(filterValue))
+//   }
+// filter(event: any) {
+//   if (this.query != "") {
+//       this.FilteredApplicationNames = this.employeeList.filter(function (el) {
+//           return el.toString().toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+//       }.bind(this));
+//   } else {
+//       this.FilteredApplicationNames = [];
+//   }
+// }
+  
 
   
 }
 
 
 
+
+// function filterValue(filterValue: any) {
+//   throw new Error('Function not implemented.');
+// }
 // <i class="fa fa-file-excel-o fa-2x 
 // //Job Master Excel
 //   exportApprovalSummaryAsExcel(): void {

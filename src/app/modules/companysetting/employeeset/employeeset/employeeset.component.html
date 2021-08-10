@@ -39,7 +39,7 @@
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
                         <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
                            [(ngModel)] = "employeeList" resetFilterOnHide=true
-                           optionLabel=""
+                           optionLabel="" 
                           [placeholder]="'Select Emp.code'" formControlName = "empList"
                           (onChange)="getArea(employeeList,$event)" class="font-12 text-ellipsis mt-1"
 

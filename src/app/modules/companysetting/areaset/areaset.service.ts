@@ -20,9 +20,9 @@ public apiUrl = environment.baseUrl8084;
     
     /** Get Arealist by service */
     getByServiceName(serviceid):Observable<any>{
-       // return this.http.get<any>(this.apiUrl+ `Areamaster/getByServiceName/`+serviceid)
+       return this.http.get<any>(this.apiUrl+ `Areamaster/getByServiceName/`+serviceid)
        // return this.http.get<any>(this.apiUrl+ `Areamaster/getAreaMastersById/`+serviceid)
-       return this.http.get<any>(this.apiUrl+ `Areamaster/ServiceMasterId/`+serviceid)
+      // return this.http.get<any>(this.apiUrl+ `Areamaster/ServiceMasterId/`+serviceid)
 
     }
 
