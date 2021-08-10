@@ -14,8 +14,8 @@ export class SdnCreationService {
   }
 
   //  (Summery)
-  sdmSummery(sdmMasterId) : Observable<any> {
-    return this.HttpClient.get<any>(this.url + `source-derived-matrix/`+ sdmMasterId);
+  sdmSummery(companyGroupId) : Observable<any> {
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/summary/`+ companyGroupId);
   }
 
   // 1st tab api (Source)

@@ -10,7 +10,7 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path:   'formula',
+        path:   'formulamaster',
         component:  FormulamasterComponent,
         data: { title: ':: DelziaHR :: Formula' },
         

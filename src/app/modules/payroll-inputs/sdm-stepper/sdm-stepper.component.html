@@ -86,7 +86,7 @@
 
 
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">Module
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">Module Count
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -97,11 +97,15 @@
                                                                 </div>
                                                             </th>
 
-                                                            <th colspan="5" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center"
-                                                                    style="margin-left: 330px;">Source
+                                                            <th rowspan="2" class="wd-8 text-center">
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">Source Count
 
-
+                                                                    <div class="Sort_Filter_Position">
+                                                                        <p-sortIcon field="date"></p-sortIcon>
+                                                                        <p-columnFilter type="date" field="date"
+                                                                            display="menu" class="p-ml-auto">
+                                                                        </p-columnFilter>
+                                                                    </div>
                                                                 </div>
                                                             </th>
                                                             <th rowspan="2" class="wd-8 text-center">
@@ -118,8 +122,7 @@
                                                                 </div>
                                                             </th>
                                                             <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center ml-35">No. of
-                                                                    Derived
+                                                                <div class="p-d-flex p-jc-between p-ai-center ml-35">Derived Count
 
                                                                     <div class="Sort_Filter_Position">
                                                                         <p-sortIcon field="date"></p-sortIcon>
@@ -145,77 +148,23 @@
 
 
                                                         </tr>
-                                                        <tr>
-                                                            <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">1
-
-                                                                    <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="date"></p-sortIcon>
-                                                                        <p-columnFilter type="date" field="date"
-                                                                            display="menu" class="p-ml-auto">
-                                                                        </p-columnFilter>
-                                                                    </div>
-                                                                </div>
-                                                            </th>
-                                                            <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">2
-
-                                                                    <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="date"></p-sortIcon>
-                                                                        <p-columnFilter type="date" field="date"
-                                                                            display="menu" class="p-ml-auto">
-                                                                        </p-columnFilter>
-                                                                    </div>
-                                                                </div>
-                                                            </th>
-                                                            <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">3
-
-                                                                    <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="date"></p-sortIcon>
-                                                                        <p-columnFilter type="date" field="date"
-                                                                            display="menu" class="p-ml-auto">
-                                                                        </p-columnFilter>
-                                                                    </div>
-                                                                </div>
-                                                            </th>
-                                                            <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">4
-
-                                                                    <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="date"></p-sortIcon>
-                                                                        <p-columnFilter type="date" field="date"
-                                                                            display="menu" class="p-ml-auto">
-                                                                        </p-columnFilter>
-                                                                    </div>
-                                                                </div>
-                                                            </th>
-                                                            <th rowspan="2" class="wd-8 text-center">
-                                                                <div class="p-d-flex p-jc-between p-ai-center ml-45">5
-
-                                                                    <div class="Sort_Filter_Position">
-                                                                        <p-sortIcon field="date"></p-sortIcon>
-                                                                        <p-columnFilter type="date" field="date"
-                                                                            display="menu" class="p-ml-auto">
-                                                                        </p-columnFilter>
-                                                                    </div>
-                                                                </div>
-                                                            </th>
-                                                        </tr>
+                                                       
                                                     </ng-template>
                                                     <ng-template pTemplate="body" let-summery let-rowIndex="rowIndex">
                                                         <tr class="p-selectable-row">
                                                             <td class="text-center">{{rowIndex+1}}</td>
                                                             <td class="text-center">{{summery.sdmName}}</td>
                                                             <td class="text-center">{{summery.sdmDescription}}</td>
-                                                            <td class="text-center"></td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"> </td>
-                                                            <td class="text-center"></td>
-                                                            <td class="text-center"></td>
-                                                            <td class="text-center"></td>
+                                                            <td class="text-center">
+                                                                <span class="badge badge-pill badge-success">{{summery.moduleCount}}</span>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span class="badge badge-pill badge-success">{{summery.sourceCount}}</span>
+                                                            </td>
+                                                            <td class="text-center">{{summery.rangeApplicableStatus}}</td>
+                                                            <td class="text-center">
+                                                                <span class="badge badge-pill badge-success">{{summery.derivedCount}}</span>
+                                                            </td>
                                                             <td class="text-center">
                                                                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                                                                 (click)="editSummaryData(summery)"
@@ -579,17 +528,22 @@
                                                                             (onChange)="valueListDataValue($event)"
                                                                 placeholder="Select All"></p-multiSelect> -->
 
-                                                                <ng-multiselect-dropdown
-                                                                                    *ngIf="valueListData"
+                                                                                <ng-multiselect-dropdown
+                                                                                    *ngIf="valueListData && sourceMasterName != 'SPAndFunctionMaster'"
                                                                                     [placeholder]="'Select'"
                                                                                     [settings]="dropdownSettings"
                                                                                     [data]="valueListData"
+                                                                                    [disabled]="isDisabled"
                                                                                     [(ngModel)]="valuelist"
                                                                                     [ngModelOptions]="{standalone: true}"
                                                                                     (onSelect)="valueListDataValue($event)"
                                                                                     (onDeSelect)="deSelectValueListDataValue($event)"
                                                                                     (onSelectAll)="onSelectAllValueListDataValue($event)">
                                                                                 </ng-multiselect-dropdown>
+
+                                                                                <select class="form-control" *ngIf="sourceMasterName == 'SPAndFunctionMaster'" disabled>
+                                                                                    <option>Select</option>
+                                                                                </select>
                                                             </td>
                               
                                                             <td></td>
@@ -656,7 +610,7 @@
                                                   </div>
                                                   <br>
                                                   <br>
-                                                <div class="row d-flex">
+                                                <div class="row d-flex" *ngIf="sourceMasterName == 'SPAndFunctionMaster'">
                                                     <div class="ml-2 pl-1 pr-0">
                                                         <label class="form-label mt-2">
                                                             Source Period

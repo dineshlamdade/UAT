@@ -137,6 +137,8 @@ export class SdmStepperComponent implements OnInit {
   selectedFromDateForSave: any;
   selectedToDateForSave: any;
   copyToFlag: boolean = false;
+  rangeApplicableStatus: any;
+  isDisabled:boolean;
 
   constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, 
     private toaster: ToastrService,private datepipe: DatePipe,private excelservice: ExcelserviceService) {
@@ -440,6 +442,7 @@ export class SdmStepperComponent implements OnInit {
           this.sdmSourceMasterFieldValueMappingDetailList.forEach(element => {
               if(element.sourceTableId == ele.sourceMasterId){
                 this.sourceMasterName = ele.sourceObjectName
+               
                 let val: any = ele.sourceMasterId + ','+ele.sourceObjectName
                 this.fieldTypeList(val, 0)
               }
@@ -456,6 +459,14 @@ export class SdmStepperComponent implements OnInit {
     let val = value.split(',')
     this.sourceMasterId = val[0]
     this.sourceMasterName = val[1]
+
+    if(this.sourceMasterName == 'SPAndFunctionMaster'){
+      // alert(this.isDisabled)
+      this.isDisabled = true;
+    }else{
+      // alert(this.isDisabled)
+      this.isDisabled = false;
+    }
     this.sdmService.fieldTypeList(this.sourceMasterId).subscribe(
       res => {
         this.fieldTypeData = res.data.results;
@@ -854,6 +865,15 @@ export class SdmStepperComponent implements OnInit {
   sdmSummery(){
     this.sdmService.sdmSummery(1).subscribe(res =>{
       this.sdmSummeryData = res.data.results;
+
+      this.sdmSummeryData.forEach(element => {
+        if(element.rangeApplicable = 'false'){
+          element.rangeApplicableStatus = 'No'
+        }else{
+          
+          element.rangeApplicableStatus = 'Yes'
+        }
+      });
       
     })
   }

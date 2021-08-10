@@ -844,9 +844,9 @@
 
  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
 
-    <a href="javascript:void(0)" (click)="isCollapsedKeywordinput = !isCollapsedKeywordinput" [attr.aria-expanded]="!isCollapsedpayrollinput" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
+    <a href="javascript:void(0)" [routerLink]="['/formula/formulamaster']" (click)="isCollapsedKeywordinput = !isCollapsedKeywordinput" [attr.aria-expanded]="!isCollapsedpayrollinput" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
           class="icon-credit-card"></i><span>Formulas</span></a>
-    <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedKeywordinput" [isAnimated]="true">
+    <!-- <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedKeywordinput" [isAnimated]="true">
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
         [routerLink]="['/formula/formulacreation']" href="javascript:void(0)">
         <span>Formula Creation</span></a>
@@ -856,7 +856,7 @@
         <span>Keyword Master</span></a>
       </li>
       
-    </ul>
+    </ul> -->
 </li>
 
 
