@@ -59,18 +59,18 @@
                         <!-- (onChange)="getEmployeeMasterId($event)" -->
                       </div>
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
-                        <div class="form-group">
-                          <div class="form-group">
+                        <div class="form-group mt-20 ml-30">
+                          
                             <div class="custom-controls-stacked">
                               <label class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" name="example- radios" value="radioStatus"
-                                [checked]="radioStatus" (change)="example($event)"
+                                [checked]="radioStatus" (change)="example($event)"  (click)="Arealistpop(arealistpop)"
                                 >
-                                <div class="custom-control-label"> Emp. List </div>
+                                <div class="custom-control-label form-label"> Emp. List </div>
                               </label>
                             </div>
                       
-                          </div>
+                          
                       
                       
                         </div>
@@ -79,17 +79,18 @@
                       </div>
 
                       <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 ">
-                        <div class="form-group">
-                          <div class="form-group">
+                        <div class="form-group mt-20 p-d-inline-flex ml-10">
+                          
+                          <!-- <a  class="text-link text-bold ">Field
+                            Level</a> -->
+
+                            <label class="form-label text-link text-bold" (click)="largepopup (template)"> Selected Employee List
+                            </label>&nbsp;
+                            <i class="fa fa-file-excel-o text-dark-green font-20" 
+                            (click) = "exportApprovalSummaryAsExcel()" style="cursor: pointer;"
+                            ></i>
                            
-                            <label class="form-label"> Selected Employee List <br>
-                              <i class="fa fa-file-excel-o fa-2x mr-2 text-dark-green" 
-                              (click) = "exportApprovalSummaryAsExcel()" style="cursor: pointer;"
-                              ></i>
-      
-                            </label>
-                           
-                          </div>
+                          
                       
                       
                         </div>
@@ -174,7 +175,7 @@
                             <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
 
                             <th rowspan="2" class="wd-8 text-center">
-                              <div class="p-d-flex p-jc-between p-ai-center">Emp. Set Name
+                              <div class="p-d-flex p-jc-between p-ai-center ml-100">Emp. Set Name
                                 <div class="Sort_Filter_Position">
                                   <p-sortIcon field="employeeSetName" pSortableColumn="employeeSetName"></p-sortIcon>
                                   <p-columnFilter type="text" field="employeeSetName" display="menu" class="p-ml-auto">
@@ -183,7 +184,7 @@
                               </div>
                             </th>
                             <th rowspan="2" class="wd-8 text-center">
-                              <div class="p-d-flex p-jc-between p-ai-center">No. of Emp.
+                              <div class="p-d-flex p-jc-between p-ai-center ml-100">No. of Emp.
                                 <div class="Sort_Filter_Position">
                                   <p-sortIcon field="employeeSetMasterDetailsList.length" pSortableColumn="employeeSetMasterDetailsList.length"></p-sortIcon>
                                   <p-columnFilter field="employeeSetMasterDetailsList.length" display="menu" class="p-ml-auto">
@@ -193,7 +194,7 @@
                             </th>
 
 
-                            <th rowspan="2" class="wd-4"> Action </th>
+                            <th rowspan="2" class="wd-4 text-center"> Action </th>
 
                           </tr>
 
@@ -202,18 +203,18 @@
                           <tr class="p-selectable-row">
                             <td class="text-center">{{rowIndex+1}}</td>
 
-                            <td>
+                            <td class="text-center">
                              {{data.employeeSetName}}
 
                             </td>
-                            <td>
+                            <td class="text-center">
                              {{data.employeeSetMasterDetailsList.length}}
 
                             </td>
                             
                             
 
-                            <td>
+                            <td class="text-center">
 
                               <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" tooltip="Edit"
                               (click) = "editEmployeeSet(data)"
@@ -280,3 +281,215 @@
       <app-footer></app-footer>
     </div>
   </div>
+
+
+  <!-- employeelist -->
+  <ng-template #arealistpop>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Employee List</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row  ">
+                    <div class="col-md-12">
+                        <textarea rows="3" cols="60"></textarea>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" 
+      class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left" tooltip="Close" (click)="modalRef.hide()"><b>
+      <i class="fa fa-times"></i></b> Close</button>
+        <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button> -->
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+            tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+</div>
+</ng-template>
+
+
+<!-- selected emp list -->
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Selected Employee List</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+
+
+        <div class="row clearfix">
+
+          <div class="col-md-12">
+
+            <p-table #dt2 [value]="customers" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+              (sortFunction)="customSort($event)" [customSort]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areasetname','Status']">
+              <ng-template pTemplate="caption">
+                <div class="row">
+
+                  <div class="col-md-12">
+                    <div class="float-right">
+                      <span class="p-input-icon-left p-ml-auto">
+                        <i class="pi pi-search" style="top: 9px !important;"></i>
+                        <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                          placeholder="Search " />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <!--                                                       
+                                                    <th rowspan="2">
+                                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                                        Select 
+                                          
+                                          
+                                                          <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="Attribute"
+                                                            pSortableColumn="Attribute"></p-sortIcon>
+                                                              <p-columnFilter type="text" field="name" display="menu"
+                                                                  class="p-ml-auto"></p-columnFilter>
+                                                          </div>
+                                                      </div>
+                                                  </th> -->
+
+                  <th rowspan="2">
+                    <div class="p-d-flex p-jc-between p-ai-center">
+                      Employee Set Name
+
+                      <div class="Sort_Filter_Position">
+                        <p-sortIcon field="areasetname" pSortableColumn="areasetname"></p-sortIcon>
+                        <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                      </div>
+                    </div>
+                  </th>
+
+
+                  <!-- <th rowspan="2" >
+                                              <div class="p-d-flex p-jc-between p-ai-center">
+                                            No.of Areas
+                                                  <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="Attribute"
+                                                    pSortableColumn="Attribute"></p-sortIcon>
+                                                      <p-columnFilter type="date" field="date" display="menu"
+                                                          class="p-ml-auto"></p-columnFilter>
+                                                  </div>
+                                              </div>
+                                          </th> -->
+
+                </tr>
+
+
+              </ng-template>
+
+
+              <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
+                <tr class="p-selectable-row">
+
+                  <!-- <td class="text-center bg-color-light_gray">
+                                                      <label class="custom-control custom-checkbox checkbox-center">
+                                                        <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                                        <span class="custom-control-label"></span>
+                                                   </label>
+                                                   
+                                                    </td> -->
+
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td>
+                  <!-- <td class="bg-color-light_gray"> 
+                      
+                                                  </td>
+                                                   -->
+
+
+                </tr>
+                <tr class="p-selectable-row">
+
+                  <!-- <td class="text-center bg-color-light_gray">
+                                                    <label class="custom-control custom-checkbox checkbox-center">
+                                                      <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                                      <span class="custom-control-label"></span>
+                                                 </label>
+                                                 
+                                                  </td> -->
+
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td>
+                  <!-- <td class="bg-color-light_gray">
+                                                
+                                                  </td> -->
+
+
+
+                </tr>
+                <tr class="p-selectable-row">
+
+                  <!-- <td class="text-center bg-color-light_gray">
+                                                  <label class="custom-control custom-checkbox checkbox-center">
+                                                    <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                                    <span class="custom-control-label"></span>
+                                               </label>
+                                               
+                                                </td> -->
+
+                  <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td>
+                  <!-- <td class="bg-color-light_gray">        
+                                           
+                                                </td> -->
+
+
+
+                </tr>
+                <tr class="p-selectable-row">
+
+                  <!-- <td class="text-center bg-color-light_gray">
+                                                <label class="custom-control custom-checkbox checkbox-center">
+                                                  <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                                  <span class="custom-control-label"></span>
+                                             </label>
+                                             
+                                              </td> -->
+
+                  <td class="bg-color-light_gray"></td>
+                  <!-- <td class="bg-color-light_gray">
+                                              
+                                              </td> -->
+
+
+
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                      Available</span></td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" 
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2" tooltip="Reset"><b>
+                          <i class="fa fa-refresh"></i></b> Reset</button>
+                          -->
+    <button type="button" class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left " tooltip="Close"
+      (click)="modalRef.hide()"><b>
+        <i class="fa fa-times"></i></b> Close</button>
+  </div>
+</ng-template>
+

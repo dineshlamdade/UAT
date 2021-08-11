@@ -7,6 +7,10 @@ import { ExcelserviceService } from 'src/app/core/services/excelservice.service'
 import { SortEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map,debounceTime } from 'rxjs/operators';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
+import { TemplateRef} from '@angular/core';
+
 //import { ExcelserviceService } from  './../../core/services/excelservice.service';
 @Component({
   selector: 'app-employeeset',
@@ -34,13 +38,15 @@ export class EmployeesetComponent implements OnInit {
   radioStatus: boolean;
   primengConfig: any;
   private searchSubscribe;
+  modalRef: BsModalRef;
 //  result: any;
 //  query: string;
  // FilteredApplicationNames: any;
  // search: (text$: Observable<string>) => Observable<any>;
 
   constructor(public empService: EmployeesetService, public fb: FormBuilder,public toaster : ToastrService,
-    public alertService : AlertServiceService,private excelservice: ExcelserviceService) {
+    public alertService : AlertServiceService,private excelservice: ExcelserviceService,
+    private modalService: BsModalService) {
     this.employeesetForm = new FormGroup({
       employeeSetName : new FormControl('',[Validators.required,Validators.maxLength(25)]),
       empList : new FormControl('',Validators.required),
@@ -346,8 +352,19 @@ export class EmployeesetComponent implements OnInit {
 //   }
 // }
   
+Arealistpop(arealist: TemplateRef<any>) {
+  this.modalRef = this.modalService.show(
+    arealist,
+    Object.assign({}, { class: 'gray modal-lg' })
+  );
+}
 
-  
+largepopup(template: TemplateRef<any>) {
+  this.modalRef = this.modalService.show(
+    template,
+    Object.assign({}, { class: 'gray modal-md' })
+  );
+}
 }
 
 

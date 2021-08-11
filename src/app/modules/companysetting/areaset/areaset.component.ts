@@ -11,6 +11,19 @@ import { SortEvent } from 'primeng/api';
 import { element } from 'protractor';
 import { threadId } from 'node:worker_threads';
 import { ColumnFilterFormElement } from 'primeng/table';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
+import { TemplateRef} from '@angular/core';
+import { interval } from 'rxjs';
+
+
+interface User1 {
+  areaSetName;
+  nature;
+
+}
+
+
 //import { AlertServiceService } from '@src/app/core/services/alert-service.service';
 // interface City {
 //   name: string,
@@ -26,7 +39,8 @@ export class AreasetComponent implements OnInit {
   // cities: City[];
 
   // selectedCities: City[];
- 
+  public modalRef: BsModalRef;
+
   public apiUrl = environment.baseUrl8084;
   areasetForm : FormGroup;
   areaMaster : any = [];
@@ -57,10 +71,12 @@ export class AreasetComponent implements OnInit {
   excelData: any;
   header: any;
 
-
+  users1: User1[];
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
     private toaster : ToastrService, private primengConfig: PrimeNGConfig,
-    public alertService : AlertServiceService,private excelservice: ExcelserviceService) { 
+    public alertService : AlertServiceService,private excelservice: ExcelserviceService,
+    private modalService: BsModalService
+) { 
      
         this.getForm();
     //this.areaMaster = this.areasetForm.get('areaMaster') as FormArray;   
@@ -75,7 +91,7 @@ export class AreasetComponent implements OnInit {
       serviceName : new FormControl(''),
       numberOfArea : new FormControl(''),
       isActive : new FormControl(1),
-      areaList : new FormControl(''),
+      aList : new FormControl(''),
       areaSetMasterDetailsList: new FormControl([]) 
     })
 
@@ -109,8 +125,12 @@ export class AreasetComponent implements OnInit {
      this.getServiceList();
      this.getSummaryData();
     
-    
-
+     this.users1 = [
+      { areaSetName: '1', nature: 'Earning'},
+  
+  
+  ];
+// this.testMultiSelect();
   //    this.cities = [
   //     {name: 'New York', code: 'NY'},
   //     {name: 'Rome', code: 'RM'},
@@ -144,7 +164,7 @@ export class AreasetComponent implements OnInit {
 
        // this.toaster.success('','Area set saved succefully');
         //this.areaList = [];
-        
+      //  this.areasetForm.controls.areaList.setValue("");
        this.areasetForm.controls['areaList'].setValue([]);
        this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
       
@@ -180,7 +200,7 @@ export class AreasetComponent implements OnInit {
       this.alertService.sweetalertMasterSuccess('Success','Area Set Updated Successfully');
       this.getSummaryData();
       this.areasetForm.reset();
-      this.areaList = [];
+     // this.areaList = [];
 
       this.areaListData = [];
       this.editFormFlag = false;
@@ -345,14 +365,17 @@ getAreaMasterId(e){
 
       data.areaSetMasterDetailsList.forEach(element => {
         abc.push({
-         label : element.areaCode,
-           value : element.areaId 
+        label : element.areaCode,
+        value : element.areaId 
+       // label : element.serviceMaster.serviceCode,
+       // value : element.serviceMaster.serviceMasterId
         })
      });
-     this.areasetForm.controls['areaList'].setValue(abc)
+     this.areasetForm.controls['aList'].setValue(abc)
 let datatest = []
     this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
-      datatest.push(ele.areaId) 
+  datatest.push(ele.areaId) 
+    //datatest.push(ele.serviceMaster.serviceMasterId)
       
     });
     this.areaList = datatest
@@ -368,10 +391,10 @@ let datatest = []
       this.areasetForm.patchValue(data);
       this.areasetForm.controls['serviceMasterId'].setValue(data.serviceMaster.serviceMasterId);
       this.getAreasetByService(data.serviceMaster.serviceMasterId);
-      this.areaList = [{
-        label:'PA-Staff',
-        value:data.areaSetMasterDetailsList[0].areaCode
-      }]
+      // this.areaList = [{
+      //   label:'PA-Staff',
+      //   value:data.areaSetMasterDetailsList[0].areaCode
+      // }]
       console.log(data)
       let datatest = []
     this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
@@ -490,7 +513,34 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
 
   }
   
+  largepopup(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+
+  Arealistpop(arealist: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      arealist,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
   
+  testMultiSelect() {
+   //interval(3000).pipe().subscribe(() => {
+    // this.getAreasetByService()
+    // this.areaListData = []
+    //  = [
+      // { label: 'New York', value: { id: 1, name: 'New York', code: 'NY' } },
+      // { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
+      // { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
+      // { label: 'Istanbul', value: { id: 4, name: 'Istanbul', code: 'IST' } },
+      // { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } }
+    // ];
+ //});
+}
 
 
 }
