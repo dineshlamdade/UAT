@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder,FormControl,FormGroup,FormGroupDirective,Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { GarnishmentService } from './garnishment.service';
-import { AlertServiceService } from '../../../../core/services/alert-service.service';
 
 
 @Component({
@@ -52,7 +46,7 @@ export class GarnishmentMasterComponent implements OnInit {
 
   constructor(private formbuilder: FormBuilder,
      private garnishmentService: GarnishmentService,
-    private alertService: AlertServiceService) 
+    private alertService: ToastrService) 
     {
     this.form = this.formbuilder.group({
       nameOfInstitution: new FormControl('', Validators.required),
@@ -206,13 +200,6 @@ export class GarnishmentMasterComponent implements OnInit {
 
     this.deactivateRemark();
 
-
-
-    //-----------------------All data Get API------------------------------
-    // this.garnishmentService.getGarnishmentMaster().subscribe(data => this.success(data), err => this.failed(err));
-
-    // console.log('showButtonSaveAndReset::', this.showButtonSaveAndReset);
-
   }
 
   // success(res) {
@@ -241,7 +228,7 @@ export class GarnishmentMasterComponent implements OnInit {
 
 
       }, (error: any) => {
-        this.alertService.sweetalertError(error['error']['status']['messsage']);
+        this.alertService.error(error['error']['status']['messsage']);
 
       });
     }
@@ -313,7 +300,7 @@ export class GarnishmentMasterComponent implements OnInit {
         if (res.data.results.length > 0) {
           console.log('data is updated');
 
-          this.alertService.sweetalertMasterSuccess(res.data.messsage, '');
+          this.alertService.success(res.data.messsage, '');
           this.form.get('nameOfInstitution').disable();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
@@ -321,12 +308,12 @@ export class GarnishmentMasterComponent implements OnInit {
           this.isEditMode = false;
           this.refreshHtmlTableData();
         } else {
-          this.alertService.sweetalertWarning(res.status.messsage);
+          this.alertService.warning(res.status.messsage);
         }
 
         this.form.reset();
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        this.alertService.error(error["error"]["status"]["messsage"]);
       });
     }
     else {
@@ -364,18 +351,18 @@ export class GarnishmentMasterComponent implements OnInit {
         console.log("before save", data)
         // console.log("after save",res);
         if (res.data.results.length > 0) {
-          this.alertService.sweetalertMasterSuccess('Garnishment master Details Saved Successfully.', '');
+          this.alertService.success('Garnishment master Details Saved Successfully.', '');
           this.form.reset();
 
         } else {
-          this.alertService.sweetalertWarning(res.status.messsage);
+          this.alertService.warning(res.status.messsage);
         }
         this.form.reset();
         this.refreshHtmlTableData();
       },
 
         (error: any) => {
-          this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+          this.alertService.error(error["error"]["status"]["messsage"]);
 
         });
     }
@@ -549,7 +536,7 @@ onSelectHeadName(evt: any) {
     console.log(masterid);
     this.garnishmentService.deleteGarnishmentMasterDetails(masterid)
       .subscribe(() => {
-        this.alertService.sweetalertMasterSuccess('Garnishment master Details Deleted successfully', '');
+        this.alertService.success('Garnishment master Details Deleted successfully', '');
         // this.summaryHtmlDataList.splice(masterid, thirdPartyMasterId);
       })
   }

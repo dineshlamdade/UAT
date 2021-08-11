@@ -39,6 +39,7 @@ import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.com
 import { SdmComponent } from './steppersdm/sdm.component';
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
+import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
 
 
 
@@ -52,7 +53,8 @@ import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.com
      FastentryNRAmtComponent,
      SdmComponent,
      NonRecurringQtyMasterComponent,
-     FastentryNrQtyComponent
+     FastentryNrQtyComponent,
+     GarnishmentMasterComponent
     ],
   imports: [
     CommonModule,
