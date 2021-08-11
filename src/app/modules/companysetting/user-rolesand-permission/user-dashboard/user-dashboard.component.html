@@ -201,9 +201,27 @@
                                         <button type="button" tooltip="Welcome Mail" class="custom_button custom_btn bg-color-purple btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-envelope"></i></b> Welcome Mail  </button>
                                         <button type="button" tooltip="Forgot Password" class="custom_button custom_btn bg-color-purple btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-key"></i></b> Forgot Password </button>
                                         <button type="button" tooltip="Reset Password" class="custom_button custom_btn bg-color-purple btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-refresh"></i></b>Reset Password </button>
-                                        <button type="button" tooltip="Filter" class="bg-teal-400 btn btn-sm mr-10" (click)="display=true"><b><i class="fa fa-filter"></i></b> </button>
-                                        <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i>
-                                        <i class="fa fa-file-pdf-o font-18 text-red pt-10  mr-10" aria-hidden="true"></i>
+                                        <span class="p-input-icon-left p-ml-auto">
+                                            <i
+                                              class="pi pi-search"
+                                              style="top: 9px !important"
+                                            ></i>
+                                            <input
+                                              pInputText
+                                              type="text"
+                                              (input)="
+                                                dt1.filterGlobal(
+                                                  $event.target.value,
+                                                  'contains'
+                                                )
+                                              "
+                                              placeholder="Search keyword"
+                                            />
+                                          </span>
+                                          
+                <i class="fa fa-file-excel-o font-24 text-dark-green pt-10 ml-10  mr-10" tooltip="Download" style="cursor: pointer"
+                (click)="exportApprovalAllSummaryAsExcel()" aria-hidden="true"></i>
+                                        <!-- <button type="button" tooltip="Filter" class="bg-teal-400 btn btn-sm mr-10" (click)="display=true"><b><i class="fa fa-filter"></i></b> </button> -->
                                        
 
                                     </div>
@@ -214,12 +232,18 @@
                                 <div class="col-md-12 m-10 p-0">
 <!-- <pre>{{employeeDataByGroupId | json}}</pre> -->
                                     <!-- <p-table [value]="summarydata"> -->
-                                        <p-table #dt [value]="summarydata"  
+                                        <p-table #dt1 [value]="summarydata"  
                                        [rows]="10" [showCurrentPageReport]="true"
                                     [totalRecords]= "totalUsersCount"   [loading]="loading"
                               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                              [rowsPerPageOptions]="[10,25,50,100,200]">
-                               (onPage)="paginate($event)" >
+                              [rowsPerPageOptions]="[10,25,50,100,200]"
+                               (onPage)="paginate($event)"
+                               [globalFilterFields]="[
+                               'employeeCode',
+                               'userName',
+                               'emailId',
+                               'mobileNumber',
+                              'userIsActive']" >
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th class="text-center">
@@ -362,7 +386,7 @@
                     <div class="col-md-12 pl-0 pr-0">
                       <div class="border-dark-card radius-10">
                     
-                     <div class="row ml-3 mb-5">
+                     <div class="row ml-3 mb-3">
                          
                           <!-- <div class="col-md-4">
                             <label class="form-label  mb-0">Employee Code</label>
@@ -370,7 +394,7 @@
                                 <input type="text" class="form-control" [(ngModel)]="employeeCode" [ngModelOptions]="{standalone: true}"
                                 disabled></label>
                           </div> -->
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                             <label class="form-label  mb-0">Employee Name</label>
                             <label class="font-12 text-ellipsis  mb-0"><input type="text" class="form-control" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}"
                                 disabled></label>
@@ -381,6 +405,33 @@
                             <label class="font-12 text-ellipsis  mb-0"><input type="text" class="form-control" [(ngModel)]="emailId" [ngModelOptions]="{standalone: true}"
                                 disabled></label>
                           </div>
+                          <div class="col-md-4 mt-3">
+                            
+                            <div class="input-group">
+                                <div class="input-icon">
+                          <span class="p-input-icon-left p-ml-auto">
+                            <i
+                              class="pi pi-search"
+                              style="top: 9px !important"
+                            ></i>
+                            <input
+                              pInputText
+                              type="text"
+                              (input)="
+                                dt1.filterGlobal(
+                                  $event.target.value,
+                                  'contains'
+                                )
+                              "
+                              placeholder="Search keyword"
+                            />
+                          </span>
+                       </div>
+                       </div>
+                      
+                          </div>
+<div class="col-md-1 mt-3"> <i class="fa fa-file-excel-o font-24 text-dark-green"  tooltip="Download" style="cursor: pointer"
+    (click)="exportApprovalSummaryAssignGroupAsExcel()" aria-hidden="true"></i></div>
                         </div>
                       </div>
                     </div>
@@ -389,9 +440,17 @@
                    
                     <div class="col-md-12">
 
-                        <p-table [value]="asignRoleSummary" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        <p-table #dt1 [value]="asignRoleSummary" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                         totalRecords={{asignRoleSummary}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                        [globalFilterFields]="[
+                        'companyGroupCode',
+                        'companyGroupName',
+                        'companyCode',
+                        'companyName',
+                       'groupName',
+                       'roleName'
+                      ]"
                        >
                             <ng-template pTemplate="header">
                                 <tr>
@@ -451,7 +510,7 @@
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                             User Role &nbsp;&nbsp;
                                             <div class="Sort_Filter_Position d-flex ">
-                                                <p-sortIcon field="grupname" pSortableColumn="roleName"></p-sortIcon>
+                                                <p-sortIcon field="roleName" pSortableColumn="roleName"></p-sortIcon>
                                                 <p-columnFilter field="roleName" display="menu" class="p-ml-auto">
 
                                                 </p-columnFilter>

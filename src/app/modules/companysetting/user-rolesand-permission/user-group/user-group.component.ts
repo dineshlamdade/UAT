@@ -4,6 +4,7 @@ import {FormBuilder,FormControl,FormGroup,FormGroupDirective,Validators,} from '
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 import { UserRolesPermissionService } from '../user-roles-permission.service';
 import { AuthService } from 'src/app/modules/auth/auth.service';
+import { ExcelserviceService } from '../excel_service/excelservice.service';
 
 
 
@@ -36,12 +37,15 @@ export class UserGroupComponent implements OnInit {
   selectedAssignData: any[];
   
   selectAllGroupFlag: boolean = false;
+  excelData: any[];
+  header: any[];
  // userData: unknown;
 
   constructor(private modalService: BsModalService,
     private service: UserRolesPermissionService,
     private formBuilder: FormBuilder,
-    private alertService: AlertServiceService,private authService: AuthService) {
+    private alertService: AlertServiceService,private authService: AuthService,
+    private excelservice : ExcelserviceService) {
 
       
       this.form = this.formBuilder.group({
@@ -277,6 +281,7 @@ this.modalRef = this.modalService.show(
          }
          
        });
+       
     }else{
       if(this.companyMasterData.length > 0){
         this.companyMasterData.forEach((element,index) => {
@@ -381,7 +386,75 @@ this.modalRef = this.modalService.show(
       this.Grplistdata = res.data.results;
     });
   }
+  exportApprovalSummaryAsExcel(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["companyGroupName"];
+    this.excelData = [];
+    if(this.Grplistdata.length>0){
+   
+     this.Grplistdata.forEach((element) => {
+      let obj = {
+        companyGroupName: element.companyGroupName,
+       
+      };
+      this.excelData.push(obj);
+    });
+     
+    }
+    this.excelservice.exportAsExcelFile(this.excelData, 'User-Group-Summary', 'User-Group-Summary' ,this.header);
+  
+  }
+  exportApprovalAllSummaryAsExcel(){
+    this.excelData = [];
+    this.header = []
+    this.header =["groupName","groupDescription"];
+    this.excelData = [];
+    if(this.userGridData.length>0){
+   
+     this.userGridData.forEach((element) => {
+      let obj = {
+        groupName: element.groupName,
+        groupDescription : element.groupDescription
+       
+      };
+      this.excelData.push(obj);
+    });
+     
+    }
+    this.excelservice.exportAsExcelFile(this.excelData, 'All-Summary-UserGroup', 'All-Summary-UserGroup' ,this.header); 
+  }
+  exportApprovalSummaryAssignGroupAsExcel(){
+    this.excelData = [];
+    this.header = []
+    this.header =["companyGroupCode","shortName","companyGroupName"];
+    this.excelData = [];
+    if(this.assignGroupData.length>0){
+   
+     this.assignGroupData.forEach((element) => {
+      let obj = {
+        companyGroupCode: element.companyGroupCode,
+        shortName : element.shortName,
+        companyGroupName: element.companyGroupName
+       
+      };
+      this.excelData.push(obj);
+    });
+     
+    }
+    this.excelservice.exportAsExcelFile(this.excelData, 'Summary-Assign-Group', 'Summary-Assign-Group' ,this.header);  
+  }
 }
+
+
+
+
+
+
+
+
+
+
 // assignuserGrpData(assigndata,event){
 //   this.asginUserGroup=[assigndata.companyGroupMasterId];
 //  // this.companyMasterData  = []
@@ -409,3 +482,5 @@ this.modalRef = this.modalService.show(
 
 //   console.log("selected company data: "+ JSON.stringify(this.companyMasterData))
 //  }
+
+

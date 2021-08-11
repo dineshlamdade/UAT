@@ -129,8 +129,8 @@ export class RolePrivilegeComponent implements OnInit {
          applicationMenusId: new FormControl(''),
          userGroupId: new FormControl(''),
          companyId: new FormControl(''),
-         companyGroupName: new FormControl(''),
-         companyName: new FormControl(''),
+         companyGroupName: new FormControl('',Validators.required),
+         companyName: new FormControl('',Validators.required),
          remark: new FormControl(''),
          readAccess: new FormControl(''),
          writeAccess: new FormControl(''),
@@ -142,8 +142,8 @@ export class RolePrivilegeComponent implements OnInit {
          createdDateTime: new FormControl(''),
          lastModifiedBy: new FormControl(''),
          lastModifiedDateTime: new FormControl(''),
-         userName: new FormControl(),
-         roleName: new FormControl(null, Validators.required),
+         userName: new FormControl('',Validators.required),
+         roleName: new FormControl('', Validators.required),
 
 
       })

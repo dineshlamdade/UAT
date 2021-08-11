@@ -6,6 +6,8 @@ import { UserDashboardService } from './user-dashboard.service';
 import { AlertServiceService } from '../../../../core/services/alert-service.service'
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { element } from 'protractor';
+import { ExcelserviceService } from '../excel_service/excelservice.service';
+import { ElementSchemaRegistry } from '@angular/compiler';
 
 
 @Component({
@@ -85,7 +87,7 @@ export class UserDashboardComponent implements OnInit {
   loading: boolean = true;
 
   page: any=1;
-  size: any=10;
+  size: any=200;
   selectedUserGroupId: any;
   
   employeeUserDetails: any;
@@ -99,12 +101,15 @@ export class UserDashboardComponent implements OnInit {
   selectedroleindex: any;
   butDisabled: string;
   employeeRoleAssignmentId: any;
+  excelData: any[];
+  header: any[];
   // butDisabled: boolean = true;
 
   // userDashBoardForm: any;
 
   constructor(private modalService: BsModalService, private service: UserDashboardService,
-    private formBuilder: FormBuilder, private alertService: AlertServiceService, private authService: AuthService) {
+    private formBuilder: FormBuilder, private alertService: AlertServiceService,
+     private authService: AuthService, private excelservice : ExcelserviceService) {
 
     this.userData = this.authService.getprivileges()
     console.log("userData::", this.userData);
@@ -951,5 +956,53 @@ this.service.employeeRoleAssignmentUser(globalUserMasterId).subscribe(res =>{
 })
 }
 
+exportApprovalAllSummaryAsExcel(){
+  this.excelData = [];
+  this.header = []
+  this.header =["employeeCode","userName","emailId","mobileNumber","userIsActive"];
+  this.excelData = [];
+  if(this.summarydata.length>0){
+ 
+   this.summarydata.forEach((element) => {
+    let obj = {
+      companyGroupCode: element.companyGroupCode,
+      userName : element.userName,
+      emailId: element.emailId,
+      mobileNumber : element.mobileNumber,
+      userIsActive : element.userIsActive
+
+     
+    };
+    this.excelData.push(obj);
+  });
+   
+  }
+  this.excelservice.exportAsExcelFile(this.excelData, 'Summary-Data', 'Summary-Data' ,this.header);  
+}
+exportApprovalSummaryAssignGroupAsExcel(){
+  this.excelData = [];
+  this.header = []
+  this.header =["companyGroupCode","companyGroupName","companyCode","companyName","groupName","roleName"];
+  this.excelData = [];
+  if(this.asignRoleSummary.length>0){
+ 
+   this.asignRoleSummary.forEach((element) => {
+    let obj = {
+      companyGroupCode: element.companyGroupCode,
+      companyGroupName : element.companyGroupName,
+      companyCode: element.companyCode,
+      companyName : element.companyName,
+      groupName : element.groupName,
+      roleName : element.roleName
+
+
+     
+    };
+    this.excelData.push(obj);
+  });
+   
+  }
+  this.excelservice.exportAsExcelFile(this.excelData, 'Summary-Assign-Group', 'Summary-Assign-Group' ,this.header);
+}
 
 }

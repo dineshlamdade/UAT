@@ -9,8 +9,10 @@
                     <div class="row">
                          <div class="col-md-3">
                             <label class="form-label">Company Group Name</label>
-                            <select name="companyGroupName" class="form-control custom-select" formControlName="companyGroupMasterId" (change)="onSelectCompanyName($event.target.value)" >
-                                <option value="">select</option>
+                            <select name="companyGroupName" class="form-control custom-select" formControlName="companyGroupMasterId"
+                             (change)="onSelectCompanyName($event.target.value)"
+                             [ngClass]="{'is-invalid' : form.get('companyGroupMasterId').status == 'INVALID'}"  >
+                                <option selected value=''>Select </option>
                               <option *ngFor="let companyGroupName of comapnyGroupNamesData" [value]="companyGroupName.companyGroupMasterId">
                                   {{companyGroupName.companyGroupName}}
                                 </option>
@@ -19,7 +21,8 @@
                         <div class="col-md-3">
                             <label class="form-label">User Group</label>
                             <select name="groupName" class="form-control custom-select" formControlName="userGroupId"
-                            [disabled]="butDisabled === 'disabled'" >
+                            [ngClass]="{'is-invalid' : form.get('userGroupId').status == 'INVALID'}" >
+                            <option selected value=''>Select </option>
                             <option *ngFor="let groupName of groupNameList"
                             [value]="groupName.value">
                             {{groupName.label}}
@@ -116,17 +119,90 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
+        <!-- <div class="row">
+            <div class="col-md-4">
                 <h3 class="font-14 text-purple font-bold">Summary</h3>
             </div>
-        </div>
+              <div  class="col-md-2">
+
+              </div>
+            <div class="col-md-4">
+                <div class="form-group">
+
+                    <div class="input-group">
+                          <div class="input-icon mb-3">
+                    <span class="p-input-icon-left p-ml-auto">
+                      <i
+                        class="pi pi-search"
+                        style="top: 9px !important"
+                      ></i>
+                      <input
+                        pInputText
+                        type="text"
+                        (input)="
+                          dt1.filterGlobal(
+                            $event.target.value,
+                            'contains'
+                          )
+                        "
+                        placeholder="Search keyword"
+                      />
+                    </span>
+                 </div>
+                 </div>
+                 </div>
+            </div>
+            <div class="col-md-1 ">
+                <i class="fa fa-file-excel-o font-24 text-dark-green"  tooltip="Download" style="cursor: pointer"
+                (click)="exportApprovalAllSummaryAsExcel()" aria-hidden="true"></i>
+                    </div>
+                    <div  class="col-md-1">
+
+                    </div>
+
+        </div> -->
+        <div class="row mt-10">
+            <div class="col-md-8 ">
+
+              <span class="font-14 text-purple font-bold">Summary</span>
+
+              <div class="justify-content-end p-d-inline-flex float-right">
+                <div class="input-icon mb-3">
+                  <input type="text" class="form-control" placeholder="Search...">
+                  <span class="input-icon-addon"><i class="fe fe-search"></i>
+                    <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      dt1.filterGlobal(
+                        $event.target.value,
+                        'contains'
+                      )
+                    "
+                    placeholder="Search keyword"
+                  />
+                </span>
+
+                </div>
+                &nbsp;
+                <i class="fa fa-file-excel-o font-24 text-dark-green"  tooltip="Download" style="cursor: pointer"
+                (click)="exportApprovalAllSummaryAsExcel()" aria-hidden="true"></i>
+
+              </div>
+            </div>
+          </div>
         <div class="row mb-10">
             <div class="col-md-8">
-                <p-table [value]="masterGridData"  [paginator]="true" [rows]="10" 
+                <p-table #dt1 [value]="masterGridData"  [paginator]="true" [rows]="10" 
                 [showCurrentPageReport]="true"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                totalRecords={{masterGridData.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+                totalRecords={{masterGridData.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                [globalFilterFields]="[
+                'groupName',
+                'roleName',
+                'roleDescription',
+               
+              ]">
                     <ng-template pTemplate="header">
                         <tr>
                             <th class="wd-10 text-center">

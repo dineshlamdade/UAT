@@ -30,7 +30,8 @@
                         </div>
                         <div class="col-md-3 text-center mt-15">
                             <button type="button" tooltip="Assign / Un-Assign Group" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" 
-                            (click)="AssignedGroup(template)"><b><i class="fa fa-file"></i></b> Assign To Group</button>
+                            (click)="AssignedGroup(template)"><b><i class="fa fa-adn font-16 text-dark-green" aria-hidden="true"></i>
+                                </b> Assign To Group</button>
                         </div>
                     </div>
                     <div class="row mt-10">
@@ -91,12 +92,55 @@
                 </div>
             </div>
         </div>
+
+      
+        <div class="row mt-10">
+            <div class="col-md-8">
+
+              <span class="font-14 text-purple font-bold">Summary</span>
+
+              <div class="justify-content-end p-d-inline-flex float-right">
+                <div class="input-icon mb-3">
+                    <div class="input-group">
+                        <div class="input-icon mb-3">
+                  <span class="p-input-icon-left p-ml-auto">
+                    <i
+                      class="pi pi-search"
+                      style="top: 9px !important"
+                    ></i>
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="
+                        dt1.filterGlobal(
+                          $event.target.value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                  
+               </div>
+               </div>
+
+                </div>
+                &nbsp;
+                <i class="fa fa-file-excel-o font-24 text-dark-green "  tooltip="Download" style="cursor: pointer"
+                (click)="exportApprovalAllSummaryAsExcel()" aria-hidden="true"></i>
+
+              </div>
+            </div>
+          </div>
         <div class="row mb-10">
             <div class="col-md-8">
-                <p-table [value]="userGridData" [(selection)]="selecteduserGridData" dataKey="id" styleClass="p-datatable-userGridData" [rowHover]="true"
+                <p-table #dt1 [value]="userGridData" [(selection)]="selecteduserGridData" dataKey="id" styleClass="p-datatable-userGridData" [rowHover]="true"
                 [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                totalRecords={{userGridData.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+                                totalRecords={{userGridData.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                                [globalFilterFields]="[
+                                'groupName',
+                                'groupDescription',]">
                     <ng-template pTemplate="header" >
                         <tr>
                             <th class="wd-10 text-center">
@@ -172,9 +216,9 @@
                         <input type="text" class="form-control" [(ngModel)]="userGroupName" disabled>
 
                     </div>
-                    <div class="col-md-4">
+                   <div class="col-md-3">
 
-                    </div>
+                   </div>
                     <div class="col-md-4">
                         <div class="form-group mt-20">
 
@@ -200,6 +244,10 @@
                          </div>
                          </div>
                          </div>
+                    </div>
+                    <div class="col-md-1 mt-5">
+                        <i class="fa fa-file-excel-o font-24 text-dark-green"  tooltip="Download" style="cursor: pointer"
+                        (click)="exportApprovalSummaryAssignGroupAsExcel()" aria-hidden="true"></i>
                     </div>
                 </div>
                 <div class="row">
@@ -318,7 +366,7 @@
                     <div class="col-md-2">
 
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group mt-20">
 
                             <div class="input-group">
@@ -344,6 +392,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-1 mt-4">
+                        <i class="fa fa-file-excel-o font-24 text-dark-green"  tooltip="Download" style="cursor: pointer"
+                        (click)="exportApprovalSummaryAsExcel()" aria-hidden="true"></i>
+                    </div>
+                    
+                    
                 </div>
                 <div class="row">
                     <div class="col-md-12">

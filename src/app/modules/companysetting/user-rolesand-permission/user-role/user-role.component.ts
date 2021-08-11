@@ -10,6 +10,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../../auth/auth.service';
+import { ExcelserviceService } from '../excel_service/excelservice.service';
+
 
 
 @Component({
@@ -40,12 +42,16 @@ export class UserRoleComponent implements OnInit {
   comapnyGroupNamesData: any[];
   companyGroupMasterIdArray: any[];
   butDisabled: string;
+  excelData: any[];
+  header: any[];
+ 
 
   constructor(private modalService: BsModalService,
     private service: UserRolesPermissionService,
     private formBuilder: FormBuilder,
     private alertService: AlertServiceService,
-    private authService: AuthService,) {
+    private authService: AuthService, 
+    private excelservice : ExcelserviceService) {
 
     this.userData = this.authService.getprivileges()
     console.log("userData::", this.userData);
@@ -80,9 +86,9 @@ export class UserRoleComponent implements OnInit {
     this.form = this.formBuilder.group({
 
       userRoleId: new FormControl(0),
-      userGroupId: new FormControl(null),
+      userGroupId: new FormControl('',Validators.required),
       roleName: new FormControl(null, Validators.required),
-      companyGroupMasterId: new FormControl(),
+      companyGroupMasterId: new FormControl('',Validators.required),
       roleDescription: new FormControl(null, Validators.required),
       default: new FormControl(''),
       active: new FormControl(true),
@@ -153,9 +159,12 @@ onSelectCompanyName(companyGroupMasterId){
           this.onPageLoad();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
-         
           this.form.reset();
 
+          this.form.patchValue( {
+            companyGroupMasterId: '',
+            userGroupId : ''
+          } );
         }
 
       });
@@ -172,6 +181,10 @@ onSelectCompanyName(companyGroupMasterId){
           this.alertService.sweetalertMasterSuccess('', res.data.messsage);
           this.onPageLoad();
           this.form.reset();
+          this.form.patchValue( {
+            companyGroupMasterId: '',
+            userGroupId : ''
+          } );
 
         }
         else {
@@ -248,10 +261,12 @@ console.log(this.companyGroupMasterId);
   this.userGroupId=summary.userGroupId
    this.form.patchValue(summary)
    this.form.controls['default'].setValue(summary.default);
-   this.form.get('roleName').disable();
    this.isSaveAndReset = false;
    this.showButtonSaveAndReset = true;
    this.form.enable();
+   this.form.get('roleName').disable();
+   this.form.get('companyGroupMasterId').disable();
+   this.form.get('userGroupId').disable();
 
     });
 
@@ -287,10 +302,37 @@ console.log(this.companyGroupMasterId);
     this.isSaveAndReset = true;
     this.form.enable();
     this.form.reset();
+    
+      // this.onSelectJobMaster( 'All' );
+      this.form.patchValue( {
+        companyGroupMasterId: '',
+        userGroupId : ''
+      } );
+
     this.showButtonSaveAndReset = true;
     this.form.controls['active'].setValue(true);
   }
- 
+  exportApprovalAllSummaryAsExcel(){
+    this.excelData = [];
+    this.header = []
+    this.header =["groupName","roleName","roleDescription"];
+    this.excelData = [];
+    if(this.masterGridData.length>0){
+   
+     this.masterGridData.forEach((element) => {
+      let obj = {
+        groupName: element.groupName,
+        roleName : element.roleName,
+        roleDescription : element.roleDescription
+
+       
+      };
+      this.excelData.push(obj);
+    });
+     
+  }
+    this.excelservice.exportAsExcelFile(this.excelData, 'User-Role-Summary', 'User-Role-Summary' ,this.header);
+  }
 
 
   // getUserGroupID(groupid) {
