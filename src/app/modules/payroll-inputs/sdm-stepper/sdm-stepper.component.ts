@@ -139,6 +139,7 @@ export class SdmStepperComponent implements OnInit {
   copyToFlag: boolean = false;
   rangeApplicableStatus: any;
   isDisabled:boolean;
+  editTempFlag1: boolean = false;
 
   constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, 
     private toaster: ToastrService,private datepipe: DatePipe,private excelservice: ExcelserviceService) {
@@ -148,7 +149,7 @@ export class SdmStepperComponent implements OnInit {
     "groupCompanyId": new FormControl("1"),
     "sdmName": new FormControl("",Validators.required),
     "sdmDescription": new FormControl("",Validators.required),
-    "sourcePeriod": new FormControl("",Validators.required),
+    "sourcePeriod": new FormControl(""),
     "isActive": new FormControl("1",Validators.required),
     "sdmRemark": new FormControl(""),
     "moduleIdList": new FormControl("",Validators.required),
@@ -170,6 +171,7 @@ export class SdmStepperComponent implements OnInit {
 
 
     if(localStorage.getItem('sdmMasterId') !=  null){
+      this.editTempFlag1 = true
       this.sdmMasterId = localStorage.getItem('sdmMasterId')
       if(localStorage.getItem('sdmFormStep1') != null){
         let data = JSON.parse(localStorage.getItem('sdmFormStep1'))
@@ -586,7 +588,8 @@ export class SdmStepperComponent implements OnInit {
       'valueId':this.sourceValueName,
       "sourceTableId": this.sourceTableId,
       "sourceFieldId": this.sourceFieldId,
-      "sourceValueIdList": this.sourceValueId   
+      "sourceValueIdList": this.sourceValueId,
+      "count":  this.sourceValueName.length 
     })
 
     this.sdmSourceMasterFieldValueMappingDetailList.push({
@@ -711,6 +714,25 @@ export class SdmStepperComponent implements OnInit {
 
       this.editTempFlag = false;
       }
+  }
+
+  updateSourceDriveMatrix(){
+    
+    
+
+      this.sdmFormStep1.controls['sdmMasterId'].setValue(this.sdmMasterId)
+      console.log(this.sdmFormStep1.value)
+      this.sdmService.SdmSourceUpdate(this.sdmFormStep1.value).subscribe(res =>{
+        this.toaster.success("","SDM data Updated successfully.")
+        this.sdmFormStep1.controls['sdmName'].disable();
+        localStorage.setItem('sdmFormStep1',JSON.stringify(this.sdmFormStep1.value))
+        this.sdmMasterId = res.data.results[0].sdmMasterId;
+        localStorage.setItem('sdmMasterId', this.sdmMasterId)
+        this.sourceCombination();
+        this.SdmMasterDetails();
+        this.selectedSDMModule = []
+    })
+    
   }
  
   removeSource(index){

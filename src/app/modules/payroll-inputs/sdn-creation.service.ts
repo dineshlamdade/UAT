@@ -48,6 +48,11 @@ export class SdnCreationService {
     return this.HttpClient.get<any>(this.url + `source-derived-matrix/sdm/` + sdmMasterId);
   }
 
+  // 1st tab api (Source)
+  SdmSourceUpdate(data):Observable<any>{
+    return this.HttpClient.put<any>(this.url + `source-derived-matrix/`, data);
+  }
+
   // 2nd tab api (Source Combination)
   sourceCombination(sourceFieldId):Observable<any>{
     return this.HttpClient.get<any>(this.url + `source-derived-matrix/source-combination/` + sourceFieldId);

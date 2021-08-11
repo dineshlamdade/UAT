@@ -576,7 +576,7 @@
                                                               {{temp.valueId.toString() | ellipsis}}
                                                           </td>
                                                           <td class="text-center">
-                                                            <span class="badge badge-pill badge-success">{{sourceValueCount}}</span>
+                                                            <span class="badge badge-pill badge-success">{{temp.count}}</span>
                                                               
                                                           </td>
                                                           <td class="text-center">
@@ -618,8 +618,9 @@
 
                                                     </div>
                                                     <div class="col-2">
+                                                        <pre>{{sourceMasterName}}</pre>
                                                         <select name="Select" class="form-control"
-                                                            formControlName="sourcePeriod">
+                                                            formControlName="sourcePeriod" [required]="sourceMasterName == 'SPAndFunctionMaster'">
                                                             <option value="Select"> Select </option>
                                                             <option>Current Cycle End</option>
                                                             <option>Current Cycle Start </option>
@@ -651,7 +652,7 @@
                                                 <br>
                                                 <div class="row mt-15 float-right">
                                                     <div class="float-right ">
-                                                        <button *ngIf="!editTempFlag" type="submit" [disabled]="sdmFormStep1.invalid"
+                                                        <button *ngIf="!editTempFlag && !editTempFlag1" type="submit" [disabled]="sdmFormStep1.invalid"
                                                             (click)="getStepper(1);saveSourceDerivedMatrix()"
                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                                             [ngClass]="{'disabled-btn-bg-green' : sdmFormStep1.invalid,'btn-bg-green': !sdmFormStep1.invalid}"
@@ -659,9 +660,10 @@
                                                                 <i class="fa fa-floppy-o"></i></b>Save</button>&nbsp;
 
                                                               
-                                                        <button type="submit" *ngIf="editTempFlag"
+                                                        <button type="button" *ngIf="editTempFlag || editTempFlag1" (click)="updateSourceDriveMatrix()"
                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                            tooltip="Save" [disabled]="step1FormDisableFlag"><b>
+                                                            [ngClass]="{'disabled-btn-bg-green' : sdmFormStep1.invalid,'btn-bg-green': !sdmFormStep1.invalid}"
+                                                            tooltip="Save" [disabled]="sdmFormStep1.invalid"><b>
                                                                 <i class="fa fa-floppy-o"></i></b>Update</button>&nbsp;
                                                         <button type="button" tooltip="Next" (click)="getStepper(1);next();sourceCombination();"
                                                         
