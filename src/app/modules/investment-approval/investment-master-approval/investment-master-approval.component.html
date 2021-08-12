@@ -11,7 +11,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <div class="sticky">
+              <div class="">
                 <!-- Back to Dashboard Button -->
                 <div class="row">
                   <div class="col-md-11"></div>
@@ -578,15 +578,13 @@
                                   ripple
                                   mr-2
                                 "
-                                [class.disablegreenbutton]="approvedDisabled ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
-                                    'Approved'
+                                [class.disablegreenbutton]=" approved1Disabled ||
+                                  masterInfo.masterDetail.masterStatus == '' 
+                                
                                 "
-                                [disabled]="approvedDisabled ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
-                                    'Approved'
+                                [disabled]= " approved1Disabled ||
+                                  masterInfo.masterDetail.masterStatus == ''
+                                
                                 "
                                 (click)="changeStatus(masterInfo, 'Approved')"
                                 tooltip="Approve"
@@ -732,17 +730,13 @@
                                   proofSubmissionIdListIndex ==
                                     localStorageProofSubmissionIdList.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
-                                    'Approved'
+                                  approved1Disabled
                                 "
                                 [disabled]="
                                   proofSubmissionIdListIndex ==
                                     localStorageProofSubmissionIdList.length -
                                       1 ||
-                                  masterInfo.masterDetail.masterStatus == '' ||
-                                  masterInfo.masterDetail.masterStatus ==
-                                    'Approved'
+                                  approved1Disabled
                                 "
                                 (click)="
                                   changeStatusWithNextPrevious(
