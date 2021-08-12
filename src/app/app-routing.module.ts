@@ -46,6 +46,8 @@ const routes: Routes = [
   { path: 'email-sms', loadChildren: './modules/email-sms/email-sms.module#EmailSmsModule' },
   { path: 'loan-master', loadChildren: './modules/loan-master/loan-master.module#LoanMasterModule' },
 
+  { path: 'demo', loadChildren: './modules/demo/demo.module#DemoModule' },
+  // { path: 'demo', loadChildren: () => import('./modules/demo/demo.module').then(m => m.DemoModule) },
 
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
   { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },

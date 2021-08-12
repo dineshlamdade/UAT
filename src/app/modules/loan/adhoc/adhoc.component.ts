@@ -11,87 +11,102 @@ import * as _html2canvas from "html2canvas";
 import { Router } from '@angular/router';
 const html2canvas: any = _html2canvas;
 
+
+
 @Component({
   selector: 'app-adhoc',
   templateUrl: './adhoc.component.html',
   styleUrls: ['./adhoc.component.scss']
 })
 export class AdhocComponent implements OnInit {
-  AddLoanForm: FormGroup;
-  public modalRef: BsModalRef;
-  loanData: any;
-  editflag: boolean = false;
-  isShown: boolean = true;
-  loanTypeData: any;
-  isAssetValue: boolean = false;
-  loanType: any;
-  scheduleData: any;
-  loanCode: any;
-  noOfInstallment: any;
-  installmentAmount: any = 0;
-  loanCodeName: any;
-  dataOfFootballers: any[];
-  documentList: any = [];
-  guarantorsList: any;
-  getscheduleData: any;
-  // minFractionDigits: number;
-  public masterfilesArray: File[] = [];
-  public urlArray: Array<any> = [];
-  public urlIndex: number;
-  public urlSafe: SafeResourceUrl;
-  approvalData: any;
-  carType: boolean = false;
-  instituteType: boolean = false;
-  EndDate: Date;
-  guarantorDataForTable: any;
-  empCode: any;
-  fullName: string = '';
-  excelData: any[];
-  guarentedCount: any = [];
-  empIndex: any;
-  documentIndex: any;
-  selectedDoc: any;
-
-  @Input() public data: any;
-  @Input() public applyLoanData: any;
-
-  deviationAmount: any;
-  deviationIntrest: any;
-  deviationNoOfInstallment: any;
-  calculatedDeviationAmt: number;
-  allowedLoanAmount: number;
-  devaiationData: any[] = [];
-  deviationVal: number;
-
-  isUploadDocument: boolean = true;
-  calculatedDeviationInt: number;
-  allowedRateInterest: number;
-  calculatedDeviationIntallment: number;
-  allowedInstallment: any;
-  guarentor: any = [];
-  deletedData: any;
-  approvalDetailsData: any;
-  recoveryAllMethod: any;
-  flatIntrestVisible: boolean = false;
-  guarantorName: any = [];
-  updatedData: any;
-  editLoanData: any;
-  isVisible: boolean = true;
-  isVisiblee: boolean = false;
-  isVisibleee:boolean= false;
-  viewFlag: boolean = false;
-  viewAppNo:boolean = false;
-  applicationNo: any;
-  applicationDate: any;
-  display: boolean;
-  // config="{backdrop: static, keyboard: false}";
+  addAdhocForm: FormGroup;
+  perticularEmpDetails: any;
+  employeeMasterIdData: any;
+  loanDetails:any;
+  
 
   constructor(public formBuilder: FormBuilder,
-    private router: Router,
-    private modalService: BsModalService, public loanservice: LoanService, public toster: ToastrService,
-    private datePipe: DatePipe, private excelservice: ExcelService, public sanitizer: DomSanitizer) { }
+    private loanService: LoanService,
+    private datePipe: DatePipe,
+    private modalService: BsModalService,
+    private excelservice: ExcelService,
+    public sanitizer: DomSanitizer,
+    private toaster: ToastrService,
+    private router: Router) { 
+
+      this.addAdhocForm = new FormGroup({
+        loanApplicationNumber: new FormControl(''),
+        active: new FormControl(true),
+        applicationDate: new FormControl(new Date()),
+        employeeModeOfPayment: new FormControl(''),
+        ifscCode: new FormControl(''),
+        bankAddress: new FormControl(''),
+        bankName: new FormControl(''),
+        paymentDate: new FormControl(new Date()),
+        chequeUtrNo: new FormControl(''),
+        amount: new FormControl(''),
+        remark: new FormControl(''),
+
+        adhocPaymentDetailsId: new FormControl('334'),
+        loanApplicationId: new FormControl('19'),
+        loanType: new FormControl('Personal Loan'),
+        discription: new FormControl('Personal Loan'),
+        repaymentType: new FormControl(),
+        balance: new FormControl('0.0'),
+        payee: new FormControl(),
+        payeeType: new FormControl(),
+         createDateTime: new FormControl(new Date()),
+         createdBy: new FormControl('Ajay'),
+         lastModifiedDateTime: new FormControl(new Date()),
+        // transactionNo: new FormControl(''),
+         lastModifiedBy: new FormControl(''),
+         loanDisbursementPaymentDetailsId:new FormControl(492),
+        // status: new FormControl(''),
+        // modeofPayment: new FormControl('self'),
+        // employeeBankInfoId: new FormControl(2),
+        // approvedAmount: new FormControl(100000),
+        
+        
+        // 
+        
+        // employeeBankInfoId: 2,
+       
+      });
+    }
 
   ngOnInit(): void {
+    this.getEmpMasterDetails();
+    this.getLoanDetails();
+  }
+  getEmpMasterDetails()// temp id is used
+  {
+    this.loanService.getEmpMasterDetails(60).subscribe(
+      res =>
+      {
+        this.perticularEmpDetails = res.data.results[0][0];
+      })
   }
 
+  /** Submit Adhoc form */
+  addAdhocData() {
+    console.log(this.addAdhocData);
+    this.loanService.saveAdhocData(this.addAdhocForm.value).subscribe(
+      res => {
+        this.toaster.success('', 'Loan data Saved Successfully!!')
+
+      }
+    )
+    }
+/** Submit Disburse form End */
+
+// Get Loan details
+
+getLoanDetails() { // temp id is used
+  
+  this.loanService.getLoanDetails('Car Loan').subscribe((res) => {
+    this.loanDetails = res.data.results[0];
+    // console.log(this.loanDetails);
+  });
+}
+// Get Loan details End
 }

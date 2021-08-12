@@ -7,6 +7,7 @@ import {AdhocComponent} from './adhoc/adhoc.component';
 import {RescheduleComponent} from './reschedule/reschedule.component';
 import { SettlementComponent } from './settlement/settlement.component';
 import { EmpListComponent } from './emp-list/emp-list.component';
+import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,11 @@ const routes: Routes = [
         component:LoanComponent,
 
     },
+    {
+      path:'summary',
+      component:LoanSummaryComponent,
+
+  },
     {
       path:'empList',
       component:EmpListComponent,

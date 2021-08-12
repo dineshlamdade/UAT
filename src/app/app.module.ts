@@ -59,6 +59,7 @@ import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.mod
 import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 import { LockModule } from './modules/lock/lock.module';
+import { DemoModule} from './modules/demo/demo.module'
 
 
 
@@ -108,6 +109,7 @@ import { TestComponent } from './test/test.component';
     /////////////////
     //  payrollModule,
     LockModule,
+    DemoModule,
     ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,
@@ -147,8 +149,8 @@ import { TestComponent } from './test/test.component';
     EmployeemasterlistpageModule,
     EmailSmsModule,
     LoanMasterModule,
-    SignaturePadModule
-
+    SignaturePadModule,
+   
   ],
 
   providers: [BsDatepickerModule,

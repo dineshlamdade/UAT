@@ -2,8 +2,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PrimeNGModule } from './../../app.primeNG.module';
 import { LoanRoutingModule } from './loan-routing.module';
 import { LoanComponent } from './loan/loan.component';
-
-
 import { AddNewLoanComponent } from './add-new-loan/add-new-loan.component';
 import { ExcelService } from '../uploadexcel/uploadexcelhome/excel.service';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -39,10 +37,11 @@ import { SettlementComponent } from './settlement/settlement.component';
 
 import { EmpListComponent } from './emp-list/emp-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
 
 
 @NgModule({
-  declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent, SettlementComponent, EmpListComponent],
+  declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent, DisbursementComponent, AdhocComponent, RescheduleComponent, SettlementComponent, EmpListComponent, LoanSummaryComponent],
   imports: [
     CollapseModule,ProgressbarModule,PopoverModule,ToastrModule,ModalModule,BsDropdownModule,CarouselModule,
     AlertModule,AccordionModule,

@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12"> -->
-                <div class="card" style="width: 1274px !important; margin-left: 72px !important;">
+                <div class="card" style="width: 95% !important; margin-left: 72px !important;">
                     <div class="card-body">
                         <div class="tabs about-page">
                             <form [formGroup]="paymentLoanForm">
@@ -202,10 +202,19 @@
                                     </div>
 
                                     <div class="row text-right" style="margin: 10px; float:right;">
-                                        <button type="button" class="btn btn-success" (click)="previousTab()">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Previous</button>&nbsp;
-                                        <button type="button" class="btn btn-success" (click)="submitPaymentForm()">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Submit</button>&nbsp;
+                                        <button
+                                        type="button"
+                                        tooltip="Reset"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"
+                                      >
+                                        <b><i class="fa fa-angle-double-left"></i></b> Previous
+                                      </button>&nbsp;
+                                        <!-- <button type="button" class="btn btn-success" (click)="submitPaymentForm()">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Submit</button>&nbsp; -->
+                                            <button type="submit" tooltip="Update"   class="custom_button custom_btn btn-labeled btn-labeled-left"
+                    [disabled]="!AddLoanForm.valid" (click)="updateLoan()"
+                     [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}"  *ngIf="isVisibleee">
+                    <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Submit</button>&nbsp;
                                         <button type="button" class="btn btn-dark" (click)="resetPaymentForm()"
                                             [disabled]="loandata != '' || editloandata != '' ">
                                             <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;

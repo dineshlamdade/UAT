@@ -37,7 +37,7 @@ export class PaymentComponent implements OnInit {
       loanMasterId: new FormControl(null),
       active: new FormControl(true),
       adhocPaymentsTreatment: new FormControl(""),
-      approvalWorkFlow: new FormControl(""),
+      approvalWorkFlowId: new FormControl(""),
       approvalWorkFlowSDM: new FormControl(""),
       assignmentsIntHead: new FormControl(""),
       assignmentsLoanPayment: new FormControl(""),
@@ -52,7 +52,7 @@ export class PaymentComponent implements OnInit {
       gapEndOfEarlierLoanAndNewLoanApp: new FormControl(""),
       instances: new FormControl(""),
       intAddInPri: new FormControl("string"),
-      intAdhocPayments: new FormControl(""),
+      // intAdhocPayments: new FormControl(""),
       intBeforePriRepaymentStarts: new FormControl(""),
       intCycleOfDisbursement: new FormControl(""),
       intDateOfTransactions: new FormControl(""),
@@ -60,6 +60,7 @@ export class PaymentComponent implements OnInit {
       loanApplicationTemplate: new FormControl([null]),
       loanCode: new FormControl(""),
       loanDescription: new FormControl(""),
+      minLoanAmount: new FormControl(""),
       maxAmountLoan: new FormControl(""),
       methodOfComputation: new FormControl(""),
       minRemainingServiceLoanApplication: new FormControl(""),
@@ -81,11 +82,11 @@ export class PaymentComponent implements OnInit {
       taxSettingPerquisiteSubCategory: new FormControl(""),
       underliningAsset: new FormControl(""),
       deviationAmount: new FormControl(""),
-      deviationIntrest: new FormControl(""),
+      deviationInterest: new FormControl(""),
       deviationNoOfInstallment: new FormControl(""),
-      intrestNode: new FormControl(""),
-      intrestWithNode: new FormControl(""),
-      intrestWithoutNode: new FormControl(""),
+      interestNode: new FormControl(""),
+      interestWithNode: new FormControl(""),
+      interestWithoutNode: new FormControl(""),
 
       noOfInstallmentNode: new FormControl(""),
       noOfInstallmenttWithNode: new FormControl(""),
@@ -274,17 +275,18 @@ export class PaymentComponent implements OnInit {
   /** Submit Loan Master form */
   submitPaymentForm() {
     if (!this.editFlag) {
+      this.loanMasterForm.removeControl('loanMasterId')
       this.paymentLoanForm.controls['document'].setValue(this.filesArray)
       localStorage.setItem('paymentLoanForm', JSON.stringify(this.paymentLoanForm.value))
       this.loanMasterForm.patchValue(this.paymentLoanForm.value)
       this.loanMasterForm.controls['document'].setValue(this.filesArray)
       this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
-      console.log("Add Data: " + JSON.stringify(this.loanMasterForm.value))
+      //console.log("Add Data: " + JSON.stringify(this.loanMasterForm.value))
 
       this.loanmasterService.saveLoanMasterData(this.loanMasterForm.value).subscribe(
         res => {
           this.toaster.success('', 'Loan data Saved Successfully!!')
-          this.router.navigate['/loan-master/summary']
+          this.router.navigate(['/loan-master/summary'])
         }
       )
     } else {
@@ -293,12 +295,12 @@ export class PaymentComponent implements OnInit {
       this.loanMasterForm.patchValue(this.paymentLoanForm.value)
       this.loanMasterForm.controls['document'].setValue(this.filesArray)
       this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
-      console.log("Update Data: " + JSON.stringify(this.loanMasterForm.value))
+      //console.log("Update Data: " + JSON.stringify(this.loanMasterForm.value))
 
       this.loanmasterService.updateLoanMasterData(this.loanMasterForm.value).subscribe(
         res => {
           this.toaster.success('', 'Loan data Updated Successfully!!')
-          this.router.navigate['/loan-master/summary']
+          this.router.navigate(['/loan-master/summary'])
         }
       )
     }

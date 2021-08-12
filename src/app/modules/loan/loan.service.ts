@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,51 +10,94 @@ export class LoanService {
 
 public apiUrl = environment.baseUrl8087;
 public apiUrl1 = environment.baseUrl8088;
+public apiUrl2 = environment.baseUrl8083;
+public apiUrl3 = environment.baseUrl8082;
 
-constructor(private http : HttpClient) { }
+constructor(private HttpClient : HttpClient) { }
+
 // .....................loan application Api....................................................................
-public addDisburseData(data)
-{ 
-  return this.http.post<any>(this.apiUrl  +'disbursement/add',data);
+
+
+/**  Disburse Payment save data */
+saveDisburseData(data):Observable<any>{ 
+  return this.HttpClient.post<any>(this.apiUrl  +'loanDisbursementPayment/add',data);
 }
+
+/**  adhoc save data */
+saveAdhocData(data):Observable<any>{ 
+  return this.HttpClient.post<any>(this.apiUrl  +'loanAdhocPayment/add',data);
+}
+
+/**  reschedule save data */
+saveRescheduleData(data):Observable<any>{ 
+  return this.HttpClient.post<any>(this.apiUrl  +'loanMaster-RescheduleDetails/add',data);
+}
+
+saveSettlementData(data):Observable<any>{
+  return this.HttpClient.post<any>(this.apiUrl +'loanSettlementPayment/add',data);
+}
+
+
+
+updateLoan(data): Observable<any> {
+  return this.HttpClient.put<any>(this.apiUrl + 'loanApplication/update',data);
+}
+
 public getAll()
 {
-return this.http.get<any>(this.apiUrl + 'loanApplication/getAll');
+return this.HttpClient.get<any>(this.apiUrl + 'loanApplication/getAll');
 }
 
 public addLoan(data)
 {
-  return this.http.post<any>(this.apiUrl  +'loanApplication/add',data);
+  return this.HttpClient.post<any>(this.apiUrl  +'loanApplication/add',data);
 }
-public updateLoan(data)
-{
- return this.http.put<any>(this.apiUrl + 'loanApplication/update',data);
-}
+
 public getAllLoanType()
 {
-return this.http.get<any>(this.apiUrl + 'loan-Master/getAll');
+return this.HttpClient.get<any>(this.apiUrl + 'loan-Master/getAll');
 }
 
 public allScheduleData(data)
 {
-  return this.http.post<any>(this.apiUrl  +'loan-Schedule/addSchedule',data);
+  return this.HttpClient.post<any>(this.apiUrl  +'loan-Schedule/addSchedule',data);
 }
 public getallScheduleData(id)
 {
-  return this.http.get<any>(this.apiUrl  +'loan-Schedule/getByTempLoanMasterId/'+id);
+  return this.HttpClient.get<any>(this.apiUrl  +'loan-Schedule/getByTempLoanMasterId/'+id);
 }
 public getGuarantorData(id)
 {
-  return this.http.get<any>(this.apiUrl  +'employee-Master/getByEmployeeCode/'+id);
+  return this.HttpClient.get<any>(this.apiUrl  +'employee-Master/getByEmployeeCode/'+id);
 }
 public deleteLoanScheduleByID(id)
 {
-  return this.http.delete<any>(this.apiUrl  +'/loan-Schedule/deleteByTempLoanMasterId/'+id);
+  return this.HttpClient.delete<any>(this.apiUrl  +'/loan-Schedule/deleteByTempLoanMasterId/'+id);
 }
 // .........................Summary Page Api................................................................
 public getApproverDetails()
 {
-  return this.http.get<any>(this.apiUrl1 + '/workflowMaster-report/approverDetails')
+  return this.HttpClient.get<any>(this.apiUrl1 + '/workflowMaster-report/approverDetails')
 
 }
+// .........................Summary Page Employee  Api......................
+
+getEmpMasterDetails(id): Observable<any>
+{
+  return this.HttpClient.get<any>(this.apiUrl3 + 'employee-fin-details/' +id);
+}
+
+// getEmpBankDetails(id): Observable<any>
+// {
+//   return this.HttpClient.get<any>(this.apiUrl3 + 'employee-bank-info/employeeMasterId/' +id);
+// }
+getLoanDetails(id): Observable<any>
+{
+  return this.HttpClient.get<any>(this.apiUrl + 'loanApplication/getByLoanType/Car Loan',id);
+}
+
+public getBankMasterDetails(){
+  return this.HttpClient.get<any>(this.apiUrl3 + 'employee-bank-info/employeeMasterId/2251');
+}
+
 }

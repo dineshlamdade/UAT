@@ -3,323 +3,258 @@
   <app-header></app-header>
   <div class="section-body mt-3">
     <div class="container-fluid">
-
-
       <div class="row">
         <div class="col-12">
           <div class="card">
             <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
               <form [formGroup]="AddLoanForm" (ngSubmit)="addloanFormSubmit()">
+                <!-- <div class="float-right">
+                  <button type="button" class="btn btn-success" [routerLink]="['/loan/application']">Back</button>
+                </div> -->
+                <br><br>
+
                 <fieldset>
-                  <legend>Employee Details</legend>
-                  <div class="col-md-12 pl-0 pr-0">
-                    <div class="border-dark-card radius-10 p-2">
-                      <div class="row">
-                        <div class="col-md-3">
-                          <label class="form-label mt-1 mb-0" >Emp. Code</label >
-                            <label class="font-12 text-ellipsis mt-1 mb-0">
-                              0001</label>
-                        </div>
-                        <div class="col-md-3">
-                          <label class="form-label mt-1 mb-0">Emp. Name</label >
-                          <label class="font-12 text-ellipsis mt-1 mb-0">ABC</label>
-                        </div>
-                        <div class="col-md-3">
-                          <label class="form-label mt-1 mb-0">Loan No.</label  >
-                            <label class="font-12 text-ellipsis mt-1 mb-0">1111</label  >
-                         
-                        </div>
-                        <div class="col-md-3">
-                          <label class="form-label mt-1 mb-0">Application Date</label>
-                          <label class="font-12 text-ellipsis mt-1 mb-0">11-Jan-2021</label  >
-                          <!-- <input type="text" class="form-control" value="Worker"  disabled /> -->
-                        </div>
-                        
-                      </div>
-                    </div>
-                  </div>
-              </fieldset>
-              <br>
-                <fieldset>
-                  <legend>Loan Details</legend>
-                  <div class="row">
-                    <!-- <div class="col-md-3">
-                      <label class="form-label">Loan No.</label>
-                      <input type="text" class="form-control" disabled />
+                  <legend>Apply Loan</legend>
+                  <div class="row" *ngIf="viewAppNo">
+                    <div class="col-md-3">
+                      <label class="form-label">Loan Application No.</label>
+                      <input type="text" class="form-control" value="{{editLoanData.loanApplicationNumber}}" disabled />
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Loan Application Date</label>
-                      <input type="text" class="form-control" disabled />
-                    </div> -->
-                    <div class="col-md-3">
-                      <label class="form-label">Loan Type</label>
-                      <input type="text" class="form-control" formControlName="repaymentType"
-                      disabled />
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Repayment Type</label>
-                      <input type="text" class="form-control" formControlName="repaymentType"
-                         disabled />
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">Underline Asset Value</label>
-                      <input type="text" class="form-control" formControlName="underlineAssestValue"
-                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
-                         disabled />
-                    </div>
-
-                    <div class="col-md-3">
-                      <label class="form-label">Car Type</label>
-                      <input type="text" class="form-control" formControlName="repaymentType"
-                         disabled />
+                      <input type="text" class="form-control" value="{{editLoanData.createDateTime | date: 'dd-MMM-yyyy'}}"disabled />
                     </div>
                   </div>
                   <br>
                   <div class="row">
+                    <div class="col-md-3">
+                      <label class="form-label">Loan Type</label>
+                      <select class="form-control" formControlName="loanType"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('loanType').status == 'INVALID'}"
+                        placeholder="Select" (change)="assetValueShowHide($event.target.value)">
+                        <option [ngValue]="null" selected>Select</option>
+                        <option *ngFor="let loan of loanTypeData " [selected]="loanType == loan.loanCode">
+                          {{loan.loanCode}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Repayment Type</label>
+                      <input type="text" class="form-control" formControlName="repaymentType"
+                        placeholder="Repayment Type" disabled />
+                    </div>
+                    <div class="col-md-3" *ngIf="isAssetValue">
+                      <label class="form-label">Underline Asset Value</label>
+                      <input type="text" class="form-control" formControlName="underlineAssestValue"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('underlineAssestValue').status == 'INVALID'}"
+                        placeholder="Underline Asset Value"
+                         />
+                    </div>
 
+                    <div class="col-md-3" *ngIf="carType">
+                      <label class="form-label">Car Type</label>
+                      <select class="form-control " formControlName="carOrInstitutionType" placeholder="Select"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('carOrInstitutionType').status == 'INVALID'}"
+                        >
+                        <!-- <option [value]="null" selected>Select</option> -->
+                        <option>First Hand</option>
+                        <option>Second Hand</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-3" *ngIf="instituteType">
+                      <label class="form-label">Institution</label>
+                      <select class="form-control " formControlName="carOrInstitutionType" placeholder="Select"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('carOrInstitutionType').status == 'INVALID'}"
+                        >
+                        <!-- <option [value]="null" selected>Select</option> -->
+                        <option>A+</option>
+                        <option>B+</option>
+                        <option>C+</option>
+                      </select>
+                    </div>
+
+                  </div>
+                  <br />
+                  <div class="row">
                     <div class="col-md-3">
                       <label class="form-label">Loan Amount</label>
-                      <input type="text" class="form-control" formControlName="loanAmount" 
-                        value="{{loanAmount | number:'1.2-2'}}" />
+                      <input type="text" class="form-control" formControlName="loanAmount" placeholder="Loan Amount"
+                        value="{{loanAmount }}"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('loanAmount').status == 'INVALID'}"
+                        (focusout)="calculateInstallmentAmount($event.target.value)" />
                       <label style="font-size: 10px;">As per Policy :- 5,00,000</label>
 
+                      <!-- <p-inputNumber class="form-control" formControlName="loanAmount"
+                    mode="decimal"
+                    locale="en-IN" [minFractionDigits]="2"  placeholder="Loan Amount"
+                    [ngClass]="{'is-invalid' : AddLoanForm.get('loanAmount').status == 'INVALID'}"
+                    (focusout)="calculateInstallmentAmount($event.target.value)"
+                     ></p-inputNumber> -->
+                    </div>
+
+                    <div class="col-md-3" *ngIf="flatIntrestVisible">
+                      <label class="form-label">Flat Interest</label>
+                      <input type="text" class="form-control" placeholder="Flat Interest" />
+                    </div>
+
+                    <div class="col-md-3 placeholderStyle" *ngIf="!flatIntrestVisible">
+                      <label class="form-label">Interest rate (%)</label>
+                      <input type="text" class="form-control-sm" formControlName="interestRate"
+                        placeholder="Interest Rate (%)"
+                        (focusout)="calculateRateOfInterest($event.target.value)" />&nbsp;
+                      <span style="font-size: 11px; font-weight:500;">Per Annum</span>
+                      <label style="font-size: 10px;">As per Policy :12%</label>
 
                     </div>
-                   
 
-                    <div class="col-md-3">
-                      <label class="form-label">Interest Rate (%) Per Annum</label>
-                      <input type="text" class="form-control" formControlName="loanAmount" 
-                        value="{{loanAmount | number:'1.2-2'}}" />
-                        <!-- <span style="font-size: 11px; font-weight:500;">PA</span> -->
-                        <label style="font-size: 10px;">As per Policy :12%</label>
-
-
-                    </div>
                     <div class="col-md-3" *ngIf="!flatIntrestVisible">
-                      <label class="form-label">No. of Installments</label>
+                      <label class="form-label">No. of Installment</label>
                       <input type="text" class="form-control" formControlName="noOfInstallment"
-                         />
+                        placeholder="No. of Installment" (focusout)="calculateNoOfInstallment($event.target.value)"
+                        [ngClass]="{'is-invalid' : AddLoanForm.get('noOfInstallment').status == 'INVALID'}" />
                       <label style="font-size: 10px;">As per Policy :- 48</label>
 
                     </div>
                     <div class="col-md-3" *ngIf="!flatIntrestVisible">
                       <label class="form-label">Installment Amount</label>
                       <input type="text" class="form-control" formControlName="installmentAmount"
-                        />
+                        placeholder="Installment Amount" (focusout)="calculateInstallments($event.target.value)"
+                        value="{{installmentAmount}}" />
                       <label style="font-size: 10px;">As per Policy :- 45234</label>
 
-                    </div>
+                      <!--
+                    <p-inputNumber class="form-control " formControlName="installmentAmount" mode="decimal"
+                  locale="en-IN" [minFractionDigits]="2" ></p-inputNumber> -->
 
+                    </div>
                   </div>
                   <br />
                   <div class="row">
-
-                    
                     <div class="col-md-3">
                       <label class="form-label">End Date</label>
                       <input type="text" class="form-control" formControlName="endDate" disabled />
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">Remark</label>
-                      <input type="text" class="form-control" formControlName="remark"  disabled />
+                      <input type="text" class="form-control" formControlName="remark" placeholder="Remark" />
                     </div>
                     <div class="col-md-3">
                       <label class="form-label">External Referance No.</label>
                       <input type="text" class="form-control" formControlName="externalReferenceNumber"
-                        disabled />
+                        placeholder="External Referance No." />
                     </div>
                   </div>
-                <br/>
-                  <div class="row">
-                    <div class=" col-md-6">
-                      <fieldset>
-                        <legend>Guarantor Details</legend>
-
-
-                        <div class="table-responsive Custom_Table">
-                          <table class="table table-striped table-bordered table-hover bg-color-light_gray m-b-0">
-                            <thead class="thead-dark">
-                              <tr>
-                                <!-- <th scope="col">Sr .No.</th> -->
-                                <th scope="col">Emp.Code</th>
-                                <th scope="col">Name</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <!-- <td>{{i+1}}</td> -->
-                                <td>001</td>
-                                <td>Jhon</td>
-                              </tr>
-                              <tr>
-                                <!-- <td>{{i+1}}</td> -->
-                                <td>002</td>
-                                <td>AAA</td>
-                              </tr>
-                              <tr>
-                                <!-- <td>{{i+1}}</td> -->
-                                <td>003</td>
-                                <td>BBB</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-
-                      </fieldset>
-                    </div>
-                    <div class="col-md-6">
-                      <fieldset>
-                        <legend>Deviation </legend>
-
-
-                        <div class="table-responsive Custom_Table">
-                          <table class="table table-striped table-bordered table-hover m-b-0 bg-color-light_gray">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th scope="col">Deviation Types</th>
-                                <th scope="col">User Input</th>
-                                <th scope="col">Limit</th>
-                                <th scope="col">Deviation Value</th>
-                                <th scope="col">Reason</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr >
-                                <td>
-                                   Loan Amount                       </td>
-                                <td>222,222.00</td>
-                                <td>500,000.00</td>
-                                <td>100,000.00</td>
-                                <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
-                                <td style="background-color: #fff;">ABC</td>
-                                <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
-                              </tr>
-
-                              <tr >
-                                <td>
-                                  No.Of Installments</td>
-                                <td>11</td>
-                                <td>12</td>
-                                <td>13</td>
-                                <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
-                                <td style="background-color: #fff;">BBB</td>
-                                <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
-                              </tr>
-
-                              <tr >
-                                <td>
-                                 Interest Rate</td>
-                                <td>6.00%</td>
-                                <td>4.00%</td>
-                                <td>0</td>
-                                <!-- <td >{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td> -->
-                                <td style="background-color: #fff;">CCC</td>
-                                <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
-                              </tr>
-    
-                            </tbody>
-                          </table>
-                        </div>
-
-                      </fieldset>
-                    </div>
+                  <br />
+                  <div class="float-right">
+                    <button type="button" class="btn btn-danger" (click)="schedule(template)" data-target="#UploadModal"
+                      [disabled]="!AddLoanForm.valid"
+                      [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
+                      <i class="fa fa-clock-o" aria-hidden="true"> </i>&nbsp;Schedule
+                    </button>
                   </div>
-<br/>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <fieldset>
-                        <legend>Document </legend>
+                  <br />
+                  <br />
 
+                  <ng-template #template let-c="close">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="UploadModalLabel">Schedule</h5>
+                      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="cards">
+                        <div class="card-bodys">
+                          <div class="row clearfix">
+                            <div class="col-12">
+                              <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 
-                        <div class="table-responsive Custom_Table">
+                                  <!-- <div class="float-right">
+                                            <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="download()"></i></span>&nbsp;
+                                            <span class="ml-10"><i class="fa fa-file-excel-o font-18 text-dark-green" (click)="exportAsXLSX()" tooltip="Export to Excel"></i ></span>
+                                              <br><br>
+                                        </div> -->
+                                  <div class="table-responsive Custom_Table " id="contentToConvert">
+                                    <table class="table table-striped table-hover table-bordered m-b-0">
+                                      <thead class="thead-dark">
+                                        <tr>
+                                          <th scope="col" class="wd-15" rowspan="2">Date</th>
+                                          <th scope="col" class="wd-15" rowspan="2">Opening Balance</th>
+                                          <th colspan="2">Interest </th>
+                                          <th scope="col" class="wd-15" rowspan="2">Disbursement</th>
+                                          <th colspan="3">Repayment</th>
+                                          <th scope="col" class="wd-15" rowspan="2">Closing Balance</th>
+                                        </tr>
+                                        <tr style="background-color: #8d8b8d; color: floralwhite;">
+                                          <td scope="col" class="wd-8">Rate - PA</td>
+                                          <td scope="col" class="wd-8">Charge</td>
+                                          <td scope="col" class="wd-8">Principal</td>
+                                          <td scope="col" class="wd-8">Interest</td>
+                                          <td scope="col" class="wd-8">Total</td>
 
-                          <table class="table table-striped table-bordered table-hover m-b-0">
-                            <thead class="thead-dark">
-                              <tr>
-                                <!-- <th scope="col" >Sr .No.</th> -->
-                                <th scope="col">Name Of Document</th>
-                                <th scope="col">Attachment</th>
-                                <th scope="col">Remark</th>
-                                <th scope="col">Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <!-- <td class="wd-9">{{i+1}}</td> -->
-                                <td>Adhar card</td>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr class="align" *ngFor="let schedule of getscheduleData">
 
-                                <td>
-                                  <a><i class="fa fa-paperclip text-orange"></i> &nbsp;
-                                    Adhar Copy Doc</a>
-                                </td>
-                                <td>
-                                  ABC Remark
-                                <td>
-                                  <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
-                                    (click)="UploadModalDocument(template1, i,document)" data-toggle="modal"
-                                    data-target="#UploadModal1"></i>&nbsp;&nbsp;
-                                </td>
+                                          <td>{{schedule.date | date :"dd-MMM-yyyy"}}</td>
+                                          <td>{{schedule.openingBalance |number:'1.2-2'}}</td>
 
-                              </tr>
+                                          <td>{{schedule.rateOfIntrest |number:'1.2-2'}}%</td>
+                                          <td>{{schedule.interestCharged | number:'1.2-2'}}</td>
 
-                            </tbody>
-                          </table>
-                          <ng-template #template1>
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-                              <button type="button" (click)=" modalRef.hide(); " class="close" data-dismiss="modal"
-                                aria-label="Close"><span aria-hidden="true">×</span></button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="card">
-                                <div class="card-body">
-                                  <div class="row clearfix">
+                                          <td>{{schedule.disbursedAmount | number:'1.2-2'}}</td>
 
-                                    <div class="col-md-12">
-                                      <div class="fileuploadbox bg-color-lightgray">
-                                        <label class="filelabel">
-                                          <i class="fa fa-upload">
-                                          </i>
-                                          <span class="title">
-                                            Choose file
-                                          </span>
-                                          <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
-                                            accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
-                                        </label>
-                                      </div>
-                                      <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
-                                        Selected files
-                                        <label *ngFor="let item of masterfilesArray;  let index = index;"
-                                          class="filelabeldisplay">
-                                          <div class="text-ellipsis"><i class="fa fa-paperclip">
-                                            </i>
-                                            <span class="title">
-                                              {{ item.name }}
-                                            </span>
-                                          </div>
-                                          <div>
-                                            <i class="fa fa-times text-red font-18"
-                                              (click)="removeSelectedLicMasterDocument(index)"></i>
-                                          </div>
-                                        </label>
-                                      </div>
-                                    </div>
+                                          <td>{{schedule.proposedScheduledRecoveryPrincipal | number:'1.2-2'}} </td>
+                                          <td>{{schedule.proposedScheduledRecoveryInterest | number:'1.2-2'}} </td>
+                                          <td>{{schedule.recoveryPrinInterestTotalBalance | number:'1.2-2'}} </td>
 
+                                          <td>{{schedule.closingBalance | number:'1.2-2'}} </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-                            </div>
-                          </ng-template>
+                          </div>
                         </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary"
+                        (click)="deleteLoanScheduleByID();modalRef.hide()">Ok</button>
+                    </div>
+                  </ng-template>
 
-                      </fieldset>
+                  <div>
+                    <div class=" col-md-6" *ngIf="guarentedCount.length > 0">
+                      <h3 class="font-14 text-purple font-bold "> Guarantors</h3>
+                      <div class="table-responsive Custom_Table">
+                        <table class="table table-striped table-bordered table-hover m-b-0">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Sr .No.</th>
+                              <th scope="col">Emp Code of Guarantor</th>
+                              <th scope="col">Name of Guarantor</th>
+                            </tr>
+                          </thead>
+                          <tbody *ngFor="let gurantor of guarentedCount, ,let i = index;">
+                            <tr>
+                              <td>{{i+1}}</td>
+                              <td><input type="text" value="{{gurantor.empCode}}"
+                                (focusout)="getEmpcode($event.target.value,i)"  [disabled]="viewFlag"
+                                class="form-control"
+                                [ngClass]="{'is-invalid' : gurantor.empCode == undefined || gurantor.empCode == ''}"
+                                ></td>
+                              <td><input type="text" value="{{gurantor.fullName}}" disabled></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
-                  <br>
+                  <br><br>
                   <div class=" col-md-8" *ngIf="devaiationData.length > 0">
                     <h3 class="font-14 text-purple font-bold ">Deviations</h3>
                     <div class="table-responsive Custom_Table">
@@ -337,18 +272,16 @@
                           <tr *ngFor="let data of devaiationData;let index = index;">
                             <td>
                               <span *ngIf="data.deviationType == 'LoanAmount'"> Loan Amount</span>
-                              <span *ngIf="data.deviationType == 'noOfInstallment'"> No. Of Installments</span>
+                              <span *ngIf="data.deviationType == 'noOfInstallment'"> No. Of Installment</span>
                               <span *ngIf="data.deviationType == 'interestRate'"> Interest Rate</span>
                             </td>
-                            <td>{{data.deviationValue | number:'1.2-2'}}</td>
-                            <td>{{data.userLimit | number:'1.2-2'}}</td>
-                            <td *ngIf="data.deviationType != 'interestRate'">{{data.deviationValue - data.userLimit |
-                              number:'1.2-2'}}</td>
-                            <td *ngIf="data.deviationType == 'interestRate'">{{data.userLimit - data.deviationValue |
-                              number:'1.2-2'}}</td>
+                            <td>{{data.deviationValue}}</td>
+                            <td>{{data.userLimit}}</td>
+                            <td *ngIf="data.deviationType != 'interestRate'">{{data.deviationValue - data.userLimit}}</td>
+                            <td *ngIf="data.deviationType == 'interestRate'">{{data.userLimit - data.deviationValue | number: '1.0-0'}}</td>
                             <td><input type="text" class="form-control" value="{{data.reason}}"
-                                (focusout)="reasons($event.target.value, index)" [disabled]="viewFlag"
-                                [ngClass]="{'is-invalid' : data.reason == undefined || data.reason == ''}"></td>
+                              (focusout)="reasons($event.target.value, index)" [disabled]="viewFlag"
+                              [ngClass]="{'is-invalid' : data.reason == undefined || data.reason == ''}"></td>
                             <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
                           </tr>
 
@@ -381,9 +314,7 @@
                               {{ document.fileName }}
                             </td>
                             <td class="wd-14">
-                              <input type="text" class="form-control"
-                                (focusout)="getDocumentReason($event.target.value)">
-                            </td>
+                              <input type="text" class="form-control" (focusout)="getDocumentReason($event.target.value)"></td>
 
                             <td>
                               <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
@@ -446,92 +377,78 @@
                       </ng-template>
                     </div>
                   </div>
-                  
-
-                  <div class="row ">
-                    <div class="col-12">
-                      <div class="card">
-                        <div class="mb-0 row">
-                          <div class="col-md-6">
-                            <h3 class="font-14 text-purple font-bold">Approval Details</h3>
-
-                          </div>
-                          <div class="col-md-6 ">
-                            <h6 class="font-12 mb-3 font-normal float-right">
-                              <strong>Overall Status </strong>&nbsp;&nbsp;
-
-                              <strong class="btn-bg-green p-2">Submit:Pending with Approver 2</strong>
-                            </h6>
-                          </div>
-
-                        </div>
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="table-responsive Custom_Table">
-                              <table class="table table-striped table-hover table-bordered m-b-0">
-                                <thead class="thead-dark">
-                                  <tr>
-                                    <th scope="col" class="font700 ">Level</th>
-                                    <th scope="col" class="font700 ">Approver code</th>
-                                    <th scope="col" class="font700 ">Approver Name</th>
-                                    <th scope="col" class="font700 ">Action Date & Time</th>
-                                    <!-- <th scope="col" class="font700">Action Time</th> -->
-                                    <th scope="col" class="font700 ">Status</th>
-                                    <th scope="col" class="font700 ">Remark</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <td>1</td>
-                                  <td>222</td>
-                                  <td>AAA</td>
-                                  <td>8-Jun-2021 &nbsp;  10.00 AM</td>
-                                  <!-- <td>10.00 AM</td> -->
-                                  <td>Pending</td>
-                                  <td><input type="text" /></td>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  <br><br>
+                  <div class="col-md-12">
+                    <h3 class="font-14 text-purple font-bold "> Approver Details</h3>
+                    <!-- <label class="form-label float-right">Status <input  type="text" class="form-control"></label> -->
+                    <div class="table-responsive Custom_Table">
+                      <table class="table table-striped table-bordered table-hover m-b-0">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col" class="wd-9">Level</th>
+                            <th scope="col" class="wd-14">Approver Code</th>
+                            <th scope="col" class="wd-14">Approver Name</th>
+                            <th scope="col" class="wd-14">Action Date</th>
+                            <th scope="col" class="wd-14">Action Time</th>
+                            <th scope="col" class="wd-14">Remark</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="wd-9">First</td>
+                            <td class="wd-14">approve001</td>
+                            <td class="wd-14">approver1</td>
+                            <td class="wd-14">Null</td>
+                            <td class="wd-14">Null</td>
+                            <td class="wd-14">approved</td>
+                          </tr>
+                        </tbody>
+                        <!-- <tbody>
+                        <tr *ngFor="let approver of approvalDetailsData">
+                          <td class="wd-9">{{approver.sequence}}</td>
+                          <td class="wd-14">{{approver.approverEmpCode}}</td>
+                          <td class="wd-14">{{approver.approverName}}</td>
+                          <td class="wd-14"></td>
+                          <td class="wd-14"></td>
+                          <td class="wd-14"></td>
+                        </tr>
+                      </tbody> -->
+                      </table>
                     </div>
+
                   </div>
                   <br><br>
-
                   <ng-container class="float-right">
                     <!-- || (documentList.length != documentReason.length)
 
                     || (devaiationData.length != deviationReason.length) || (guarentedCount.length != guarantorName.length)-->
                     <!-- || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length) -->
                     <div class="row float-right" style="margin: 10px">
-                      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"
-                        >
-                        <b> <i class="fa fa-check-square-o
-                         
-                          " aria-hidden="true"></i></b>Approve</button>&nbsp;
+                      <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                        [disabled]="AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length)"
+                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length) ,'btn-bg-green': !AddLoanForm.invalid}" *ngIf="!isVisiblee">
+                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
 
-                      <button type="submit" tooltip="Update"
-                        class="custom_button custom_btn btn-labeled btn-labeled-left" [disabled]="!AddLoanForm.valid"
-                        (click)="updateLoan()"
-                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}"
-                        *ngIf="isVisibleee">
-                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button>&nbsp;
+                      <button type="submit" tooltip="Update"   class="custom_button custom_btn btn-labeled btn-labeled-left"
+                    [disabled]="!AddLoanForm.valid" (click)="updateLoan()"
+                     [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}"  *ngIf="isVisibleee">
+                    <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
+                   >&nbsp;
 
                       <!-- <button type="submit" class="custom_button bg-btn-red custom_btn btn-labeled btn-labeled-left"
                       tooltip="Draft" ><b> <i class="fa fa-file" aria-hidden="true"></i></b>Draft</button
                       >&nbsp; -->
 
                       <button type="button" tooltip="Reset"
-                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                        (click)="reset()" *ngIf="isVisible">
-                        <b><i class="fa  fa-reply 
-                          "></i></b>Send Back</button>&nbsp;
-
-                      <!-- *ngIf="isVisiblee" -->
-                      <button type="button" tooltip="Cancel"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
-                        [routerLink]="['/loan/application']">
-                        <b> <i class="fa fa-times-circle" aria-hidden="true"></i></b>Close</button>
+                        (click)="reset()" *ngIf="isVisible">
+                        <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>&nbsp;
+
+                        <!-- *ngIf="isVisiblee" -->
+                      <button type="button" tooltip="Cancel"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                        [routerLink]="['/loan/application']" >
+                        <b> <i class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
 
                     </div>
                   </ng-container>
