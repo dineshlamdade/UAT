@@ -352,6 +352,8 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
         }
         this.documentList = [];
       });
+      this.approvedDisabled=true;
+      this.transactionList=[];
   }
 
   //-------- For selecting transaction For Processing of Approval, SendBack and Forward ----------
@@ -396,14 +398,14 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
      }
      if(status=='Approved'){
 
-      //  this.masterInfo.masterDetail.documentDetailList.forEach((doc)=>
-      //  {
-      //    console.log("doc.documentStatus::",doc.documentStatus)
-      //    if(doc.documentStatus!='Approved'){
-      //      this.alertService.sweetalertWarning("Make all Documents either Approved or Discarded");
-      //      return;
-      //    }
-      //  });
+       this.transactionInfo.documentList.forEach((doc)=>
+       {
+         console.log("doc.documentStatus::",doc.documentStatus)
+         if(doc.documentStatus!='Approved'){
+           this.alertService.sweetalertWarning("Make all Documents either Approved or Discarded");
+           return;
+         }
+       });
      }
      if (this.transactionList.length == 0) {
       this.alertService.sweetalertWarning('Please Select Atleast One Transaction');
@@ -457,7 +459,8 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
         this.previousDisabled = false;
         this.nextDisabled = false;
       }
-
+      this.transactionList=[];
+      this.approvedDisabled =true;
       console.log('index::', index);
       this.getTransactionInfoByPSID(this.globalPSID);
     } else if (

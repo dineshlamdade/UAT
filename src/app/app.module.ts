@@ -87,12 +87,14 @@ import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-
 
 
 
+
 @NgModule( {
   declarations: [
     AppComponent,
     ProfileComponent,
     ShortenStringPipe,
     SettingsComponent,
+    
   ],
 
   exports: [],
