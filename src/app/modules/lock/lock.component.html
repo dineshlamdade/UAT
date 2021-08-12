@@ -1,5 +1,4 @@
-<app-leftmenu></app-leftmenu>
-<!-- Main body part  -->
+<!-- <app-leftmenu></app-leftmenu>
 <div class="page">
   <app-header></app-header>
   <div class="section-body mt-3">
@@ -38,6 +37,88 @@
                 <label class="nav" for="Declaration">
                   <span>Business Year </span>
                 </label>
+
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(3)"
+                  [checked]="tabIndex == 3" />
+                <div class="tabs about-page">
+                  <app-newlock #licdeclaration [data]="data" *ngIf="tabIndex == 3"></app-newlock>
+                </div>
+
+                <label class="nav" for="Declaration">
+                  <span>New Lock</span>
+                </label>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
+            <i class="fa fa-angle-double-up text-white font-18"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+<router-outlet></router-outlet> -->
+
+
+
+ <app-leftmenu></app-leftmenu>
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="fourtabview">
+                <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
+                  [checked]="tabIndex == 0" />
+                <div class="fourtabs  about-page">
+                  <app-area *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"  (claimNonTab)="redirectToClaimNon($event)"
+                    (policyNumber)="redirectToMaster($event)">
+                  </app-area>
+                </div>
+                <label class="nav" for="summary">
+                  <span>Primary Cycle </span>
+                </label>
+
+                <input name="nav" type="radio"  class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
+                  [checked]="tabIndex == 1" />
+                <div class="fourtabs  about-page">
+                  <!-- <app-supplementry-cycle *ngIf="tabIndex == 1" [policyNumber]="policyNumber"> </app-supplementry-cycle> -->
+                  <app-supplementry-cycle *ngIf="tabIndex == 1" [policyNumber]="policyNumber"> </app-supplementry-cycle>
+                </div>
+                <label class="nav" for="Master">
+                  <span>As & When/ Supplementry Cycle </span>
+                </label>
+
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
+                  [checked]="tabIndex == 2" />
+                <div class="fourtabs  about-page">
+                  <app-business-year #licdeclaration [data]="data" *ngIf="tabIndex == 2"></app-business-year>
+                </div>
+
+                <label class="nav" for="Declaration">
+                  <span>Bussiness Year</span>
+                </label>
+
+
+                <input name="nav" type="radio" class="about-radio" id="claimtax" (change)="changeTabIndex(3)"
+                  [checked]="tabIndex == 3" />
+                <div class="fourtabs  about-page ">
+                  <app-summary #licdeclaration [data]="data" *ngIf="tabIndex == 3"></app-summary>
+                </div>
+                <label class="nav" for="claimtax">
+                  <span>Summary </span>
+                </label>
+
               </div>
             </div>
           </div>

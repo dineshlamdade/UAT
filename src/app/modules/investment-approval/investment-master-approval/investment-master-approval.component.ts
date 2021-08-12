@@ -24,8 +24,8 @@ import { InvestmentApprovalDocumentRemarkInfo } from '../interfaces/investment-a
   styleUrls: ['./investment-master-approval.component.scss'],
 })
 export class InvestmentMasterApprovalComponent implements OnInit {
-
   public documentList: Array<any> = [];
+  public approved1Disabled= false;
   public documentSafeURL: SafeResourceUrl;
   public modalRef: BsModalRef;
   public documentURLIndex: number;
@@ -33,29 +33,30 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   public globalPSID: any = '';
   //public documentCheckBox: boolean = false;
   public dtSelectedRows: any[];
-  public documentRemarkList: InvestmentApprovalDocumentRemarkInfo[]=[];
+  public documentRemarkList: InvestmentApprovalDocumentRemarkInfo[] = [];
   public proofSubmissionIdList: Array<any> = [];
   public localStorageProofSubmissionIdList: Array<any> = [];
   public proofSubmissionIdListIndex: number;
   public masterRemark: any;
-  public documentRemark: any
-  public documentDetailList: InvestmentApprovalMasterDocumentInfo[]=[];
+  public documentRemark: any;
+  public documentDetailList: InvestmentApprovalMasterDocumentInfo[] = [];
   public previousDisabled: boolean = true;
   public nextDisabled: boolean = false;
+  public test = [];
 
   public employeeInfo: InvestmentApprovalEmployeeInfo = {
-    employeeMasterId : 0,
-    fullName : '',
-    employeeType : '',
-    designation : '',
-    employeeCode : '',
+    employeeMasterId: 0,
+    fullName: '',
+    employeeType: '',
+    designation: '',
+    employeeCode: '',
     joiningDate: null,
-    grade : '',
-    establishment : ''
+    grade: '',
+    establishment: '',
   };
 
   public masterInfo: InvestmentApprovalMasterInfo = {
-    psidDetailList: [],
+    // psidDetailList: [],
     psidDetail: {
       groupName: '',
       section: '',
@@ -63,7 +64,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
       psid: '',
       dateOfSubmission: null,
       proofSubmissionStatus: '',
-      lastModifiedDateTime: null
+      lastModifiedDateTime: null,
     },
     masterDetail: {
       masterId: 0,
@@ -78,10 +79,13 @@ export class InvestmentMasterApprovalComponent implements OnInit {
       masterStatus: '',
       paymentDetailList: [],
       documentDetailList: this.documentDetailList,
-      masterRemarkDetailList: []
-    }
+      masterRemarkDetailList: [],
+    },
   };
-  public remarkValidation: boolean=false;
+  public remarkValidation: boolean = false;
+  public approvedDisabled: boolean = true;
+  public approvedDiscardDisabled = false;
+  public documentRemarkValidation: boolean = false;
 
   constructor(
     private investmentMasterApprovalService: InvestmentMasterApprovalService,
@@ -104,18 +108,29 @@ export class InvestmentMasterApprovalComponent implements OnInit {
       'localStorageProofSubmissionIdList after remove::',
       localStorage.getItem('localStorageProofSubmissionIdList')
     );
-    if(this.localStorageProofSubmissionIdList!=null){
-      this.globalPSID = this.localStorageProofSubmissionIdList[0];
+    this.proofSubmissionIdListIndex = Number(
+      localStorage.getItem('localStorageProofSubmissionIdListIbex')
+    );
+    localStorage.removeItem('localStorageProofSubmissionIdList');
+    console.log(
+      'localStorageProofSubmissionIdListIbex after remove::',
+      localStorage.getItem('localStorageProofSubmissionIdListIbex')
+    );
+    if (this.localStorageProofSubmissionIdList != null) {
+      this.globalPSID =
+        this.localStorageProofSubmissionIdList[
+          this.proofSubmissionIdListIndex
+        ].psid;
       console.log('globalPSID::', this.globalPSID);
-      this.getEmployeeInfo(60);
+      //this.getEmployeeInfo(60);
       this.getMasterInfo(this.globalPSID);
-      if(this.localStorageProofSubmissionIdList.length==1){
-        this.nextDisabled=true;
+      if (this.localStorageProofSubmissionIdList.length == 1) {
+        this.nextDisabled = true;
       }
     }
-
   }
 
+  // --------- Get Employee Info by employee mAster ID --------------------------------
   getEmployeeInfo(employeeMasterId: any): void {
     this.investmentMasterApprovalService
       .getEmployeeInfo(employeeMasterId)
@@ -125,21 +140,51 @@ export class InvestmentMasterApprovalComponent implements OnInit {
       });
   }
 
+  // ---------- Get Master Info By PSID ------------------------------------------
   getMasterInfo(psid: any): void {
     this.investmentMasterApprovalService
       .getMasterInfo(psid)
       .subscribe((res: InvestmentApprovalMasterInfo) => {
-        console.log('res asterinfo::', res);
+        console.log('res masterinfo::', res);
         if (res != null || res != undefined) {
+         
           this.masterInfo = res;
+          
           this.documentDetailList =
             this.masterInfo.masterDetail.documentDetailList;
-          this.proofSubmissionIdList = this.masterInfo.psidDetailList;
-          console.log('proofSubmissionIdList::', this.proofSubmissionIdList);
+            this.documentDetailList.forEach((doc)=>{
+              
+              this.test.push(doc.documentStatus);
+              
+              if (this.test.includes('Submitted')) {
+                this.approved1Disabled = true;
+            } else if (this.test.includes('Approved')) {
+              this.approved1Disabled = false;
+            } else if (this.test.includes('Discarded')) {
+              this.approved1Disabled = true;
+            }
+                       // if(doc.documentStatus =="Approved") {
+              //   this.approved1Disabled = false;
+              // }  if (doc.documentStatus =="Discarded") {
+              //     this.approvedDiscardDisabled = true;
+                
+              // }
+              // if(doc.documentStatus =="Submitted") {
+              //   this.approvedDisabled = true;
+              // }
+            
+            });
+          this.getEmployeeInfo(60);
+          console.log(this.test);
+      
+    
+
         }
+        this.test = [];
       });
   }
 
+  // -------------- Doc Remark Modal ---------------------------
   public docRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     index: any,
@@ -153,11 +198,12 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     );
   }
 
+  // -------------- Master Remark Modal ---------------------------
   public masterRemarkModal(
     documentViewerTemplate: TemplateRef<any>,
     documentRemarkList
   ) {
-    console.log('documentDetail::', documentRemarkList);
+    console.log('documentRemarkDetail::', documentRemarkList);
     this.documentRemarkList = documentRemarkList;
     this.modalRef = this.modalService.show(
       documentViewerTemplate,
@@ -165,22 +211,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     );
   }
 
-  public nextDocViewer() {
-    this.documentURLIndex = this.documentURLIndex + 1;
-    this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex]
-        .blobURI
-    );
-  }
-
-  public previousDocViewer() {
-    this.documentURLIndex = this.documentURLIndex - 1;
-    this.documentSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.masterInfo.masterDetail.documentDetailList[this.documentURLIndex]
-        .blobURI
-    );
-  }
-
+  // ----------- Custom sort for Table -------------------------
   customSort(event: SortEvent) {
     event.data.sort((data1, data2) => {
       let value1 = data1[event.field];
@@ -198,6 +229,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     });
   }
 
+  // ------------ Opening Doc Viewer----------------------------
   navigateAssociates(documentInformationId: any) {
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['/investment-approval/documentview'])
@@ -215,20 +247,29 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     });
   }
 
+  // --------------- Change PSID Next Or Previous -------------------------------
   changePSID(psid: any, operationType: string) {
     console.log('psid::', psid);
     let index = 0;
-    if (this.localStorageProofSubmissionIdList.length > 0) {
-      index = this.localStorageProofSubmissionIdList.findIndex(
-        (psidEle) => psidEle == psid
-      );
-      if (operationType == 'Next') {
-        this.proofSubmissionIdListIndex = index + 1;
-      } else if (operationType == 'Previous') {
-        this.proofSubmissionIdListIndex = index - 1;
-      }
+
+    index = this.localStorageProofSubmissionIdList.findIndex(
+      (psidEle) => psidEle.psid == psid
+    );
+
+    if (operationType == 'Next') {
+      this.proofSubmissionIdListIndex = index + 1;
+    } else if (operationType == 'Previous') {
+      this.proofSubmissionIdListIndex = index - 1;
+    }
+
+    if (
+      this.localStorageProofSubmissionIdList[this.proofSubmissionIdListIndex]
+        .type == 'M'
+    ) {
       this.globalPSID =
-        this.localStorageProofSubmissionIdList[this.proofSubmissionIdListIndex];
+        this.localStorageProofSubmissionIdList[
+          this.proofSubmissionIdListIndex
+        ].psid;
       if (
         this.proofSubmissionIdListIndex ==
         this.localStorageProofSubmissionIdList.length - 1
@@ -242,56 +283,55 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         this.previousDisabled = false;
         this.nextDisabled = false;
       }
-    } else {
-      index = this.proofSubmissionIdList.findIndex(
-        (psidEle) => psidEle.psid == psid
-      );
-      if (operationType == 'Next') {
-        this.proofSubmissionIdListIndex = index + 1;
-      } else if (operationType == 'Previous') {
-        this.proofSubmissionIdListIndex = index - 1;
-      }
-      this.globalPSID =
-        this.proofSubmissionIdList[this.proofSubmissionIdListIndex].psid;
 
-      if (
-        this.proofSubmissionIdListIndex ==
-        this.proofSubmissionIdList.length - 1
-      ) {
-        this.nextDisabled = true;
-        this.previousDisabled = false;
-      } else if (this.proofSubmissionIdListIndex == 0) {
-        this.previousDisabled = true;
-        this.nextDisabled = false;
-      } else {
-        this.previousDisabled = false;
-        this.nextDisabled = false;
-      }
+      console.log('index::', index);
+      this.getMasterInfo(this.globalPSID);
+    } else if (
+      this.localStorageProofSubmissionIdList[this.proofSubmissionIdListIndex]
+        .type == 'T'
+    ) {
+      localStorage.setItem(
+        'localStorageProofSubmissionIdList',
+        JSON.stringify(this.localStorageProofSubmissionIdList)
+      );
+
+      localStorage.setItem(
+        'localStorageProofSubmissionIdListIbex',
+        this.proofSubmissionIdListIndex.toString()
+      );
+
+      this.router.navigate(['/investment-approval/transaction']);
+    } else {
+      this.router.navigate(['/investment-approval/dashboard']);
     }
 
-    console.log('index::', index);
-    this.remarkValidation= false;
-    this.getMasterInfo(this.globalPSID);
+    this.remarkValidation = false;
+    this.approvedDisabled = true;
   }
 
+  // ------------ Change PSID Status of Master --------------------------------------
   changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any) {
-   console.log("status::",status)
-   console.log("remarkValidation::",this.remarkValidation)
-    if(status=='SendBack'){
-      console.log("masterRemark::",this.masterRemark)
-      if(this.masterRemark==''||this.masterRemark==undefined||this.masterRemark==null){
-          this.remarkValidation= true;
-          console.log("remarkValidation::",this.remarkValidation)
+    console.log('status::', status);
+    console.log('remarkValidation::', this.remarkValidation);
+    if (status == 'SendBack') {
+      console.log('masterRemark::', this.masterRemark);
+      if (
+        this.masterRemark == '' ||
+        this.masterRemark == undefined ||
+        this.masterRemark == null
+      ) {
+        this.remarkValidation = true;
+        console.log('remarkValidation::', this.remarkValidation);
         return;
       }
     }
-    if(status=='Approved'){
-
-      this.masterInfo.masterDetail.documentDetailList.forEach((doc)=>
-      {
-        console.log("doc.documentStatus::",doc.documentStatus)
-        if(doc.documentStatus!='Approved'){
-          this.alertService.sweetalertWarning("Make all Documents either Approved or Discarded");
+    if (status == 'Approved') {
+      this.masterInfo.masterDetail.documentDetailList.forEach((doc) => {
+        console.log('doc.documentStatus::', doc.documentStatus);
+        if (doc.documentStatus != 'Approved') {
+          this.alertService.sweetalertWarning(
+            'Make all Documents either Approved or Discarded'
+          );
           return;
         }
       });
@@ -334,30 +374,185 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         console.log('proofSubmissionId::', res.data.results[0].psidDetail.psid);
         // }
         this.getMasterInfo(res.data.results[0].psidDetail.psid);
+        this.masterRemark = '';
+        this.remarkValidation = false;
       });
-    this.masterRemark = '';
-    this.remarkValidation= false;
+
   }
 
-  changeStatusWithNextPrevious(masterDetails: InvestmentApprovalMasterInfo, status: any,  psid: any, operationType: string) {
-    if(status=='SendBack'){
-      console.log("masterRemark::",this.masterRemark)
-      if(this.masterRemark==''||this.masterRemark==undefined||this.masterRemark==null){
-          this.remarkValidation= true;
-          console.log("remarkValidation::",this.remarkValidation)
+  // ----------------- Change PSID Status of MASTER with NEXT and PREVIOUS -------------------------------
+  changeStatusWithNextPrevious(
+    masterDetails: InvestmentApprovalMasterInfo,
+    status: any,
+    psid: any,
+    operationType: string
+  ) {
+    // if (status == 'SendBack') {
+    //   console.log('masterRemark::', this.masterRemark);
+    //   if (
+    //     this.masterRemark == '' ||
+    //     this.masterRemark == undefined ||
+    //     this.masterRemark == null
+    //   ) {
+    //     this.remarkValidation = true;
+    //     console.log('remarkValidation::', this.remarkValidation);
+    //     return;
+    //   }
+    // }
+    // this.changeStatus(masterDetails, status);
+    // this.changePSID(psid, operationType);
+    console.log('status::', status);
+    console.log('remarkValidation::', this.remarkValidation);
+    if (status == 'SendBack') {
+      console.log('masterRemark::', this.masterRemark);
+      if (
+        this.masterRemark == '' ||
+        this.masterRemark == undefined ||
+        this.masterRemark == null
+      ) {
+        this.remarkValidation = true;
+        console.log('remarkValidation::', this.remarkValidation);
         return;
       }
     }
-    this.changeStatus(masterDetails,status)
-    this.changePSID(psid, operationType)
-   }
+    if (status == 'Approved') {
+      this.masterInfo.masterDetail.documentDetailList.forEach((doc) => {
+        console.log('doc.documentStatus::', doc.documentStatus);
+        if (doc.documentStatus != 'Approved') {
+          this.alertService.sweetalertWarning(
+            'Make all Documents either Approved or Discarded'
+          );
+          return;
+        }
+      });
+    }
 
+    const data = {
+      masterId: masterDetails.masterDetail.masterId,
+      proofSubmissionId: masterDetails.psidDetail.psid,
+      policyNo: masterDetails.masterDetail.policyNo,
+      masterStatus: status,
+      remark: this.masterRemark,
+      group: masterDetails.psidDetail.groupName,
+      section: masterDetails.psidDetail.section,
+    };
+
+    console.log('data::', data);
+
+    let formData: any = new FormData();
+
+    formData.append('approvalMasterRequestDTO', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key, ' ', value);
+    });
+
+    this.investmentMasterApprovalService
+      .changeMasterStatus(formData)
+      .subscribe((res: any) => {
+        console.log('res asterinfo::', res);
+
+        //if (res != null || res != undefined) {
+        this.alertService.sweetalertMasterSuccess(
+          'Master ' + status + ' sucessfully.',
+          ''
+        );
+        // this.masterInfo = res.data.results[0].masterDetail;
+        // this.proofSubmissionIdList = this.masterInfo.psidDetailList;
+        console.log('proofSubmissionId::', res.data.results[0].psidDetail.psid);
+        // }
+        this.getMasterInfo(res.data.results[0].psidDetail.psid);
+        console.log('psid::', psid);
+        let index = 0;
+    
+        index = this.localStorageProofSubmissionIdList.findIndex(
+          (psidEle) => psidEle.psid == psid
+        );
+    
+        if (operationType == 'Next') {
+          this.proofSubmissionIdListIndex = index + 1;
+        } else if (operationType == 'Previous') {
+          this.proofSubmissionIdListIndex = index - 1;
+        }
+    
+        if (
+          this.localStorageProofSubmissionIdList[this.proofSubmissionIdListIndex]
+            .type == 'M'
+        ) {
+          this.globalPSID =
+            this.localStorageProofSubmissionIdList[
+              this.proofSubmissionIdListIndex
+            ].psid;
+          if (
+            this.proofSubmissionIdListIndex ==
+            this.localStorageProofSubmissionIdList.length - 1
+          ) {
+            this.nextDisabled = true;
+            this.previousDisabled = false;
+          } else if (this.proofSubmissionIdListIndex == 0) {
+            this.previousDisabled = true;
+            this.nextDisabled = false;
+          } else {
+            this.previousDisabled = false;
+            this.nextDisabled = false;
+          }
+    
+          console.log('index::', index);
+          this.getMasterInfo(this.globalPSID);
+        } else if (
+          this.localStorageProofSubmissionIdList[this.proofSubmissionIdListIndex]
+            .type == 'T'
+        ) {
+          localStorage.setItem(
+            'localStorageProofSubmissionIdList',
+            JSON.stringify(this.localStorageProofSubmissionIdList)
+          );
+    
+          localStorage.setItem(
+            'localStorageProofSubmissionIdListIbex',
+            this.proofSubmissionIdListIndex.toString()
+          );
+    
+          this.router.navigate(['/investment-approval/transaction']);
+        } else {
+          this.router.navigate(['/investment-approval/dashboard']);
+        }
+    
+        this.remarkValidation = false;
+        this.approvedDisabled = true;
+        this.masterRemark = '';
+        this.remarkValidation = false;
+      });
+  }
+
+  //  ------------ Change Document Status ------------------
   changeDocumentStatus(status: any) {
     if (this.documentList.length == 0) {
       // if(status == 'Approved')
       this.alertService.sweetalertWarning('Please Select Atleast One Document');
       return;
     }
+
+    console.log("status::", status);
+    console.log("status::", status == 'Discarded');
+    if (status == 'Discarded') {
+      this.documentList.forEach((doc) => {
+        console.log("doc.statusRemark::", doc.statusRemark);
+        if (doc.statusRemark == '' || doc.statusRemark == undefined) {
+         this.documentRemarkValidation = true;
+        }
+      });
+    }
+    if(this.documentRemarkValidation){
+      this.alertService.sweetalertWarning(
+        'Please give Remark for Discarded Document'
+      );
+      this.documentRemarkValidation = false;
+      return;
+    }
+
     this.documentList.forEach((doc) => {
       doc.documentStatus = status;
     });
@@ -394,11 +589,12 @@ export class InvestmentMasterApprovalComponent implements OnInit {
           }
           this.documentDetailList =
             res.data.results[0].masterDetail.documentDetailList;
-            this.getMasterInfo(res.data.results[0].psidDetail.psid);
+          this.getMasterInfo(res.data.results[0].psidDetail.psid);
         }
         this.documentList = [];
       });
-      this.remarkValidation= false;
+    this.remarkValidation = false;
+    this.approvedDisabled =true;
   }
 
   //-------- For selecting Document For Approval Or Discard ----------
@@ -428,22 +624,35 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     console.log('documentList::', this.documentList);
   }
 
-  // Edit Document Detail for Approval or Discard
-  public editDocument(docDetail){
-    const index= this.masterInfo.masterDetail.documentDetailList.indexOf(docDetail);
-    console.log("index::", index);
+  //---------------- Edit Document Detail for Approval or Discard ---------------------------
+  public editDocument(docDetail) {
+    const index =
+      this.masterInfo.masterDetail.documentDetailList.indexOf(docDetail);
+    console.log('index::', index);
 
-    this.masterInfo.masterDetail.documentDetailList[index].documentStatus="Edit-"+docDetail.documentStatus;
+    this.masterInfo.masterDetail.documentDetailList[index].documentStatus =
+      'Edit-' + docDetail.documentStatus;
   }
 
-  // On change Document Remark
+  //----------- On change Document Remark --------------------------
   public onChangeDocumentRemark(docDetail, event) {
+    console.log('event.target.value::', event.target.value);
+    if(this.documentList.length>0){
+      const index =
+      this.documentList.indexOf((doc)=>doc.documentInformationId=docDetail.documentInformationId);
+    console.log('index::', index);
 
-    console.log("event.target.value::",event.target.value);
-    const index= this.masterInfo.masterDetail.documentDetailList.indexOf(docDetail);
-    console.log("index::", index);
+    this.documentList[index].statusRemark =
+      event.target.value;
+    } else {
+      const index =
+      this.masterInfo.masterDetail.documentDetailList.indexOf(docDetail);
+    console.log('index::', index);
 
-    this.masterInfo.masterDetail.documentDetailList[index].statusRemark=event.target.value;
+    this.masterInfo.masterDetail.documentDetailList[index].statusRemark =
+      event.target.value;
+    }
+
   }
 
   @HostListener('window:scroll', [])
