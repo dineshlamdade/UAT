@@ -22,6 +22,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   querySubQueryTypeQAData: any;
   subQueryType: any;
   isSave:boolean = true;
+  isSave2:boolean = false;
   isReset:boolean = true;
   isUpdate:boolean = false;
   isCancle :boolean = false;
@@ -41,6 +42,7 @@ export class AdminQuryGenerationComponent implements OnInit {
   documentList: any = [];
 
   perticularEmpDetails: any;
+  multipleEmpFlag:boolean = true;
   employeeMasterIdData: any;
   subQueryData: any;
   priorityData: any;
@@ -117,20 +119,19 @@ export class AdminQuryGenerationComponent implements OnInit {
 
     this.userData = this.authService.getprivileges()
       console.log("userData::", this.userData);
-      this.employeeMasterId = this.userData.UserDetails.employeeMasterId
+      this.employeeMasterId = this.userData.UserDetails.employeeMasterId;
 
 
     if(localStorage.getItem('dashboardSummary')!= null){
-
       let formdata = JSON.parse(localStorage.getItem('dashboardSummary'))
        this.queryGenerationForm.patchValue(formdata);
       //  this.getById(formdata.queryGenerationEmpId);
        console.log("formdata.queryGenerationEmpId",formdata)
-
-       localStorage.removeItem('dashboardSummary');
        this.queryGenerationForm.enable();
        this.editQuery(formdata);
+       console.log('formdata',formdata)
        this.queryGenerationForm.controls['queAnsMasterId'].setValue(formdata.queAnsMasterId);
+      //  console.log('formdata.queAnsMasterId',formdata.queAnsMasterId)
        this.queryGenerationForm.controls['priority'].setValue(formdata.priority);
        this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(formdata.subQueTypeMasterId);
       //  this.editflag = true;
@@ -146,24 +147,29 @@ export class AdminQuryGenerationComponent implements OnInit {
        this.isSave = false;
 
        }
+       localStorage.removeItem('dashboardSummary');
+
     }
 
     if(localStorage.getItem('viewdashboardSummary')!= null){
 
       let formdata = JSON.parse(localStorage.getItem('viewdashboardSummary'))
        this.queryGenerationForm.patchValue(formdata);
-       this.getById(formdata.queryGenerationEmpId);
-       this.editQuery(formdata);
 
-       localStorage.removeItem('viewdashboardSummary')
+      //  this.getById(formdata.queryGenerationEmpId);
+       this.editQuery(formdata);
+       this.queryGenerationForm.controls['queAnsMasterId'].setValue(formdata.queAnsMasterId);
+       //  console.log('formdata.queAnsMasterId',formdata.queAnsMasterId)
+        this.queryGenerationForm.controls['priority'].setValue(formdata.priority);
+        this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(formdata.subQueTypeMasterId);
        this.queryGenerationForm.disable();
        this.isSaveDraft = false;
        this.isSave = false;
        this.isReset = false;
        this.hideEditTime = false;
+       localStorage.removeItem('viewdashboardSummary')
+
     }
-
-
     /******************************** Same NR */
     if(localStorage.getItem('queryListEmpData') != null){
       this.employeeListId = []
@@ -179,35 +185,66 @@ export class AdminQuryGenerationComponent implements OnInit {
       this.getEmpMasterDetails(this.employeeMasterId);
       localStorage.removeItem('queryListEmpData')
 
-    }
+      if(localStorage.getItem('emlpoyeeSelectionData') != null){
+        this.emlpoyeeSelectionData = JSON.parse(localStorage.getItem('emlpoyeeSelectionData'))
 
-    if(localStorage.getItem('emlpoyeeSelectionData') != null){
-      this.emlpoyeeSelectionData = JSON.parse(localStorage.getItem('emlpoyeeSelectionData'))
+        if(this.employeeListId.length == 1){
+          this.isPrevious = false;
+          this.isSaveNext = false;
+          this.isSaveDraftNext = false;
+          this.isSave = false;
+          this.isSaveDraft = true;
+          this.isSave2 = true;
 
-        // this.isPrevious = false;
-        // this.isSaveNext = false;
-        // this.isSaveDraftNext = false;
-        // this.isSave = true;
-        // this.isSaveDraft = true;
+        }else{
+        this.isnext = true;
+        this.isPrevious = true;
+        this.isSaveNext = true;
+        this.isSaveDraftNext = true;
+        this.isSave = false;
+        this.isSaveDraft = false;
+        this.isSave2 = false;
 
-      if(this.employeeListId.length == 1){
-        this.isPrevious = false;
-        this.isSaveNext = false;
-        this.isSaveDraftNext = false;
+      }
+
+        if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes' ||
+        this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'yes'){
+         this.multipleEmpFlag = false;
+         this.isPrevious = false;
+         this.isSaveNext = false;
+         this.isSaveDraftNext = false;
         this.isSave = true;
+        this.isnext = false;
         this.isSaveDraft = true;
 
-      }else{
-      this.isnext = true;
-      this.isPrevious = true;
-      this.isSaveNext = true;
-      this.isSaveDraftNext = true;
-      this.isSave = false;
-      this.isSaveDraft = false;
-    }
-    localStorage.clear();
+        }else{
+         this.multipleEmpFlag = true;
+         this.isPrevious = true;
+         this.isSaveNext = true;
+         this.isSaveDraftNext = true;
+        this.isSave = false;
+        this.isnext = true;
+        this.isSaveDraft = false;
+        }
+        if(this.emlpoyeeSelectionData.onBehalf == 'yes'){
+          this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue(true);
+        }else{
+          this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue(false);
+        }
+
+        if(this.emlpoyeeSelectionData.sameContent == 'yes'){
+          this.queryGenerationForm.controls['sameContentForAllEmp'].setValue(true);
+        }else{
+          this.queryGenerationForm.controls['sameContentForAllEmp'].setValue(false);
+        }
+
+      localStorage.clear();
+
+      }
 
     }
+
+
    }
 
    nextRecord(){
@@ -230,7 +267,6 @@ export class AdminQuryGenerationComponent implements OnInit {
   ngOnInit(): void {
     this.getModuleName();
     this.getAllQueryListSummary();
-    // this.getQueAnstemplistById(this.queryGenerationEmpId);7
   }
 
   queryGenerationFormSubmit(value)
@@ -266,10 +302,8 @@ this.queryService.getAllQueryList().subscribe(res =>
   {
     this.getAllQueryGenerationData = res.data.results;
     this.getAllQueryGenerationData.forEach(element => {
-    // this.employeeMasterIdData = element.employeeMasterId;
     this.queryNumberData = element.queryNumber;
-    // this.employeeMasterId = element.employeeMasterId
-    // console.log("getAllQueryListSummary",this.employeeMasterId )
+
     });
     this.getEmpMasterDetails(this.employeeMasterId);
 
@@ -287,10 +321,11 @@ getById(queryGenerationEmpId) { //used for the edit
 
     this.listDoc = this.getByIdData.listDoc;
     this.viewDoc = this.listDoc;
-    this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
-    this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
     this.queryGenerationForm.controls['priority'].setValue(this.getByIdData.priority);
     this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(this.getByIdData.subQueTypeMasterId);
+    // this.getSubQueryListData(this.getByIdData.queryTypeMasterId)
+    this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
+
 
   })
 }
@@ -308,7 +343,8 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
 
           });
         }
-        if (this.editflag) {
+        if (this.editflag || this.viewFlag) {
+
           this.getSubQueryListData(this.getByIdData.queryTypeMasterId);
           this.editQueryTypeMasterId = this.getByIdData.queryTypeMasterId
           this.queryGenerationForm.controls['queryTypeMasterId'].setValue(this.getByIdData.queryTypeMasterId);
@@ -322,7 +358,7 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
     this.querySubQueryTypeQAData.forEach(element => {
       if (element.queryTypeMasterId == parseInt(value)) {
         this.subQueryData = element.listSubQueryTypeData;
-        console.log(" this.subQueryData", this.subQueryData)
+        // console.log(" this.subQueryData", this.subQueryData)
         this.priorityData = element.listPriority;
         this.priorityData.forEach(element => {
           if(element.defaultPriority == true)
@@ -332,6 +368,7 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
         });
         if (element.subQuery == false) {
           this.listQAData = element.listQA;
+          console.log("element.listQA",element.listQA)
         }
       else {
           element.listSubQueryTypeData.forEach(element => {
@@ -340,15 +377,13 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
 
             });
 
-            // console.log("this.listQAData", this.listQAData);
-
           });
 
         }
-        if (this.editflag) {
-          this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
+        if (this.editflag || this.viewFlag) {
 
-          // console.log("@@@@@@@@@@@@@",this.getByIdData.queryTypeMasterId)
+          this.gettempdatafromsubquery(this.getByIdData.subQueTypeMasterId);
+          this.queryGenerationForm.controls['queAnsMasterId'].setValue(this.getByIdData.queAnsMasterId);
         }
       }
     });
@@ -359,8 +394,8 @@ querySubQueryTypeQA(applicationModuleId)  //for all dropdown
 
     this.subQueryData.forEach(element => {
       if(element.subQueTypeMasterId == value){
-       this.templatedata = element.listSubQA
-      console.log(" this.templatedata", this.templatedata)
+       this.listQAData = element.listSubQA
+      console.log(" this.templatedata", this.listQAData)
       }
 
     });
@@ -387,28 +422,20 @@ queryTempChange(value)
 addQueryGeneration(){ //post api for saving data
 
   console.log("this.emlpoyeeSelectionData",this.emlpoyeeSelectionData);
+
   if(localStorage.getItem('emlpoyeeSelectionData') != null ){
 
-    // console.log("this.selectedEmployee",this.employeeListId.length)
   if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'no')
   {
-    this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
+    this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
 
       if(this.listDoc.length == 0){
         this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
         this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
         this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
         this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-        console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
         this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
         this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-        this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue('yes');
-        this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('no');
-
-        // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-        // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
         let data = []
         data.push(this.queryGenerationForm.value)
@@ -420,15 +447,10 @@ addQueryGeneration(){ //post api for saving data
           this.queryService.addQueryGeneration(formData).subscribe(res =>
           {
             this.addQueryGenerationData = res.data.results;
-            console.log(JSON.stringify(this.addQueryGenerationData));
-
             this.getAllQueryListSummary();
-
             this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-            // this.router.navigate(['/admin-dashboard']);
-            console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
-         this.queryGenerationForm.controls['queryDescription'].reset();
-
+            localStorage.clear();
+            this.queryGenerationForm.controls['queryDescription'].reset();
             this.reset();
           })
           }else{
@@ -439,22 +461,15 @@ addQueryGeneration(){ //post api for saving data
 
   if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes')
         {
-
-        this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
+        this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
 
             if(this.listDoc.length == 0){
               this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
               this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
               this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
               this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-              console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
               this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
               this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-              this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue('yes');
-              this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('yes');
-              // this.queryGenerationForm.controls['priority'].setValue('Low');
-
 
               let data = []
               data.push(this.queryGenerationForm.value)
@@ -466,19 +481,16 @@ addQueryGeneration(){ //post api for saving data
                 this.queryService.addQueryGeneration(formData).subscribe(res =>
                 {
                   this.addQueryGenerationData = res.data.results;
-                  console.log(JSON.stringify(this.addQueryGenerationData));
-
                   this.getAllQueryListSummary();
-
                   this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-                  // this.router.navigate(['/admin-dashboard']);
-               this.queryGenerationForm.controls['queryDescription'].reset();
-
+                  localStorage.clear();
+                  this.queryGenerationForm.controls['queryDescription'].reset();
                   this.reset();
                 })
                 }else{
                   this.addQuerywithDocs();
                 }
+              // });
 
         }
 
@@ -492,16 +504,9 @@ addQueryGeneration(){ //post api for saving data
                     this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
                     this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
                     this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
                     this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-                    console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
-                    this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
+                    // this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
                     this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-                    this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue('no');
-                   this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('yes');
-                    // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-                    // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
                     let data = []
                     data.push(this.queryGenerationForm.value)
@@ -513,14 +518,11 @@ addQueryGeneration(){ //post api for saving data
                       this.queryService.addQueryGeneration(formData).subscribe(res =>
                       {
                         this.addQueryGenerationData = res.data.results;
-                        console.log(JSON.stringify(this.addQueryGenerationData));
-
                         this.getAllQueryListSummary();
-
                         this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-                        // this.router.navigate(['/admin-dashboard']);
-                     this.queryGenerationForm.controls['queryDescription'].reset();
-
+                        console.log('No yes senario',JSON.stringify(this.addQueryGenerationData))
+                        localStorage.clear();
+                        this.queryGenerationForm.controls['queryDescription'].reset();
                         this.reset();
                       })
                       }else{
@@ -532,23 +534,16 @@ addQueryGeneration(){ //post api for saving data
   if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'no')
                     {
 
-                    this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
+                    this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
                     // this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('true');
 
                         if(this.listDoc.length == 0){
                           this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
                           this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
                           this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
                           this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-                          console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
                           this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
                           this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-                          this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue('no');
-                         this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('no');
-                          // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-                          // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
                           let data = []
                           data.push(this.queryGenerationForm.value)
@@ -560,14 +555,10 @@ addQueryGeneration(){ //post api for saving data
                             this.queryService.addQueryGeneration(formData).subscribe(res =>
                             {
                               this.addQueryGenerationData = res.data.results;
-                              console.log(JSON.stringify(this.addQueryGenerationData));
-
                               this.getAllQueryListSummary();
-
                               this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-                              // this.router.navigate(['/admin-dashboard']);
-                           this.queryGenerationForm.controls['queryDescription'].reset();
-
+                              localStorage.clear();
+                              this.queryGenerationForm.controls['queryDescription'].reset();
                               this.reset();
                             })
                             }else{
@@ -582,14 +573,9 @@ addQueryGeneration(){ //post api for saving data
             this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
             this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
             this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
             this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-            console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
             this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
             this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-            // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-            // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
             let data = []
             data.push(this.queryGenerationForm.value)
@@ -601,13 +587,10 @@ addQueryGeneration(){ //post api for saving data
               this.queryService.addQueryGeneration(formData).subscribe(res =>
               {
                 this.addQueryGenerationData = res.data.results;
-                console.log(JSON.stringify(this.addQueryGenerationData));
-
                 this.getAllQueryListSummary();
-
                 this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-                // this.router.navigate(['/admin-dashboard']);
-             this.queryGenerationForm.controls['queryDescription'].reset();
+                localStorage.clear();
+                this.queryGenerationForm.controls['queryDescription'].reset();
 
                 this.reset();
               })
@@ -618,20 +601,13 @@ addQueryGeneration(){ //post api for saving data
         }
       }
 else{
-      alert();
       if(this.listDoc.length == 0){
-        alert('1')
         this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
         this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
         this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
         this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-        console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
         this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
         this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-        // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-        // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
         let data = []
         data.push(this.queryGenerationForm.value)
@@ -643,14 +619,10 @@ else{
           this.queryService.addQueryGeneration(formData).subscribe(res =>
           {
             this.addQueryGenerationData = res.data.results;
-            console.log(JSON.stringify(this.addQueryGenerationData));
-
             this.getAllQueryListSummary();
-
             this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-            // this.router.navigate(['/admin-dashboard']);
-         this.queryGenerationForm.controls['queryDescription'].reset();
-
+            localStorage.clear();
+            this.queryGenerationForm.controls['queryDescription'].reset();
             this.reset();
           })
           }else{
@@ -690,6 +662,7 @@ updateQueryGeneration(value) //put api for update data
       this.getAllQueryListSummary();
       this.alertService.sweetalertMasterSuccess('Query Updated Successfully', '' );
       this.router.navigate(['/admin-dashboard']);
+      localStorage.clear();
       this.queryGenerationForm.controls['queryDescription'].reset();
 
       this.editflag =false;
@@ -709,26 +682,17 @@ addQuerywithDocs()
   console.log("this.emlpoyeeSelectionData",this.emlpoyeeSelectionData);
   if(localStorage.getItem('emlpoyeeSelectionData') != null ){
 
-    // console.log("this.selectedEmployee",this.employeeListId.length)
     if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'no')
     {
-      this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
+      this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
 
         if(this.listDoc.length == 0){
           this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
           this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
           this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
           this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-          console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
           this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
           this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-          this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue('yes');
-          this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('no');
-
-          // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-          // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
           let data = []
           data.push(this.queryGenerationForm.value)
@@ -740,15 +704,10 @@ addQuerywithDocs()
             this.queryService.addQueryGeneration(formData).subscribe(res =>
             {
               this.addQueryGenerationData = res.data.results;
-              console.log(JSON.stringify(this.addQueryGenerationData));
-
               this.getAllQueryListSummary();
-
               this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-              // this.router.navigate(['/admin-dashboard']);
-              console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
-           this.queryGenerationForm.controls['queryDescription'].reset();
-
+              localStorage.clear();
+               this.queryGenerationForm.controls['queryDescription'].reset();
               this.reset();
             })
             }else{
@@ -757,26 +716,17 @@ addQuerywithDocs()
 
           }
 
-    if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes')
+   if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes')
           {
-
-          this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
-          // this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('true');
+          this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
 
               if(this.listDoc.length == 0){
                 this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
                 this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
                 this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
                 this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-                console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
                 this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
                 this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-                this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue('yes');
-                this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('yes');
-                // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-                // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
                 let data = []
                 data.push(this.queryGenerationForm.value)
@@ -788,42 +738,31 @@ addQuerywithDocs()
                   this.queryService.addQueryGeneration(formData).subscribe(res =>
                   {
                     this.addQueryGenerationData = res.data.results;
-                    console.log(JSON.stringify(this.addQueryGenerationData));
-
                     this.getAllQueryListSummary();
-
                     this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-                    // this.router.navigate(['/admin-dashboard']);
-                 this.queryGenerationForm.controls['queryDescription'].reset();
-
+                    localStorage.clear();
+                    this.queryGenerationForm.controls['queryDescription'].reset();
                     this.reset();
                   })
                   }else{
                     this.addQuerywithDocs();
                   }
+                // });
 
           }
 
     if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'yes')
                 {
 
-                this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
-                // this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('true');
+                this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
 
                     if(this.listDoc.length == 0){
                       this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
                       this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
                       this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
                       this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-                      console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
                       this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
                       this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-                      this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue('no');
-                     this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('yes');
-                      // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-                      // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
                       let data = []
                       data.push(this.queryGenerationForm.value)
@@ -835,14 +774,10 @@ addQuerywithDocs()
                         this.queryService.addQueryGeneration(formData).subscribe(res =>
                         {
                           this.addQueryGenerationData = res.data.results;
-                          console.log(JSON.stringify(this.addQueryGenerationData));
-
                           this.getAllQueryListSummary();
-
                           this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-                          // this.router.navigate(['/admin-dashboard']);
-                       this.queryGenerationForm.controls['queryDescription'].reset();
-
+                          localStorage.clear();
+                          this.queryGenerationForm.controls['queryDescription'].reset();
                           this.reset();
                         })
                         }else{
@@ -854,23 +789,15 @@ addQuerywithDocs()
     if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'no')
                       {
 
-                      this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
-                      // this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('true');
+                      this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
 
                           if(this.listDoc.length == 0){
                             this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
                             this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
                             this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
-
                             this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-                            console.log("this.queryGenerationForm.value",this.queryGenerationForm.value)
                             this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
                             this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-                            this.queryGenerationForm.controls['onBehalfOfEmployee'].setValue('no');
-                           this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('no');
-                            // this.queryGenerationForm.controls['priority'].setValue('Low');
-
-                            // this.queryGenerationForm.controls['employeeMasterIdList'].setValue([]);
 
                             let data = []
                             data.push(this.queryGenerationForm.value)
@@ -883,13 +810,10 @@ addQuerywithDocs()
                               {
                                 this.addQueryGenerationData = res.data.results;
                                 console.log(JSON.stringify(this.addQueryGenerationData));
-
                                 this.getAllQueryListSummary();
-
                                 this.alertService.sweetalertMasterSuccess('Query Generated Successfully.', '' );
-                                // this.router.navigate(['/admin-dashboard']);
-                             this.queryGenerationForm.controls['queryDescription'].reset();
-
+                                localStorage.clear();
+                                this.queryGenerationForm.controls['queryDescription'].reset();
                                 this.reset();
                               })
                               }else{
@@ -914,7 +838,6 @@ else{
       const formData  = new FormData();
       formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
       this.employeeMasterId = this.employeeMasterId;
-      console.log("employeeMasterId",this.employeeMasterId)
       for (const queryDoc of this.listDoc) {
         formData.append('queryDocs', queryDoc,this.employeeMasterId + queryDoc.name);
       }
@@ -926,8 +849,7 @@ else{
         this.addQueryGenerationData = res.data.results;
         this.alertService.sweetalertMasterSuccess('Query Generated Successfully', '' );
         this.queryGenerationForm.controls['queryDescription'].reset();
-        // this.router.navigate(['/admin-dashboard']);
-
+        localStorage.clear();
         this.getAllQueryListSummary();
         this.reset();
 
@@ -940,7 +862,6 @@ else{
       this.queryGenerationForm.controls['queryTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queryTypeMasterId'].value));
       this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
       this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
-
         let data = []
         data.push(this.queryGenerationForm.value)
         let queryGenerationEmployeeData  = {
@@ -962,8 +883,7 @@ else{
             this.addQueryGenerationData = res.data.results;
             this.alertService.sweetalertMasterSuccess('Query Generated Successfully', '' );
             this.queryGenerationForm.controls['queryDescription'].reset();
-            // this.router.navigate(['/admin-dashboard']);
-
+            localStorage.clear();
             this.getAllQueryListSummary();
             this.reset();
 
@@ -1032,9 +952,7 @@ editQuery(queryGenerationSummary) {
 
   this.querySubQueryTypeQAData = null
   this.listQAData = [];
-
   this.editflag = true;
-
   this.queryGenerationForm.enable();
   this.queryGenerationForm.patchValue(queryGenerationSummary);
   this.isUpdate = true;
@@ -1172,18 +1090,6 @@ this.urlIndex = this.urlIndex + 1;
 this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
  this.ListOfDocuments[this.urlIndex].queryBlobURI
 );
-}
-
-savePopUp(saveQueryGeneration: TemplateRef<any> ) {
-   this.modalRef = this.modalService.show(saveQueryGeneration,
-     Object.assign({}, { class: 'gray modal-md' })
-   );
- }
-
- saveandDraftPopUp(saveanddraftQueryGeneration: TemplateRef<any> ) {
-  this.modalRef = this.modalService.show(saveanddraftQueryGeneration,
-    Object.assign({}, { class: 'gray modal-md' })
-  );
 }
 
 }

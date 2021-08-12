@@ -96,8 +96,8 @@
                           [disabled]="viewFlag" [multiple]="true">
                         </ng-multiselect-dropdown> -->
 
-                        <p-multiSelect [options]="queryListData" class="multiselect-custom"
-                        [disabled]="viewFlag" [virtualScroll]="true"
+                        <p-multiSelect [filter]="true" [options]="queryListData" class="multiselect-custom"
+                        [disabled]="viewFlag"
                         formControlName="assignQATemplate1" [filterPlaceHolder]="'Select'" [placeholder]="'Select Template'"
                         ngDefaultControl>
                         </p-multiSelect>
@@ -143,11 +143,11 @@
                         [ngClass]="{'is-invalid' : querytypeForm.get('assignQATemplate2').status == 'INVALID'}">
                         </ng-multiselect-dropdown> -->
                         <p-multiSelect  [options]="queryListData" class="multiselect-custom"
-                        [showHeader]="true" [disabled]="viewFlag"
+                        [disabled]="viewFlag"
                        [id]="'queAnsMasterId'"
                         (onChange)="onItemSubQuerySelect($event)"
                         (onSelectAll)="onSelectAllSubQuery($event)"
-                        [disabled]="viewFlag" [virtualScroll]="true"
+                        [disabled]="viewFlag"
                         formControlName="assignQATemplate2" [filterPlaceHolder]="'Select'" [placeholder]="'Select Template'"
                         ngDefaultControl >
                         </p-multiSelect>

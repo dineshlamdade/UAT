@@ -245,11 +245,15 @@
                                               </div>
                                           </div>
                                       </div>
+                                      <!-- [disabled]="!queryGenerationForm.valid" [ngClass]="{'disabled-btn-bg-green' :
+                                      queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}" -->
                                       <div class="modal-footer">
                                           <button type="button" tooltip="Proceed" (click)="modalRef.hide();addQueryGeneration() "
                                               [routerLink]="['/admin-query-generation']"
+                                              [disabled]="onBehalfValue == '' || sameContentValue == '' &&  selectedEmployeeData.length > 1"
+                                              [ngClass]="{'disabled-btn-bg-green' :onBehalfValue == '' || sameContentValue == '' &&  selectedEmployeeData.length > 1 }"
                                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"><b><i
-                                                class="fa fa-arrow-circle-o-right" aria-hidden="true"
+                                              class="fa fa-arrow-circle-o-right" aria-hidden="true"
                                                 ></i></b> Proceed</button>
                                           <button type="button" tooltip="Cancel" (click)="modalRef.hide()"
                                               data-dismiss="modal" aria-label="Close"

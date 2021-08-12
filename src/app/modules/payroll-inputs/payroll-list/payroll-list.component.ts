@@ -33,15 +33,14 @@ export class PayrollListComponent implements OnInit {
   selectedEmployeeData: any = [];
   form:FormGroup;
   generationFormData: any;
-  onBehalfValue: any;
-  sameContentValue: any;
+  onBehalfValue:any = '';
+  sameContentValue: any ='';
   sameContentViewFlag:boolean = false;
   constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService
     ,public queryService :QueryService ) { }
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
-    // this.addQueryGeneration();
   }
 
   public getAllEmployeeDetails(): void {
@@ -87,8 +86,8 @@ export class PayrollListComponent implements OnInit {
       }
      }else{
        this.sameContentViewFlag = false;
-
      }
+
 
   }
 
