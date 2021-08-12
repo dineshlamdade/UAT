@@ -132,7 +132,7 @@ export class EmployeesetComponent implements OnInit {
     error => {
       if(error.error.status.code == '400'){
         //this.toaster.success( 'Duplicate Area Set Name' );
-       this.alertService.sweetalertError('Dulicate employeeset');
+       //this.alertService.sweetalertError('Dulicate employeeset');
 
       }
     })

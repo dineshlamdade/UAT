@@ -37,7 +37,7 @@
 
                         <label class="form-label">Emp. Code</label>
                         <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
-                        <p-multiSelect [options]="serviceListData" class="multiselect-custom" [virtualScroll]="true"
+                        <p-multiSelect [options]="serviceListData" class="multiselect-custom"
                            [(ngModel)] = "employeeList" resetFilterOnHide=true
                            optionLabel="" 
                           [placeholder]="'Select Emp.code'" formControlName = "empList"
@@ -84,7 +84,7 @@
                           <!-- <a  class="text-link text-bold ">Field
                             Level</a> -->
 
-                            <label class="form-label text-link text-bold" (click)="largepopup (template)"> Selected Employee List
+                            <label class="form-label text-link text-bold" (click)="largepopup (template);exportApprovalSummaryAsExcel()"> Selected Employee List
                             </label>&nbsp;
                             <i class="fa fa-file-excel-o text-dark-green font-20" 
                             (click) = "exportApprovalSummaryAsExcel()" style="cursor: pointer;"
@@ -328,10 +328,10 @@
         <div class="row clearfix">
 
           <div class="col-md-12">
-
-            <p-table #dt2 [value]="customers" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-              (sortFunction)="customSort($event)" [customSort]="true"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            <!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" -->
+            <p-table #dt2 [value]="excelData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            (sortFunction)="customSort3($event)" [customSort3]="true"
+            
               [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areasetname','Status']">
               <ng-template pTemplate="caption">
                 <div class="row">
@@ -370,8 +370,8 @@
                       Employee Set Name
 
                       <div class="Sort_Filter_Position">
-                        <p-sortIcon field="areasetname" pSortableColumn="areasetname"></p-sortIcon>
-                        <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                        <p-sortIcon field="employeeCode" pSortableColumn="employeeCode"></p-sortIcon>
+                        <p-columnFilter type="text" field="employeeCode" display="menu" class="p-ml-auto"></p-columnFilter>
                       </div>
                     </div>
                   </th>
@@ -395,7 +395,7 @@
               </ng-template>
 
 
-              <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
+              <ng-template pTemplate="body" let-data1 let-rowIndex=rowIndex>
                 <tr class="p-selectable-row">
 
                   <!-- <td class="text-center bg-color-light_gray">
@@ -406,7 +406,7 @@
                                                    
                                                     </td> -->
 
-                  <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td>
+                  <td class="bg-color-light_gray">{{data1.employeeCode}}<label class="form-lable mb-0"> </label></td>
                   <!-- <td class="bg-color-light_gray"> 
                       
                                                   </td>
@@ -414,7 +414,7 @@
 
 
                 </tr>
-                <tr class="p-selectable-row">
+                <!-- <tr class="p-selectable-row"> -->
 
                   <!-- <td class="text-center bg-color-light_gray">
                                                     <label class="custom-control custom-checkbox checkbox-center">
@@ -424,15 +424,15 @@
                                                  
                                                   </td> -->
 
-                  <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td>
+                  <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td> -->
                   <!-- <td class="bg-color-light_gray">
                                                 
                                                   </td> -->
 
 
 
-                </tr>
-                <tr class="p-selectable-row">
+                <!-- </tr> -->
+                <!-- <tr class="p-selectable-row"> -->
 
                   <!-- <td class="text-center bg-color-light_gray">
                                                   <label class="custom-control custom-checkbox checkbox-center">
@@ -442,15 +442,15 @@
                                                
                                                 </td> -->
 
-                  <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td>
+                  <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td> -->
                   <!-- <td class="bg-color-light_gray">        
                                            
                                                 </td> -->
 
 
 
-                </tr>
-                <tr class="p-selectable-row">
+                <!-- </tr> -->
+                <!-- <tr class="p-selectable-row"> -->
 
                   <!-- <td class="text-center bg-color-light_gray">
                                                 <label class="custom-control custom-checkbox checkbox-center">
@@ -460,14 +460,14 @@
                                              
                                               </td> -->
 
-                  <td class="bg-color-light_gray"></td>
+                  <!-- <td class="bg-color-light_gray"></td> -->
                   <!-- <td class="bg-color-light_gray">
                                               
                                               </td> -->
 
 
 
-                </tr>
+                <!-- </tr> -->
               </ng-template>
               <ng-template pTemplate="emptymessage">
                 <tr>

@@ -72,8 +72,8 @@
                               <div class="form-group ">
 
                                 <label class="form-label">Area</label>
-                                <p-multiSelect [options]="areaListData" class="multiselect-custom" #multiselect
-                                  [virtualScroll]="true" formControlName="aList" [placeholder]="'Select Area'"
+                                <p-multiSelect [options]="areaListData" class="multiselect-custom"
+                                formControlName="areaList" [placeholder]="'Select Area'"
                                   resetFilterOnHide=true [(ngModel)]="areaList" [ngModelOptions]="{standalone: true}"
                                   (onChange)="getArea(areaList,$event)" [filter]="true" >
 
@@ -120,7 +120,7 @@
                               <div class="form-group mt-20 p-d-inline-flex">
 
 
-                                <label class="form-label text-link text-bold mr-2" (click)="largepopup (template)"> Selected
+                                <label class="form-label text-link text-bold mr-2" (click)="largepopup (template);exportApprovalSummaryAsExcel()"> Selected
                                   Area List
 
 
@@ -233,7 +233,8 @@
                     <div class="col-md-8">
                       <p-table [value]="summaryData" [paginator]="true" [rows]="10"
                         [rowsPerPageOptions]="[10,25,50,100,200]" (sortFunction)="customSort3($event)"
-                        [customSort3]="true">
+                        [customSort3]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        >
                         <ng-template pTemplate="header">
                           <tr>
                             <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
@@ -337,11 +338,11 @@
           <div class="row clearfix">
 
             <div class="col-md-12">
+              <!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" -->
 
-              <p-table #dt2 [value]="" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                (sortFunction)="customSort($event)" [customSort]="true"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areasetname','Status']">
+              <p-table #dt2 [value]="excelData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+              (sortFunction)="customSort3($event)" [customSort3]="true"
+               [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areasetname','Status']">
                 <ng-template pTemplate="caption">
                   <div class="row">
 
@@ -379,8 +380,8 @@
                         Area Set Name
 
                         <div class="Sort_Filter_Position">
-                          <p-sortIcon field="areaSetName" pSortableColumn="areaSetName"></p-sortIcon>
-                          <p-columnFilter type="text" field="areaSetName" display="menu" class="p-ml-auto"></p-columnFilter>
+                          <p-sortIcon field="areacode" pSortableColumn="areacode"></p-sortIcon>
+                          <p-columnFilter type="text" field="areacode" display="menu" class="p-ml-auto"></p-columnFilter>
                         </div>
                       </div>
                     </th>
@@ -404,7 +405,7 @@
                 </ng-template>
 
 
-                <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
+                <ng-template pTemplate="body" let-data1 let-rowIndex=rowIndex>
                   <tr class="p-selectable-row">
 
                     <!-- <td class="text-center bg-color-light_gray">
@@ -415,7 +416,7 @@
                                                      
                                                       </td> -->
 
-                    <td class="bg-color-light_gray">
+                    <td class="bg-color-light_gray">{{data1.areacode}}
                       <label class="form-lable mb-0"> </label>
                       <!-- {{data.areaSetName}} -->
                     </td>
@@ -426,7 +427,7 @@
 
 
                   </tr>
-                  <tr class="p-selectable-row">
+                  <!-- <tr class="p-selectable-row"> -->
 
                     <!-- <td class="text-center bg-color-light_gray">
                                                       <label class="custom-control custom-checkbox checkbox-center">
@@ -436,15 +437,15 @@
                                                    
                                                     </td> -->
 
-                    <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td>
+                    <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td> -->
                     <!-- <td class="bg-color-light_gray">
                                                   
                                                     </td> -->
 
 
 
-                  </tr>
-                  <tr class="p-selectable-row">
+                  <!-- </tr> -->
+                  <!-- <tr class="p-selectable-row"> -->
 
                     <!-- <td class="text-center bg-color-light_gray">
                                                     <label class="custom-control custom-checkbox checkbox-center">
@@ -454,15 +455,15 @@
                                                  
                                                   </td> -->
 
-                    <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td>
+                    <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td> -->
                     <!-- <td class="bg-color-light_gray">        
                                              
                                                   </td> -->
 
 
 
-                  </tr>
-                  <tr class="p-selectable-row">
+                  <!-- </tr> -->
+                  <!-- <tr class="p-selectable-row"> -->
 
                     <!-- <td class="text-center bg-color-light_gray">
                                                   <label class="custom-control custom-checkbox checkbox-center">
@@ -472,14 +473,14 @@
                                                
                                                 </td> -->
 
-                    <td class="bg-color-light_gray"></td>
+                    <!-- <td class="bg-color-light_gray"></td> -->
                     <!-- <td class="bg-color-light_gray">
                                                 
                                                 </td> -->
 
 
 
-                  </tr>
+                  <!-- </tr> -->
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                   <tr>

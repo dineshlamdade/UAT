@@ -91,7 +91,7 @@ export class AreasetComponent implements OnInit {
       serviceName : new FormControl(''),
       numberOfArea : new FormControl(''),
       isActive : new FormControl(1),
-      aList : new FormControl(''),
+      areaList : new FormControl(''),
       areaSetMasterDetailsList: new FormControl([]) 
     })
 
@@ -124,6 +124,7 @@ export class AreasetComponent implements OnInit {
   ngOnInit(): void {
      this.getServiceList();
      this.getSummaryData();
+     
     
      this.users1 = [
       { areaSetName: '1', nature: 'Earning'},
@@ -151,27 +152,29 @@ export class AreasetComponent implements OnInit {
   onSubmit(){
     //alert("hi")
   // const data = this.areasetForm.getRawValue();
-    console.log(this.areasetForm.value)
+    //console.log(this.areasetForm.value)
  
   // this.areasetForm.removeControl('areaSetMasterId')
   //this.areasetForm.controls['serviceMasterId'].setValue(parseInt(this.areasetForm.controls['serviceMasterId'].value))
        this.areasetService.saveAreaSet(this.areasetForm.value).subscribe((res)=>{
          // this.areasetService.saveAreaSet(data).subscribe((res) => {
-          console.log(res);
+         console.log(res);
          
-          this.summaryData = res.data.results;
+        //  this.summaryData = res.data.results;
           this.alertService.sweetalertMasterSuccess('Success','Area Set Saved Successfully');
-
+          this.getSummaryData();
+          this.areaListData = [];
        // this.toaster.success('','Area set saved succefully');
-        //this.areaList = [];
+       // this.areaList = [];
       //  this.areasetForm.controls.areaList.setValue("");
        this.areasetForm.controls['areaList'].setValue([]);
-       this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
+      // this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
       
-        this.areaListData = [];
-        this.getSummaryData();
+     
+       
         this.getForm();
         this.areasetForm.reset();
+      //  window.location.reload();
       //  this.areasetForm.controls['areaList'].reset();
      
       
@@ -365,16 +368,16 @@ getAreaMasterId(e){
 
       data.areaSetMasterDetailsList.forEach(element => {
         abc.push({
-        label : element.areaCode,
-        value : element.areaId 
+       label : element.areaCode,
+       value : element.areaId 
        // label : element.serviceMaster.serviceCode,
-       // value : element.serviceMaster.serviceMasterId
+       //value : element.serviceMaster.serviceMasterId
         })
      });
-     this.areasetForm.controls['aList'].setValue(abc)
+     this.areasetForm.controls['areaList'].patchValue(abc)
 let datatest = []
     this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
-  datatest.push(ele.areaId) 
+ datatest.push(ele.areaId) 
     //datatest.push(ele.serviceMaster.serviceMasterId)
       
     });
@@ -528,19 +531,7 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
     );
   }
   
-  testMultiSelect() {
-   //interval(3000).pipe().subscribe(() => {
-    // this.getAreasetByService()
-    // this.areaListData = []
-    //  = [
-      // { label: 'New York', value: { id: 1, name: 'New York', code: 'NY' } },
-      // { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
-      // { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
-      // { label: 'Istanbul', value: { id: 4, name: 'Istanbul', code: 'IST' } },
-      // { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } }
-    // ];
- //});
-}
+  
 
 
 }
