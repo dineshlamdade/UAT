@@ -118,6 +118,7 @@ export class NonRecurringQtyComponent implements OnInit {
   nonSalaryTransactionGroupId: any;
   nonSalaryDetailId: any;
   NonSalaryTransactionGroupHeadwiseHistoryData: any;
+  header: any[];
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
     private nonRecQtyService: NonRecurringQtyService,
@@ -228,7 +229,7 @@ export class NonRecurringQtyComponent implements OnInit {
 	/** Transaction History by group id */
 	NonRecurringTransactionGroupHeadwiseHistory() {
 		const formData = new FormData();
-	
+
 		formData.append('nonSalaryTransactionGroupId', this.nonSalaryTransactionGroupId)
 
 		this.nonRecQtyService.NonSalaryTransactionGroupHistoryAPI(formData,this.nonSalaryTransactionGroupId).subscribe(
@@ -242,7 +243,7 @@ export class NonRecurringQtyComponent implements OnInit {
   /** Transaction head history */
   NonRecurringTransactionGroupHeadHistory(){
     const formData = new FormData();
-	
+
 		formData.append('employeeMasterId', this.employeeMasterId)
     formData.append('nonSalaryDetailId', this.nonSalaryDetailId)
 
@@ -493,12 +494,12 @@ export class NonRecurringQtyComponent implements OnInit {
 					"amount": value,
 					"fromDate": this.selectedFromDate
 				}
-					
+
 				this.deviationModeData = []
 					this.repeatModeData = []
 					this.deviationData = []
 					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
-						// this.deviationData = res 
+						// this.deviationData = res
 						let resp : any = res;
 							resp.forEach(element => {
 								if(element.status != 'No Deviation'){
@@ -516,9 +517,9 @@ export class NonRecurringQtyComponent implements OnInit {
 							}
 						});
 					})
-			}	
+			}
 		}
-			
+
 	}
 
     /** edit deviation popup */
@@ -952,13 +953,13 @@ export class NonRecurringQtyComponent implements OnInit {
 				"fromDate": this.selectedFromDateForSave
 			}
 			this.nonRecService.NonRecurringTransactionGroupGetSDMValue(inputdata).subscribe(res =>{
-				this.SDMAmountValue = res 
+				this.SDMAmountValue = res
 				this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].openingAmount = this.SDMAmountValue
 			})
 		}
 		// else{
 		// 	if(data.closingAmount != '' || data.closingAmount != null){
-				
+
 		// 			let inputdata1 = {
 		// 				"employeeMasterId":this.selectedEmployeeMasterId,
 		// 				"headMasterId": data.headId,
@@ -976,7 +977,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		// 			this.deviationModeData = []
 		// 			this.repeatModeData = []
 		// 			this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata1).subscribe(res =>{
-		// 				// this.deviationData = res 
+		// 				// this.deviationData = res
 		// 				let resp : any = res;
         //                 resp.forEach(element => {
 		// 					if(element.status != 'No Deviation'){
@@ -992,7 +993,7 @@ export class NonRecurringQtyComponent implements OnInit {
 		// 					}
 		// 				});
 		// 			})
-				
+
 		// 	}
 		// }
 		let todate = "";
@@ -1094,7 +1095,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				"clawbackDate": "",
 				"executeSDM": data.executeSDM,
 				"refferedEmpId": this.refralemployeeMasterId,
-				"refferedpayrollAreaCode": this.refPayrolArea,				
+				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
 				"nonRecurringTransactionGroupDeviationList":[]
 
@@ -1491,12 +1492,12 @@ export class NonRecurringQtyComponent implements OnInit {
 					"amount": value,
 					"fromDate": this.selectedFromDateForSave
 				}
-					
+
 				this.deviationModeData = []
 					this.repeatModeData = []
 					this.deviationData = []
 					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
-						// this.deviationData = res 
+						// this.deviationData = res
 						let resp : any = res;
 							resp.forEach(element => {
 								if(element.status != 'No Deviation'){
@@ -1514,10 +1515,10 @@ export class NonRecurringQtyComponent implements OnInit {
 							}
 						});
 					})
-			}	
+			}
 		}
-			
-		
+
+
 		if (this.saveTransactionData.length > 0) {
 			this.saveTransactionData.forEach((element, index) => {
 				if (element.headMasterId == data.headId) {
@@ -2445,7 +2446,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			   this.refemployeeCode = element.employeeCode
 			   this.refemployeeName = element.fullName
 			   this.refralemployeeMasterId = element.employeeMasterId
-			   
+
 			   this.nonRecService.getEmployeeWisePayrollList(this.refralemployeeMasterId).subscribe(
 				res => {
 					this.refralPayrollListData = res.data.results[0];
@@ -2488,7 +2489,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			"deviationAmountLimit":this.selectedDeviationdata.deviationAmountLimit
 		}
 		this.nonRecurringTransactionGroupDeviationList.push(obj)
-		
+
 		this.saveTransactionData.forEach((element, index) => {
 			if (element.headMasterId == selectedDevData.headId) {
 				let ind = index;
@@ -2519,7 +2520,7 @@ export class NonRecurringQtyComponent implements OnInit {
 					"nonRecurringTransactionGroupDeviationList":this.nonRecurringTransactionGroupDeviationList
 
 				})
-			} 
+			}
 		})
 
 		console.log("this.saveTransactionData: "+ JSON.stringify(this.saveTransactionData))
@@ -2905,7 +2906,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			}
 			this.excelData.push(obj)
 		});
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary');
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
 	}
 
 
@@ -2931,7 +2932,7 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.AllNonRecurringTransactionScheduledData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-All-Schedules');
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
 	}
 
 
@@ -2957,6 +2958,6 @@ export class NonRecurringQtyComponent implements OnInit {
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.NonRecurringTransactionScheduleEMPdData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Schedules');
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
 	}
 }

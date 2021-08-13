@@ -113,6 +113,7 @@ export class NonRecurringAmtComponent implements OnInit {
 	devationRemarkText: any = '';
 	selectedDeviationdata: any;
 	repeatRemarkText: any;
+  header: any[];
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -514,12 +515,12 @@ export class NonRecurringAmtComponent implements OnInit {
 					"amount": value,
 					"fromDate": this.selectedFromDate
 				}
-					
+
 				this.deviationModeData = []
 					this.repeatModeData = []
 					this.deviationData = []
 					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
-						// this.deviationData = res 
+						// this.deviationData = res
 						let resp : any = res;
 							resp.forEach(element => {
 								if(element.status != 'No Deviation'){
@@ -537,9 +538,9 @@ export class NonRecurringAmtComponent implements OnInit {
 							}
 						});
 					})
-			}	
+			}
 		}
-			
+
 	}
 
     /** edit deviation popup */
@@ -973,13 +974,13 @@ export class NonRecurringAmtComponent implements OnInit {
 				"fromDate": this.selectedFromDateForSave
 			}
 			this.nonRecService.NonRecurringTransactionGroupGetSDMValue(inputdata).subscribe(res =>{
-				this.SDMAmountValue = res 
+				this.SDMAmountValue = res
 				this.NonRecurringTransactionGroupAPIEmpwiseData[rowindex].openingAmount = this.SDMAmountValue
 			})
 		}
 		// else{
 		// 	if(data.closingAmount != '' || data.closingAmount != null){
-				
+
 		// 			let inputdata1 = {
 		// 				"employeeMasterId":this.selectedEmployeeMasterId,
 		// 				"headMasterId": data.headId,
@@ -997,7 +998,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		// 			this.deviationModeData = []
 		// 			this.repeatModeData = []
 		// 			this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata1).subscribe(res =>{
-		// 				// this.deviationData = res 
+		// 				// this.deviationData = res
 		// 				let resp : any = res;
         //                 resp.forEach(element => {
 		// 					if(element.status != 'No Deviation'){
@@ -1013,7 +1014,7 @@ export class NonRecurringAmtComponent implements OnInit {
 		// 					}
 		// 				});
 		// 			})
-				
+
 		// 	}
 		// }
 		let todate = "";
@@ -1115,7 +1116,7 @@ export class NonRecurringAmtComponent implements OnInit {
 				"clawbackDate": "",
 				"executeSDM": data.executeSDM,
 				"refferedEmpId": this.refralemployeeMasterId,
-				"refferedpayrollAreaCode": this.refPayrolArea,				
+				"refferedpayrollAreaCode": this.refPayrolArea,
 				"approveStatus": "Pending",
 				"nonRecurringTransactionGroupDeviationList":[]
 
@@ -1512,12 +1513,12 @@ export class NonRecurringAmtComponent implements OnInit {
 					"amount": value,
 					"fromDate": this.selectedFromDateForSave
 				}
-					
+
 				this.deviationModeData = []
 					this.repeatModeData = []
 					this.deviationData = []
 					this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res =>{
-						// this.deviationData = res 
+						// this.deviationData = res
 						let resp : any = res;
 							resp.forEach(element => {
 								if(element.status != 'No Deviation'){
@@ -1535,10 +1536,10 @@ export class NonRecurringAmtComponent implements OnInit {
 							}
 						});
 					})
-			}	
+			}
 		}
-			
-		
+
+
 		if (this.saveTransactionData.length > 0) {
 			this.saveTransactionData.forEach((element, index) => {
 				if (element.headMasterId == data.headId) {
@@ -2466,7 +2467,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			   this.refemployeeCode = element.employeeCode
 			   this.refemployeeName = element.fullName
 			   this.refralemployeeMasterId = element.employeeMasterId
-			   
+
 			   this.nonRecService.getEmployeeWisePayrollList(this.refralemployeeMasterId).subscribe(
 				res => {
 					this.refralPayrollListData = res.data.results[0];
@@ -2509,7 +2510,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			"deviationAmountLimit":this.selectedDeviationdata.deviationAmountLimit
 		}
 		this.nonRecurringTransactionGroupDeviationList.push(obj)
-		
+
 		this.saveTransactionData.forEach((element, index) => {
 			if (element.headMasterId == selectedDevData.headId) {
 				let ind = index;
@@ -2540,7 +2541,7 @@ export class NonRecurringAmtComponent implements OnInit {
 					"nonRecurringTransactionGroupDeviationList":this.nonRecurringTransactionGroupDeviationList
 
 				})
-			} 
+			}
 		})
 
 		console.log("this.saveTransactionData: "+ JSON.stringify(this.saveTransactionData))
@@ -2926,7 +2927,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			}
 			this.excelData.push(obj)
 		});
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary');
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
 	}
 
 
@@ -2952,7 +2953,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.AllNonRecurringTransactionScheduledData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-All-Schedules');
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
 	}
 
 
@@ -2978,8 +2979,8 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.NonRecurringTransactionScheduleEMPdData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Schedules');
+		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
 	}
-	
+
 
 }

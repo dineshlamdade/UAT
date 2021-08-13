@@ -179,7 +179,7 @@ export class AdminQuryGenerationComponent implements OnInit {
       });
       this.index =0
       this.selectedEmployee = this.emplData[this.index]
-    // console.log("this.selectedEmployee",this.employeeListId.length)
+    console.log("this.selectedEmployee",this.selectedEmployee)
 
       this.employeeMasterId = this.selectedEmployee.employeeMasterId
       this.getEmpMasterDetails(this.employeeMasterId);
@@ -754,7 +754,7 @@ addQuerywithDocs()
     if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'yes')
                 {
 
-                this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
+                this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
 
                     if(this.listDoc.length == 0){
                       this.queryGenerationForm.controls['applicationModuleId'].setValue(parseInt(this.queryGenerationForm.controls['applicationModuleId'].value));
