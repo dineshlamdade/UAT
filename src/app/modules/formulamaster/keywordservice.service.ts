@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class KeywordserviceService {
 
   url = environment.baseUrl8084;
+  url1 = environment.devbaseUrl8084;
   constructor(private HttpClient: HttpClient) { }
 
 
@@ -17,11 +18,14 @@ export class KeywordserviceService {
     return this.HttpClient.get<any>(this.url + `KeywordMasterDetails`);
   }
 
+  globalGetAl() : Observable<any> {
+    return this.HttpClient.get<any>(this.url1 + `payrollhead-master/global-getAll`);
+  }
+
   // Save Keyword data
   KeywordMasterDetails(data) : Observable<any> {
     return this.HttpClient.post<any>(this.url + `KeywordMasterDetails`,data);
   }
-
 
   // Keyword Edit data by id
   KeywordMasterDetailsGetById(data) : Observable<any> {

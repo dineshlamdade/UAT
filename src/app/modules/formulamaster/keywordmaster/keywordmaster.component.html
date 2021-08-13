@@ -1,150 +1,134 @@
-
 <div class="tabview-contents">
 
-
-
     <div class="row mt-20">
+
         <div class="col-md-12">
-            <fieldset>
-                <div class="row mt-20">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">Code </label>
-                            <input type="text" class="form-control" value="">
+            <form [formGroup]="keywordForm">
+                <fieldset>
+
+                    <div class="row mt-20">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Code </label>
+                                <input formControlName="keywordName" type="text" class="form-control" value="">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">Description</label>
-                            <input type="text" class="form-control" value="">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <input formControlName="keywordDescription" type="text" class="form-control" value="">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-
-                        <div class="form-group">
-                            <label class="form-label">Nature</label>
-                            <label class="custom-switch mt_5">
-                                <span class="form-label">E / D Head </span>&nbsp;&nbsp;
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-                                <span class="custom-switch-indicator"></span>&nbsp;&nbsp;
-                                <span class="form-label">Formula </span>
-                            </label>
-
-                        </div>
-                    </div>
-                   
-
-                </div>
-
-                <div class="row mt-20">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">E / D Head  </label>
-                            <select class="form-control">
-                                <option>Select</option>
-                                <option value=""> </option>
-                                <option value=""> </option>
-                                <option value=""></option>
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">Type</label>
-                            <select class="form-control">
-                                <option>Select</option>
-                                <option value="Master">Master</option>
-                                <option value="Output">Output</option>
-                                <option value="Projection">Projection</option>
-                               
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-
-                        <div class="form-group">
-                            <label class="form-label">Formula</label>
-                            <select class="form-control" >
-                                <option>Select</option>
-                                <option value="" *ngFor="let formula of formulaListData">{{formula.formulaName}}</option>
-                                
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-
-                        <div class="form-group">
-                            <label class="form-label">Remark</label>
-                            <textarea class="form-control"></textarea>
-
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Nature</label>
+                                <label class="custom-switch mt_5">
+                                    <span class="form-label">E / D Head </span>&nbsp;&nbsp;
+                                    <input (click)="getSelectedNature($event.target)" type="checkbox"
+                                        name="custom-switch-checkbox" class="custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>&nbsp;&nbsp;
+                                    <span class="form-label">Formula </span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="row mt-20">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">E / D Head </label>
+                                <select class="form-control" formControlName="headMasterId">
+                                    <option>Select</option>
+                                    <option value="" *ngFor="let head of FDHeadList" value="{{head.headMasterId}}">
+                                        {{head.standardName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Type</label>
+                                <select class="form-control" formControlName="type">
+                                    <option>Select</option>
+                                    <option value="Master">Master</option>
+                                    <option value="Output">Output</option>
+                                    <option value="Projection">Projection</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Formula</label>
+                                <select class="form-control" formControlName="formula">
+                                    <option>Select</option>
+                                    <option *ngFor="let formula of formulaListData">{{formula.formulaName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Remark</label>
+                                <textarea class="form-control" formControlName="remark"></textarea>
+                            </div>
+                        </div>
 
-                </div>
+                    </div>
 
-
-            </fieldset>
-
+                </fieldset>
+            </form>
         </div>
         <br>
 
-
         <div class="col-12">
-
             <div class="row">
-
                 <div class="col-12 mt-20">
                     <div class="float-right ">
-
-
-
-                        <button type="submit"
+                        <button type="submit" *ngIf="!editflag && !viewflag"
                             class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                            tooltip="Save" [disabled]="loading">
+                            tooltip="Save" [disabled]="loading" (click)="saveKeyword()">
                             <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
                             Save</button>
-
-
-                        <button type="button" tooltip="Reset"
-                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                    class="fa  fa-refresh"></i></b> Reset</button>
-
-
-
-
+                        <button type="submit" *ngIf="editflag && !viewflag"
+                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                            tooltip="Save" [disabled]="loading" (click)="updateKeyword()">
+                            <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
+                            Update</button>
+                        <button type="button" tooltip="Reset" *ngIf="!editflag && !viewflag"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+                            <b><i class="fa  fa-refresh"></i></b> Reset</button>
+                        <button type="button" tooltip="Reset" *ngIf="editflag || viewflag"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+                            <b><i class="fa  fa-refresh"></i></b> Cancel</button>
                     </div>
                 </div>
-
             </div>
-
-
         </div>
+
     </div>
 
 
     <div class="cycle-table mt-4">
         <!-- <div class="cycle-value pt-20 pb-20 bg-color-light_gray">
-                            <h6 class="font-14">&nbsp; &nbsp;Total Records (10) &nbsp;&nbsp; Selected Records (10) <span
-                                    class="float-right">
-                                    <button type="submit"
-                                        class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                                        tooltip="Hold" [disabled]="loading" (click)=" extralargepopup(template)">
-                                        <b><i class="fa fa-hand-paper-o" aria-hidden="true"></i></b>
-                                        Hold</button>&nbsp; <i
-                                        class="fa fa-file-excel-o font-34 text-dark-green  mr-10 float-right"
-                                        aria-hidden="true"></i></span></h6>
-                        </div> -->
+            <h6 class="font-14">&nbsp; &nbsp;Total Records (10) &nbsp;&nbsp; Selected Records (10) <span
+            class="float-right">
+            <button type="submit"
+            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+            tooltip="Hold" [disabled]="loading" (click)=" extralargepopup(template)">
+            <b><i class="fa fa-hand-paper-o" aria-hidden="true"></i></b>
+            Hold</button>&nbsp; <i
+            class="fa fa-file-excel-o font-34 text-dark-green  mr-10 float-right"
+            aria-hidden="true"></i></span></h6>
+        </div> -->
         <p-table [value]="keywordSummeryData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,25,50]">
+            [rowsPerPageOptions]="[10,25,50,100,200]">
+
             <ng-template pTemplate="header">
                 <tr style="text-align:center;">
                     <th rowspan="1" class="wd-10">
                         Sr. No.
                     </th>
-                    <th rowspan="2"  class="wd-10">
+                    <th rowspan="2" class="wd-10">
                         <div class="p-d-flex p-jc-between p-ai-center">
                             Code
                             <div class="Sort_Filter_Position">
@@ -154,7 +138,7 @@
                             </div>
                         </div>
                     </th>
-                    <th rowspan="2"  class="wd-10">
+                    <th rowspan="2" class="wd-10">
                         <div class="p-d-flex p-jc-between p-ai-center">
                             Description
                             <div class="Sort_Filter_Position">
@@ -164,8 +148,8 @@
                             </div>
                         </div>
                     </th>
-                   
-                    <th rowspan="2"  class="wd-10">
+
+                    <th rowspan="2" class="wd-10">
                         <div class="p-d-flex p-jc-between p-ai-center">
                             Nature
                             <div class="Sort_Filter_Position">
@@ -175,7 +159,7 @@
                             </div>
                         </div>
                     </th>
-                    <th rowspan="2"  class="wd-10">
+                    <th rowspan="2" class="wd-10">
                         <div class="p-d-flex p-jc-between p-ai-center">
                             E / D Head
                             <div class="Sort_Filter_Position">
@@ -186,7 +170,7 @@
                         </div>
                     </th>
                     <th rowspan="2" class="wd-10">
-                        <div class="p-d-flex p-jc-between p-ai-center" >
+                        <div class="p-d-flex p-jc-between p-ai-center">
                             Type
                             <div class="Sort_Filter_Position">
                                 <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
@@ -195,7 +179,7 @@
                             </div>
                         </div>
                     </th>
-                   
+
 
                     <th rowspan="2" class="wd-10">
                         <div class="p-d-flex p-jc-between p-ai-center">
@@ -228,7 +212,7 @@
                             </div>
                         </div>
                     </th>
-                   
+
                     <th rowspan="2" class="text-center">
                         <div class="p-d-flex p-jc-between p-ai-center">
                             Action
@@ -238,8 +222,6 @@
                 </tr>
 
             </ng-template>
-
-
 
             <ng-template pTemplate="body" let-key let-rowIndex="rowIndex">
                 <tr class="p-selectable-row">
@@ -253,18 +235,27 @@
                     </td> -->
 
                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{key.keywordName}}</label></td>
-                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{key.keywordDescription}}</label></td>
+                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{key.keywordDescription}}</label>
+                    </td>
                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{key.nature}}</label></td>
                     <td class="bg-color-light_gray"><label class="form-lable mb-0"></label></td>
                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{key.type}}</label></td>
                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{key.formula}}</label></td>
                     <td class="bg-color-light_gray"><label class="form-lable mb-0"></label></td>
                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{key.remark}}</label></td>
-                    <td class="bg-color-light_gray"><label class="form-lable mb-0"></label></td>
+                    <td class="bg-color-light_gray">
+                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editSummaryData(key)"
+                            tooltip="Edit"></i>&nbsp;
+                        <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewSummaryData(key)"
+                            tooltip="View"></i>&nbsp;
+                        <i class="fa fa-trash font-16 text-red cursor-pointer" (click)="deleteSummaryData(key)"
+                            tooltip="Delete"></i>
+                    </td>
 
                 </tr>
 
             </ng-template>
+
             <ng-template pTemplate="emptymessage">
                 <tr>
                     <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
@@ -273,11 +264,5 @@
             </ng-template>
         </p-table>
 
-
     </div>
-
-
-
-
-
 </div>

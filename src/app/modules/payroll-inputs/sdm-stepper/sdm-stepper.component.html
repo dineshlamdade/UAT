@@ -902,8 +902,7 @@
                                                                     <option value="Select">Select</option>
                                                                     <option
                                                                         *ngFor=" let tableData of derivedTableFieldsData">
-                                                                        {{tableData.sourceObjectName}}</option>
-
+                                                                        {{tableData.derivedObjectName}}</option>
                                                                 </select>
 
                                                             </div>
@@ -917,7 +916,7 @@
                                                                     <option value="Select">Select</option>
                                                                     <option *ngFor="let field of fieldTypes"
                                                                         value="{{field.sdmDerivedTableId}}">
-                                                                        {{field.sourceObjectFieldName}}</option>
+                                                                        {{field.derivedFieldName}}</option>
                                                                     <!-- <option >Max Amount Allowed</option> -->
                                                                 </select>
 

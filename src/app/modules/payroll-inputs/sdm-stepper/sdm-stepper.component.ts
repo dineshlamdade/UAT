@@ -140,6 +140,7 @@ export class SdmStepperComponent implements OnInit {
   rangeApplicableStatus: any;
   isDisabled:boolean;
   editTempFlag1: boolean = false;
+  selectedtableId: any;
 
   constructor(private formBuilder: FormBuilder,private sdmService: SdnCreationService, 
     private toaster: ToastrService,private datepipe: DatePipe,private excelservice: ExcelserviceService) {
@@ -877,10 +878,18 @@ export class SdmStepperComponent implements OnInit {
     this.fieldTypes = []
     this.derivedTableName = value
       this.derivedTableFieldsData.forEach(element => {
-      if(element.sourceObjectName == value){
-        this.fieldTypes =element.sourceObjectFieldNameList
+      if(element.derivedObjectName == value){
+        this.selectedtableId = element.sdmDerivedTableId
+        // this.fieldTypes =element.sourceObjectFieldNameList
+        this.sdmService.derivedTablesFieldsValue(this.selectedtableId).subscribe(res =>{
+          this.fieldTypes = res.data.results;
+          
+        })
       }  
     });
+
+    
+
   }
 
 

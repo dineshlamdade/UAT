@@ -73,6 +73,11 @@ export class SdnCreationService {
     return this.HttpClient.get<any>(this.url + `source-derived-matrix/derived/tables-fields/`);
   }
 
+  // 3rd tab api (Derived) get values from table selection
+  derivedTablesFieldsValue(id):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/derived/tables-fields/value/` + id);
+  }
+
   // 3rd tab api (Derived)
   saveDerived(data):Observable<any>{
     return this.HttpClient.post<any>(this.url + `source-derived-matrix/derived-master/`,data);

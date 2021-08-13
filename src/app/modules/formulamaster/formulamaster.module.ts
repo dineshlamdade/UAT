@@ -25,6 +25,7 @@ import { FormulamasterRoutingModule } from './formulamaster-routing.module';
 import { FormulamasterComponent } from './formulamaster.component';
 import { KeywordmasterComponent } from './keywordmaster/keywordmaster.component';
 import { FormulacreationComponent } from './formulacreation/formulacreation.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -51,7 +52,9 @@ import { FormulacreationComponent } from './formulacreation/formulacreation.comp
     TableModule,
     NgMultiSelectDropDownModule,
     MultiSelectModule,
-    SharedlayoutModule
+    SharedlayoutModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class FormulamasterModule { }
