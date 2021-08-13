@@ -561,7 +561,7 @@ viewAreaSet(data){
     this.adhocForm.controls['startDate'].patchValue(new Date(from.fromDate));
    // const to =new Date( this.cycleNameList.find(a=>a.periodId==data.periodId)[0].toDate);
     this.adhocForm.controls['endDate'].patchValue(new Date(from.toDate));
-   }, 100);
+   }, 1000);
  // this.adhocForm.controls['startDate'].patchValue(new Date(data.fromDate));
  // this.adhocForm.controls['endDate'].patchValue(new Date(data.toDate));
   this.adhocForm.controls['fromDate'].patchValue(new Date(data.fromDate));

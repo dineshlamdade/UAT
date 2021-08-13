@@ -358,29 +358,35 @@ getAreaMasterId(e){
       this.areasetForm.patchValue(data);
       
      // this.areasetForm.get('isActive').setValue(1);
-      this.areasetForm.controls['serviceMasterId'].setValue(data.serviceMaster.serviceMasterId);
+    this.areasetForm.controls['serviceMasterId'].setValue(data.serviceMaster.serviceMasterId);
      this.getAreasetByService(data.serviceMaster.serviceMasterId);
-    let abc = [];
-      // this.areaList = [{
-      //   label:'PA-Staff',
-      //   value:data.areaSetMasterDetailsList[0].areaCode
-      // }]
+     let abc = [];
+    //   // this.areaList = [{
+    //   //   label:'PA-Staff',
+    //   //   value:data.areaSetMasterDetailsList[0].areaCode
+    //   // }]
 
       data.areaSetMasterDetailsList.forEach(element => {
         abc.push({
-       label : element.areaCode,
-       value : element.areaId 
-       // label : element.serviceMaster.serviceCode,
-       //value : element.serviceMaster.serviceMasterId
+      label : element.areaCode,
+      value : element.areaId 
+      // label : element.serviceMaster.serviceCode,
+      //value : element.serviceMaster.serviceMasterId
         })
      });
-     this.areasetForm.controls['areaList'].patchValue(abc)
+   this.areasetForm.controls['areaList'].setValue(abc);
+    //this.areasetForm.get('areaList').setValue(abc)
 let datatest = []
-    this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
- datatest.push(ele.areaId) 
-    //datatest.push(ele.serviceMaster.serviceMasterId)
+   this.areaList = data.areaSetMasterDetailsList.forEach(ele => {
+   datatest.push(ele.areaId) 
+
+
+   
+   // datatest.push(ele.serviceMaster.serviceMasterId)
       
     });
+   // this.areasetForm.controls['areaList'].setValue(datatest);
+   // this.areasetForm.controls['areaList'].setValue(abc)
     this.areaList = datatest
       console.log(data)
       console.log("Area list is",this.areaList);
