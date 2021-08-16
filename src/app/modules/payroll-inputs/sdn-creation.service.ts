@@ -106,5 +106,11 @@ export class SdnCreationService {
   // 4th tab api (Matrix) table
   getMatrixData(sdmMasterId):Observable<any>{
     return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/source-combination/`+ sdmMasterId);
-  }   
+  }  
+  
+  
+  // 4th tab api (Matrix) table
+  derivedFieldName(value):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/derivedObjectName/EmployeeJobMapping/derivedFieldName/`+value);
+  }  
 }
