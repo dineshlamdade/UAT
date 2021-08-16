@@ -1,8 +1,24 @@
-import { Component, ElementRef, OnInit,  ViewChild ,TemplateRef } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+  FormArray,
+} from '@angular/forms';
+import {
+  trigger,
+  transition,
+  animate,
+  style,
+  state,
+} from '@angular/animations';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { SortEvent } from 'primeng/api';
-import { CKEditorModule } from 'ckeditor4-angular';
-import { User2 } from '../cycle/cycle.component';
+import { LockService } from '../lock.service';
+
+import { AlertServiceService } from '../../../core/services/alert-service.service';
+import { element } from 'protractor';
+
 export interface Customer {
   empcode;
   empName;
@@ -13,105 +29,61 @@ export interface Customer {
   area;
   companyname;
   service;
-
 }
 export interface User1 {
-
   area;
   service;
   cmpnyname;
-
 }
 export interface emplist {
   empno;
   area;
   service;
   cmpnyname;
-
-}
-export interface aswhen {
-  companyname;
-  service;
-  type;
-  cyclecreationdate;
-  cyclename;
-  fromdate;
-  todate;
-
-}
-export interface sumarea {
-  area;
-  companyname;
-  service;
-  businessyear;
-  cyclename;
-  cycledefinition;
-  fromdatearea;
-  todatearea;
-  lockdatearea;
-  lockbyarea;
-
-}
-export interface sumbusiness {
-  area;
-  companyname;
-  service;
-  businessyear;
-
-  fromdate;
-  todate;
-  lockdate;
-  lockby;
-
-}
-export interface sumemp {
-  empcode;
-  empname;
-  area;
-  companyname;
-  service;
-  businessyear;
-  cycledefinition;
-  cyclename;
-  fromdate;
-  todate;
-  lockdate;
-  lockby;
-
-}
-
-export interface sumaswhn {
-
-  companyname;
-  service;
-  businessyear;
-  type;
-  cyclename;
-  remark;
-  fromdate;
-  todate;
-  lockdate;
-  lockby;
-
 }
 export interface arealist {
-
   area;
   service;
   cmpnyname;
-}
-interface group {
-  name: string
-
-}
-interface City {
-  name: string,
 }
 
 @Component({
   selector: 'app-area',
   templateUrl: './area.component.html',
-  styleUrls: ['./area.component.scss']
+  styleUrls: ['./area.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(200%)' }),
+        animate('700ms ease-in', style({ transform: 'translateX(0%)' })),
+      ]),
+      transition(':leave', [
+        style({ transform: 'translateX(0%)' }),
+        animate('0ms ease-in', style({ transform: 'translateX(-100%)' })),
+      ]),
+    ]),
+    [
+      trigger('stateAnimation', [
+        transition(':enter', [
+          style({ width: '2vh' }),
+          animate('700ms ease-in', style({ width: '0vh' })),
+        ]),
+        transition(':leave', [
+          style({ width: '0vh' }),
+          animate('0ms ease-in', style({ width: '2vh' })),
+        ]),
+      ]),
+    ],
+  ],
+  styles: [
+    `
+      .outofstock {
+        background-color: #ddd !important;
+        color: #000 !important;
+        font-weight: 500;
+      }
+    `,
+  ],
 })
 // export class AreaComponent implements OnInit {
 
@@ -121,159 +93,241 @@ interface City {
 //   }
 
 // }
-
 export class AreaComponent implements OnInit {
   public modalRef: BsModalRef;
-  customers: Customer[];
-  groups: group[];
-  aswhens: aswhen[];
-  sumbusinesss:sumbusiness[];
-  cities: City[];
-  users1: User1[];
-  sumareas: sumarea[];
-  arealists: arealist[];
-  sumemps:sumemp[];
-  sumaswhns:sumaswhn[];
-  emplists: emplist[];
+  public cycleDefinationList: Array<any> = [];
+  public cycleNameList: Array<any> = [];
+  public companyNameList: Array<any> = [];
+  public serviceNameList: Array<any> = [];
+  public NameofCycleDefination: Array<any> = [];
+  public periodNameList: Array<any> = [];
+  public ServiceAreaList: Array<any> = [];
+  public serviceNames: Array<any> = [];
+  public companyNames: Array<any> = [];
+  public areaSeriveList: Array<any> = [];
+  public areaSummaryTableList: Array<any> = [];
+  public allAreaCodes: Array<any> = [];
+  public serviceNameLabel: Array<any> = [];
+  public areaForm: any = FormGroup;
+  public empForm: any = FormGroup;
+  public areTableList : Array<any> = []
+  public checkedSummaryList : Array<any> = []
+  public checkedFinalLockList  :  Array<any> = [];
 
-  @ViewChild('username') username:ElementRef;
-  radioModel = 'Middle';
-  areaSection = true;
-  employeeSection = false;
-  users2: User2[];
-  constructor(private modalService: BsModalService) { }
+    disabled: boolean = true;
+    customers: Customer[];
+    users1: User1[];
+    emplists: emplist[];
+    arealists: arealist[];
+    public HighlightRight: any;
+    public selectedUser: Array<any> = [];
+    public selectedUserInLock: Array<any> = [];
+
+    HighlightRow: number;
+//
+
+
+cycleDefinationListEmp: Array<any> = [];
+NameofCycleDefinationEmp: Array<any> = [];
+cycleNameListEmp: Array<any> = [];
+periodNameListEmp: Array<any> = [];
+companyNameListEmp: Array<any> = [];
+companyNamesEmp: Array<any> = [];
+serviceNameListEmp: Array<any> = [];
+serviceNamesEmp: Array<any> = [];
+ServiceAreaListEmp: Array<any> = [];
+areaSeriveListEmp: Array<any> = [];
+allAreaCodesEmp: Array<any> = [];
+areTableListEmp: Array<any> = [];
+selectedUserEmp: Array<any> = [];
+  constructor(
+    private formBuilder: FormBuilder,
+    private alertService: AlertServiceService,
+    private modalService: BsModalService,
+    private lockService: LockService
+  ) {
+    this.reactiveAreaForm();
+    this.reactiveEmpForm();
+  }
 
   ngOnInit(): void {
+    this.getAreaTableSummaryList();
+    this.getAllCycleDefination();
+    this.getAllCompanyName();
+    // this.getAllCycleName();
+    this.getAllServiceName();
+
+    this.getAreaTableSummaryListEmp();
+    this.getAllCycleDefinationEmp();
+    this.getAllCompanyNameEmp();
+    // this.getAllCycleName();
+    this.getAllServiceNameEmp();
+
     this.customers = [
-      { empcode: '1', empName: ' ', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '11', empName: 'ssss', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '111', empName: 'dddddd', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '555', empName: 'dddddd', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '222', empName: 'dddddd', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '1', empName: 'dddddd', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '1', empName: 'dddddd', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '1', empName: 'dddddd', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '1', empName: 'dddddd', designation: '', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '888', empName: 'dddddd', designation: '', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '1', empName: 'dddddd', designation: '', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '1', empName: 'dddddd', designation: '', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
-      { empcode: '66', empName: 'dddddd', designation: '', grade: ' ', establishment: '123', department: ' ', area: ' ', companyname: ' ', service: '' },
-
+      {
+        empcode: '1',
+        empName: ' ',
+        designation: ' ',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '11',
+        empName: 'ssss',
+        designation: ' ',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '111',
+        empName: 'dddddd',
+        designation: ' ',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '555',
+        empName: 'dddddd',
+        designation: ' ',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '222',
+        empName: 'dddddd',
+        designation: ' ',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '1',
+        empName: 'dddddd',
+        designation: ' ',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '1',
+        empName: 'dddddd',
+        designation: ' ',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '1',
+        empName: 'dddddd',
+        designation: ' ',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '1',
+        empName: 'dddddd',
+        designation: '',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '888',
+        empName: 'dddddd',
+        designation: '',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '1',
+        empName: 'dddddd',
+        designation: '',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '1',
+        empName: 'dddddd',
+        designation: '',
+        grade: ' ',
+        establishment: ' ',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: ' ',
+      },
+      {
+        empcode: '66',
+        empName: 'dddddd',
+        designation: '',
+        grade: ' ',
+        establishment: '123',
+        department: ' ',
+        area: ' ',
+        companyname: ' ',
+        service: '',
+      },
     ];
+
+    console.log('customers', this.customers);
+
     this.users1 = [
-      { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-      { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-      { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-
-
+      { area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
+      { area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
+      { area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
     ];
     this.emplists = [
-      { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-      { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-      { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-
-
+      { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
+      { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
+      { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
     ];
     this.arealists = [
-      { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-      { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-      { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-
-
-    ];
-    this.sumareas = [{
-      area: '', companyname: '', service: '', businessyear: '', cyclename: '', cycledefinition: 'a',fromdatearea: 't', todatearea: '11', lockdatearea: 'aa', lockbyarea: 'SS'}
-    ];
-    this.sumbusinesss = [{
-      area: '', companyname: '', service: '', businessyear: '', fromdate: '', todate: '', lockdate: '', lockby: '' }
-    ];
-    this.sumemps = [{
-    empcode:'111',empname:'Rihan',  area: '', companyname: '', service: '', businessyear: '',cyclename: '', cycledefinition: '', fromdate: '', todate: '', lockdate: '', lockby: '', }
-    ];
-
-    this.sumaswhns = [{
-      companyname: '', service: '',businessyear:'',type:'', cyclename: '', remark: 'a',fromdate: 't', todate: '11', lockdate: 'aa', lockby: 'SS'}
-    ];
-
-
-
-    this.aswhens = [
-      {
-        companyname: 'Paysquare',
-        service: 'IT',
-        type: 'As & When Cycle',
-        cyclecreationdate: '22-jan-2021',
-        cyclename: 'Weekly',
-        fromdate: '23-jan-2021',
-        todate: '29-jan-2021',
-
-      },
-      {
-        companyname: 'Paysquare',
-        service: 'IT',
-        type: 'Supplementry Cycle',
-        cyclecreationdate: '22-jan-2021',
-        cyclename: 'Weekly',
-        fromdate: '23-jan-2021',
-        todate: '29-jan-2021',
-
-      },
-      {
-        companyname: 'Paysquare',
-        service: 'IT',
-        type: 'Supplementry Cycle',
-        cyclecreationdate: '22-jan-2021',
-        cyclename: 'Weekly',
-        fromdate: '23-jan-2021',
-        todate: '29-jan-2021',
-
-      },
-      {
-        companyname: 'Paysquare',
-        service: 'IT',
-        type: 'Supplementry Cycle',
-        cyclecreationdate: '22-jan-2021',
-        cyclename: 'Weekly',
-        fromdate: '23-jan-2021',
-        todate: '29-jan-2021',
-
-      },
-      {
-        companyname: 'Paysquare',
-        service: 'IT',
-        type: 'Supplementry Cycle',
-        cyclename: 'Weekly',
-        cyclecreationdate: '22-jan-2021',
-
-        fromdate: '23-jan-2021',
-        todate: '29-jan-2021',
-
-      },
-      {
-        companyname: 'Paysquare',
-        service: 'IT',
-        type: 'Supplementry Cycle',
-        cyclename: 'Weekly',
-        cyclecreationdate: '22-jan-2021',
-
-        fromdate: '23-jan-2021',
-        todate: '29-jan-2021',
-
-      },
-    ];
-    this.groups = [
-      { name: '101' },
-      { name: '102' },
-      { name: '103' },
-
-    ];
-    this.cities = [
-      { name: 'Set 1' },
-      { name: 'Set 2' },
-      { name: 'Set 3' },
-
+      { area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
+      { area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
+      { area: 'area', service: 'aaa', cmpnyname: 'aaaa' },
     ];
   }
+
   smallpopup(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
@@ -281,10 +335,13 @@ export class AreaComponent implements OnInit {
     );
   }
   lockarea(template2: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      template2,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+ if(this.checkedSummaryList.length > 0){
+  this.modalRef = this.modalService.show(
+    template2,
+    Object.assign({}, { class: 'gray modal-lg' })
+  );
+ }
+
   }
   Areapendingforlockpopup(Areapendingforlock: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
@@ -292,70 +349,700 @@ export class AreaComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
-
   Emplist(emplist: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       emplist,
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
+
   Arealistpop(arealist: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       arealist,
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
-  aswhen(aswhen1: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      aswhen1,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
-  }
-  Aswhen2(aswhen2: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      aswhen2,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
-  }
-  BusinessLockpop(BusinessLock: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      BusinessLock,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
-  }
-  BusinessPendingForLockPopup(BusinessPendingForLock: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      BusinessPendingForLock,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
-  }
-  customSort(event: SortEvent) {
-    event.data.sort((data1, data2) => {
-      let value1 = data1[event.field];
-      let value2 = data2[event.field];
-      let result = null;
 
-      if (value1 == null && value2 != null)
-        result = -1;
-      else if (value1 != null && value2 == null)
-        result = 1;
-      else if (value1 == null && value2 == null)
-        result = 0;
-      else if (typeof value1 === 'string' && typeof value2 === 'string')
-        result = value1.localeCompare(value2);
-      else
-        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
-
-      return (event.order * result);
+  ///Area Tab code
+  reactiveAreaForm() {
+    this.areaForm = this.formBuilder.group({
+      cycleLockPayrollAreaId: new FormControl(0),
+      areaMasterId: new FormControl(0),
+      id: new FormControl(0),
+      name: new FormControl('', Validators.required),
+      businessCycleDefinitionId: new FormControl(null),
+      periodName: new FormControl('', Validators.required),
+      fromDate: new FormControl(''),
+      toDate: new FormControl(''),
+      // companyName : new FormControl ('', Validators.required),
+      companyName: new FormControl(''),
+      serviceName: new FormControl('', Validators.required),
+      groupCompanyId: new FormControl(''),
+      serviceMasterId: new FormControl(''),
+      areaMasterCode: new FormControl('', Validators.required),
     });
   }
 
-  areaSelect() {
-    this.areaSection = true;
-    this.employeeSection = false;
-     }
-     employeeSelect() {
-       this.areaSection = false;
-       this.employeeSection = true;
-     }
+  //Cycle Defination Service
+  getAllCycleDefination() {
+    this.lockService.getAllCycleData().subscribe((res) => {
+      this.cycleDefinationList = res;
+      console.log('cycleDefinationList', this.cycleDefinationList);
+
+      res.data.results[0].forEach((element) => {
+        const obj = {
+          label: element.name,
+          value: element.id,
+        };
+        this.NameofCycleDefination.push(obj);
+      });
+    });
+  }
+
+  //All Cycle Name API
+  // getAllCycleName(){
+  //   this.lockService.getAllCycleNamesA().subscribe((res) =>{
+  //     console.log("res.data.results[0]", res);
+  //     this.cycleNameList = res.data.results[0];
+  //     console.log("cycleNameList", this.cycleNameList);
+  //   });
+  // }
+
+  //  Get defication on change
+
+  onChangeDefination(evt: any) {
+    this.areaForm.patchValue({
+      fromDate: '',
+      toDate: '',
+    });
+    if (evt == '') {
+      this.periodNameList = [];
+    } else {
+      this.periodNameList = [];
+      this.lockService.getAllCycleNames(evt).subscribe(
+        (res) => {
+          this.cycleNameList = res.data.results[0];
+          console.log('cycleNameList', this.cycleNameList);
+          res.data.results[0].forEach((element) => {
+            const obj = {
+              label: element.periodName,
+              value: element.businessCycleDefinitionId,
+            };
+            this.periodNameList.push(obj);
+          });
+        },
+        (error: any) => {
+          this.alertService.sweetalertError(
+            error['error']['status']['message']
+          );
+        }
+      );
+    }
+  }
+  //Get Cycle Name
+  onSelectCycleName(evt: any) {
+    if (evt != '') {
+      this.cycleNameList.forEach((element) => {
+        if (element.periodName == evt) {
+          this.areaForm.patchValue({
+            fromDate: new Date(element.fromDate),
+            toDate: new Date(element.toDate),
+          });
+        }
+      });
+    } else {
+      this.areaForm.patchValue({
+        fromDate: '',
+        toDate: '',
+      });
+    }
+  }
+
+  //Company Name and GroupCompanyId API
+  getAllCompanyName() {
+    this.lockService.getAllCompanysName().subscribe((res) => {
+      this.companyNameList = res.data.results[0];
+      console.log('companyNameList', this.companyNameList);
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.companyName,
+          value: element.groupCompanyId,
+        };
+        this.companyNames.push(obj);
+      });
+    });
+  }
+
+  //Service Master Name API
+  getAllServiceName() {
+    this.lockService.getAllServicesName().subscribe((res) => {
+      this.serviceNameList = res.data.results[0];
+      console.log('serviceNameList', this.serviceNameList);
+      res.data.results[0].forEach((element) => {
+        const obj = {
+          label: element.serviceName,
+          value: element.serviceMasterId,
+        };
+        this.serviceNames.push(obj);
+      });
+    });
+  }
+
+  //On Seelct service name get The Area  List
+  onSelectServiceName(evt: any) {
+    if (evt == '') {
+      this.ServiceAreaList = [];
+    } else {
+      this.ServiceAreaList = [];
+      this.lockService.getAreawServicesName(evt).subscribe(
+        (res) => {
+          this.areaSeriveList = res.data.results[0];
+          console.log('areaSeriveList', this.areaSeriveList);
+          res.data.results[0].forEach((element) => {
+            const obj = {
+              //   label: element.areaMasterCode,
+              //   value: element.payrollAreaId,
+              name: element.payrollArea.payrollAreaCode,
+              code: element.payrollArea.payrollAreaId,
+            };
+            this.ServiceAreaList.push(obj);
+          });
+        },
+        (error: any) => {
+          this.alertService.sweetalertError(
+            error['error']['status']['message']
+          );
+        }
+      );
+    }
+  }
+
+  // Save Area Form
+  saveArea() {
+    this.allAreaCodes = [];
+    const selectedPayrollAreaCodes = this.areaForm.get('areaMasterCode').value;
+    if (selectedPayrollAreaCodes.length > 0) {
+      selectedPayrollAreaCodes.forEach((element) => {
+        this.allAreaCodes.push(element.name);
+      });
+    } else {
+      this.alertService.sweetalertWarning('Please select Group code');
+      return false;
+    }
+
+    const data = [{
+      areaMasterId: this.getAreaMasterID(),
+      businessCycleId: this.getBusinessID(),
+      cycle: this.areaForm.get('periodName').value,
+      serviceName: this.getServiceName(this.areaForm.get('serviceName').value),
+      payrollAreaCodeList: this.allAreaCodes,
+      isChecked: false
+    }];
+
+
+
+    this.lockService.postAreaForm(data).subscribe((res: any) => {
+      if (res) {
+        if (res.data.results.length >= 1) {
+          this.getAreaTableSummaryList()
+        }
+      }
+      this.areaForm.reset();
+    });
+  }
+
+  getServiceName(serviceCode: any) {
+    const toSelect = this.serviceNameList.find(
+      (element) => element.serviceMasterId == serviceCode
+    );
+    return toSelect.serviceName;
+    console.log('toSelect', toSelect);
+  }
+
+  //Get AArea Master ID
+  getAreaMasterID() {
+    if (this.areaSeriveList.length > 0) {
+      return this.areaSeriveList[0].areaMaster.areaMasterId;
+    } else {
+      return 0;
+    }
+  }
+
+
+//Get Business Cycle ID
+  getBusinessID() {
+    if (this.cycleNameList.length > 0) {
+      return this.cycleNameList[0].id;
+    } else {
+      return 0;
+    }
+  }
+
+    //Area Table List
+  getAreaTableSummaryList(){
+    this.lockService.getAllAreaTableList().subscribe((res) => {
+      if(res.data.results.length > 0){
+        this.areTableList = res.data.results[0];
+        console.log("areTableList",this.areTableList)
+      }
+    });
+  }
+
+  //OnCheck check box in area summary table
+  onCheckArea(checkValue, element){
+    if(checkValue){
+      const data = {
+        companyName : element.companyName,
+        payrollAreaCode : element.payrollAreaCode,
+        serviceName : element.serviceName,
+        cycleLockPayrollAreaTempId : element.cycleLockPayrollAreaTempId,
+      };
+      this.checkedSummaryList.push(data);
+      console.log("checkedSummaryList", this.checkedSummaryList)
+    }
+  }
+
+
+  // onCheckJobMaster(checkValue, element): void {
+  //   if (checkValue) {
+  //     const data = {
+  //       jobMasterValueId: element.jobMasterValueId,
+  //       groupCompanyId: parseInt(this.formAssignment.controls.companyName.value),
+  //       fromDate: this.datePipe.transform(element.fromDate, "dd-MMM-yyyy"),
+  //       toDate: this.datePipe.transform(element.toDate, "dd-MMM-yyyy")
+  //     };
+  //     this.mappedJobMastersToCompany.push(data);
+  //     // this.employeeList.filter((employee)=>employee.jobMasterValueId==element.jobMasterValueId).forEach((excelEmploee)=>{
+  //     //   this.excelEmployeeList.push(excelEmploee);
+  //     // });
+  //   } else {
+  //     const index = this.mappedJobMastersToCompany.indexOf((p) => (p.jobMasterValueId = element.jobMasterValueId));
+  //     this.mappedJobMastersToCompany.splice(index, 1);
+  //     // this.excelEmployeeList.splice(index, 1);
+  //   }
+  // }
+
+  // updateFromDate(eventDate, jobMasterId) {
+  //   this.companyAssignTableListDummy.forEach(element => {
+  //     if (element.jobMasterValueId == jobMasterId) {
+  //       element.fromDate = this.datePipe.transform(eventDate, 'dd-MMM-yyyy' );
+
+  //     }
+  //   });
+  // }
+
+
+
+  //Reset the  form
+  resetAreaForm(){
+    this.areaForm.reset();
+    this.areaForm.patchValue({
+      companyName : '',
+      serviceName : '',
+      periodName : '',
+      name : '',
+    })
+    }
+
+  //Row select in table
+   //Select Row in left table of PHG
+   RowSelected(u: any, ind: number) {
+    this.HighlightRow = ind;
+
+    let temp = this.areTableList;
+    this.areTableList = new Array();
+    let index = this.selectedUser.findIndex(
+      (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
+    );
+    let isContain = this.selectedUser.some(
+      (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
+    );
+    if (isContain == true) {
+      this.selectedUser.splice(index, 1);
+    } else {
+      this.selectedUser.push(u);
+    }
+
+    this.areTableList = temp;
+
+    this.areTableList.forEach((element, i) => {
+      if (i == this.HighlightRow) {
+        element.isHighlightright = false;
+        if (isContain == true) {
+          element.isHighlight = false;
+        } else {
+          if (i == this.HighlightRow) {
+            element.isHighlight = true;
+          }
+        }
+      }
+    });
+  }
+
+  doubleClickOnLeftTable(evt: any) {}
+
+
+    //Row select in table
+   //Select Row in left table of PHG
+   RowSelectedInLock(u: any, ind: number) {
+    this.HighlightRow = ind;
+
+    let temp = this.checkedSummaryList;
+    this.checkedSummaryList = new Array();
+    let index = this.selectedUserInLock.findIndex(
+      (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
+    );
+    let isContain = this.selectedUserInLock.some(
+      (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
+    );
+    if (isContain == true) {
+      this.selectedUserInLock.splice(index, 1);
+    } else {
+      this.selectedUserInLock.push(u);
+    }
+
+    this.checkedSummaryList = temp;
+
+    this.checkedSummaryList.forEach((element, i) => {
+      if (i == this.HighlightRow) {
+        element.isHighlightright = false;
+        if (isContain == true) {
+          element.isHighlight = false;
+        } else {
+          if (i == this.HighlightRow) {
+            element.isHighlight = true;
+          }
+        }
+      }
+    });
+  }
+
+
+   //OnCheck check box in area summary table On Check Area after click on  Lock button
+   onCheckAreaInLock(checkValue, element){
+    if(checkValue){
+      this.checkedFinalLockList.push(element.cycleLockPayrollAreaTempId);
+    }
+  }
+
+  //Reset Lock
+  resetLock(){
+    this.checkedFinalLockList = [];
+  }
+
+  // Update
+  saveLockProceed(){
+    const data = { cycleLockPayrollAreaTempIds : this.checkedFinalLockList }
+
+    this.lockService.postAreaInLock(data).subscribe((res) =>{
+
+    })
+  }
+
+
+getReturnCycleTempID(cycleLockPayrollAreaTempId: any) {
+  const toSelect = this.checkedFinalLockList.find(
+    (element) => element.cycleLockPayrollAreaTempId == cycleLockPayrollAreaTempId
+  );
+  return toSelect.cycleLockPayrollAreaTempId;
+  console.log('toSelect', toSelect);
+}
+
+// getReturnCycleTempID() {
+//   if (this.checkedFinalLockList.length > 0) {
+//     return this.checkedFinalLockList[0].cycleLockPayrollAreaTempId;
+//   } else {
+//     return 0;
+//   }
+// }
+
+//// Emp tab ////////
+
+reactiveEmpForm(){
+  this.empForm = this.formBuilder.group({
+    cycleLockPayrollAreaId: new FormControl(0),
+    areaMasterId: new FormControl(0),
+    id: new FormControl(0),
+    name: new FormControl('', Validators.required),
+    businessCycleDefinitionId: new FormControl(null),
+    periodName: new FormControl('', Validators.required),
+    fromDate: new FormControl(''),
+    toDate: new FormControl(''),
+    // companyName : new FormControl ('', Validators.required),
+    companyName: new FormControl(''),
+    serviceName: new FormControl('', Validators.required),
+    groupCompanyId: new FormControl(''),
+    serviceMasterId: new FormControl(''),
+    areaMasterCode: new FormControl('', Validators.required),
+  });
+}
+
+//Cycle Defination Service
+getAllCycleDefinationEmp() {
+  this.lockService.getAllCycleData().subscribe((res) => {
+    this.cycleDefinationListEmp = res;
+    console.log('cycleDefinationListEmp', this.cycleDefinationListEmp);
+
+    res.data.results[0].forEach((element) => {
+      const obj = {
+        label: element.name,
+        value: element.id,
+      };
+      this.NameofCycleDefinationEmp.push(obj);
+    });
+  });
+}
+
+//All Cycle Name API
+// getAllCycleName(){
+//   this.lockService.getAllCycleNamesA().subscribe((res) =>{
+//     console.log("res.data.results[0]", res);
+//     this.cycleNameList = res.data.results[0];
+//     console.log("cycleNameList", this.cycleNameList);
+//   });
+// }
+
+//  Get defication on change
+
+onChangeDefinationEmp(evt: any) {
+  this.areaForm.patchValue({
+    fromDate: '',
+    toDate: '',
+  });
+  if (evt == '') {
+    this.periodNameListEmp = [];
+  } else {
+    this.periodNameListEmp = [];
+    this.lockService.getAllCycleNames(evt).subscribe(
+      (res) => {
+        this.cycleNameListEmp = res.data.results[0];
+        console.log('cycleNameListEmp', this.cycleNameListEmp);
+        res.data.results[0].forEach((element) => {
+          const obj = {
+            label: element.periodName,
+            value: element.businessCycleDefinitionId,
+          };
+          this.periodNameListEmp.push(obj);
+        });
+      },
+      (error: any) => {
+        this.alertService.sweetalertError(
+          error['error']['status']['message']
+        );
+      }
+    );
+  }
+}
+//Get Cycle Name
+onSelectCycleNameEmp(evt: any) {
+  if (evt != '') {
+    this.cycleNameListEmp.forEach((element) => {
+      if (element.periodName == evt) {
+        this.areaForm.patchValue({
+          fromDate: new Date(element.fromDate),
+          toDate: new Date(element.toDate),
+        });
+      }
+    });
+  } else {
+    this.areaForm.patchValue({
+      fromDate: '',
+      toDate: '',
+    });
+  }
+}
+
+//Company Name and GroupCompanyId API
+getAllCompanyNameEmp() {
+  this.lockService.getAllCompanysName().subscribe((res) => {
+    this.companyNameListEmp = res.data.results[0];
+    console.log('companyNameListEmp', this.companyNameListEmp);
+    res.data.results.forEach((element) => {
+      const obj = {
+        label: element.companyName,
+        value: element.groupCompanyId,
+      };
+      this.companyNamesEmp.push(obj);
+    });
+  });
+}
+
+//Service Master Name API
+getAllServiceNameEmp() {
+  this.lockService.getAllServicesName().subscribe((res) => {
+    this.serviceNameListEmp = res.data.results[0];
+    console.log('serviceNameListEmp', this.serviceNameListEmp);
+    res.data.results[0].forEach((element) => {
+      const obj = {
+        label: element.serviceName,
+        value: element.serviceMasterId,
+      };
+      this.serviceNamesEmp.push(obj);
+    });
+  });
+}
+
+//On Seelct service name get The Area  List
+onSelectServiceNameEmp(evt: any) {
+  if (evt == '') {
+    this.ServiceAreaListEmp = [];
+  } else {
+    this.ServiceAreaListEmp = [];
+    this.lockService.getAreawServicesName(evt).subscribe(
+      (res) => {
+        this.areaSeriveListEmp = res.data.results[0];
+        console.log('areaSeriveList', this.areaSeriveListEmp);
+        res.data.results[0].forEach((element) => {
+          const obj = {
+            //   label: element.areaMasterCode,
+            //   value: element.payrollAreaId,
+            name: element.payrollArea.payrollAreaCode,
+            code: element.payrollArea.payrollAreaId,
+          };
+          this.ServiceAreaListEmp.push(obj);
+        });
+      },
+      (error: any) => {
+        this.alertService.sweetalertError(
+          error['error']['status']['message']
+        );
+      }
+    );
+  }
+}
+
+// Save Area Form
+saveEmp() {
+  this.allAreaCodesEmp = [];
+  const selectedPayrollAreaCodes = this.areaForm.get('areaMasterCode').value;
+  if (selectedPayrollAreaCodes.length > 0) {
+    selectedPayrollAreaCodes.forEach((element) => {
+      this.allAreaCodesEmp.push(element.name);
+    });
+  } else {
+    this.alertService.sweetalertWarning('Please select Group code');
+    return false;
+  }
+
+  const data = [{
+    areaMasterId: this.getAreaMasterIDEmp(),
+    businessCycleId: this.getBusinessIDEmp(),
+    cycle: this.empForm.get('periodName').value,
+    serviceName: this.getServiceNameEmp(this.empForm.get('serviceName').value),
+    payrollAreaCodeList: this.allAreaCodesEmp,
+    isChecked: false
+  }];
+
+  this.lockService.postAreaForm(data).subscribe((res: any) => {
+    if (res) {
+      if (res.data.results.length >= 1) {
+        this.getAreaTableSummaryListEmp()
+      }
+    }
+    this.empForm.reset();
+  });
+}
+
+getServiceNameEmp(serviceCode: any) {
+  const toSelect = this.serviceNameListEmp.find(
+    (element) => element.serviceMasterId == serviceCode
+  );
+  return toSelect.serviceName;
+  console.log('toSelect', toSelect);
+}
+
+
+
+//Get AArea Master ID
+getAreaMasterIDEmp() {
+  if (this.areaSeriveListEmp.length > 0) {
+    return this.areaSeriveListEmp[0].areaMaster.areaMasterId;
+  } else {
+    return 0;
+  }
+}
+
+
+//Get Business Cycle ID
+getBusinessIDEmp() {
+  if (this.cycleNameListEmp.length > 0) {
+    return this.cycleNameListEmp[0].id;
+  } else {
+    return 0;
+  }
+}
+
+  //Area Table List
+getAreaTableSummaryListEmp(){
+  this.lockService.getAllAreaTableList().subscribe((res) => {
+    if(res.data.results.length > 0){
+      this.areTableListEmp = res.data.results[0];
+      console.log("areTableListEmp",this.areTableListEmp)
+    }
+  });
+}
+
+//OnCheck check box in area summary table
+onCheckAreaEmp(checkValue, element){
+  if(checkValue){
+    const data = {
+      companyName : element.companyName,
+      payrollAreaCode : element.payrollAreaCode,
+      serviceName : element.serviceName,
+      cycleLockPayrollAreaTempId : element.cycleLockPayrollAreaTempId,
+    }
+    console.log(element)
+  }
+}
+
+//Reset the  form
+resetAreaFormEmp(){
+  this.areaForm.reset();
+  this.areaForm.patchValue({
+    companyName : '',
+    serviceName : '',
+    periodName : '',
+    name : '',
+  })
+  }
+
+//Row select in table
+ //Select Row in left table of PHG
+ RowSelectedEmp(u: any, ind: number) {
+  this.HighlightRow = ind;
+
+  let temp = this.areTableListEmp;
+  this.areTableListEmp = new Array();
+  let index = this.selectedUserEmp.findIndex(
+    (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
+  );
+  let isContain = this.selectedUserEmp.some(
+    (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
+  );
+  if (isContain == true) {
+    this.selectedUserEmp.splice(index, 1);
+  } else {
+    this.selectedUserEmp.push(u);
+  }
+
+  this.areTableListEmp = temp;
+
+  this.areTableListEmp.forEach((element, i) => {
+    if (i == this.HighlightRow) {
+      element.isHighlightright = false;
+      if (isContain == true) {
+        element.isHighlight = false;
+      } else {
+        if (i == this.HighlightRow) {
+          element.isHighlight = true;
+        }
+      }
+    }
+  });
+}
+
+doubleClickOnLeftTableEmp(evt: any) {}
+
+
+
 }

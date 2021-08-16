@@ -28,6 +28,7 @@ import { AdhocComponent } from './adhoc/adhoc.component';
 import { SupplementryCycleComponent } from './supplementry-cycle/supplementry-cycle.component';
 import { SummaryComponent } from './summary/summary.component';
 import { AreaComponent } from './area/area.component';
+import { MultiSelectModule } from 'primeng/multiselect';
 // import { NewlockComponent } from './newlock/newlock.component';
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { AreaComponent } from './area/area.component';
     BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    MultiSelectModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),
