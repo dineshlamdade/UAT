@@ -1396,9 +1396,10 @@
 
 
                                                             </ng-template>
+                                                            <!-- let-srcCombData let-rowIndex = rowIndex -->
                                                             <ng-template pTemplate="body" >
-                                                                <tr class="p-selectable-row"
-                                                                    *ngFor="let srcCombData of matrixsdmSourceCombinationList; let rowIndex = index;">
+                                                                <!--  -->
+                                                                <tr class="p-selectable-row" *ngFor="let srcCombData of matrixsdmSourceCombinationList; let rowIndex = index;">
                                                                     <td *ngFor="let header of matrixTableData">
                                                                         <span
                                                                             *ngIf="header == 'PayrollArea'">{{srcCombData.payrollAreaId}}</span>
@@ -1466,7 +1467,6 @@
                                                                             </select>
 
                                                                     </td>
-
                                                                     <td class="p-d-inline-flex">
                                                                         <div class="p-d-inline-flex">
                                                                             <span ><i (click)="copyFromDateToAll(srcCombData,rowIndex);" style="cursor: pointer;"
@@ -1493,7 +1493,6 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-
                                                                     <td>
 
                                                                         <div
@@ -1516,9 +1515,6 @@
                                                                         </div>
 
                                                                     </td>
-
-
-
                                                                     <td class="text-center">
 
                                                                        
@@ -1533,9 +1529,7 @@
 
                                                                     </td>
                                                                 </tr>
-
-                                                                
-                                                                        <tr class="p-selectable-row text-center"
+                                                                <tr class="p-selectable-row text-center"
                                                                         *ngFor="let data of tempMatrixData;let i = index;">
                                                                         <td *ngFor="let header of sourceFieldListData">
                                                                             <span
