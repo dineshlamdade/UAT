@@ -43,5 +43,8 @@ export class SupplementaryService{
         deleteData(id : number):Observable<any>{
             return this.http.delete<any>(this.apiUrl + `business-cycle/soft-delete/`+id)
         }
+        getAdhocCycle():Observable<any>{
+            return this.http.get(this.apiUrl+`business-cycle/AdhocCycle/`);
+        }
 
 }

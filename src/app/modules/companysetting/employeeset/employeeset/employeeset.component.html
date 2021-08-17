@@ -84,12 +84,13 @@
                           <!-- <a  class="text-link text-bold ">Field
                             Level</a> -->
 
-                            <label class="form-label text-link text-bold" (click)="largepopup (template);exportApprovalSummaryAsExcel()"> Selected Employee List
+                            <label class="form-label text-link text-bold mr-2" (click)="largepopup (template);exportApprovalSummaryAsExcel1()"> Selected Employee List
                             </label>&nbsp;
+                            <div>
                             <i class="fa fa-file-excel-o text-dark-green font-20" 
                             (click) = "exportApprovalSummaryAsExcel()" style="cursor: pointer;"
                             ></i>
-                           
+                          </div>
                           
                       
                       
@@ -329,7 +330,7 @@
 
           <div class="col-md-12">
             <!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" -->
-            <p-table #dt2 [value]="excelData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            <p-table #dt2 [value]="excelData1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
             (sortFunction)="customSort3($event)" [customSort3]="true"
             
               [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areasetname','Status']">

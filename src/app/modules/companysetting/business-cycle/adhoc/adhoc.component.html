@@ -163,7 +163,8 @@
                                           data-provide="datepicker" data-date-autoclose="true"
                                           class="form-control" (bsValueChange)="setPolicyEndDate()"
                                           placeholder="" bsDatepicker formControlName = "toDate"
-                                          [minDate]="minStartDate"
+                                         
+                                          [minDate]="adhocForm.get('fromDate').value"
                                            [maxDate]="maxStartDate"
                                           [ngClass]="{'is-invalid' : adhocForm.get('toDate').status == 'INVALID'}"
                                           >
@@ -181,7 +182,7 @@
                                     <option value="">Cycle 4</option> -->
                                    
                                     <option selected value=''>Select </option>
-                        <option *ngFor="let Cycle of adhocCycleList" [value]="Cycle.periodId">
+                        <option *ngFor="let Cycle of adhocCycleList" [value]="Cycle.periodName">
                        {{Cycle.periodName}}
                        </option>
                                 </select>
@@ -257,16 +258,16 @@
 
                 <div class="row">
                   <div class="col-5">
-                    <label for="" class="text-purple font-bold font-14">Total List :{{activeHeadList?.length}}</label>
+                    <label for="" class="text-purple font-bold font-14">Total List: {{activeHeadList?.length}}</label>
                     <span for="" class="text-purple  font-bold font-14" style="margin-left: 250px;">Selected
-                      List :{{selectedUser?.length}}</span>
+                      List: {{selectedUser?.length}}</span>
                   </div>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="col-1"> </div>
                   <div class="col-5">
-                    <label for="" class="text-purple font-bold font-14">Total List :{{targetProducts?.length}}</label>
+                    <label for="" class="text-purple font-bold font-14">Total List: {{targetProducts?.length}}</label>
                     <span for="" class="mr-33  text-purple font-bold font-14" style="margin-left: 250px;">Selected
-                      List :{{selectedUser2?.length}} </span>
+                      List: {{selectedUser2?.length}} </span>
                   </div>
                 </div>
 

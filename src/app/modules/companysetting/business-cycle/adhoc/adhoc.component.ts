@@ -255,7 +255,7 @@ export class AdhocComponent implements OnInit {
   onChangeCopyFrom(){
     this.activeHeadList = this.activeHeadListCopy;
    // const selected = this.adhocForm.get('copyFrom').value;
-    let period = this.adhocCycleList.find(x=>x.periodId== this.adhocForm.get('copyFrom').value) 
+    let period = this.adhocCycleList.find(x=>x.periodName== this.adhocForm.get('copyFrom').value) 
   //const location =   this.summarydata.filter(x=>x.periodName == period);
   const value = period.awphgname.split(',');
   let copyHeadMaster = [];
@@ -310,7 +310,7 @@ export class AdhocComponent implements OnInit {
         //debugger;
         //console.log(ele.businessCycleDefinition)
        
-        if(ele.periodId == periodId  ){
+        if(ele.periodId == periodId){
           this.selectedPeriodName = ele.periodName
           // this.businessCycleDefinition = ele.businessCycleDefinition.businessYearDefinition
           this.businessCycleDefinition = ele
@@ -321,7 +321,7 @@ export class AdhocComponent implements OnInit {
 
       let i = 1
       this.adhocCycleList.forEach(element => {
-        if(element.periodId == periodId){
+        if(element.periodId == periodId && element.businessCycleDefinition.id == businessId){
          // console.log('period id is',periodId)
           i = i+1
         }
@@ -513,9 +513,10 @@ export class AdhocComponent implements OnInit {
     }
 
     //copy from
-    let period = this.adhocCycleList.find(x=>x.id== data.id) 
-    if(period.awphgname != null){
-      const value = period.awphgname.split(',');
+   // let period = this.adhocCycleList.find(x=>x.id== data.id) 
+  // let period = data;
+    if(data.awphgname != null){
+      const value = data.awphgname.split(',');
     let copyHeadMaster = [];
     value.forEach(element => {
       copyHeadMaster.push({
@@ -525,6 +526,7 @@ export class AdhocComponent implements OnInit {
   
     console.log('value is',value);
     this.targetProducts=[];
+    this.activeHeadList = this.activeHeadListCopy;
     this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
     this.activeHeadList = this.activeHeadList.filter(ar => !this.targetProducts.find(rm => rm.headMasterId == ar.headMasterId ))
   
@@ -536,6 +538,7 @@ export class AdhocComponent implements OnInit {
      this.adhocForm.controls['startDate'].disable();
      this.adhocForm.controls['endDate'].disable();
      this.adhocForm.controls['copyFrom'].disable();
+     
    //  this.adhocForm.controls['fromDate'].disable();
     // this.adhocForm.controls['toDate'].disable();
      
@@ -580,20 +583,28 @@ viewAreaSet(data){
     // }
 
     //copy from
-    let period = this.adhocCycleList.find(x=>x.id== data.id) 
-    const value = period.awphgname.split(',');
+   // let period = this.adhocCycleList.find(x=>x.id== data.id) 
+    //const value = period.awphgname.split(',');
+    let copyHeadMaster = [];
+    // value.forEach(element => {
+    //   copyHeadMaster.push({
+    //     headId :parseInt(element)
+    //   })
+    // });
+    if(data.awphgname != null){
+      const value = data.awphgname.split(',');
     let copyHeadMaster = [];
     value.forEach(element => {
       copyHeadMaster.push({
         headId :parseInt(element)
       })
     });
-  
-    console.log('value is',value);
+   console.log('value is',value);
     this.targetProducts=[];
+    this.activeHeadList = this.activeHeadListCopy;
     this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
     this.activeHeadList = this.activeHeadList.filter(ar => !this.targetProducts.find(rm => rm.headMasterId == ar.headMasterId ))
-
+  }
 }  
 
 deleteData(id){

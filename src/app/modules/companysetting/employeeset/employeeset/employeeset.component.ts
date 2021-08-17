@@ -25,6 +25,8 @@ export class EmployeesetComponent implements OnInit {
   empListt: any;
   excelData: any;
   header: any;
+  excelData1: any;
+  header1: any;
 
   employeeMasterId: number;
   serviceData: any;
@@ -183,7 +185,19 @@ export class EmployeesetComponent implements OnInit {
     this.empService.getSummaryData().subscribe((res)=>{
       this.summaryData = res.data.results[0];
       console.log(this.summaryData)
-    })
+    },error => {
+      // if(error.error.status.code == ''){
+         //this.toaster.success( 'Duplicate Area Set Name' );
+        // this.alertService.sweetalertError('Dulicate Areaset');
+        // this.areasetForm.controls['areaSetName'].reset();
+
+      // }
+      setTimeout(()=>{
+       this.summaryData = []
+      },200)
+     
+     }
+    )
   }
 
   formReset() {
@@ -275,6 +289,7 @@ export class EmployeesetComponent implements OnInit {
      this.alertService.sweetalertMasterSuccess( res.status.message, '' );
     //this.getServiceList();
    this.ngOnInit()
+   this.getSummaryData();
      
    })
 
@@ -287,7 +302,7 @@ export class EmployeesetComponent implements OnInit {
     this.header =["Emp.SetName", "No.Of Emp"];
     this.excelData = [];
 
-   let empname = this.employeesetForm.get('employeeSetName').value;
+   //let empname = this.employeesetForm.get('employeeSetName').value;
    //console.log("employee list",this.employeeList)
   // let emp = this.employeesetForm.get('empList').value
   // console.log('empdata',emp)
@@ -296,9 +311,11 @@ export class EmployeesetComponent implements OnInit {
    if(this.employeeList.length>0){
   this.employeeList.forEach(element=>{
     let empCode = this.serviceListData.find(x=>x.value==element)
-  let obj={  EmployeeSetName : empname,
+  let obj={ 
+    // EmployeeSetName : empname,
     employeeCode : empCode.label,
-  empName : empCode.name}
+ // empName : empCode.name
+}
     this.excelData.push(obj)
  })
  
@@ -321,6 +338,52 @@ export class EmployeesetComponent implements OnInit {
     this.excelservice.exportAsExcelFile(this.excelData, this.header);
 
   }
+
+  exportApprovalSummaryAsExcel1(): void {
+    this.excelData1 = [];
+    this.header1 = []
+    this.header1 =["Emp.SetName", "No.Of Emp"];
+    
+    this.excelData1 = [];
+
+   let empname = this.employeesetForm.get('employeeSetName').value;
+   //console.log("employee list",this.employeeList)
+  // let emp = this.employeesetForm.get('empList').value
+  // console.log('empdata',emp)
+  // let empList= emp.split(',');
+
+   if(this.employeeList.length>0){
+  this.employeeList.forEach(element=>{
+    let empCode = this.serviceListData.find(x=>x.value==element)
+  let obj={ 
+     EmployeeSetName : empname,
+    employeeCode : empCode.label,
+ empName : empCode.name
+}
+    this.excelData1.push(obj)
+ })
+ 
+
+  
+
+    // if(this.summaryData.length>0){
+    //  // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+    //  //this.employeeList =  this.tableDataList;
+    //  this.summaryData.forEach((element) => {
+    //   let obj = {
+    //     EmployeeSetName: element.employeeSetName,
+    //     NoOfEmp: element.employeeSetMasterDetailsList.length,
+    //     //masterDescription: element.masterDescription,
+    //   };
+      
+   // });
+      console.log('this.employeeList::', this.employeeList);
+    }
+   // this.excelservice.exportAsExcelFile(this.excelData, this.header);
+
+  }
+
+  
   customSort3(event: SortEvent) {
     event.data.sort((data1, data2) => {
       let value1 = data1[event.field];

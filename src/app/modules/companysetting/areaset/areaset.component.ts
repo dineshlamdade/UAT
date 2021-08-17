@@ -15,6 +15,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 import { TemplateRef} from '@angular/core';
 import { interval } from 'rxjs';
+import { setTime } from 'ngx-bootstrap/chronos/utils/date-setters';
 
 
 interface User1 {
@@ -70,6 +71,9 @@ export class AreasetComponent implements OnInit {
   radioStatus: boolean;
   excelData: any;
   header: any;
+
+  excelData1: any;
+  header1: any;
 
   users1: User1[];
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
@@ -155,6 +159,7 @@ export class AreasetComponent implements OnInit {
     //console.log(this.areasetForm.value)
  
   // this.areasetForm.removeControl('areaSetMasterId')
+ 
   //this.areasetForm.controls['serviceMasterId'].setValue(parseInt(this.areasetForm.controls['serviceMasterId'].value))
        this.areasetService.saveAreaSet(this.areasetForm.value).subscribe((res)=>{
          // this.areasetService.saveAreaSet(data).subscribe((res) => {
@@ -167,8 +172,9 @@ export class AreasetComponent implements OnInit {
        // this.toaster.success('','Area set saved succefully');
        // this.areaList = [];
       //  this.areasetForm.controls.areaList.setValue("");
+      this.areaMaster=[];
        this.areasetForm.controls['areaList'].setValue([]);
-      // this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
+       this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
       
      
        
@@ -256,7 +262,19 @@ getAreaMasterId(e){
       this.areasetService.getSummaryData().subscribe(res =>{
       this.summaryData = res.data.results[0];
       console.log(this.summaryData)
-       })
+       },error => {
+       // if(error.error.status.code == ''){
+          //this.toaster.success( 'Duplicate Area Set Name' );
+         // this.alertService.sweetalertError('Dulicate Areaset');
+         // this.areasetForm.controls['areaSetName'].reset();
+
+       // }
+       setTimeout(()=>{
+        this.summaryData = []
+       },200)
+      
+      }
+       )
   }
 
   /**Service list */
@@ -435,6 +453,7 @@ let datatest = []
   }
 
   getArea(data,elm){
+
     console.log('getArea',data);
     console.log('elm',elm);
     this.areaMaster.push({
@@ -447,20 +466,23 @@ let datatest = []
    deleteData(id){
      this.areasetService.deleteData(id).subscribe((res)=>{
       this.alertService.sweetalertMasterSuccess( res.status.message, '' );
-      //this.getServiceList()
+     // this.areasetService.getServiceList();
+    
       this.ngOnInit();
+      this.getSummaryData();
      })
 
    }
 
-   //Employee set Excel
+   //Area set Excel
   exportApprovalSummaryAsExcel(): void {
  this.excelData = [];
 this.header = []
- this.header =["AreaSetName", "Service" ,'No.Of.Area'];
+ this.header =["Service" ,'No.Of.Area'];
+// this.header =["AreaSetName", "Service" ,'No.Of.Area'];
 this.excelData = [];
 
-let areaName = this.areasetForm.get('areaSetName').value;
+//let areaName = this.areasetForm.get('areaSetName').value;
 
 let serName = this.areasetForm.get('serviceMasterId').value;
 let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
@@ -474,13 +496,15 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
    let areaCode = this.areaListData.find(x=>x.value==element)
    
   let obj={ 
-     areaSetName : areaName,
+     //areaSetName : areaName,
      serviceName :servName.serviceName,
      areacode :areaCode.label 
 }
    this.excelData.push(obj)
 })
 }
+
+
 
   
 
@@ -501,7 +525,61 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
 
  }
 
+ exportApprovalSummaryAsExcel1(): void {
+  this.excelData1 = [];
+ this.header1 = []
+  this.header1 =["AreaSetName", "Service" ,'No.Of.Area'];
+ this.excelData1 = [];
+ 
+ let areaName = this.areasetForm.get('areaSetName').value;
+ 
+ let serName = this.areasetForm.get('serviceMasterId').value;
+ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
+ //    //console.log("employee list",this.employeeList)
+ //   // let emp = this.employeesetForm.get('empList').value
+ //   // console.log('empdata',emp)
+ //   // let empList= emp.split(',');
+ 
+  if(this.areaList.length>0){
+   this.areaList.forEach(element=>{
+    let areaCode = this.areaListData.find(x=>x.value==element)
+    
+   let obj={ 
+      areaSetName : areaName,
+      serviceName :servName.serviceName,
+      areacode :areaCode.label 
+ }
+    this.excelData1.push(obj)
+ })
+ }
+ 
+ 
+ 
+   
+ 
+ //     // if(this.summaryData.length>0){
+ //     //  // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+ //     //  //this.employeeList =  this.tableDataList;
+ //     //  this.summaryData.forEach((element) => {
+ //     //   let obj = {
+ //     //     EmployeeSetName: element.employeeSetName,
+ //     //     NoOfEmp: element.employeeSetMasterDetailsList.length,
+ //     //     //masterDescription: element.masterDescription,
+ //     //   };
+       
+ //    // });
+      console.log('this.areaList::', this.areaList);
+ //     }
+   //this.excelservice.exportAsExcelFile(this.excelData, this.header);
+ 
+  }
+  
+ 
+ 
+ 
 
+
+ 
   customSort3(event: SortEvent) {
     event.data.sort((data1, data2) => {
       let value1 = data1[event.field];

@@ -27,6 +27,8 @@ export class SupplementaryComponent implements OnInit {
   supplimentary: any;
   periodId: any;
   cycleLockList: any;
+  adhocCycleListNew: any[];
+  adhocCycleList: any;
   constructor(public supplementaryService : SupplementaryService,public fb : FormBuilder,public taoster:ToastrService,
     public alertService : AlertServiceService) { 
     this.supplementaryForm = new FormGroup({
@@ -51,6 +53,7 @@ export class SupplementaryComponent implements OnInit {
   ngOnInit(): void {
     this.getAllCycleDefinition();
     this.getSummaryData();
+   //this.getAdhocCycle()
 
     
   }
@@ -82,13 +85,31 @@ console.log('data is',data);
    this.alertService.sweetalertMasterSuccess('Success','Supplementary Cycle Saved Successfully');
 
     this.getSummaryData();
-    this.cycleNameList = [];
+    this.cycleLockList = [];
     this.supplementaryForm.reset();
     this.editFormFlag = false;
     this.viewFormFlag = false;
   })
 }
 
+// getAdhocCycle(){
+//   this.adhocCycleListNew = [];
+//     this.supplementaryService.getAdhocCycle().subscribe((res)=>{
+//    this.adhocCycleList = res.data.results;
+//    console.log(this.adhocCycleList)
+//   // res.data.results[0].forEach(element => {
+//   //   this.adhocCycleList.push({
+//   //     label : element.periodId,
+//   //     value : element.periodName
+//   //   })
+    
+//   // })
+   
+
+//     // this.adhocCycleList = res.data.results.businessYeardefinition;
+//     //  console.log(this.adhocCycleList);
+//   })
+// }
 
 
   getAllCycleDefinition(){
@@ -99,7 +120,13 @@ console.log('data is',data);
   }
 
   getCycleNameById(id){
-    
+  //   this.cycleLockList = [];
+  //   this.cycleDefinitionList.forEach(ele =>{
+  //    if(ele.id == id){
+  //     this.selctedCycleName = ele.cycleName
+  //    }
+     
+  //  })
     
       this.supplementaryService.getByCycleLock(id).subscribe((res)=>{
         this.cycleLockList = res.data.results;
@@ -147,7 +174,7 @@ console.log('data is',data);
       // });
       let cycleName;
       let location = this.cycleLockList.find(a=>a.periodId==periodId);
-       const businessId= location.businessCycleDefinition.id;
+       let businessId= location.businessCycleDefinition.id;
       this.cycleLockList.forEach(ele =>{
         //console.log(ele.businessCycleDefinition)
         if(ele.periodId == periodId){
@@ -159,7 +186,7 @@ console.log('data is',data);
         }
       })
       let i = 1;
-      this.cycleLockList.forEach(element => {
+      this.summarydata.forEach(element => {
      
         if(element.periodId == periodId){
           i = i+1
