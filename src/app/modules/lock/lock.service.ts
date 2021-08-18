@@ -125,9 +125,66 @@ export class LockService {
           // formData.forEach((value, key) => {
           //   console.log(key," ",value)
           // });
-          return this._HTTP.put( environment.baseUrl8084 + 'payrollArea-lock',  data,)
+          return this._HTTP.post( environment.baseUrl8084 + 'payrollArea-lock',  data,)
             .pipe( map( ( res: any ) => {
               return res;
             } ) );
         }
+
+
+        // EMP COde
+         //Get APIs Cycle Name
+     getEmpCode(empCode) {
+      const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+      return this._HTTP.get( environment.baseUrl8084 + 'employee-lock/' + empCode)
+        .pipe( map( ( res: any ) => {
+          return res;
+        } ) );
+    }
+
+
+
+
+       //Get APIs
+   getAreaInEmp(payCode) {
+    const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get( environment.baseUrl8084 + ' servicemaster/' + payCode)
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+
+
+
+       //Get APIs Period Name
+   getCycleNameInEmp(cycleName) {
+    const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/employeeCycleLock/' + cycleName)
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+
+//Save Emp form
+
+postEmpForm(data){
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.post( environment.baseUrl8084 + 'employee-lock', data)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
 }
+
+
+}
+
+
+

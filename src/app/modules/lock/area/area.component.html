@@ -171,11 +171,11 @@
                                   <div class="float-right">
                                       <button type="submit"
                                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
-                                          (click)="lockarea (template2)" tooltip="Area Lock"  [ngClass]="{'disabled-btn-bg-green' : checkedSummaryList.length == 0, 'btn-bg-green': !checkedSummaryList.length == 0}"><b>
+                                          (click)="lockTemp (template2)" tooltip="Area Lock"  [ngClass]="{'disabled-btn-bg-green' : checkedSummaryList.length == 0, 'btn-bg-green': !checkedSummaryList.length == 0}"><b>
                                               <i class="fa fa-lock" aria-hidden="true"></i>
                                           </b> Lock
                                       </button>
-                                      <i class="fa fa-file-excel-o text-dark-green fa-2x "></i>
+                                      <i class="fa fa-file-excel-o fa-2x mr-2 pointer-cursor" (click)="exportApprovalSummaryAsExcel()"></i>
                                   </div>
                               </div>
                           </div>
@@ -188,16 +188,16 @@
                               <th>
                                   <div class="p-d-flex p-jc-between p-ai-center"> Area
                                       <div class="Sort_Filter_Position">
-                                          <p-sortIcon field="empcode" pSortableColumn="empcode"> </p-sortIcon>
-                                          <p-columnFilter field="empcode" display="menu" class="p-ml-auto"> </p-columnFilter>
+                                          <p-sortIcon field="payrollAreaCode" pSortableColumn="payrollAreaCode"> </p-sortIcon>
+                                          <p-columnFilter field="payrollAreaCode" display="menu" class="p-ml-auto"> </p-columnFilter>
                                       </div>
                                   </div>
                               </th>
                               <th>
                                   <div class="p-d-flex p-jc-between p-ai-center"> Company Name
                                       <div class="Sort_Filter_Position">
-                                          <p-sortIcon field="empcode" pSortableColumn="empcode">   </p-sortIcon>
-                                          <p-columnFilter field="empcode" display="menu" class="p-ml-auto">
+                                          <p-sortIcon field="companyName" pSortableColumn="companyName">   </p-sortIcon>
+                                          <p-columnFilter field="companyName" display="menu" class="p-ml-auto">
                                           </p-columnFilter>
                                       </div>
                                   </div>
@@ -205,8 +205,8 @@
                               <th>
                                   <div class="p-d-flex p-jc-between p-ai-center">Service
                                       <div class="Sort_Filter_Position">
-                                          <p-sortIcon field="empcode" pSortableColumn="empcode"> </p-sortIcon>
-                                          <p-columnFilter field="empcode" display="menu" class="p-ml-auto"> </p-columnFilter>
+                                          <p-sortIcon field="serviceName" pSortableColumn="serviceName"> </p-sortIcon>
+                                          <p-columnFilter field="serviceName" display="menu" class="p-ml-auto"> </p-columnFilter>
                                       </div>
                                   </div>
                               </th>
@@ -316,22 +316,32 @@
                                 </select>
                               </div>
                               <div class="col-4">
-                                  <label class="form-label">Area</label>
-                                  <p-multiSelect formControlName="areaMasterCode"
+                                  <label class="form-label">Area </label>
+                                  <!-- <p-multiSelect formControlName="areaMasterCode"
                                   [ngClass]="{'is-invalid' : empForm.get('areaMasterCode').status == 'INVALID'}"
                                   [options]="ServiceAreaListEmp" optionLabel="name"  [ngClass]="{'is-invalid' : empForm.get('areaMasterCode').status == 'INVALID'}" >
-                                  </p-multiSelect>
+                                  </p-multiSelect> -->
+                                  <select  name="areaMasterCode" id="areaMasterCode"  (change)="onSelectAreaInEmp($event.target.value)"
+                                  [ngClass]="{'is-invalid' : empForm.get('areaMasterCode').status == 'INVALID'}"
+                                  class="form-control  " formControlName="areaMasterCode">
+                                  <option selected value=''>Select </option>
+                                  <option *ngFor="let area of ServiceAreaListEmp" [value]="area.value">
+                                    {{area.label}}
+                                  </option>
+                                </select>
                               </div>
                           </div>
                       </fieldset>
                   </div>
                   <div class="col-md-6">
                       <fieldset>
-                          <legend>Employee Selection  </legend>
+                          <legend>Employee Selection </legend>
                           <div class="row">
                               <div class="col-md-4">
                                   <lable class="form-label"> Employee Code</lable>
-                                  <p-multiSelect [options]="groups" [(ngModel)]="selectedgroups" optionLabel="name">
+                                 <p-multiSelect formControlName="employeeCode"
+                                  [ngClass]="{'is-invalid' : empForm.get('employeeCode').status == 'INVALID'}"
+                                  [options]="employeeCodes" optionLabel="name"  [ngClass]="{'is-invalid' : empForm.get('employeeCode').status == 'INVALID'}" >
                                   </p-multiSelect>
                               </div>
                               <div class="col-md-4">
@@ -353,13 +363,12 @@
               <div class="row mt-15">
                   <div class="col-md-12">
                       <div class="float-right">
-                          <button type="submit"
-                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
-                              tooltip="Go"><b>
-                                  <i class="fa fa-arrow-right"></i></b>  Go</button>
-                          <button type="button" tooltip="Reset"
-                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
-                                      class="fa fa-refresh"></i></b>Reset</button>
+                        <button type="submit"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
+                        tooltip="Go"  [ngClass]="{'disabled-btn-bg-green' : empForm.invalid,'btn-bg-green': !empForm.invalid}"><b> <i class="fa fa-arrow-right"></i></b>Go</button>
+                      <button type="button" tooltip="Reset" (click)="resetEmpForm()"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+                                class="fa fa-refresh"></i></b> Reset</button>
                       </div>
                   </div>
               </div>
@@ -1036,13 +1045,32 @@
               </div>
               <div class="row clearfix">
                   <div class="col-md-12">
-                          <p-table [value]="checkedSummaryList" [paginator]="true" [rows]="10"
+                          <!-- <p-table [value]="checkedSummaryList" [paginator]="true" [rows]="10"
                           [showCurrentPageReport]="true"
                           (sortFunction)="customSort3($event)"
                           [customSort3]="true"
                           [pageLinks]="5"
                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                          totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+                          totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"> -->
+
+                          <p-table
+                          #dt1
+                          [value]="checkedSummaryList"
+                          [paginator]="true"
+                          [rows]="10"
+                          [showCurrentPageReport]="true"
+                          (sortFunction)="customSort3($event)"
+                          [customSort3]="true"
+                          [pageLinks]="5"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                          [globalFilterFields]="[
+                            'payrollAreaCode',
+                            'companyName',
+                            'serviceName'
+                          ]"
+                        >
+
 
                           <ng-template pTemplate="caption">
                               <div class="row">
@@ -1052,7 +1080,7 @@
                                   </div>
                                   <div class="col-md-6">
                                       <div class="float-right">
-                                          <i class="fa fa-file-excel-o text-dark-green fa-2x "></i>
+                                        <i class="fa fa-file-excel-o fa-2x mr-2 pointer-cursor" (click)="exportToExcelAreaLock()"></i>
                                       </div>
                                   </div>
                               </div>
@@ -1066,9 +1094,9 @@
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                           Area
                                           <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="empcode"
-                                                  pSortableColumn="empcode"></p-sortIcon>
-                                              <p-columnFilter field="empcode"
+                                              <p-sortIcon field="payrollAreaCode"
+                                                  pSortableColumn="payrollAreaCode"></p-sortIcon>
+                                              <p-columnFilter field="payrollAreaCode"
                                                   display="menu" class="p-ml-auto">
                                               </p-columnFilter>
                                           </div>
@@ -1078,9 +1106,9 @@
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                           Company Name
                                           <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="empcode"
-                                                  pSortableColumn="empcode"></p-sortIcon>
-                                              <p-columnFilter field="empcode"
+                                              <p-sortIcon field="companyName"
+                                                  pSortableColumn="companyName"></p-sortIcon>
+                                              <p-columnFilter field="companyName"
                                                   display="menu" class="p-ml-auto">
                                               </p-columnFilter>
                                           </div>
@@ -1090,9 +1118,9 @@
                                       <div class="p-d-flex p-jc-between p-ai-center">
                                           Service
                                           <div class="Sort_Filter_Position">
-                                              <p-sortIcon field="empcode"
-                                                  pSortableColumn="empcode"></p-sortIcon>
-                                              <p-columnFilter field="empcode"
+                                              <p-sortIcon field="serviceName"
+                                                  pSortableColumn="serviceName"></p-sortIcon>
+                                              <p-columnFilter field="serviceName"
                                                   display="menu" class="p-ml-auto">
                                               </p-columnFilter>
                                           </div>

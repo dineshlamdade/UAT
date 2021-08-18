@@ -18,6 +18,7 @@ import { LockService } from '../lock.service';
 
 import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { element } from 'protractor';
+import { ExcelserviceService } from '../../../core/services/excelservice.service';
 
 export interface Customer {
   empcode;
@@ -113,6 +114,8 @@ export class AreaComponent implements OnInit {
   public areTableList : Array<any> = []
   public checkedSummaryList : Array<any> = []
   public checkedFinalLockList  :  Array<any> = [];
+  public AreaCodes  :  Array<any> = [];
+  public employeeList : Array<any> = [];
 
     disabled: boolean = true;
     customers: Customer[];
@@ -134,17 +137,25 @@ periodNameListEmp: Array<any> = [];
 companyNameListEmp: Array<any> = [];
 companyNamesEmp: Array<any> = [];
 serviceNameListEmp: Array<any> = [];
+employeeCodes: Array<any> = [];
+employeeCodeList: Array<any> = [];
 serviceNamesEmp: Array<any> = [];
 ServiceAreaListEmp: Array<any> = [];
 areaSeriveListEmp: Array<any> = [];
 allAreaCodesEmp: Array<any> = [];
 areTableListEmp: Array<any> = [];
 selectedUserEmp: Array<any> = [];
+excelDataLock: Array<any> = [];
+
+  excelData: any[];
+  header: any[];
+  excelDataAreaLock: any[];
   constructor(
     private formBuilder: FormBuilder,
     private alertService: AlertServiceService,
     private modalService: BsModalService,
-    private lockService: LockService
+    private lockService: LockService,
+    private excelservice: ExcelserviceService,
   ) {
     this.reactiveAreaForm();
     this.reactiveEmpForm();
@@ -334,7 +345,10 @@ selectedUserEmp: Array<any> = [];
       Object.assign({}, { class: 'gray modal-xl' })
     );
   }
-  lockarea(template2: TemplateRef<any>) {
+  lockTemp(template2: TemplateRef<any>) {
+    // this.checkedSummaryList = [];
+    // this.checkedFinalLockList = [];
+    // this.modalRef.hide()
  if(this.checkedSummaryList.length > 0){
   this.modalRef = this.modalService.show(
     template2,
@@ -504,6 +518,10 @@ selectedUserEmp: Array<any> = [];
               //   value: element.payrollAreaId,
               name: element.payrollArea.payrollAreaCode,
               code: element.payrollArea.payrollAreaId,
+
+              // label: element.payrollAreaCode,
+              // value: element.payrollAreaId,
+
             };
             this.ServiceAreaList.push(obj);
           });
@@ -542,13 +560,26 @@ selectedUserEmp: Array<any> = [];
 
 
     this.lockService.postAreaForm(data).subscribe((res: any) => {
-      if (res) {
-        if (res.data.results.length >= 1) {
+       if(res){
+        if(res.data.results.length >= 1) {
           this.getAreaTableSummaryList()
+          this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        } else {
+          this.alertService.sweetalertWarning(res.status.messsage);
         }
+      }else {
+        this.alertService.sweetalertError(
+          'Something went wrong. Please try again.'
+        );
       }
-      this.areaForm.reset();
     });
+    this.areaForm.reset();
+    this.areaForm.patchValue({
+      companyName : '',
+      serviceName : '',
+      periodName : '',
+      name : '',
+    })
   }
 
   getServiceName(serviceCode: any) {
@@ -600,6 +631,11 @@ selectedUserEmp: Array<any> = [];
       this.checkedSummaryList.push(data);
       console.log("checkedSummaryList", this.checkedSummaryList)
     }
+    else {
+      const index = this.checkedSummaryList.indexOf((item) => (item.cycleLockPayrollAreaTempId == element.cycleLockPayrollAreaTempId));
+      this.checkedSummaryList.splice(index, 1);
+      console.log("checkedSummaryList", this.checkedSummaryList)
+    }
   }
 
 
@@ -643,6 +679,8 @@ selectedUserEmp: Array<any> = [];
       name : '',
     })
     }
+
+
 
   //Row select in table
    //Select Row in left table of PHG
@@ -722,21 +760,42 @@ selectedUserEmp: Array<any> = [];
    onCheckAreaInLock(checkValue, element){
     if(checkValue){
       this.checkedFinalLockList.push(element.cycleLockPayrollAreaTempId);
+    }else {
+       const index = this.checkedFinalLockList.indexOf((p) => (p.cycleLockPayrollAreaTempId = element.jobMasterValueId));
+      this.checkedFinalLockList.splice(index, 1);
     }
+
   }
 
   //Reset Lock
   resetLock(){
+    this.checkedSummaryList = [];
     this.checkedFinalLockList = [];
+    this.modalRef.hide()
+
   }
 
-  // Update
+  // Update Lock
   saveLockProceed(){
     const data = { cycleLockPayrollAreaTempIds : this.checkedFinalLockList }
 
     this.lockService.postAreaInLock(data).subscribe((res) =>{
-
-    })
+      if(res){
+        if(res.data.results.length >= 1) {
+          this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        } else {
+          this.alertService.sweetalertWarning(res.status.messsage);
+        }
+      }else {
+        this.alertService.sweetalertError(
+          'Something went wrong. Please try again.'
+        );
+      }
+      this.alertService.sweetalertMasterSuccess( '', 'Records added Successfully' );
+      this.modalRef.hide()
+      this.checkedSummaryList = [];
+      this.getAreaTableSummaryListEmp ();
+    });
   }
 
 
@@ -773,7 +832,9 @@ reactiveEmpForm(){
     serviceName: new FormControl('', Validators.required),
     groupCompanyId: new FormControl(''),
     serviceMasterId: new FormControl(''),
+    employeeCode: new FormControl(''),
     areaMasterCode: new FormControl('', Validators.required),
+
   });
 }
 
@@ -813,10 +874,10 @@ onChangeDefinationEmp(evt: any) {
     this.periodNameListEmp = [];
   } else {
     this.periodNameListEmp = [];
-    this.lockService.getAllCycleNames(evt).subscribe(
+    this.lockService.getCycleNameInEmp(evt).subscribe(
       (res) => {
         this.cycleNameListEmp = res.data.results[0];
-        console.log('cycleNameListEmp', this.cycleNameListEmp);
+        console.log('PeriodName In EMP ', this.cycleNameListEmp);
         res.data.results[0].forEach((element) => {
           const obj = {
             label: element.periodName,
@@ -838,14 +899,14 @@ onSelectCycleNameEmp(evt: any) {
   if (evt != '') {
     this.cycleNameListEmp.forEach((element) => {
       if (element.periodName == evt) {
-        this.areaForm.patchValue({
+        this.empForm.patchValue({
           fromDate: new Date(element.fromDate),
           toDate: new Date(element.toDate),
         });
       }
     });
   } else {
-    this.areaForm.patchValue({
+    this.empForm.patchValue({
       fromDate: '',
       toDate: '',
     });
@@ -882,6 +943,58 @@ getAllServiceNameEmp() {
   });
 }
 
+
+//Get EMP code in Employee Section
+
+// getEmployeeCode() {
+//   this.lockService.getEmpCode().subscribe((res) => {
+//     this.employeeCodeList = res.data.results[0];
+//     console.log('employeeCodeList', this.employeeCodeList);
+//     res.data.results[0].forEach((element) => {
+//       const obj = {
+//         // label: element.serviceName,
+//         // value: element.serviceMasterId,
+//         name: element.employeeCode,
+//         code: element.employeeCode,
+//       };
+//       this.employeeCodes.push(obj);
+//     });
+//   });
+// }
+
+
+//On get the emp code on select area
+onSelectAreaInEmp(evt: any) {
+  // this.empForm.patchValue({
+  //   areaMasterCode: '',
+  // });
+
+  if (evt == '') {
+    this.employeeCodes = [];
+  } else {
+    this.employeeCodes = [];
+    this.lockService.getEmpCode(evt).subscribe((res) => {
+        this.employeeCodeList = res.data.results[0];
+        console.log('employeeCodeList', this.employeeCodeList);
+        res.data.results[0].forEach((element) => {
+          const obj = {
+              // label: element.payrollAreaCode,
+              // value: element.payrollAreaId,
+            name: element.employeeCode,
+            code: element.employeeMasterId,
+          };
+          this.employeeCodes.push(obj);
+        });
+      },
+      (error: any) => {
+        this.alertService.sweetalertError(
+          error['error']['status']['message']
+        );
+      }
+    );
+  }
+}
+
 //On Seelct service name get The Area  List
 onSelectServiceNameEmp(evt: any) {
   if (evt == '') {
@@ -894,10 +1007,10 @@ onSelectServiceNameEmp(evt: any) {
         console.log('areaSeriveList', this.areaSeriveListEmp);
         res.data.results[0].forEach((element) => {
           const obj = {
-            //   label: element.areaMasterCode,
-            //   value: element.payrollAreaId,
-            name: element.payrollArea.payrollAreaCode,
-            code: element.payrollArea.payrollAreaId,
+              label: element.payrollArea.payrollAreaCode,
+              value: element.payrollArea.payrollAreaId,
+            // name: element.payrollArea.payrollAreaCode,
+            // code: element.payrollArea.payrollAreaId,
           };
           this.ServiceAreaListEmp.push(obj);
         });
@@ -911,43 +1024,130 @@ onSelectServiceNameEmp(evt: any) {
   }
 }
 
-// Save Area Form
+// Save EMP Form
 saveEmp() {
   this.allAreaCodesEmp = [];
-  const selectedPayrollAreaCodes = this.areaForm.get('areaMasterCode').value;
+  const selectedPayrollAreaCodes = this.empForm.get('employeeCode').value;
   if (selectedPayrollAreaCodes.length > 0) {
     selectedPayrollAreaCodes.forEach((element) => {
-      this.allAreaCodesEmp.push(element.name);
+      this.allAreaCodesEmp.push(element.code);
     });
   } else {
-    this.alertService.sweetalertWarning('Please select Group code');
+    this.alertService.sweetalertWarning('Please select Employee Code');
     return false;
   }
+
+  // const selectedAreaCodes = this.empForm.get('employeeCode').value;
+  // if (selectedAreaCodes.length > 0) {
+  //   selectedAreaCodes.forEach((element) => {
+  //     this.AreaCodes.push(element.value);
+  //   });
+  // } else {
+  //   this.alertService.sweetalertWarning('Please select Employee Code');
+  //   return false;
+  // }
+
 
   const data = [{
     areaMasterId: this.getAreaMasterIDEmp(),
     businessCycleId: this.getBusinessIDEmp(),
     cycle: this.empForm.get('periodName').value,
     serviceName: this.getServiceNameEmp(this.empForm.get('serviceName').value),
-    payrollAreaCodeList: this.allAreaCodesEmp,
-    isChecked: false
+    payrollAreaCode:  this.getAreaCodesInEmp(this.empForm.get('areaMasterCode').value),
+    employeeMasterIdList:  this.allAreaCodesEmp
+
   }];
 
-  this.lockService.postAreaForm(data).subscribe((res: any) => {
-    if (res) {
-      if (res.data.results.length >= 1) {
-        this.getAreaTableSummaryListEmp()
-      }
-    }
-    this.empForm.reset();
-  });
+
+  this.lockService.postEmpForm(data).subscribe((res: any) => {
+    if(res){
+     if(res.data.results.length >= 1) {
+      //  this.getAreaTableSummaryList()
+       this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+     } else {
+       this.alertService.sweetalertWarning(res.status.messsage);
+     }
+   }else {
+     this.alertService.sweetalertError(
+       'Something went wrong. Please try again.'
+     );
+   }
+ });
+ this.empForm.reset();
+ this.empForm.patchValue({
+  companyName : '',
+  serviceName : '',
+  periodName : '',
+  name : '',
+  employeeCode : '',
+  areaMasterCode : '',
+})
 }
+
+
+  // Sort and Excel
+//Job Master Excel
+exportApprovalSummaryAsExcel(): void {
+  this.excelData = [];
+  this.header = []
+  this.header =["companyName", "payrollAreaCode", "serviceName"];
+  this.excelData = [];
+  if(this.areTableList.length>0){
+   // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+   //this.employeeList =  this.areTableList;
+   this.areTableList.forEach((element) => {
+    let obj = {
+      companyName: element.companyName,
+      payrollAreaCode: element.payrollAreaCode,
+      serviceName: element.serviceName,
+    };
+    this.excelData.push(obj);
+  });
+    console.log('this.excelData::', this.excelData);
+  }
+  this.excelservice.exportAsExcelFile(this.excelData, 'Area-to-Lock', 'Area-to-Lock' ,this.header);
+  console.log('this.excelData::', this.excelData);
+}
+
+
+exportToExcelAreaLock(): void {
+  this.excelDataAreaLock = [];
+  this.header = []
+  this.header =["companyName", "payrollAreaCode", "serviceName"];
+  this.excelDataAreaLock = [];
+  if(this.checkedSummaryList.length>0){
+   // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
+   //this.employeeList =  this.areTableList;
+   this.checkedSummaryList.forEach((element) => {
+    let obj = {
+      companyName: element.companyName,
+      payrollAreaCode: element.payrollAreaCode,
+      serviceName: element.serviceName,
+    };
+    this.excelDataLock.push(obj);
+  });
+    console.log('this.excelDataLock::', this.excelDataLock);
+  }
+  this.excelservice.exportAsExcelFile(this.excelDataLock, 'Area-Lock', 'Area-Lock' ,this.header);
+  console.log('this.excelDataLock::', this.excelDataLock);
+}
+
 
 getServiceNameEmp(serviceCode: any) {
   const toSelect = this.serviceNameListEmp.find(
     (element) => element.serviceMasterId == serviceCode
   );
   return toSelect.serviceName;
+  console.log('toSelect', toSelect);
+}
+
+
+
+getAreaCodesInEmp(payrollAreaCode: any) {
+  const toSelect = this.areaSeriveListEmp.find(
+    (element) => element.payrollArea.payrollAreaId == payrollAreaCode
+  );
+  return toSelect.payrollArea.payrollAreaCode;
   console.log('toSelect', toSelect);
 }
 
@@ -997,8 +1197,8 @@ onCheckAreaEmp(checkValue, element){
 
 //Reset the  form
 resetAreaFormEmp(){
-  this.areaForm.reset();
-  this.areaForm.patchValue({
+  this.empForm.reset();
+  this.empForm.patchValue({
     companyName : '',
     serviceName : '',
     periodName : '',
@@ -1043,6 +1243,16 @@ resetAreaFormEmp(){
 
 doubleClickOnLeftTableEmp(evt: any) {}
 
-
+  //Reset the  form
+  resetEmpForm(){
+    this.empForm.reset();
+    this.empForm.patchValue({
+      companyName : '',
+      serviceName : '',
+      periodName : '',
+      name : '',
+      employeeCode : '',
+    })
+    }
 
 }
