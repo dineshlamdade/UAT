@@ -9,13 +9,15 @@ import { TableModule } from 'primeng/table';
 import { DocumentviewerComponent } from './documentviewer/documentviewer.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InvestmentTransactionApprovalComponent } from './investment-transaction-approval/investment-transaction-approval.component';
+import { InvestmentOnetimetransactionApprovalComponent } from './investment-onetimetransaction-approval/investment-onetimetransaction-approval.component';
 
 @NgModule({
   declarations: [
     InvestmentApprovalComponent,
     InvestmentMasterApprovalComponent,
     DocumentviewerComponent,
-    InvestmentTransactionApprovalComponent
+    InvestmentTransactionApprovalComponent,
+    InvestmentOnetimetransactionApprovalComponent
   ],
   imports: [
     CommonModule,
