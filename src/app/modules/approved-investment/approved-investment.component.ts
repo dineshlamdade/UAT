@@ -51,6 +51,7 @@ export class ApprovedInvestmentComponent implements OnInit {
   constructor(private modalService: BsModalService) { }
 
   ngOnInit() {
+  
     
 this.customers = [
   {empcode: '551', empName: 'abc', Group:'House Rent', Frequency:'80-TTA', Type:'M',proofsubmission:'234234',PSIdDetails:'ABC',SubmissionDate:'12/3/2020',Status:'Submitted'},

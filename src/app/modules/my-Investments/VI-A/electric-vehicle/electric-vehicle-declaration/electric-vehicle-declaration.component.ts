@@ -573,56 +573,6 @@ selectedTransactionLenderName(lenderName: any) {
   }
 
   // --------------- ON change of declared Amount in line-------------
-  onDeclaredAmountChange(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: any;
-      dueDate: Date;
-    },
-    i: number,
-    j: number
-  ) {
-    this.declarationService = new DeclarationService(summary);
-    // console.log('Ondeclaration Amount change' + summary.declaredAmount);
-
-    this.transactionDetail[
-      j
-    ].electricVehicleLoanTransactionPreviousEmployerList[
-      i
-    ].declaredAmount = this.declarationService.declaredAmount;
-    const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j]
-        .electricVehicleLoanTransactionPreviousEmployerList[i].declaredAmount
-    );
-    // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[
-      j
-    ].electricVehicleLoanTransactionPreviousEmployerList[
-      i
-    ].declaredAmount = formatedDeclaredAmount;
-
-    this.declarationTotal = 0;
-    // this.declaredAmount=0;
-
-    this.transactionDetail[
-      j
-    ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(/,/g, ''));
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(/,/g, '')
-      );
-      // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(/,/g, ''));
-    });
-
-    this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( 'DeclarATION total==>>' + this.transactionDetail[j].declarationTotal);
-  }
-
-
-  // --------------- ON change of declared Amount in line-------------
 
   onDeclaredAmountChangeCurrentEmp(
     summary: {
@@ -654,149 +604,7 @@ selectedTransactionLenderName(lenderName: any) {
     );
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
   }
-
-  // ------------ ON change of DueDate in line----------
-  onDueDateChange(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: any;
-    },
-    i: number,
-    j: number
-  ) {
-    this.transactionDetail[
-      j
-    ].electricVehicleLoanTransactionPreviousEmployerList[i].dueDate =
-      summary.dueDate;
-  }
-
-  // ------------Actual Amount change-----------
-  onActualAmountChange(
-    summary: {
-      previousEmployerName: any;
-      // declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      // dueDate: Date;
-    },
-    i: number,
-    j: number
-  ) {
-    this.declarationService = new DeclarationService(summary);
-    // console.log('Actual Amount change::' , summary);
-
-    this.transactionDetail[
-      j
-    ].electricVehicleLoanTransactionPreviousEmployerList[
-      i
-    ].actualAmount = this.declarationService.actualAmount;
-    const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j]
-        .electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount
-    );
-    // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[
-      j
-    ].electricVehicleLoanTransactionPreviousEmployerList[
-      i
-    ].actualAmount = formatedActualAmount;
-
-    if (
-      this.transactionDetail[j]
-        .electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount !==
-        Number(0) ||
-      this.transactionDetail[j]
-        .electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount !==
-        null
-    ) {
-      // console.log(`in if::`,this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
-      this.isDisabled = false;
-    } else {
-      // console.log(`in else::`,this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
-      this.isDisabled = true;
-    }
-
-    this.actualTotal = null;
-    this.actualAmount = null;
-    this.transactionDetail[
-      j
-    ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(/,/g, ''));
-      this.actualTotal += Number(
-        element.actualAmount.toString().replace(/,/g, '')
-      );
-      // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
-    });
-
-    this.transactionDetail[j].actualTotal = this.actualTotal;
-    // this.transactionDetail[j].actualAmount = this.actualAmount;
-    // console.log(this.transactionDetail[j]);
-    // console.log(this.actualTotal);
-  }
-
-  // ------------Actual Amount change-----------
-  onActualAmountChangeCurrent(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: Date;
-    },
-    i: number,
-    j: number
-  ) {
-    this.declarationService = new DeclarationService(summary);
-    // console.log('Actual Amount change::' , summary);
-
-    this.transactionDetail[j].electricVehicleLoanTransactionList[
-      i
-    ].actualAmount = this.declarationService.actualAmount;
-    // console.log('Actual Amount changed::' , this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
-    const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].electricVehicleLoanTransactionList[i]
-        .actualAmount
-    );
-    // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[j].electricVehicleLoanTransactionList[
-      i
-    ].actualAmount = formatedActualAmount;
-
-    if (
-      this.transactionDetail[j].electricVehicleLoanTransactionList[i]
-        .actualAmount !== Number(0) ||
-      this.transactionDetail[j].electricVehicleLoanTransactionList[i]
-        .actualAmount !== null
-    ) {
-      // console.log(`in if::`,this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
-      this.isDisabled = false;
-    } else {
-      // console.log(`in else::`,this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
-      this.isDisabled = true;
-    }
-
-    this.actualTotal = null;
-    this.actualAmount = null;
-    this.transactionDetail[j].electricVehicleLoanTransactionList.forEach(
-      (element) => {
-        // console.log(element.actualAmount.toString().replace(/,/g, ''));
-        this.actualTotal += Number(
-          element.actualAmount.toString().replace(/,/g, '')
-        );
-        // console.log(this.actualTotal);
-        // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
-      }
-    );
-
-    this.transactionDetail[j].actualTotal = this.actualTotal;
-    // this.transactionDetail[j].actualAmount = this.actualAmount;
-    // console.log(this.transactionDetail[j]);
-    // console.log(this.actualTotal);
-  }
+ 
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
@@ -1315,11 +1123,12 @@ selectedTransactionLenderName(lenderName: any) {
     ].electricVehicleLoanTransactionPreviousEmployerList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    console.log(
+    
+   /*  console.log(
       'Actual Amount changed::',
       this.editTransactionUpload[j]
         .electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount
-    );
+    ); */
 
     const formatedActualAmount = this.numberFormat.transform(
       this.editTransactionUpload[j]
@@ -1370,7 +1179,6 @@ selectedTransactionLenderName(lenderName: any) {
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
     console.log(this.editTransactionUpload[j].actualTotal);
   }
-
 
   onActualAmountChangeInEditCaseCurrentEmp(
     summary: {
