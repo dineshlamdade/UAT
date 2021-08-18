@@ -129,6 +129,8 @@ export class AdhocComponent implements OnInit {
     this.getSummaryData();
   this.targetProducts = [];
     this.cycleNameList = [];
+    this.getAdhocCycle();
+    this.getActiveHead()
     this.adhocForm.reset();
     this.editFormFlag = false;
     this.viewFormFlag = false;
@@ -171,6 +173,7 @@ export class AdhocComponent implements OnInit {
       this.alertService.sweetalertMasterSuccess('Success','Adhoc Cycle Updated Successfully');
       this.adhocForm.controls['copyFrom'].enable();
       this.getSummaryData();
+      this.getAdhocCycle();
       this.targetProducts = [];
       this.cycleNameList = [];
       this.adhocForm.reset();
@@ -267,6 +270,7 @@ export class AdhocComponent implements OnInit {
 
   console.log('value is',value);
   this.targetProducts=[];
+  //this.activeHeadList = this.activeHeadListCopy;
   this.targetProducts = this.activeHeadList.filter(ar => copyHeadMaster.find(rm => rm.headId == ar.headMasterId ))
  this.activeHeadList = this.activeHeadList.filter(ar => !this.targetProducts.find(rm => rm.headMasterId == ar.headMasterId ))
 // this.targetProducts.push({
@@ -481,6 +485,7 @@ export class AdhocComponent implements OnInit {
 
   editAreaSet(data){
     console.log('result is',data);
+    // this.activeHeadList = this.activeHeadListCopy;
    // this.editData= data;
     this.getCycleNameById(data.businessCycleDefinition.id);
     this.editFormFlag =true;
@@ -570,6 +575,7 @@ viewAreaSet(data){
   this.adhocForm.controls['fromDate'].patchValue(new Date(data.fromDate));
   this.adhocForm.controls['toDate'].patchValue(new Date(data.toDate));
   this.adhocForm.controls['remark'].patchValue(data.remark);
+  
 // this.adhocForm.controls.lefttablePusg.disable();
   
 //  this.adhocForm.controls['headMasterIds'].disable();

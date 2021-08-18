@@ -100,11 +100,12 @@ export class EmployeesetComponent implements OnInit {
 
   onSubmit() {
    //console.log(this.employeesetForm.value)
-   this.empService.saveEmployeeSet(this.employeesetForm.value).subscribe((res : any)=>{
+   this.empService.saveEmployeeSet(this.employeesetForm.value).subscribe((res)=>{
      
    // this.toaster.success('','Employee set saved successfully');
    this.alertService.sweetalertMasterSuccess('Success','Employee Set Saved Successfully');
    //this.employeeList = [];
+   this.serviceListData = [];
     this.getSummaryData();
     this.employeesetForm.controls['empList'].setValue([]);
     //this.serviceListData = [];

@@ -343,7 +343,7 @@
 
               <p-table #dt2 [value]="excelData1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               (sortFunction)="customSort3($event)" [customSort3]="true"
-               [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areasetname','Status']">
+               [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areacode','Status']">
                 <ng-template pTemplate="caption">
                   <div class="row">
 
@@ -351,7 +351,7 @@
                       <div class="float-right">
                         <span class="p-input-icon-left p-ml-auto">
                           <i class="pi pi-search" style="top: 9px !important;"></i>
-                          <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                          <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
                             placeholder="Search " />
                         </span>
                       </div>
