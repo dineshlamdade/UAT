@@ -459,7 +459,7 @@ addQueryGeneration(){ //post api for saving data
 
         }
 
-  if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes')
+  else if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes')
         {
         this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
 
@@ -494,10 +494,10 @@ addQueryGeneration(){ //post api for saving data
 
         }
 
-  if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'yes')
+  else if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'yes')
               {
 
-              this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
+              this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
               // this.queryGenerationForm.controls['sameContentForAllEmp'].setValue('true');
 
                   if(this.listDoc.length == 0){
@@ -506,7 +506,7 @@ addQueryGeneration(){ //post api for saving data
                     this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
                     this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
                     // this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-                    this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
+                    this.queryGenerationForm.controls['employeeMasterId'].setValue(0);
 
                     let data = []
                     data.push(this.queryGenerationForm.value)
@@ -531,7 +531,7 @@ addQueryGeneration(){ //post api for saving data
 
         }
 
-  if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'no')
+  else if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'no')
                     {
 
                     this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
@@ -716,7 +716,7 @@ addQuerywithDocs()
 
           }
 
-   if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes')
+   else if(this.emlpoyeeSelectionData.onBehalf == 'yes' && this.emlpoyeeSelectionData.sameContent == 'yes')
           {
           this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
 
@@ -751,7 +751,7 @@ addQuerywithDocs()
 
           }
 
-    if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'yes')
+    else if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'yes')
                 {
 
                 this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.selectedEmployee);
@@ -762,7 +762,7 @@ addQuerywithDocs()
                       this.queryGenerationForm.controls['queAnsMasterId'].setValue(parseInt(this.queryGenerationForm.controls['queAnsMasterId'].value));
                       this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
                       this.queryGenerationForm.controls['subQueTypeMasterId'].setValue(parseInt(this.queryGenerationForm.controls['subQueTypeMasterId'].value));
-                      this.queryGenerationForm.controls['employeeMasterId'].setValue(this.employeeMasterId);
+                      this.queryGenerationForm.controls['employeeMasterId'].setValue(0);
 
                       let data = []
                       data.push(this.queryGenerationForm.value)
@@ -786,7 +786,7 @@ addQuerywithDocs()
 
           }
 
-    if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'no')
+   else if(this.emlpoyeeSelectionData.onBehalf == 'no' && this.emlpoyeeSelectionData.sameContent == 'no')
                       {
 
                       this.queryGenerationForm.controls['employeeMasterIdList'].setValue(this.employeeListId);
