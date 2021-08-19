@@ -1,6 +1,8 @@
 <div class="row">
   <div class="col-md-12">
+
       <div class="card">
+        <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" (ngSubmit)="save()" method="post" novalidate>
           <div class="card-body">
               <div class="fourtabview-contents">
               <div class="row">
@@ -17,6 +19,7 @@
                           <label class="form-label">Company Name</label>
                           <select name="Gender"
                               class="form-control custom-select">
+                              <option selected value="">Select</option>
                               <option value="Male"> Paysquare</option>
                               <option value="Female"> Infosys</option>
                           </select>
@@ -26,6 +29,7 @@
                           <label class="form-label">Type</label>
                           <select name="Gender"
                               class="form-control custom-select">
+                              <option selected value="">Select</option>
                               <option value="Male"> Supplementry</option>
                               <option value="Female"> Adhoc</option>
                           </select>
@@ -34,6 +38,7 @@
                           <label class="form-label">Cycle Name</label>
                           <select name="Gender"
                               class="form-control custom-select">
+                              <option selected value="">Select</option>
                               <option value="Male"> Apr 20202</option>
                               <option value="Female"> Apr 2021</option>
                           </select>
@@ -96,7 +101,8 @@
 
               </div>
           </div>
-      </div>
+      </form>
+        </div>
   </div>
 </div>
 

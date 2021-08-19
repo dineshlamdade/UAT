@@ -105,15 +105,15 @@
                                   <lable class="form-label"> Area</lable>
                                   <!-- <p-multiSelect [options]="groups" [(ngModel)]="ServiceAreaList" optionLabel="name">
                                   </p-multiSelect> -->
-                                  <p-multiSelect formControlName="areaMasterCode"
+                                  <p-multiSelect formControlName="areaMasterCode" defaultLabel="Select a Area"
                                   [ngClass]="{'is-invalid' : areaForm.get('areaMasterCode').status == 'INVALID'}"
                                   [options]="ServiceAreaList" optionLabel="name"  [ngClass]="{'is-invalid' : areaForm.get('areaMasterCode').status == 'INVALID'}" >
                                   </p-multiSelect>
                               </div>
                               <div class="col-md-4">
                                   <lable class="form-label"> Area Set</lable>
-                                  <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name">
-                                  </p-multiSelect> -->
+                                  <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name">
+                                  </p-multiSelect>
                               </div>
                               <div class="col-md-4 ">
                                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
@@ -475,10 +475,14 @@
                                           </th>
                                           <th>
                                               <div class="p-d-flex p-jc-between p-ai-center">Designation
-                                                  <div class="Sort_Filter_Position">
+                                                  <!-- <div class="Sort_Filter_Position">
                                                       <p-sortIcon field="Group" pSortableColumn="Group"></p-sortIcon>
                                                       <p-columnFilter type="text" field="Group" display="menu" class="p-ml-auto"> </p-columnFilter>
-                                                  </div>
+                                                  </div> -->
+                                                  <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="ItSection" pSortableColumn="ItSection"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="ItSection" display="menu" class="p-ml-auto">  </p-columnFilter>
+                                                </div>
                                               </div>
                                           </th>
                                       </tr>
@@ -496,7 +500,8 @@
                                           <td> {{customer.establishment}} </td>
                                           <td> {{ customer.department}} </td>
                                           <td>  {{customer.grade}} </td>
-                                          <td> {{ customer.designation}} </td>
+                                          <td>  {{customer.grade}} </td>
+                                          <td> {{ customer.grade}} </td>
                                          </tr>
                                   </ng-template>
                               </p-table>
@@ -851,7 +856,7 @@
                                   <td> {{ customer.establishment}}</td>
                                   <td> {{ customer.department}}</td>
                                   <td> {{ customer.grade}}</td>
-                                  <td>  {{ customer.designation}} </td>
+                                  <td>  {{ customer.designation}}</td>
                              </tr>
                           </ng-template>
                       </p-table>

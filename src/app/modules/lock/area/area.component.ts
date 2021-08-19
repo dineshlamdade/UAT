@@ -503,7 +503,66 @@ excelDataLock: Array<any> = [];
   }
 
   //On Seelct service name get The Area  List
+  // onSelectServiceName(evt: any) {
+  //   if (evt == '') {
+  //     this.ServiceAreaList = [];
+  //   } else {
+  //     this.ServiceAreaList = [];
+  //     this.lockService.getAreawServicesName(evt).subscribe(
+  //       (res) => {
+  //         this.areaSeriveList = res.data.results[0];
+  //         console.log('areaSeriveList', this.areaSeriveList);
+  //         res.data.results[0].forEach((element) => {
+  //           const obj = {
+  //             //   label: element.areaMasterCode,
+  //             //   value: element.payrollAreaId,
+  //             name: element.payrollArea.payrollAreaCode,
+  //             code: element.payrollArea.payrollAreaId,
+
+  //             // label: element.payrollAreaCode,
+  //             // value: element.payrollAreaId,
+
+  //           };
+  //           this.ServiceAreaList.push(obj);
+  //         });
+  //       },
+  //       (error: any) => {
+  //         this.alertService.sweetalertError(
+  //           error['error']['status']['message']
+  //         );
+  //       }
+  //     );
+  //   }
+  // }
+
   onSelectServiceName(evt: any) {
+   if(evt == '1'){
+    if (evt == '') {
+      this.ServiceAreaList = [];
+    } else {
+      this.ServiceAreaList = [];
+      this.lockService.getAreawServicesName(evt).subscribe(
+        (res) => {
+          this.areaSeriveList = res.data.results[0];
+          console.log('areaSeriveList', this.areaSeriveList);
+          res.data.results[0].forEach((element) => {
+            const obj = {
+
+              name: element.payrollAreaCode,
+              code: element.payrollAreaId,
+
+            };
+            this.ServiceAreaList.push(obj);
+          });
+        },
+        (error: any) => {
+          this.alertService.sweetalertError(
+            error['error']['status']['message']
+          );
+        }
+      );
+    }
+   }else {
     if (evt == '') {
       this.ServiceAreaList = [];
     } else {
@@ -519,9 +578,6 @@ excelDataLock: Array<any> = [];
               name: element.payrollArea.payrollAreaCode,
               code: element.payrollArea.payrollAreaId,
 
-              // label: element.payrollAreaCode,
-              // value: element.payrollAreaId,
-
             };
             this.ServiceAreaList.push(obj);
           });
@@ -534,6 +590,10 @@ excelDataLock: Array<any> = [];
       );
     }
   }
+  }
+
+
+
 
   // Save Area Form
   saveArea() {
@@ -866,7 +926,7 @@ getAllCycleDefinationEmp() {
 //  Get defication on change
 
 onChangeDefinationEmp(evt: any) {
-  this.areaForm.patchValue({
+  this.empForm.patchValue({
     fromDate: '',
     toDate: '',
   });
@@ -894,6 +954,9 @@ onChangeDefinationEmp(evt: any) {
     );
   }
 }
+
+
+
 //Get Cycle Name
 onSelectCycleNameEmp(evt: any) {
   if (evt != '') {
@@ -996,33 +1059,91 @@ onSelectAreaInEmp(evt: any) {
 }
 
 //On Seelct service name get The Area  List
+// onSelectServiceNameEmp(evt: any) {
+//   if (evt == '') {
+//     this.ServiceAreaListEmp = [];
+//   } else {
+//     this.ServiceAreaListEmp = [];
+//     this.lockService.getAreawServicesName(evt).subscribe(
+//       (res) => {
+//         this.areaSeriveListEmp = res.data.results[0];
+//         console.log('areaSeriveList', this.areaSeriveListEmp);
+//         res.data.results[0].forEach((element) => {
+//           const obj = {
+//               label: element.payrollArea.payrollAreaCode,
+//               value: element.payrollArea.payrollAreaId,
+//             // name: element.payrollArea.payrollAreaCode,
+//             // code: element.payrollArea.payrollAreaId,
+//           };
+//           this.ServiceAreaListEmp.push(obj);
+//         });
+//       },
+//       (error: any) => {
+//         this.alertService.sweetalertError(
+//           error['error']['status']['message']
+//         );
+//       }
+//     );
+//   }
+// }
+
+
 onSelectServiceNameEmp(evt: any) {
-  if (evt == '') {
-    this.ServiceAreaListEmp = [];
-  } else {
-    this.ServiceAreaListEmp = [];
-    this.lockService.getAreawServicesName(evt).subscribe(
-      (res) => {
-        this.areaSeriveListEmp = res.data.results[0];
-        console.log('areaSeriveList', this.areaSeriveListEmp);
-        res.data.results[0].forEach((element) => {
-          const obj = {
-              label: element.payrollArea.payrollAreaCode,
-              value: element.payrollArea.payrollAreaId,
-            // name: element.payrollArea.payrollAreaCode,
-            // code: element.payrollArea.payrollAreaId,
-          };
-          this.ServiceAreaListEmp.push(obj);
-        });
-      },
-      (error: any) => {
-        this.alertService.sweetalertError(
-          error['error']['status']['message']
-        );
-      }
-    );
-  }
-}
+  if(evt == '1'){
+   if (evt == '') {
+     this.ServiceAreaListEmp = [];
+   } else {
+     this.ServiceAreaListEmp = [];
+     this.lockService.getAreawServicesName(evt).subscribe(
+       (res) => {
+         this.areaSeriveListEmp = res.data.results[0];
+         console.log('areaSeriveList', this.areaSeriveListEmp);
+         res.data.results[0].forEach((element) => {
+           const obj = {
+
+            label: element.payrollAreaCode,
+            value: element.payrollAreaId,
+
+           };
+           this.ServiceAreaListEmp.push(obj);
+         });
+       },
+       (error: any) => {
+         this.alertService.sweetalertError(
+           error['error']['status']['message']
+         );
+       }
+     );
+   }
+  }else {
+   if (evt == '') {
+     this.ServiceAreaListEmp = [];
+   } else {
+     this.ServiceAreaListEmp = [];
+     this.lockService.getAreawServicesName(evt).subscribe(
+       (res) => {
+         this.areaSeriveList = res.data.results[0];
+         console.log('areaSeriveList', this.areaSeriveList);
+         res.data.results[0].forEach((element) => {
+           const obj = {
+             //   label: element.areaMasterCode,
+             //   value: element.payrollAreaId,
+             label: element.payrollArea.payrollAreaCode,
+             value: element.payrollArea.payrollAreaId,
+           };
+           this.ServiceAreaListEmp.push(obj);
+         });
+       },
+       (error: any) => {
+         this.alertService.sweetalertError(
+           error['error']['status']['message']
+         );
+       }
+     );
+   }
+ }
+ }
+
 
 // Save EMP Form
 saveEmp() {
