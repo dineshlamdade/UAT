@@ -494,6 +494,7 @@
                                                                 class="form-control"
                                                                 [(ngModel)]="tablevalue"
                                                                 [ngModelOptions]="{standalone: true}"
+                                                                [disabled]="editTableColDisabled"
                                                                 (change)="fieldTypeList($event.target.value,1)">
                                                                 <option>Select Table Value</option>
                                                                 <option
@@ -510,6 +511,7 @@
                                                                 class="form-control"
                                                                 [(ngModel)]="fieldtypevalue"
                                                                 [ngModelOptions]="{standalone: true}"
+                                                                [disabled]="editTableColDisabled"
                                                                 (change)="valuesList($event.target.value)">
                                                                 <option>Select Field Type</option>
                                                                 <option
@@ -599,18 +601,11 @@
                                                           </tr>
                                                         </ng-template>
                                                       </p-table>
-                              
-                              
-                              
-                              
-                              
                                                     </div>
-                              
-                              
                                                   </div>
                                                   <br>
                                                   <br>
-                                                <div class="row d-flex" *ngIf="sourceMasterName == 'SPAndFunctionMaster'">
+                                                <div class="row d-flex" *ngIf="sourceMasterName == 'SPAndFunctionMaster' || enableSourcePeriod">
                                                     <div class="ml-2 pl-1 pr-0">
                                                         <label class="form-label mt-2">
                                                             Source Period
@@ -620,7 +615,7 @@
                                                     <div class="col-2">
                                                        
                                                         <select name="Select" class="form-control"
-                                                            formControlName="sourcePeriod" [required]="sourceMasterName == 'SPAndFunctionMaster'">
+                                                            formControlName="sourcePeriod" [required]="enableSourcePeriod">
                                                             <option value="Select"> Select </option>
                                                             <option>Current Cycle End</option>
                                                             <option>Current Cycle Start </option>
@@ -652,10 +647,10 @@
                                                 <br>
                                                 <div class="row mt-15 float-right">
                                                     <div class="float-right ">
-                                                        <button *ngIf="!editTempFlag && !editTempFlag1" type="submit" [disabled]="sdmFormStep1.invalid"
+                                                        <button *ngIf="!editTempFlag && !editTempFlag1" type="submit" [disabled]="sdmFormStep1.invalid || tempSourceTable.length == 0"
                                                             (click)="getStepper(1);saveSourceDerivedMatrix()"
                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                                                            [ngClass]="{'disabled-btn-bg-green' : sdmFormStep1.invalid,'btn-bg-green': !sdmFormStep1.invalid}"
+                                                            [ngClass]="{'disabled-btn-bg-green' : sdmFormStep1.invalid || tempSourceTable.length == 0,'btn-bg-green': !sdmFormStep1.invalid}"
                                                             tooltip="Save" [disabled]="step1FormDisableFlag"><b>
                                                                 <i class="fa fa-floppy-o"></i></b>Save</button>&nbsp;
 
@@ -850,9 +845,13 @@
                                                         <div class="row mt-10">
                                                             <div class="col-sm-3">
                                                                 <label class="form-label"> Derived Name</label>
-                                                                <input formControlName="derivedName" type="text"
-                                                                [ngClass]="{'is-invalid' : sdmFormStep3.get('derivedName').status == 'INVALID'}"
+                                                                <input formControlName="derivedName" type="text" (focusout)="checkderivednameexist($event.target.value)"
+                                                                [ngClass]="{'is-invalid' : sdmFormStep3.get('derivedName').status == 'INVALID' || derivednameexist}"
                                                                     class="form-control" placeholder="">
+
+                                                                    <div class="text-danger" *ngIf="derivednameexist" style="color: red !important;">
+                                                                        <span style="color: red !important;" >Derived name already exist.</span>
+                                                                    </div>
                                                             </div>
                                                             <div class="col-sm-3">
                                                                 <label class="form-label">Module</label>
@@ -1165,7 +1164,7 @@
                                                                     tooltip="Save"><b>
                                                                         <i class="fa fa-floppy-o"></i></b>
                                                                     Save</button>&nbsp;
-                                                                <button type="button" (click)="getStepper(3);next();getMatrixTableData();derivedMaster();combinationMatrix();getMatrixData();"
+                                                                <button type="button" (click)="getStepper(3);next();getMatrixTableData();derivedMaster();combinationMatrix();"
                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
                                                                     tooltip="Next"><b>
                                                                     <i class="fa fa-angle-double-right"></i></b>Next</button>&nbsp;
@@ -1350,7 +1349,7 @@
 
                                                                     <th rowspan="2" class=" text-center">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
-                                                                            {{derivedObjectNames}}
+                                                                            {{derivedFieldName}}
                                                                             <div class="Sort_Filter_Position">
                                                                                 <p-sortIcon field="Value"
                                                                                     pSortableColumn="Value">
@@ -1361,8 +1360,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-
-                                                                    <th rowspan="2" class="text-center">
+                                                                    <!-- rowspan="2" -->
+                                                                    <th  class="text-center">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             From Date
                                                                             <div class="Sort_Filter_Position">
@@ -1376,7 +1375,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </th>
-                                                                    <th rowspan="2" class=" text-center ">
+                                                                    <!-- rowspan="2" -->
+                                                                    <th  class=" text-center ">
                                                                         <div class="p-d-flex p-jc-between p-ai-center">
                                                                             To Date
                                                                             <div class="Sort_Filter_Position">
@@ -1453,10 +1453,23 @@
 
                                                                     </td>
                                                                     <td>
-                                                                        <input type="text" class="form-control" *ngIf="!showDropdown"
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" *ngIf="!showDropdown"
                                                                             placeholder=""
                                                                             [value]="selectedIndex == rowIndex ? applicableValue : '' "
                                                                             (focusout)="applicableValueData($event.target.value)">
+                                                                            <span class="input-group-append" *ngIf="showSearchLeans">
+                                                                                <button class="btn btn-primary" type="button">
+                                                                                    <span class="fe fe-search" (click)="largepopup (template1)"><i></i>
+                                                                                    </span>
+                                                                                </button>
+                                                                            </span>
+                                                                        </div>
+
+                                                                        
+
+
+                                                                            
 
                                                                             <select type="text" class="form-control" *ngIf="showDropdown"
                                                                             placeholder=""
@@ -1573,6 +1586,36 @@
                                                                         <td>{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}
                                                                         </td>
                                                                         <td>{{data.derivedToDate | date: 'dd-MMM-yyyy'}}
+                                                                        </td>
+                                                                        <td></td>
+                                                                    </tr>
+
+
+
+                                                                    <tr class="p-selectable-row text-center"
+                                                                        *ngFor="let data of tempEditMatrixData;let i = index;">
+                                                                        <td *ngFor="let header of sourceFieldListData">
+                                                                           
+                                                                        </td>
+                                                                        <td><input type="text" class="form-control"
+                                                                            placeholder=""
+                                                                            value="{{data.sourceRangeFrom}}">
+                                                                        </td>
+                                                                        <td><input type="text" class="form-control"
+                                                                            placeholder=""
+                                                                            value="{{data.sourceRangeTo}}">
+                                                                        </td>
+                                                                        <td><input type="text" class="form-control"
+                                                                            placeholder=""
+                                                                            value="{{data.applicableValue}}">
+                                                                        </td>
+                                                                        <td><input type="text" class="form-control"
+                                                                            placeholder=""
+                                                                            value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}">
+                                                                        </td>
+                                                                        <td><input type="text" class="form-control"
+                                                                            placeholder=""
+                                                                            value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}">
                                                                         </td>
                                                                         <td></td>
                                                                     </tr>
@@ -1723,3 +1766,137 @@
         </tbody>
         </table>
 </div>
+
+<ng-template #template1>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Employee Selection</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+             
+              <div class="row mt-15">
+                <div class="col-12">
+                   <div class="mb-15">
+                    <div class="form-group">
+                      <label class="form-label"></label>
+                      <div class="input-icon mb-3" style="width: 250px;">
+                          <input type="text" class="form-control" placeholder="Search...">
+                          <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                      </div>
+                      </div>
+                     </div>
+                     </div>
+                     </div>
+                <div class="row clearfix">
+                  
+                    <div class="col-md-12">
+                
+                      <p-table [value]="EmployeeData" [paginator]="true" [rows]="10" 
+                      [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+                      [rowsPerPageOptions]="[10,25,50]" 
+                      [globalFilterFields]="['EmployeeData.employeeCode','EmployeeData.fullName']">
+                      <ng-template pTemplate="caption">
+                        <div style="text-align: right">
+                          <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                          <input type="text" pInputText size="50" placeholder="Search"
+                            (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            style="width: 203px;margin-right: 37px;">
+      
+                         
+                        </div>
+                      </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                
+                                <th>
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Select 
+                      
+                      
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="Attribute"
+                                        pSortableColumn="Attribute"></p-sortIcon>
+                                          <p-columnFilter type="text" field="name" display="menu"
+                                              class="p-ml-auto"></p-columnFilter>
+                                      </div>
+                                  </div>
+                              </th>
+                             
+                              <th rowspan="2">
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Emp. Code
+                      
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="Attribute"
+                                        pSortableColumn="Attribute"></p-sortIcon>
+                                          <p-columnFilter type="text" field="name" display="menu"
+                                              class="p-ml-auto"></p-columnFilter>
+                                      </div>
+                                  </div>
+                              </th>
+                                                                                     
+                           
+                        <th rowspan="2" >
+                          <div class="p-d-flex p-jc-between p-ai-center">
+                        Emp. Name
+                              <div class="Sort_Filter_Position">
+                                <p-sortIcon field="Attribute"
+                                pSortableColumn="Attribute"></p-sortIcon>
+                                  <p-columnFilter type="date" field="date" display="menu"
+                                      class="p-ml-auto"></p-columnFilter>
+                              </div>
+                          </div>
+                      </th>
+                      
+                            </tr>
+                           
+                           
+                        </ng-template>
+                      
+                                         
+                        <ng-template pTemplate="body" let-emp>
+                            <tr class="p-selectable-row">
+                               
+                                <td class="text-center bg-color-light_gray">
+                                  <label class="custom-control custom-checkbox checkbox-center">
+                                    <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                    <span class="custom-control-label"></span>
+                               </label>
+                               
+                                </td>
+                      
+                                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{emp.employeeCode}} </label></td>
+                                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{emp.fullName}} </label></td>
+                              
+                                      
+                              
+                            </tr>
+                         
+                     
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                        Available</span></td>
+                            </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" 
+      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
+      <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+     
+        <button type="button" 
+      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left " tooltip="Close" (click)="modalRef.hide()"><b>
+      <i class="fa fa-times"></i></b> Close</button>&nbsp;
+        </div>
+  </ng-template>

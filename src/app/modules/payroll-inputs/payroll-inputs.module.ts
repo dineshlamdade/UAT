@@ -44,6 +44,7 @@ import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ChartsModule } from 'ng2-charts';
 import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
+import { Component2Component } from './component2/component2.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
      TwoDigitDecimaNumberDirective,
      SdmComponent,
      SdmStepperComponent,
-     EllipsisPipe
+     EllipsisPipe,
+     Component2Component
     ],
   imports: [
     CommonModule,

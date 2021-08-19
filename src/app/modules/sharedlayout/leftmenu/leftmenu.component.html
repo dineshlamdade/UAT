@@ -387,6 +387,12 @@
               <span>Formulas</span>
             </a>
           </li>
+
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+            <a href="javascript:void(0)" [routerLink]="['/PayrollInputs/component2']" (click)="isCollapsedKeywordinput = !isCollapsedKeywordinput" [attr.aria-expanded]="!isCollapsedpayrollinput" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true">
+              <span>Component</span>
+            </a>
+          </li>
         </ul>
     </li>
 
