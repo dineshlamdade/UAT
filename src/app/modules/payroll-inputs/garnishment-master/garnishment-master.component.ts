@@ -12,7 +12,11 @@ import { GarnishmentService } from './garnishment.service';
 export class GarnishmentMasterComponent implements OnInit {
   garnishmentForm: FormGroup;
   garnishmentData: any;
-  
+  complianceHeadNanedata: any;
+  institutionMasterData: any;
+  countryList: any;
+
+ 
 
   constructor(private formbuilder: FormBuilder,private garnishmentService: GarnishmentService,private alertService: ToastrService) 
     {
@@ -52,11 +56,35 @@ export class GarnishmentMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllMasterData()
+    this.getComplianceHeadNane()
+    this.getInstitutionMaster()
+    this.getLocationInformationOrCountryList()
   }
 
   getAllMasterData(){
     this.garnishmentService.getAllGarnishmentMaster().subscribe(res =>{
-      this.garnishmentData = res.data.results
+      this.garnishmentData = res.data.results;
+    })
+  }
+
+  /** Get Compliance Head Nane */
+  getComplianceHeadNane(){
+    this.garnishmentService.getComplianceHeadNane().subscribe(res =>{
+      this.complianceHeadNanedata = res.data.results;
+    })
+  }
+
+  /** Get Institution Master */
+  getInstitutionMaster(){
+    this.garnishmentService.getInstitutionMaster().subscribe(res =>{
+      this.institutionMasterData = res.data.results;
+    })
+  }
+
+  /** Get Location Information Or CountryList */
+  getLocationInformationOrCountryList(){
+    this.garnishmentService.getLocationInformationOrCountryList().subscribe(res =>{
+      this.countryList = res.data.results;
     })
   }
 

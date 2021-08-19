@@ -15,11 +15,32 @@ const headers = new Headers({
 export class GarnishmentService {
   constructor(private _HTTP: HttpClient) { }
   apiUrl = environment.baseUrl8084;
+
+  apiUrl1 = environment.baseUrl8087;
+  apiUrl2 = environment.baseUrl8086;
+  apiUrl3 = environment.baseUrl8083;
+  apiUrl4 = environment.baseUrl8082;
   
   // get all master data
   getAllGarnishmentMaster() : Observable<any> {  
     return this._HTTP.get<any>(this.apiUrl + 'garnishment-master/GetAll')
   }
+
+  // get api for compliance head Name.
+    getComplianceHeadNane() : Observable<any> {
+      // ,{ headers: { 'X-TenantId': 'PaysquareDefault' } }
+      return this._HTTP.get(this.apiUrl3 + 'compliance-head/details')
+    }
+
+    // get api for institution Name.
+    getInstitutionMaster() : Observable<any> {
+      return this._HTTP.get(this.apiUrl3 + 'compliance-institution-master/details')
+    }
+
+    // get api for Country List
+      getLocationInformationOrCountryList(): Observable<any> {
+        return this._HTTP.get<any>(this.apiUrl4   + '/location-information/country')
+      }  
     
      // get api for Deduction
     //  getloanMasterAllDeductionHead() : Observable<any> {
@@ -41,23 +62,9 @@ export class GarnishmentService {
     //   ));
    //    }
    
-   // get api for institution Name.
-    // getInstitutionMaster() : Observable<any> {
-    //   return this._HTTP.get(this.apiUrl3 + 'compliance-institution-master/details' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
-    //   .pipe(map((res: any) => {
-    //     return res;
-    //   }
-    //   ));
-    // }
+   
 
-    // get api for compliance head Name.
-    // getComplianceHeadNane() : Observable<any> {
-    //   return this._HTTP.get(this.apiUrl3 + 'compliance-head/details' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
-    //   .pipe(map((res: any) => {
-    //     return res;
-    //   }
-    //   ));
-    // }
+    
 
     // get api for IndianIncomeTex
 
@@ -78,12 +85,5 @@ export class GarnishmentService {
     //     }))
     // }
  
-    // // get api for Country List
-      // getLocationInformationOrCountryList() {
-  
-      //   return this._HTTP.get(this.apiUrl4   + '/location-information/country', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
-      //     .pipe(map((res: any) => {
-      //       return res;
-      //     }))
-      // }  
+    
 }

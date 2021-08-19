@@ -109,6 +109,14 @@
                                             <i class="fa fa-plus-circle"> Loan</i>
                                         </button>
                                     </div>
+                                    <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-bg-green" (click)="navigateToQuery()"
+                                         (click)="smallpopup(template)" [routerLink]="['/admin-query-generation']"
+                                            [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
+                                            [disabled]="selectedEmployeeData.length == 0">
+                                            <i class="fa fa-plus-circle"> Query</i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <br><br>
                                 <div class="col-12" style="height: 600px;">
@@ -184,6 +192,79 @@
                                         </ng-template>
 
                                     </p-table>
+
+                                    <ng-template #template>
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="UploadModalLabel">Add-Query</h5>
+                                            <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row clearfix">
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                <div class="custom-controls-stacked">
+                                                                    <span class="d-flex"> <label class="form-label mr-55">On
+                                                                            Behalf of Employee's</label>
+                                                                        <label
+                                                                            class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input"
+  
+                                                                                id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('yes')">
+                                                                            <span class="custom-control-label">Yes</span>
+                                                                        </label>
+                                                                        <label
+                                                                            class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input"
+  
+                                                                                id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('no')">
+                                                                            <span class="custom-control-label">No</span>
+                                                                        </label>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-25">
+                                                                <div class="custom-controls-stacked">
+                                                                    <span class="d-flex"> <label class="form-label mr-15">Same
+                                                                            Content For All Employee</label>
+                                                                        <label
+                                                                            class="custom-control custom-radio custom-control-inline ">
+                                                                            <input type="radio" class="custom-control-input" [disabled]='sameContentViewFlag'
+                                                                                id="sameContent"  name="querydata2" (click)="sameContent('yes')">
+                                                                            <span class="custom-control-label">Yes</span>
+                                                                        </label>
+                                                                        <label
+                                                                            class="custom-control custom-radio custom-control-inline">
+                                                                            <input type="radio" class="custom-control-input"  [disabled]='sameContentViewFlag'
+                                                                                 id="sameContent"  name="querydata2" (click)="sameContent('no')">
+                                                                            <span class="custom-control-label">No</span>
+                                                                        </label></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- [disabled]="!queryGenerationForm.valid" [ngClass]="{'disabled-btn-bg-green' :
+                                        queryGenerationForm.invalid,'btn-bg-green': !queryGenerationForm.invalid}" -->
+                                        <div class="modal-footer">
+                                            <button type="button" tooltip="Proceed" (click)="modalRef.hide();addQueryGeneration() "
+                                                [routerLink]="['/admin-query-generation']"
+                                                [disabled]="onBehalfValue == '' || sameContentValue == '' &&  selectedEmployeeData.length > 1"
+                                                [ngClass]="{'disabled-btn-bg-green' :onBehalfValue == '' || sameContentValue == '' &&  selectedEmployeeData.length > 1 }"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"><b><i
+                                                class="fa fa-arrow-circle-o-right" aria-hidden="true"
+                                                  ></i></b> Proceed</button>
+                                            <button type="button" tooltip="Cancel" (click)="modalRef.hide()"
+                                                data-dismiss="modal" aria-label="Close"
+                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i
+                                                        class="fa fa-times"></i></b> Cancel</button>
+                                        </div>
+                                    </ng-template>
+                                    
                                 </div>
                             </div>
                         </div>

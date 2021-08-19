@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { QueryService } from '../../query/query.service';
 import { PayrollInputsService } from '../payroll-inputs.service';
 
 
@@ -29,8 +30,13 @@ export class PayrollListComponent implements OnInit {
   public checkedEmployeeList: Array<any> = [];
   public modalRef: BsModalRef;
   selectedEmployeeData: any = [];
+  generationFormData: any;
+  onBehalfValue:any = '';
+  sameContentValue: any ='';
+  sameContentViewFlag:boolean = false;
 
-  constructor(private service: PayrollInputsService, private router: Router) { }
+  constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService
+    ,public queryService :QueryService) { }
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
@@ -70,18 +76,50 @@ export class PayrollListComponent implements OnInit {
 
 
   /** get selected employee data */
-  getSelectedEmployee(user){
+  getSelectedEmployee(user) {
     this.selectedEmployeeData.push(user)
   }
 
-  navigateToNRAmt(){
-    localStorage.setItem('payrollListEmpData',JSON.stringify(this.selectedEmployeeData))
+  navigateToNRAmt() {
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
     this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
   }
 
-  navigateToNRQty(){
-    localStorage.setItem('payrollListEmpData',JSON.stringify(this.selectedEmployeeData))
+  navigateToNRQty() {
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
     this.router.navigate(['/PayrollInputs/Non-Recurring-qty'])
+  }
+
+
+
+  // ............................................Add Query....................................................
+  navigateToQuery() {
+    localStorage.setItem('queryListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/admin-query-generation'])
+  }
+  smallpopup(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+  addQueryGeneration() { //post api for saving data
+    let data = {
+      'onBehalf': this.onBehalfValue,
+      'sameContent': this.sameContentValue
+    }
+    localStorage.setItem('emlpoyeeSelectionData', JSON.stringify(data))
+
+  }
+  onBehalf(value) {
+    this.onBehalfValue = value;
+
+  }
+
+  sameContent(value) {
+    this.sameContentValue = value;
+
   }
 
 

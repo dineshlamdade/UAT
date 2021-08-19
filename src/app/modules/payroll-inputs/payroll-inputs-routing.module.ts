@@ -9,6 +9,7 @@ import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { PayrollListComponent } from './payroll-list/payroll-list.component';
+import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 import { SdmComponent } from './steppersdm/sdm.component';
 
 
@@ -59,8 +60,8 @@ const routes: Routes = [
       },
       {
         path: 'SDM',
-        component: SdmComponent,
-        data: { title: ':: DelziaHR :: Fast Entry NR Amount'}
+        component: SdmStepperComponent,
+        data: { title: ':: DelziaHR :: SDM'}
       },
       {
         path: 'FastEntry-Non-Recurring-Quantity',
