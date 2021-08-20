@@ -33,7 +33,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 })
 export class PPFMasterComponent implements OnInit {
   @Input() public accountNo: any;
-
+  public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -53,6 +53,9 @@ export class PPFMasterComponent implements OnInit {
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
   public transactionInstitutionNames: Array<any> = [];
   public editTransactionUpload: Array<any> = [];
   public transactionPolicyList: Array<any> = [];
@@ -111,6 +114,7 @@ export class PPFMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  documentArray: any[] =[];
   public proofSubmissionId;
   policyToDate: any;
   paymentDetailsToDate: any;
@@ -460,6 +464,31 @@ export class PPFMasterComponent implements OnInit {
         if (element.toDate !== null) {
           element.toDate = new Date(element.toDate);
         }
+        element.documentInformationList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
       });
       // if (this.policyNumber !== undefined || this.policyNumber !== null) {
       //   this.getInstituteDetails(this.policyNumber)
@@ -470,7 +499,7 @@ export class PPFMasterComponent implements OnInit {
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.submitted = true;
-
+   
     if (this.form.invalid) {
       return;
     }
@@ -517,11 +546,26 @@ export class PPFMasterComponent implements OnInit {
       //     this.form.get('toDate').value,
       //     'yyyy-MM-dd'
       //   );
+      
+      for (let i = 0; i <= this.documentPassword.length; i++) {
+        if(this.documentPassword[i] != undefined){
+          let remarksPasswordsDto = {};
+          remarksPasswordsDto = {
+            "documentType": "Back Statement/ Premium Reciept",
+            "documentSubType": "",
+            "remark": this.remarkList[i],
+            "password": this.documentPassword[i]
+          };
+          this.documentDataArray.push(remarksPasswordsDto);
+        }
+      }
+      console.log('this.documentDataArray', this.documentDataArray);
       const data = this.form.getRawValue();
         data.proofSubmissionId = this.proofSubmissionId;
         data.fromDate = from;
         data.toDate = to;
         data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
+        data.remarkPasswordList = this.documentDataArray;
       // }
 
       console.log('PPF::', data);
@@ -531,6 +575,7 @@ export class PPFMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
                 element.policyStartDate = new Date(element.policyStartDate);
@@ -538,6 +583,43 @@ export class PPFMasterComponent implements OnInit {
                 element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate);
               });
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               if (data.frequencyOfPayment !== 'As & When') {
                 this.alertService.sweetalertMasterSuccess(
                   'Record saved Successfully.',
@@ -582,7 +664,7 @@ export class PPFMasterComponent implements OnInit {
         this.masterfilesArray.push(file);
       }
     }
-    //console.log('this.masterfilesArray::', this.masterfilesArray);
+    console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
   // Remove LicMaster Document
@@ -712,7 +794,24 @@ export class PPFMasterComponent implements OnInit {
         this.showUpdateButton = true;
         this.isClear = true;
         this.urlArray = obj.documentInformationList;
+        this.showdocument = false;
         this.proofSubmissionId = obj.proofSubmissionId;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+          
+        });
+        console.log("documentArray::",this.documentArray);
       }
     });
   }

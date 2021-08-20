@@ -105,9 +105,9 @@
                    let i = index;
                    count as c ">    
                    <td>
-                    <input type="text" id="actualAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
-                      name="actualAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
-                      [(ngModel)]="summary.actualAmountPerMonth"
+                    <input type="text" id="actualAmount{{ summary.houseRentalTransactionDetailId }}"
+                      name="actualAmount{{ summary.houseRentalTransactionDetailId }}"
+                      [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChange(summary, i, j)" class="form-control align-right" />
                   </td>           
              <!--    <td>
@@ -505,9 +505,9 @@
                   <td>
                  
                   <td>
-                    <input type="text" id="actualAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
-                      name="actualAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
-                      [disabled]="initialArrayIndex[j] > i" [(ngModel)]="summary.actualAmountPerMonth"
+                    <input type="text" id="actualAmount{{ summary.houseRentalTransactionDetailId }}"
+                      name="actualAmount{{ summary.houseRentalTransactionDetailId }}"
+                      [disabled]="initialArrayIndex[j] > i" [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChange(summary, i, j)" class="form-control align-right" />
                   </td>
                   <td>

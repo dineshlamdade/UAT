@@ -184,6 +184,7 @@ export class InvestmentApprovalComponent implements OnInit {
       this.router.navigate(['/investment-approval/transaction']);
     }
   }
+  // onetimetransaction
 
   // ------------------ Export as Excel files ---------------------------
   exportApprovalSummaryAsExcel(): void {
