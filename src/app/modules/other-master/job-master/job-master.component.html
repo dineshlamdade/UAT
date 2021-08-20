@@ -38,10 +38,7 @@
                                   </div>
                                   <div class="col-md-3" *ngIf="hideFormControl">
                                     <label class="form-label">Description</label>
-                                    <!-- <textarea formControlName="masterDescription" class="form-control" rows="2"
-                                      autocomplete="off"
-                                      [ngClass]="{'is-invalid' : form.get('masterDescription').status == 'INVALID'} "
-                                      placeholder="Enter Remark"></textarea> -->
+
                                       <input type="text" formControlName="masterDescription" class="form-control" name="masterDescription"
                                       [ngClass]="{'is-invalid' : form.get('masterDescription').status == 'INVALID'} "
                                       autocomplete="off" placeholder="Enter Remark">
@@ -649,15 +646,11 @@
                                     </td>
 
                                     <td class="wd-4 align-left">
-                                      <!-- <button type="button" class="btn btn-icon" tooltip="View"
-                                      (click)="viewJobMasterAssign(templateEditMode,user1)">
-                                        <i class="fa fa-eye font-18 text-blue cursor-pointer"></i></button> -->
+
                                       <button type="button" class="btn btn-icon" tooltip="Edit"
                                        (click)="UploadModalEditMode(templateEditMode, user1)">
                                         <i class="fa fa-edit font-18 text-dark-green cursor-pointer"></i></button>
-                                        <!-- <i class="fa fa-trash font-16 text-red cursor-pointer"
-                                        (click)="UploadModal1(template22,user1.jobMasterValueId);"
-                                        tooltip="Delete"></i>&nbsp; -->
+
                                     </td>
                                     <!-- (click)="editUpdateDataAssign(user1)"     -->
 
@@ -898,9 +891,7 @@
         (click)="saveJobMasterMappingInMaster()"
         [ngClass]="{'disabled-btn-bg-green' : mappedJobMastersToCompanyInMaster.length == 0, 'btn-bg-green': !mappedJobMastersToCompanyInMaster.length == 0}">
         <b><i class="fa fa-floppy-o"></i></b> Save</button>
-      <!-- <button type="button" tooltip="Reset" (click)="reset()"
-        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
-        <b><i class="fa  fa-refresh"></i></b> Reset</button> -->
+
         &nbsp;
     <button type="button" tooltip="Reset" (click)="closeModule()"
       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
