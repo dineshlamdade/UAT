@@ -172,6 +172,7 @@ export class PayrollAreaComponent implements OnInit {
 //remove secondary an daddtial payroll from payroll Area List
 if(payroll.type==='Primary Main'){
     let arr:Array<any> =  this.summaryData.filter(a=>a.type!=='Primary Main');
+    
      this.payrollAreaList = this.payrollAreaList.filter(ar => !arr.find(rm => (rm.payrollAreaId === ar.payrollAreaId) ))
   // this.payrollAreaList=listRemaining;
 }

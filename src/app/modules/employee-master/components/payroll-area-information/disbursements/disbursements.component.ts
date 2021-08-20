@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { MatGridTileHeaderCssMatStyler } from '@angular/material/grid-list';
 import { setValue } from '@ngneat/transloco';
+import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { familyAddressDetailRequestDTO } from '../../family-information/family-information.model';
 import { bankName } from '../payroll-area-information.model';
@@ -76,11 +77,13 @@ export class DisbursementsComponent implements OnInit {
   companySetting: any;
   copyFrom: boolean;
   typeAreas: any[];
+  public modalRef: BsModalRef
 
   constructor(public datepipe: DatePipe,
     private formBuilder: FormBuilder,
     private payrollService: PayrollAreaInformationService,
-    private CommonDataService: SharedInformationService
+    private CommonDataService: SharedInformationService,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -656,8 +659,15 @@ export class DisbursementsComponent implements OnInit {
     return event < 0 ? event = 0 : event; event > 100 ? event = 0 : event;
   }
 
-  deleteRow(j: number) {
-   
+  deleteRow(j: number,confirmation) {
+    
+     let  confirmMessage = 'Do you want to delete this Record?';
+      this.modalRef = this.modalService.show(
+        
+        confirmation,
+        Object.assign({}, { class: 'gray modal-md' })
+      );
+    
     this.pfArray.removeAt(j);
   }
 
