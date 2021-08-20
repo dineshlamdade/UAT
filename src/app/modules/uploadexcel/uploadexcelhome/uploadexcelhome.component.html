@@ -99,6 +99,7 @@
                                   <div *ngIf="checkedEmployeeMaster == true">
                                     <input class="toggle-box" id="identifier-4" type="checkbox" value=true />
                                     <label for="identifier-4">Employee Master</label>
+
                                     <div class="ml-30">
                                       <a class="p-0 d-flex" [ngClass]="order.hide?'btn-info1':''"
                                         *ngFor="let order of ordersData; let i = index" formArrayName="orders">
@@ -107,13 +108,11 @@
                                             (change)="leftSideMenuCheckBoxChnanged($event.target.checked,order.name)"
                                             [disabled]="order.disable" [checked]="order.checked" />
                                           <span class="custom-control-label"> {{order.name}}
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"></i></span>
-
                                             <span class="notificationbadge ml-2"
                                               *ngIf="order.name !=='Select All'">{{order.counter}}</span>
-
                                           </span>
                                         </label>
+                                        <span> <i class="fa fa-compress mergeicon1" tooltip="Merge Tab/Field"></i></span>
 
                                         <!-- <span *ngIf="order.hide == true">
                                             <span *ngIf="order.name!=='Select All'"> <i class="fa fa-compress mergeicon"
@@ -317,12 +316,6 @@
                         </div>
                       </div>
                     </div>
-
-
-
-
-
-
                     <div class="row mt-10" *ngIf="preview">
                       <div class="col-md-12">
                         <div class="row mt-10 mb-10">
@@ -402,52 +395,13 @@
 
 
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-8">
                         <h3 class="font-14 text-purple font-bold">Summary</h3>
 
                         <div class="table-responsive Custom_Table">
-                          <!-- <table class="table table-striped table-hover table-bordered m-b-0">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th scope="col" class="wd-10">Sr. No.</th>
-                                <th scope="col" class="wd-40">Template Name</th>
-                                <th scope="col" class="wd-20">Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
 
-                              <tr *ngFor="let summary of summaryOfExcelTemplate; let i = index">
-                                <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
-                                </td>
-                                <td class="wd-40"><span
-                                    tooltip="{{summary.templateName}}">{{summary.templateName}}</span>
-                                </td>
-                                <td class="wd-20"> <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                    tooltip="Edit" (click)="editMaster(summary.templateMasterId)"></i>
-                                  &nbsp;&nbsp;
-                                  <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="Delete"
-                                    (click)="deleteTemplate(summary.templateMasterId)"></i>
-                                  &nbsp;&nbsp;
-                                  <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
-                                    (click)="viewTemplate(summary.templateMasterId)"></i>&nbsp;&nbsp;
-                                  <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
-                                    (click)="downloadFile(i)"></i>
-                                  &nbsp;&nbsp;
-                                </td>
-
-
-
-                              </tr>
-                              <tr *ngIf="!summaryOfExcelTemplate?.length">
-                                <td colspan="10">
-                                  <span class="font-14 font500 align-center text-red">No Data Available</span>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table> -->
-
-
-                          <p-table [globalFilterFields]="['templateName']" #dt [value]="summaryOfExcelTemplate" [rows]="10" [showCurrentPageReport]="true"
+                          <p-table [globalFilterFields]="['templateName']" #dt [value]="masterOfExcelTemplate" [rows]="10"
+                          [showCurrentPageReport]="true"
                            [rowsPerPageOptions]="[10,25,50,100,200]"
                           [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
 
@@ -455,12 +409,17 @@
 
                             <div style="text-align: right;">
                                 <span class="p-input-icon-left p-ml-auto">
-                                  <i class="pi pi-search" style="top: 26px !important; right:27px !important"></i>
+                                  <i class="pi pi-search" style="top: 26px !important; right:52px !important"></i>
                                   <input pInputText type="text"
                                       (input)="dt.filterGlobal($event.target.value, 'contains')"
                                       placeholder="Search" />
-                                </span>
-
+                                </span>&nbsp;
+                                <div class="float-right">
+                                    <a tooltip="Export to Excel" style="cursor: pointer"
+                                      (click)="exportAsXLSXSummary()"><i
+                                          class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                          aria-hidden="true"></i></a>
+                              </div>
                             </div>
 
                           </ng-template>
@@ -480,7 +439,7 @@
                                           </div>
                                       </th>
 
-                                      <th class="wd-10">Action</th>
+                                      <th class="wd-5">Action</th>
                                   </tr>
 
                               </ng-template>
@@ -500,7 +459,7 @@
                                       <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
                                         (click)="viewTemplate(summary.templateMasterId)"></i>&nbsp;&nbsp;
                                       <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
-                                        (click)="downloadFile(i)"></i>
+                                        (click)="downloadFile()"></i>
                                       &nbsp;&nbsp;
                                     </td>
                                   </tr>
@@ -534,18 +493,8 @@
                       <div class="col-md-6">
                         <div class="card box-line-border">
                           <div class="card-body height-188">
-                            <div class="row clearfix">
-                              <div class="col-md-4">
-                                <label class="form-label">Name</label>
-                              </div>
-                              <div class="col-md-8">
-                                <select name="beast" class="form-control custom-select">
-                                  <option value="1">Template 1</option>
-                                  <option value="4">Template 2</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="row clearfix mt-2">
+
+                            <div class="row clearfix ">
                               <div class="col-md-4">
                                 <label class="form-label">Module Name</label>
                               </div>
@@ -557,6 +506,20 @@
                                 </ng-multiselect-dropdown>
                               </div>
                             </div>
+
+                            <div class="row clearfix mt-2">
+                              <div class="col-md-4">
+                                <label class="form-label">Name</label>
+                              </div>
+                              <div class="col-md-8">
+                                <select name="beast" class="form-control custom-select">
+                                  <option value="1">Template 1</option>
+                                  <option value="4">Template 2</option>
+                                </select>
+                              </div>
+                            </div>
+
+
                           </div>
                         </div>
                       </div>
@@ -735,7 +698,7 @@
                                 </table>
 
                                 <p-table [globalFilterFields]="['queryNumber','submissionDate','employeeCode','empName','companyName','applicationModuleName'
-                                ,'queryDescription','subQueryTypeCode','queryDescription','subject','priority','escalationDate','status']" #dt [value]="getAllQueryGenerationData" [rows]="10" [showCurrentPageReport]="true"
+                                ,'queryDescription','subQueryTypeCode','queryDescription','subject','priority','escalationDate','status']" #dt [value]="" [rows]="10" [showCurrentPageReport]="true"
                                  [rowsPerPageOptions]="[10,25,50,100,200]"
                                 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
 
@@ -1092,7 +1055,7 @@
                                 class="notificationbadge ml-2">5</span></span>
                           </label>
                           <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                              (click)="MergeTab(template3)"></i></span>
+                              (click)="MergeTab(template3,checkboxNameToBeCheckedByDefault)"></i></span>
                         </a>
                         <a class="p-0 position_relative">
                           <label class="custom-control custom-checkbox mr-15">

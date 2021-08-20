@@ -1129,9 +1129,22 @@ export class UploadexcelhomeComponent implements OnInit {
     FileSaver.saveAs(pre, 'nameFile' + '.xlsx');
 
   }
-  downloadFile(i: number) {
-    this.saveAsBlob(this.masterOfExcelTemplate[i].excelFile);
+  downloadFile() {
+    // this.saveAsBlob(this.masterOfExcelTemplate[i].excelFile);
+    this.excelData = [];
+    this.header = []
+    this.header =["Template Name"]
+    this.masterOfExcelTemplate.forEach(element => {
+      let obj = {
+        "templateName":element.templateName,
+      }
+      this.excelData.push(obj)
+      console.log("obj",obj);
+    });
+    this.excelservice.exportAsExcelFile(this.excelData, 'Template','Template ',this.header);
+
   }
+
   deleteTemplate(templateMasterId: number) {
     this.uploadeExcelHomeService.deleteExcelTemplate(templateMasterId).subscribe((res) => {
       console.log(res);
@@ -2450,5 +2463,22 @@ export class UploadexcelhomeComponent implements OnInit {
     this.excelservice.exportAsExcelFile(this.excelData, 'Query Summary','Query Summary',this.header);
 
   }
+
+  exportAsXLSXSummary(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Template Name"]
+    this.masterOfExcelTemplate.forEach(element => {
+      let obj = {
+        "templateName":element.templateName,
+      }
+      this.excelData.push(obj)
+      console.log("obj",obj);
+    });
+    console.log("this.masterOfExcelTemplate",this.masterOfExcelTemplate)
+    this.excelservice.exportAsExcelFile(this.excelData, 'Template Summary','Template Summary',this.header);
+  }
+
+
 }
 

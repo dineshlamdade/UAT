@@ -12,6 +12,7 @@ import { UploadexcelRoutingModule } from './uploadexcel-routing.module';
  import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ExcelService } from './uploadexcelhome/excel.service';
 import {TableModule} from 'primeng/table';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {TableModule} from 'primeng/table';
     ReactiveFormsModule,
     FormsModule,
     TableModule,
+    NgxPaginationModule,
 
 
   ],
