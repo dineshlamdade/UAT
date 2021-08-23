@@ -314,7 +314,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   }
 
   // Update Previous Employee in Main Page
-  updatePreventive_PreviousEmpId(event: any, i: number, j: number) {
+  updatePreventive_PreviousEmpId(event: any, i: number) {
     console.log('select box value::', event.target.value);
     this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[
       i
@@ -322,7 +322,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   }
 
   // Update Previous Employee in Main Page
-  updateExpense_PreviousEmpId(event: any, i: number, j: number) {
+  updateExpense_PreviousEmpId(event: any, i: number) {
     console.log('select box value::', event.target.value);
     this.medicalExpenseTransactionDetail.medicalExpenseTransactionDetailList[
       i
@@ -669,7 +669,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-    j: number
+   // j: number
   ) {
     const checked = event.target.checked;
 
@@ -1187,7 +1187,7 @@ export class MediclaimDeclarationComponent implements OnInit {
       actualAmount: number;
     },
     i: number,
-    j: number
+   // j: number
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
