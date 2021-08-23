@@ -15,6 +15,7 @@
                   <label class="form-label">ComplianceHeadName</label>
                   <select name="complianceHeadName" id="complianceHeadName" class="form-control"
                     formControlName="complianceHeadName">
+                    <option value="">Select</option>
                     <option *ngFor="let data of complianceHeadNanedata" value="{{data.complianceHeadId}}">
                       {{data.complianceHeadName}}
                     </option>
@@ -24,6 +25,7 @@
                   <label class="form-label">Institution name</label>
                   <select name="nameOfInstitution" id="nameOfInstitution" class="form-control"
                     formControlName="nameOfInstitution">
+                    <option value="">Select</option>
                     <option *ngFor="let data of institutionMasterData">{{data.institutionName}}</option>
                   </select>
                 </div>
@@ -71,17 +73,18 @@
                   <label class="form-label">Address3</label>
                   <input type="text" formControlName="address3" class="form-control">
                 </div>
-
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Country</label>
                   <select name="country" id="country" formControlName="country" class="form-control custom-select">
+                    <option value="">Select</option>
                     <option *ngFor="let data of countryList">{{data}}</option>
                   </select>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">PIN</label>
                   <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6"
-                    formControlName="pinCode" pattern="[0-9]{6}">
+                    formControlName="pinCode" pattern="[0-9]{6}"
+                    (focusout)="getPermanentAddressFromPIN()">
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">State</label>
@@ -121,7 +124,8 @@
                   <label class="form-label">Deduction Head</label>
                   <select name="standardName" id="standardName" formControlName="standardName"
                     class="form-control custom-select">
-                    <option></option>
+                    <option value ="">Select</option>
+                    <option *ngFor="let data of loanDeductionData">{{data.displayName}}</option>
                   </select>
                 </div>
                 <div class="col-sm-6 col-md-3">
@@ -133,14 +137,15 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">SDM</label>
                   <select name="sdm" id="sdm" formControlName="sdm" class="form-control custom-select">
-                    <option></option>
+                    <option value="">Select</option>
+                    <option>SDM1</option>
                   </select>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Frequency/ies</label>
                   <select name="frequency" id="frequency" formControlName="frequency"
                     class="form-control custom-select">
-                    <option></option>
+                    <option value="">Select</option>
                   </select>
                 </div>
               </div>

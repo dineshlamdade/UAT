@@ -15,6 +15,8 @@ export class GarnishmentMasterComponent implements OnInit {
   complianceHeadNanedata: any;
   institutionMasterData: any;
   countryList: any;
+  loanDeductionData: any;
+  frequencyData: any;
 
  
 
@@ -59,8 +61,12 @@ export class GarnishmentMasterComponent implements OnInit {
     this.getComplianceHeadNane()
     this.getInstitutionMaster()
     this.getLocationInformationOrCountryList()
+    this.getloanMasterAllDeductionHead()
+    this.getALLFrequecyDetails()
   }
 
+
+  /** Get All summary data */
   getAllMasterData(){
     this.garnishmentService.getAllGarnishmentMaster().subscribe(res =>{
       this.garnishmentData = res.data.results;
@@ -88,4 +94,39 @@ export class GarnishmentMasterComponent implements OnInit {
     })
   }
 
+
+  /** Check pincode and set city state etc */
+  getPermanentAddressFromPIN() {
+    if (this.garnishmentForm.get('pinCode').value.length < 6) {
+      this.garnishmentForm.get('state').setValue('');
+      this.garnishmentForm.get('city').setValue('');
+    }
+    if (this.garnishmentForm.get('pinCode').value.length == 6 && this.garnishmentForm.get('country').value == 'India') {
+      this.garnishmentService.getAddressFromPIN(this.garnishmentForm.get('pinCode').value).subscribe(res => {
+        console.log(res);
+        this.garnishmentForm.get('state').setValue(res.data.results[0].state);
+        this.garnishmentForm.get('city').setValue(res.data.results[0].city);
+
+
+      }, (error: any) => {
+        this.alertService.error(error['error']['status']['messsage']);
+
+      });
+    }
+  }
+
+
+  /** Get Loan Master All Deduction Head */
+  getloanMasterAllDeductionHead(){
+    this.garnishmentService.getloanMasterAllDeductionHead().subscribe(res =>{
+      this.loanDeductionData = res.data.results;
+    })
+  }
+
+  /** get ALL Frequecy Details */
+  getALLFrequecyDetails(){
+    this.garnishmentService.getALLFrequecyDetails().subscribe(res =>{
+      this.frequencyData = res.data.result;
+    })
+  }
 }
