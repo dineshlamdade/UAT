@@ -172,7 +172,7 @@
                                                                 <i class="fa fa-eye font-16 text-blue cursor-pointer"
                                                                     tooltip="View"></i>&nbsp;
                                                                 <i class="fa fa-trash font-16 text-red cursor-pointer"
-                                                                    tooltip="View"></i>
+                                                                    tooltip="Delete"></i>
                                                             </td>
                                                         </tr>
                                                     </ng-template>
@@ -966,6 +966,7 @@
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="card">
+                                                                    <legend>Derived Summery</legend>
                                                                     <div class="table-responsive Custom_Table">
                                                                         <p-table [value]="tempDerivedTable"
                                                                             [paginator]="true" [rows]="10"
@@ -1080,26 +1081,49 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </th>
+                                                                                   
                                                                                     <th rowspan="2"
-                                                                                        class="wd-12 text-center">
+                                                                                    class="wd-12 text-center">
+                                                                                    <div
+                                                                                        class="p-d-flex p-jc-between p-ai-center ml-75">
+                                                                                        Field Name
                                                                                         <div
-                                                                                            class="p-d-flex p-jc-between p-ai-center ml-75">
-                                                                                            Field Name
-                                                                                            <div
-                                                                                                class="Sort_Filter_Position">
-                                                                                                <p-sortIcon
-                                                                                                    field="FieldName"
-                                                                                                    pSortableColumn="FieldName">
-                                                                                                </p-sortIcon>
-                                                                                                <p-columnFilter
-                                                                                                    type="date"
-                                                                                                    field="date"
-                                                                                                    display="menu"
-                                                                                                    class="p-ml-auto">
-                                                                                                </p-columnFilter>
-                                                                                            </div>
+                                                                                            class="Sort_Filter_Position">
+                                                                                            <p-sortIcon
+                                                                                                field="FieldName"
+                                                                                                pSortableColumn="FieldName">
+                                                                                            </p-sortIcon>
+                                                                                            <p-columnFilter
+                                                                                                type="date"
+                                                                                                field="date"
+                                                                                                display="menu"
+                                                                                                class="p-ml-auto">
+                                                                                            </p-columnFilter>
                                                                                         </div>
-                                                                                    </th>
+                                                                                    </div>
+                                                                                </th>
+
+                                                                                <th rowspan="2"
+                                                                                    class="wd-12 text-center">
+                                                                                    <div
+                                                                                        class="p-d-flex p-jc-between p-ai-center ml-75">
+                                                                                       Action
+                                                                                        <!-- <div
+                                                                                            class="Sort_Filter_Position">
+                                                                                            <p-sortIcon
+                                                                                                field="FieldName"
+                                                                                                pSortableColumn="FieldName">
+                                                                                            </p-sortIcon>
+                                                                                            <p-columnFilter
+                                                                                                type="date"
+                                                                                                field="date"
+                                                                                                display="menu"
+                                                                                                class="p-ml-auto">
+                                                                                            </p-columnFilter>
+                                                                                        </div> -->
+                                                                                    </div>
+                                                                                </th>
+                                                                        
 
 
 
@@ -1130,6 +1154,16 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{data.sourceObjectName}}
+                                                                                    </td>
+                                                                                   
+                                                                                    <td class="text-center">
+                                                                                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                                                                        (click)="edittempDerivedData(data)"
+                                                                                            tooltip="Edit"></i>&nbsp;
+                                                                                        <!-- <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                                                                                            tooltip="View"></i>&nbsp;
+                                                                                        <i class="fa fa-trash font-16 text-red cursor-pointer"
+                                                                                            tooltip="Delete"></i> -->
                                                                                     </td>
                                                                                 </tr>
 

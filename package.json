@@ -54,7 +54,7 @@
     "primeng": "^11.1.0-rc.1",
     "rxjs": "^6.5.5",
     "simple-line-icons": "^2.5.5",
-    "sweetalert2": "^9.17.1",
+    "sweetalert2": "^9.17.2",
     "tslib": "^2.0.0",
     "tslint-angular": "^3.0.3",
     "xlsx": "^0.14.5",

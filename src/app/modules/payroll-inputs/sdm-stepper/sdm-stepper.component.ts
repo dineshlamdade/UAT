@@ -10,6 +10,8 @@ import { ExcelserviceService } from '../../excel_service/excelservice.service';
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { PayrollInputsService } from '../payroll-inputs.service';
+import { AlertServiceService } from '../../../core/services/alert-service.service';
+
 
 
 const EXCEL_TYPE =
@@ -154,10 +156,13 @@ export class SdmStepperComponent implements OnInit {
   enableSourcePeriod: boolean = false;
   derivednameexist: boolean = false;
   EmployeeData: any;
+  duplicateDataErrorMessage: any;
+  tempeditDerivedData: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private sdmService: SdnCreationService,
     private toaster: ToastrService, private datepipe: DatePipe, private excelservice: ExcelserviceService,
-    private modalService: BsModalService,private Empservice: PayrollInputsService) {
+    private modalService: BsModalService,private Empservice: PayrollInputsService,
+    private alertService: AlertServiceService) {
 
     this.sdmFormStep1 = this.formBuilder.group({
       "sdmMasterId": new FormControl(""),
@@ -426,6 +431,12 @@ export class SdmStepperComponent implements OnInit {
         };
       }
     )
+  }
+
+  edittempDerivedData(data){
+    this.tempeditDerivedData = true;
+    console.log("sdm derived data: " + JSON.stringify(data))
+    this.sdmFormStep3.patchValue(data)
   }
 
 
@@ -1148,7 +1159,8 @@ export class SdmStepperComponent implements OnInit {
     let controls = this.sdmFormStep3.controls
     this.tempDerivedTable.push({
       "derivedName": controls['derivedName'].value,
-      "sdmDerivedTypeId": this.derivedTypeName,
+      "sdmDerivedTypeId": controls['sdmDerivedTypeId'].value,
+      "derivedTypeName": this.derivedTypeName,
       "sourceObjectName": this.sourceObjectName,
       "sdmDerivedTableId": this.derivedTableName,
       "percentageOf": controls['percentageOf'].value,
@@ -1184,14 +1196,23 @@ export class SdmStepperComponent implements OnInit {
   }
 
   saveDerived() {
-    this.sdmService.saveDerived(this.saveDerivedData).subscribe(res => {
-      this.toaster.success("", "Derived data saved successfully.")
+   
+    this.sdmService.saveDerived(this.saveDerivedData).subscribe(( res: any ) => {
+      
+     // this.alertService.sweetalertMasterSuccess("", "Derived data saved successfully.")
+    //  alert(JSON.stringify(res.status))
+     this.alertService.sweetalertMasterSuccess(res.status.messsage, "" );
       //this.sdmFormStep1.controls['sdmName'].disable();
+     // this.duplicateDataErrorMessage = res.status.messsage[1];
+     
       this.sdmFormStep3.reset();
       localStorage.setItem('tempDerivedTable', JSON.stringify(this.tempDerivedTable))
       //this.derivedMasterData = res.data.results;
 
-    })
+    },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        })
   }
 
 
