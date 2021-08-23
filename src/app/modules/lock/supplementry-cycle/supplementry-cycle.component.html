@@ -1,6 +1,8 @@
 <div class="row">
   <div class="col-md-12">
+
       <div class="card">
+        <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" (ngSubmit)="save()" method="post" novalidate>
           <div class="card-body">
               <div class="fourtabview-contents">
               <div class="row">
@@ -17,6 +19,7 @@
                           <label class="form-label">Company Name</label>
                           <select name="Gender"
                               class="form-control custom-select">
+                              <option selected value="">Select</option>
                               <option value="Male"> Paysquare</option>
                               <option value="Female"> Infosys</option>
                           </select>
@@ -26,6 +29,7 @@
                           <label class="form-label">Type</label>
                           <select name="Gender"
                               class="form-control custom-select">
+                              <option selected value="">Select</option>
                               <option value="Male"> Supplementry</option>
                               <option value="Female"> Adhoc</option>
                           </select>
@@ -34,6 +38,7 @@
                           <label class="form-label">Cycle Name</label>
                           <select name="Gender"
                               class="form-control custom-select">
+                              <option selected value="">Select</option>
                               <option value="Male"> Apr 20202</option>
                               <option value="Female"> Apr 2021</option>
                           </select>
@@ -96,7 +101,8 @@
 
               </div>
           </div>
-      </div>
+      </form>
+        </div>
   </div>
 </div>
 
@@ -479,4 +485,197 @@ fa-2x "></i>
 
   </div>
 </div>
+
+<ng-template #aswhen2>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Pending For Lock</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+          aria-label="Close"><span aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+      <div class="card">
+          <div class="card-body">
+              <div class="row clearfix">
+                  <div class="col-md-12">
+
+                      <div class="row mt-10">
+                          <div class="col-md-12">   <p-table #dt2 [value]="aswhens" [paginator]="true" [rows]="10"
+                              [showCurrentPageReport]="true"
+                              (sortFunction)="customSort($event)" [customSort]="true"
+                              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              [rowsPerPageOptions]="[10,25,50]"
+                              [globalFilterFields]="['empcode','empName','Group','Frequency','Type','proofsubmission','PSIdDetails','SubmissionDate','Status']">
+
+                              <ng-template
+                                      pTemplate="caption">
+                                      <div class="row">
+                                          <div class="col-md-6 mt-10 d-flex ">
+                                              <label
+                                                  class="form-label mr-5">Total
+                                                  Records
+
+                                                  (10)</label>
+                                              <label
+                                                  class="form-label">Selected
+                                                  records
+
+                                                  (10)</label>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="float-right">
+                                                  <i
+                                                  class="fa fa-file-excel-o text-dark-green
+fa-2x "></i>
+                                              </div>
+                                          </div>
+
+                                      </div>
+
+
+
+
+
+                                  </ng-template>
+                              <ng-template pTemplate="header">
+                                  <tr>
+                                      <th style="width: 3rem">
+                                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                      </th>
+
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">
+                                              Company Name
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="PSIdDetails"
+                                                      pSortableColumn="PSIdDetails">
+                                                  </p-sortIcon>
+                                                  <p-columnFilter type="text"
+                                                      field="PSIdDetails" display="menu"
+                                                      class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">
+                                              Service
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="SubmissionDate"
+                                                      pSortableColumn="SubmissionDate">
+                                                  </p-sortIcon>
+                                                  <p-columnFilter type="text"
+                                                      field="SubmissionDate" display="menu"
+                                                      class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">Type
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="proofsubmission"
+                                                      pSortableColumn="proofsubmission">
+                                                  </p-sortIcon>
+                                                  <p-columnFilter type="text" field="name"
+                                                      display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">
+                                              Cycle Name
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="Type"
+                                                      pSortableColumn="Type"></p-sortIcon>
+                                                  <p-columnFilter type="text" field="Type"
+                                                      display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">
+                                              Cycle Creation Date
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="Type"
+                                                      pSortableColumn="Type"></p-sortIcon>
+                                                  <p-columnFilter type="text" field="Type"
+                                                      display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">From Date
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="ItSection"
+                                                      pSortableColumn="ItSection">
+                                                  </p-sortIcon>
+                                                  <p-columnFilter type="text"
+                                                      field="ItSection" display="menu"
+                                                      class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+                                      <th>
+                                          <div class="p-d-flex p-jc-between p-ai-center">
+                                              To Date
+                                              <div class="Sort_Filter_Position">
+                                                  <p-sortIcon field="Group"
+                                                      pSortableColumn="Group"></p-sortIcon>
+                                                  <p-columnFilter type="text" field="Group"
+                                                      display="menu" class="p-ml-auto">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+
+
+
+
+
+
+                                  </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-aswhen>
+                                  <tr class="p-selectable-row">
+                                      <td>
+                                          <p-tableCheckbox [value]="aswhen">
+                                          </p-tableCheckbox>
+                                      </td>
+                                      <td>{{ aswhen.companyname}}</td>
+                                      <td>{{ aswhen.service}}</td>
+                                      <td> {{aswhen.type}}</td>
+                                      <td> {{aswhen.cyclename}}</td>
+                                      <td> {{aswhen.cyclecreationdate}}</td>
+
+                                      <td> {{ aswhen.fromdate}}</td>
+                                      <td> {{ aswhen.todate}}</td>
+
+
+                                  </tr>
+                              </ng-template>
+
+                          </p-table>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="submit"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+          tooltip="Save"><b>
+              <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+              <button type="button" tooltip="Cancel"class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i class="fa fa-refresh"></i></b> Reset</button>
+              <!-- <button type="button" class="btn btn-secondary"
+          (click)="modalRef.hide()">Clear</button> -->
+  </div>
+</ng-template>
 

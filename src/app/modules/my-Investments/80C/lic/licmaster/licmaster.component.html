@@ -95,6 +95,7 @@
                              min="0"></p-inputNumber>
               <!-- <p-inputNumber class="align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
 
+
               <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
               </div>
@@ -735,8 +736,8 @@
                   </td>
                   <td class="wd-5">
                     <i [ngClass]="{'disableEdit': summary.masterStatus === 'Re-Open'}" class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.licMasterId)" tooltip="Edit"></i> &nbsp;&nbsp;
-                  
-                
+
+
                   </td>
                 </tr>
                 <tr *ngIf="!masterGridData?.length">
