@@ -145,7 +145,7 @@
                         class="form-control" (bsValueChange)="setPolicyEndDate()"
                         placeholder="" bsDatepicker
                         (ngModelChange)="onFromDateChange()"
-
+                        
                        [minDate]="minStartDate"
                        [maxDate]="maxStartDate"
                         formControlName = "fromDate"
@@ -196,7 +196,7 @@
                    <legend>Heads</legend>
                    <label class="custom-control custom-checkbox custom-control-inline pl-45">
                     <input autocomplete="off" type="checkbox" class="custom-control-input"
-                      name="example-inline-checkbox1" checked
+                      name="example-inline-checkbox1" (click)="isArrear($event.target)"
                       formControlName = "arrear" />
                     <span class="custom-control-label">Arrear </span>
                   </label>
@@ -476,7 +476,7 @@
                   <div class="col-12">
                     <div class="float-right mb-15">
                       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
-                      (click)="onSubmit()" [disabled] = "adhocForm.invalid"
+                      (click)="onSubmit()" [disabled] = "adhocForm.invalid && (isArrearFlag || selectedUser?.length > 0)"
                       [ngClass]="{'disabled-btn-bg-green' : adhocForm.invalid, 'btn-bg-green': !adhocForm.invalid }"><b>
                        <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
 

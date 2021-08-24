@@ -55,6 +55,7 @@ export class EmployeesetComponent implements OnInit {
       remark : new FormControl(''),
       isActive : new FormControl(1),
       empListRadio : new FormControl(''),
+      numberOfArea : new FormControl(''),
       employeeSetMasterId : new FormControl('')
     })
   }
@@ -101,16 +102,21 @@ export class EmployeesetComponent implements OnInit {
   onSubmit() {
    //console.log(this.employeesetForm.value)
    this.empService.saveEmployeeSet(this.employeesetForm.value).subscribe((res)=>{
-     
+     console.log(res)
    // this.toaster.success('','Employee set saved successfully');
    this.alertService.sweetalertMasterSuccess('Success','Employee Set Saved Successfully');
    //this.employeeList = [];
-   this.serviceListData = [];
-    this.getSummaryData();
-    this.employeesetForm.controls['empList'].setValue([]);
-    //this.serviceListData = [];
+   //this.serviceListData = [];
+   this.getSummaryData();
+  //this.serviceListData = [];
+  // this.employeeMaster = [];
+   // this.employeesetForm.controls['empList'].setValue([]);
+   
     //this.getServiceList();
     this.employeesetForm.reset();
+    this.editFormFlag = false;
+    this.viewFormFlag = false;
+     this.hideRemarkDiv2 = false;
    },error => {
     if(error.error.status.code == '400'){
       //this.toaster.error('', 'Duplicate Area Set Name' );
@@ -154,8 +160,9 @@ export class EmployeesetComponent implements OnInit {
   }
 
   getServiceList() {
-    this.empService.getServiceList().subscribe((res:any) => {
-   // this.serviceListData = res.data.results[0];
+    this.empService.getServiceList().subscribe((res) => {
+    //this.serviceListData = res.data.results[0];
+    this.serviceListData = []
      res.data.results.forEach(element => {
         this.serviceListData.push({
           label : element.employeeCode,
@@ -185,16 +192,16 @@ export class EmployeesetComponent implements OnInit {
   getSummaryData(){
     this.empService.getSummaryData().subscribe((res)=>{
       this.summaryData = res.data.results[0];
-      console.log(this.summaryData)
-    },error => {
-      // if(error.error.status.code == ''){
-         //this.toaster.success( 'Duplicate Area Set Name' );
-        // this.alertService.sweetalertError('Dulicate Areaset');
-        // this.areasetForm.controls['areaSetName'].reset();
+      console.log('summary data is',this.summaryData)
+    } ,error => {
+    //   // if(error.error.status.code == ''){
+    //      //this.toaster.success( 'Duplicate Area Set Name' );
+    //     // this.alertService.sweetalertError('Dulicate Areaset');
+    //     // this.areasetForm.controls['areaSetName'].reset();
 
-      // }
-      setTimeout(()=>{
-       this.summaryData = []
+    //   // }
+     setTimeout(()=>{
+        this.summaryData = []
       },200)
      
      }
@@ -206,7 +213,7 @@ export class EmployeesetComponent implements OnInit {
      this.employeesetForm.reset();
 
      this.serviceListData = [];
-     
+    // this.employeeList = []
      this.editFormFlag = false;
      this.viewFormFlag = false;
      this.employeesetForm.enable(); 

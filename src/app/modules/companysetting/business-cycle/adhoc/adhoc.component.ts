@@ -36,6 +36,7 @@ export class AdhocComponent implements OnInit {
   editFormFlag: boolean = false;
   viewFormFlag: boolean = false;
   date: any;
+  isArrearFlag : boolean = false;
  // fromDate: any;
   //toDate: any;
   businessCycleDefinition: any;
@@ -74,7 +75,7 @@ export class AdhocComponent implements OnInit {
       periodName : new FormControl('',[Validators.required]),
       periodId : new FormControl(''),
       remark : new FormControl(''),
-      arrear : new FormControl(true),
+      arrear : new FormControl(''),
       headMasterIds : new FormControl([]),
       fromDate : new FormControl(''),
       toDate : new FormControl(''),
@@ -82,13 +83,34 @@ export class AdhocComponent implements OnInit {
       headNature : new FormControl(''), 
       startDate : new FormControl(''),
       endDate : new FormControl(''),
-      copyFrom : new FormControl(''),
+      copyFrom : new FormControl('')
      
      // adhocCycleName : new FormControl('')
     
     })
     
    }
+  //  isTrueChange(){
+  //    this.isTrue = true;
+  //  }
+
+  
+  // checkValid() {
+  //   if(this.adhocForm.get('arrear').valid || this.selectedUser?.length>0) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
+
+  isArrear($event){
+    if($event.target){
+        this.isArrearFlag = false;
+    }else{
+        this.isArrearFlag = true;
+    }
+}
 
   ngOnInit(): void {
     this.getAllCycleDefinition();
@@ -164,8 +186,10 @@ export class AdhocComponent implements OnInit {
      arrear:this.adhocForm.controls['arrear'].value,
       //remark:this.adhocForm.value.remark,
       remark:this.adhocForm.controls['remark'].value,
-      fromDate: this.datepipe.transform(this.adhocForm.value.fromDate, "dd-MMM-yyyy"),
-      toDate: this.datepipe.transform(this.adhocForm.value.toDate, "dd-MMM-yyyy")
+      fromDate: this.datepipe.transform(this.adhocForm.value.fromDate, "dd-MM-yyyy"),
+      toDate: this.datepipe.transform(this.adhocForm.value.toDate, "dd-MM-yyyy"),
+     
+     
     }]
     console.log('data is',data);
       this.adhocService.updateData(data).subscribe((res)=>{
@@ -497,7 +521,8 @@ export class AdhocComponent implements OnInit {
     this.businessCycleDefinitionId=data.id;
    this.periodName=data.periodName;
 // this.supplimentary=data.supplimentary;
-  this.periodId = data.periodId
+  this.periodId = data.periodId;
+  
  // this.adhocForm.get['businessCycleId'].setValue(data.businessCycleId);
  this.adhocForm.controls['periodName'].patchValue(data.periodId);
  this.adhocForm.controls['cycleName'].setValue(data.periodName);
@@ -509,7 +534,9 @@ export class AdhocComponent implements OnInit {
  }, 1000);
  
   this.adhocForm.controls['fromDate'].patchValue(new Date(data.fromDate));
+ //this.adhocForm.controls['fromDate'].setValue(new Date(data.fromDate));
   this.adhocForm.controls['toDate'].patchValue(new Date(data.toDate));
+ // this.adhocForm.controls['toDate'].setValue(new Date(data.toDate));
   this.adhocForm.controls['remark'].patchValue(data.remark);
   
  let cycleDef = this.cycleDefifitionList.find(el => el.id === data.businessCycleDefinition.id);
