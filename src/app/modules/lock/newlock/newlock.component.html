@@ -2665,25 +2665,17 @@
                                                     <ng-template pTemplate="caption">
                                                         <div class="row">
                                                             <div class="col-md-6 mt-10 d-flex ">
-                                                                <label class="form-label mr-5">Total Records
-                                                                    (10) </label>
-                                                                <label class="form-label">Selected Records
-                                                                    (2) </label>
+                                                                <label class="form-label mr-5" *ngIf="empdataSource">Total Records
+                                                                    ({{empdataSource.length}}) </label>
+                                                                <label class="form-label" *ngIf="empdataSource">Selected Records
+                                                                    ({{empdataSource.length}}) </label>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="float-right">
-                                                                    <i
-                                                                        class="fa fa-file-excel-o text-dark-green
- fa-2x mr-2"></i>
-
+                                                                    <i class="fa fa-file-excel-o text-dark-green fa-2x mr-2"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
-
-
-
                                                     </ng-template>
                                                     <ng-template pTemplate="header">
                                                         <tr>
@@ -2816,7 +2808,7 @@
                                                         <tr class="p-selectable-row">
                                                            
                                                             <td>{{ emp.employeeCode }}</td>
-                                                            <td></td>
+                                                            <td> {{ emp.fullName}} </td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>

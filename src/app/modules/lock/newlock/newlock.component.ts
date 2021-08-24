@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SortEvent } from 'primeng/api';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { CycleLockService } from '../cycle-lock.service';
 export interface Customer {
   empcode;
   empName;
@@ -132,7 +133,8 @@ export class NewlockComponent implements OnInit {
   ;
   areadataSource: any;
   empdataSource: any;
-  constructor(private modalService: BsModalService) { }
+  employeeMasterdata: any;
+  constructor(private modalService: BsModalService,private CycleLockService: CycleLockService) { }
 
   ngOnInit(): void {
     this.customers = [
@@ -268,7 +270,17 @@ export class NewlockComponent implements OnInit {
       { name: 'Set 3' },
 
     ];
+
+
+     this.getEmployeeData()
   }
+
+  getEmployeeData(){
+    this.CycleLockService.getEmpData().subscribe(res=>{
+      this.employeeMasterdata = res.data.results[0]
+    })
+  }
+
   smallpopup(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
@@ -291,7 +303,7 @@ export class NewlockComponent implements OnInit {
   Emplist(emplist: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       emplist,
-      Object.assign({}, { class: 'gray modal-lg' })
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
   Arealistpop(arealist: TemplateRef<any>) {
@@ -378,9 +390,11 @@ export class NewlockComponent implements OnInit {
     let clipboardData = event.clipboardData;
     let pastedText = clipboardData.getData('text');
     let row_data = pastedText.split('\n');
-    //this.displayedColumns = row_data[0].split('\t');
-    //this.displayedColumns = ["employeeCode", "employeeName"]
+    // this.displayedColumns = row_data[0].split('\t');
+    // this.displayedColumns = ["employeeCode", "employeeName"]
     this.displayedColumns = ["employeeCode"]
+
+    
     //delete row_data[0];
     // Create table dataSource
     row_data.forEach(row_data => {
@@ -388,11 +402,24 @@ export class NewlockComponent implements OnInit {
       this.displayedColumns.forEach((a, index) => {
         row[a] = row_data.split('\t')[index]
       });
+      // console.log(row)
       this.employeedata.push(row);
     })
     this.empdataSource = this.employeedata;
     this.empdataSource.splice(this.empdataSource.length-1,1)
-    //console.log(this.dataSource);
+
+    console.log("Before: " + JSON.stringify(this.empdataSource));
+    
+    this.employeeMasterdata.forEach(element => {
+      this.empdataSource.forEach(emp => {
+        let empcode = emp.employeeCode.split('\r')
+        if(element.employeeCode+',' == empcode){
+          emp.employeeMasterId = element.employeeMasterId
+          emp.fullName = element.fullName 
+        }
+      });
+    });
+    console.log("After: " + JSON.stringify(this.empdataSource));
   }
 
   ResetempData(){

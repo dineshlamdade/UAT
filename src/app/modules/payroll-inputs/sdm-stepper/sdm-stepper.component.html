@@ -911,6 +911,7 @@
 
                                                                 <select name="custom-select" class="form-control"
                                                                     (change)="derivedFiedName($event.target.value)"
+                                                                    [(ngModel)]="selectedDerivedName" [ngModelOptions]="{standalone : true}"
                                                                     [ngClass]="{'is-invalid' : sdmFormStep3.get('sdmDerivedTableId').status == 'INVALID'}"
                                                                     >
                                                                     <option value="Select">Select</option>
@@ -946,13 +947,20 @@
                                                                         class="form-control" [required]="!derivedactive"></textarea>
                                                                 </div>
                                                                 <div class="float-right ">
-                                                                    <button [disabled]="sdmFormStep3.invalid"
+                                                                    <button [disabled]="sdmFormStep3.invalid" *ngIf="!tempeditDerivedData"
                                                                         (click)="addsaveDerived()" type="submit"
                                                                         [ngClass]="{'disabled-btn-bg-green' : sdmFormStep3.invalid,'btn-bg-green': !sdmFormStep3.invalid}"
                                                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                                                         tooltip="Add"><b>
                                                                             <i class="fa fa-plus"></i></b>
                                                                         Add</button>&nbsp;
+                                                                        <button [disabled]="sdmFormStep3.invalid" *ngIf="tempeditDerivedData"
+                                                                        (click)="updatesaveDerived()" type="submit"
+                                                                        [ngClass]="{'disabled-btn-bg-green' : sdmFormStep3.invalid,'btn-bg-green': !sdmFormStep3.invalid}"
+                                                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                                        tooltip="Add"><b>
+                                                                            <i class="fa fa-plus"></i></b>
+                                                                        Update</button>&nbsp;
 
 
                                                                     <!-- <button type="button" tooltip="Next"
@@ -988,12 +996,12 @@
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
                                                                                                 <p-sortIcon
-                                                                                                    field="DerivedName"
-                                                                                                    pSortableColumn="DerivedName">
+                                                                                                    field="derivedName"
+                                                                                                    pSortableColumn="derivedName">
                                                                                                 </p-sortIcon>
                                                                                                 <p-columnFilter
-                                                                                                    type="date"
-                                                                                                    field="date"
+                                                                                                    type="text"
+                                                                                                    field="derivedName"
                                                                                                     display="menu"
                                                                                                     class="p-ml-auto">
                                                                                                 </p-columnFilter>
@@ -1008,12 +1016,12 @@
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
                                                                                                 <p-sortIcon
-                                                                                                    field="Module"
-                                                                                                    pSortableColumn="Module">
+                                                                                                    field="moduleIdList"
+                                                                                                    pSortableColumn="moduleIdList">
                                                                                                 </p-sortIcon>
                                                                                                 <p-columnFilter
-                                                                                                    type="date"
-                                                                                                    field="date"
+                                                                                                    type="text"
+                                                                                                    field="text"
                                                                                                     display="menu"
                                                                                                     class="p-ml-auto">
                                                                                                 </p-columnFilter>
@@ -1028,12 +1036,12 @@
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
                                                                                                 <p-sortIcon
-                                                                                                    field="DerivedType"
-                                                                                                    pSortableColumn="DerivedType">
+                                                                                                    field="sdmDerivedTypeName"
+                                                                                                    pSortableColumn="sdmDerivedTypeName">
                                                                                                 </p-sortIcon>
                                                                                                 <p-columnFilter
-                                                                                                    type="date"
-                                                                                                    field="date"
+                                                                                                    type="text"
+                                                                                                    field="text"
                                                                                                     display="menu"
                                                                                                     class="p-ml-auto">
                                                                                                 </p-columnFilter>
@@ -1048,12 +1056,12 @@
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
                                                                                                 <p-sortIcon
-                                                                                                    field="Percentageof"
-                                                                                                    pSortableColumn="Percentageof">
+                                                                                                    field="percentageOf"
+                                                                                                    pSortableColumn="percentageOf">
                                                                                                 </p-sortIcon>
                                                                                                 <p-columnFilter
-                                                                                                    type="date"
-                                                                                                    field="date"
+                                                                                                    type="text"
+                                                                                                    field="text"
                                                                                                     display="menu"
                                                                                                     class="p-ml-auto">
                                                                                                 </p-columnFilter>
@@ -1069,12 +1077,12 @@
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
                                                                                                 <p-sortIcon
-                                                                                                    field="TableName"
-                                                                                                    pSortableColumn="TableName">
+                                                                                                    field="sdmDerivedTableId"
+                                                                                                    pSortableColumn="sdmDerivedTableId">
                                                                                                 </p-sortIcon>
                                                                                                 <p-columnFilter
-                                                                                                    type="date"
-                                                                                                    field="date"
+                                                                                                    type="text"
+                                                                                                    field="text"
                                                                                                     display="menu"
                                                                                                     class="p-ml-auto">
                                                                                                 </p-columnFilter>
@@ -1090,12 +1098,12 @@
                                                                                         <div
                                                                                             class="Sort_Filter_Position">
                                                                                             <p-sortIcon
-                                                                                                field="FieldName"
-                                                                                                pSortableColumn="FieldName">
+                                                                                                field="sourceObjectName"
+                                                                                                pSortableColumn="sourceObjectName">
                                                                                             </p-sortIcon>
                                                                                             <p-columnFilter
-                                                                                                type="date"
-                                                                                                field="date"
+                                                                                                type="text"
+                                                                                                field="text"
                                                                                                 display="menu"
                                                                                                 class="p-ml-auto">
                                                                                             </p-columnFilter>
@@ -1133,8 +1141,7 @@
                                                                             <ng-template pTemplate="body" let-data
                                                                                 let-rowIndex=rowIndex>
                                                                                 <tr class="p-selectable-row">
-                                                                                    <td class="text-center">{{rowIndex +
-                                                                                        1}} </td>
+                                                                                    <td class="text-center">{{rowIndex + 1}} </td>
 
                                                                                     <td class="text-center">
                                                                                         {{data.derivedName}}
@@ -1144,9 +1151,9 @@
                                                                                         {{data.moduleIdList}}
                                                                                     </td>
                                                                                     <td>
-                                                                                        {{data.sdmDerivedTypeId}}
+                                                                                        {{data.sdmDerivedTypeName}}
                                                                                     </td>
-                                                                                    <td *ngIf="derivedTypeName == 'Percentage'">
+                                                                                    <td *ngIf="sdmDerivedTypeName == 'Percentage'">
                                                                                         {{data.percentageOf}}
                                                                                     </td>
                                                                                     <td class="text-center">
@@ -1158,7 +1165,7 @@
                                                                                    
                                                                                     <td class="text-center">
                                                                                         <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                                                                        (click)="edittempDerivedData(data)"
+                                                                                        (click)="edittempDerivedData(data,rowIndex)"
                                                                                             tooltip="Edit"></i>&nbsp;
                                                                                         <!-- <i class="fa fa-eye font-16 text-blue cursor-pointer"
                                                                                             tooltip="View"></i>&nbsp;

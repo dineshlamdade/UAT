@@ -158,6 +158,8 @@ export class SdmStepperComponent implements OnInit {
   EmployeeData: any;
   duplicateDataErrorMessage: any;
   tempeditDerivedData: boolean = false;
+  selectedDerivedName: any = '';
+  editTempDerivedIndex: any;
 
   constructor(private formBuilder: FormBuilder, private sdmService: SdnCreationService,
     private toaster: ToastrService, private datepipe: DatePipe, private excelservice: ExcelserviceService,
@@ -433,10 +435,13 @@ export class SdmStepperComponent implements OnInit {
     )
   }
 
-  edittempDerivedData(data){
+  edittempDerivedData(data,index){
     this.tempeditDerivedData = true;
+    this.editTempDerivedIndex = index
     console.log("sdm derived data: " + JSON.stringify(data))
+    this.derivedTableNameChange(data.derivedObjectName)
     this.sdmFormStep3.patchValue(data)
+    this.selectedDerivedName = data.selectedDerivedName
   }
 
 
@@ -1137,6 +1142,7 @@ export class SdmStepperComponent implements OnInit {
     // this.fieldTypes.forEach(element => {
     // if(element.sdmDerivedTableId == sdmDerivedTableId){
     // console.log("this.fieldTypes: "+ JSON.stringify(element))
+    this.selectedDerivedName = sdmDerivedTableId
     this.sourceObjectName = value[1]
     this.sdmFormStep3.controls['sdmDerivedTableId'].setValue(value[0])
     this.sdmFormStep3.controls['derivedFieldName'].setValue(this.sourceObjectName)
@@ -1154,12 +1160,13 @@ export class SdmStepperComponent implements OnInit {
 
     this.saveDerivedData.push(this.sdmFormStep3.value)
 
-    console.log(JSON.stringify(this.sdmFormStep3.value))
+    //console.log(JSON.stringify(this.sdmFormStep3.value))
 
     let controls = this.sdmFormStep3.controls
     this.tempDerivedTable.push({
       "derivedName": controls['derivedName'].value,
       "sdmDerivedTypeId": controls['sdmDerivedTypeId'].value,
+      "selectedDerivedName": this.selectedDerivedName,
       "derivedTypeName": this.derivedTypeName,
       "sourceObjectName": this.sourceObjectName,
       "sdmDerivedTableId": this.derivedTableName,
@@ -1167,22 +1174,46 @@ export class SdmStepperComponent implements OnInit {
       "moduleIdList": this.derivedModuleName.toString(),
     })
 
+    this.sdmFormStep3.reset()
+    this.derivedTableName = ""
+    this.derivedactive = true
+    this.selectedDerivedName = ""
+  }
 
-    // "sdmDerivedMasterId":"0",
-    //     "derivedName":"DemoDerived2",
-    //     "sdmDerivedTypeId":"2",
-    //     "sdmMasterId":"67",
-    //     "sdmDerivedTableId":"15",
-    //     "derivedObjectName":"EmployeeJobMapping",
-    //     "derivedFieldName":"Grade",
-    //     "percentageOf":"BASICM",
-    //     "moduleIdList":[1],
-    //     "active":"true",
-    //     "sdmDerivedMasterRemark":""
+  updatesaveDerived(){
+    //alert(this.editTempDerivedIndex)
+    this.sdmFormStep3.controls['active'].setValue(this.derivedactive)
+    this.sdmFormStep3.controls['moduleIdList'].setValue([parseInt(this.sdmFormStep3.controls['moduleIdList'].value)])
+    this.sdmFormStep3.controls['sdmDerivedMasterId'].setValue(0)
+    this.sdmFormStep3.controls['sdmMasterId'].setValue(this.sdmMasterId)
+
+    this.saveDerivedData.push(this.sdmFormStep3.value)
+
+    //console.log(JSON.stringify(this.sdmFormStep3.value))
+
+    let controls = this.sdmFormStep3.controls
+    this.tempDerivedTable.forEach((element,index) => {
+      if(this.editTempDerivedIndex == index){
+        //alert('here')
+        let ind = index
+        this.tempDerivedTable.splice(ind,1,{
+          "derivedName": controls['derivedName'].value,
+          "sdmDerivedTypeId": controls['sdmDerivedTypeId'].value,
+          "selectedDerivedName": this.selectedDerivedName,
+          "derivedTypeName": this.derivedTypeName,
+          "sourceObjectName": this.sourceObjectName,
+          "sdmDerivedTableId": this.derivedTableName,
+          "percentageOf": controls['percentageOf'].value,
+          "moduleIdList": this.derivedModuleName.toString(),
+        })
+      }
+    });
 
     this.sdmFormStep3.reset()
     this.derivedTableName = ""
     this.derivedactive = true
+    this.tempeditDerivedData = false
+    this.selectedDerivedName = ""
   }
 
   resetSdmForm1() {
@@ -1232,8 +1263,11 @@ export class SdmStepperComponent implements OnInit {
         this.derivedMastersData.forEach(element => {
           this.tempDerivedTable.push({
             "derivedName": element.derivedName,
-            "sdmDerivedTypeId": element.derivedType,
+            "sdmDerivedTypeId": element.sdmDerivedTypeId,
+            "sdmDerivedTypeName": element.derivedType,
+            "selectedDerivedName": element.sdmDerivedTableId + ','+ element.derivedFieldName,
             "sourceObjectName": element.derivedFieldName,
+            "derivedObjectName":element.derivedObjectName,
             "sdmDerivedTableId": element.derivedObjectName,
             "percentageOf": element.percentageOf,
             "moduleIdList": this.derivedModuleName.toString(),
