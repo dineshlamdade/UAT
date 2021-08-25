@@ -33,7 +33,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 })
 export class LicmasterComponent implements OnInit {
   @Input() public policyNumber: any;
-
+ public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -574,6 +574,7 @@ export class LicmasterComponent implements OnInit {
           this.isVisibleTable = false;
           if (res) {
             if (res.data.results.length > 0) {
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
                 element.policyStartDate = new Date(element.policyStartDate);
@@ -797,6 +798,7 @@ export class LicmasterComponent implements OnInit {
         this.isClear = true;
         
         this.urlArray = obj.documentInformationList;
+        this.showdocument = false;
         this.PremiumurlArray = obj.documentInformationList;
         this.proofSubmissionId = obj.proofSubmissionId;
         // this.documentArray = obj.documentInformationList;

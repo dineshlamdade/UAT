@@ -361,7 +361,6 @@ export class EducationalLoanMasterComponent implements OnInit {
 
  /*  ====================hide===================== */
   show = true;
-
   // toggle()
   //  {
   //   this.show = !this.show
@@ -384,9 +383,6 @@ export class EducationalLoanMasterComponent implements OnInit {
         'You Have No Full Time Course Then Educational Loan Not To Apply ');
     }
   }
-
-
-
 
   // Policy End Date Validations with Current Finanacial Year
   checkFinancialYearStartDateWithPolicyEnd() {
