@@ -112,7 +112,7 @@
                                               *ngIf="order.name !=='Select All'">{{order.counter}}</span>
                                           </span>
                                         </label>
-                                        <span> <i class="fa fa-compress mergeicon1" tooltip="Merge Tab/Field"></i></span>
+                                        <!-- <span> <i class="fa fa-compress mergeicon1" tooltip="Merge Tab/Field"></i></span> -->
 
                                         <!-- <span *ngIf="order.hide == true">
                                             <span *ngIf="order.name!=='Select All'"> <i class="fa fa-compress mergeicon"
@@ -121,9 +121,10 @@
 
                                           </span> -->
 
-                                        <span *ngIf="order.hide == false && order.name!== 'Select All'"> <i
+                                          <i *ngIf="order.name !== 'Select All'" class="fa fa-compress "  (click)="MergeTab(template3,order.name )"></i>
+                                        <!-- <span *ngIf="order.hide == true && order.name !== 'Select All'"> <i
                                             class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,order.name)"></i></span>
+                                            (click)="MergeTab(template3,order.name)"></i></span> -->
                                       </a>
 
                                     </div>
@@ -458,8 +459,10 @@
                                       &nbsp;&nbsp;
                                       <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
                                         (click)="viewTemplate(summary.templateMasterId)"></i>&nbsp;&nbsp;
-                                      <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
-                                        (click)="downloadFile()"></i>
+                                        <a href="{{summary.blobURI}}" download target="_blank">  <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
+                                          ></i></a>
+                                          <!-- (click)="downloadFile()" -->
+
                                       &nbsp;&nbsp;
                                     </td>
                                   </tr>
@@ -591,8 +594,9 @@
                                         Choose file
                                       </span>
                                       <input class="FileUpload1" class="dropify" accept=".xlsx"
-                                        (change)="readFile($event,fileInput)" [multiple]="multiple" #fileInput
+                                        (change)="readFile($event,fileInput)" #fileInput
                                         id="FileInput" type="file" single />
+                                        <!-- [multiple]="multiple"  -->
                                     </label>
                                   </div>
                                 </div>

@@ -113,9 +113,11 @@ export class UploadexcelhomeComponent implements OnInit {
   public mergeSelected = [];
   public dropdownSettings = {};
   public dropdownList1 = [];
+
   errorExcelData: any;
   excelData: any[];
   header: any[];
+  assignValueArray:any;
 
   constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private excelService: ExcelService,
     private uploadeExcelHomeService: UploadExcelHomeService, private alertService: AlertServiceService,private excelservice: ExcelserviceService) {
@@ -211,6 +213,7 @@ export class UploadexcelhomeComponent implements OnInit {
     const companyId = 1;
     this.uploadeExcelHomeService.getAllExcelTemplate(companyId).subscribe((res) => {
       this.masterOfExcelTemplate = res.data.results;
+      console.log("masterOfExcelTemplate",this.masterOfExcelTemplate)
       let i = 1;
       res.data.results.forEach((element) => {
         const obj = {
@@ -223,6 +226,7 @@ export class UploadexcelhomeComponent implements OnInit {
           templateDescription: element.templateDescription,
           templateMasterId: element.templateMasterId,
           templateName: element.templateName,
+          blobURI:element.blobURI,
         };
         this.summaryOfExcelTemplate.push(obj);
       });
@@ -1130,18 +1134,8 @@ export class UploadexcelhomeComponent implements OnInit {
 
   }
   downloadFile() {
-    // this.saveAsBlob(this.masterOfExcelTemplate[i].excelFile);
-    this.excelData = [];
-    this.header = []
-    this.header =["Template Name"]
-    this.masterOfExcelTemplate.forEach(element => {
-      let obj = {
-        "templateName":element.templateName,
-      }
-      this.excelData.push(obj)
-      console.log("obj",obj);
-    });
-    this.excelservice.exportAsExcelFile(this.excelData, 'Template','Template ',this.header);
+    console.log(JSON.stringify(this.masterOfExcelTemplate))
+    this.saveAsBlob(this.masterOfExcelTemplate.blobURI);
 
   }
 
@@ -1711,6 +1705,7 @@ export class UploadexcelhomeComponent implements OnInit {
 
 
     const assignValueArray = [...new Set(this.employeeMasterModuleList.map((item) => item.assignValue))];
+    // Array.form(new Set[(this.employeeMasterModuleList.map((item) => item.assignValue))])
     console.log('assignVAlue array', assignValueArray);
     const removeBlankspace = assignValueArray.findIndex(o => o == '');
     console.log('removeBlanck space index', removeBlankspace);
@@ -2470,7 +2465,7 @@ export class UploadexcelhomeComponent implements OnInit {
     this.header =["Template Name"]
     this.masterOfExcelTemplate.forEach(element => {
       let obj = {
-        "templateName":element.templateName,
+        "Template Name":element.templateName,
       }
       this.excelData.push(obj)
       console.log("obj",obj);
