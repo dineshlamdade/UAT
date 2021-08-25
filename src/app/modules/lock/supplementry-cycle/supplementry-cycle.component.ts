@@ -1,3 +1,4 @@
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, ElementRef, OnInit,  ViewChild ,TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SortEvent } from 'primeng/api';
@@ -152,9 +153,19 @@ export class SupplementryCycleComponent implements OnInit {
   areaSection = true;
   employeeSection = false;
   users2: User2[];
-  constructor(private modalService: BsModalService) { }
+  public form: any = FormGroup;
+  constructor(private modalService: BsModalService, private formBuilder : FormBuilder) { }
 
   ngOnInit(): void {
+    this.asAndWhenForm();
+    this.rowData();
+
+
+
+  }
+
+  rowData(){
+
     this.customers = [
       { empcode: '1', empName: ' ', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
       { empcode: '11', empName: 'ssss', designation: ' ', grade: ' ', establishment: ' ', department: ' ', area: ' ', companyname: ' ', service: ' ' },
@@ -171,19 +182,17 @@ export class SupplementryCycleComponent implements OnInit {
       { empcode: '66', empName: 'dddddd', designation: '', grade: ' ', establishment: '123', department: ' ', area: ' ', companyname: ' ', service: '' },
 
     ];
+    console.log("customers",this.customers);
     this.users1 = [
       { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
       { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
       { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-
-
     ];
+    console.log("users1",this.users1);
     this.emplists = [
       { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
       { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
       { empno: '1', area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
-
-
     ];
     this.arealists = [
       { area: 'area', service: 'aaa', cmpnyname: 'aaaa', },
@@ -285,6 +294,19 @@ export class SupplementryCycleComponent implements OnInit {
 
     ];
   }
+
+
+  //Reactive Form
+  asAndWhenForm(){
+   this.form = this.formBuilder.group({
+    companyName : new FormControl('',Validators.required),
+    type : new FormControl('',Validators.required),
+    cycleName : new FormControl('', Validators.required),
+    formDate : new FormControl(''),
+    toDate : new FormControl('')
+   });
+  }
+
   smallpopup(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
@@ -369,6 +391,11 @@ export class SupplementryCycleComponent implements OnInit {
      employeeSelect() {
        this.areaSection = false;
        this.employeeSection = true;
+     }
+
+
+     save(){
+
      }
 }
 
