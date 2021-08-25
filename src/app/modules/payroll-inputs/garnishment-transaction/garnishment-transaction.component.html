@@ -1,0 +1,698 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post"
+                                novalidate>
+                                
+                                <div class="row mt-25">
+                                    <div class="col-md-12">
+                                        <!-- <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="float-right">
+                                                    <div class="d-flex finyearlabel">
+                                                       
+                                                         <label class="form-label"><strong>Application No. :</strong>&nbsp;&nbsp; <b class="finyearlabel" aria-disabled="true">1234</b></label> &nbsp;&nbsp;&nbsp;&nbsp;  
+                                                        
+                                                            <label class="form-label"><strong>Application Date :</strong>&nbsp;&nbsp; <b class="finyearlabel" aria-disabled="true">12-Jan-2021</b></label>   
+                                                         
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div class="tabview-contents">
+                                           
+                                            <!-- <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Application No.</label>
+                                                    <input type="text" class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Application Date.</label>
+                                                    <input type="text" class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Status</label>
+                                                    <input type="text" class="form-control" disabled>
+                                                </div>
+                                            </div> -->
+                                          
+                                            <div class="row pt-10  bg-color-light_gray d-flex">
+                                                <div class="col-md-2 ">
+                                                    <label class="form-label ">Emp. Code & Name </label>
+                                                    <label class="form-label">
+                                                        001-John
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-2 ">
+                                                    <label class="form-label ">Date of Joining</label>
+                                                    <label class="form-label ">
+                                                        12-Jan-2021
+                                                    </label>
+                                                </div>
+
+                                                <div class="col-md-2 ">
+                                                    <label class="form-label ">Establishment</label>
+                                                    <label class="form-label ">
+                                                        Pune
+                                                    </label>
+                                                </div>
+
+                                                <div class="col-md-2 ">
+                                                    <label class="form-label  ">Department </label>
+                                                    <label class="form-label  ">
+                                                        Worker
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-2 ">
+                                                    <label class="form-label  ">Grade</label>
+                                                    <label class="form-label ">
+                                                        G1
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-2 ">
+                                                    <label class="form-label  ">Designation</label>
+                                                    <label class="form-label ">
+                                                        UI Developer
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                              <fieldset class="mt-25">
+                                                  <legend>Garnishment Details</legend>
+                                             
+                                           <div class="row mt-25">
+                                               <div class="col-md-3">
+                                                   <label class="form-label">Application No.</label>
+                                                   <input type="text" class="form-control" disabled> 
+                                               </div>
+                                               <div class="col-md-3">
+                                                <label class="form-label">Application Date.</label>
+                                                <input type="text" class="form-control" disabled> 
+                                            </div>
+                                           </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-3">
+                                                    <label class="form-label"> Payroll Area</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male"> PA 1 </option>
+                                                        <option value="Female"> PA 2</option>
+                                                        <option value="Female"> PA 3</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label"> Garnishment / Third Party Master</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male">Select </option>
+                                                        <option value="Female"> PA 2</option>
+                                                        <option value="Female"> PA 3</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Address</label>
+                                                    <input class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Nature</label>
+                                                    <input class="form-control" disabled>
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-25">
+
+                                                <div class="col-md-3">
+                                                    <label class="form-label">E/D Head Code & Desc.</label>
+                                                    <input class="form-control" disabled>
+                                                </div>
+                                               
+                                                <div class="col-md-3">
+                                                    <label class="form-label"> Family Members</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male"> Name1 </option>
+                                                        <option value="Female"> Name2</option>
+                                                        <option value="Female"> Name3</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-3"><label class="form-label">Once Every</label>
+                                                <input type="text" class="form-control">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label"> Frequency</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male">Select </option>
+                                                        <option value="Female"> PA 2</option>
+                                                        <option value="Female"> PA 3</option>
+                                                    </select>
+
+                                                </div>
+                                           
+                                            </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-3">
+                                                    <label class="form-label">From Date</label>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input data-provide="datepicker" data-Date-autoclose="true"
+                                                                class="form-control" placeholder="Date" bsDatepicker>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Transaction Type</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male"> Defined Date </option>
+                                                        <option value="Female"> No. Of Transaction</option>
+                                                        <option value="Female"> Name3</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">No. Of Transaction</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">To Date</label>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                            <input data-provide="datepicker" data-Date-autoclose="true"
+                                                                class="form-control" placeholder="Date" bsDatepicker>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                              
+                                            </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Input Type</label>
+                                                    <select name="Gender" class="form-control custom-select">
+                                                        <option value="Male"> Percentage </option>
+                                                        <option value="Female"> Amount</option>
+                                                        <option value="Female"> Defined Amount</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Percentage ( % )</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Amount</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Goal Amount</label>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Balance Goal</label>
+                                                    <input type="text" class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Remark</label>
+                                                    <textarea class="form-control"></textarea>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Reference No.</label>
+                                                    <input class="form-control">
+                                                </div>
+                                              
+                                                <div class="col-md-3 mt-4 ">
+                                                    <div class="float-right">
+                                                    <button type="button" tooltip="Schedule" (click)="schedulepopup(template)"
+                                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+                                                         class="fa fa-clock-o "></i></b> Schedule </button>
+                                                        </div>
+                                                        </div>
+                                            </div>
+                                            <div class="row mt-25">
+                                                <div class="col-md-12">
+                                                    <h4 class="font-14 text-purple font-bold"><b>Upload Document</b>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-10">
+                                                <div class="col-md-6">
+                                                    <div class="table-responsive Custom_Table">
+                                                        <table
+                                                            class="table table-striped table-hover table-bordered m-b-0">
+                                                            <thead class="thead-dark">
+                                                                <tr>
+                                                                    <th>Sr. No.</th>
+                                                                    <th>Document Name</th>
+                                                                    <th>Attachment</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>1</td>
+                                                                    <td>ABC</td>
+                                                                    <td><i class=" fa fa-paperclip text-red" ></i></td>
+                                                                    <td ><i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template3)" data-toggle="modal" data-target="#UploadModal"></i></td>
+                                                                </tr>
+                                                            </tbody>
+                                                            </table>
+
+                                                        
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </fieldset>
+
+                                        </div>
+
+
+
+
+
+
+
+                                        <div class="row mt-25" >
+                                            <div class="col-md-12">
+                                                <div class="float-right">
+                                                    <button type="button" tooltip="History"
+                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"   ><b><i
+                                                            class="fa fa-floppy-o  "></i></b> Save</button>
+                                                            <button type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2"><b><i class="fa fa-refresh"></i></b> Reset</button>
+                                                            <button type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-times"></i></b> Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-25">
+                                            <div class="col-md-12">
+                                                <h4 class="font-14 text-purple font-bold"><b>Summary</b>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-10">
+                                            <div class="col-md-12">
+                                                <div class="table-responsive Custom_Table">
+                                                    <p-table #dt1 [value]="employeeList" [paginator]="true"
+                                                        [rows]="10" [showCurrentPageReport]="true"
+                                                        (sortFunction)="customSort($event)" [customSort]="true"
+                                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                                        [rowsPerPageOptions]="[10, 25, 50]">
+
+                                                        <!-- P-Table ng-template caption, filter, search is started -->
+
+                                                        <!-- P-Table ng-template caption, filter, search is ended -->
+
+                                                        <!-- P-Table ng-template header with filter, sort is started -->
+                                                        <ng-template pTemplate="header">
+                                                            <tr>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Sr. No.
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="employeeCode"
+                                                                                pSortableColumn="employeeCode">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter field="employeeCode"
+                                                                                display="menu" class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                       Application No.
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="employeeName"
+                                                                                pSortableColumn="employeeName">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="employeeName" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Application Date
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Master
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Nature
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Percentage (%)
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Amount
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        From Date
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        To Date
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Balance Goal
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                        Remark
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                                                       Status
+                                                                        <div class="Sort_Filter_Position">
+                                                                            <p-sortIcon field="itGroup"
+                                                                                pSortableColumn="itGroup">
+                                                                            </p-sortIcon>
+                                                                            <p-columnFilter type="text"
+                                                                                field="itGroup" display="menu"
+                                                                                class="p-ml-auto">
+                                                                            </p-columnFilter>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                                
+
+
+                                                                <th rowspan="2">
+                                                                    <div class="align-center">Action</div>
+                                                                </th>
+
+
+                                                                <!-- <th>Action</th> -->
+                                                            </tr>
+
+                                                        </ng-template>
+                                                        <!-- P-Table ng-template header with filter, sort is ended -->
+
+                                                        <!-- P-Table ng-template body is started -->
+                                                        <ng-template pTemplate="body" let-employee>
+                                                            <tr class="p-selectable-row">
+
+                                                                <td>1</td>
+                                                                <td><input type="text" class="form-control"
+                                                                        disabled></td>
+                                                                <td><input type="text" class="form-control"
+                                                                        disabled></td>
+                                                                <td><input type="text" class="form-control"
+                                                                        disabled></td>
+                                                                <td><input type="text" class="form-control"
+                                                                        disabled>
+                                                                </td>
+                                                                <td><input type="text" class="form-control"
+                                                                    disabled></td>
+                                                                    <td><input type="text" class="form-control"
+                                                                        disabled></td>
+                                                                        <td><input type="text" class="form-control"
+                                                                            disabled></td>
+                                                                            <td><input type="text" class="form-control"
+                                                                                disabled></td>
+                                                                                <td><input type="text" class="form-control"
+                                                                                    disabled></td>
+                                                                                    <td><input type="text" class="form-control"
+                                                                                        disabled></td>
+                                                                                        <td><input type="text" class="form-control"
+                                                                                            disabled></td>
+                                                                
+                                                                <td class="wd-20">
+                                                                    <div class="d-flex">
+                                                                        <i class="fa fa-eye text-blue mr-2"></i>
+                                                                        <i class="fa fa-times text-red mr-2"></i>
+                                                                        <i class="fa fa-pencil text-green"></i>
+                                                                    </div></td>
+
+                                                            </tr>
+                                                        </ng-template>
+
+                                                    </p-table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                            <ng-template #template>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="UploadModalLabel">Garnishment / Third party Payment Schedule </h5>
+                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                           
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">Application No.</label>
+                                                            <input type="text" class="form-control" disabled>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">Garnishment / Third Party </label>
+                                                            <input type="text" class="form-control" disabled>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">Frequency</label>
+                                                            <input type="text" class="form-control" disabled>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">Goal Amount</label>
+                                                            <input type="text" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                <div class="row mt-25">
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive Custom_Table">
+                                                            <table
+                                                                class="table table-striped table-hover table-bordered m-b-0">
+                                                                <thead class="thead-dark">
+                                                                    <th>Date</th>
+                                                                    <th>Percentage ( % )</th>
+                                                                    <th>Amount</th>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>12-Aug-2021</td>
+                                                                            <td>20</td>
+                                                                            <td>4000</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                
+
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                                  </div>
+                               
+                            </ng-template>
+                            <ng-template #template3>
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+                                  <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="card">
+                                    <div class="card-body">
+                                      <div class="row clearfix">
+                                        <!-- <div class="col-md-12">
+                                       <label class="form-label">Upload File here :</label>
+                                    </div> -->
+                                        <div class="col-md-12">
+                                          <div class="fileuploadbox bg-color-lightgray">
+                                            <label class="filelabel">
+                                              <i class="fa fa-upload">
+                                              </i>
+                                              <span class="title">
+                                                  Choose file
+                                                </span>
+                                              <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
+                                                     accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+                                            </label>
+                                          </div>
+                                          <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
+                                            <span class="text-purple font-14 font700">Selected Files</span>
+                                            <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
+                                              <div class="text-ellipsis"><i class="fa fa-paperclip">
+                                              </i>
+                                                <span class="title" tooltip="{{item.name}}">
+                                                   
+                                                  </span>
+                                                <div>
+                                                  <div style="float: left; width: 40%;">
+                                                    <div class="col-md-8 mt-10">
+                                                      <label class="form-label">Password</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                      <input class="form-control" [(ngModel)]="documentPassword[index]" rows="1">
+                                                    </div>
+                              
+                                                  </div>
+                                                  <div style="float: right; width: 40%; margin-right: 59px">
+                                                    <div class="col-md-8 mt-10">
+                                                      <label class="form-label">Remark</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                      <input class="form-control" [(ngModel)]="remarkList[index]" rows="1">
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index)"></i>
+                                              </div>
+                                            </label>
+                              
+                              
+                                          </div>
+                                        </div>
+                                        <!-- <div class="col-md-12 mt-10">
+                                            <label class="form-label">Remark</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+                                        </div> -->
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                                </div>
+                              </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

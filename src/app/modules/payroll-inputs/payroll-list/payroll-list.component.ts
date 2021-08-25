@@ -90,6 +90,11 @@ export class PayrollListComponent implements OnInit {
     this.router.navigate(['/PayrollInputs/Non-Recurring-qty'])
   }
 
+  navigateToGarnishmentApplication(){
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Garnishment-Transaction'])
+  }
+
 
 
   // ............................................Add Query....................................................

@@ -5,6 +5,7 @@ import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.com
 import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
 import { FinancialMasterComponent } from './financial-master/financial-master.component';
 import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
+import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
@@ -71,7 +72,12 @@ const routes: Routes = [
       {
         path: 'Garnishment-Master',
         component: GarnishmentMasterComponent,
-        data: { title: ':: DelziaHR :: Fast Entry NR Quantity'}
+        data: { title: ':: DelziaHR :: Garnishment Master'}
+      },
+      {
+        path: 'Garnishment-Transaction',
+        component: GarnishmentTransactionComponent,
+        data: { title: ':: DelziaHR :: Garnishment Transaction'}
       },
     ],
   },
