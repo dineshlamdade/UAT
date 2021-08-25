@@ -118,7 +118,7 @@ export class UploadexcelhomeComponent implements OnInit {
   excelData: any[];
   header: any[];
   assignValueArray:any;
-
+  viewFlag:boolean = false;
   constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private excelService: ExcelService,
     private uploadeExcelHomeService: UploadExcelHomeService, private alertService: AlertServiceService,private excelservice: ExcelserviceService) {
     this.excelDataList = [];
@@ -2400,6 +2400,10 @@ export class UploadexcelhomeComponent implements OnInit {
   }
   viewTemplate(templateMasterId: number) {
     this.editMaster(templateMasterId, true);
+    this.form.patchValue();
+    this.form.disable();
+this.viewFlag = true;
+
   }
   forReadOnlyAllCheckBox() {
     for (let i = 0; i < this.sequenceArray.length; i++) {

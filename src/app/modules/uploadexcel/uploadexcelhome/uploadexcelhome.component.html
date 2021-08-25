@@ -64,22 +64,22 @@
                               <div class="d-flex">
                                 <label class="custom-control custom-checkbox mr-15">
                                   <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                    (change)="onClickEmployeeMaster($event)" value="Employee_Master" checked />
+                                    (change)="onClickEmployeeMaster($event)" value="Employee_Master" [disabled]="viewFlag" checked />
                                   <span class="custom-control-label">Employee Master</span>
                                 </label>
                                 <label class="custom-control custom-checkbox mr-15">
                                   <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                    (change)="onClickPayrollMaster($event)" value="Payroll" />
+                                    (change)="onClickPayrollMaster($event)" value="Payroll" [disabled]="viewFlag" />
                                   <span class="custom-control-label">Payroll</span>
                                 </label>
                                 <label class="custom-control custom-checkbox mr-15">
                                   <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                    (change)="onClickAssetMaster($event)" value="Asset" />
+                                    (change)="onClickAssetMaster($event)" value="Asset" [disabled]="viewFlag" />
                                   <span class="custom-control-label">Asset</span>
                                 </label>
                                 <label class="custom-control custom-checkbox mr-15">
                                   <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                    (change)="onClickLeaveManagement($event)" value="Leave_Management" />
+                                    (change)="onClickLeaveManagement($event)" value="Leave_Management" [disabled]="viewFlag" />
                                   <span class="custom-control-label">Leave Management</span>
                                 </label>
                               </div>
@@ -121,7 +121,8 @@
 
                                           </span> -->
 
-                                          <i *ngIf="order.name !== 'Select All'" class="fa fa-compress "  (click)="MergeTab(template3,order.name )"></i>
+                                          <i *ngIf="order.name !== 'Select All'" class="fa fa-compress mergeicon1"
+                                           (click)="MergeTab(template3,order.name )"></i>
                                         <!-- <span *ngIf="order.hide == true && order.name !== 'Select All'"> <i
                                             class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
                                             (click)="MergeTab(template3,order.name)"></i></span> -->
@@ -459,6 +460,7 @@
                                       &nbsp;&nbsp;
                                       <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
                                         (click)="viewTemplate(summary.templateMasterId)"></i>&nbsp;&nbsp;
+
                                         <a href="{{summary.blobURI}}" download target="_blank">  <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
                                           ></i></a>
                                           <!-- (click)="downloadFile()" -->
