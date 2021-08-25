@@ -41,6 +41,10 @@ export class EmployeesetComponent implements OnInit {
   primengConfig: any;
   private searchSubscribe;
   modalRef: BsModalRef;
+  displayedColumns: any;
+  employeedata: any[] = [];
+  empdataSource: any;
+  employeeMasterdata: any;
 //  result: any;
 //  query: string;
  // FilteredApplicationNames: any;
@@ -193,19 +197,19 @@ export class EmployeesetComponent implements OnInit {
     this.empService.getSummaryData().subscribe((res)=>{
       this.summaryData = res.data.results[0];
       console.log('summary data is',this.summaryData)
-    } ,error => {
-    //   // if(error.error.status.code == ''){
-    //      //this.toaster.success( 'Duplicate Area Set Name' );
-    //     // this.alertService.sweetalertError('Dulicate Areaset');
-    //     // this.areasetForm.controls['areaSetName'].reset();
+     } ,error => {
+    // //   // if(error.error.status.code == ''){
+    // //      //this.toaster.success( 'Duplicate Area Set Name' );
+    // //     // this.alertService.sweetalertError('Dulicate Areaset');
+    // //     // this.areasetForm.controls['areaSetName'].reset();
 
-    //   // }
-     setTimeout(()=>{
-        this.summaryData = []
-      },200)
+    // //   // }
+    setTimeout(()=>{
+       this.summaryData = []
+     },200)
      
      }
-    )
+     )
   }
 
   formReset() {
@@ -436,6 +440,45 @@ largepopup(template: TemplateRef<any>) {
     Object.assign({}, { class: 'gray modal-md' })
   );
 }
+
+
+//emp list radio button//
+employeeListPasteData(event: ClipboardEvent) {
+  let clipboardData = event.clipboardData;
+  let pastedText = clipboardData.getData('text');
+  let row_data = pastedText.split('\n');
+  // this.displayedColumns = row_data[0].split('\t');
+  // this.displayedColumns = ["employeeCode", "employeeName"]
+  this.displayedColumns = ["employeeCode"]
+
+  
+  //delete row_data[0];
+  // Create table dataSource
+  row_data.forEach(row_data => {
+    let row = {};
+    this.displayedColumns.forEach((a, index) => {
+      row[a] = row_data.split('\t')[index]
+    });
+    // console.log(row)
+    this.employeedata.push(row);
+  })
+  this.empdataSource = this.employeedata;
+  this.empdataSource.splice(this.empdataSource.length-1,1)
+
+  console.log("Before: " + JSON.stringify(this.empdataSource));
+  
+  this.serviceListData.forEach(element => {
+    this.empdataSource.forEach(emp => {
+      let empcode = emp.employeeCode.split('\r')
+      if(element.employeeCode+',' == empcode){
+        emp.employeeMasterId = element.employeeMasterId
+        emp.fullName = element.fullName 
+      }
+    });
+  });
+  console.log("After: " + JSON.stringify(this.empdataSource));
+}
+
 }
 
 

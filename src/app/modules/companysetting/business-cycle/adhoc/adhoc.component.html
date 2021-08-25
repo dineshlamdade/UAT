@@ -196,11 +196,11 @@
                    <legend>Heads</legend>
                    <label class="custom-control custom-checkbox custom-control-inline pl-45">
                     <input autocomplete="off" type="checkbox" class="custom-control-input"
-                      name="example-inline-checkbox1" (click)="isArrear($event.target)"
+                      name="example-inline-checkbox1" 
                       formControlName = "arrear" />
                     <span class="custom-control-label">Arrear </span>
                   </label>
-
+                  <!-- (click)="isArrear($event.target)" -->
                    <div class="row">
                     <div class="col-5">
                       &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
@@ -476,10 +476,15 @@
                   <div class="col-12">
                     <div class="float-right mb-15">
                       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
-                      (click)="onSubmit()" [disabled] = "adhocForm.invalid && (isArrearFlag || selectedUser?.length > 0)"
-                      [ngClass]="{'disabled-btn-bg-green' : adhocForm.invalid, 'btn-bg-green': !adhocForm.invalid }"><b>
+                      (click)="onSubmit()" [disabled] = "checkValid()"
+                      [ngClass]="{'disabled-btn-bg-green' : adhocForm.invalid, 'btn-bg-green': !adhocForm.invalid}"><b>
                        <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
 
+                      <!-- <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
+                      (click)="onSubmit()" [disabled] = "adhocForm.invalid && (isArrearFlag || selectedUser?.length > 0)"
+                      [ngClass]="{'disabled-btn-bg-green' : adhocForm.invalid, 'btn-bg-green': !adhocForm.invalid && (isArrearFlag || selectedUser?.length > 0)}"><b>
+                       <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp; -->
+                       <!--&& isArrearFlag || selectedUser?.length > 0) -->
                        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Update" *ngIf="editFormFlag && !viewFormFlag"
                       (click)="onUpdate()"><b>
                        <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;

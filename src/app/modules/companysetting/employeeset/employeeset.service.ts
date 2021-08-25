@@ -31,7 +31,7 @@ import { Observable } from "rxjs";
 
     /**get summary data */
     getSummaryData():Observable<any>{
-    // return this.http.get<any>(this.apiUrl+ `EmployeeMaster/SummaryData`);
+     //return this.http.get<any>(this.apiUrl+ `EmployeeMaster/SummaryData`);
      return this.http.get(this.apiUrl+`EmployeeMaster/getAllEmployeeSet`);
     }
 

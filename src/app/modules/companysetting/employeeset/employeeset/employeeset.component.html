@@ -64,8 +64,7 @@
                             <div class="custom-controls-stacked">
                               <label class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" name="example- radios" value="radioStatus"
-                                [checked]="radioStatus" (change)="example($event)"  (click)="Arealistpop(arealistpop)"
-                                >
+                                [checked]="radioStatus" (change)="example($event)" (click)="Arealistpop(arealistpop)">
                                 <div class="custom-control-label form-label"> Emp. List </div>
                               </label>
                             </div>
@@ -296,7 +295,7 @@
             <div class="card-body">
                 <div class="row  ">
                     <div class="col-md-12">
-                        <textarea rows="3" cols="60"></textarea>
+                        <textarea rows="3" cols="60" (paste)="employeeListPasteData($event)"></textarea>
                     </div>
                 </div>
                

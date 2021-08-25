@@ -95,17 +95,18 @@ export class AdhocComponent implements OnInit {
   //  }
 
   
-  // checkValid() {
-  //   if(this.adhocForm.get('arrear').valid || this.selectedUser?.length>0) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
+  checkValid() {
+    if(this.adhocForm.get('arrear').valid || this.selectedUser?.length>0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
 
   isArrear($event){
-    if($event.target){
+    
+    if(this.adhocForm.get('arrear').value != true){
         this.isArrearFlag = false;
     }else{
         this.isArrearFlag = true;
