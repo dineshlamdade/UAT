@@ -8,14 +8,25 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              <form [formGroup]="rolePrivilegeForm" (ngSubmit)="onSubmit(rolePrivilegeForm,formDirective)"
+              <form [formGroup]="rolePrivilegeForm"
                 #formDirective="ngForm">
                 <div class="box-line-border radius-10 p-3 mt-3">
                   <div class="row">
 
-                    <div class="col-md-2">
+                    <div class="col-md-2" *ngIf="viewFlag">
                       <label class="form-label mt-1 mb-0">Group Name</label>
-                      <select name="Gender" class="form-control custom-select" formControlName="companyGroupName"
+                      <select class="form-control custom-select" formControlName="companyGroupName"
+                      [ngClass]="{'is-invalid' : rolePrivilegeForm.get('companyGroupName').status == 'INVALID'}" disabled>
+                        <option value="">select</option>
+                        <option *ngFor="let companyGroupName of groupNamesData"
+                          [value]="companyGroupName.companyGroupMasterId">
+                          {{companyGroupName.companyGroupName}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2" *ngIf="!viewFlag">
+                      <label class="form-label mt-1 mb-0">Group Name</label>
+                      <select class="form-control custom-select" formControlName="companyGroupName"
                         [ngClass]="{'is-invalid' : rolePrivilegeForm.get('companyGroupName').status == 'INVALID'}"
                         (change)="onSelectCompanyName($event.target.value)">
                         <option value="">select</option>
@@ -28,7 +39,7 @@
                     <div class="col-md-2" *ngIf="!editFlag">
                       <label class="form-label mt-1 mb-0">Company Name
                       </label>
-                      <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings"
+                      <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings" [disabled]="viewFlag"
                         [data]="companyNameList" (onSelect)="onItemSelect($event)" formControlName="companyName"
                         [ngClass]="{'is-invalid' : rolePrivilegeForm.get('companyName').status == 'INVALID'}">
                       </ng-multiselect-dropdown>
@@ -45,7 +56,22 @@
 
 
 
-                    <div class="col-md-2">
+                    <div class="col-md-2" *ngIf="viewFlag">
+                      <label class="form-label mt-1 mb-0">User Group
+                        <!-- {{rolePrivilegeForm.controls.userName.value}} -->
+                      </label>
+                      <select name="userName" class="form-control custom-select" formControlName="userName"
+                      disabled
+                        [ngClass]="{'is-invalid' : rolePrivilegeForm.get('userName').status == 'INVALID'}"
+                        (change)="onSelectGroupName($event.target.value)">
+                        <option value="">select</option>
+                        <option *ngFor="let userGroupName of userGroupNameList" [value]="userGroupName.userGroupId">
+                          {{userGroupName.groupName}}
+                        </option>
+                      </select>
+
+                    </div>
+                    <div class="col-md-2" *ngIf="!viewFlag">
                       <label class="form-label mt-1 mb-0">User Group
                         <!-- {{rolePrivilegeForm.controls.userName.value}} -->
                       </label>
@@ -59,7 +85,19 @@
                       </select>
 
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" *ngIf="viewFlag">
+                      <label class="form-label mt-1 mb-0">User Role</label>
+                      <select name="roleName" class="form-control custom-select" formControlName="roleName"
+                        disabled
+                        [ngClass]="{'is-invalid' : rolePrivilegeForm.get('roleName').status == 'INVALID'}"
+                        (change)="getSelectedRole()">
+                        <option value="">select</option>
+                        <option *ngFor="let userRoleNameList of userRoleData" [value]="userRoleNameList.userRoleId">
+                          {{userRoleNameList.roleName}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2" *ngIf="!viewFlag">
                       <label class="form-label mt-1 mb-0">User Role</label>
                       <select name="roleName" class="form-control custom-select" formControlName="roleName"
                         [ngClass]="{'is-invalid' : rolePrivilegeForm.get('roleName').status == 'INVALID'}"
@@ -118,12 +156,12 @@
 
                                   <div class="">
                                     <input class="toggle-box" id="identifier-{{i}}" type="checkbox" />
-                                    <label for="identifier-{{i}}" style="font-size: 13px;" >{{group.menuName}}</label>
+                                    <label for="identifier-{{i}}">{{group.menuName}}</label>
 
                                     <div class="">
                                       <a class="p-0 d-flex" for="identifier-1">
-                                        <label for="identifier-{{i}}" class="custom-control custom-checkbox">
-                                          <ul style="list-style-type:none;position:sticky;">
+                                        <label for="identifier-{{i}}" class="custom-control custom-checkbox" *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                          <ul style="list-style-type:none;position:sticky;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
                                             <div *ngFor="let submenu of group.childItems">
 
                                               <li id="{{submenu.menuName}}">
@@ -132,8 +170,8 @@
                                                 <div class="">
                                                   <a class="p-0 d-flex">
                                                     <label for="identifier-{{i}}"
-                                                      class="custom-control custom-checkbox">
-                                                      <ul style="list-style-type:none;line-height:42px;">
+                                                      class="custom-control custom-checkbox"><br>
+                                                      <ul style="list-style-type:none;line-height:45px;">
                                                         <div *ngFor="let smenu of submenu.childItems">
                                                           <li class="rup" id="{{submenu.menuName}}" class="mb-6">
 
@@ -162,7 +200,7 @@
                                   <div class="text-center">
                                     <a class="p-0 d-flex">
                                       <label class="custom-control custom-checkbox " for="identifier-10 ">
-                                        <ul style="list-style-type:none; text-align: center;">
+                                        <ul style="list-style-type:none; text-align: center;"  *ngIf="rolePrivilegeForm.controls.roleName.valid">
                                           <div *ngFor="let submenu of group.childItems">
                                             <li id="{{submenu.menuName}}" style="margin-left:-75px;">
                                               <input type="checkbox" name="websitecheckMenuFull"
@@ -173,11 +211,11 @@
 
                                               <div class="">
                                                 <a class="p-0 d-flex" for="identifier-1">
-                                                  <label class="custom-control custom-checkbox ">
+                                                  <label class="custom-control custom-checkbox"><br>
                                                     <ul style="list-style-type:none;">
                                                       <div *ngFor="let smenu of submenu.childItems">
                                                         <li class="rup" id="{{smenu.menuName}}"
-                                                          style="margin-left:-50px;line-height: 42px;">
+                                                          style="margin-left:-50px;line-height: 45px;">
 
                                                           <input type="checkbox" name="websitecheckMenuSubFull"
                                                             [checked]="isChecked || group.allFlag || submenu.allFlag || smenu.allFlag"
@@ -205,7 +243,7 @@
                                   <div class="">
                                     <a class="p-0 d-flex">
                                       <label class="custom-control custom-checkbox ">
-                                        <ul style="list-style-type:none;">
+                                        <ul style="list-style-type:none;"  *ngIf="rolePrivilegeForm.controls.roleName.valid">
                                           <div *ngFor="let submenu of group.childItems">
                                             <li id="{{submenu.menuName}}" style="margin-left: -85px;">
                                               <input type="checkbox" name="websitecheckMenuMainRead"
@@ -216,11 +254,11 @@
 
                                               <div class="">
                                                 <a class="p-0 d-flex" for="identifier-1">
-                                                  <label class="custom-control custom-checkbox ">
+                                                  <label class="custom-control custom-checkbox"><br>
                                                     <ul style="list-style-type:none;">
                                                       <div *ngFor="let smenu of submenu.childItems">
                                                         <li class="rup" id="{{smenu.menuName}}"
-                                                          style="margin-left:-50px;line-height: 42px;">
+                                                          style="margin-left:-50px;line-height: 45px;">
 
                                                           <input type="checkbox" name="websitecheckMenuSubRead"
                                                             [checked]="isChecked || isCheckedRead || group.readFlag || group.allFlag || submenu.allFlag || submenu.readAccess || smenu.allFlag"
@@ -249,7 +287,7 @@
                                   <div class="">
                                     <a class="p-0 d-flex">
                                       <label class="custom-control custom-checkbox ">
-                                        <ul style="list-style-type:none;">
+                                        <ul style="list-style-type:none;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
                                           <div *ngFor="let submenu of group.childItems">
                                             <li id="{{submenu.menuName}}" style="margin-left: -85px;">
                                               <input type="checkbox" name="websitecheckMenuMainWrite"
@@ -260,11 +298,11 @@
 
                                               <div class="">
                                                 <a class="p-0 d-flex" for="identifier-1">
-                                                  <label class="custom-control custom-checkbox ">
+                                                  <label class="custom-control custom-checkbox"><br>
                                                     <ul style="list-style-type:none;">
                                                       <div *ngFor="let smenu of submenu.childItems">
                                                         <li class="rup" id="{{submenu.menuName}}"
-                                                          style="margin-left:-45px;line-height: 42px;">
+                                                          style="margin-left:-45px;line-height: 45px;">
 
                                                           <input type="checkbox" name="websitecheckMenuSubWrite"
                                                             [checked]="isChecked || isCheckedWrite || group.writeFlag || group.allFlag || submenu.allFlag || submenu.writeAccess || smenu.allFlag"
@@ -294,7 +332,7 @@
                                   <div class="">
                                     <a class="p-0 d-flex">
                                       <label class="custom-control custom-checkbox ">
-                                        <ul style="list-style-type:none;">
+                                        <ul style="list-style-type:none;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
                                           <div *ngFor="let submenu of group.childItems">
                                             <li id="{{submenu.menuName}}" style="margin-left: -95px;">
                                               <input type="checkbox" name="websitecheckMenuMainModify"
@@ -305,11 +343,11 @@
 
                                               <div class="">
                                                 <a class="p-0 d-flex" for="identifier-1">
-                                                  <label class="custom-control custom-checkbox ">
+                                                  <label class="custom-control custom-checkbox"><br>
                                                     <ul style="list-style-type:none;">
                                                       <div *ngFor="let smenu of submenu.childItems">
                                                         <li class="rup" id="{{submenu.menuName}}"
-                                                          style="margin-left:-35px;line-height: 42px;">
+                                                          style="margin-left:-35px;line-height: 45px;">
                                                           <input type="checkbox" name="websitecheckMenuSubModify"
                                                             [checked]="isCheckedModify || group.modifyFlag || isChecked || group.allFlag || submenu.allFlag || submenu.modifyAccess || smenu.allFlag"
                                                             [disabled]="viewFlag"
@@ -337,7 +375,7 @@
                                   <div class="">
                                     <a class="p-0 d-flex">
                                       <label class="custom-control custom-checkbox ">
-                                        <ul style="list-style-type:none;">
+                                        <ul style="list-style-type:none;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
                                           <div *ngFor="let submenu of group.childItems">
                                             <li id="{{submenu.menuName}}" style="margin-left: -95px;">
                                               <input type="checkbox" name="websitecheckMenuMainDelete"
@@ -348,11 +386,11 @@
 
                                               <div class="">
                                                 <a class="p-0 d-flex" for="identifier-1">
-                                                  <label class="custom-control custom-checkbox ">
+                                                  <label class="custom-control custom-checkbox"><br>
                                                     <ul style="list-style-type:none;">
                                                       <div *ngFor="let smenu of submenu.childItems">
                                                         <li class="rup" id="{{smenu.menuName}}"
-                                                          style="margin-left:-35px;line-height: 42px;">
+                                                          style="margin-left:-35px;line-height: 45px;">
 
                                                           <input type="checkbox" name="websitecheckMenuSubDelete"
                                                             [checked]="isCheckedDelete || group.deleteFlag || isChecked || group.allFlag || submenu.allFlag || submenu.deleteAccess || smenu.allFlag"
@@ -380,7 +418,7 @@
                                     &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                                     &nbsp;                                 
                                     <label class="custom-control custom-checkbox ">
-                                      <ul style="list-style-type:none;">
+                                      <ul style="list-style-type:none;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
                                         <div *ngFor="let submenu of group.childItems">
                                           <li style="margin-left: -70px; line-height: 42px;">
 
@@ -428,7 +466,7 @@
                       <ng-container class="float-right">
                         <div class="row float-right" style="margin: 10px">
                           <button type="submit" *ngIf="isShown"
-                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" (click)="onSubmit(fieldPopup)"
                             [disabled]="!rolePrivilegeForm.valid"
                             [ngClass]="{'disabled-btn-bg-green' : rolePrivilegeForm.invalid,'btn-bg-green': !rolePrivilegeForm.invalid}">
                             <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
@@ -469,13 +507,59 @@
                     <!-- Tab 2 -->
                     <input type="radio" name="tabset2" id="tab4" aria-controls="Reportsummary" />
                     <label for="tab4">Report Summary</label>
+
+                    <!-- <a tooltip="Download" style="cursor: pointer" (click)="exportAsXLSX()">
+                        <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                            aria-hidden="true" style="float: right;"></i>
+                    </a> -->
+
+                   <!-- <div style="float: right !important;">
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <input type="text" pInputText size="50" placeholder="Search"
+                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: 203px !important;margin-right: 37px;">
+                    </div> -->
+
                     <div class="tab-panels">
                       <section id="Menusummary" class="tab-panel">
-                        <p-table [value]="menuSummaryData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                          [lazy]="true"  [totalRecords]="totalRecords"
+                        
+                        <!-- <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                        aria-hidden="true"></i> -->
+
+                        <p-table 
+                        [globalFilterFields]="['companyName',
+                                     'groupName',
+                                     'roleName'
+                                    ]" #dt
+                        [value]="menuSummaryData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                          [totalRecords]="totalRecords" [lazy]="true"
                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                           [rowsPerPageOptions]="[10,25,50,100,200]"
                           (onPage)="paginate($event)">
+                          <ng-template pTemplate="caption">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <div class="d-flex">
+                                            <span
+                                            class="p-input-icon-left p-ml-auto">
+                                            <i class="pi pi-search"
+                                                style="top: 9px !important; right: 59px;"></i>
+                                            <input pInputText type="text"
+                                                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search " />
+        
+                                        </span>
+                                        <i
+                                            class="fa fa-file-excel-o text-dark-green   fa-2x ml-2  mr-2"
+                                            (click)="exportAsXLSX()"></i>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </ng-template>
                           <ng-template pTemplate="header">
                             <tr>
                               <th class="wd-10 text-center">Sr. No.</th>
@@ -528,7 +612,7 @@
 
                               </td>
                               <td class="wd-5 text-center">
-                                <i class="fa fa-edit font-16 text-blue cursor-pointer" tooltip="Edit"
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"
                                   (click)="editMenuSummary(menuSummary)"></i>
                                 &nbsp;&nbsp;
                                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
@@ -1048,19 +1132,18 @@
     <div class="card">
       <div class="card-body">
         <div class="table-responsive Custom_Table my-registertable">
-
-        <table class="table  table-bordered table-hover m-b-0 bg-color-white my-registertable">
-          <thead class="thead-dark">
+          <table class="table table-striped table-hover table-bordered  m-b-0 my-registertable" style=" height: 500px;">
+            <thead class="thead-dark">
             <tr>
               <th scope="col" class="font700 wd-30 text-center" style="color: white">Name</th>
               <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox"
-                  name="fieldcheckRead" [checked]="isChecked" (click)="checkUncheckallReadFields()"> Read</th>
+                  name="fieldcheckRead" [checked]="isFieldChecked" (click)="checkUncheckallReadFields()"> Read</th>
               <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox"
-                  name="fieldcheckWrite" [checked]="isChecked" (click)="checkUncheckallWriteFields()"> Write</th>
+                  name="fieldcheckWrite" [checked]="isFieldChecked" (click)="checkUncheckallWriteFields()"> Write</th>
               <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox"
-                  name="fieldcheckModify" [checked]="isChecked" (click)="checkUncheckallModifyFields()">Modify</th>
-              <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox"
-                  name="fieldcheckHide" [checked]="isChecked" (click)="checkUncheckallHideFields()">Hide</th>
+                  name="fieldcheckModify" [checked]="isFieldChecked" (click)="checkUncheckallModifyFields()">Modify</th>
+              <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" [disabled]="fullFlag"
+                  name="fieldcheckHide" [checked]="isFieldChecked || !fullFlag" (click)="checkUncheckallHideFields()">Hide</th>
 
             </tr>
           </thead>
@@ -1093,8 +1176,9 @@
                             <ul style="list-style-type:none;">
                               <div>
                                     <li id="{{fields.controlName}}" style="margin-left: -80px;">
+                                      <!-- {{fields.formFieldId}} -->
                                         <input type="checkbox" name="websitecheckMenuMainRead"
-                                            [checked]="isChecked || isCheckedReadFields || fields.readFlag || fields.allFlag " [disabled]="viewFlag"
+                                            [checked]="isCheckedReadFields || fields.readFlag || fields.allFlag " [disabled]="viewFlag"
                                              (click)="checkeUncheckSingleReadFields(fields,$event.target)" />
                                      </li>
                                 </div>
@@ -1112,7 +1196,7 @@
                             <div>
                                   <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                       <input type="checkbox" name="websitecheckMenuMainWrite"
-                                          [checked]="isChecked || isCheckedWriteFields || fields.writeFlag || fields.allFlag"
+                                          [checked]="isCheckedWriteFields || fields.writeFlag || fields.allFlag"
                                            [disabled]="viewFlag" (click)="checkeUncheckSingleWriteFields(fields,$event.target)" />
                                    </li>
                               </div>
@@ -1129,7 +1213,7 @@
                           <div>
                                 <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                     <input type="checkbox" name="websitecheckMenuMainModify"
-                                        [checked]="isChecked || isCheckedModifyFields || fields.modifyFlag || fields.allFlag"
+                                        [checked]="isCheckedModifyFields || fields.modifyFlag || fields.allFlag"
                                          [disabled]="viewFlag" (click)="checkeUncheckSingleModifyFields(fields,$event.target)" />
                                  </li>
                             </div>
@@ -1146,7 +1230,7 @@
                         <div>
                               <li id="{{fields.controlName}}" style="margin-left: -80px;">
                                   <input type="checkbox" name="websitecheckMenuMainHide"
-                                      [checked]="isChecked || isCheckedHideFields || fields.HideFlag || fields.allFlag" [disabled]="viewFlag"
+                                      [checked]="isCheckedHideFields || fields.HideFlag || fields.allFlag" [disabled]="viewFlag || fullFlag"
                                        (click)="checkeUncheckSingleHideFields(fields,$event.target)" />
                                </li>
                           </div>
@@ -1158,8 +1242,7 @@
             </tr>
           </tbody>
         </table>
-
-      </div>
+</div>
       </div>
     </div>
   </div>
@@ -1172,5 +1255,30 @@
       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="resetFields()"><b><i
           class="fa fa-refresh"></i></b> Reset</button>
 
+  </div>
+</ng-template>
+
+
+<ng-template #fieldPopup>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body mb-0 pb-0 pt-0">
+      <div class="card mb-0">
+          <div class="card-body">
+              <div class="row clearfix">
+                  <div class="col-md-12">
+                      <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;
+                        Field level data save
+                   </label>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="saveFieldLevelData();modalRef.hide()">Yes</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
   </div>
 </ng-template>

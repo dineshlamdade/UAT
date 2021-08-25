@@ -1,5 +1,7 @@
 
   
+ 
+  
   table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -34,6 +36,7 @@
   font-weight: bold;
   line-height: 21px;
   margin-bottom: 10px !important;
+  font-size: 13px !important;
   
 }
 
@@ -49,4 +52,18 @@
 }
 ul{
   list-style-type: none;
+
 }
+
+.table th {
+  color: #9aa0ac;
+  font-size: .875rem;
+  font-weight: 400;
+  // text-transform: uppercase;
+}
+.tabset>input:checked+label {
+  border: 2px solid #33ad36 !important;
+  border-top: 7px solid #33ad36 !important;
+  border-bottom: 2px solid #ffffff !important;
+  margin-bottom: -1px;
+  color: #713f93 !important;}

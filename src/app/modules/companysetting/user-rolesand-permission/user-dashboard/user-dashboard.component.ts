@@ -87,7 +87,7 @@ export class UserDashboardComponent implements OnInit {
   loading: boolean = true;
 
   page: any=1;
-  size: any=200;
+  size: any=10;
   selectedUserGroupId: any;
   
   employeeUserDetails: any;
@@ -103,6 +103,12 @@ export class UserDashboardComponent implements OnInit {
   employeeRoleAssignmentId: any;
   excelData: any[];
   header: any[];
+  totalPages: any;
+  groupid: any;
+  compnyid: any;
+  roleid: any;
+  userGroupId: any;
+  compnayGlobalSelectId: any = null;
   // butDisabled: boolean = true;
 
   // userDashBoardForm: any;
@@ -198,57 +204,128 @@ export class UserDashboardComponent implements OnInit {
    // this.getSummaryDataByCompany()
 
   }
+  // getSummaryDataByCompany(){
+
+  //      this.service.getAllEmployeeRoleAssignment(this.page,this.size).subscribe((res) =>{
+  //       this.summarydata = res.data.results[0].content;
+  //       console.log(this.summarydata)
+  //       this.service.getEmployeeMasterCode().subscribe( res =>{
+  //         let empData = res.data.results;
+  //         this.summarydata.forEach(element => {
+  //                empData.forEach(ele => {
+  //                   if(element.employeeMasterId == ele.employeeMasterId){
+  //                   element.employeeCode = ele.employeeCode
+  //               }
+  //             });
+  //       })  
+  //     });
+
+  //     this.service.employeeRoleAssignmentDashboard(this.subId).subscribe(res =>{
+  //       this.totalUsersCount = res.data.results[0].totalUsers
+  //       this.activeUserCount = res.data.results[0].activeUsers
+  //       this.lockUserCount = res.data.results[0].lockedUsers
+  //       this.userGroupNameL =res.data.results[0].userGroups
+  //       this.userRoleName = res.data.results[0].userRoles
+  //       this.inactiveUserCount = res.data.results[0].deActiveUsers
+  //     })
+  //      let activeUser = [];
+  //       let lockUser = [];
+  //       let userGroupNameL = [];
+  //       let userRoleName = [];
+    
+  //       this.summarydata.forEach(element => {
+  //         // this.userNameList.push({
+  //         //   'userName': element.userName
+  //         // })
+  //         if (element.userIsActive == true) {
+  //           activeUser.push(element)
+  //         }
+  //         if (element.lockUser == true) {
+  //           lockUser.push(element)
+  //         }
+  //         if (element.userGroupId != '') {
+  //           userGroupNameL.push(element)
+  //         }
+  //         if (element.userRoleId != '') {
+  //           userRoleName.push(element)
+  //         }
+  //       });
+      
+  //       console.log("summarydata", this.summarydata);
+  //     })
+    
+  // }
   getSummaryDataByCompany(){
 
-       this.service.getAllEmployeeRoleAssignment(this.page,this.size).subscribe((res) =>{
-        this.summarydata = res.data.results[0].content;
-        console.log(this.summarydata)
-        this.service.getEmployeeMasterCode().subscribe( res =>{
-          let empData = res.data.results;
-          this.summarydata.forEach(element => {
-                 empData.forEach(ele => {
-                    if(element.employeeMasterId == ele.employeeMasterId){
-                    element.employeeCode = ele.employeeCode
-                }
-              });
-        })  
-      });
+    this.service.getAllEmployeeRoleAssignment(this.page,this.size).subscribe((res) =>{
+     this.summarydata = res.data.results[0].content;
+     console.log(this.summarydata)
+     this.service.getEmployeeMasterCode().subscribe( res =>{
+       let empData = res.data.results;
+       this.summarydata.forEach(element => {
+              empData.forEach(ele => {
+                 if(element.employeeMasterId == ele.employeeMasterId){
+                 element.employeeCode = ele.employeeCode
+             }
+           });
+     })  
+   });
 
-      this.service.employeeRoleAssignmentDashboard(this.subId).subscribe(res =>{
-        this.totalUsersCount = res.data.results[0].totalUsers
-        this.activeUserCount = res.data.results[0].activeUsers
-        this.lockUserCount = res.data.results[0].lockedUsers
-        this.userGroupNameL =res.data.results[0].userGroups
-        this.userRoleName = res.data.results[0].userRoles
-        this.inactiveUserCount = res.data.results[0].deActiveUsers
-      })
-       let activeUser = [];
-        let lockUser = [];
-        let userGroupNameL = [];
-        let userRoleName = [];
+   this.totalPages = res.data.results[0].totalElements
+  
+   this.service.employeeRoleAssignmentDashboard(this.subId).subscribe(res =>{
+     this.totalUsersCount = res.data.results[0].totalUsers
+     this.activeUserCount = res.data.results[0].activeUsers
+     this.lockUserCount = res.data.results[0].lockedUsers
+     this.userGroupNameL =res.data.results[0].userGroups
+     this.userRoleName = res.data.results[0].userRoles
+     this.inactiveUserCount = res.data.results[0].deActiveUsers
+   })
+    let activeUser = [];
+     let lockUser = [];
+     let userGroupNameL = [];
+     let userRoleName = [];
+ 
+     this.summarydata.forEach(element => {
+       // this.userNameList.push({
+       //   'userName': element.userName
+       // })
+       if (element.userIsActive == true) {
+         activeUser.push(element)
+       }
+       if (element.lockUser == true) {
+         lockUser.push(element)
+       }
+       if (element.userGroupId != '') {
+         userGroupNameL.push(element)
+       }
+       if (element.userRoleId != '') {
+         userRoleName.push(element)
+       }
+     });
+   
+     console.log("summarydata", this.summarydata);
+   })
+ 
+}
+
+
+
+// paginate(event) {
+//     console.log(JSON.stringify(event));
     
-        this.summarydata.forEach(element => {
-          // this.userNameList.push({
-          //   'userName': element.userName
-          // })
-          if (element.userIsActive == true) {
-            activeUser.push(element)
-          }
-          if (element.lockUser == true) {
-            lockUser.push(element)
-          }
-          if (element.userGroupId != '') {
-            userGroupNameL.push(element)
-          }
-          if (element.userRoleId != '') {
-            userRoleName.push(element)
-          }
-        });
-      
-        console.log("summarydata", this.summarydata);
-      })
+//     //event.first: Index of first record being displayed 
+//     //event.rows: Number of rows to display in new page 
+//     //event.page: Index of the new page 
+//     //event.pageCount: Total number of pages 
     
-  }
+//    let pageIndex = event.first/event.rows + 1 // Index of the new page if event.page not defined.
+    
+//   this.page = pageIndex;
+//   this.size = event.rows;
+//   this.getSummaryDataByCompany()
+   
+//   }
 
   getGroupName() {
     this.service.employeeRoleAssignmentUser(this.subId).subscribe((res) => {
@@ -425,9 +502,7 @@ saveAssignGroupData(formDirective: FormGroupDirective): void {
   }
   //else {
   const assginUserDetails = this.userDashBoardForm.getRawValue();
-   assginUserDetails.globalCompanyMasterId = assginUserDetails.companyName
-    .toString()
-    .replace(',', '');
+   assginUserDetails.globalCompanyMasterId = assginUserDetails.companyName.toString().replace(',', '');
     console.log('Fixed Deposite Data::', this.saveAssignData);
     this.service.addUserRoleWithCompany(this.saveAssignData).subscribe((res) => {
     console.log("before save", res);
@@ -590,6 +665,14 @@ viewSummary(template1:TemplateRef<any>,summarydata,globalUserMasterId) {
   resetForm() {
     this.userDashBoardForm.enable();
     this.userDashBoardForm.reset();
+    this.companyNameList = null
+    this.userGroupNameList = null
+    this.userDashBoardForm.patchValue( {
+      userName: '',
+     companyGroupName : ''
+
+    } );
+
   }
 
 
@@ -636,7 +719,7 @@ viewSummary(template1:TemplateRef<any>,summarydata,globalUserMasterId) {
 
 
   
-    this.service.employeeRoleAssignmentDashboard(this.subId).subscribe(res =>{
+    this.service.countCompanyGroup(this.subId,this.companyGroupMasterId).subscribe(res =>{
       console.log(res.data)
         this.totalUsersCount = res.data.results[0].totalUsers
         this.activeUserCount = res.data.results[0].activeUsers
@@ -681,6 +764,9 @@ viewSummary(template1:TemplateRef<any>,summarydata,globalUserMasterId) {
 
   onItemSelect(item){
   item.globalCompanyMasterId
+  
+  this.compnayGlobalSelectId = item.globalCompanyMasterId
+  //alert(this.compnayGlobalSelectId)
   this.service.getAllEmployeeRoleAssignmentByCompanyId( item.globalCompanyMasterId).subscribe(res =>{
      this.summarydata = res.data.results;
   
@@ -697,14 +783,14 @@ viewSummary(template1:TemplateRef<any>,summarydata,globalUserMasterId) {
   });
   console.log(JSON.stringify(this.summarydata))
   
-  this.service.employeeRoleAssignmentDashboard(this.subId).subscribe(res =>{
-    this.totalUsersCount = res.data.results[0].totalUsers
-    this.activeUserCount = res.data.results[0].activeUsers
-    this.lockUserCount = res.data.results[0].lockedUsers
-    this.userGroupNameL =res.data.results[0].userGroups
-    this.userRoleName = res.data.results[0].userRoles
-
-    this.inactiveUserCount = res.data.results[0].deActiveUsers
+  this.service.countCompanyGroup(this.subId,this.companyGroupMasterId).subscribe(res =>{
+    console.log(res.data)
+      this.totalUsersCount = res.data.results[0].totalUsers
+      this.activeUserCount = res.data.results[0].activeUsers
+      this.lockUserCount = res.data.results[0].lockedUsers
+      this.userGroupNameL =res.data.results[0].userGroups
+      this.userRoleName = res.data.results[0].userRoles
+      this.inactiveUserCount = res.data.results[0].deActiveUsers
   })
     let activeUser = [];
     let lockUser = [];
@@ -759,6 +845,7 @@ viewSummary(template1:TemplateRef<any>,summarydata,globalUserMasterId) {
 }
 
 allGroupSelect(userGroupId) {
+  
   let summary = this.summarydata
   this.summarydata = []
   summary.forEach(element => {
@@ -768,6 +855,40 @@ allGroupSelect(userGroupId) {
 }
 
 });
+
+this.service.countCompanyGroupAndUserGroupId(this.subId,this.companyGroupMasterId,this.compnayGlobalSelectId,this.selectedUserGroupId).subscribe(res =>{
+  console.log(res.data)
+    this.totalUsersCount = res.data.results[0].totalUsers
+    this.activeUserCount = res.data.results[0].activeUsers
+    this.lockUserCount = res.data.results[0].lockedUsers
+    this.userGroupNameL =res.data.results[0].userGroups
+    this.userRoleName = res.data.results[0].userRoles
+    this.inactiveUserCount = res.data.results[0].deActiveUsers
+})
+let activeUser = [];
+let lockUser = [];
+let userGroupNameL = [];
+let userRoleName = [];
+
+this.summarydata.forEach(element => {
+  // this.userNameList.push({
+  //   'userName': element.userName
+  // })
+  if (element.userIsActive == true) {
+    activeUser.push(element)
+  }
+  if (element.lockUser == true) {
+    lockUser.push(element)
+  }
+  if (element.userGroupId != '') {
+    userGroupNameL.push(element)
+  }
+  if (element.userRoleId != '') {
+    userRoleName.push(element)
+  }
+});
+
+
 }
 
 getSelectedRoleName(roleid,i){
@@ -808,6 +929,8 @@ this.roleName = roleid
    let pageIndex = event.first/event.rows + 1 // Index of the new page if event.page not defined.
     
   this.page = pageIndex;
+  this.size = event.rows;
+
   this.getSummaryDataByCompany()
    
   }
@@ -861,6 +984,8 @@ onSelectAssginCompanyGroupName(companyGroupMasterId){
 }
 onItemSelectCompanyName(item){
   item.globalCompanyMasterId
+  this.compnayGlobalSelectId = item.globalCompanyMasterId
+  alert(this.compnayGlobalSelectId)
   this.service.getAllEmployeeRoleAssignmentByCompanyId( item.globalCompanyMasterId).subscribe(res =>{
      this.userNameList = []
      res.data.results.forEach(element => {

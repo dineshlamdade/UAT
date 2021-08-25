@@ -6,6 +6,8 @@ import { AlertServiceService } from '../../../../core/services/alert-service.ser
 import { AuthService } from '../../../auth/auth.service';
 import { threadId } from 'node:worker_threads';
 import { JsonpClientBackend } from '@angular/common/http';
+import { ExcelserviceService } from '../excel_service/excelservice.service';
+
 
 
 @Component({
@@ -67,7 +69,7 @@ export class RolePrivilegeComponent implements OnInit {
    userRoleId: any = [];
    totalRecords: any;
    companyName: any;
-   editMenuSummaryData: any;
+   editMenuSummaryData: any = '';
    selectedCompanyName: { globalCompanyMasterId: any; companyName: any; }[];
    fieldLevelMenu: any;
    isCheckedReadFields: boolean = false;
@@ -83,10 +85,11 @@ export class RolePrivilegeComponent implements OnInit {
    parentMenuId: any;
    selectedapplicationMenuId: any;
    selectedSubMenuName: any;
-
-
-
-
+   fullFlag: boolean = false;
+   excelData: any[];
+   header: any[];
+   isFieldChecked: boolean = false;
+   rolePrivilegeFormflag: boolean = false;
 
    get f() {
       return this.rolePrivilegeForm.controls;
@@ -94,7 +97,8 @@ export class RolePrivilegeComponent implements OnInit {
 
    constructor(private modalService: BsModalService,
       private formBuilder: FormBuilder, private service: RolePrivilegeService,
-      private alertService: AlertServiceService, private authService: AuthService,) {
+      private alertService: AlertServiceService, private authService: AuthService,
+      private excelservice: ExcelserviceService) {
 
 
       this.userData = this.authService.getprivileges()
@@ -129,7 +133,7 @@ export class RolePrivilegeComponent implements OnInit {
          applicationMenusId: new FormControl(''),
          userGroupId: new FormControl(''),
          companyId: new FormControl(''),
-         companyGroupName: new FormControl('',Validators.required),
+         companyGroupName: new FormControl('', Validators.required),
          companyName: new FormControl('',Validators.required),
          remark: new FormControl(''),
          readAccess: new FormControl(''),
@@ -142,7 +146,7 @@ export class RolePrivilegeComponent implements OnInit {
          createdDateTime: new FormControl(''),
          lastModifiedBy: new FormControl(''),
          lastModifiedDateTime: new FormControl(''),
-         userName: new FormControl('',Validators.required),
+         userName: new FormControl('', Validators.required),
          roleName: new FormControl('', Validators.required),
 
 
@@ -195,13 +199,6 @@ export class RolePrivilegeComponent implements OnInit {
       })
       console.log("this.menuAllMasterData: " + this.menuAllMasterData)
    }
-   //  getRolePrivilegeSummary(){
-   //    this.menuSummaryData = []
-   //    this.service.getUserRolePrivilegesByUserRoleId(this.page,this.size).subscribe((res) => {
-   //              this.menuSummaryData = res.data.results;
-   //    })
-   // }
-
 
    getRolePrivilegeSummaryByUserRoleId() {
       let roleId = this.rolePrivilegeForm.controls['roleName'].value
@@ -263,7 +260,6 @@ export class RolePrivilegeComponent implements OnInit {
       });
    }
 
-
    paginate(event) {
       console.log(JSON.stringify(event));
 
@@ -272,8 +268,6 @@ export class RolePrivilegeComponent implements OnInit {
       this.page = pageIndex;
       this.getRolePrivilegeSummaryByUserRoleId()
    }
-
-
 
    checkUncheckall() {
       if (this.isChecked == true) {
@@ -306,8 +300,16 @@ export class RolePrivilegeComponent implements OnInit {
                "modifyAccess": 1,
                "deleteAccess": 1
             })
+
+
+            this.selectedapplicationMenuId = ele.applicationMenuId
+            this.fullFlag = true;
+            this.isFieldChecked = true;
+            this.getAllFieldLevelData()
          })
       }
+
+
 
       console.log("Data all is: " + JSON.stringify(this.SelectedData))
 
@@ -459,6 +461,7 @@ export class RolePrivilegeComponent implements OnInit {
    }
 
    checkUncheckAllSelectedMenu(group: any, event: any) {
+
       if (event.checked) {
          this.menusData.forEach((ele: any) => {
             // ele.readAccess = false
@@ -481,9 +484,21 @@ export class RolePrivilegeComponent implements OnInit {
                   "modifyAccess": 1,
                   "deleteAccess": 1
                })
+
+               this.selectedapplicationMenuId = group.applicationMenuId
+               this.fullFlag = true;
+               this.getAllFieldLevelData()
             }
          })
+
+         this.selectedapplicationMenuId = group.applicationMenuId
+         this.fullFlag = true;
+         this.isFieldChecked = true;
+         this.getAllFieldLevelData()
+
+
       } else {
+         this.fullFlag = false;
          this.menusData.forEach((ele: any) => {
             if (group.applicationMenuId == ele.applicationMenuId) {
                ele.allFlag = false
@@ -674,6 +689,7 @@ export class RolePrivilegeComponent implements OnInit {
             }
          })
       } else {
+         this.fullFlag = false;
          this.menusData.forEach((ele: any) => {
             if (ele.childItems != null) {
                ele.childItems.forEach(element => {
@@ -693,15 +709,11 @@ export class RolePrivilegeComponent implements OnInit {
          })
       }
 
-      // this.service.getFieldById(submenu.applicationMenuId).subscribe(res => {
-      //    console.log('fieldAllMasterData::', res);
-
-      //    this.fieldLevelMenu = res.data.results[0];
-      //    this.fieldAllMasterData = res.data.results[0];
-
-      //    //  if()
-      // })
+      this.selectedapplicationMenuId = submenu.applicationMenuId
+      this.fullFlag = true;
+      this.getAllFieldLevelData()
    }
+
    /** single menu checked uncheked read */
    checkeUncheckSingleMenuRead(submenu, event) {
       if (event.checked) {
@@ -723,6 +735,12 @@ export class RolePrivilegeComponent implements OnInit {
                      "deleteAccess": privillegedata.deleteAccess
                   })
                } else {
+                  let index = this.SelectedData.length - 1
+                  if (this.SelectedData[length].applicationMenusId == submenu.applicationMenuId) { return; }
+                  if (this.SelectedData[index].applicationMenusId == submenu.applicationMenuId) { return; }
+                  for (let i = 0; i < index; i++) {
+                     if (this.SelectedData[i].applicationMenusId == submenu.applicationMenusId) { return; }
+                  }
                   this.SelectedData.push({
                      // "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
                      "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
@@ -825,17 +843,20 @@ export class RolePrivilegeComponent implements OnInit {
                } else {
                   let index = this.SelectedData.length - 1
                   if (this.SelectedData[length].applicationMenusId == submenu.applicationMenuId) { return; }
-                  //    else{this.SelectedData.push({
-                  //       "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-                  //       "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
-                  //       "applicationMenusId": submenu.applicationMenuId,
-                  //       "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
-                  //       "readAccess":0,
-                  //       "writeAccess": 1,
-                  //       "modifyAccess": 0,
-                  //       "deleteAccess": 0
-                  //    }) 
-                  // }
+                  if (this.SelectedData[index].applicationMenusId == submenu.applicationMenuId) { return; }
+                  for (let i = 0; i < index; i++) {
+                     if (this.SelectedData[i].applicationMenusId == submenu.applicationMenusId) { return; }
+                  }
+                  this.SelectedData.push({
+                     "rolePrivilegeMatrixId": this.rolePrivilegeMatrixId,
+                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                     "applicationMenusId": submenu.applicationMenuId,
+                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                     "readAccess": 0,
+                     "writeAccess": 1,
+                     "modifyAccess": 0,
+                     "deleteAccess": 0
+                  })
                }
             })
             //  element.allFlag = true
@@ -928,17 +949,21 @@ export class RolePrivilegeComponent implements OnInit {
                } else {
                   let index = this.SelectedData.length - 1
                   if (this.SelectedData[length].applicationMenusId == submenu.applicationMenuId) { return; }
-                  //    else{this.SelectedData.push({
-                  //       "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-                  //       "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
-                  //       "applicationMenusId": submenu.applicationMenuId,
-                  //       "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
-                  //       "readAccess":0,
-                  //       "writeAccess": 1,
-                  //       "modifyAccess": 0,
-                  //       "deleteAccess": 0
-                  //    }) 
-                  // }
+                  if (this.SelectedData[index].applicationMenusId == submenu.applicationMenuId) { return; }
+                  for (let i = 0; i < index; i++) {
+                     if (this.SelectedData[i].applicationMenusId == submenu.applicationMenusId) { return; }
+                  }
+                  this.SelectedData.push({
+                     "rolePrivilegeMatrixId": this.rolePrivilegeMatrixId,
+                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                     "applicationMenusId": submenu.applicationMenuId,
+                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                     "readAccess": 0,
+                     "writeAccess": 1,
+                     "modifyAccess": 0,
+                     "deleteAccess": 0
+                  })
+
                }
             })
             //  element.allFlag = true
@@ -1031,17 +1056,20 @@ export class RolePrivilegeComponent implements OnInit {
                } else {
                   let index = this.SelectedData.length - 1
                   if (this.SelectedData[length].applicationMenusId == submenu.applicationMenuId) { return; }
-                  //    else{this.SelectedData.push({
-                  //       "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
-                  //       "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
-                  //       "applicationMenusId": submenu.applicationMenuId,
-                  //       "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
-                  //       "readAccess":0,
-                  //       "writeAccess": 1,
-                  //       "modifyAccess": 0,
-                  //       "deleteAccess": 0
-                  //    }) 
-                  // }
+                  if (this.SelectedData[index].applicationMenusId == submenu.applicationMenuId) { return; }
+                  for (let i = 0; i < index; i++) {
+                     if (this.SelectedData[i].applicationMenusId == submenu.applicationMenusId) { return; }
+                  }
+                  this.SelectedData.push({
+                     "rolePrivilegeMatrixId": this.rolePrivilegeMatrixId,
+                     "userRoleId": parseInt(this.rolePrivilegeForm.controls['roleName'].value),
+                     "applicationMenusId": submenu.applicationMenuId,
+                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                     "readAccess": 0,
+                     "writeAccess": 1,
+                     "modifyAccess": 0,
+                     "deleteAccess": 0
+                  })
                }
             })
             //  element.allFlag = true
@@ -1111,229 +1139,227 @@ export class RolePrivilegeComponent implements OnInit {
       console.log("writeaccess data: " + JSON.stringify(this.SelectedData))
    }
 
-
-
-
-   onSubmit() {
+   onSubmit(fieldPopup: TemplateRef<any>) {
       //debugger
-      this.SelectedData.forEach(element => {
-         element.fieldLeveleAccessMatrixId = this.fieldLeveleAccessMatrixId
-      });
-      this.privilegeData = this.SelectedData
-      console.log("before: " + JSON.stringify(this.privilegeData))
-      if (!this.editFlag) {
-         this.service.addUserRolePrivilege(this.privilegeData).subscribe(res => {
-            this.alertService.sweetalertMasterSuccess("Role Privilege data saved successfully", "");
-            this.rolePrivilegeForm.reset();
-            this.getApplicationMenus();
-            this.getRolePrivilegeSummaryByUserRoleId();
-            this.editFlag = false
-            this.isVisible = false;
-            this.isShown = true;
-            this.SelectedData = []
-            this.privilegeData = []
-            this.menusData.forEach(element => {
-               element.modifyFlag = false
-               element.writeFlag = false
-               element.readFlag = false
-               element.allFlag = false
-               element.deleteFlag = false
-
-            });
-         })
-      } else {
-         //this.updateRolePrivilege();
-         
-         this.privilegeData.forEach(element => {
-            element.rolePrivilegeMatrixId  = this.rolePrivilegeMatrixId;
+      if (this.fieldLeveleAccessMatrixId != 0) {
+         this.fullFlag = false;
+         this.SelectedData.forEach(element => {
+            element.fieldLeveleAccessMatrixId = this.fieldLeveleAccessMatrixId
          });
-         console.log("update data is: " + JSON.stringify(this.privilegeData))
-         this.service.updateUserRolePrivilege(this.privilegeData).subscribe(res => {
-            this.alertService.sweetalertMasterSuccess("Role Privilege data updated successfully", "");
+         this.privilegeData = this.SelectedData
+         // console.log("before: " + JSON.stringify(this.privilegeData))
+         if (!this.editFlag) {
+            this.service.addUserRolePrivilege(this.privilegeData).subscribe(res => {
+               this.alertService.sweetalertMasterSuccess("Role Privilege data saved successfully", "");
+               this.rolePrivilegeForm.reset();
+               this.getApplicationMenus();
+               this.getRolePrivilegeSummaryByUserRoleId();
+               this.editFlag = false
+               this.isVisible = false;
+               this.isShown = true;
+               this.SelectedData = []
+               this.privilegeData = []
+               this.menusData.forEach(element => {
+                  element.modifyFlag = false
+                  element.writeFlag = false
+                  element.readFlag = false
+                  element.allFlag = false
+                  element.deleteFlag = false
 
-            this.rolePrivilegeForm.reset();
-            this.editFlag = false
-            this.isVisible = false;
-            this.isShown = true;
-            this.SelectedData = []
-            this.privilegeData = []
-            //this.menusData = []
-            // setTimeout(() => {
-            //   this.getApplicationMenus();
-            // }, 500);
-            // 
-            //    this.menusData.forEach(element => {
-            //       element.modifyFlag = false
-            //       element.writeFlag = false
-            //       element.readFlag = false
-            //       element.allFlag = false
-            //       element.deleteFlag = false
+               });
+            })
 
-            //    });
-            this.menusData.forEach((ele: any) => {
-               if (ele.applicationMenuId == this.editMenuSummaryData.accessibleMenuDetail.applicationMenuId) {
-                  if (ele.childItems != null) {
-                     ele.childItems.forEach(element => {
+         } else {
+            //this.updateRolePrivilege();
 
-                        if (ele.applicationMenuId == element.parentMenuId) {
-                           if (this.editMenuSummaryData.readAccess == 1) {
+            this.privilegeData.forEach(element => {
+               element.rolePrivilegeMatrixId = this.rolePrivilegeMatrixId;
+            });
+            console.log("update data is: " + JSON.stringify(this.privilegeData))
+            this.service.updateUserRolePrivilege(this.privilegeData).subscribe(res => {
+               this.alertService.sweetalertMasterSuccess("Role Privilege data updated successfully", "");
+
+               this.rolePrivilegeForm.reset();
+               this.editFlag = false
+               this.isVisible = false;
+               this.isShown = true;
+               this.SelectedData = []
+               this.privilegeData = []
+               this.menusData.forEach((ele: any) => {
+                  if (ele.applicationMenuId == this.editMenuSummaryData.accessibleMenuDetail.applicationMenuId) {
+                     if (ele.childItems != null) {
+                        ele.childItems.forEach(element => {
+
+                           if (ele.applicationMenuId == element.parentMenuId) {
+                              if (this.editMenuSummaryData.readAccess == 1) {
+                                 element.readAccess = false
+                                 ele.readFlag = false;
+                                 this.isCheckedRead = false
+                              }
+                              if (this.editMenuSummaryData.writeAccess == 1) {
+                                 element.writeAccess = false
+                                 // ele.writeFlag = false;
+                                 // this.isCheckedWrite = false
+                              }
+                              if (this.editMenuSummaryData.deleteAccess == 1) {
+                                 element.deleteAccess = false
+                                 // ele.deleteFlag = false;
+                                 // this.isCheckedDelete = false
+                              }
+                              if (this.editMenuSummaryData.modifyAccess == 1) {
+                                 element.modifyAccess = false
+                                 // ele.modifyFlag = false;
+                                 // this.isCheckeModify = false
+                              }
+                              if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
+                                 element.allAccess = false
+                                 ele.allFlag = false
+                                 //this.isChecked = false;
+                              }
+                           }
+
+                           if (element.childItems != null) {
+                              element.childItems.forEach(element => {
+                                 if (ele.applicationMenuId == element.parentMenuId) {
+                                    if (this.editMenuSummaryData.readAccess == 1) {
+                                       element.readAccess = false
+                                       ele.readFlag = false;
+                                       this.isCheckedRead = false
+                                    }
+                                    if (this.editMenuSummaryData.writeAccess == 1) {
+                                       element.writeAccess = false
+                                       // ele.writeFlag = false;
+                                       // this.isCheckedWrite = false
+                                    }
+                                    if (this.editMenuSummaryData.deleteAccess == 1) {
+                                       element.deleteAccess = false
+                                       // ele.deleteFlag = false;
+                                       // this.isCheckedDelete = false
+                                    }
+                                    if (this.editMenuSummaryData.modifyAccess == 1) {
+                                       element.modifyAccess = false
+                                       // ele.modifyFlag = false;
+                                       // this.isCheckeModify = false
+                                    }
+                                    if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
+                                       element.allAccess = false
+                                       ele.allFlag = false
+                                       //this.isChecked = false;
+                                    }
+                                 }
+                              })
+
+                           }
+                           else {
                               element.readAccess = false
                               ele.readFlag = false;
-                              this.isCheckedRead = false
-                           }
-                           if (this.editMenuSummaryData.writeAccess == 1) {
                               element.writeAccess = false
-                              // ele.writeFlag = false;
-                              // this.isCheckedWrite = false
-                           }
-                           if (this.editMenuSummaryData.deleteAccess == 1) {
                               element.deleteAccess = false
-                              // ele.deleteFlag = false;
-                              // this.isCheckedDelete = false
-                           }
-                           if (this.editMenuSummaryData.modifyAccess == 1) {
                               element.modifyAccess = false
-                              // ele.modifyFlag = false;
-                              // this.isCheckeModify = false
-                           }
-                           if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
                               element.allAccess = false
                               ele.allFlag = false
-                              //this.isChecked = false;
+
                            }
-                        }
-
-                        if (element.childItems != null) {
-                           element.childItems.forEach(element => {
-                              if (ele.applicationMenuId == element.parentMenuId) {
-                                 if (this.editMenuSummaryData.readAccess == 1) {
-                                    element.readAccess = false
-                                    ele.readFlag = false;
-                                    this.isCheckedRead = false
-                                 }
-                                 if (this.editMenuSummaryData.writeAccess == 1) {
-                                    element.writeAccess = false
-                                    // ele.writeFlag = false;
-                                    // this.isCheckedWrite = false
-                                 }
-                                 if (this.editMenuSummaryData.deleteAccess == 1) {
-                                    element.deleteAccess = false
-                                    // ele.deleteFlag = false;
-                                    // this.isCheckedDelete = false
-                                 }
-                                 if (this.editMenuSummaryData.modifyAccess == 1) {
-                                    element.modifyAccess = false
-                                    // ele.modifyFlag = false;
-                                    // this.isCheckeModify = false
-                                 }
-                                 if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
-                                    element.allAccess = false
-                                    ele.allFlag = false
-                                    //this.isChecked = false;
-                                 }
-                              }
-                           })
-
-                        }
-                        else {
-                           element.readAccess = false
-                           ele.readFlag = false;
-                           element.writeAccess = false
-                           element.deleteAccess = false
-                           element.modifyAccess = false
-                           element.allAccess = false
-                           ele.allFlag = false
-
-                        }
-                     });
-                  } else {
-                     if (ele.applicationMenuId == this.editMenuSummaryData.accessibleMenuDetail.applicationMenuId) {
-                        if (this.editMenuSummaryData.readAccess == 1) {
-                           ele.readAccess = false
-                        }
-                        if (this.editMenuSummaryData.writeAccess == 1) {
-                           ele.writeAccess = false
-                        }
-                        if (this.editMenuSummaryData.deleteAccess == 1) {
-                           ele.deleteAccess = false
-                        }
-                        if (this.editMenuSummaryData.modifyAccess == 1) {
-                           ele.modifyAccess = false
-                        }
-                        if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
-                           ele.allAccess = false
-                           ele.allFlag = false
-                           //this.isChecked = false;
-                        }
-                     }
-                  }
-               } else {
-                  if (ele.childItems != null) {
-                     ele.childItems.forEach(element => {
-                        if (this.editMenuSummaryData.accessibleMenuDetail.applicationMenuId == element.applicationMenuId) {
+                        });
+                     } else {
+                        if (ele.applicationMenuId == this.editMenuSummaryData.accessibleMenuDetail.applicationMenuId) {
                            if (this.editMenuSummaryData.readAccess == 1) {
-                              element.readAccess = false
-
+                              ele.readAccess = false
                            }
                            if (this.editMenuSummaryData.writeAccess == 1) {
-                              element.writeAccess = false
-                              // ele.writeFlag = false;
-                              // this.isCheckedWrite = false
+                              ele.writeAccess = false
                            }
                            if (this.editMenuSummaryData.deleteAccess == 1) {
-                              element.deleteAccess = false
-                              // ele.deleteFlag = false;
-                              // this.isCheckedDelete = false
+                              ele.deleteAccess = false
                            }
                            if (this.editMenuSummaryData.modifyAccess == 1) {
-                              element.modifyAccess = false
-                              // ele.modifyFlag = false;
-                              // this.isCheckeModify = false
+                              ele.modifyAccess = false
                            }
                            if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
-                              element.allAccess = false
+                              ele.allAccess = false
                               ele.allFlag = false
                               //this.isChecked = false;
                            }
-                        } else {
-                           element.readAccess = false
-                           ele.readFlag = false;
-                           element.writeAccess = false
-                           element.deleteAccess = false
-                           element.modifyAccess = false
-                           element.allAccess = false
-                           ele.allFlag = false
-
                         }
-                     });
+                     }
                   } else {
-                     if (ele.applicationMenuId == this.editMenuSummaryData.accessibleMenuDetail.applicationMenuId) {
-                        if (this.editMenuSummaryData.readAccess == 1) {
-                           ele.readAccess = false
-                        }
-                        if (this.editMenuSummaryData.writeAccess == 1) {
-                           ele.writeAccess = false
-                        }
-                        if (this.editMenuSummaryData.deleteAccess == 1) {
-                           ele.deleteAccess = false
-                        }
-                        if (this.editMenuSummaryData.modifyAccess == 1) {
-                           ele.modifyAccess = false
-                        }
-                        if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
-                           ele.allAccess = false
-                           ele.allFlag = false
-                           //this.isChecked = false;
+                     if (ele.childItems != null) {
+                        ele.childItems.forEach(element => {
+                           if (this.editMenuSummaryData.accessibleMenuDetail.applicationMenuId == element.applicationMenuId) {
+                              if (this.editMenuSummaryData.readAccess == 1) {
+                                 element.readAccess = false
+
+                              }
+                              if (this.editMenuSummaryData.writeAccess == 1) {
+                                 element.writeAccess = false
+                                 // ele.writeFlag = false;
+                                 // this.isCheckedWrite = false
+                              }
+                              if (this.editMenuSummaryData.deleteAccess == 1) {
+                                 element.deleteAccess = false
+                                 // ele.deleteFlag = false;
+                                 // this.isCheckedDelete = false
+                              }
+                              if (this.editMenuSummaryData.modifyAccess == 1) {
+                                 element.modifyAccess = false
+                                 // ele.modifyFlag = false;
+                                 // this.isCheckeModify = false
+                              }
+                              if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
+                                 element.allAccess = false
+                                 ele.allFlag = false
+                                 //this.isChecked = false;
+                              }
+                           } else {
+                              element.readAccess = false
+                              ele.readFlag = false;
+                              element.writeAccess = false
+                              element.deleteAccess = false
+                              element.modifyAccess = false
+                              element.allAccess = false
+                              ele.allFlag = false
+
+                           }
+                        });
+                     } else {
+                        if (ele.applicationMenuId == this.editMenuSummaryData.accessibleMenuDetail.applicationMenuId) {
+                           if (this.editMenuSummaryData.readAccess == 1) {
+                              ele.readAccess = false
+                           }
+                           if (this.editMenuSummaryData.writeAccess == 1) {
+                              ele.writeAccess = false
+                           }
+                           if (this.editMenuSummaryData.deleteAccess == 1) {
+                              ele.deleteAccess = false
+                           }
+                           if (this.editMenuSummaryData.modifyAccess == 1) {
+                              ele.modifyAccess = false
+                           }
+                           if (this.editMenuSummaryData.readAccess == 1 && this.editMenuSummaryData.writeAccess == 1 && this.editMenuSummaryData.deleteAccess == 1 && this.editMenuSummaryData.modifyAccess == 1) {
+                              ele.allAccess = false
+                              ele.allFlag = false
+                              //this.isChecked = false;
+                           }
                         }
                      }
                   }
-               }
 
 
-            });
+               });
+            }
+            )
          }
-         )
+      } else {
+         // console.log(this.privilegeData)
+         if (this.fullFlag) {
+            this.modalRef = this.modalService.show(fieldPopup,
+               Object.assign({}, { class: 'gray modal-md' })
+            );
+         } else {
+            this.alertService.sweetalertWarning("Please give privilege to Field level also")
+         }
       }
+
    }
 
    updateRolePrivilege() {
@@ -1346,7 +1372,7 @@ export class RolePrivilegeComponent implements OnInit {
       this.viewFlag = false
       this.isVisible = true;
       this.isShown = false;
-      console.log("menuSummay::", menuSummary)
+      //console.log("menuSummay::", menuSummary)
       //debugger
       this.editMenuSummaryData = menuSummary
       this.onSelectCompanyName(menuSummary.companyGroupMasterId)
@@ -1392,7 +1418,7 @@ export class RolePrivilegeComponent implements OnInit {
       this.SelectedData = []
 
       this.globalCompanyMasterId = this.editMenuSummaryData.globalCompanyMasterId
-      
+
       this.menusData.forEach((ele: any) => {
          if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
             //  element.allFlag = true
@@ -1626,47 +1652,122 @@ export class RolePrivilegeComponent implements OnInit {
    viewMenuSummary(menuSummary) {
       this.editFlag = false;
       this.viewFlag = true;
-      this.isVisible = false;
+      this.isVisible = true;
       this.isShown = false;
 
-
-
-
+      this.editMenuSummaryData = menuSummary
       this.onSelectCompanyName(menuSummary.companyGroupMasterId)
 
-      this.rolePrivilegeForm.reset();
+      this.userGroupNameList = null;
 
+
+      this.userRoleData = []
+      // console.log("edit user role list: "+ JSON.stringify(this.userRoleNameList))
+      this.service.userRoleGetByCompanyGroupMasterId(this.companyGroupMasterId).subscribe((res) => {
+         this.userRoleNameList = res.data.results;
+         this.userRoleNameList.forEach(element => {
+
+            if (menuSummary.userGroupId == element.userGroupId) {
+               this.userRoleData.push(
+                  {
+                     'userRoleId': element.userRoleId,
+                     'roleName': element.roleName
+                  })
+            }
+         });
+         this.rolePrivilegeForm.controls['roleName'].setValue(menuSummary.userRoleId)
+      });
+
+      //this.rolePrivilegeForm.reset();
+      this.rolePrivilegeMatrixId = this.editMenuSummaryData.rolePrivilegeMatrixId
+      this.fieldLeveleAccessMatrixId = this.editMenuSummaryData.fieldLeveleAccessMatrixId.fieldLeveleAccessMatrixId
       this.rolePrivilegeForm.enable();
       this.rolePrivilegeForm.controls['companyGroupName'].setValue(menuSummary.companyGroupMasterId)
 
       let com = [{
-         'globalCompanyMasterId': menuSummary.globalCompanyMasterId,
-         'companyName': menuSummary.companyName
+         'globalCompanyMasterId': this.editMenuSummaryData.globalCompanyMasterId,
+         'companyName': this.editMenuSummaryData.companyName
       }]
-      this.rolePrivilegeForm.controls['companyName'].setValue(com)
 
-      this.rolePrivilegeForm.controls['userName'].setValue(menuSummary.userGroupId)
-      this.rolePrivilegeForm.controls['roleName'].setValue(menuSummary.userRoleId)
+      console.log("company details 2: " + JSON.stringify(com))
+      this.selectedCompanyName = com
+      setTimeout(() => {
+         this.rolePrivilegeForm.controls['companyName'].setValue(this.selectedCompanyName)
+      }, 1000);
+
+
+      this.SelectedData = []
+
+      this.globalCompanyMasterId = this.editMenuSummaryData.globalCompanyMasterId
 
       this.menusData.forEach((ele: any) => {
          if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
             //  element.allFlag = true
+            console.log("menu id: " + ele.applicationMenuId)
             this.SelectedData.push({
-               "rolePrivilegeMatrixId": this.rolePrivilegeMatrixId,
-               "menuId": ele.applicationMenuId,
+
+               //"rolePrivilegeMatrixId":this.editMenuSummaryData.rolePrivilegeMatrixId,
+               "userRoleId": parseInt(this.editMenuSummaryData.userRoleId),
+               "applicationMenusId": ele.applicationMenuId,
+               "fieldLeveleAccessMatrixId": this.editMenuSummaryData.fieldLeveleAccessMatrixId.fieldLeveleAccessMatrixId,
+               "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
                "readAccess": menuSummary.readAccess,
                "modifyAccess": menuSummary.modifyAccess,
                "deleteAccess": menuSummary.deleteAccess,
                "writeAccess": menuSummary.writeAccess
             })
+            console.log(JSON.stringify(this.SelectedData))
          }
+         if (ele.childItems != null) {
+            ele.childItems.forEach(child => {
+               if (child.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+                  //  element.allFlag = true
+                  console.log("childmenu id: " + ele.applicationMenuId)
+                  this.SelectedData.push({
 
+                     //  "rolePrivilegeMatrixId":this.editMenuSummaryData.rolePrivilegeMatrixId,
+                     "userRoleId": parseInt(this.editMenuSummaryData.userRoleId),
+                     "applicationMenusId": child.applicationMenuId,
+                     "fieldLeveleAccessMatrixId": this.editMenuSummaryData.fieldLeveleAccessMatrixId.fieldLeveleAccessMatrixId,
+                     "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                     "readAccess": menuSummary.readAccess,
+                     "modifyAccess": menuSummary.modifyAccess,
+                     "deleteAccess": menuSummary.deleteAccess,
+                     "writeAccess": menuSummary.writeAccess
+                  })
+                  console.log(JSON.stringify(this.SelectedData))
+               }
+
+               if (child.childItems != null) {
+                  child.childItems.forEach(subchild => {
+                     if (subchild.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
+                        //  element.allFlag = true
+                        console.log("childmenu id: " + ele.applicationMenuId)
+                        this.SelectedData.push({
+
+                           // "rolePrivilegeMatrixId":this.editMenuSummaryData.rolePrivilegeMatrixId,
+                           "userRoleId": parseInt(this.editMenuSummaryData.userRoleId),
+                           "applicationMenusId": subchild.applicationMenuId,
+                           "fieldLeveleAccessMatrixId": this.editMenuSummaryData.fieldLeveleAccessMatrixId.fieldLeveleAccessMatrixId,
+                           "globalCompanyMasterId": parseInt(this.globalCompanyMasterId.toString()),
+                           "readAccess": menuSummary.readAccess,
+                           "modifyAccess": menuSummary.modifyAccess,
+                           "deleteAccess": menuSummary.deleteAccess,
+                           "writeAccess": menuSummary.writeAccess
+                        })
+                        console.log(JSON.stringify(this.SelectedData))
+                     }
+                  })
+               }
+            });
+         }
       });
 
       this.menusData.forEach((ele: any) => {
          if (ele.applicationMenuId == menuSummary.accessibleMenuDetail.applicationMenuId) {
             if (ele.childItems != null) {
                ele.childItems.forEach(element => {
+
                   if (ele.applicationMenuId == element.parentMenuId) {
                      if (menuSummary.readAccess == 1) {
                         element.readAccess = true
@@ -1693,7 +1794,42 @@ export class RolePrivilegeComponent implements OnInit {
                         ele.allFlag = true
                         //this.isChecked = true;
                      }
-                  } else {
+                  }
+
+                  if (element.childItems != null) {
+                     element.childItems.forEach(element => {
+                        if (ele.applicationMenuId == element.parentMenuId) {
+                           if (menuSummary.readAccess == 1) {
+                              element.readAccess = true
+                              ele.readFlag = true;
+                              this.isCheckedRead = true
+                           }
+                           if (menuSummary.writeAccess == 1) {
+                              element.writeAccess = true
+                              // ele.writeFlag = true;
+                              // this.isCheckedWrite = true
+                           }
+                           if (menuSummary.deleteAccess == 1) {
+                              element.deleteAccess = true
+                              // ele.deleteFlag = true;
+                              // this.isCheckedDelete = true
+                           }
+                           if (menuSummary.modifyAccess == 1) {
+                              element.modifyAccess = true
+                              // ele.modifyFlag = true;
+                              // this.isCheckeModify = true
+                           }
+                           if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
+                              element.allAccess = true
+                              ele.allFlag = true
+                              element.allFlag = true
+                              //this.isChecked = true;
+                           }
+                        }
+                     })
+
+                  }
+                  else {
                      element.readAccess = false
                      ele.readFlag = false;
                      element.writeAccess = false
@@ -1751,6 +1887,7 @@ export class RolePrivilegeComponent implements OnInit {
                      if (menuSummary.readAccess == 1 && menuSummary.writeAccess == 1 && menuSummary.deleteAccess == 1 && menuSummary.modifyAccess == 1) {
                         element.allAccess = true
                         ele.allFlag = true
+                        element.allFlag = true
                         //this.isChecked = true;
                      }
                   } else {
@@ -1786,21 +1923,20 @@ export class RolePrivilegeComponent implements OnInit {
                }
             }
          }
-
-
       });
 
 
-
-
-      // this.rolePrivilegeForm.patchValue(menuSummary);
-      this.rolePrivilegeForm.reset();
-      this.rolePrivilegeForm.disable();
+      //this.rolePrivilegeForm.reset();
+      // this.rolePrivilegeForm.disable();
    }
+
    reset() {
+      this.editFlag = false
+      this.viewFlag = false
       this.rolePrivilegeForm.enable();
       this.rolePrivilegeForm.reset();
    }
+
    cancel() {
       this.reset();
       this.isShown = true;
@@ -2041,13 +2177,17 @@ export class RolePrivilegeComponent implements OnInit {
       this.selectedUsrGroupId = userGroupId
       this.userRoleData = []
       this.userRoleNameList.forEach(element => {
-
          if (userGroupId == element.userGroupId) {
-            this.userRoleData.push(
-               {
-                  'userRoleId': element.userRoleId,
-                  'roleName': element.roleName
-               })
+            // this.menuSummaryData.forEach(summary => {
+               // if(summary.userRoleId != element.userRoleId){
+                  this.userRoleData.push(
+                     {
+                        'userRoleId': element.userRoleId,
+                        'roleName': element.roleName
+                     })
+      
+               // }
+            // });
          }
       });
 
@@ -2057,8 +2197,9 @@ export class RolePrivilegeComponent implements OnInit {
 
 
    getSelectedRole() {
-     // this.getApplicationMenus();
+      // this.getApplicationMenus();
       // this.getRolePrivilegeSummaryByUserRoleId();
+      this.rolePrivilegeFormflag = true;
    }
 
    /////----------FieldLavel------------------
@@ -2069,14 +2210,32 @@ export class RolePrivilegeComponent implements OnInit {
       this.fieldLevelMenu = null;
       this.fieldAllMasterData = []
       this.service.getFieldById(this.selectedapplicationMenuId).subscribe(res => {
-         console.log('fieldAllMasterData::', res);
 
          this.fieldLevelMenu = res.data.results[0];
          this.fieldAllMasterData = res.data.results[0];
 
+         if (this.fullFlag) {
+            this.fieldAllMasterData.forEach(element => {
+               element.readFlag = true;
+               element.writeFlag = true;
+               element.modifyFlag = true;
+               element.HideFlag = false;
+
+
+               this.SelectedDataFields.push({
+                  "fieldLeveleAccessMatrixId": this.fieldLeveleAccessMatrixId,
+                  "formFieldId": element.formFieldId,
+                  "hide": false,
+                  "readAccess": true,
+                  "writeAccess": true,
+                  "modifyAccess": true,
+                  "isActive": true
+               })
+            });
+         }
+
          if (this.editMenuSummaryData != '') {
             this.fieldAllMasterData.forEach(element => {
-               console.log(this.editMenuSummaryData.fieldLeveleAccessMatrixId)
                if (element.formFieldId == this.editMenuSummaryData.fieldLeveleAccessMatrixId.formFieldId) {
                   element.readFlag = this.editMenuSummaryData.fieldLeveleAccessMatrixId.readAccess;
                   element.writeFlag = this.editMenuSummaryData.fieldLeveleAccessMatrixId.writeAccess;
@@ -2097,58 +2256,78 @@ export class RolePrivilegeComponent implements OnInit {
             })
 
          }
-
-         // this.fieldLevelMenu.forEach(ele =>{
-         //   this.fieldAllMasterData.push(ele[0])
-
-         // })
-         // console.log("this.fieldAllMasterData: " + this.fieldAllMasterData)
       })
 
    }
 
 
    saveFieldLevelData() {
-
-      // {
-      //    let data = {
-
-      //          "fieldLeveleAccessMatrixId": 0,
-      //          "rolePrivilegeMatrixId": 132,
-      //          "formFieldId": 142,
-      //          "hide": 0,
-      //          "readAccess": true,
-      //          "writeAccess": true,
-      //          "modifyAccess": true,
-      //          "isActive": true
-
-      //    } 
-      //    this.service.addFields(data).subscribe((res) => {
-      //      console.log("AssignedGroupSave:::",res);
-      //      this.fieldAllMasterData = res.data.results;
-      //    });
-      //  }
-
       this.fieldLevelData = this.SelectedDataFields
-      console.log("before: " + JSON.stringify(this.fieldLevelData))
+      // console.log("before: " + JSON.stringify(this.fieldLevelData))
       if (!this.editFlag) {
-         this.service.addFields(this.fieldLevelData).subscribe(res => {
-            this.alertService.sweetalertMasterSuccess("Field Level Privilege data saved successfully", "");
-            this.SelectedDataFields = []
-            this.fieldLevelData = []
-            this.fieldAllMasterData.forEach(element => {
-               element.modifyFlag = false
-               element.writeFlag = false
-               element.readFlag = false
-               element.allFlag = false
-               element.hideFlag = false
+         if (this.fullFlag) {
+            this.service.addFields(this.fieldLevelData).subscribe(res => {
+               // this.alertService.sweetalertMasterSuccess("Field Level Privilege data saved successfully", "");
+               this.SelectedDataFields = []
+               this.fieldLevelData = []
+               this.fieldAllMasterData.forEach(element => {
+                  element.modifyFlag = false
+                  element.writeFlag = false
+                  element.readFlag = false
+                  element.allFlag = false
+                  element.hideFlag = false
 
-            });
-            this.fieldLeveleAccessMatrixId = res.data.results[0][0].fieldLeveleAccessMatrixId
-            console.log("Save field level data", this.fieldLeveleAccessMatrixId);
-            // console.log("after save",res.data.results[0][0].fieldLeveleAccessMatrixId);
+               });
+               this.rolePrivilegeFormflag = false;
+               this.fieldLeveleAccessMatrixId = res.data.results[0][0].fieldLeveleAccessMatrixId
+               this.SelectedData.forEach(element => {
+                  element.fieldLeveleAccessMatrixId = this.fieldLeveleAccessMatrixId
+               });
+               this.privilegeData = this.SelectedData
 
-         })
+               if (this.privilegeData.length > 0) {
+                  this.service.addUserRolePrivilege(this.privilegeData).subscribe(res => {
+                     this.alertService.sweetalertMasterSuccess("Role Privilege data saved successfully", "");
+                     this.rolePrivilegeForm.reset();
+                     this.getApplicationMenus();
+                     this.getRolePrivilegeSummaryByUserRoleId();
+                     this.editFlag = false
+                     this.isVisible = false;
+                     this.isShown = true;
+                     this.SelectedData = []
+                     this.privilegeData = []
+                     this.menusData.forEach(element => {
+                        element.modifyFlag = false
+                        element.writeFlag = false
+                        element.readFlag = false
+                        element.allFlag = false
+                        element.deleteFlag = false
+
+                     });
+                  })
+               }
+
+            })
+         } else {
+            this.service.addFields(this.fieldLevelData).subscribe(res => {
+               this.alertService.sweetalertMasterSuccess("Field Level Privilege data saved successfully", "");
+               this.SelectedDataFields = []
+               this.fieldLevelData = []
+               this.fieldAllMasterData.forEach(element => {
+                  element.modifyFlag = false
+                  element.writeFlag = false
+                  element.readFlag = false
+                  element.allFlag = false
+                  element.hideFlag = false
+
+               });
+               this.rolePrivilegeFormflag = false;
+               this.fieldLeveleAccessMatrixId = res.data.results[0][0].fieldLeveleAccessMatrixId
+               // console.log("Save field level data", this.fieldLeveleAccessMatrixId);
+               // console.log("after save",res.data.results[0][0].fieldLeveleAccessMatrixId);
+
+            })
+         }
       }
 
    }
@@ -2176,7 +2355,7 @@ export class RolePrivilegeComponent implements OnInit {
                   ele.allFlag = false
                });
             }
-            
+
             this.SelectedDataFields.push({
                // "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
                "fieldLeveleAccessMatrixId": this.fieldLeveleAccessMatrixId,
@@ -2333,6 +2512,13 @@ export class RolePrivilegeComponent implements OnInit {
                      "isActive": true
                   })
                } else {
+                  let index = this.SelectedDataFields.length - 1
+                  if (this.SelectedDataFields[length].formFieldId == fieldmenu.formFieldId) { return; }
+                  if (this.SelectedDataFields[index].formFieldId == fieldmenu.formFieldId) { return; }
+                  for (let i = 0; i < index; i++) {
+                     if (this.SelectedDataFields[i].formFieldId == fieldmenu.formFieldId) { return; }
+                  }
+
                   this.SelectedDataFields.push({
                      // "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
                      "fieldLeveleAccessMatrixId": this.fieldLeveleAccessMatrixId,
@@ -2425,6 +2611,13 @@ export class RolePrivilegeComponent implements OnInit {
                      "isActive": true
                   })
                } else {
+                  let index = this.SelectedDataFields.length - 1
+                  if (this.SelectedDataFields[length].formFieldId == fieldmenu.formFieldId) { return; }
+                  if (this.SelectedDataFields[index].formFieldId == fieldmenu.formFieldId) { return; }
+                  for (let i = 0; i < index; i++) {
+                     if (this.SelectedDataFields[i].formFieldId == fieldmenu.formFieldId) { return; }
+                  }
+
                   this.SelectedDataFields.push({
                      // "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
                      "fieldLeveleAccessMatrixId": this.fieldLeveleAccessMatrixId,
@@ -2457,8 +2650,8 @@ export class RolePrivilegeComponent implements OnInit {
                if (ele.childItems != null) {
                   ele.childItems.forEach(element => {
                      if (element.applicationMenuId == fieldmenu.applicationMenuId) {
-                        element.readFlag = true
-                        element.readAccess = true
+                        element.writeFlag = true
+                        element.writeAccess = true
                      }
                   })
                }
@@ -2488,14 +2681,17 @@ export class RolePrivilegeComponent implements OnInit {
 
       }
 
+      console.log("write single value: " + JSON.stringify(this.SelectedDataFields))
    }
 
    checkeUncheckSingleModifyFields(fieldmenu, event) {
-      if (event.checked) {
 
+      if (event.checked) {
+         console.log(this.SelectedDataFields);
 
          if (this.SelectedDataFields.length > 0) {
             this.SelectedDataFields.forEach((fieldLevelPrivilegeData, index) => {
+
                if (fieldLevelPrivilegeData.formFieldId == fieldmenu.formFieldId) {
                   let ind = index;
                   this.SelectedDataFields.splice(ind, 1, {
@@ -2509,8 +2705,15 @@ export class RolePrivilegeComponent implements OnInit {
                      "isActive": true
                   })
                } else {
+                  let index = this.SelectedDataFields.length - 1
+                  if (this.SelectedDataFields[length].formFieldId == fieldmenu.formFieldId) { return; }
+                  if (this.SelectedDataFields[index].formFieldId == fieldmenu.formFieldId) { return; }
+                  for (let i = 0; i < index; i++) {
+                     if (this.SelectedDataFields[i].formFieldId == fieldmenu.formFieldId) { return; }
+                  }
+
                   this.SelectedDataFields.push({
-                     //  "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                     // "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
                      "fieldLeveleAccessMatrixId": this.fieldLeveleAccessMatrixId,
                      "formFieldId": fieldmenu.formFieldId,
                      "hide": 0,
@@ -2550,36 +2753,35 @@ export class RolePrivilegeComponent implements OnInit {
          });
 
 
-
       } else {
          this.fieldAllMasterData.forEach((ele: any) => {
-            if (ele.applicationMenuId == fieldmenu.parentMenuId) {
-               this.SelectedDataFields.forEach((item, index) => {
-                  if (item.menuId == fieldmenu.parentMenuId) {
-                     let ind = index;
-                     this.SelectedData.splice(ind, 1, {
-                        //  "rolePrivilegeMatrixId":fieldmenu.rolePrivilegeMatrixId,
-                        "fieldLeveleAccessMatrixId": fieldmenu.fieldLeveleAccessMatrixId,
-                        "formFieldId": fieldmenu.formFieldId,
-                        "hide": ele.hide,
-                        "readAccess": ele.readAccess,
-                        "writeAccess": ele.writeAccess,
-                        "modifyAccess": true,
-                        "isActive": true
-                     })
-                  }
-               });
+            this.SelectedDataFields.forEach((item, index) => {
+               if (item.formFieldId == fieldmenu.formFieldId) {
+                  let ind = index;
+                  this.SelectedDataFields.splice(ind, 1, {
+                     // "rolePrivilegeMatrixId":fieldmenu.rolePrivilegeMatrixId,
+                     "fieldLeveleAccessMatrixId": fieldmenu.fieldLeveleAccessMatrixId,
+                     "formFieldId": fieldmenu.formFieldId,
+                     "hide": ele.hide,
+                     "readAccess": ele.readAccess,
+                     "writeAccess": ele.writeAccess,
+                     "modifyAccess": true,
+                     "isActive": true
+                  })
+               }
+            });
 
-            }
-           
          })
+
       }
+
+      console.log("modify single value: " + JSON.stringify(this.SelectedDataFields))
 
    }
 
    checkeUncheckSingleHideFields(fieldmenu, event) {
       if (event.checked) {
-
+         console.log(this.SelectedDataFields);
 
          if (this.SelectedDataFields.length > 0) {
             this.SelectedDataFields.forEach((fieldLevelPrivilegeData, index) => {
@@ -2590,18 +2792,25 @@ export class RolePrivilegeComponent implements OnInit {
                      // "rolePrivilegeMatrixId":fieldLevelPrivilegeData.rolePrivilegeMatrixId,
                      "fieldLeveleAccessMatrixId": fieldLevelPrivilegeData.fieldLeveleAccessMatrixId,
                      "formFieldId": fieldmenu.formFieldId,
-                     "hide":0,
-                     "readAccess": fieldLevelPrivilegeData.readAccess,
+                     "hide": true,
+                     "readAccess": fieldLevelPrivilegeData.rightAccess,
                      "writeAccess": fieldLevelPrivilegeData.writeAccess,
                      "modifyAccess": fieldLevelPrivilegeData.modifyAccess,
                      "isActive": true
                   })
                } else {
+                  let index = this.SelectedDataFields.length - 1
+                  if (this.SelectedDataFields[length].formFieldId == fieldmenu.formFieldId) { return; }
+                  if (this.SelectedDataFields[index].formFieldId == fieldmenu.formFieldId) { return; }
+                  for (let i = 0; i < index; i++) {
+                     if (this.SelectedDataFields[i].formFieldId == fieldmenu.formFieldId) { return; }
+                  }
+
                   this.SelectedDataFields.push({
-                     //  "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
+                     // "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
                      "fieldLeveleAccessMatrixId": this.fieldLeveleAccessMatrixId,
                      "formFieldId": fieldmenu.formFieldId,
-                     "hide": 0,
+                     "hide": true,
                      "readAccess": false,
                      "writeAccess": false,
                      "modifyAccess": false,
@@ -2616,7 +2825,7 @@ export class RolePrivilegeComponent implements OnInit {
                // "rolePrivilegeMatrixId":this.rolePrivilegeMatrixId,
                "fieldLeveleAccessMatrixId": this.fieldLeveleAccessMatrixId,
                "formFieldId": fieldmenu.formFieldId,
-               "hide": 0,
+               "hide": true,
                "readAccess": false,
                "writeAccess": false,
                "modifyAccess": false,
@@ -2624,13 +2833,13 @@ export class RolePrivilegeComponent implements OnInit {
             })
          }
          this.fieldAllMasterData.forEach((ele: any, index) => {
-            if (ele.applicationMenuId == fieldmenu.parentMenuId) {
+            if (ele.formFieldId == fieldmenu.parentMenuId) {
 
                if (ele.childItems != null) {
                   ele.childItems.forEach(element => {
                      if (element.applicationMenuId == fieldmenu.applicationMenuId) {
-                        element.hideFlag = true
-                        element.hideAccess = true
+                        element.readFlag = true
+                        element.readAccess = true
                      }
                   })
                }
@@ -2655,15 +2864,14 @@ export class RolePrivilegeComponent implements OnInit {
                   })
                }
             });
-          
+
          })
+
       }
 
+      console.log("hide single value: " + JSON.stringify(this.SelectedDataFields))
+
    }
-
-
-
-
 
    onSelectFieldLevel(template1: TemplateRef<any>, menu) {
       this.modalRef = this.modalService.show(
@@ -2686,4 +2894,28 @@ export class RolePrivilegeComponent implements OnInit {
          Object.assign({}, { class: 'gray modal-xl' })
       );
    }
+
+
+   exportAsXLSX(): void {
+      this.excelData = [];
+      this.header = []
+      this.header = ["Comapny Name", "User Group", "User Role"]
+      //this.excelData = this.attendanceData
+      this.menuSummaryData.forEach(element => {
+
+
+         let obj = {
+            "Comapny Name": element.companyName,
+            "User Group": element.groupName,
+            "User Role": element.roleName,
+
+
+
+         }
+         this.excelData.push(obj)
+      });
+      // console.log(this.excelData)
+      this.excelservice.exportAsExcelFile(this.excelData, 'Attandence', 'Attendance', this.header);
+   }
+
 }

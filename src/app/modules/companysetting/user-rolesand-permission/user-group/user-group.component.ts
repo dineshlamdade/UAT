@@ -39,6 +39,7 @@ export class UserGroupComponent implements OnInit {
   selectAllGroupFlag: boolean = false;
   excelData: any[];
   header: any[];
+  editflag: boolean = false;
  // userData: unknown;
 
   constructor(private modalService: BsModalService,
@@ -127,20 +128,28 @@ export class UserGroupComponent implements OnInit {
         "active": true,
         "default": this.form.controls['default'].value,
     }
+    if(this.companyMasterData.length > 0){
       console.log(JSON.stringify(data));
       this.service.postUserGroupData(data).subscribe(res => {
         console.log("before save", data);
-        this.alertService.sweetalertMasterSuccess("User Group data save successfully","");
+        if(!this.showButtonSaveAndReset){
+          this.alertService.sweetalertMasterSuccess("User Group Save Successfully","");
+        }
+        else{
+          this.alertService.sweetalertMasterSuccess("User Group  Updated Successfully","");
+        }
+       
         this.summaryPage();
         this.form.reset();
         this.form.controls['active'].setValue(true);
         this.isSaveAndReset = true;
         this.showButtonSaveAndReset = true;
       });
-    // }else{
-    //   //update
+    }else{
 
-    // }
+      this.alertService.sweetalertWarning("Please Assign Group")
+
+    }
       
     }
     
@@ -151,6 +160,7 @@ editUserGroup(summary){
    
    this.isSaveAndReset = false;
     this.showButtonSaveAndReset = true;
+   this.editflag = true;
     this.form.enable();
     this.form.get('groupName').disable();
     //this.form.controls['default'].setValue(true);
@@ -171,7 +181,7 @@ resetForm(){
   }
 
 viewUserGroup(summary){
-
+   this.editflag = false;
    this.userGroupId=summary.userGroupId
    this.isSaveAndReset = false;
     this.showButtonSaveAndReset = false;
@@ -338,7 +348,9 @@ this.modalRef = this.modalService.show(
   selectAll(event){
     // assignGroupData
     if(event.checked){
+      
       this.assignGroupData.forEach((element,index)=>{
+        this.asginUserGroup=[element.companyGroupMasterId];
         this.companyMasterData.push(
           {
             "userGroupId": this.userGroupId,
@@ -352,6 +364,7 @@ this.modalRef = this.modalService.show(
     }
     else{
       this.companyMasterData = []
+      this.asginUserGroup = []
       this.selectAllGroupFlag = false;
     } 
 
@@ -389,13 +402,13 @@ this.modalRef = this.modalService.show(
   exportApprovalSummaryAsExcel(): void {
     this.excelData = [];
     this.header = []
-    this.header =["companyGroupName"];
+    this.header =["Company Group Name"];
     this.excelData = [];
     if(this.Grplistdata.length>0){
    
      this.Grplistdata.forEach((element) => {
       let obj = {
-        companyGroupName: element.companyGroupName,
+        'Company Group Name': element.companyGroupName,
        
       };
       this.excelData.push(obj);
@@ -408,14 +421,14 @@ this.modalRef = this.modalService.show(
   exportApprovalAllSummaryAsExcel(){
     this.excelData = [];
     this.header = []
-    this.header =["groupName","groupDescription"];
+    this.header =["Group Name","Group Description"];
     this.excelData = [];
     if(this.userGridData.length>0){
    
      this.userGridData.forEach((element) => {
       let obj = {
-        groupName: element.groupName,
-        groupDescription : element.groupDescription
+        'Group Name': element.groupName,
+        'Group Description' : element.groupDescription
        
       };
       this.excelData.push(obj);
@@ -427,15 +440,15 @@ this.modalRef = this.modalService.show(
   exportApprovalSummaryAssignGroupAsExcel(){
     this.excelData = [];
     this.header = []
-    this.header =["companyGroupCode","shortName","companyGroupName"];
+    this.header =["Company Group Code","Short Name","Company Group Name"];
     this.excelData = [];
     if(this.assignGroupData.length>0){
    
      this.assignGroupData.forEach((element) => {
       let obj = {
-        companyGroupCode: element.companyGroupCode,
-        shortName : element.shortName,
-        companyGroupName: element.companyGroupName
+        'Company Group Code': element.companyGroupCode,
+        'Short Name' : element.shortName,
+        'Company Group Name': element.companyGroupName
        
       };
       this.excelData.push(obj);

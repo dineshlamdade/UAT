@@ -44,6 +44,7 @@ export class UserRoleComponent implements OnInit {
   butDisabled: string;
   excelData: any[];
   header: any[];
+  editFlag: boolean = false;
  
 
   constructor(private modalService: BsModalService,
@@ -87,9 +88,9 @@ export class UserRoleComponent implements OnInit {
 
       userRoleId: new FormControl(0),
       userGroupId: new FormControl('',Validators.required),
-      roleName: new FormControl(null, Validators.required),
+      roleName: new FormControl('', Validators.required),
       companyGroupMasterId: new FormControl('',Validators.required),
-      roleDescription: new FormControl(null, Validators.required),
+      roleDescription: new FormControl('', Validators.required),
       default: new FormControl(''),
       active: new FormControl(true),
       remark: new FormControl(null),
@@ -146,7 +147,7 @@ onSelectCompanyName(companyGroupMasterId){
     
     if (this.isSaveAndReset == false) {
       console.log('in edit');
-
+      this.form.controls['userGroupId'].setValue(this.userGroupId)
       this.form.controls['companyGroupMasterId'].setValue(this.companyGroupMasterId)
       const id = this.form.get('userRoleId').value;
       console.log(JSON.stringify(this.form.value));
@@ -155,7 +156,7 @@ onSelectCompanyName(companyGroupMasterId){
         console.log('after save..', res);
         if (res.data.results.length > 0) {
           console.log('data is updated');
-          this.alertService.sweetalertMasterSuccess(res.data.messsage,'Updated User Role Details Successfully');
+          this.alertService.sweetalertMasterSuccess('',' User Role Updated Successfully');
           this.onPageLoad();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
@@ -174,11 +175,12 @@ onSelectCompanyName(companyGroupMasterId){
     else {
       console.log('clcicked on new record save button');
       console.log(JSON.stringify(this.form.value));
+    
       this.service.postUserRollData(this.form.value).subscribe(res => {
         console.log("before save", this.form.value)
         if (res.data.results.length > 0) {
           console.log('data is updated');
-          this.alertService.sweetalertMasterSuccess('', res.data.messsage);
+          this.alertService.sweetalertMasterSuccess('User Role Save Successfully',"");
           this.onPageLoad();
           this.form.reset();
           this.form.patchValue( {
@@ -239,8 +241,47 @@ console.log(this.companyGroupMasterId);
 
 
 
+  // edit(summary, userGroupId: number) {
+  // this.userGroupId = summary.userGroupId
+  //   this.companyGroupMasterId =summary.companyGroupMasterId;
+  //   this.groupNameList = []
+  //   this.service.getUserGroupForRoleGroup(this.companyGroupMasterId).subscribe((res) => {
+  //     this.userGroupName = res.data.results;
+  //     res.data.results.forEach((element) => {
+  //       const obj = {
+  //         label: element.groupName,
+  //         value: element.userGroupId,
+  //       };
+  //       this.groupNameList.push(obj);
+  //     });
+  //     console.log("groupName",this.groupNameList)
+  //   },(error)=>{console.log(error)},()=>{
+      
+  //  //this.onSelectCompanyName(summary.userGroupId);
+  //  console.log("summary::", summary)
+  //  this.userGroupId = userGroupId;
+  // this.userGroupId=summary.userGroupId
+  //  this.form.patchValue(summary)
+  //  this.form.controls['default'].setValue(summary.default);
+  //  this.isSaveAndReset = false;
+  //  this.showButtonSaveAndReset = true;
+  //  this.form.enable();
+  //  this.form.get('roleName').disable();
+  //  this.form.get('companyGroupMasterId').disable();
+  //  this.form.get('userGroupId').disable();
+
+  //   });
+
+
+
+  // }
+
   edit(summary, userGroupId: number) {
-  
+    this.editFlag = true;
+    // this.form.controls['roleDescription'].enable();
+    //  this.form.controls['roleName'].disable();
+    //  this.form.controls['companyGroupMasterId'].disable();
+    //  this.form.controls['userGroupId'].disable();
     this.companyGroupMasterId =summary.companyGroupMasterId;
     this.groupNameList = []
     this.service.getUserGroupForRoleGroup(this.companyGroupMasterId).subscribe((res) => {
@@ -254,21 +295,15 @@ console.log(this.companyGroupMasterId);
       });
       console.log("groupName",this.groupNameList)
     },(error)=>{console.log(error)},()=>{
-      
-   //this.onSelectCompanyName(summary.userGroupId);
-   console.log("summary::", summary)
    this.userGroupId = userGroupId;
   this.userGroupId=summary.userGroupId
    this.form.patchValue(summary)
    this.form.controls['default'].setValue(summary.default);
+  //this.butDisabled = "";
    this.isSaveAndReset = false;
    this.showButtonSaveAndReset = true;
-   this.form.enable();
-   this.form.get('roleName').disable();
-   this.form.get('companyGroupMasterId').disable();
-   this.form.get('userGroupId').disable();
-
-    });
+ 
+   });
 
 
 
@@ -315,15 +350,16 @@ console.log(this.companyGroupMasterId);
   exportApprovalAllSummaryAsExcel(){
     this.excelData = [];
     this.header = []
-    this.header =["groupName","roleName","roleDescription"];
+    this.header =["Sr No","Group Name","Role Name","Role Description"];
     this.excelData = [];
     if(this.masterGridData.length>0){
    
-     this.masterGridData.forEach((element) => {
+     this.masterGridData.forEach((element,index) => {
       let obj = {
-        groupName: element.groupName,
-        roleName : element.roleName,
-        roleDescription : element.roleDescription
+        'Sr No' : index+1,
+        'Group Name': element.groupName,
+        'Role Name' : element.roleName,
+        'Role Description' : element.roleDescription
 
        
       };
