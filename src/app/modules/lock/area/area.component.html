@@ -45,7 +45,7 @@
                           <div class="input-group-prepend">
                               <span class="input-group-text"> <i class="fa fa-calendar"></i>  </span>
                           </div>
-                          <input formControlName="fromDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                          <input  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
                               placeholder="Date" bsDatepicker disabled>
                               <!-- <div *ngIf="areaForm.fromDate.errors.required">From Date is mandatory</div> -->
                       </div>
@@ -58,7 +58,7 @@
                           <div class="input-group-prepend">
                               <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
                           </div>
-                          <input formControlName="toDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
                               placeholder="Date" bsDatepicker disabled>
                               <!-- <div *ngIf="areaForm.toDate.errors.required">From Date is mandatory</div> -->
                       </div>
@@ -269,7 +269,7 @@
                           <div class="input-group-prepend">
                               <span class="input-group-text"> <i class="fa fa-calendar"></i></span>
                           </div>
-                          <input formControlName="fromDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                          <input  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
                           placeholder="Date" bsDatepicker disabled>
                       </div>
                   </div>
@@ -281,7 +281,7 @@
                           <div class="input-group-prepend">
                               <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
                           </div>
-                          <input formControlName="toDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                          <input  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate" data-provide="datepicker" data-date-autoclose="true" class="form-control"
                           placeholder="Date" bsDatepicker disabled>
                       </div>
                   </div>
@@ -536,7 +536,7 @@
                               <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="fa fa-calendar"></i> </span>
                               </div>
-                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              <input  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                   placeholder="Date" bsDatepicker disabled>
                           </div>
                       </div>
@@ -549,7 +549,7 @@
                               <div class="input-group-prepend">
                                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
                               </div>
-                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              <input  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                   placeholder="Date" bsDatepicker disabled>
                           </div>
                       </div>
@@ -726,7 +726,7 @@
                               <div class="input-group-prepend">
                                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
                               </div>
-                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
+                              <input  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"  data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
                           </div>
                       </div>
                   </div>
@@ -736,7 +736,7 @@
                               <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               </div>
-                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
+                              <input  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"  data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
                           </div>
                       </div>
                   </div>
@@ -1032,7 +1032,7 @@
                               <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               </div>
-                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
                           </div>
                       </div>
                   </div>
@@ -1043,7 +1043,7 @@
                               <div class="input-group-prepend">
                                   <span class="input-group-text"> <i class="fa fa-calendar"></i></span>
                               </div>
-                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker  disabled>
+                              <input  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker  disabled>
                           </div>
                       </div>
                   </div>

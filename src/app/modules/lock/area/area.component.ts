@@ -1266,11 +1266,20 @@ getServiceNameEmp(serviceCode: any) {
 
 getAreaCodesInEmp(payrollAreaCode: any) {
   const toSelect = this.areaSeriveListEmp.find(
-    (element) => element.payrollArea.payrollAreaId == payrollAreaCode
+    (element) => element.payrollAreaId == payrollAreaCode
   );
-  return toSelect.payrollArea.payrollAreaCode;
+  return toSelect.payrollAreaCode;
   console.log('toSelect', toSelect);
 }
+
+// getAreaCodesInEmp(payrollAreaCode: any) {
+//   const toSelect = this.areaSeriveListEmp.find(
+//     (element) => element.payrollArea.payrollAreaId == payrollAreaCode
+//   );
+//   return toSelect.payrollArea.payrollAreaCode;
+//   console.log('toSelect', toSelect);
+// }
+
 
 
 
