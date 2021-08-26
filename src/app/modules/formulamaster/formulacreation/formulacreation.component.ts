@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SortEvent } from 'primeng/api';
 import { TemplateRef} from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { FormControl, FormGroup } from '@angular/forms';
+import { FormulaServiceService } from '../formula-service.service';
+import { AlertServiceService } from '../../../core/services/alert-service.service';
 interface User1 {
   SrNo;
   DerivedName;
@@ -22,13 +25,25 @@ interface User1 {
 export class FormulacreationComponent implements OnInit {
     public modalRef: BsModalRef;
     users1: User1[];
-  constructor(private modalService: BsModalService) { }
+  formulaform: any;
+  formulaSummeryData: any;
+  constructor(private modalService: BsModalService,private formulaService: FormulaServiceService,
+    private alertService: AlertServiceService) {
+
+      this.formulaform = new FormGroup({
+      formulaName: new FormControl(""),
+      formulaDescription: new FormControl(""),
+      originalFormula: new FormControl(""),
+      displayName: new FormControl(""),
+      effectiveFromDate: new FormControl(""),
+      effectiveToDate: new FormControl(""),
+      isActive: new FormControl(""),
+      remark: new FormControl(""),
+      });
+  }
 
   ngOnInit(): void {
-    this.users1 = [
-      { SrNo: '1', DerivedName: 'grp',Module:'AAA',TableName:'B',FieldName:'Hold',DerivedType:'C',JobFieldType:'D',Percentageof:'E'},
-     
-    ];
+    this.FormulaMasterDetailsSummery()
     
   }
   mediumpopup(template: TemplateRef<any>) {
@@ -65,5 +80,30 @@ export class FormulacreationComponent implements OnInit {
         return (event.order * result);
     });
   
+}
+
+saveFormulaMasters() {
+  
+ this.formulaform.controls['isActive'].setValue(1),
+
+  this.formulaService.formulamasterSave(this.formulaform.value).subscribe(res => {
+    this.alertService.sweetalertMasterSuccess(res.status.messsage, "" );
+    //this.KeywordMasterDetailsSummery();
+    this.formulaform.reset()
+    // this.editflag = false
+    // this.viewflag = false
+  },
+  ( error: any ) => {
+    this.alertService.sweetalertError( error["error"]["status"]["message"] );
+  })
+}
+
+FormulaMasterDetailsSummery(){
+  this.formulaService.formulamasterSummery().subscribe(res => {
+    this.formulaSummeryData = res.data.results;
+    },
+  ( error: any ) => {
+    this.alertService.sweetalertError( error["error"]["status"]["message"] );
+  })
 }
 }

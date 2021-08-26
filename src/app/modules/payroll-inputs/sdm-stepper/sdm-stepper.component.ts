@@ -96,7 +96,7 @@ export class SdmStepperComponent implements OnInit {
   SelectedCount: any;
   sourceFieldListData: any;
   selectedSourceCombinationData: any = [];
-  derivedTableFieldsData: any;
+  derivedTableFieldsData: any = [];
   fieldTypes: any[];
   sdmSummeryData: any;
   sdmFormStep3: FormGroup;
@@ -104,7 +104,7 @@ export class SdmStepperComponent implements OnInit {
   keywordData: any;
   saveDerivedData: any = [];
   tempDerivedTable: any = [];
-  derivedTypeName: any;
+  derivedTypeName: any = '';
   derivedTableName: any;
   derivedModuleName: any = [];
   sourceObjectName: any;
@@ -160,11 +160,24 @@ export class SdmStepperComponent implements OnInit {
   tempeditDerivedData: boolean = false;
   selectedDerivedName: any = '';
   editTempDerivedIndex: any;
+  sdmDerivedTypeId: any;
+  showPercentageFlag: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private sdmService: SdnCreationService,
     private toaster: ToastrService, private datepipe: DatePipe, private excelservice: ExcelserviceService,
     private modalService: BsModalService,private Empservice: PayrollInputsService,
     private alertService: AlertServiceService) {
+
+      this.tempDerivedTable.push({
+        "derivedName": "",
+        "sdmDerivedTypeId": "",
+        "selectedDerivedName": this.selectedDerivedName,
+        "derivedTypeName": this.derivedTypeName,
+        "sourceObjectName": this.sourceObjectName,
+        "sdmDerivedTableId": this.derivedTableName,
+        "percentageOf": "",
+        "moduleIdList": this.derivedModuleName.toString(),
+      })
 
     this.sdmFormStep1 = this.formBuilder.group({
       "sdmMasterId": new FormControl(""),
@@ -442,6 +455,8 @@ export class SdmStepperComponent implements OnInit {
     this.derivedTableNameChange(data.derivedObjectName)
     this.sdmFormStep3.patchValue(data)
     this.selectedDerivedName = data.selectedDerivedName
+    this.derivedTypeName = this.selectedDerivedName
+    this.derivedTablesFields()
   }
 
 
@@ -1059,9 +1074,24 @@ export class SdmStepperComponent implements OnInit {
   }
 
   derivedTablesFields() {
+    this.derivedTableFieldsData = []
+    alert()
     this.sdmService.derivedTablesFields().subscribe(res => {
-      this.derivedTableFieldsData = res.data.results;
+      // this.derivedTableFieldsData = res.data.results;
 
+      res.data.results.forEach(element => {
+        if(this.derivedTypeName == 'JobField'){
+          if(element.derivedObjectName == 'EmployeeJobMapping' || element.derivedObjectName == 'EmployeePositionMapping'){
+            this.derivedTableFieldsData.push(element)
+          }
+        }else if(this.derivedTypeName == 'Percentage'){
+          if(element.derivedObjectName != 'EmployeeJobMapping' && element.derivedObjectName != 'EmployeePositionMapping'){
+            this.derivedTableFieldsData.push(element)
+          }
+        }else{
+          this.derivedTableFieldsData = res.data.results
+        }
+      });
     })
   }
 
@@ -1129,11 +1159,13 @@ export class SdmStepperComponent implements OnInit {
   }
 
   getDerivedType(sdmDerivedTypeId) {
+    this.sdmDerivedTypeId = sdmDerivedTypeId
     this.derivedTypeData.forEach(element => {
       if (element.sdmDerivedTypeId == sdmDerivedTypeId) {
         this.derivedTypeName = element.derivedType
       }
     });
+    this.derivedTablesFields()
   }
 
   derivedFiedName(sdmDerivedTableId) {
@@ -1146,6 +1178,9 @@ export class SdmStepperComponent implements OnInit {
     this.sourceObjectName = value[1]
     this.sdmFormStep3.controls['sdmDerivedTableId'].setValue(value[0])
     this.sdmFormStep3.controls['derivedFieldName'].setValue(this.sourceObjectName)
+
+    // this.derivedTablesFields()
+
     // }
     // });
 
@@ -1167,7 +1202,8 @@ export class SdmStepperComponent implements OnInit {
       "derivedName": controls['derivedName'].value,
       "sdmDerivedTypeId": controls['sdmDerivedTypeId'].value,
       "selectedDerivedName": this.selectedDerivedName,
-      "derivedTypeName": this.derivedTypeName,
+      "derivedTypeName": this.sdmDerivedTypeId,
+      "sdmDerivedTypeName":this.derivedTypeName,
       "sourceObjectName": this.sourceObjectName,
       "sdmDerivedTableId": this.derivedTableName,
       "percentageOf": controls['percentageOf'].value,
@@ -1214,6 +1250,7 @@ export class SdmStepperComponent implements OnInit {
     this.derivedactive = true
     this.tempeditDerivedData = false
     this.selectedDerivedName = ""
+    this.showPercentageFlag = false
   }
 
   resetSdmForm1() {
@@ -1261,6 +1298,9 @@ export class SdmStepperComponent implements OnInit {
       console.log("derived Master data: "+ JSON.stringify(this.derivedMastersData))
       if(this.editFlag){
         this.derivedMastersData.forEach(element => {
+           if(element.percentageOf != '' || element.percentageOf != null){
+             this.showPercentageFlag = true
+           }
           this.tempDerivedTable.push({
             "derivedName": element.derivedName,
             "sdmDerivedTypeId": element.sdmDerivedTypeId,

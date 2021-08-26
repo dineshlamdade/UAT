@@ -33,8 +33,8 @@
                         </div>
                     </div>
 
-                    <div class="row mt-20">
-                        <div class="col-md-3">
+                    <div class="row mt-20" >
+                        <div class="col-md-3" *ngIf="natureValueFlag == false">
                             <div class="form-group">
                                 <label class="form-label">E / D Head </label>
                                 <select class="form-control" formControlName="headMasterId">
@@ -55,7 +55,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3" *ngIf="natureValueFlag == true">
                             <div class="form-group">
                                 <label class="form-label">Formula</label>
                                 <select class="form-control" formControlName="formula">
@@ -225,11 +225,14 @@
 
             <ng-template pTemplate="body" let-key let-rowIndex="rowIndex">
                 <tr class="p-selectable-row">
-                    <td class="bg-color-light_gray"><label class="custom-control custom-checkbox checkbox-center"
-                            tooltip="Select All">
-                            <input type="checkbox" class="custom-control-input" name="select" /> <span
-                                class="custom-control-label"></span> &nbsp; {{rowIndex+1}}
-                        </label></td>
+                    <td class="bg-color-light_gray"> {{rowIndex+1}}
+                        <!-- <label class="custom-control custom-checkbox checkbox-center"
+                            tooltip="Select All"><input type="checkbox" class="custom-control-input" name="select" />
+                             <span
+                                class="custom-control-label"></span> &nbsp;
+                                
+                        </label> -->
+                    </td>
                     <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"></label>
 
                     </td> -->

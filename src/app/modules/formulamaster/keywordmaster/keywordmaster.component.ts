@@ -24,6 +24,8 @@ export class KeywordmasterComponent implements OnInit {
   viewflag: boolean = false;
   keywordId: any;
   keywordDataById: any;
+  natureValueFlag: boolean= false;
+
 
   constructor(private datepipe: DatePipe, private keywordservice: KeywordserviceService,
     private toster: ToastrService, private formulaservice: FormulaServiceService) {
@@ -70,10 +72,13 @@ export class KeywordmasterComponent implements OnInit {
 
   getSelectedNature(event){
     if(event.checked){
-     this.natureValue ="Formula"
-    }else{
+      if(this.natureValue ="Formula"){
+        this.natureValueFlag = true;
+      }
+     }else{
       this.natureValue = "Master"
-    }
+      this.natureValueFlag = false;
+      }
   }
 
 
