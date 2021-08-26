@@ -347,8 +347,12 @@ export class EmployeesetComponent implements OnInit {
    // });
       console.log('this.employeeList::', this.employeeList);
     }
-    this.excelservice.exportAsExcelFile(this.excelData, this.header);
+   
+this.downloadExcel(this.excelData, this.header);
+  }
 
+  downloadExcel(excelData, header){
+    this.excelservice.exportAsExcelFile(excelData, header);
   }
 
   exportApprovalSummaryAsExcel1(): void {
@@ -450,8 +454,21 @@ employeeListPasteData(event: ClipboardEvent) {
   // this.displayedColumns = row_data[0].split('\t');
   // this.displayedColumns = ["employeeCode", "employeeName"]
   this.displayedColumns = ["employeeCode"]
+let emp=[];
+for(let i= 0;i<row_data.length;i++){
+  let data=row_data[i].replace('\r','');
+  if(data!=''){
+const employee=this.serviceListData.find(a=>a.label ==data)
+let obj=employee.value;
 
-  
+emp.push(obj)
+}
+}
+
+  this.employeesetForm.get('empList').setValue(emp);
+  this.excelData=row_data;
+  this.excelData1=row_data;
+
   //delete row_data[0];
   // Create table dataSource
   row_data.forEach(row_data => {

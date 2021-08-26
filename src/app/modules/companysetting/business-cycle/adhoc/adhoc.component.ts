@@ -60,6 +60,7 @@ export class AdhocComponent implements OnInit {
   editData: any;
   periodId: any;
   activeHeadListCopy: any;
+  checkValids :boolean =false;
  // fromtDate: string;
 
   
@@ -96,7 +97,7 @@ export class AdhocComponent implements OnInit {
 
   
   checkValid() {
-    if(this.adhocForm.get('arrear').valid || this.selectedUser?.length>0) {
+    if(this.adhocForm.get('arrear').value || this.selectedUser2?.length>0) {
       return false;
     } else {
       return true;
@@ -187,8 +188,8 @@ export class AdhocComponent implements OnInit {
      arrear:this.adhocForm.controls['arrear'].value,
       //remark:this.adhocForm.value.remark,
       remark:this.adhocForm.controls['remark'].value,
-      fromDate: this.datepipe.transform(this.adhocForm.value.fromDate, "dd-MM-yyyy"),
-      toDate: this.datepipe.transform(this.adhocForm.value.toDate, "dd-MM-yyyy"),
+      fromDate: this.datepipe.transform(this.adhocForm.value.fromDate, "dd-MMM-yyyy"),
+      toDate: this.datepipe.transform(this.adhocForm.value.toDate, "dd-MMM-yyyy"),
      
      
     }]
