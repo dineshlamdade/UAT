@@ -31,7 +31,9 @@ export class AdhocService{
 
     /**get active heads */
     getActiveHead():Observable<any>{
-        return this.http.get(this.apiUrl+`head-creation/getActive`);
+       // return this.http.get(this.apiUrl+`head-creation/getActive`);
+        return this.http.get(this.apiUrl+`head-creation/oneTimeHead`);
+
     }
 
     /**get summary data */

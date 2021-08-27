@@ -85,19 +85,30 @@ export class AdhocComponent implements OnInit {
       startDate : new FormControl(''),
       endDate : new FormControl(''),
       copyFrom : new FormControl('')
+      
      
      // adhocCycleName : new FormControl('')
     
     })
+    this.adhocForm.setErrors({required: true});
+    this.adhocForm.valueChanges.subscribe(newValue => {
+    if(this.adhocForm.get('arrear').value || newValue.selectedUser?.length > 0 || this.adhocForm.get('remark').value){
+        this.adhocForm.setErrors(null);
+    } else {
+        this.adhocForm.setErrors({required: true});
+    } 
+});
     
    }
+
+
   //  isTrueChange(){
   //    this.isTrue = true;
   //  }
 
   
   checkValid() {
-    if(this.adhocForm.get('arrear').value || this.selectedUser2?.length>0) {
+    if(this.adhocForm.get('arrear').value || this.selectedUser?.length>0) {
       return false;
     } else {
       return true;
@@ -105,14 +116,14 @@ export class AdhocComponent implements OnInit {
   }
 
 
-  isArrear($event){
+//   isArrear($event){
     
-    if(this.adhocForm.get('arrear').value != true){
-        this.isArrearFlag = false;
-    }else{
-        this.isArrearFlag = true;
-    }
-}
+//     if(this.adhocForm.get('arrear').value != true){
+//         this.isArrearFlag = false;
+//     }else{
+//         this.isArrearFlag = true;
+//     }
+// }
 
   ngOnInit(): void {
     this.getAllCycleDefinition();
