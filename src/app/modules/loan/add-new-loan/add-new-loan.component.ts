@@ -1044,7 +1044,7 @@ export class AddNewLoanComponent implements OnInit {
       var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
       this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
       this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
-      this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+      // this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
 
       this.devaiationData.forEach((ele, index) => {
         if (ele.deviationType == 'noOfInstallment') {
@@ -1152,7 +1152,7 @@ export class AddNewLoanComponent implements OnInit {
       var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
       this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
       this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
-      this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+      // this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
 
       this.devaiationData.forEach((ele, index) => {
         if (ele.deviationType == 'noOfInstallment') {
@@ -1171,7 +1171,7 @@ export class AddNewLoanComponent implements OnInit {
     var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
     this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
     this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
-    this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+    // this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
 
   }
 

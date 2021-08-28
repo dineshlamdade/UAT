@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { TemplateRef} from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CKEditorModule } from 'ckeditor4-angular';
+import { ToastrService } from 'ngx-toastr';
+import { LoanMasterService } from '../loan-master.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-general',
@@ -13,13 +20,13 @@ export class GeneralComponent implements OnInit {
   Instances: any = [];
   loanValue: any;
   monthValue: any;
-  minimumNetPayValue: string = '';
+  minimumNetPayValueFlag: string = '';
   loandata: any = '';
   editloandata: any = '';
   tabIndex: number = 1;
   url: string;
   deviationAmount: string = '';
-  deviationIntrest: string = '';
+  deviationInterest: string = '';
   deviationNoOfInstallment: string = '';
   PricipalNode: any = '';
   TenureNode: any = '';
@@ -27,9 +34,13 @@ export class GeneralComponent implements OnInit {
   intrestWithNodeFlag: string = '';
   noOfInstallWithNodeFlag: string = '';
   principalWithNodeFlag: string = '';
+  loanType: any;
+  public headTemplateList5 = [];
+  public approvalWorkFlowSDMList = [];
+  public approvalDerivedNameList = [];
 
-
-  constructor(private router: Router) {
+  constructor(public formBuilder : FormBuilder ,public loanMasterService :LoanMasterService ,public toster : ToastrService,
+    private router: Router,public sanitizer: DomSanitizer,private datePipe: DatePipe,private modalService: BsModalService) {
 
     this.generalLoanForm = new FormGroup({
       loanCode: new FormControl(""),
@@ -38,32 +49,42 @@ export class GeneralComponent implements OnInit {
       loanApplicationTemplate: new FormControl([null]),
       approvalWorkFlowId: new FormControl(""),
       approvalWorkFlowSDM: new FormControl(""),
-      servicePeriod: new FormControl(""),
-      underliningAsset: new FormControl(""),
-      noOfTimesOfSalary: new FormControl(""),
-      salaryDefinition: new FormControl(""),
-      maxAmountLoan: new FormControl(""),
-      gapBetTwoLoanApp: new FormControl(""),
-      gapEndOfEarlierLoanAndNewLoanApp: new FormControl(""),
-      instances: new FormControl(""),
-      minRemainingServiceLoanApplication: new FormControl(""),
-      minRemainingServiceLoanCompletion: new FormControl(""),
+      approvalDerivedName: new FormControl(""),
+      minLoanAmount: new FormControl(null),
       deviationAmount: new FormControl(""),
       deviationInterest: new FormControl(""),
       deviationNoOfInstallment: new FormControl(""),
-     
-      interestNode: new FormControl(0),
-      interestWithNode: new FormControl(""),
-      interestWithoutNode: new FormControl(""),
-
-      noOfInstallmentNode: new FormControl(0),
-      noOfInstallmenttWithNode: new FormControl(""),
-      noOfInstallmenttWithoutNode: new FormControl(""),
-
       principalAmountNode: new FormControl(0),
       principalAmountWithNode: new FormControl(""),
       principalAmountWithoutNode: new FormControl(""),
-      minLoanAmount: new FormControl(null)
+      interestNode: new FormControl(0),
+      interestWithNode: new FormControl(""),
+      interestWithoutNode: new FormControl(""),
+      noOfInstallmentNode: new FormControl(0),
+      noOfInstallmenttWithNode: new FormControl(""),
+      noOfInstallmenttWithoutNode: new FormControl(""),
+      servicePeriod: new FormControl(""),
+      servicePeriodDerivedName: new FormControl(""),
+      underliningAsset: new FormControl(""),
+      underlyingAssetDerivedName: new FormControl(""),
+      noOfTimesOfSalary: new FormControl(""),
+      noOfTimeOfSalaryDerivedName: new FormControl(""),
+      salaryDefinition: new FormControl(""),
+      maxAmountLoan: new FormControl(""),
+      maxAmountAllowedDerivedName: new FormControl(""),
+      gapBetTwoLoanApp: new FormControl(""),
+      gapEarilerLoanDerivedName: new FormControl(""),
+      gapEndOfEarlierLoanAndNewLoanApp: new FormControl(""),
+      gapEndLoanDerivedName: new FormControl(""),
+      instances: new FormControl(""),
+      minRemainingServiceLoanApplication: new FormControl(""),
+      loanAppplicationDerivedName: new FormControl(""),
+      minRemainingServiceLoanCompletion: new FormControl(""),
+      loanCompletionDerivedName: new FormControl(""),
+      disbursementRequired: new FormControl(""),
+      partDisbursementPermissible: new FormControl(""),
+      
+      // claimApprWorkflowId: new FormControl({ value: '', disabled: false }),
     })
 
     if (localStorage.getItem('viewData') != null) {
@@ -81,15 +102,15 @@ export class GeneralComponent implements OnInit {
       });
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
       if (this.loandata.minimumNetPayLoan == 1) {
-        this.minimumNetPayValue = 'Yes'
+        this.minimumNetPayValueFlag = 'Yes'
       } else {
-        this.minimumNetPayValue = 'No'
+        this.minimumNetPayValueFlag = 'No'
       }
 
-      if (this.loandata.deviationIntrest == 1) {
-        this.deviationIntrest = 'Yes'
+      if (this.loandata.deviationInterest == 1) {
+        this.deviationInterest = 'Yes'
       } else {
-        this.deviationIntrest = 'No'
+        this.deviationInterest = 'No'
       }
 
       if (this.loandata.deviationAmount == 1) {
@@ -145,16 +166,16 @@ export class GeneralComponent implements OnInit {
       });
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
       if (this.editloandata.minimumNetPayLoan == true) {
-        this.minimumNetPayValue = 'Yes'
+        this.minimumNetPayValueFlag = 'Yes'
       } else {
-        this.minimumNetPayValue = 'No'
+        this.minimumNetPayValueFlag = 'No'
       }
 
 
-      if (this.editloandata.deviationIntrest == 1) {
-        this.deviationIntrest = 'Yes'
+      if (this.editloandata.deviationInterest == 1) {
+        this.deviationInterest = 'Yes'
       } else {
-        this.deviationIntrest = 'No'
+        this.deviationInterest = 'No'
       }
 
       if (this.editloandata.deviationAmount == 1) {
@@ -201,6 +222,10 @@ export class GeneralComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllWorkflowMasters();
+    this.getAllapprovalWorkFlowSDM();
+    this.getAllDerivedSDM();
+
     this.url = window.location.pathname
     if (this.url == "/loan-master/general") {
       this.tabIndex = 1
@@ -221,15 +246,15 @@ export class GeneralComponent implements OnInit {
       });
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
       if (generalFormValue.minimumNetPayLoan == true) {
-        this.minimumNetPayValue = 'Yes'
+        this.minimumNetPayValueFlag = 'Yes'
       } else {
-        this.minimumNetPayValue = 'No'
+        this.minimumNetPayValueFlag = 'No'
       }
 
-      if (generalFormValue.deviationIntrest == 1) {
-        this.deviationIntrest = 'Yes'
+      if (generalFormValue.deviationInterest == 1) {
+        this.deviationInterest = 'Yes'
       } else {
-        this.deviationIntrest = 'No'
+        this.deviationInterest = 'No'
       }
 
       if (generalFormValue.deviationAmount == 1) {
@@ -246,6 +271,31 @@ export class GeneralComponent implements OnInit {
     }
   }
 
+// get workflow master
+  getAllWorkflowMasters() {
+    this.loanMasterService.getAllWorkflowMasters().subscribe(
+      res => {
+      console.log("getAllWorkflowMasters", res);
+      this.headTemplateList5 = res.data.results;
+    })
+  }
+
+  // get sdm master
+  getAllapprovalWorkFlowSDM() {
+    this.loanMasterService.getAllapprovalWorkFlowSDM().subscribe(
+      res => {
+      console.log("getAllapprovalWorkFlowSDM", res);
+      this.approvalWorkFlowSDMList = res.data.results;
+    })
+  }
+  // get sdm derived  master
+  getAllDerivedSDM() {
+    this.loanMasterService.getAllDerivedSDM().subscribe(
+      res => {
+      console.log("getAllDerivedSDM", res);
+      this.approvalDerivedNameList = res.data.results;
+    })
+  }
 
   /**Set minimum net pay boolean vaue */
   minimumNetPay(value) {

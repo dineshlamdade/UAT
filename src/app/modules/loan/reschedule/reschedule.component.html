@@ -101,11 +101,11 @@
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">Description</label>
-                          <input type="text" class="form-control" value="{{loanDetails.carOrInstitutionType}}"disabled />
+                          <input type="text" class="form-control" value="{{loanDetails.carOrInstitutionType}}" disabled />
                         </div>
                         <div class="col-md-3">
                           <label class="form-label ">Loan No.</label>
-                          <input type="text" class="form-control" value="{{loanDetails.loanApplicationNumber}}"disabled />
+                          <input type="text" class="form-control" value="{{loanDetails.loanApplicationNumber}}" disabled />
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">
@@ -136,6 +136,10 @@
                         <div class="col-md-3">
                           <label class="form-label">Payroll Area</label>
                           <input type="text" class="form-control" value="{{loanDetails.payrollArea}}" disabled />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Scheduled EMI</label>
+                          <input type="text" class="form-control" value="{{loanDetails.loanAmount}}" disabled />
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">Loan Balance</label>
@@ -209,9 +213,9 @@
                         </div> -->
                       </div>
                       <br>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-md-6">
-                          <!-- <fieldset> -->
+                          
                           <legend>Installments to Reschedule </legend>
                           <div class="table-responsive Custom_Table">
                             <table class="table table-striped table-bordered table-hover m-b-0 bg-color-light_gray">
@@ -252,16 +256,16 @@
                               </tbody>
                             </table>
                           </div>
-                          <!-- </fieldset> -->
+                         
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </fieldset>
 
                 <br><br>
 
-                <div class="row mt-30">
+                <div class="row mt-30" >
                   <div class="col-12">
                     <div class="card">
                       <div class="mb-0 row">
@@ -275,7 +279,7 @@
                           </h6>
                         </div>
                       </div>
-                      <div class="row">
+                      <div class="row" >
                         <div class="col-md-12">
                           <div class="table-responsive Custom_Table">
                             <table class="table table-striped table-hover table-bordered m-b-0">
@@ -291,12 +295,14 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <td>1</td>
-                                <td>222</td>
-                                <td>AAA</td>
-                                <td>8-Jun-2021 &nbsp; 10.00 AM</td>
-                                <td>Pending</td>
+                                <tr *ngIf="loanDetails" let i = index>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
                                 <td><textarea type="text" rows="1" class="form-control"></textarea></td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>

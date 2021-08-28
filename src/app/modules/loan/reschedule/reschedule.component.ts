@@ -24,6 +24,10 @@ export class RescheduleComponent implements OnInit {
   perticularEmpDetails: any;
   employeeMasterIdData: any;
   loanDetails:any;
+  public summaryAllOtherMappingDetailsList = [];
+  public getAllOtherMappingDetailsResponse: any;
+
+
   constructor(public formBuilder: FormBuilder,private loanService: LoanService,private datePipe: DatePipe,
     private modalService: BsModalService,private excelservice: ExcelService, public sanitizer: DomSanitizer,
     private toaster: ToastrService,
@@ -61,7 +65,7 @@ export class RescheduleComponent implements OnInit {
       })
   }
 
-  /** Submit Adhoc form */
+  /** Submit Reschedule form */
   addRescheduleData() {
     console.log(this.addRescheduleData);
     this.loanService.saveRescheduleData(this.addRescheduleForm.value).subscribe(
@@ -71,13 +75,32 @@ export class RescheduleComponent implements OnInit {
       }
     )
     }
-/** Submit Disburse form End */
+/** Submit Reschedule form End */
 
 getLoanDetails() { // temp id is used
+
+  this.summaryAllOtherMappingDetailsList = [];
+  this.loanDetails = {};
   
   this.loanService.getLoanDetails('Car Loan').subscribe((res) => {
     this.loanDetails = res.data.results[0];
+    let i = 1;
     // console.log(this.loanDetails);
+    res.data.results.forEach( ( element ) => {
+      if ( element.isActive == 1 ) {
+        const obj = {
+          SrNo: i++,
+          masterMappingId: element.masterMappingId,
+          masterId: element.masterId,
+          groupCompanyId: element.groupCompanyId,
+          masterMappingType: element.masterMappingType,
+          masterCode: element.masterCode,
+          companyName: element.companyName,
+          isActive: element.isActive,
+        };
+        this.summaryAllOtherMappingDetailsList.push( obj );
+      }
+    } );
   });
 }
 // Get Loan details End

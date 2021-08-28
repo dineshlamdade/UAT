@@ -57,45 +57,62 @@
                   </div>
                 </fieldset>
                 <br>
+
                 <fieldset>
                   <legend>Loan Details</legend>
+                  <div class=" row" *ngIf="loanDetails">
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="border-dark-card radius-10 p-2">
                       <div class="row">
                         <div class="col-md-3">
                           <label class="form-label">Loan Type</label>
-                          <input type="text" class="form-control" disabled />
+                          <input type="text" class="form-control"  value="{{loanDetails.loanType}}" disabled />
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">Description</label>
-                          <input type="text" class="form-control" disabled />
+                          <input type="text" class="form-control" value="{{loanDetails.carOrInstitutionType}}" disabled />
                         </div>
                         <div class="col-md-3">
                           <label class="form-label mt-1 mb-0">Loan No.</label>
-                          <input type="text" class="form-control" disabled />
+                          <input type="text" class="form-control" value="{{loanDetails.loanApplicationNumber}}" disabled />
                         </div>
                         <div class="col-md-3">
-                          <label class="form-label mt-1 mb-0">Application Date</label>
-                          <input type="text" class="form-control" disabled />
+                          <label class="form-label">
+                            Application Date
+                          </label>
+
+                          <div class="form-group mb-0  mt-1 SMDatepickerWidth" >
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="fa fa-calendar"></i>
+                                </span>
+                              </div>
+                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="Date" value="{{loanDetails.createDateTime|date:
+                                  'dd-MMM-yyyy'}}" bsDatepicker disabled />
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <br>
                       <div class="row">
                         <div class="col-md-3">
                           <label class="form-label">Repayment Type</label>
-                          <input type="text" class="form-control" disabled />
+                          <input type="text" class="form-control" value="{{loanDetails.repaymentType}}" disabled />
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">Payroll Area</label>
-                          <input type="text" class="form-control" />
+                          <input type="text" class="form-control" value="{{loanDetails.payrollArea}}" disabled/>
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">Loan Balance</label>
-                          <input type="text" class="form-control" disabled />
+                          <input type="text" class="form-control" value="{{loanDetails.loanAmount}}" disabled />
                         </div>
                       </div>
                       <br />
                     </div>
+                  </div>
                   </div>
                 </fieldset>
                 <br>
@@ -121,7 +138,7 @@
                                 </span>
                               </div>
                               <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="Date" bsDatepicker formControlName="settelmentDate">
+                                placeholder="Date" bsDatepicker formControlName="settelmentDate"  />
                             </div>
                           </div>
 

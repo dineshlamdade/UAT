@@ -94,8 +94,8 @@ export class DisbursementComponent implements OnInit {
       payee: new FormControl(''),
       payeeType: new FormControl(''),
       remark: new FormControl(''),
-      loanApplicationId:new FormControl(19),
-      loanDisbursementPaymentDetailsId:new FormControl(),
+      loanApplicationId:new FormControl(32),
+      loanDisbursementPaymentDetailsId:new FormControl(610),
      
      
       // employeeBankInfoId: new FormControl(2)
@@ -109,6 +109,7 @@ export class DisbursementComponent implements OnInit {
     // this.getEmpBankDetails();
     this.getLoanDetails();
     this.getBankDetailsPopUp();
+    this.getCmpnyBankDetailsPopUp();
     // this.getPayeeType()
     // this.getModePayment();
 
@@ -159,6 +160,12 @@ getBankDetailsPopUp(){
     this.bankData = res.data.results[0];
   })
 }
+
+getCmpnyBankDetailsPopUp(){
+  this.loanService.getCompanyBankMasterDetails().subscribe(res =>{
+    this.bankData = res.data.results[0];
+  })
+}
   
   /** Submit Disburse form */
    addDisburseData() {
@@ -204,6 +211,12 @@ getBankDetailsPopUp(){
 bankDetailsInfo(template: TemplateRef<any>,) {
   this.modalRef = this.modalService.show(
    template,
+        Object.assign({}, { class: 'gray modal-lg' })
+  );
+}
+cmpnybankDetailsInfo(template1: TemplateRef<any>,) {
+  this.modalRef = this.modalService.show(
+   template1,
         Object.assign({}, { class: 'gray modal-lg' })
   );
 }

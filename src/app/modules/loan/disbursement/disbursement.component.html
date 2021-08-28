@@ -115,7 +115,7 @@
 
                         <div class="col-md-3">
                           <label class="form-label">Disbursed Amt.</label>
-                          <input type="text" class="form-control"  value="{{loanDetails.installmentAmount}}" disabled />
+                          <input type="text" class="form-control"  value="0" disabled />
                         </div>
                       </div>
 
@@ -123,7 +123,7 @@
                       <div class="row">
                         <div class="col-md-3">
                           <label class="form-label">Yet to Disburse Amt.</label>
-                          <input type="text" class="form-control" value="{{loanDetails.installmentAmount}}" disabled />
+                          <input type="text" class="form-control" value="0" disabled />
                         </div>
                       </div>
                       <br>
@@ -136,6 +136,7 @@
                 </div>
                 </fieldset>
                 <br>
+
 <fieldset>
                   <legend>Disbursement Details</legend>
                   <div class="col-md-12 pl-0 pr-0">
@@ -146,11 +147,11 @@
                           <input type="text" class="form-control" formControlName="transactionNo"  />
                         </div>
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <label class="form-label">
                             Application Date
                           </label>
-                          <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                          <div class="form-group mb-0  mt-1 SMDatepickerWidth" disabled >
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text">
@@ -158,7 +159,26 @@
                                 </span>
                               </div>
                               <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                formControlName="expectedPaymentDate" placeholder="Date" bsDatepicker >
+                                formControlName="expectedPaymentDate" placeholder="Date" bsDatepicker   >
+                            </div>
+                          </div>
+
+                        </div> -->
+
+                        <div class="col-md-3">
+                          <label class="form-label">
+                            Application Date
+                          </label>
+                          <div class="form-group mb-0  mt-1 SMDatepickerWidth" disabled>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="fa fa-calendar"></i>
+                                </span>
+                              </div>
+                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="Date" bsDatepicker value="{{loanDetails.createDateTime|date:
+                                  'dd-MMM-yyyy'}}" disabled>
                             </div>
                           </div>
 
@@ -389,19 +409,20 @@
                         </div>
 
                         <div class="col-md-3">
-                          <button type="button" tooltip="Button"
-                            class="custom_button custom_btn1 btn-bg-green btn-labeled1 btn-labeled-left ml-2 mr-2 mt-4"
-                            aria-hidden="true"><b><i class="fa fa-university" aria-hidden="true"></i>
+                          <button type="button" tooltip=""
+                            class="custom_button custom_btn1 btn-bg-green btn-labeled1 btn-labeled-left ml-2 mr-2 mt-4" 
+                            (click)="cmpnybankDetailsInfo(template)"><b><i class="fa fa-university"
+                                aria-hidden="true"></i>
                             </b>Company Bank Details
                           </button>
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">IFSC</label>
-                          <input type="text" class="form-control" />
+                          <input type="text" class="form-control" disabled/>
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">Bank Name</label>
-                          <input type="text" class="form-control" />
+                          <input type="text" class="form-control" disabled/>
                         </div>
                       </div>
                       <br>
@@ -410,7 +431,7 @@
 
                         <div class="col-md-3">
                           <label class="form-label">Branch Name</label>
-                          <input type="text" class="form-control" />
+                          <input type="text" class="form-control" disabled/>
                         </div>
                         <!-- <div class="col-md-3">
                           <label class="form-label">Branch Address</label>
@@ -445,7 +466,7 @@
                         <div class="col-md-3">
                           <label class="form-label">Cycle Name
                           </label>
-                          <input type="text" class="form-control" disabled />
+                          <input type="text" class="form-control"  />
                         </div>
                         <div class="col-md-3">
                           <label class="form-label">Amount</label>
@@ -484,6 +505,150 @@
                 </ng-container>
 
                 <ng-template #template>
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="UploadModalLabel">Bank Details</h5>
+                      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="card">
+                          <div class="card-body">
+                           
+                            <div class="row">
+                              <div class="col-12">
+                                 <div class="float-right mb-15">
+                                  <div class="form-group">
+                                    <label class="form-label"></label>
+                                    <div class="input-icon mb-3">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                        <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                                    </div>
+                                    </div>
+                                   </div>
+                                   </div>
+                                   </div>
+                              <div class="row clearfix">
+                                
+                                  <div class="col-md-12">
+                              
+                                    <p-table [value]="bankData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" >
+                                      <ng-template pTemplate="header">
+                                          <tr>
+                                              
+                                              <th rowspan="2">
+                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                                  Select 
+                                                </div>
+                                            </th>
+                                          
+                                           
+                                            <th rowspan="2">
+                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                                  IFCS Code
+                                    
+                                                    <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="Attribute"
+                                                      pSortableColumn="Attribute"></p-sortIcon>
+                                                     <p-columnFilter type="text" field="name" display="menu"
+                                                         class="p-ml-auto"></p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                                                                                   
+                                         
+                                      <th rowspan="2" >
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                          Bank Name
+                                            <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="Attribute"
+                                              pSortableColumn="Attribute"></p-sortIcon>
+                                                <p-columnFilter type="date" field="date" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2" >
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        Branch Name
+                                          <div class="Sort_Filter_Position">
+                                            <p-sortIcon field="Attribute"
+                                            pSortableColumn="Attribute"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" >
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                      Account Number
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="Attribute"
+                                          pSortableColumn="Attribute"></p-sortIcon>
+                                            <p-columnFilter type="date" field="date" display="menu"
+                                                class="p-ml-auto"></p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th>
+                                    
+                                          </tr>
+                                         
+                                         
+                                      </ng-template>
+                                    
+                                                       
+                                      <ng-template pTemplate="body" let-bankData>
+                                         
+                                          <tr class="p-selectable-row">
+                                             
+                                            <td class="text-center bg-color-light_gray">
+                                              <label class="custom-control custom-checkbox checkbox-center">
+                                                <input type="checkbox"  class="custom-control-input" name="select" (click)="onSelectBanksdetails($event.target,bankData)"  /> 
+                                                <span class="custom-control-label"></span>
+                                           </label>
+                                           
+                                            </td>
+                                                <td class="text-center bg-color-light_gray">{{bankData.bankIFSC}}</td>
+                                                  <td class="text-center bg-color-light_gray">{{bankData.bankName}}</td>
+                                                  <td class="text-center bg-color-light_gray">{{bankData.branchName}}</td>
+                                                  <td class="text-center bg-color-light_gray">{{bankData.accountNo}}</td>
+                                    
+                                            <!-- <td class="bg-color-light_gray"><label
+                                                    class="form-lable mb-0"> </label>{{bankData.ifscCode}}</td>
+                                            <td class="bg-color-light_gray">
+                                          
+                                            </td> -->
+                                          
+                                                  
+                                          
+                                        </tr>
+                                      
+                                    
+                                      </ng-template>
+                                      <ng-template pTemplate="emptymessage">
+                                          <tr>
+                                              <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                                      Available</span></td>
+                                          </tr>
+                                      </ng-template>
+                                    </p-table>
+                                  </div>
+                                
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" 
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
+                    <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+                   
+                      <button type="button" 
+                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left " tooltip="Close" (click)="modalRef.hide()"><b>
+                    <i class="fa fa-times"></i></b> Close</button>&nbsp;
+                      </div>
+                </ng-template>
+
+                <ng-template #template1>
                   <div class="modal-header">
                       <h5 class="modal-title" id="UploadModalLabel">Bank Details</h5>
                       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">

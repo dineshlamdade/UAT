@@ -21,6 +21,7 @@ export class SettlementComponent implements OnInit {
   addSettlementForm: FormGroup;
   perticularEmpDetails: any;
   employeeMasterIdData: any;
+  loanDetails:any;
 
   constructor(public formBuilder: FormBuilder,
     private loanService: LoanService,
@@ -57,6 +58,7 @@ export class SettlementComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmpMasterDetails();
+    this.getLoanDetails();
      }
 
   getEmpMasterDetails()// temp id is used
@@ -79,5 +81,14 @@ export class SettlementComponent implements OnInit {
     )
     }
 /** Submit Settlement form End */
+
+
+getLoanDetails() { // temp id is used
+  
+  this.loanService.getLoanDetails('Car Loan').subscribe((res) => {
+    this.loanDetails = res.data.results[0];
+    // console.log(this.loanDetails);
+  });
+}
 
 }

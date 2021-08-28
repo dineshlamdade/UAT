@@ -48,7 +48,7 @@ export class AdhocComponent implements OnInit {
         remark: new FormControl(''),
 
         adhocPaymentDetailsId: new FormControl('334'),
-        loanApplicationId: new FormControl('19'),
+        loanApplicationId: new FormControl('32'),
         loanType: new FormControl('Personal Loan'),
         discription: new FormControl('Personal Loan'),
         repaymentType: new FormControl(),

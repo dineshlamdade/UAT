@@ -100,4 +100,8 @@ public getBankMasterDetails(){
   return this.HttpClient.get<any>(this.apiUrl3 + 'employee-bank-info/employeeMasterId/2251');
 }
 
+public getCompanyBankMasterDetails(){
+  return this.HttpClient.get<any>(this.apiUrl3 + 'company-bankmaster-mapping/details/');
+}
+
 }
