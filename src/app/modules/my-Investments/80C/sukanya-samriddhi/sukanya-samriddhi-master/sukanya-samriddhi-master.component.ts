@@ -57,6 +57,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   documentPassword =[];
   remarkList =[];
   documentDataArray = [];
+  filesUrlArray = [];
   public transactionInstitutionNames: Array<any> = [];
   public editTransactionUpload: Array<any> = [];
   public transactionPolicyList: Array<any> = [];
@@ -91,6 +92,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   public maxFromDate: any = '';
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
+  public isEdit: boolean = false;
   public windowScrolled: boolean;
   public addNewRowId: number;
   public declarationTotal: number;
@@ -119,6 +121,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   paymentDetailsToDate: any;
   policyMaxDate: any;
   selectedPolicyFromDate: any;
+  isVisibleTable = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -503,6 +506,9 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
 
     console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
@@ -510,7 +516,9 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
         'Sukanya Samriddhi Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+    // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -553,6 +561,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -623,11 +632,15 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
       this.documentRemark = '';
       this.getInitialData();
       this.getDetails();
-    }
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -715,6 +728,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
   // On Master Edit functionality
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.sukanyaSamriddhiService
       .getSukanyaSamriddhiMaster()
@@ -739,7 +753,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
           this.showUpdateButton = true;
           this.isClear = true;
           this.showdocument = false;
-          this.urlArray = obj.documentInformationList;
+          // this.urlArray = obj.documentInformationList;
+          this.filesUrlArray = obj.documentInformationList;
           this.proofSubmissionId = obj.proofSubmissionId;
           this.documentArray = [];
         obj.documentInformationList.forEach(element => {
@@ -757,6 +772,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
           
         });
         console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
         }
       });
   }
@@ -842,9 +858,11 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     console.log('---in doc viewer--');
     this.urlIndex = index;
 
+    console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(

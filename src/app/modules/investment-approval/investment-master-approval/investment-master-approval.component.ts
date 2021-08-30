@@ -311,6 +311,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
   // ------------ Change PSID Status of Master --------------------------------------
   changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any) {
+    
     console.log('status::', status);
     console.log('remarkValidation::', this.remarkValidation);
     if (status == 'SendBack') {

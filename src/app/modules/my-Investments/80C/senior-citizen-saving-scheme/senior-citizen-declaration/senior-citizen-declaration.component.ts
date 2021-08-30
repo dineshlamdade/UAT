@@ -187,6 +187,9 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   public addNewRow: boolean = true;
   public showDeleteButton: boolean = false;
   public enableButton : boolean = false;
+  disableRemarkList = false
+  disableRemark: any;
+
 
 
   constructor(
@@ -438,6 +441,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          this.disableRemark = res.data.results[0].investmentGroup3TransactionDetailList[0].transactionStatus;
         // this.urlArray.forEach((element) => {
         //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
         //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
@@ -511,6 +515,24 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       this.documentArray = [];
   }
 
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
+
   //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
 
@@ -565,7 +587,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
       groupTransactionIDs:this.uploadGridData,
-      documentPassword: this.documentPassword,
+      // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
 
     };  
@@ -577,6 +599,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
         if (res.data.results.length > 0) {      
           this.editremarkList = [];
           this.editdocumentPassword = [];
+          this.editfilesArray = [];
 
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({
@@ -849,8 +872,14 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       declaredAmount: number;
       actualAmount: number;
       dateOfPayment: Date;
+      transactionStatus: any;
     },
   ) {
+    if (summary.transactionStatus == 'Approved' || summary.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
 
     // if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
     //   this.requiredField = true;

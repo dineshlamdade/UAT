@@ -56,6 +56,7 @@ export class PPFMasterComponent implements OnInit {
   documentPassword =[];
   remarkList =[];
   documentDataArray = [];
+  filesUrlArray = [];
   public transactionInstitutionNames: Array<any> = [];
   public editTransactionUpload: Array<any> = [];
   public transactionPolicyList: Array<any> = [];
@@ -66,6 +67,7 @@ export class PPFMasterComponent implements OnInit {
   public glbalECS: number;
   public form: FormGroup;
   public Index: number;
+  public isEdit: boolean = false;
   public showUpdateButton: boolean;
   public tabIndex = 0;
   public radioSelected: string;
@@ -120,6 +122,7 @@ export class PPFMasterComponent implements OnInit {
   paymentDetailsToDate: any;
   policyMaxDate: any;
   selectedPolicyFromDate: any;
+  isVisibleTable = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -504,13 +507,18 @@ export class PPFMasterComponent implements OnInit {
       return;
     }
    
-    // console.log('urlArray.length', this.urlArray.length);
+    console.log('this.isEdit', this.isEdit);
+   
+  if(!this.isEdit){
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'PPF Document needed to Create Master.'
       );
       return;
-    } else {
+     
+    }
+  }
+  //  else {
       // const data = this.form.getRawValue();
       // data.proofSubmissionId = this.proofSubmissionId;
       // if (this.form.value.frequencyOfPayment === 'As & When') {
@@ -564,7 +572,9 @@ export class PPFMasterComponent implements OnInit {
         data.proofSubmissionId = this.proofSubmissionId;
         data.fromDate = from;
         data.toDate = to;
+      
         data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
+      
         data.remarkPasswordList = this.documentDataArray;
       // }
 
@@ -574,7 +584,9 @@ export class PPFMasterComponent implements OnInit {
         (res) => {
           console.log(res);
           if (res) {
+          
             if (res.data.results.length > 0) {
+              this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -585,6 +597,7 @@ export class PPFMasterComponent implements OnInit {
               });
               if (res.data.results.length > 0) {
                 this.masterGridData = res.data.results;
+                
             
                 this.masterGridData.forEach((element, index) => {
                   this.documentArray.push({
@@ -651,10 +664,15 @@ export class PPFMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+     this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
+     
       this.submitted = false;
        this.getInitialData();
       this.getDetails();
-    }
+      // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -745,6 +763,7 @@ export class PPFMasterComponent implements OnInit {
 
   // // On Master Edit functionality
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.Service.getPPFMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -793,10 +812,12 @@ export class PPFMasterComponent implements OnInit {
         //  this.checkFinancialYearStartDateWithPolicyEnd();
         this.showUpdateButton = true;
         this.isClear = true;
-        this.urlArray = obj.documentInformationList;
+        // this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
         this.showdocument = false;
         this.proofSubmissionId = obj.proofSubmissionId;
         this.documentArray = [];
+        
         obj.documentInformationList.forEach(element => {
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -812,6 +833,7 @@ export class PPFMasterComponent implements OnInit {
           
         });
         console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
       }
     });
   }
@@ -898,9 +920,11 @@ export class PPFMasterComponent implements OnInit {
     console.log('---in doc viewer--');
     this.urlIndex = index;
 
+    console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(

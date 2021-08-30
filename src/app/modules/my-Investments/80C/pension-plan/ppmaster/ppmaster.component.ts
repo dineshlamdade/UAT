@@ -80,6 +80,7 @@ export class PpmasterComponent implements OnInit {
   public receiptNumber: number;
   public receiptAmount: string;
   documentArray: any[] =[];
+  filesUrlArray = [];
   public receiptDate: Date;
   public selectedInstitution: string;
   public policyDuplicate: string;
@@ -99,6 +100,7 @@ export class PpmasterComponent implements OnInit {
   public declaredAmount: number;
   public actualTotal: number;
   public actualAmount: number;
+  public isEdit: boolean = false;
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
   public isClear: boolean;
@@ -121,6 +123,7 @@ export class PpmasterComponent implements OnInit {
   paymentDetailsToDate: any;
   policyMaxDate: any;
   selectedPolicyFromDate: any;
+  isVisibleTable = false;
 
 
   constructor(
@@ -500,13 +503,21 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+ if(!this.isEdit) {
     console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Pension Plan Document needed to Create Master.'
       );
       return;
-    } else {
+    }
+  }
+
+
+  
+    
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -551,6 +562,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -619,12 +631,19 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
       this.documentRemark = '';
-      this.getInitialData();
+     
+      setTimeout(()=>{                           
+        this.getInitialData();
       this.getDetails();
+   }, 2000);
     }
-  }
+  
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
@@ -689,6 +708,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -710,10 +730,12 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
         this.Index = obj.accountNumber;
         this.showUpdateButton = true;
         this.isClear = true;
-        this.urlArray = obj.documentInformationList;
+        // this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
         this.showdocument = false;
         this.proofSubmissionId = obj.proofSubmissionId;
         this.documentArray = [];
+        // this.documentArray = obj.documentInformationList;
         obj.documentInformationList.forEach(element => {
           this.documentArray.push({
             'dateofsubmission':element.creatonTime,
@@ -729,6 +751,7 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
           
         });
         console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
       }
     });
   }
@@ -828,9 +851,10 @@ checkFinancialYearStartDateWithPaymentDetailToDate() {
     console.log('---in doc viewer--');
     this.urlIndex = index;
 
+    console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
     //this.urlSafe
