@@ -26,7 +26,7 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                          {{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}</label>
+                                                                          {{perticularEmpDetails.employeeCode  +' - '+  perticularEmpDetails.fullName}}</label>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label class="form-label mt-1 mb-0">Date
@@ -173,7 +173,7 @@
                                                         </div>
                                                         <div class="row mt-10">
                                                             <div class="col-md-6"> <label class="form-label">Last
-                                                                    Update Date & TIme</label></div>
+                                                                    Update Date & Time</label></div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <div class="input-group">
@@ -223,12 +223,12 @@
                                                                                     <div class="col-md-12">
                                                                                         <div class="float-right">
                                                                                             <button type="button"
-                                                                                                tooltip="Reply" *ngIf="status !='Closed'"
+                                                                                                tooltip="Reply" *ngIf="status !='Closed' && status !='Draft'"
                                                                                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
                                                                                                 (click)="toggleDisplayDiv();getReplayDataById(queryGenerationEmpId)"><b><i
                                                                                                         class="fa fa-reply"></i></b>
                                                                                                 Reply</button>
-                                                                                            <button type="button" *ngIf="forwardWorkflowId != 0 && status !='Closed'"
+                                                                                            <button type="button" *ngIf="forwardWorkflowId != 0 && status !='Closed' && status !='Draft'"
                                                                                                 tooltip="Forward"
                                                                                                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"  (click)="toggleDisplayforwarddiv();getReplayDataById(queryGenerationEmpId)"><b><i
                                                                                                         class="fa fa-share"
@@ -258,10 +258,10 @@
                                                                                         </div>
                                                                                         <!-- oninput="this.parentNode.dataset.value = this.value" rows="4" -->
                                                                                         <div class="col-md-10" >
-                                                                                            <textarea style="overflow:hidden;"
-                                                                                                class="form-control" [innerHTML]="GetIterationdetailsbyQueryIDData.queryDescription"
-                                                                                               disabled></textarea>
-                                                                                        </div>
+                                                                                          <textarea style="overflow:hidden;"
+                                                                                              class="form-control owl-carousel"  [innerHTML]="getInnerHTML(GetIterationdetailsbyQueryIDData.queryDescription)"
+                                                                                             disabled value="GetIterationdetailsbyQueryIDData.queryDescription"></textarea>
+                                                                                      </div>
                                                                                     </div>
                                                                                     <div class="row mt-10">
                                                                                         <div class="col-md-2">

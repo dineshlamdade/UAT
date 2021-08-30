@@ -6,6 +6,7 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 import { CKEditorModule } from 'ckeditor4-angular';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { QueryService } from '../query.service';
+import { AuthService } from '../../auth/auth.service';
 // import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
 
 
@@ -88,8 +89,11 @@ queryCommunicationForm: FormGroup;
   // hideClosebtn :boolean = true;
   badgeCount:boolean=true;
   feedbackRemark:any= '';
+  employeeMasterId: any;
+  userData: any;
+
 constructor(private modalService: BsModalService ,public formBuilder : FormBuilder ,public queryService :QueryService , private router: Router,
-  public sanitizer: DomSanitizer,private alertService: AlertServiceService, private route:ActivatedRoute ){
+  public sanitizer: DomSanitizer,private alertService: AlertServiceService, private route:ActivatedRoute,private authService: AuthService ){
 
     this.route.params.subscribe(value =>{
       this.queryGenerationEmpId = value.id;
@@ -123,6 +127,9 @@ constructor(private modalService: BsModalService ,public formBuilder : FormBuild
          "status":new FormControl('save'),
 
       })
+      this.userData = this.authService.getprivileges()
+      console.log("userData::", this.userData);
+      this.employeeMasterId = this.userData.UserDetails.employeeMasterId;
   }
 
 
@@ -136,11 +143,10 @@ Popup1(template: TemplateRef<any>) {
   contact1:contact[];
 
   ngOnInit(): void {
-
-this.getEmpMasterDetails(60);
+this.getAllQueryListSummary();
+this.getEmpMasterDetails(this.employeeMasterId);
 this.getIterationdetailsbyQueryID(this.queryGenerationEmpId);
 this.getQueAnstemplistById(this.queryGenerationEmpId);
-this.getAllQueryListSummary();
 this.getRootCasuelist();
 this.addressedTodropdown();
 
@@ -250,9 +256,10 @@ this.addressedTodropdown();
   }
 // ..................................QueryIteration API calling...................................................
 
-  getEmpMasterDetails(employeeMasterIdData)// temp id is used for employee details...
+  getEmpMasterDetails(employeeMasterId)// temp id is used for employee details...
 {
-  this.queryService.getEmpMasterDetails(60).subscribe(res =>
+
+  this.queryService.getEmpMasterDetails(employeeMasterId).subscribe(res =>
     {
       this.perticularEmpDetails = res.data.results[0][0];
     })
@@ -261,25 +268,29 @@ getAllQueryListSummary() //left side card data....
 {
 this.queryService.getAllQueryList().subscribe(res =>
   {
-    // this.getAllQueryGenerationData = res.data.results[0];
+    this.getAllQueryGenerationData = res.data.results[0];
+    this.employeeMasterId = this.getAllQueryGenerationData.employeeMasterId;
+    // console.log("employeeMasterId",this.employeeMasterId);
+
     res.data.results.forEach(element => {
       if(element.queryNumber == this.queryNumber)
       {
         this.getAllQueryGenerationData = element;
       }
     });
-    console.log("getAllQueryGenerationData",this.getAllQueryGenerationData);
+    // console.log("getAllQueryGenerationData",this.getAllQueryGenerationData);
 
   })
+  // this.getEmpMasterDetails(this.employeeMasterId)
 }
 getIterationdetailsbyQueryID(queryGenerationEmpId) //Get Iteration details by Query ID // for all table
 {
   this.queryService.getIterationdetailsbyQueryID(this.queryGenerationEmpId).subscribe(res =>
     {
       this.GetIterationdetailsbyQueryIDData = res.data.results[0];
-      console.log(" this.GetIterationdetailsbyQueryIDData", this.GetIterationdetailsbyQueryIDData);
+      // console.log(" this.GetIterationdetailsbyQueryIDData", this.GetIterationdetailsbyQueryIDData);
       this.attachementData = res.data.results;
-      console.log(" attachementData ", this.attachementData )
+      // console.log(" attachementData ", this.attachementData )
 
       this.documents = this.GetIterationdetailsbyQueryIDData.documents[0];
       // this.docName = this.GetIterationdetailsbyQueryIDData.documents;
@@ -288,9 +299,9 @@ getIterationdetailsbyQueryID(queryGenerationEmpId) //Get Iteration details by Qu
           this.docName.push(element.documents)
         }
       });
-      console.log(" this.docName",  this.docName)
+      // console.log(" this.docName",  this.docName)
 
-      console.log(" this.documents ", this.documents )
+      // console.log(" this.documents ", this.documents )
     })
 }
 getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list by QueryGenerationEmpId
@@ -303,7 +314,7 @@ getQueAnstemplistById(queryGenerationEmpId) //Get Question Answer template list 
 }
 answerTempChange(value)
 {
-  console.log("this.getQueAnstemplistByIdData: "+ JSON.stringify(this.getQueAnstemplistByIdData))
+  // console.log("this.getQueAnstemplistByIdData: "+ JSON.stringify(this.getQueAnstemplistByIdData))
 
     this.getQueAnstemplistByIdData.forEach(element => {
       if(element.queAnsMasterId == value)
@@ -332,7 +343,7 @@ addQueryIteration(value){ // post api for save data
     this.queryCommunicationForm.controls['action'].setValue('reply');
     this.queryCommunicationForm.controls['addressedToEmpId'].setValue(this.addressedToEmpId);
 
-    console.log("addressedToEmpId",this.addressedToEmpId)//undefined
+    // console.log("addressedToEmpId",this.addressedToEmpId)//undefined
     if(value == 'Save'){
       this.queryCommunicationForm.controls['status'].setValue('Save');
      }else{
@@ -609,6 +620,10 @@ this.ratingName = [];
 this.feedbackRemark ='';
 }
 
-
+getInnerHTML(val){
+if(this.GetIterationdetailsbyQueryIDData.queryDescription != null){
+  return val.replace(/(<([^>]+)>)/ig,'');
+}
+}
 
 };

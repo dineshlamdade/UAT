@@ -249,22 +249,12 @@
                                 </div>
 
                                 <div class="tabview-contents mt-25">
-
-                                    <div class="row" >
-                                      <div class="col-md-6"></div>
-                                        <div class="col-md-6" >
-                                            <button type="button" tooltip="Add Query" (click)="smallpopup(template)"
-                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"
-                                                [routerLink]="['/admin-query-generation']"><b><i
-                                                        class="fa fa-plus"></i></b> Add Query </button>
-                                        </div>
-                                    </div>
-
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="table-responsive Custom_Table table-striped table-hover table-bordered mt-25"  id="contentToConvert">
                                                 <p-table [globalFilterFields]="['queryNumber','submissionDate','employeeCode','empName','companyName','applicationModuleName'
-                                                ,'queryDescription','subQueryTypeCode','queryDescription','subject','priority','escalationDate','status']" #dt [value]="getAllQueryGenerationData" [rows]="10" [showCurrentPageReport]="true"
+                                                ,'queryDescription','subQueryTypeCode','queryDescription','subject','priority','escalationDate','status']" #dt [value]="getAllQueryGenerationData" [rows]="10"
+                                                 [showCurrentPageReport]="true"
                                                  [rowsPerPageOptions]="[10,25,50,100,200]"
                                                 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
 
@@ -273,19 +263,24 @@
                                                     <label class="form-label">Total Count : &nbsp;({{summaryLength}})</label>
                                                 </div>
                                                   <div style="text-align: right;  margin-top :-35px">
-                                                      <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-                                                      <input type="text"  pInputText size="50" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                                                      style="width:20%">
+                                                      <span class="p-input-icon-left p-ml-auto">
+                                                        <i class="pi pi-search" style="top: 36px !important; right:85px !important"></i>
+                                                        <input pInputText type="text"
+                                                            (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                                            placeholder="Search" />
+                                                      </span>&nbsp;
                                                       <div class="float-right">
-                                                        <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="download()"></i></span>&nbsp;
-                                                        <!-- <span class="ml-10"><i class="fa fa-file-excel-o font-18 text-dark-green" (click)="exportAsXLSX()" tooltip="Export to Excel"></i ></span> -->
+                                                        <!-- <span class="ml-10"><i class="fa fa-file-pdf-o font-18 text-dark-red" tooltip="Export to PDF" (click)="downloadPdf()"></i></span>&nbsp; -->
                                                           <a tooltip="Export to Excel" style="cursor: pointer"
                                                             (click)="exportAsXLSX()"><i
                                                                 class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
                                                   </div>
-                                              </ng-template>
+
+                                                </ng-template>
+
+
 
                                                 <ng-template pTemplate="header">
                                                         <tr>
@@ -478,8 +473,9 @@
 
                                                             <td> <label
                                                                     class="form-lable mb-0 ">{{summary.employeeCode}}</label>
+                                                                    </td>
 
-                                                            <td> <label
+                                                            <td> <label style="width: max-content;"
                                                                     class="form-lable mb-0 ">{{summary.empName}}</label>
 
                                                             </td>
@@ -492,15 +488,15 @@
                                                                     class="form-lable mb-0 " >{{summary.applicationModuleName}}</label>
                                                             </td>
 
-                                                            <td > <label
-                                                              class="form-lable mb-0 " ><p [innerHTML]="summary.queryDescription"></p></label>
+                                                            <td > <label style="width: max-content;"
+                                                              class="form-lable mb-0 " ><p [innerHTML]="summary.queryTypeDescription"></p></label>
                                                               <!-- <span class="a" [innerHTML]="summary.queryDescription"></span> -->
 
                                                             </td >
 
                                                             <ng-template #queryDescription>
                                                               <div class="modal-header">
-                                                                  <h6 class="modal-title" id="UploadModalLabel">Query Description</h6>
+                                                                  <h6 class="modal-title" id="UploadModalLabel">Query</h6>
                                                                   <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
                                                                   aria-hidden="true">×</span></button>
                                                               </div>
@@ -509,8 +505,13 @@
                                                                       <div class="card-body">
                                                                           <div class="row clearfix">
                                                                               <div class="col-md-12">
+                                                                                <h6>Subject</h6>
+                                                                                <p [innerHTML]="summarysubject">{{summarysubject}}</p>
+                                                                                <hr>
+                                                                                <h6>Description</h6>
                                                                                   <p [innerHTML]="summarydescription"></p>
-                                                                              </div>
+                                                                                  <hr>
+                                                                                </div>
                                                                           </div>
                                                                       </div>
                                                                   </div>
@@ -521,81 +522,34 @@
                                                           </ng-template>
 
 
-                                                            <td ><label
+                                                            <td ><label style="width: max-content;"
                                                                     class="form-lable mb-0 "><p >{{summary.subQueryTypeDescription}}</p></label>
 
                                                             </td>
-                                                            <!-- <ng-template #subqueryDescription>
-                                                              <div class="modal-header">
-                                                                  <h6 class="modal-title" id="UploadModalLabel">Sub Query Description</h6>
-                                                                  <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-                                                                  aria-hidden="true">×</span></button>
-                                                              </div>
-                                                              <div class="modal-body">
-                                                                  <div class="card">
-                                                                      <div class="card-body">
-                                                                          <div class="row clearfix">
-                                                                              <div class="col-md-12">
-                                                                                  <p  [innerHTML]="summarysubquerydescription"></p>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-                                                              <div class="modal-footer">
-                                                                  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-                                                              </div>
-                                                          </ng-template> -->
 
-                                                          <td   (click)="smallpopup1(queryDescription,summary)">  <label
+
+                                                          <td  (click)="smallpopup1(queryDescription,summary)">  <label
                                                                     class="form-lable mb-0 "><p class="a" [innerHTML]="summary.subject">{{summary.subject}}</p></label>
 
                                                             </td>
-                                                            <ng-template #querySubject>
-                                                              <div class="modal-header">
-                                                                  <h6 class="modal-title" id="UploadModalLabel">Subject</h6>
-                                                                  <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-                                                                  aria-hidden="true">×</span></button>
-                                                              </div>
-                                                              <div class="modal-body">
-                                                                  <div class="card">
-                                                                      <div class="card-body">
-                                                                          <div class="row clearfix">
-                                                                              <div class="col-md-12">
-                                                                                <p [innerHTML]="summarydescription">{{summarydescription}}</p>
-                                                                                <!-- <p [innerHTML]="summarysubquerydescription">{{summarysubquerydescription}}</p> -->
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-                                                              <div class="modal-footer">
-                                                                  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-                                                              </div>
-                                                          </ng-template>
+
                                                             <td> <label
                                                                     class="form-lable mb-0 ">{{summary.priority}}</label>
 
                                                             </td>
                                                             <td> <label
-                                                                    class="form-lable mb-0 ">{{summary.escalationDate |date:"dd-MMM-yyyy"}}</label>
+                                                                    class="form-lable mb-0 ">{{summary.updatedDateTime |date:"dd-MMM-yyyy"}}</label>
 
                                                             </td>
                                                             <td><label class="form-lable mb-0 ">{{summary.status}}</label>
 
                                                             </td>
-                                                            <!-- <td><span class="ml-1 mt-2">
-                                                                    <i class="fa fa-eye font-16 text-blue cursor-pointer "
-                                                                        aria-hidden="true"></i>&nbsp;
-                                                                    <i class="fa fa-times font-16 text-blue cursor-pointer"
-                                                                        aria-hidden="true"></i>&nbsp;
-                                                                    <i class="fa fa-pencil font-16 text-blue cursor-pointer "
-                                                                        aria-hidden="true"></i></span></td> -->
+
                                                                         <td>
                                                                           <span >
                                                                               <i *ngIf="summary.status != 'Closed' && summary.status != 'Redirect'" class="fa fa-edit font-16 text-dark-green cursor-pointer mr-2 ml-3" tooltip="Edit" aria-hidden="true" (click)="editQuery(summary)" ></i>
                                                                               <i class="fa fa-eye font-16 text-blue cursor-pointer mr-2 ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(summary)"></i>
-                                                                              <i *ngIf="summary.status != 'Closed' && summary.status != 'Redirect'"  class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="smallpopup4(deleteTemp)" ></i ></span>
+                                                                              <i *ngIf="summary.status != 'Closed' && summary.status != 'Redirect'"  class="fa fa-trash font-16 text-red cursor-pointer mr-2 ml-3" tooltip="Delete" aria-hidden="true" (click)="smallpopup4(deleteTemp,summary)" ></i ></span>
                                                                                 <!--  -->
                                                                         </td>
                                                         </tr>
@@ -642,70 +596,6 @@
 
                                 </div>
                             </form>
-                            <ng-template #template>
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="UploadModalLabel">Add-Query</h5>
-                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
-                                        aria-label="Close"><span aria-hidden="true">×</span></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row clearfix">
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <div class="custom-controls-stacked">
-                                                            <span class="d-flex"> <label class="form-label mr-55">On
-                                                                    Behalf of Employee's</label>
-                                                                <label
-                                                                    class="custom-control custom-radio custom-control-inline">
-                                                                    <input type="radio" class="custom-control-input"
-                                                                        name="example-inline-radios" value="option2">
-                                                                    <span class="custom-control-label">Yes</span>
-                                                                </label>
-                                                                <label
-                                                                    class="custom-control custom-radio custom-control-inline">
-                                                                    <input type="radio" class="custom-control-input"
-                                                                        name="example-inline-radios" value="option3">
-                                                                    <span class="custom-control-label">No</span>
-                                                                </label>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-25">
-                                                        <div class="custom-controls-stacked">
-                                                            <span class="d-flex"> <label class="form-label mr-15">Same
-                                                                    Content For All Employee</label>
-                                                                <label
-                                                                    class="custom-control custom-radio custom-control-inline ">
-                                                                    <input type="radio" class="custom-control-input"
-                                                                        name="example-inline-radios" value="option2">
-                                                                    <span class="custom-control-label">Yes</span>
-                                                                </label>
-                                                                <label
-                                                                    class="custom-control custom-radio custom-control-inline">
-                                                                    <input type="radio" class="custom-control-input"
-                                                                        name="example-inline-radios" value="option3">
-                                                                    <span class="custom-control-label">No</span>
-                                                                </label></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" tooltip="Button" (click)="modalRef.hide()"
-                                        [routerLink]="['/admin-query-generation']"
-                                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left float-right"><b><i
-                                                class="fa fa-thumbs-up"></i></b> Ok</button>
-                                    <button type="button" tooltip="Cancel" (click)="modalRef.hide()"
-                                        data-dismiss="modal" aria-label="Close"
-                                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"><b><i
-                                                class="fa fa-times"></i></b> Cancel</button>
-                                </div>
-                            </ng-template>
 
                         </div>
                     </div>
