@@ -30,12 +30,28 @@ export class LockComponent implements OnInit {
   }
 
 
-  changeTabIndex(index: number) {
-    if (index !== 2) {
+  // changeTabIndex(index: number) {
+  //   if (index !== 2) {
+  //     this.data = undefined;
+  //   }
+  //   this.tabIndex = index;
+  // }
+
+  changeTabIndex(index: number)
+  {
+    // console.log(this.accountNo)
+    if(index !== 3) {
+      this.data = undefined;
+    }
+    if(index !== 2) {
+      this.data = undefined;
+    }
+    if(index !== 1) {
       this.data = undefined;
     }
     this.tabIndex = index;
   }
+
 
   public modalRef: BsModalRef;
 

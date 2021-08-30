@@ -34,6 +34,13 @@ export class BusinessYearComponent implements OnInit {
 
   constructor(private modalService: BsModalService) { }
 
+  BusinessPendingForLockPopup(BusinessPendingForLock: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      BusinessPendingForLock,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
+
   ngOnInit(): void {
     this.users1 = [
       { srno: '1', headtype: 'Earning', headcode: 'AAA', headdesc: 'AAA Desc', openingval: '0.00', chngamount: '0.00', chngper: '2', closingamt: '0.00', unitofmeasure: 'PM', remark: 'Remark1' },
@@ -85,6 +92,15 @@ export class BusinessYearComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
+
+  lockarea(template2: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template2,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
+
+
   areaSelect() {
  this.areaSection = true;
  this.employeeSection = false;

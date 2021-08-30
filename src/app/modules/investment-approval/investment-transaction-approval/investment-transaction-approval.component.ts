@@ -84,6 +84,8 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   public documentDetailList: InvestmentApprovalMasterDocumentInfo[] = [];
   public documentRemarkList: InvestmentApprovalDocumentRemarkInfo[] = [];
   public globalPSID: any = '';
+  test = [];
+  approved1Disabled: boolean = true;
   public previousDisabled: boolean = true;
   public nextDisabled: boolean = false;
   public transactionList: Array<any> = [];
@@ -191,6 +193,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       .getTransactionInfoByPSID(psid)
       .subscribe((res: InvestmentApprovalTransactionInfo) => {
         console.log('res transactionInfo::', res);
+        
         if (res != null || res != undefined) {
           this.transactionInfo = res;
           this.documentDetailList = this.transactionInfo.documentList;
@@ -201,9 +204,18 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
             });
           });
           this.documentDetailList.forEach((doc)=>{
-            if(doc.documentStatus =="Approved") {
-              this.approvedDisabled = false;
-            }
+            this.test.push(doc.documentStatus);
+            
+            if (this.test.includes('Submitted')) {
+              this.approved1Disabled = true;
+          } else if (this.test.includes('Approved')) {
+            this.approved1Disabled = false;
+          } else if (this.test.includes('Discarded')) {
+            this.approved1Disabled = true;
+          }
+            // if(doc.documentStatus =="Approved") {
+            //   this.approvedDisabled = false;
+            // }
           });
         }
       });

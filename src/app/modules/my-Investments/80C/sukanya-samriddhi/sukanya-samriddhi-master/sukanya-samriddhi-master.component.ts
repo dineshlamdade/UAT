@@ -34,7 +34,7 @@ import { SukanyaSamriddhiService } from '../sukanya-samriddhi.service';
 })
 export class SukanyaSamriddhiMasterComponent implements OnInit {
   @Input() public accountNo: any;
-
+  public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -54,6 +54,10 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
   public transactionInstitutionNames: Array<any> = [];
   public editTransactionUpload: Array<any> = [];
   public transactionPolicyList: Array<any> = [];
@@ -71,7 +75,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
   public documentRemark: any;
   public isECS = true;
-
+  documentArray: any[] =[];
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
   public receiptAmount: string;
@@ -88,6 +92,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   public maxFromDate: any = '';
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
+  public isEdit: boolean = false;
   public windowScrolled: boolean;
   public addNewRowId: number;
   public declarationTotal: number;
@@ -116,6 +121,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   paymentDetailsToDate: any;
   policyMaxDate: any;
   selectedPolicyFromDate: any;
+  isVisibleTable = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -464,6 +470,31 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
           element.policyEndDate = new Date(element.policyEndDate);
           element.fromDate = new Date(element.fromDate);
           element.toDate = new Date(element.toDate);
+          element.documentInformationList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission':element.creatonTime,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+    
+            })
+          });
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
         });
       });
   }
@@ -475,6 +506,9 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
 
     console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
@@ -482,7 +516,9 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
         'Sukanya Samriddhi Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+    // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -491,6 +527,19 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      for (let i = 0; i <= this.documentPassword.length; i++) {
+        if(this.documentPassword[i] != undefined){
+          let remarksPasswordsDto = {};
+          remarksPasswordsDto = {
+            "documentType": "Back Statement/ Premium Reciept",
+            "documentSubType": "",
+            "remark": this.remarkList[i],
+            "password": this.documentPassword[i]
+          };
+          this.documentDataArray.push(remarksPasswordsDto);
+        }
+      }
+      console.log('this.documentDataArray', this.documentDataArray);
       // const data = this.form.getRawValue();
       console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
@@ -499,6 +548,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       data.fromDate = from;
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
+      data.remarkPasswordList = this.documentDataArray;
 
       console.log('Sukanya Samriddhi Scheme data::', data);
 
@@ -511,6 +561,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
                 element.policyStartDate = new Date(element.policyStartDate);
@@ -518,6 +570,43 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
                 element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate);
               });
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
                 'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
@@ -543,11 +632,15 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
       this.documentRemark = '';
       this.getInitialData();
       this.getDetails();
-    }
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -635,6 +728,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
   // On Master Edit functionality
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.sukanyaSamriddhiService
       .getSukanyaSamriddhiMaster()
@@ -658,8 +752,27 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
           this.Index = obj.accountNumber;
           this.showUpdateButton = true;
           this.isClear = true;
-          this.urlArray = obj.documentInformationList;
+          this.showdocument = false;
+          // this.urlArray = obj.documentInformationList;
+          this.filesUrlArray = obj.documentInformationList;
           this.proofSubmissionId = obj.proofSubmissionId;
+          this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+          
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
         }
       });
   }
@@ -745,9 +858,11 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     console.log('---in doc viewer--');
     this.urlIndex = index;
 
+    console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(

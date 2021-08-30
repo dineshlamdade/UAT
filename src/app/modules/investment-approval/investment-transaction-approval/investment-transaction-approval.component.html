@@ -10,7 +10,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <div class="sticky">
+              <div class="">
               <!-- Back to Dashboard Button -->
               <div class="row">
                 <div class="col-md-11"></div>
@@ -663,15 +663,9 @@
                               ripple
                               mr-2
                             "
-                            [class.disablegreenbutton]="transactionList.length == 0 || approvedDisabled ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
-                                'Approved'
+                            [class.disablegreenbutton]=" approved1Disabled 
                             "
-                            [disabled]="transactionList.length == 0 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' || approvedDisabled ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
-                                'Approved'
+                            [disabled]=" approved1Disabled
                             "
                             (click)="changePSIDStatusOfTransaction('Approved')"
                             tooltip="Approve"
@@ -720,7 +714,7 @@
                             (click)="changePSID(globalPSID, 'Next')"
                           >
                             <b><i class="fa fa-angle-double-right"></i></b
-                            >Next
+                            >Next {{proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1}}
                           </button>
 
                           <button

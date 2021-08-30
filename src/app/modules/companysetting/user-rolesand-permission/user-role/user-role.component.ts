@@ -10,6 +10,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../../auth/auth.service';
+import { ExcelserviceService } from '../excel_service/excelservice.service';
+
 
 
 @Component({
@@ -39,12 +41,18 @@ export class UserRoleComponent implements OnInit {
   companyGroupName: any;
   comapnyGroupNamesData: any[];
   companyGroupMasterIdArray: any[];
+  butDisabled: string;
+  excelData: any[];
+  header: any[];
+  editFlag: boolean = false;
+ 
 
   constructor(private modalService: BsModalService,
     private service: UserRolesPermissionService,
     private formBuilder: FormBuilder,
     private alertService: AlertServiceService,
-    private authService: AuthService,) {
+    private authService: AuthService, 
+    private excelservice : ExcelserviceService) {
 
     this.userData = this.authService.getprivileges()
     console.log("userData::", this.userData);
@@ -79,11 +87,11 @@ export class UserRoleComponent implements OnInit {
     this.form = this.formBuilder.group({
 
       userRoleId: new FormControl(0),
-      userGroupId: new FormControl(null),
-      roleName: new FormControl(null, Validators.required),
-      companyGroupMasterId: new FormControl(),
-      roleDescription: new FormControl(null, Validators.required),
-      default: new FormControl(false),
+      userGroupId: new FormControl('',Validators.required),
+      roleName: new FormControl('', Validators.required),
+      companyGroupMasterId: new FormControl('',Validators.required),
+      roleDescription: new FormControl('', Validators.required),
+      default: new FormControl(''),
       active: new FormControl(true),
       remark: new FormControl(null),
 
@@ -139,7 +147,7 @@ onSelectCompanyName(companyGroupMasterId){
     
     if (this.isSaveAndReset == false) {
       console.log('in edit');
-
+      this.form.controls['userGroupId'].setValue(this.userGroupId)
       this.form.controls['companyGroupMasterId'].setValue(this.companyGroupMasterId)
       const id = this.form.get('userRoleId').value;
       console.log(JSON.stringify(this.form.value));
@@ -148,11 +156,16 @@ onSelectCompanyName(companyGroupMasterId){
         console.log('after save..', res);
         if (res.data.results.length > 0) {
           console.log('data is updated');
-          this.alertService.sweetalertMasterSuccess(res.data.messsage,'Updated User Role Details Successfully');
+          this.alertService.sweetalertMasterSuccess('',' User Role Updated Successfully');
           this.onPageLoad();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
+          this.form.reset();
 
+          this.form.patchValue( {
+            companyGroupMasterId: '',
+            userGroupId : ''
+          } );
         }
 
       });
@@ -162,13 +175,18 @@ onSelectCompanyName(companyGroupMasterId){
     else {
       console.log('clcicked on new record save button');
       console.log(JSON.stringify(this.form.value));
+    
       this.service.postUserRollData(this.form.value).subscribe(res => {
         console.log("before save", this.form.value)
         if (res.data.results.length > 0) {
           console.log('data is updated');
-          this.alertService.sweetalertMasterSuccess('', res.data.messsage);
+          this.alertService.sweetalertMasterSuccess('User Role Save Successfully',"");
           this.onPageLoad();
           this.form.reset();
+          this.form.patchValue( {
+            companyGroupMasterId: '',
+            userGroupId : ''
+          } );
 
         }
         else {
@@ -223,8 +241,74 @@ console.log(this.companyGroupMasterId);
 
 
 
-  edit(summary, userGroupId: number) {
+  // edit(summary, userGroupId: number) {
+  // this.userGroupId = summary.userGroupId
+  //   this.companyGroupMasterId =summary.companyGroupMasterId;
+  //   this.groupNameList = []
+  //   this.service.getUserGroupForRoleGroup(this.companyGroupMasterId).subscribe((res) => {
+  //     this.userGroupName = res.data.results;
+  //     res.data.results.forEach((element) => {
+  //       const obj = {
+  //         label: element.groupName,
+  //         value: element.userGroupId,
+  //       };
+  //       this.groupNameList.push(obj);
+  //     });
+  //     console.log("groupName",this.groupNameList)
+  //   },(error)=>{console.log(error)},()=>{
+      
+  //  //this.onSelectCompanyName(summary.userGroupId);
+  //  console.log("summary::", summary)
+  //  this.userGroupId = userGroupId;
+  // this.userGroupId=summary.userGroupId
+  //  this.form.patchValue(summary)
+  //  this.form.controls['default'].setValue(summary.default);
+  //  this.isSaveAndReset = false;
+  //  this.showButtonSaveAndReset = true;
+  //  this.form.enable();
+  //  this.form.get('roleName').disable();
+  //  this.form.get('companyGroupMasterId').disable();
+  //  this.form.get('userGroupId').disable();
 
+  //   });
+
+
+
+  // }
+
+  edit(summary, userGroupId: number) {
+    this.editFlag = true;
+    // this.form.controls['roleDescription'].enable();
+    //  this.form.controls['roleName'].disable();
+    //  this.form.controls['companyGroupMasterId'].disable();
+    //  this.form.controls['userGroupId'].disable();
+    this.companyGroupMasterId =summary.companyGroupMasterId;
+    this.groupNameList = []
+    this.service.getUserGroupForRoleGroup(this.companyGroupMasterId).subscribe((res) => {
+      this.userGroupName = res.data.results;
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.groupName,
+          value: element.userGroupId,
+        };
+        this.groupNameList.push(obj);
+      });
+      console.log("groupName",this.groupNameList)
+    },(error)=>{console.log(error)},()=>{
+   this.userGroupId = userGroupId;
+  this.userGroupId=summary.userGroupId
+   this.form.patchValue(summary)
+   this.form.controls['default'].setValue(summary.default);
+  //this.butDisabled = "";
+   this.isSaveAndReset = false;
+   this.showButtonSaveAndReset = true;
+ 
+   });
+
+
+
+  }
+  view(summary) {
     this.companyGroupMasterId =summary.companyGroupMasterId;
     this.groupNameList = []
     this.service.getUserGroupForRoleGroup(this.companyGroupMasterId).subscribe((res) => {
@@ -239,39 +323,52 @@ console.log(this.companyGroupMasterId);
       console.log("groupName",this.groupNameList)
     },(error)=>{console.log(error)},()=>{
       
-   //this.onSelectCompanyName(summary.userGroupId);
-   console.log("summary::", summary)
-   this.userGroupId = userGroupId;
-  this.userGroupId=summary.userGroupId
-   this.form.patchValue(summary)
-   this.isSaveAndReset = false;
-   this.showButtonSaveAndReset = true;
-   this.form.enable();
-
-    });
-
-
-
-  }
-  view(summary) {
-   
+    this.butDisabled = "";
     this.isSaveAndReset = false;
     this.showButtonSaveAndReset = false;
     this.form.reset();
     this.form.controls['active'].setValue(true);
     this.form.patchValue(summary);
      this.form.disable();
-
+    });
   }
   cancelView() {
     this.userRoleId = 0;
     this.isSaveAndReset = true;
     this.form.enable();
     this.form.reset();
+    
+      // this.onSelectJobMaster( 'All' );
+      this.form.patchValue( {
+        companyGroupMasterId: '',
+        userGroupId : ''
+      } );
+
     this.showButtonSaveAndReset = true;
     this.form.controls['active'].setValue(true);
   }
- 
+  exportApprovalAllSummaryAsExcel(){
+    this.excelData = [];
+    this.header = []
+    this.header =["Sr No","Group Name","Role Name","Role Description"];
+    this.excelData = [];
+    if(this.masterGridData.length>0){
+   
+     this.masterGridData.forEach((element,index) => {
+      let obj = {
+        'Sr No' : index+1,
+        'Group Name': element.groupName,
+        'Role Name' : element.roleName,
+        'Role Description' : element.roleDescription
+
+       
+      };
+      this.excelData.push(obj);
+    });
+     
+  }
+    this.excelservice.exportAsExcelFile(this.excelData, 'User-Role-Summary', 'User-Role-Summary' ,this.header);
+  }
 
 
   // getUserGroupID(groupid) {

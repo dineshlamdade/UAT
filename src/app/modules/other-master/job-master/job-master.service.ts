@@ -57,6 +57,17 @@ export class JobMasterService {
         return res;
       }));
   }
+
+  //Copy From Get
+  getAllCopyFrom() {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get(environment.baseUrl8083 + 'job-master-mapping/company/', { 'headers': headers })
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 //Update API
 
   putJobMasterDetails(data) {
@@ -147,6 +158,16 @@ export class JobMasterService {
   }
 
 
+  putAssignTable(data) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-TenantId', 'PaysquareDefault');
+    console.log(data);
+    return this._HTTP.put(environment.baseUrl8083 + "job-master-mapping/", data, { 'headers': headers })
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 
 
 }

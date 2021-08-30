@@ -179,9 +179,9 @@
                     *ngIf="previousEmployeeList?.length">
                     <thead class="thead-dark">
                       <tr>
-                        <th rowspan="2" class="wd-4">
-                          <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                            <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
+                        <th rowspan="2" class="wd-6">
+                          <label class="custom-control custom-checkbox checkbox-center" placement="bottom"  tooltip="Select All">
+                            <input type="checkbox" class="custom-control-input"   [ngModel]="isCheckAll"
                               [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
                               (change)="checkUncheckAll(item, j)" />
                             <span class="custom-control-label"></span>
@@ -958,7 +958,7 @@
                       <thead class="thead-dark">
                         <tr>
                           <th rowspan="2" class="wd-4">
-                            <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                            <label class="custom-control custom-checkbox checkbox-center" placement="bottom"  tooltip="Select All">
                               <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
                                 [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
                                 (change)="checkUncheckAll(item, j)" />
