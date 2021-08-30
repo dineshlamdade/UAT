@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Description</label>
-                  <input type="text" formControlName="description" class="form-control align-right" name="description">
+                  <input type="text" formControlName="description" class="form-control" name="description">
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Contact Person Name</label>
@@ -50,7 +50,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class=""></i></span>
                       </div>
-                      <input type="text" formControlName="contactNumber" class="form-control align-right" minlength="10"
+                      <input type="text" formControlName="contactNumber" class="form-control" minlength="10"
                         maxlength="12" name="contactNumber">
                     </div>
                   </div>
@@ -83,8 +83,7 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">PIN</label>
                   <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6"
-                    formControlName="pinCode" pattern="[0-9]{6}"
-                    (focusout)="getPermanentAddressFromPIN()">
+                    formControlName="pinCode" pattern="[0-9]{6}" (focusout)="getPermanentAddressFromPIN()">
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">State</label>
@@ -124,14 +123,15 @@
                   <label class="form-label">Deduction Head</label>
                   <select name="standardName" id="standardName" formControlName="standardName"
                     class="form-control custom-select">
-                    <option value ="">Select</option>
+                    <option value="">Select</option>
                     <option *ngFor="let data of loanDeductionData">{{data.displayName}}</option>
                   </select>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Formula</label>
                   <select name="formula" id="formula" formControlName="formula" class="form-control custom-select">
-                    <option></option>
+                    <option value="">Select</option>
+                    <option>Formula</option>
                   </select>
                 </div>
                 <div class="col-sm-6 col-md-3">
@@ -146,6 +146,7 @@
                   <select name="frequency" id="frequency" formControlName="frequency"
                     class="form-control custom-select">
                     <option value="">Select</option>
+                    <option *ngFor="let data of frequencyData">{{data.name}}</option>
                   </select>
                 </div>
               </div>
@@ -154,7 +155,9 @@
                   <label class="form-label">Income Tax Section</label>
                   <select name="investmentSection" id="investmentSection" formControlName="investmentSection"
                     class="form-control custom-select">
-                    <option></option>
+                    <option value="">Select</option>
+                    <!-- <option *ngFor="let data of incomeTaxData"></option> -->
+                    <option>Abc</option>
                   </select>
                 </div>
                 <div class="col-sm-6 col-md-3">
@@ -174,7 +177,7 @@
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label pl-10">Remark </label>
-                  <textarea formControlName="remark" class="form-control align-right" rows="1"></textarea>
+                  <textarea formControlName="remark" class="form-control" rows="1"></textarea>
                 </div>
               </div>
             </fieldset>
@@ -196,18 +199,28 @@
         </div>
       </form>
 
+      <!-- Buttons-->
       <div class="row mt-15">
         <div class="col-12 mt-20">
           <div class="float-right mb-15">
             <ng-container>
               <ng-container>
-                <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                  [ngClass]="{'disabled-btn-bg-green' : garnishmentForm.invalid, 'btn-bg-green': !garnishmentForm.invalid}">
+                <!-- [ngClass]="{'disabled-btn-bg-green' : garnishmentForm.invalid, 'btn-bg-green': !garnishmentForm.invalid}" -->
+                <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"
+                  *ngIf="!editFlag" (click)="saveMasterData()">
                   <b><i class="fa fa-floppy-o"></i></b> Save
                 </button>
-                <button type="button" tooltip="Reset"
+                <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                  *ngIf="editFlag" (click)="updateMasterData()">
+                  <b><i class="fa fa-floppy-o"></i></b> Save
+                </button>
+                <button type="button" tooltip="Reset" *ngIf="!viewFlag" (click)="resetData()"
                   class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                   <b><i class="fa  fa-refresh"></i></b> Reset
+                </button>
+                <button type="button" tooltip="Reset" *ngIf="viewFlag" (click)="resetData()"
+                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                  <b><i class="fa  fa-refresh"></i></b> Cancel
                 </button>
               </ng-container>
             </ng-container>
@@ -267,13 +280,13 @@
 
 
                     <td class="wd-10">
-                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)"
+                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMasterData(summary)"
                         tooltip="Edit"></i>
 
-                      <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
+                      <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMasterData(summary)"
                         tooltip="View"></i>
-                      <i class="fa fa-trash-o font-16 text-red cursor-pointer ml-3"
-                        (click)="deleteMaster(summary.thirdPartyMasterId)" tooltip="delete"></i>
+                      <!-- <i class="fa fa-trash-o font-16 text-red cursor-pointer ml-3"
+                        (click)="deleteMaster(summary.thirdPartyMasterId)" tooltip="delete"></i> -->
 
                       <!-- <i class="fa fa-times text-red font-18" (click)="removeSelectedRow(i)"></i> -->
 

@@ -50,25 +50,33 @@ export class GarnishmentService {
 
   //get api for Deduction
   getloanMasterAllDeductionHead(): Observable<any> {
-    return this._HTTP.get<any>(this.apiUrl1 + 'loan-Master/getDeduction')
+    return this._HTTP.get<any>(this.apiUrl1 + 'loan-Master/getDeduction' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
   }
 
   //get api for GET ALL FrequecyDetails.
   getALLFrequecyDetails(): Observable<any> {
-    return this._HTTP.get(this.apiUrl2 + 'frequency-master/getAllActive')
+    return this._HTTP.get<any>(this.apiUrl2 + 'frequency-master/getAllActive')
   }
 
 
   // get api for IndianIncomeTex
+  getindianincometax() : Observable<any> {
+    return this._HTTP.get<any>(this.apiUrl + 'indian-income-tax' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+  }
 
-  // getindianincometax() : Observable<any> {
-  //   return this._HTTP.get(this.apiUrl + 'indian-income-tax' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }
-  //   ));
-  // }
+  /** Save master data */
+  savemasterdata(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + 'garnishment-master',data)
+  }
 
+  /** Get data by id */
+  masterDataGetById(garnishmentId):Observable<any>{
+    return this._HTTP.get<any>(this.apiUrl + 'garnishment-master/GetbyId/'+garnishmentId)  
+  }
 
+  /** Update master data */
+  updatemasterdata(data):Observable<any>{
+    return this._HTTP.put<any>(this.apiUrl + 'garnishment-master/updateById',data)
+  }
 
 }

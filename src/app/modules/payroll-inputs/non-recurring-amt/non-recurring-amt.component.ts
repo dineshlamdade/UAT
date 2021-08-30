@@ -887,6 +887,14 @@ export class NonRecurringAmtComponent implements OnInit {
 				} else {
 					let length = this.saveTransactionData.length - 1;
 					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+
+				// 	let index = this.saveTransactionData.length - 1
+                //   if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+                //   if (this.saveTransactionData[index].headMasterId == data.headId) { return; }
+                //   for (let i = 0; i < index; i++) {
+                //      if (this.saveTransactionData[i].headMasterId == data.headId) { return; }
+                //   }
+
 					else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
