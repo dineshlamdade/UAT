@@ -12,6 +12,7 @@ import { InvestmentTransactionApprovalService } from '../investment-transaction-
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { InvestmentApprovalMasterInfo } from '../interfaces/investment-approval-master-info';
 import {InvestmentOnetimetransactionApprovalService } from './investment-onetimetransaction-approval.service';
+import { debug } from 'node:console';
 
 @Component({
   selector: 'app-investment-onetimetransaction-approval',
@@ -131,6 +132,7 @@ export class InvestmentOnetimetransactionApprovalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
     this.localStorageProofSubmissionIdList = JSON.parse(
       localStorage.getItem('localStorageProofSubmissionIdList')
     );
@@ -181,10 +183,12 @@ export class InvestmentOnetimetransactionApprovalComponent implements OnInit {
 
   // --------- Get Employee Info by employee mAster ID --------------------------------
   getEmployeeInfo(employeeMasterId: any): void {
+   
     this.investmentMasterApprovalService
       .getEmployeeInfo(employeeMasterId)
       .subscribe((res: InvestmentApprovalEmployeeInfo) => {
         console.log('res empInfo::', res);
+     
         this.employeeInfo = res;
       });
   }
@@ -195,15 +199,16 @@ export class InvestmentOnetimetransactionApprovalComponent implements OnInit {
       .getTransactionInfoByPSID(psid)
       .subscribe((res: InvestmentApprovalTransactionInfo) => {
         console.log('res transactionInfo::', res);
+        
         if (res != null || res != undefined) {
           this.transactionInfo = res;
           this.documentDetailList = this.transactionInfo.documentList;
-          this.transactionInfo.transactionDetail.forEach((transWithMaster)=>{
-            transWithMaster.transactionDetailList.forEach((transaction)=>{
-              transaction.amountApproved = this.numberFormatPipe.transform(transaction.amountApproved)
-              transaction.amountRejected = this.numberFormatPipe.transform(transaction.amountRejected)
-            });
-          });
+          // this.transactionInfo.transactionDetail.forEach((transWithMaster)=>{
+          //   transWithMaster.transactionDetailList.forEach((transaction)=>{
+          //     transaction.amountApproved = this.numberFormatPipe.transform(transaction.amountApproved)
+          //     transaction.amountRejected = this.numberFormatPipe.transform(transaction.amountRejected)
+          //   });
+          // });
           this.documentDetailList.forEach((doc)=>{
             this.test.push(doc.documentStatus);
             
@@ -361,8 +366,10 @@ export class InvestmentOnetimetransactionApprovalComponent implements OnInit {
     checkValue,
     trnsactionLineItem
   ) {
+    
     console.log('checkValue::', checkValue);
     console.log('trnsactionLineItem::', trnsactionLineItem);
+    
     // console.log("documentCheckBox::",this.documentCheckBox);
     if (checkValue) {
       const data = {

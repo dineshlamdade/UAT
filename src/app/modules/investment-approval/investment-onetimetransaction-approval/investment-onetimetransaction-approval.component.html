@@ -33,8 +33,8 @@
                           >Employee No. & Name</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo.employeeCode }}-{{
-                            employeeInfo.fullName
+                          {{ employeeInfo?.employeeCode }}-{{
+                            employeeInfo?.fullName
                           }}</label
                         >
                       </div>
@@ -43,13 +43,13 @@
                           >Employee Type</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo.employeeType }}
+                          {{ employeeInfo?.employeeType }}
                         </label>
                       </div>
                       <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">Grade</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo.grade }}
+                          {{ employeeInfo?.grade }}
                         </label>
                       </div>
                       <div class="col-md-2">
@@ -57,7 +57,7 @@
                           >Date of Joining</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo.joiningDate | date: "dd-MMM-yyyy" }}
+                          {{ employeeInfo?.joiningDate | date: "dd-MMM-yyyy" }}
                         </label>
                       </div>
                       <div class="col-md-2">
@@ -65,20 +65,20 @@
                           >Date of Leaving</label
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo.joiningDate | date: "dd-MMM-yyyy" }}
+                          {{ employeeInfo?.joiningDate | date: "dd-MMM-yyyy" }}
                         </label>
                       </div>
 
                       <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">Designation</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo.designation }}
+                          {{ employeeInfo?.designation }}
                         </label>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Emp. Status</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ employeeInfo.establishment }}
+                          {{ employeeInfo?.establishment }}
                         </label>
                       </div>
                     </div>
@@ -93,25 +93,25 @@
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Group</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo.psidDetail.groupName }}</label
+                          {{ transactionInfo?.psidDetail?.groupName }}</label
                         >
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">Section</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo.psidDetail.section }}
+                          {{ transactionInfo?.psidDetail?.section }}
                         </label>
                       </div>
                       <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">Type</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo.psidDetail.type }}
+                          {{ transactionInfo?.psidDetail?.type }}
                         </label>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label mt-1 mb-0">PS ID</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo.psidDetail.psid }}
+                          {{ transactionInfo?.psidDetail?.psid }}
                         </label>
                       </div>
 
@@ -121,7 +121,7 @@
                         >
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{
-                            transactionInfo.psidDetail.dateOfSubmission
+                            transactionInfo?.psidDetail?.dateOfSubmission
                               | date: "dd-MMM-yyyy"
                           }}
                         </label>
@@ -129,7 +129,7 @@
                       <div class="col-md-1">
                         <label class="form-label mt-1 mb-0">PS ID Status</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
-                          {{ transactionInfo.psidDetail.proofSubmissionStatus }}
+                          {{ transactionInfo?.psidDetail?.proofSubmissionStatus }}
                         </label>
                       </div>
 
@@ -137,7 +137,7 @@
                         <label class="form-label mt-1 mb-0">Date & Time</label>
                         <label class="font-12 text-ellipsis mt-1 mb-0">
                           {{
-                            transactionInfo.psidDetail.lastModifiedDateTime
+                            transactionInfo?.psidDetail?.lastModifiedDateTime
                               | date: "dd-MMM-yyyy HH:mm"
                           }}
                         </label>
@@ -186,7 +186,7 @@
                         <!-- Transaction Details For Loop Started -->
                         <div
                           *ngFor="
-                            let transactionDetail of transactionInfo.transactionDetail;
+                            let transactionDetail of transactionInfo.oneTimeTransactionDetailList;
                             let transactionDetailIndex = index
                           "
                         >
@@ -210,7 +210,7 @@
                           </div> -->
                           <!-- Master Popup Button End-->
                           <!-- Master Details Line -->
-                          <div class="row">
+                          <!-- <div class="row">
                             <div class="col-md-3 col-xs-12">
                               <h6 class="font-12 mb-3 font-normal">
                                 <strong>Institution </strong
@@ -235,7 +235,7 @@
                                 >{{ transactionDetail.frequency }}
                               </h6>
                             </div>
-                          </div>
+                          </div> -->
                           <!-- Master Details Line End -->
 
                           <!-- Transaction  Details Table -->
@@ -244,7 +244,7 @@
                               <div class="table-responsive">
                                 <p-table
                                   [value]="
-                                    transactionDetail.transactionDetailList
+                                  this.transactionInfo.oneTimeTransactionDetailList
                                   "
                                 >
 
@@ -257,7 +257,11 @@
                                       </th>
 
                                       <th class="wd-10">Previous Employer</th>
-                                      <th class="wd-10">Due Date</th>
+                                      <th class="wd-10">Institution</th>
+                                      <th class="wd-10">Policy No.</th>
+                                      <!-- <th class="wd-10">Policy Holder Name</th> -->
+                                      <!-- <th class="wd-10">Frequency</th> -->
+                                      <!-- <th class="wd-10">Due Date</th> -->
                                       <th class="wd-10">Date of Payment</th>
                                       <th class="wd-10">Actual</th>
                                       <th class="primeng-table-header-center wd-10">
@@ -299,29 +303,39 @@
                                         )
                                       "
                                       #e
-                                      [class.disableCheckbox]="
-                                      transaction.transactionStatus ==
-                                      'Approved'"
+                                    
                                         >
                                         </p-tableCheckbox>
                                       </td>
                                       <td aria-disabled="true" class="disabled">
-                                        {{ transaction.previousEmployer }}
+                                        {{ transaction?.previousEmployer }}
                                       </td>
-                                      <td class="disabled">
+                                      <td class="disabled align-right">
+                                        {{ transactionDetail?.institutionName }}
+                                      </td>
+                                      <td class="disabled align-right">
+                                        {{ transaction?.accountNumber }}
+                                      </td>
+                                      <!-- <td class="disabled align-right">
+                                        {{ transactionDetail.policyholdername }}
+                                      </td> -->
+                                      <!-- <td class="disabled align-right">
+                                        {{ transactionDetail.frequency }}
+                                      </td> -->
+                                      <!-- <td class="disabled">
                                         {{
                                           transaction.dueDate
                                             | date: "dd-MMM-yyyy"
                                         }}
-                                      </td>
+                                      </td> -->
                                       <td class="disabled">
                                         {{
-                                          transaction.dateOfPayment
+                                          transaction?.dateOfPayment
                                             | date: "dd-MMM-yyyy"
                                         }}
                                       </td>
                                       <td class="disabled align-right">
-                                        {{ transaction.actualAmount | number: "1.2-2"}}
+                                        {{ transaction?.actualAmount | number: "1.2-2"}}
                                       </td>
 
                                       <td>
@@ -410,7 +424,7 @@
                                               _ngcontent-ykc-c443=""
                                               class="Label_badge "
                                               >{{
-                                                transaction.remarkList.length
+                                                transaction?.remarkList.length
                                               }}</span
                                             >
                                           </div>
@@ -419,7 +433,7 @@
                                       </td>
 
                                       <td class="disabled">
-                                        {{ transaction.transactionStatus }}
+                                        {{ transaction?.transactionStatus }}
                                       </td>
                                       <td>
                                         <i
@@ -516,7 +530,7 @@
                                         tooltip=""
                                       >
                                         {{
-                                          transactionInfo.grandTotalActual
+                                          transactionInfo?.grandTotalActual
                                             | number: "1.2-2"
                                         }}
                                       </span>
@@ -536,7 +550,7 @@
                                         tooltip=""
                                       >
                                         {{
-                                          transactionInfo.grandTotalRejected
+                                          transactionInfo?.grandTotalRejected
                                             | number: "1.2-2"
                                         }}
                                       </span>
@@ -555,7 +569,7 @@
                                         placement="left"
                                         tooltip=""
                                       >
-                                        {{  transactionInfo.grantTotalApproved| number: "1.2-2" }}
+                                        {{  transactionInfo?.grantTotalApproved| number: "1.2-2" }}
                                       </span>
                                     </td>
                                     <td
@@ -584,7 +598,7 @@
                         <div class="float-right">
                           <button
                             *ngIf="
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                               'Approved'
                             "
                             type="button"
@@ -608,20 +622,20 @@
                               btn-labeled btn-labeled-left
                               mr-2
                             "
-                            [class.disableredbutton]=" transactionList.length == 0 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                            [class.disableredbutton]=" transactionList?.length == 0 ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved'
                                 ||
-                                  transactionInfo.psidDetail.proofSubmissionStatus ==
+                                  transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                     'SendBack'
                             "
-                            [disabled]=" transactionList.length == 0 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                            [disabled]=" transactionList?.length == 0 ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved'
                                 ||
-                                  transactionInfo.psidDetail.proofSubmissionStatus ==
+                                  transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                     'SendBack'
                             "
                             (click)="changePSIDStatusOfTransaction('SendBack')"
@@ -638,18 +652,18 @@
                               ripple
                               mr-2
                             "
-                            [disabled]="transactionList.length == 0 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                            [disabled]="transactionList?.length == 0 ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved' ||
-                                transactionInfo.psidDetail.proofSubmissionStatus ==
+                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                   'SendBack'
                             "
-                            [class.disablegreenbutton]="transactionList.length == 0 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                            [class.disablegreenbutton]="transactionList?.length == 0 ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved' ||
-                                transactionInfo.psidDetail.proofSubmissionStatus ==
+                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                   'SendBack'
                             "
                           >
@@ -705,16 +719,16 @@
                             "
                             [class.disablegraybutton]="
                                proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == ''
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == ''
                             "
                             [disabled]="
                                proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == ''
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == ''
                             "
                             (click)="changePSID(globalPSID, 'Next')"
                           >
                             <b><i class="fa fa-angle-double-right"></i></b
-                            >Next
+                            >Next {{ proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 }}
                           </button>
 
                           <button
@@ -726,20 +740,20 @@
                               btn-labeled btn-labeled-left
                               mr-2
                             "
-                            [class.disableredbutton]=" transactionList.length == 0 ||
+                            [class.disableredbutton]=" transactionList?.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved' ||
-                                transactionInfo.psidDetail.proofSubmissionStatus ==
+                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                   'SendBack'
                             "
                             [disabled]="transactionList.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved' ||
-                                transactionInfo.psidDetail.proofSubmissionStatus ==
+                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                   'SendBack'
                             "
                             (click)="changeStatusWithNextPrevious('SendBack',globalPSID, 'Next')"
@@ -757,20 +771,20 @@
                               btn-bg-green btn-labeled btn-labeled-left
                               mr-2
                             "
-                            [class.disablegreenbutton]="transactionList.length == 0 ||
+                            [class.disablegreenbutton]="transactionList?.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved'  ||
-                                transactionInfo.psidDetail.proofSubmissionStatus ==
+                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                   'SendBack'
                             "
                             [disabled]="transactionList.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved'  ||
-                                transactionInfo.psidDetail.proofSubmissionStatus ==
+                                transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                   'SendBack'
                             "
                           >
@@ -788,14 +802,14 @@
                             "
                             [class.disablegreenbutton]="transactionList.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved'
                             "
                             [disabled]="transactionList.length == 0 ||
                               proofSubmissionIdListIndex==localStorageProofSubmissionIdList.length-1 ||
-                              transactionInfo.psidDetail.proofSubmissionStatus == '' ||
-                              transactionInfo.psidDetail.proofSubmissionStatus ==
+                              transactionInfo?.psidDetail?.proofSubmissionStatus == '' ||
+                              transactionInfo?.psidDetail?.proofSubmissionStatus ==
                                 'Approved'
                             "
                             (click)="changeStatusWithNextPrevious('Approved',globalPSID, 'Next')"
@@ -832,7 +846,7 @@
                             <div class="table-responsive Custom_Table">
                               <p-table
                                 #dt2
-                                [value]="transactionInfo.documentList"
+                                [value]="this.transactionInfo.documentList"
                                 [selection]="documentList"
                                 [paginator]="true"
                                 [rows]="10"
@@ -1287,9 +1301,9 @@
               <!-- Document Information Table End -->
 
               <!-- Master Details Pop Up Started -->
-              <ng-template #masterDetailtemplate>
+              <!-- <ng-template #masterDetailtemplate> -->
                 <!-- Master Detail Header -->
-                <div class="modal-header">
+                <!-- <div class="modal-header">
                   <h5 class="modal-title" id="UploadModalLabel">
                     Master Details
                   </h5>
@@ -1302,11 +1316,11 @@
                   >
                     <span aria-hidden="true">×</span>
                   </button>
-                </div>
+                </div> -->
                 <!-- Master Detail Header End-->
 
                 <!-- Master Detail Body -->
-                <div class="modal-body">
+                <!-- <div class="modal-body">
                   <div class="card">
                     <div class="card-body">
                       <div class="row clearfix">
@@ -1384,13 +1398,13 @@
                                 />
                               </div>
                             </div>
-                          </div>
+                          </div> -->
 
-                          <div class="row mt-25">
+                          <!-- <div class="row mt-25"> -->
                             <!-- <fieldset> -->
-                              <div class="col-12 col-md-12 col-sm-12">
+                              <!-- <div class="col-12 col-md-12 col-sm-12">
                               <legend>Payment Details</legend>
-                            </div>
+                            </div> -->
                               <!-- <div class="row mt-15">
                                 <div class="col-md-3">
                                   <label class="form-label"
@@ -1505,7 +1519,7 @@
                               </div> -->
 
                               <!-- Master Payment Details -->
-                              <div class="col-12 col-md-12 col-sm-12">
+                              <!-- <div class="col-12 col-md-12 col-sm-12">
                         <div class="row mt-15">
                           <div class="col-12 col-md-12 col-sm-12">
                             <div class="table-responsive Custom_Table">
@@ -1580,20 +1594,20 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> -->
                         <!-- Master Payment Details End -->
 
                             <!-- </fieldset> -->
-                          </div>
+                          <!-- </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <!-- Master Detail Body End -->
 
                 <!-- Master Detail Footer -->
-                <div class="modal-footer">
+                <!-- <div class="modal-footer">
                   <button
                     type="button"
                     class="btn btn-secondary"
@@ -1601,10 +1615,10 @@
                   >
                     Ok
                   </button>
-                </div>
+                </div> -->
                 <!-- Master Detail Footer -->
 
-              </ng-template>
+              <!-- </ng-template> -->
               <!-- Master Details Pop Up Ended -->
 
               <!-- Remark Modal started -->

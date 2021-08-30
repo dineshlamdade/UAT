@@ -1340,7 +1340,7 @@
                           <label class="form-label">Remark</label>
                         </div>
                     <div class="col-md-12">
-                    <input class="form-control" [(ngModel)]="editremarkList[index]" rows="1">
+                    <input class="form-control" [(ngModel)]="editremarkList[index]" rows="1" [disabled] = "this.disableRemark =='Approved' || this.disableRemark =='WIP'">
                   </div>
                     </div>
                     </div>
@@ -1876,7 +1876,7 @@
                         <label class="form-label">Remark</label>
                       </div>
                       <div class="col-md-12">
-                        <input class="form-control" [(ngModel)]="remarkList[index]" rows="1">
+                        <input class="form-control" [(ngModel)]="remarkList[index]" rows="1" [disabled]='disableRemarkList'>
                       </div>
                     </div>
                   </div>
@@ -2507,7 +2507,7 @@
                         <label class="form-label">Remark</label>
                       </div>
                       <div class="col-md-12">
-                        <input class="form-control" [(ngModel)]="remarkList[index]" rows="1">
+                        <input class="form-control" [(ngModel)]="remarkList[index]" rows="1" [disabled] = "this.disableRemark =='Approved' || this.disableRemark =='WIP'">
                       </div>
                     </div>
                   </div>

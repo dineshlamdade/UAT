@@ -172,6 +172,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   dateOfJoining: Date;
   postofficeDeclarationData: any;
+  disableRemarkList = false
+  disableRemark: any;
+
 
 
   public canEdit: boolean;
@@ -436,6 +439,11 @@ export class PostOfficeDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
         'Please Enter Declared Amount'
@@ -1330,6 +1338,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
@@ -1382,6 +1391,24 @@ export class PostOfficeDeclarationComponent implements OnInit {
         //console.log('converted:: ', this.urlArray);
       });
       this.documentArray = [];
+  }
+
+
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
   }
 
   nextDocViewer() {
@@ -1562,7 +1589,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
-      documentPassword: this.documentPassword,
+      // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
@@ -1577,6 +1604,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
         if (res.data.results.length > 0) {
           this.editremarkList = [];
           this.editdocumentPassword = [];
+          this.editfilesArray = [];
 
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({

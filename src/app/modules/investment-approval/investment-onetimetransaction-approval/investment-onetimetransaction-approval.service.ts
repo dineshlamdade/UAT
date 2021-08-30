@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { APIResponse } from '../interfaces/apiresponse';
 import { InvestmentApprovalTransactionInfo } from '../interfaces/investment-approval-transaction-info';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,4 +30,18 @@ export class InvestmentOnetimetransactionApprovalService {
         )
       );
   }
+   // --------- POST API for changing Transaction List status ---------------------------------
+   changeTransactionStatus(formData: any) {
+    return this.httpClient.post<APIResponse>(
+      this.apiUrl + 'transaction-approval',
+      formData
+    ) .pipe(
+      map(
+        (response: APIResponse) =>
+          response.data.results[0] as InvestmentApprovalTransactionInfo
+      )
+    );
+  }
+  
+  
 }
