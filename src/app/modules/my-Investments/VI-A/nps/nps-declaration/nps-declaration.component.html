@@ -82,7 +82,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="canEdit && isDisabled"
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -90,16 +90,17 @@
                 <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
                 </th>
-                <th rowspan="2" class="wd-4 font700">
+                <!-- <th rowspan="2" class="wd-4 font700">
                   <span tooltip="Electronic Clearing Service">ECS</span>
-                </th>
+                </th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -111,18 +112,19 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" name="select" />
+                    <input type="checkbox"  class="custom-control-input" name="select" />
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
+                <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
-                <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-15 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -158,7 +160,7 @@
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
                     ">
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
@@ -169,47 +171,82 @@
                     </option>
                   </select>
                 </td>
-                <td>
+                <!-- <td>
                   <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
-                </td>
+                </td> -->
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" class="form-control" [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
-                        initialArrayIndex[j] > i || summary.isECS === 1
-                      " (ngModelChange)="
-                        summary.dueDate = $event.toLocaleDateString();
+                    <input  *ngIf = "item.frequency !=='As & When'"
+                    type="text" 
+                    class="form-control" 
+                    [minDate]="financialYearStartDate"
+                      [maxDate]="financialYearEndDate" 
+                      [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" 
+                      [disabled]="initialArrayIndex[j] > i || summary.isECS === 1
+                      " (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)
-                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker />
+                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                      data-provide="datepicker" 
+                      bsDatepicker 
+                      />
+                      <input
+                    *ngIf = "item.frequency ==='As & When'"
+                      type="text"
+                      class="form-control"
+                     placeholder="NA"
+                     disabled
+                    />
                   </div>
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
-                      class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" />
+                    <input   *ngIf = "item.frequency !=='As & When'"
+                    type="text" 
+                    id="declaredAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
+                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" 
+                      [(ngModel)]="summary.declaredAmount"
+                      class="form-control align-right" 
+                      (change)="onDeclaredAmountChange(summary, i, j)"
+                      [disabled]="initialArrayIndex[j] > i" 
+                      />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
+                              <input
+                              *ngIf = "item.frequency ==='As & When'"
+                               type="text"
+                               class="form-control"
+                              placeholder="NA"
+                              disabled
+                             />
                   </div>
                 </td>
                 <td>
-                  <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
-                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true"
+                  <input type="text" 
+                  [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                    [minDate]="financialYearStartDate" 
+                    [maxDate]="today"
+                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                    data-provide="datepicker" 
+                    data-date-autoclose="true"
                     (ngModelChange)="
                       summary.dateOfPayment = $event.toLocaleDateString();
                       setDateOfPayment(summary, i, j)
                     " [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    " class="form-control" bsDatepicker />
+                      (isDisabled && !canEdit) || summary.transactionStatus === 'Submitted'
+                    " class="form-control" 
+                    bsDatepicker 
+                    />
                 </td>
                 <td>
-                  <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                    [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
-                    class="form-control align-right" />
+                  <input type="text" 
+                  id="actualAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
+                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" 
+                    [disabled]="initialArrayIndex[j] > i && item.frequency !=='As & When'"
+                    [(ngModel)]="summary.actualAmount" 
+                    (change)="onActualAmountChange(summary, i, j)"
+                    class="form-control align-right" 
+                    />
                 </td>
                 <td>
                   <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -224,11 +261,15 @@
                     {{ summary.remark }}
                   </span>
                 </td>
-                <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}">
-                    {{ summary.proofSubmissionId }}
-                  </span>
-                </td>
+                
+                  <td>
+                    <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                      <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                      <!-- {{ summary.proofSubmissionId }} -->
+                    </span>
+                  </td>
+  
+                
                 <td class="text-orange font700">
                   <span tooltip="{{ summary.transactionStatus }}">
                     {{ summary.transactionStatus }}
@@ -254,7 +295,7 @@
               <tr>
                 <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
+               
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ item.declarationTotal | number: "1.2-2" }}
@@ -262,7 +303,11 @@
                 </td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip="{{ item.actualTotal | number: '1.2-2' }}" class="padding-right-12">
+                  <span
+                    tooltip="{{ item.actualTotal | number: '1.2-2' }}"
+                    class="padding-right-12"
+                  >
+
                     {{ item.actualTotal | number: "1.2-2" }}
                   </span>
                 </td>
@@ -279,6 +324,8 @@
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
               </tr>
             </tbody>
           </table>
@@ -295,16 +342,20 @@
           <tbody>
             <tr>
               <td class="bg-gray font-18 font700 wd-14">Grand Total</td>
-              <td class="bg-gray font-18 font700 align-right wd-4"></td>
+              <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
               <td class="bg-gray font-18 font700 align-right wd-11"></td>
-              <td class="bg-gray font-18 font700 align-right wd-9">
+              <!-- <td class="bg-gray font-18 font700 align-right wd-9"> -->
+                <td class="bg-lightgray font-18 font700 align-right">
                 <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
                   {{ grandDeclarationTotal | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="bg-gray font-18 font700 align-right wd-11"></td>
+              <td class="bg-gray font-18 font700 align-right wd-9"></td>
               <td class="bg-gray font-18 font700 align-right wd-9">
-                <span class="padding-right-12" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ grandActualTotal | number: '1.2-2' }}"
+                >
                   {{ grandActualTotal | number: "1.2-2" }}
                 </span>
               </td>
@@ -468,7 +519,7 @@
             <table class="table table-striped table-hover table-bordered m-b-0">
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col" class="font700 wd-15">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-7">PS ID</th>
                   <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
                   <th scope="col" class="font700 wd-15">Policy No.</th>
@@ -557,7 +608,7 @@
                   <td>
                     <div class="custom_Label_badge">
                       <button
-                        class="btn bg-color-lightgray text-000"
+                      class="btn btn-bg-green text-white"
                         (click)="docViewer(template3, documentSummary.documentDetailList)"
 
                       >
@@ -705,16 +756,16 @@
                   <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
                   </th>
-                  <th rowspan="2" class="wd-4 font700">
+                  <!-- <th rowspan="2" class="wd-4 font700">
                     <span tooltip="Electronic Clearing Service">ECS</span>
-                  </th>
+                  </th> -->
                   <th rowspan="2" class="wd-11 font700">Due Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-7">PS ID</th>
                   <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -724,14 +775,14 @@
               </thead>
               <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
                 <tr>
-                  <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
+                  <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                   <th rowspan="2" class="wd-11 font700">Due Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
-                  <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-7">PS ID</th>
                   <th rowspan="2" class="wd-15 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -764,11 +815,11 @@
                       </option>
                     </select>
                   </td>
-                  <td>
+                  <!-- <td>
                     <span
                       >{{ summary.isECS === 1 ? "Yes" : "No" }}</span
                     >
-                  </td>
+                  </td> -->
                   <td>
                     <div class="custom_icon_badge">
                       <input
@@ -804,13 +855,13 @@
                       type="text"
                       [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                       [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate"
+                      [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
                       data-date-autoclose="true"
                       (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
                         setDateOfPaymentInEditCase(summary, i, j)"
-                      [disabled]="summary.transactionStatus=='Approved'"
+                      [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
                       class="form-control"
                       bsDatepicker
                     />
@@ -820,7 +871,7 @@
                       type="text"
                       id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                       name="actualAmount{{ summary.investmentGroup1TransactionId }}"
-                      [disabled]="!summary.additionalPayment"
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
@@ -848,8 +899,9 @@
                     </span>
                   </td>
                   <td>
-                    <span tooltip="{{ summary.proofSubmissionId }}">
-                      {{ summary.proofSubmissionId }}
+                    <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                      <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                      <!-- {{ summary.proofSubmissionId }} -->
                     </span>
                   </td>
                   <td class="text-orange font700">
@@ -866,7 +918,7 @@
                     *ngIf="previousEmployeeList?.length"
                     class="bg-lightgray font-18 font700 align-right"
                   ></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip=" {{ item.declarationTotal | number: '1.2-2' }}"
@@ -1134,7 +1186,7 @@
     <button
       *ngIf="viewDocumentDetail"
       type="button"
-      tooltip="View Document"
+      tooltip="Save Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >

@@ -52,6 +52,7 @@ export class LeftmenuComponent implements OnInit {
   updateEmpIdSubscription: Subscription;
   employeeMasterId: number;
   ischaptersettingCollapsed = true;
+  isCollapsedpayrollinput : boolean = true
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService ) {
@@ -60,7 +61,7 @@ export class LeftmenuComponent implements OnInit {
       this.isCollapsed = false;
     }
     if ( ( this.router.url ).includes( 'PayrollInputs' ) ) {
-      this.isPayrollInputsCollapsed = false;
+      this.isCollapsedpayrollinput = false;
     }
     if ( ( this.router.url ).includes( 'investment' ) ) {
       this.isInvestmentCollapsed = false;

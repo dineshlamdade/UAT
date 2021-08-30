@@ -1,0 +1,1171 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="tabview">
+
+                <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="masterPage()"
+                  [checked]="tabIndex==0" />
+                <div class="tabs home-page">
+                  <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
+                    [formGroup]="BusinessYearform" method="post" novalidate (ngSubmit)="addBusinessYear()">
+                    <div class="tabview-contents">
+                      <!-- <div *ngFor="let phone of getPhonesFormControls(); let i = index"> -->
+
+
+                      <div class="row">
+
+                        <div class="col-sm-6 col-md-3">
+                          <label class="form-label">Description</label>
+
+
+                          <input [ngClass]="{'is-invalid' : BusinessYearform.get('description').status == 'INVALID'}"
+                            type="text" formControlName="description" class="form-control"
+                            placeholder="Enter Description">
+
+
+                        </div>
+
+
+
+                        <div class="col-sm-6 col-md-3">
+                          <label class="form-label">From Date</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              </div>
+
+                              <input data-provide="datepicker" data-date-autoclose="true" formControlName="fromDate"
+                                class="form-control" placeholder="DD-MMM" (ngModelChange)="OnDateChange($event)"
+                                [ngClass]="{'is-invalid' : BusinessYearform.get('fromDate').status == 'INVALID'}"
+                                bsDatepicker
+                                [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
+
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-3">
+                          <label class="form-label">To Date</label>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              </div>
+                              <input data-provide="datepicker" data-date-autoclose="true" formControlName="toDate"
+                                class="form-control" placeholder="DD-MMM"
+                                [ngClass]="{'is-invalid' : BusinessYearform.get('toDate').status == 'INVALID'}"
+                                bsDatepicker
+                                [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- </div> -->
+
+                      <div class="row mt-15">
+                        <div class="col-12">
+                          <div class="float-right mb-15">
+                            <button type="submit" *ngIf="!updateFlag"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"
+                              [disabled]="BusinessYearform.invalid"
+                              [ngClass]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}">
+                              <b><i class="fa fa-floppy-o"></i></b>
+                              Save</button>
+
+
+
+                            <button type="submit" *ngIf="updateFlag"
+                              [ngClass]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+                            <button type="button" (click)="ResetBusiness()" *ngIf="updateFlag"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                              Cancel</button>
+
+                            <button type="button" (click)="ResetBusiness()" *ngIf="!updateFlag"
+                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                              tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                              Reset</button>
+
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mt-20">
+                        <div class="col-12">
+                          <div class="card">
+                            <div class="mb-0">
+                              <h3 class="font-14 text-purple font-bold">Summary</h3>
+                            </div>
+                            <div class="">
+                              <div class="table-responsive Custom_Table">
+                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col" class="font700 wd-8">Sr. No.
+                                      </th>
+                                      <th scope="col" class="wd-40">Description
+                                      </th>
+                                      <th scope="col" class="wd-40">Business Year
+                                        Definition
+                                      </th>
+                                      <th scope="col" class="wd-12">Action</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <tr *ngFor="let summary of BusinessyearList; let i = index">
+                                      <td class="align-center wd-10">
+                                        <span>{{i+1}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.description}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.yearDefinition}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <button *ngIf="!summary.used" type="button"
+                                          (click)="GetBussinessyearById(summary.id)" class="btn btn-icon"
+                                          title="Edit"><i class="fa fa-edit"></i>
+                                        </button>
+
+                                        <button *ngIf="!summary.used" type="button"
+                                          (click)="UploadModal1(template12);getBussinessyearName(summary.yearDefinition)"
+                                          data-toggle="modal" data-target="#UploadModal"
+                                          class="btn btn-icon js-sweetalert" title="Delete" data-type="confirm"><i
+                                            class="fa fa-trash-o"></i></button>
+                                      </td>
+
+                                      <ng-template #template12>
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="UploadModalLabel">Delete
+                                            Business Year Definition</h5>
+                                          <button type="button" (click)="modalRef.hide()" class="close"
+                                            data-dismiss="modal" aria-label="Close"><span
+                                              aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="card">
+                                            <div class="card-body">
+                                              <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                  <label class="form-label">Are
+                                                    you sure want to
+                                                    delete Business
+                                                    Year Definition
+                                                    from-{{Name}}</label>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-primary"
+                                            (click)="DeleteBussinessyearById(summary.id);modalRef.hide()">Yes</button>
+                                          <button type="button" class="btn btn-secondary bg-btn-red"
+                                            (click)="modalRef.hide()">No</button>
+                                        </div>
+                                      </ng-template>
+
+                                    </tr>
+                                  </tbody>
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <label class="nav" for="Master">
+                  <span>
+                    Business Year
+                  </span>
+                </label>
+
+                <input name="nav" type="radio" class="about-radio" id="summary" (change)="summaryPage()"
+                  [checked]="tabIndex==1" />
+
+
+
+                <div class="tabs about-page">
+                  <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
+                    [formGroup]="CycleDefinationForm" method="post" (ngSubmit)="addCycleDefinition()" novalidate>
+
+
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+
+                          <div class="col-sm-6 col-md-3">
+                            <label class="form-label">Cycle Definition</label>
+                            <input type="text" maxlength="10"
+                              [ngClass]="{'is-invalid' : CycleDefinationForm.get('name').status == 'INVALID'}"
+                              [readonly]="!disabled" formControlName="name" class="form-control"
+                              placeholder="Enter Cycle Definition">
+                          </div>
+
+
+                          <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Business Year</label>
+                            <select placeholder="select" name="beast" id="Institution1"
+                              class="form-control custom-select" formControlName="businessYearDefinitionId"
+                              [ngClass]="{'is-invalid' : CycleDefinationForm.get('businessYearDefinitionId').status == 'INVALID'}">
+                              <option *ngFor="let InstitutionName of BusinessyearList" [value]="InstitutionName.id">
+                                {{InstitutionName.yearDefinition}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Frequency</label>
+                            <select [disabled]="!disabled" name="beast" id="Institution2"
+                              (change)="onStatusChange($event);" [(ngModel)]="selectedFrequency"
+                              class="form-control custom-select" formControlName="frequencyMasterId"
+                              [ngClass]="{'is-invalid' : CycleDefinationForm.get('frequencyMasterId').status == 'INVALID'}">
+                              <option *ngFor="let Frequency of FrequencyList" [value]="Frequency.id">
+                                {{Frequency.name}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-3" *ngIf="selectedFrequency=='5'">
+                            <label class="form-label">Add Days</label>
+                            <input type="number" [min]=1 formControlName="addDays"
+                              [ngClass]="{'is-invalid' : CycleDefinationForm.get('addDays').status == 'INVALID'}"
+                              class="form-control" placeholder="Enter Days">
+                          </div>
+
+
+                          <div class="col-sm-6 col-md-3" *ngIf="CycleupdateFlag"
+                            [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                            <label class="form-label">Services</label>
+                            <select name="beast" id="Institution2" class="form-control custom-select"
+                              formControlName="services">
+                              <option *ngFor="let Services of dropdownList" [value]="Services.serviceName">
+                                {{Services.serviceName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-3" *ngIf="!CycleupdateFlag">
+                            <label class="form-label">Services</label>
+                            <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect
+                              style="font-size: small;" [settings]="dropdownSettings" [data]="dropdownList"
+                              (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+                              (onDeSelect)="onItemDeSelect($event)" formControlName="serviceName"
+                              [ngClass]="{'is-invalid' : CycleDefinationForm.get('serviceName').status == 'INVALID'}">
+                            </ng-multiselect-dropdown>
+                          </div>
+
+
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-15">
+                      <div class="col-12">
+                        <div class="float-right mb-15">
+                          <button type="submit" *ngIf="!CycleupdateFlag" [disabled]="CycleDefinationForm.invalid"
+                            [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                            tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>
+                            Save</button>
+
+                          <button type="submit" *ngIf="CycleupdateFlag1"
+                            [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                            tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>
+                            Update</button>
+
+                          <button type="button" (click)="CancelBusiness()" *ngIf="CycleupdateFlag"
+                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                            Cancel</button>
+
+                          <button type="button" (click)="resetCycledefinition()" *ngIf="!CycleupdateFlag"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                            tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                            Reset</button>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="tabview-contents">
+                      <div class="row mt-20">
+                        <div class="col-12">
+                          <div class="card">
+                            <div class="mb-0">
+                              <h3 class="font-14 text-purple font-bold">Summary</h3>
+                            </div>
+                            <div class="">
+                              <div class="table-responsive Custom_Table">
+                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col" class="wd-8">Sr. No.
+                                      </th>
+                                      <th scope="col" class="wd-30">Cycle
+                                        Definition
+                                      </th>
+                                      <th scope="col" class="wd-40">Description
+                                      </th>
+
+                                      <th scope="col" class="wd-20">Action</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <tr *ngFor="let summary of CycleDefinitionList; let i = index">
+                                      <td class="align-center wd-10">
+                                        <span>{{i+1}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.name}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.description}}</span>
+                                      </td>
+
+                                      <td>
+                                        <button *ngIf="!summary.isUsed" type="button" class="btn btn-icon"
+                                          title="Edit"><i (click)="GetCycleDefinitionbyId(summary.id)"
+                                            class="fa fa-edit"></i></button>
+
+                                        <button (click)="GetCycleDefinitionbyIdDisable(summary.id)"
+                                          *ngIf="summary.isUsed" type="button" class="btn btn-icon" title="View">
+                                          <i class="fa fa-eye"></i></button>
+
+                                        <button *ngIf="!summary.isUsed" type="button"
+                                          (click)="UploadModal1(templatecycle);getCycleName(summary.name)"
+                                          data-toggle="modal" data-target="#UploadModal"
+                                          class="btn btn-icon js-sweetalert" title="Delete" data-type="confirm"><i
+                                            class="fa fa-trash-o"></i></button>
+                                      </td>
+
+                                      <ng-template #templatecycle>
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="UploadModalLabel">Delete
+                                            Cycle Definition</h5>
+                                          <button type="button" (click)="modalRef.hide()" class="close"
+                                            data-dismiss="modal" aria-label="Close"><span
+                                              aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="card">
+                                            <div class="card-body">
+                                              <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                  <label class="form-label">Are
+                                                    you sure want to
+                                                    delete Cycle
+                                                    Definition
+                                                    {{CycleName}}</label>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-primary"
+                                            (click)="DeleteCycleDefinitionById(summary.id);modalRef.hide()">Yes</button>
+                                          <button type="button" class="btn btn-secondary"
+                                            (click)="modalRef.hide()">No</button>
+                                        </div>
+                                      </ng-template>
+
+                                    </tr>
+                                  </tbody>
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </form>
+
+                </div>
+
+                <label class="nav" for="summary">
+                  <span>
+                    Cycle Definition
+                  </span>
+                </label>
+
+
+
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="declarationPage()"
+                  [checked]="tabIndex==2" />
+                <div class="tabs about-page">
+                  <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
+                    [formGroup]="CycleCreationForm1" (ngSubmit)="addCycleCreation()" method="post" novalidate>
+                    <div class="tabview-contents">
+                      <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                          <label class="form-label">Cycle Definition</label>
+                          <select
+                            [ngClass]="{'is-invalid' : CycleCreationForm1.get('businessCycleDefinitionId').status == 'INVALID'}"
+                            name="beast" id="Institution1" class="form-control custom-select"
+                            formControlName="businessCycleDefinitionId">
+                            <option *ngFor="let Cycle of CycleDefinitionList" [value]="Cycle.id">
+                              {{Cycle.name}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-6 col-md-3">
+                          <label class="form-label">Business Year</label>
+                          <select
+                            [ngClass]="{'is-invalid' : CycleCreationForm1.get('businessYear').status == 'INVALID'}"
+                            name="beast" id="Institution2" class="form-control custom-select"
+                            formControlName="businessYear">
+                            <option *ngFor="let by of BusinessYear" [value]="by.value">
+                              {{by.label}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+
+
+                      <div class="row mt-15">
+                        <div class="col-12">
+                          <div class="float-right mb-15">
+                            <button type="submit" [disabled]="CycleCreationForm1.invalid"
+                              [ngClass]="{'disabled-btn-bg-green' : CycleCreationForm1.invalid,'btn-bg-green': !CycleCreationForm1.invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>
+                              Preview Cycle & Save
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="row mt-30">
+                        <div class="col-12">
+                          <div class="card">
+                            <div class="mb-10">
+                              <h3 class="font-14 text-purple font-bold">Summary</h3>
+                            </div>
+                            <div class="">
+                              <div class="table-responsive Custom_Table">
+                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col" class="font700 wd-8">Sr. No.
+                                      </th>
+                                      <th scope="col" class="font700 wd-12">Cycle
+                                        Definition</th>
+                                      <th scope="col" class="font700 wd-12">No. of Cycles</th>
+                                      <th scope="col" class="font700 wd-12">
+                                        Business Year</th>
+                                      <th scope="col" class="font700 wd-12">From
+                                        Date</th>
+                                      <th scope="col" class="font700 wd-12">To
+                                        Date</th>
+                                      <th scope="col" class="font700 wd-20">Action
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+
+                                    <tr *ngFor="let summary of CycleCreationList; let i = index">
+                                      <td class="align-center wd-10">
+                                        <span>{{i+1}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.businessCycleDefinition.name}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.noOfCycles}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.businessYear}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.businessCycleDefinition.businessYearDefinition.fromDate}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{summary.businessCycleDefinition.businessYearDefinition.toDate}}</span>
+                                      </td>
+
+                                      <td>
+                                        <button type="button" class="btn btn-icon" title="Extend">
+                                          <i class="fa fa-arrows-alt"
+                                            (click)="UploadModal1(template1);getBussinessyear(summary.businessYear,summary.businessCycleDefinition.id)"
+                                            data-toggle="modal" data-target="#UploadModal"></i></button>
+
+                                        <button type="button" class="btn btn-icon" title="Edit"
+                                          (click)="UploadModal2(template3);GetCycleCreationById(summary.businessCycleDefinition.id,summary.businessYear)"
+                                          data-toggle="modal" data-target="#UploadModal">
+                                          <i class="fa fa-edit"></i></button>
+
+                                        <button type="button" class="btn btn-icon" title="View"
+                                          (click)="UploadModal2(template33);GetCycleCreationById(summary.businessCycleDefinition.id,summary.businessYear)"
+                                          data-toggle="modal" data-target="#UploadModal">
+                                          <i class="fa fa-eye"></i></button>
+
+                                        <button type="button" *ngIf="!summary.used"
+                                          (click)="UploadModal1(templatecyclecreation);getCycleCreationName(summary.businessCycleDefinition.name)"
+                                          data-toggle="modal" data-target="#UploadModal"
+                                          class="btn btn-icon js-sweetalert" title="Delete" data-type="confirm"><i
+                                            class="fa fa-trash-o"></i></button>
+                                      </td>
+
+                                      <ng-template #templatecyclecreation>
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="UploadModalLabel">Delete
+                                            Cycle Creation</h5>
+                                          <button type="button" (click)="modalRef.hide()" class="close"
+                                            data-dismiss="modal" aria-label="Close"><span
+                                              aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="card">
+                                            <div class="card-body">
+                                              <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                  <label class="form-label">Are
+                                                    you sure want to
+                                                    delete cycle
+                                                    creation
+                                                    for-{{CycleCreationName}}</label>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-primary"
+                                            (click)="DeleteCycleCreationById(summary.businessCycleDefinition.id,summary.businessYear);modalRef.hide()">Yes</button>
+                                          <button type="button" class="btn btn-secondary"
+                                            (click)="modalRef.hide()">No</button>
+                                        </div>
+                                      </ng-template>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <label class="nav" for="Declaration">
+                  <span>
+                    Cycle Creation
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-to-top" [ngClass]="{'show-scrollTop': windowScrolled}">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
+            <i class="fa fa-angle-double-up text-white font-18"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+
+  <ng-template #template>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row clearfix">
+            <div class="col-md-12">
+              <label class="form-label">Upload File here:</label>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group mt-2 mb-3">
+                <input type="file" class="dropify">
+                <small id="fileHelp" class="form-text text-muted">File size upto 100000</small>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <label class="form-label">Remark:</label>
+            </div>
+            <div class="col-md-12">
+              <textarea class="form-control ml-10" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+    </div>
+  </ng-template>
+
+  <ng-template #template1>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">More Cycle</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row clearfix">
+            <div class="col-md-12">
+              <label class="form-label">Cycles for Business Year {{BusinessYearformorecycle}} would be
+                ceated. Do you want to create?</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="CreateMoreCycleforNextYear();modalRef.hide()">Yes</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+    </div>
+  </ng-template>
+
+
+
+
+  <ng-template #template2>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Preview Cycle</h5>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row clearfix">
+            <div class="tabs about-page">
+              <div class="tabview-contents">
+
+                <div class="row">
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label">Cycle Definition:&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="textcolor">{{Previewname}}</span></label>
+                  </div>
+
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label">Business Year:&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="textcolor">{{Previewbusiness}}</span></label>
+                  </div>
+
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label">Frequency:&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="textcolor">{{PreviewFrequency}}</span></label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label">From Date:&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="textcolor">{{PreviewfromDate}}</span></label>
+                  </div>
+
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label">To Date:&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="textcolor">{{PreviewtoDate}}</span></label>
+                  </div>
+
+                </div>
+
+                <div class="row mt-20">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="mb-0">
+                        <h3 class="font-14 text-purple font-bold">Cycle Details</h3>
+                      </div>
+                      <div class="">
+                        <div class="table-responsive Custom_Table">
+                          <table class="table table-striped table-hover table-bordered m-b-0">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col" class="wd-8">Sr. No.
+                                </th>
+                                <th scope="col" class="wd-20">Cycle Name
+                                </th>
+                                <th scope="col" class="wd-20">From Date
+                                </th>
+                                <th scope="col" class="wd-20">To Date
+                                </th>
+                                <th scope="col" class="wd-20">No. Of Days</th>
+                                <th scope="col" class="wd-20">Remarks</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              <tr *ngFor="let summary of previewCycleList; let i = index">
+                                <td class="align-center wd-10"><span>{{i+1}}</span>
+                                </td>
+                                <td class="wd-10"><span tooltip="{{summary.periodName}}">{{summary.periodName}}</span>
+                                </td>
+                                <td class="wd-10"><span tooltip="{{summary.fromDate}}">{{summary.fromDate}}</span>
+                                </td>
+                                <td class="wd-10">
+                                  <input type="text"
+                                    (ngModelChange)="UploadModalYesNo(template12445);OntoDateChange($event)"
+                                    data-toggle="modal" data-target="#UploadModal" [(ngModel)]="summary.toDate"
+                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" [disabled]="!todisabletodate"
+                                    data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                    bsDatepicker>
+                                </td>
+
+                                <td class="wd-10"><span
+                                    tooltip="{{summary.frequencyOfPayment}}">{{summary.noOfDays}}</span>
+                                </td>
+                                <td class="wd-10">
+                                  <input type="text" [(ngModel)]="summary.remark" [disabled]="!todisabletodate"
+                                    class="form-control" placeholder="Enter Remark">
+                                </td>
+                                <ng-template #template12445>
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="UploadModalLabel">
+                                      Number of days </h5>
+                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                      aria-label="Close"><span aria-hidden="true">×</span></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <div class="row clearfix">
+                                          <div class="col-md-12">
+                                            <label class="form-label">To
+                                              adjust these days in Next
+                                              cycle</label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary"
+                                      (click)="setflagAdjustedToNextCycle(summary.businessCycleDefinition.id,summary.businessYear,previewCycleList,true);modalRef1.hide()">Yes</button>
+                                    <button type="button" class="btn btn-secondary bg-btn-red"
+                                      (click)="setflagAdjustedToNextCycle(summary.businessCycleDefinition.id,summary.businessYear,previewCycleList,false);modalRef1.hide()">No</button>
+                                  </div>
+                                </ng-template>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-15">
+                  <div class="col-12">
+                    <div class="float-right mb-15">
+                      <button type="button" class="btn btn-primary btn-bg-green"
+                        (click)="ForcetoYearEndofcycleCreation();modalRef.hide()">Force - Year
+                        End</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- </form> -->
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="EdittoDateofcycle();modalRef.hide()">Save</button>
+      <button type="button" class="btn btn-secondary" (click)="UploadModalYesNo(templatecyclecreation1);"
+        data-toggle="modal" data-target="#UploadModal">Discard</button>
+    </div>
+  </ng-template>
+
+
+
+  <ng-template #templatecyclecreation1>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Delete Business Year Definition</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row clearfix">
+            <div class="col-md-12">
+              <label class="form-label">Are you sure discard cycle</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary"
+        (click)="deletePreviewCycleDiscard();modalRef1.hide();modalRef.hide()">Yes</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef1.hide()">No</button>
+    </div>
+  </ng-template>
+
+  <ng-template #template3>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Edit Cycle</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row clearfix">
+
+            <div class="tabs about-page">
+
+              <div class="tabview-contents">
+                <div>
+
+
+                  <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">Cycle Definition: {{name}}</label>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">Business Year: {{business}}</label>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">Frequency: {{Frequency}}</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">From Date: {{fromDate}}</label>
+
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">To Date: {{toDate}}</label>
+
+                    </div>
+
+                  </div>
+
+                  <div class="row mt-20">
+                    <div class="col-12">
+                      <div class="card">
+                        <div class="mb-0">
+                          <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                        <div class="">
+                          <div class="table-responsive Custom_Table">
+                            <table [scrollable]="true" scrollHeight="200px"  
+                              class="table table-striped table-hover table-bordered m-b-0">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th scope="col" class="wd-8">Sr. No.
+                                  </th>
+                                  <th scope="col" class="wd-20">Cycle Name
+                                  </th>
+                                  <th scope="col" class="wd-20">From Date
+                                  </th>
+                                  <th scope="col" class="wd-20">To Date
+                                  </th>
+                                  <th scope="col" class="wd-20">No. Of Days</th>
+                                  <th scope="col" class="wd-20">Remarks</th>
+                                  <th scope="col" class="wd-20">Status</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <tr *ngFor="let summary of CycleDefinitionByid; let i = index">
+                                  <td class="align-center wd-10"><span>{{i+1}}</span>
+                                  </td>
+
+                                  <td class="align-left wd-10"><span
+                                      tooltip="{{summary.periodName}}">{{summary.periodName}}</span>
+                                  </td>
+
+
+                                  <td>
+
+                                    <span tooltip="{{summary.fromDate}}">{{summary.fromDate}}</span>
+                                  </td>
+
+
+                                  <td *ngIf="!summary.locked">
+                                    <input type="text"
+                                      (ngModelChange)="UploadModalYesNo(template1244);OntoDateChange($event)"
+                                      data-toggle="modal" data-target="#UploadModal" [(ngModel)]="summary.toDate"
+                                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" [disabled]="!todisabletodate"
+                                      data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                      bsDatepicker>
+                                  </td>
+
+                                  <td class="wd-10" *ngIf="summary.locked"><span
+                                      tooltip="{{summary.toDate}}">{{summary.toDate}}</span>
+                                  </td>
+
+
+
+                                  <td class="wd-10"><span tooltip="{{summary.noOfDays}}">{{summary.noOfDays}}</span>
+                                  </td>
+                                  <td class="wd-10" *ngIf="!summary.locked">
+
+                                    <input type="text" [(ngModel)]="summary.remark" [disabled]="!todisabletodate"
+                                      class="form-control" placeholder="Enter Remark">
+
+
+                                  </td>
+                                  <td class="wd-10" *ngIf="summary.locked"><span
+                                      tooltip="{{summary.noOfDays}}">{{summary.remark}}</span>
+                                  </td>
+
+                                  <td class="wd-10"><span *ngIf="summary.locked">
+                                      <i class="fa fa-lock"></i></span>
+                                  </td>
+
+                                  <ng-template #template1244>
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="UploadModalLabel">Number of days
+                                      </h5>
+                                      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="card">
+                                        <div class="card-body">
+                                          <div class="row clearfix">
+                                            <div class="col-md-12">
+                                              <label class="form-label">To
+                                                adjust these days in
+                                                Next cycle</label>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-primary"
+                                        (click)="setflagAdjustedToNextCycle(summary.businessCycleDefinition.id,summary.businessYear,CycleDefinitionByid,true);modalRef1.hide()">Yes</button>
+                                      <button type="button" class="btn btn-secondary bg-btn-red"
+                                        (click)="setflagAdjustedToNextCycle(summary.businessCycleDefinition.id,summary.businessYear,CycleDefinitionByid,false);modalRef1.hide()">No</button>
+                                    </div>
+                                  </ng-template>
+
+                                  <ng-template #templateforForceToyearEnd>
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="UploadModalLabel">Number of days
+                                      </h5>
+                                      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="card">
+                                        <div class="card-body">
+                                          <div class="row clearfix">
+                                            <div class="col-md-12">
+                                              <label class="form-label">To
+                                                adjust these days in
+                                                Next cycle</label>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-primary"
+                                        (click)="setflagAdjustedToNextCycle(summary.businessCycleDefinition.id,summary.businessYear,CycleDefinitionByid,true);modalRef.hide()">Yes</button>
+                                      <button type="button" class="btn btn-secondary bg-btn-red"
+                                        (click)="setflagAdjustedToNextCycle(summary.businessCycleDefinition.id,summary.businessYear,CycleDefinitionByid,false);modalRef.hide()">No</button>
+                                    </div>
+                                  </ng-template>
+                                </tr>
+
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-15">
+                    <div class="col-12">
+                      <div class="float-right mb-15">
+                        <button type="button" class="btn btn-primary btn-bg-green"
+                          (click)="ForcetoYearEndofcycleCreation();modalRef.hide();">Force -
+                          Year End</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="EdittoDateofcycle();modalRef.hide()">Update</button>
+      <button type="button" class="btn btn-secondary bg-btn-red" (click)="modalRef.hide()">Cancel</button>
+    </div>
+  </ng-template>
+
+  <ng-template #template33>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">View Cycle</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row clearfix">
+
+
+            <div class="tabs about-page">
+
+              <div class="tabview-contents">
+                <div>
+
+
+                  <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">Cycle Definition: {{name}}</label>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">Business Year: {{business}}</label>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">Frequency: {{Frequency}}</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">From Date: {{fromDate}}</label>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <label class="form-label">To Date: {{toDate}}</label>
+                    </div>
+
+                  </div>
+
+                  <div class="row mt-20">
+                    <div class="col-12">
+                      <div class="card">
+                        <div class="mb-0">
+                          <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                        <div class="">
+                          <div class="table-responsive Custom_Table">
+                            <table class="table table-striped table-hover table-bordered m-b-0">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th scope="col" class="wd-8">Sr. No.
+                                  </th>
+                                  <th scope="col" class="wd-20">Cycle Name
+                                  </th>
+                                  <th scope="col" class="wd-20">From Date
+                                  </th>
+                                  <th scope="col" class="wd-20">To Date
+                                  </th>
+                                  <th scope="col" class="wd-20">No. Of Days</th>
+                                  <th scope="col" class="wd-20">Remarks</th>
+                                  <th scope="col" class="wd-20">Status</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <tr *ngFor="let summary of CycleDefinitionByid; let i = index">
+                                  <td class="align-center wd-10"><span>{{i+1}}</span>
+                                  </td>
+
+                                  <td class="align-left wd-10"><span
+                                      tooltip="{{summary.periodName}}">{{summary.periodName}}</span>
+                                  </td>
+
+
+                                  <td>
+                                    <span tooltip="{{summary.fromDate}}">{{summary.fromDate}}</span>
+                                  </td>
+
+                                  <td class="wd-10"><span tooltip="{{summary.toDate}}">{{summary.toDate}}</span>
+                                  </td>
+
+                                  <td class="wd-10"><span tooltip="{{summary.noOfDays}}">{{summary.noOfDays}}</span>
+                                  </td>
+                                  <td class="wd-10">
+                                    <span tooltip="{{summary.remark}}">{{summary.remark}}
+                                    </span>
+
+                                  </td>
+
+                                  <td class="wd-10"><span *ngIf="summary.locked">
+                                      <i class="fa fa-lock"></i></span>
+                                  </td>
+
+                                </tr>
+
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary bg-btn-red" (click)="modalRef.hide()">Cancel</button>
+    </div>
+  </ng-template>

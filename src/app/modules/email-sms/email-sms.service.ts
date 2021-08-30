@@ -9,15 +9,33 @@ import { Observable } from 'rxjs';
 })
 export class EmailSmsService {
 
-  // url = environment.baseUrl8085;
+  url = environment.baseUrl8081;
+  public apiUrl = environment.baseUrl8091;
 
-  url;
+  moduleurl = environment.baseUrl8083;
+
 
   constructor(private HttpClient: HttpClient) { }
 
-  getEmailSmsmData() : Observable<any> {
-    return this.HttpClient.get<any>(this.url + ``);
+  getEmailSmsmData(): Observable<any> {
+    return this.HttpClient.get<any>(this.url + `emailsmstemplate/master/`);
   }
 
-  saveEmailSms(){}
+  saveEmailSms(data): Observable<any> {
+    return this.HttpClient.post<any>(this.url + `emailsmstemplate/master/`, data);
+
+  }
+
+  updateEmailSms(data): Observable<any> {
+    return this.HttpClient.put<any>(this.url + `emailsmstemplate/master/updateDetails`, data);
+  }
+
+  getModuleList(): Observable<any>{
+    return this.HttpClient.get<any>(this.moduleurl + 'application-module/');
+
+ }
+ public getStandardKeywords()
+{
+  return this.HttpClient.get<any>(this.apiUrl + 'StandardKeyword/Global');
+}
 }

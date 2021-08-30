@@ -1,0 +1,99 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
+                             <form [formGroup]="queryGenerationForm" (ngSubmit)="queryGenerationFormSubmit()">
+                                <fieldset>
+                                    <legend>Employee Details</legend>
+                                    <div class="row" *ngIf="perticularEmpDetails">
+                                        <div class="col-md-12 pl-0 pr-0">
+                                            <div class="border-dark-card radius-10 p-2 mt-3">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label class="form-label mt-1 mb-0">Employee No. & Name </label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}"
+                                                            disabled />
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label mt-1 mb-0">Date of Joining</label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
+                                                            disabled />
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label mt-1 mb-0">Establishment</label>
+
+                                                        <input type="text" class="form-control"
+                                                            value="{{perticularEmpDetails.establishment}}" disabled />
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label mt-1 mb-0">Employee Type</label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{perticularEmpDetails.employeeType}}" disabled />
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label class="form-label mt-1 mb-0">Grade</label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{perticularEmpDetails.grade}}" disabled />
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="form-label mt-1 mb-0">Designation</label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{perticularEmpDetails.designation}}" disabled />
+
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label class="form-label mt-1 mb-0">Status</label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{perticularEmpDetails.status}}" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                          <label class="form-label">Approval Workflow</label>
+                                          <select class="form-control"
+                                              (change)="claimFlowChange($event.target.value)"
+                                              formControlName="claimApprWorkflowId">
+                                              <option value="">Select</option>
+                                              <option *ngFor="let workflowList of headTemplateList5"
+                                                  value="{{workflowList.workflowMasterHeaderId}}">
+                                                  {{workflowList.workflowCode}}</option>
+                                          </select>
+                                      </div>
+                                      <!-- <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                          <label class="form-label">Approval SDM</label>
+                                          <select class="form-control"
+                                              (change)="claimSdmFlowChange($event.target.value)"
+                                              formControlName="claimApprSDMId">
+                                              <option value="" selected>Select</option>
+                                              <option value="1">Abc</option>
+                                              <option value="2">Abc</option>
+                                              <option value="3">Abc</option>
+                                              <option value="4">Abc</option>
+                                          </select>
+                                      </div> -->
+                                  </div>
+                                </fieldset>
+                                <br>
+
+                            </form>
+                       
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>

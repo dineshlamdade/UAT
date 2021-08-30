@@ -3,13 +3,15 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 // import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { ToastrService } from 'ngx-toastr';
+import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { QueryService } from '../query.service';
-
-
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
-  styleUrls: ['./query.component.scss']
+  styleUrls: ['./query.component.scss'],
+  providers: [TreeDragDropService,MessageService],
+
 })
 export class QueryComponent implements OnInit {
 
@@ -23,27 +25,18 @@ export class QueryComponent implements OnInit {
   isShown: boolean= true;
   p: number = 1;
   moduleListData: any;
-
-
-  // editorConfig = {
-  //   toolbar: [
-  //     { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
-  //     { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ] },
-  //     { name: 'document', items: ['Source'] }
-  //   ],
-  //   allowedContent: true,
-  //   fullPage: true,
-  //   startupMode: 'source',
-  // };
-
   keyword:any = [];
+  data11 :any =[];
   fieldMap: any;
+
   mappingData: any = [];
+  allKeywords: any;
+  isVisiblee:boolean=false;
+  queryCode: any;
 
-
-  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService)
+  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
+   )
   {
-
     this.queryForm = this.formBuilder.group({
       // "createdBy": new FormControl(''),
       // "updatedBy": new FormControl(''),
@@ -55,69 +48,24 @@ export class QueryComponent implements OnInit {
       "moduleId": new FormControl(null,[Validators.required]),
       "questionSubject": new FormControl(null,[Validators.required]),
       "questionDescription": new FormControl(null),
-      "answerSubject": new FormControl(null,[Validators.required]),
+      "answerSubject": new FormControl(''),
       "answerDescription": new FormControl(null),
       "remark": new FormControl(null),
       "active": new FormControl(true,[Validators.required]),
-
     });
 
-    this.keyword = [
-      {
-        'name':'Employee Code',
-        'id': 1,
-        'description': 'Employee Code'
-    },
-    {
-        'name':'Employee Full Name',
-        'id': 2,
-        'description': 'Employee Full Name'
-    },
-    {
-        'name':'Employee Email',
-        'id': 3,
-        'description': 'Employee Email'
-    },
-    {
-        'name':'Employee Contact',
-        'id': 4,
-        'description': 'Employee Contact'
-    },
-    {
-        'name':'Employee Gender',
-        'id': 5,
-        'description': 'Employee Gender'
-    },
-    {
-        'name':'Employee Grade',
-        'id': 6,
-        'description': 'Employee Grade'
-    },
-    {
-      'name':'Employee Company',
-      'id': 7,
-      'description': 'Employee Company'
-  },
-  {
-    'name':'Date',
-    'id': 8,
-    'description': 'Date'
-},
-
-    ]
-
-    this.keyword.forEach( element => {
-      this.mappingData.push(
-        [element.id.toString() , '[' + element.description +']' ]
-      )
+    this.keyword.forEach(element => {
+    this.mappingData.push(
+      [element.dbFieldName.toString(), '[' + element.displayName + ']']
+    )
     })
-
     this.fieldMap = new Map<string, string>(this.mappingData);
 
   }
   ngOnInit(): void {
     this.getModuleName();
     this.getAllData();
+    this.getStandardKeywords();
   }
   get f(){
     return this.queryForm.controls;
@@ -125,11 +73,11 @@ export class QueryComponent implements OnInit {
 
   queryFormSubmit()
   {
-    // console.log(JSON.stringify(this.queryForm.value));
     if(!this.editflag){
       this.queryService.addQuery(this.queryForm.value).subscribe(res =>
         {
-          this.toster.success("",'Query Added Successfully');
+
+          this.toster.success("",'Q&A Template Added Successfully');
           this.queryForm.controls['active'].setValue(true);
           this.getAllData();
         })
@@ -146,13 +94,15 @@ export class QueryComponent implements OnInit {
   {
      this.queryService.getAll().subscribe( res =>{
        this.queryListData = res.data.results;
+      this.queryCode = this.queryListData[4].code + 1;
      })
+     this.queryForm.controls['code'].setValue(this.queryCode);
   }
   updateQuery()
   {
     this.queryService.updateQuery(this.queryForm.value).subscribe(res =>
       {
-    this.toster.success("",'Query Updated Successfully');
+    this.toster.success("",'Q&A Template Updated Successfully');
     this.getAllData();
       }
       )
@@ -168,9 +118,12 @@ export class QueryComponent implements OnInit {
   }
   viewQuery(query)
   {
-    this.editflag = false;
+   this.editflag = false;
    this.queryForm.patchValue(query);
    this.queryForm.disable();
+   this.isVisiblee =true;
+   this.isVisible = false;
+   this.isShown =false;
   }
   reset(){
     this.queryForm.enable();
@@ -190,14 +143,21 @@ getModuleName()
 
   })
 }
+getStandardKeywords(){
+  this.queryService.getStandardKeywords().subscribe(res =>{
+    this.keyword = res.data.results;
+  })
+}
 changeEvent($event) {
 
   if ($event.target.checked) {
       this.hideRemarkDiv = false;
+      // this.queryForm.controls['remark'].clearValidators();
 
   }
   else {
       this.hideRemarkDiv = true;
+      // this.queryForm.controls['remark'].setValidators([Validators.required]);
   }
 
 }
@@ -237,7 +197,6 @@ getModuleNamefortable(moduleid){
       modulename = element.applicationModuleName
     }
   });
-
  return modulename;
 }
 
@@ -265,5 +224,8 @@ editorConfig = {
 
 };
 
-
+// paginate(event) {
+//   console.log(JSON.stringify(event));
+//   let pageIndex = event.first/event.rows + 1
+//   }
 }

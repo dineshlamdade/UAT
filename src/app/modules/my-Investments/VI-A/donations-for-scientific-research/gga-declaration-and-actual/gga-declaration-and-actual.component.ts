@@ -249,7 +249,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   // Initiate Tuition-Fees Form
   initiate80GGAForm() {
     this.eightyGGAForm = this.formBuilder.group({
-      previousEmployerId: new FormControl(null, Validators.required),
+      previousEmployerId: new FormControl(null),
       donee: new FormControl(null, Validators.required),
       purpose: new FormControl(null, Validators.required),
       dateOfPayment: new FormControl(null, Validators.required),
@@ -280,7 +280,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       declaredAmountFormatted !== undefined
     ) {
       //let installment = this.form.value.premiumAmount;
-      //installment = installment.toString().replace(',', '');
+      //installment = installment.toString().replace(/,/g, '');
       const formatedDeclaredAmount = this.numberFormat.transform(
         declaredAmountFormatted
       );
@@ -294,11 +294,20 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   }
 
   onSelectReactiveCheckbox(event) {
+    if(this.masterForm.declaredAmount.value == null || this.masterForm.declaredAmount.value <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      return false;
+    }
+
+      console.log("masterForm.value",this.masterForm.declaredAmount.value );
+
     const checked = event.target.checked;
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
     let formatedActualAmount: number = 0;
     let formatedSelectedAmount: string;
@@ -306,7 +315,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     if (checked) {
       this.eightyGGAForm.get('actualAmount').setValue(declaredAmnt);
       formatedActualAmount = Number(
-        declaredAmnt.toString().replace(',', '')
+        declaredAmnt.toString().replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -315,7 +324,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
 
     } else {
       formatedActualAmount = Number(
-        declaredAmnt.toString().replace(',', '')
+        declaredAmnt.toString().replace(/,/g, '')
       );
       this.eightyGGAForm.get('actualAmount').setValue(this.numberFormat.transform(0));
 
@@ -332,7 +341,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     // this.actualTotal = 0;
     // this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
     //   this.actualTotal += Number(
-    //     element.actualAmount.toString().replace(',', '')
+    //     element.actualAmount.toString().replace(/,/g, '')
     //   );
     // });
     // this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -353,6 +362,15 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     if (this.eightyGGAForm.invalid) {
       return;
     }
+
+    if (this.receiptAmount < this.globalSelectedAmount) {
+      this.alertService.sweetalertError(
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+      );
+      this.receiptAmount = '0.00';
+      return;
+    }
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError('Please attach Receipt / Certificate');
       return;
@@ -362,10 +380,10 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     delete ggaFormDetail.reactiveCheckbox;
     ggaFormDetail.declaredAmount = ggaFormDetail.declaredAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
       ggaFormDetail.actualAmount = ggaFormDetail.actualAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
     this.donations80GGTransactionListNewRow.push(ggaFormDetail);
     console.log('GGA',this.donations80GGTransactionListNewRow);
 
@@ -373,7 +391,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     const data = {
       proofSubmissionId : null,
       donations80GGTransactionIds: this.uploadGridData,
-      receiptAmount: this.receiptAmount.toString().replace(',', ''),
+      receiptAmount: this.receiptAmount.toString().replace(/,/g, ''),
       receiptDate: null,
       receiptNumber: null,
       donations80GGTransactionList: this.donations80GGTransactionListNewRow,
@@ -516,7 +534,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -536,7 +554,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -547,7 +565,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].actualAmount = this.numberFormat.transform(0);
       this.transactionDetail[j].dateOfPayment = null;
@@ -566,7 +584,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.actualTotal = 0;
     this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -651,7 +669,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -700,7 +718,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.transactionDetail[j].forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -911,14 +929,14 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -938,7 +956,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     }
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
 
     const data = {
       donations80GGTransactionList: this.transactionDetail,
@@ -1058,16 +1076,18 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       if (element.declaredAmount !== null) {
         element.declaredAmount = element.declaredAmount
           .toString()
-          .replace(',', '');
+          .replace(/,/g, '');
       } else {
         element.declaredAmount = 0.0;
       }
       if (element.actualAmount !== null) {
-        element.actualAmount = element.actualAmount.toString().replace(',', '');
+        element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
       } else {
         element.actualAmount = 0.0;
       }
     });
+
+
 
     const data = {
       donations80GGTransactionList: this.editTransactionUpload[0],
@@ -1225,10 +1245,10 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.editTransactionUpload[j].forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
     });
@@ -1303,9 +1323,9 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.actualTotal = 0;
         this.actualAmount = 0;
         this.editTransactionUpload[j].donations80GGTransactionList.forEach((element) => {
-          console.log(element.actualAmount.toString().replace(',', ''));
+          console.log(element.actualAmount.toString().replace(/,/g, ''));
           this.actualTotal += Number(
-            element.actualAmount.toString().replace(',', '')
+            element.actualAmount.toString().replace(/,/g, '')
           );
           console.log(this.actualTotal);
           // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1365,8 +1385,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       }
 
 
-
       changeReceiptAmountFormat() {
+        // tslint:disable-next-line: variable-name
         let receiptAmount_: number;
         let globalSelectedAmount_ : number;
 
@@ -1379,16 +1399,19 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.alertService.sweetalertError(
           'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
         );
+        this.receiptAmount = '0.00';
+        return false;
       } else if (receiptAmount_ > globalSelectedAmount_) {
         console.log(receiptAmount_);
         console.log(globalSelectedAmount_);
         this.alertService.sweetalertWarning(
           'Receipt Amount is greater than Selected line Actual Amount',
         );
+        // this.receiptAmount = '0.00';
+        // return false;
       }
         this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
-      }
-
+    }
       //Payment Detail To Date Validations with Payment Detail From Date
         // setPaymentDetailToDate() {
         //   this.paymentDetailMinDate = this.form.value.fromDate;

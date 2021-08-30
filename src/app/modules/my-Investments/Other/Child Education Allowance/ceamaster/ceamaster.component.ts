@@ -123,13 +123,19 @@ export class CeamasterComponent implements OnInit {
     public sanitizer: DomSanitizer
   ) {
     this.form = this.formBuilder.group({
-      // age: new FormControl({ value: null, disabled: true },Validators.required),
+    //  ageBracket: new FormControl({ value: null, disabled: true },Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       nameOfChild: new FormControl(null, Validators.required),
+      age: new FormControl(null, Validators.required),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       employeeMasterId: new FormControl(0),
       childrenEducationAllowanceMasterId: new FormControl(0),
+
+      ageBracket: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
     });
 
     this.masterPage();
@@ -160,7 +166,7 @@ export class CeamasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Daughter' || element.relation === 'Son') {
+        if (element.relation === 'Daughter' || element.relation === 'Son' ){
           this.familyMemberName.push(obj);
         }
       });
@@ -199,6 +205,10 @@ export class CeamasterComponent implements OnInit {
     this.childeducationallowanceService.getCEAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
     });
   }
 
@@ -227,6 +237,10 @@ export class CeamasterComponent implements OnInit {
       if (res) {
         if (res.data.results.length > 0) {
           this.masterGridData = res.data.results;
+          this.masterGridData.forEach((element) => {
+            element.fromDate = new Date(element.fromDate);
+            element.toDate = new Date(element.toDate);
+          });
 
           this.alertService.sweetalertMasterSuccess(
             'Record saved Successfully.',
@@ -266,11 +280,22 @@ export class CeamasterComponent implements OnInit {
   }
 
   //----------- Family relationship shown on Policyholder selection ---------------
-  OnSelectionfamilyMemberGroup() {
+/*   OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('nameOfChild').value
     );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+  } */
+
+    OnSelectionfamilyMemberGroup() {
+    if(this.form.get('nameOfChild').value == null ){
+      this.form.get('age').setValue(null);
+    }
+    const toSelect = this.familyMemberGroup.find(
+      (c) => c.familyMemberName === this.form.get('nameOfChild').value
+    );
+    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+    this.form.get('age').setValue(toSelect.age);
   }
 
   //--------------- Deactivate the Remark -------------------
@@ -288,6 +313,7 @@ export class CeamasterComponent implements OnInit {
   //------------- On Master Edit functionality --------------------
   editMaster(i: number) {
     this.disableSave = false;
+    
     this.form.patchValue(this.masterGridData[i]);
     this.Index = i;
     this.showUpdateButton = true;

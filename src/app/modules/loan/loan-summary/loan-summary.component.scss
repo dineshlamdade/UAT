@@ -1,0 +1,198 @@
+.buttons button
+{
+margin-right: 5px;
+margin-bottom: 10px;
+}
+.topcount label input
+{
+  width: 20%;
+}
+.topcount label
+{
+  width: 12%;
+  margin-left: 10px;
+  margin-left: 10px;
+
+}
+.topcount label span
+{
+  margin-left: 20px;
+}
+
+tbody .align td{
+  text-align: right;
+
+  }
+  .form-control-sm::placeholder  {
+    font-family: FontAwesome;
+  }
+
+  // new
+
+  .font-24{
+    font-size: 24px;
+    vertical-align: middle;
+  }
+.text-dark-red{
+  color: #F40F02;
+}
+.text-dark-green{
+  color: #1D6F42;
+}
+.grayDiv{
+  background-color: rgba(199, 194, 194, 0.897);
+  padding:5px;
+}
+  
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+
+.box-line-border {
+  /* border: 1px solid #ccc !important; */
+  border-radius: 5px !important;
+  background-color: #f1f1f1 !important;
+  border:0px !important;
+}
+
+.bg-grad{
+background-image: linear-gradient(to right, #75d0c3 , #114b61);
+}
+
+.widgetbody{
+  background-color: #38b449!important;
+  padding-bottom: 0.5rem!important;  
+  //   padding-top: 0.5rem!important;
+    border-bottom-right-radius: .25rem!important;
+    border-top-right-radius: .25rem!important;text-align: center;
+   color: #fff!important;
+   font-size:12px;font-weight:700;
+}
+.widgethead{
+  background-color: #309c3e;
+color: #fff!important;align-items: center!important;justify-content: center!important;display: flex!important;border-top-left-radius: .25rem!important;border-bottom-left-radius: .25rem!important;
+}
+.align{
+  align-items: stretch!important;
+  margin-bottom: 1.25rem;box-shadow: 0 1px 1px rgb(0, 0 , 5%);align-items: stretch!important;flex-direction: row!important;border: 0!important;position: relative;
+display: flex;
+min-width: 0; word-wrap: break-word;
+background-color: #fff;
+background-clip: border-box;
+border-radius: .25rem;
+height: 6.5rem;
+
+}
+.mt-16{
+  margin-top: 16px;
+}
+.cardborder{
+  box-shadow: 3px 4px 7px 3px gainsboro;
+  border-radius: 2px;
+  border: none;
+  padding:9px;
+}
+
+.heading {
+  font-size: 25px;
+  margin-right: 25px;
+}
+
+.xs{
+  font-size: 15px;
+}
+
+.checked {
+  color: orange;
+}
+
+/* Three column layout */
+.side {
+  float: left;
+  width: 15%;
+  margin-top:10px;
+}
+
+.middle {
+ 
+  float: left;
+  width:100%;
+}
+
+/* Place text to the right */
+.right {
+  text-align: right;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The bar container */
+.bar-container {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+}
+
+/* Individual bars */
+.bar-5 {width: 60%; height: 18px; background-color: #4CAF50;}
+.bar-4 {width: 30%; height: 18px; background-color: #2196F3;}
+.bar-3 {width: 10%; height: 18px; background-color: #00bcd4;}
+.bar-2 {width: 4%; height: 18px; background-color: #ff9800;}
+.bar-1 {width: 15%; height: 18px; background-color: #f44336;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+  .side, .middle {
+    width: 100%;
+  }
+  .right {
+    display: none;
+  }
+}
+
+.card-body{
+  // padding: 10px 10px;
+    flex: 1 1 auto;
+    position: relative;
+}
+input::placeholder{
+  font-family: inherit;
+}
+
+.bg-green{
+  background-color: #006666;
+}
+.Label_badge {
+  position: inherit !important; 
+  top: -6px;
+  right: 10px;
+  font-size: 10px;
+  width: 22px;
+  height: 22px;
+  line-height: 15px;
+  font-weight: bold;
+  color: #006666;
+  padding: 3px;
+  border: 1px solid #999;
+  background: #f2f2f2;
+  border-radius: 50px;
+}

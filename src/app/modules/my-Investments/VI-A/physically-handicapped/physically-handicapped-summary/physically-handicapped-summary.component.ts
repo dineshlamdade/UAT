@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AuthService } from './../../../../auth/auth.service';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FixedDepositsService } from '../../../80C/fixed-deposits/fixed-deposits.service';
@@ -15,6 +16,7 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   @Input() employeeName: string;
   @Input() severity: string;
   @Output() myEvent = new EventEmitter<any>();
+  userName: any;
 
 
   onEditSummary(employeeName: string, severity: string) {
@@ -45,11 +47,11 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   public selectedInstitution: string;
 
   public limit : number;
-  public benifitDeclared: number;
-  public benifitActual: number;
+  public benefitDeclared: number;
+  public benefitActual: number;
+public userInfo : any;
 
-
-  constructor(
+  constructor(private authService: AuthService,
     private service: MyInvestmentsService,
     private physicallyHandicappedService:PhysicallyHandicappedService,
     private numberFormat: NumberFormatPipe,
@@ -59,6 +61,10 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   public ngOnInit(): void {
     // Summary get Call on Page Load
     this.summaryPage();
+    this.userInfo =[]
+    this.userInfo = this.authService.getprivileges();
+    console.log(this.userInfo);
+    this.userName = this.userInfo.UserDetails.userName;
   }
 
   // ---------------------Summary ----------------------
@@ -70,8 +76,8 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
         this.limit = res.data.results[0].limit;
-        this.benifitDeclared = res.data.results[0].benifitDeclared;
-        this.benifitActual = res.data.results[0].benifitActual;
+        this.benefitDeclared = res.data.results[0].benefitDeclared;
+        this.benefitActual = res.data.results[0].benefitActual;
       }
     });
   }
@@ -94,8 +100,8 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
 
  //limit of actual and declared
  onChangelimit() {
-  this.benifitActual = Math.min(this.totalActualAmount, this.limit);
-  this.benifitDeclared = Math.min(this.totalDeclaredAmount, this.limit);
+  this.benefitActual = Math.min(this.totalActualAmount, this.limit);
+  this.benefitDeclared = Math.min(this.totalDeclaredAmount, this.limit);
 }
 }
 

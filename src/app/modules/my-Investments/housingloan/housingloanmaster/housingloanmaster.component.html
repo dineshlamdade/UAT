@@ -231,10 +231,11 @@
 
               <div class="custom-controls-stacked ml-15 mt-20">
                 <!-- <div class="float-right mb-15"> -->
-                  <button type="button" class="btn btn-primary btn-sm " tooltip="Add " (click)="addOwnerType()"><b>
+                  <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10"
+                   tooltip="Add " (click)="addOwnerType()"><b>
                       <i class="fa fa-plus"></i></b> Add
                   </button>&nbsp;&nbsp;&nbsp;
-                  <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel " (click)="cancelOwnerType()"><b>
+                  <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left" tooltip="Cancel " (click)="cancelOwnerType()"><b>
                     <i class="fa fa-plus"></i></b> Cancel
                   </button>
                 <!-- </div> -->
@@ -360,10 +361,10 @@
 
               <div class="custom-controls-stacked ml-15 mt-20">
                 <!-- <div class="float-right mb-15"> -->
-                  <button type="button" class="btn btn-primary btn-sm " tooltip="Add " (click)="addUsageType()"><b>
+                  <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10"  tooltip="Add " (click)="addUsageType()"><b>
                       <i class="fa fa-plus"></i></b> Add
                   </button>&nbsp;&nbsp;&nbsp;
-                  <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel " (click)="cancelUsageType()"><b>
+                  <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left" tooltip="Cancel " (click)="cancelUsageType()"><b>
                     <i class="fa fa-plus"></i></b> Cancel
                   </button>
                 <!-- </div> -->
@@ -613,16 +614,18 @@
 
             <div class="col-12">
               <div class="float-right mb-15">
-                <button type="button" class="btn btn-primary btn-sm " tooltip="Add " (click)="addLoanDetails()"><b>
-                    <i class="fa fa-plus"></i></b> Add New Loan
-                </button>&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-primary btn-sm " tooltip="Cancel " (click)="cancelLoanDetails()"><b>
+                <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add" (click)="addLoanDetails()"><b>
+                  <i class="fa fa-plus"></i></b> Add New Loan</button>&nbsp;&nbsp;&nbsp;
+                <!-- <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"  tooltip="Cancel " (click)="cancelLoanDetails()"><b>
                   <i class="fa fa-plus"></i></b> Cancel
-                </button>
+                </button> -->
+                <button type="button" tooltip="Cancel" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left" (click)="cancelLoanDetails()"><b><i class="fa fa-times"></i></b> Cancel</button>
               </div>
             </div>
           </div>
         </div>
+
+
         <div class="row mt-30">
           <div class="col-12 col-md-12 col-sm-12">
             <div class="table-responsive Custom_Table ">

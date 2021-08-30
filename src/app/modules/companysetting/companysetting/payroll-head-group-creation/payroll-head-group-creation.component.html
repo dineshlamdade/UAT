@@ -1,0 +1,628 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+
+              <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
+                [formGroup]="payrollHeadGroupCreationForm" method="post" novalidate>
+                <!-- (ngSubmit)="addAttributeSelection()" -->
+                <div class="row">
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label">Name</label>
+                    <div class="input-group">
+                      <input type="text" (change)="onChangeEvent($event)" formControlName="headGroupDefinitionName"
+                        class="form-control" placeholder="Enter Name"
+                        [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('headGroupDefinitionName').status == 'INVALID'}">
+                    </div>
+                    <!-- [readonly]="!disabled" -->
+                  </div>
+
+                  <div class="col-sm-6 col-md-4">
+                    <label class="form-label">Description</label>
+                    <div class="input-group">
+                      <input type="text" formControlName="description" class="form-control"
+                        placeholder="Enter Description"
+                        [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('description').status == 'INVALID'}">
+                    </div>
+                    <!-- [readonly]="!disabled" -->
+                  </div>
+
+
+                  <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                    <label class="form-label">Attribute Group</label>
+                    <select (change)="onStatusChange($event);"
+                      [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('attributeNature').status == 'INVALID'}"
+                      name="attributeNature" id="attributeNature" class="form-control  "
+                      formControlName="attributeNature">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let by of AttributeSelectionList" [value]="by.name">
+                        {{by.name}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <br><br><br>
+
+                </div>
+              </form>
+
+              <!-- First POP-UP  -->
+              <ng-template #template1244>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="UploadModalLabel">Payroll Head Group
+                  </h5>
+                  <button type="button" (click)="modalRef1.hide()" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                  <div class="card">
+                    <div class="card-body">
+
+                      <!-- <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
+                                            [formGroup]="payrollHeadGroupCreationForm" (ngSubmit)="addAttributeSelection()"
+                                            #formDirective="ngForm" method="post" novalidate> -->
+
+                      <div class="row">
+                        <div class="col-sm-6 col-md-4">
+                          <label class="form-label">Payroll Head Group Name <span class="textcolor"> {{PHGName}}</span>
+                          </label>
+                          <!-- <div class="input-group">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
+                                                    </div> -->
+                        </div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <label class="form-label">Attribute Group <span class="textcolor"> {{AttGrpName}}
+                            </span></label>
+                          <!-- <div class="input-group">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
+                                                    </div> -->
+                        </div>
+
+
+                        <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                          <label class="form-label">Copy From</label>
+                          <select (change)="getPHGname($event);" name="beast" id="Institution2" class="form-control  ">
+                            <!-- formControlName="attributeNature1" -->
+                            <option>--select----</option>
+                            <option *ngFor="let by of PayrollHeadGroupList" [value]="by.headGroupDefinitionName">
+                              {{by.headGroupDefinitionName}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <!-- <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Attribute Group</label>
+                                                    <div class="input-group">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
+                                                    </div>
+                                                </div> -->
+
+                        <br><br><br>
+                      </div>
+
+                      <!-- </form> -->
+
+                      <div class="row mt-30">
+                        <div class="col-5">
+                          <div class="card">
+                            <div class=""> Total List: {{sourceProducts.length}} &nbsp;&nbsp;Selected
+                              List:{{selectedUser.length}}
+                              <div class="table-responsive Custom_Table">
+                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col" class="font700 wd-20">Head Name</th>
+                                      <th scope="col" class="font700 wd-20">Nature</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <tr *ngFor="let product of sourceProducts; let i = index"
+                                      (click)="RowSelected(product);">
+                                      <td class="wd-10">
+                                        <span tooltip="{{product.standardName}}">{{product.standardName}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{product.headNature}}</span>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-1">
+                          <div class="row">
+                            <div class="col-md-12 mt-10">
+                              <button type="button" class="btn" (click)="lefttablePusg()">
+                                <i class="fa fa-arrow-circle-right fa-2x"></i></button>
+                            </div>
+                            <div class="col-md-12 mt-10">
+                              <button type="button" class="btn" (click)="righttablePusg()">
+                                <i class="fa fa-arrow-circle-left fa-2x"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-6">
+                          <div class="card">
+                            <div class=""> Total List: {{targetProducts.length}} &nbsp;&nbsp;Selected
+                              List:{{selectedUser2.length}}
+                              <div class="table-responsive Custom_Table">
+                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col" class="font700 wd-12">Head Name</th>
+                                      <th scope="col" class="font700 wd-8">Nature</th>
+                                      <th scope="col" class="font700 wd-20">Attributes Assignments</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+
+                                    <tr *ngFor="let product of targetProducts; let i = index"
+                                      (click)="RowSelectedtargetProducts(product);">
+                                      <!-- (click)="RowSelectedtargetProducts(product);" -->
+                                      <td class="wd-10">
+                                        <span tooltip="{{product.standardName}}">{{product.standardName}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span>{{product.headNature}}</span>
+                                      </td>
+                                      <td class="wd-10">
+                                        <span><i class="fa fa-adjust fa-lg" aria-hidden="true"
+                                            (click)="RowSelectedtargetProducts(product);UploadModal2(template12445);modalRef1.hide()"
+                                            data-toggle="modal" data-target="#UploadModal"></i></span>
+                                      </td>
+                                      <!-- <td class="wd-10" >
+                                                                                <span><i class="fa fa-adjust fa-lg" aria-hidden="true" (click)="UploadModal22().then(response => response.json()).catch();" data-toggle="modal" data-target="#UploadModal"></i></span>
+                                                                            </td>                               -->
+                                    </tr>
+                                  </tbody>
+
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" *ngIf="!viewupdateButton" class="btn btn-primary"
+                    (click)="addPayrollHeadGroup();modalRef1.hide()">Save</button>
+                  <button type="button" *ngIf="viewupdateButton" class="btn btn-secondary bg-btn-primary"
+                    (click)="UpdatePHGById();modalRef1.hide()">Update</button>
+                </div>
+              </ng-template>
+
+              <!-- Second POP up -->
+              <ng-template #template12445>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="UploadModalLabel">Payroll Head Group123
+                  </h5>
+                  <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+
+                <div class="modal-body">
+                  <div class="card">
+                    <div class="card-body">
+
+                      <!-- <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
+                                            [formGroup]="payrollHeadGroupCreationForm" (ngSubmit)="addAttributeSelection()"
+                                            #formDirective="ngForm" method="post" novalidate> -->
+
+                      <div class="row">
+                        <div class="col-sm-6 col-md-4">
+                          <label class="form-label">Head Name=> <span class="textcolor">{{HeadName}}</span> </label>
+                          <!-- <div class="input-group">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
+                                                    </div> -->
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                          <label class="form-label">Nature=> <span class="textcolor">{{Nature}}</span> </label>
+                          <!-- <div class="input-group">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
+                                                    </div> -->
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                          <label class="form-label">Payroll Head Group Name=> <span
+                              class="textcolor">{{PHGName}}</span></label>
+                          <!-- <div class="input-group">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
+                                                    </div> -->
+                        </div>
+                        <br>
+                        <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                          <label class="form-label">Copy From</label>
+                          <select (change)="copyFrommPayrollHeadGroup($event);" class="form-control  ">
+                            <option>Not Selected </option>
+                            <option *ngFor="let by of HeadNameList" [value]="by.headMasterId">
+                              {{by.standardName}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <label class="form-label">Copy To</label>
+                          <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect
+                            style="font-size: small;" [settings]="dropdownSettings" [data]="dropdownList"
+                            (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+                            (onDeSelectAll)="onDeSelectAll($event)" (onDeSelect)="onItemDeSelect($event)">
+                            <!--formControlName="serviceName"  [ngClass]="{'is-invalid' : CycleDefinationForm.get('serviceName').status == 'INVALID'}" -->
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <!-- formControlName="attributeNature" -->
+                        <!-- <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Attribute Group</label>
+                                                    <div class="input-group">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
+                                                    </div>
+                                                </div> -->
+
+                        <br><br><br>
+                      </div>
+
+                      <!-- </form> -->
+
+                      <div class="row mt-30">
+                        <div class="col-12">
+                          <div class="card">
+                            <!-- <div class="mb-10">
+                                                            <h3 class="card-title text-cyan font-bold">Summary</h3>
+                                                        </div> -->
+                            <div class="">
+                              <div class="table-responsive Custom_Table">
+                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                  <thead class="thead-dark">
+                                    <tr>
+                                      <th scope="col" class="font700 wd-8">Sr. No.</th>
+                                      <th scope="col" class="font700 wd-20">Attribute</th>
+                                      <th scope="col" class="font700 wd-12">Value</th>
+                                      <th scope="col" class="font700 wd-12">Dependent On</th>
+                                      <th scope="col" class="font700 wd-16">From Date</th>
+                                      <!-- <th scope="col" class="font700 wd-12">Nature</th>
+                                                                            <th scope="col" class="font700 wd-20">Value</th> -->
+                                      <th scope="col" class="font700 wd-16">To Date</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+
+
+                                    <tr *ngFor="let summary of AttGroupList; let i = index">
+                                      <td class="align-center wd-10">
+                                        <span>{{i+1}}</span>
+                                      </td>
+                                      <!-- <td class="wd-10" *ngIf="summary.headGroupId!=null">
+                                                                                <span tooltip="{{summary.code}}">{{summary.attributeMaster.code}}</span>
+                                                                            </td>
+                                                                            <td class="wd-10" *ngIf="summary.headGroupId==null">
+                                                                                <span tooltip="{{summary.code}}">{{summary.code}}</span>
+                                                                            </td> -->
+
+                                      <td class="wd-10">
+                                        <span tooltip="{{summary.code}}">{{summary.code}}</span>
+                                      </td>
+
+                                      <td class="wd-10"
+                                        *ngIf="summary.attributeNature!='Formula' && summary.attributeNature!='List' && summary.attributeNature!='input'">
+                                        <input type="text" [(ngModel)]="summary.value" class="form-control"
+                                          placeholder="Enter Value">
+                                      </td>
+
+                                      <td class="wd-10" *ngIf="summary.attributeNature=='input'">
+                                        <input type="text" [(ngModel)]="summary.value" class="form-control"
+                                          [readonly]="true" placeholder="Enter Value">
+                                      </td>
+
+                                      <td class="wd-10"
+                                        *ngIf="summary.attributeNature=='Formula' && summary.attributeNature!='input'">
+                                        <!-- <input type="text" [(ngModel)]="summary.value"
+                                                                                class="form-control"
+                                                                                placeholder="Enter Value"> -->
+                                        <select class="form-control  " [(ngModel)]="summary.value">
+                                          <option>Not Selected</option>
+                                          <option *ngFor="let by of FormulaArray" [value]="by.formulaName">
+                                            {{by.formulaName}}
+                                          </option>
+                                        </select>
+                                      </td>
+
+
+                                      <td class="wd-10" *ngIf="summary.attributeNature=='List'">
+                                        <select class="form-control  " [(ngModel)]="summary.value">
+                                          <option *ngFor="let by of summary.options" [value]="by.attributeOptionValue">
+                                            {{by.attributeOptionValue}}
+                                          </option>
+                                        </select>
+                                      </td>
+
+                                      <!-- <td class="wd-10" *ngIf="summary.attributeNature=='SDM'">
+                                                                                <select
+                                                                                name="beast" id="Institution2"
+                                                                                class="form-control  "
+                                                                                [(ngModel)]="summary.value"
+                                                                               >
+                                                                                <option *ngFor="let by of SDMArray" [value]="by.attributeOptionValue">
+                                                                                    {{by.attributeOptionValue}}
+                                                                                </option>
+                                                                                </select>
+                                                                            </td>
+
+                                                                            <td class="wd-10" *ngIf="showflag">
+                                                                                <span>{{summary.attributeOptionValue}}</span>
+                                                                            </td> -->
+
+                                      <td class="wd-10">
+                                        <input type="text" [(ngModel)]="summary.dependentOn" class="form-control"
+                                          placeholder="Enter Dependent On">
+                                      </td>
+
+                                      <td class="wd-10">
+                                        <input type="text" (ngModelChange)="OntoDateChange($event)"
+                                          [(ngModel)]="summary.fromDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                          data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                          bsDatepicker>
+                                      </td>
+                                      <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                                                                                    class="alert alert-danger">
+
+                                                                                <div *ngIf="name.errors.required">
+                                                                                    Name is required.
+                                                                                </div>
+                                                                            </div> -->
+
+                                      <td class="wd-10">
+                                        <input type="text" (ngModelChange)="OntoDateChangeEvent($event)"
+                                          [(ngModel)]="summary.toDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                          [minDate]="minDate1" data-provide="datepicker" data-date-autoclose="true"
+                                          class="form-control" bsDatepicker>
+                                      </td>
+                                      <!-- (ngModelChange)="save(summary)"  -->
+
+                                      <!-- <td class="wd-10">
+                                                                                <span>{{summary.attributeNature}}</span>
+                                                                            </td>
+                                                                            <td class="wd-10">
+                                                                                <span>{{summary.businessCycleDefinition.businessYearDefinition.fromDate}}</span>
+                                                                            </td>
+                                                                            <td class="wd-10">
+                                                                                <span *ngFor="let value of summary.optionList">
+                                                                                    {{value.optionValue}},
+                                                                                </span>
+                                                                                <span *ngIf="summary.optionList.length-1>summary.optionList.length">,</span>
+                                                                            </td> -->
+
+                                      <!-- <td>
+
+                                                                                <button type="button"
+                                                                                    class="btn btn-icon" title="Edit"
+                                                                                    (click)="GetAttributeSelectionById(summary.id)"                                                              >
+                                                                                    <i class="fa fa-edit"></i></button>
+
+                                                                                <button type="button"
+                                                                                    class="btn btn-icon" title="View"
+                                                                                    (click)="GetAttributeSelectionByIdDisable(summary.id)">
+                                                                                    <i class="fa fa-eye"></i></button>
+
+                                                                                <button type="button"
+                                                                                    *ngIf="!summary.used"
+                                                                                    (click)="DeleteAttributeSelection(summary.id)"
+                                                                                    class="btn btn-icon js-sweetalert"
+                                                                                    title="Delete"
+                                                                                    data-type="confirm"><i
+                                                                                        class="fa fa-trash-o"></i></button>
+                                                                            </td>                                                       -->
+                                    </tr>
+                                  </tbody>
+                                </table>
+
+
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <!-- <div class="col-sm-6 col-md-3">
+                                                <label class="form-label">Copy To</label>
+                                                <ng-multiselect-dropdown [placeholder]="'None Selected'"
+                                                    #multiSelect style="font-size: small;"
+                                                    [settings]="dropdownSettings" [data]="dropdownList"
+                                                    (onSelect)="onItemSelect($event)"
+                                                    (onSelectAll)="onSelectAll($event)"
+                                                    (onDeSelectAll)="onDeSelectAll($event)"
+                                                    (onDeSelect)="onItemDeSelect($event)"
+                                                    >
+                                                </ng-multiselect-dropdown>
+                                            </div> -->
+
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+                <div class="modal-footer">
+                  <!-- <button type="button" *ngIf="viewSaveButton" (click)="modalRef.hide()"
+                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                                            tooltip="Reset"><b><i class="fa fa-refresh"
+                                            aria-hidden="true"></i></b>
+                                            Reset</button>                                        -->
+                  <button type="button" *ngIf="viewSaveButton"
+                    (click)="saveAtttibuteAssign(AttGroupList);modalRef.hide();modalRef1.hide()"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
+                        class="fa fa-floppy-o"></i></b>
+                    Save</button>
+
+                  <button type="button" *ngIf="!viewSaveButton"
+                    (click)="UpdateAtttibuteAssign(AttGroupList);modalRef.hide();modalRef1.hide()"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
+                        class="fa fa-floppy-o"></i></b>
+                    Update</button>
+
+                  <!-- *ngIf="!viewCancelButton"
+                                            [ngClass]="{'disabled-btn-bg-green' : payrollHeadGroupCreationForm.invalid,'btn-bg-green': !payrollHeadGroupCreationForm.invalid}" -->
+
+
+                  <button type="button" *ngIf="viewSaveButton && HeadNameList.length>0"
+                    (click)="SaveNext(AttGroupList);"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"><b><i
+                        class="fa fa-floppy-o"></i></b>
+                    Save & Next</button>
+
+                  <button type="button" *ngIf="!viewSaveButton && HeadNameList.length>0" (click)="Next();"
+                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"><b><i
+                        class="fa fa-floppy-o"></i></b>
+                    Next</button>
+
+                </div>
+              </ng-template>
+
+
+              <div class="row mt-15">
+                <div class="col-12">
+                  <div class="float-right mb-15">
+                    <button type="button" (click)="UploadModalYesNo(template1244);" *ngIf="!viewupdateButton"
+                      data-toggle="modal" data-target="#UploadModal" [disabled]="payrollHeadGroupCreationForm.invalid"
+                      [ngClass]="{'disabled-btn-bg-green' : payrollHeadGroupCreationForm.invalid,'btn-bg-green': !payrollHeadGroupCreationForm.invalid}"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
+                          class="fa fa-floppy-o"></i></b>
+                      Create Payroll Head Group(PHG)</button>
+
+                    <!-- *ngIf="!viewCancelButton"
+                [ngClass]="{'disabled-btn-bg-green' : payrollHeadGroupCreationForm.invalid,'btn-bg-green': !payrollHeadGroupCreationForm.invalid}" -->
+
+
+                    <button type="button" *ngIf="viewupdateButton" (click)="UploadModalYesNo(template1244);"
+                      data-toggle="modal" data-target="#UploadModal"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"><b><i
+                          class="fa fa-floppy-o"></i></b>
+                      Update Payroll Head Group(PHG)</button>
+
+
+                    <button type="button" (click)="CancelAttributeCreation()" *ngIf="viewCancelButton"
+                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                      tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                      Cancel</button>
+
+                    <button type="button" (click)="resetAttributeSelection()" *ngIf="!viewCancelButton"
+                      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                      tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                      Reset</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- </form> -->
+
+
+
+
+              <div class="row mt-30">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="mb-10">
+                      <h3 class="card-title text-cyan font-bold">Summary</h3>
+                    </div>
+                    <div class="">
+                      <div class="table-responsive Custom_Table">
+                        <table class="table table-striped table-hover table-bordered m-b-0">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col" class="font700 wd-8">Sr. No.</th>
+                              <!-- <th scope="col" class="font700 wd-12">Attribute Group Name</th> -->
+                              <th scope="col" class="font700 wd-20">Payroll Head Group Name</th>
+                              <th scope="col" class="font700 wd-20">Payroll Head Group Description</th>
+                              <!-- <th scope="col" class="font700 wd-12">Nature</th>
+                                                        <th scope="col" class="font700 wd-20">Value</th>                                                                        -->
+                              <th scope="col" class="font700 wd-12">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngFor="let summary of PayrollHeadGroupList; let i = index">
+                              <td class="align-center wd-10">
+                                <span>{{i+1}}</span>
+                              </td>
+                              <td class="wd-10">
+                                <span>{{summary.headGroupDefinitionName}}</span>
+                              </td>
+                              <td class="wd-10">
+                                <span>{{summary.description}}</span>
+                              </td>
+
+                              <!-- <td class="wd-10">
+                                                            <span>{{summary.attributeNature}}</span>
+                                                        </td>
+                                                        <td class="wd-10">
+                                                            <span>{{summary.businessCycleDefinition.businessYearDefinition.fromDate}}</span>
+                                                        </td>
+                                                        <td class="wd-10">
+                                                            <span *ngFor="let value of summary.optionList">
+                                                                {{value.optionValue}},
+                                                            </span>
+                                                            <span *ngIf="summary.optionList.length-1>summary.optionList.length">,</span>
+                                                        </td> -->
+
+                              <td>
+                                <!-- <button type="button"
+                                                                class="btn btn-icon" title="Extend">
+                                                                <i class="fa fa-arrows-alt"
+                                                                    (click)="UploadModal1(template1);getBussinessyear(summary.businessYear,summary.businessCycleDefinition.id)"
+                                                                    data-toggle="modal"
+                                                                    data-target="#UploadModal"></i></button> -->
+
+                                <button type="button" class="btn btn-icon" title="Edit"
+                                  (click)="GetPHGByIdDisable(summary.headGroupDefinitionId)">
+                                  <i class="fa fa-edit"></i></button>
+
+                                <!-- <button type="button"
+                                                                class="btn btn-icon" title="View"
+                                                                (click)="GetAttributeSelectionByIdDisable(summary.id)">
+                                                                <i class="fa fa-eye"></i></button> -->
+
+                                <button type="button" *ngIf="!summary.used"
+                                  (click)="DeletePayrollHeadGroup(summary.headGroupDefinitionId)"
+                                  class="btn btn-icon js-sweetalert" title="Delete" data-type="confirm"><i
+                                    class="fa fa-trash-o"></i></button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

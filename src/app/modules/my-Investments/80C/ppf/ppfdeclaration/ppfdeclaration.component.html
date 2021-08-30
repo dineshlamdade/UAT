@@ -122,7 +122,7 @@
                       type="checkbox"
                       class="custom-control-input"
                       [ngModel]="isCheckAll"
-                      [disabled]="canEdit && isDisabled"
+                      [disabled]="isDisabled"
                       name="select"
                       value="isCheckAll{{ j }}"
                       (change)="checkUncheckAll(item, j)"
@@ -133,16 +133,17 @@
                 <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
                 </th>
-                <th rowspan="2" class="wd-4 font700">
+                <!-- <th rowspan="2" class="wd-4 font700">
                   <span tooltip="Electronic Clearing Service">ECS</span>
-                </th>
+                </th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -165,14 +166,15 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
+                <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
-                <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-15 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -203,7 +205,7 @@
                         enableCheckboxFlag = j
                       "
                       class="custom-control-input"
-                      value="option{{ summary.licTransactionId }}"
+                      value="option{{ summary.investmentGroup1TransactionId }}"
                     />
                     <span class="custom-control-label"></span>
                   </label>
@@ -220,7 +222,7 @@
                         enableCheckboxFlag = j
                       "
                       class="custom-control-input"
-                      value="option{{ summary.licTransactionId }}"
+                      value="option{{ summary.investmentGroup1TransactionId }}"
                     />
                     <span class="custom-control-label"></span>
                   </label>
@@ -231,7 +233,8 @@
                     class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)"
                     [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      ">
                     "
                   >
                     <option [ngValue]="0">Select Previous Emp.</option>
@@ -246,9 +249,9 @@
                     </option>
                   </select>
                 </td>
-                <td>
+                <!-- <td>
                   <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
-                </td>
+                </td> -->
                 <td>
                   <div class="custom_icon_badge">
                     <input
@@ -279,8 +282,9 @@
                     <input
                     *ngIf = "item.frequency !=='As & When'"
                       type="text"
-                      id="declaredAmount{{ summary.licTransactionId }}"  onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="declaredAmount{{ summary.licTransactionId }}"
+                      id="declaredAmount{{ summary.investmentGroup1TransactionId }}"  
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
+                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}"
                       [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right"
                       (change)="onDeclaredAmountChange(summary, i, j)"
@@ -302,8 +306,8 @@
                   <input
                     type="text"
                     [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate"
-                    [maxDate]="financialYearEndDate"
+                   
+                    [maxDate]="today"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     data-provide="datepicker"
                     data-date-autoclose="true"
@@ -318,12 +322,14 @@
                     bsDatepicker
                   />
                 </td>
+                <!-- [minDate]="financialYearStartDate" -->
                 <td>
                   <input
 
                     type="text"
-                    id="actualAmount{{ summary.licTransactionId }}"  onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.licTransactionId }}"
+                    id="actualAmount{{ summary.investmentGroup1TransactionId }}"  
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
+                    name="actualAmount{{ summary.investmentGroup1TransactionId }}"
                     [disabled]="initialArrayIndex[j] > i && item.frequency !=='As & When'"
                     [(ngModel)]="summary.actualAmount"
                     (change)="onActualAmountChange(summary, i, j)"
@@ -352,8 +358,9 @@
                   </span>
                 </td>
                 <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}">
-                    {{ summary.proofSubmissionId }}
+                  <span tooltip="{{ summary.proofSubmissionId }}" *ngIf="summary.transactionStatus === 'Submitted'">
+                    <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+                    <!-- {{ summary.proofSubmissionId }} -->
                   </span>
                 </td>
                 <td class="text-orange font700">
@@ -402,11 +409,8 @@
               </tr>
               <tr>
                 <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
-                <td
-                  *ngIf="previousEmployeeList?.length"
-                  class="bg-lightgray font-18 font700 align-right"
-                ></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
+                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span
                     tooltip=" {{ item.declarationTotal | number: '1.2-2' }}"
@@ -603,7 +607,7 @@
                     <td>
                       <span>
                         <input
-                          type="text"
+                          type="text" onkeypress="return /[0-9]/i.test(event.key)"
                           class="form-control align-right"
                           [(ngModel)]="globalSelectedAmount"
                           [disabled]="true"
@@ -652,10 +656,9 @@
           (click)="
             receiptAmount < globalSelectedAmount
               ? sweetalertError(
-                  'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
-                )
+                  'Receipt Amount should be equal or greater than Actual Amount of Selected lines')
               : upload()
-          "
+"
           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
         >
           <b><i class="fa fa-floppy-o"></i></b> Save
@@ -753,10 +756,9 @@
                   <td>
                     <div class="custom_Label_badge">
                       <button
-                        class="btn bg-color-lightgray text-000"
-                        (click)="
-                          UploadedDocumentModal1(template1, documentIndex)
-                        "
+                      class="btn btn-bg-green text-white"
+                      
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
                       >
                         Documents
                       </button>
@@ -765,8 +767,8 @@
                       }}</span>
                     </div>
                   </td>
-                  <td>
-                    <i
+                 
+                    <!-- <i 
                       class="fa fa-eye font-16 text-blue cursor-pointer"
                       (click)="
                         declarationEditUpload(
@@ -777,20 +779,20 @@
                       "
                       tooltip="View"
                     ></i
-                    >&nbsp;&nbsp;
-<!--                    <i-->
-<!--                      class="fa fa-download font-16 text-blue cursor-pointer"-->
-<!--                      tooltip="Download"-->
-<!--                    ></i>-->
-                    <div *ngFor="let doc of documentSummary.documentDetailList" hidden>
+                    >&nbsp;&nbsp; -->
+<!--                    <i
+                   class="fa fa-download font-16 text-blue cursor-pointer"
+                    tooltip="Download"
+                   ></i>-->
+                     <!-- <div *ngFor="let doc of documentSummary.documentDetailList" hidden>
                       <iframe
                         style="height: 100vh; width: 100%; display: block"
                         [src]="doc.blobURI"
                         provider="google"
                       ></iframe>
-                    </div>
-                    &nbsp;&nbsp;
-                    <i *ngIf="canEdit"
+                    </div> -->
+                    <!-- &nbsp;&nbsp;
+                    <i 
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
                         declarationEditUpload(
@@ -801,8 +803,53 @@
                       "
                       tooltip="Edit"
                     ></i>
-                  </td>
+                  </td> -->
+                  <td>
+                  <i class="fa fa-eye font-16 text-blue cursor-pointer" 
+                  (click)="
+                  declarationEditUpload(
+                      template2,
+                      documentSummary.proofSubmissionId
+                    );
+                    viewDocumentDetail = false
+                  " tooltip="view"></i> 
+                  &nbsp;&nbsp;
+                   
+                  <i *ngIf="canEdit" class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
+                    declarationEditUpload(
+                        template2,
+                        documentSummary.proofSubmissionId
+                      );
+                      viewDocumentDetail = true
+                    " tooltip="Edit"></i>
+                    </td>
                 </tr>
+                  <!-- <td>
+                    <i *ngIf="canEdit"
+                    class="fa fa-eye font-16 text-blue cursor-pointer"
+                    (click)="
+                    declarationEditUpload(
+                        template2,
+                        documentSummary.proofSubmissionId
+                      );
+                      viewDocumentDetail = false
+                    "
+                    tooltip="view"
+                  ></i>
+                  &nbsp;&nbsp;
+                    <i *ngIf="canEdit"
+                      class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                      (click)="
+                      declarationEditUpload(
+                          template2,
+                          documentSummary.proofSubmissionId
+                        );
+                        viewDocumentDetail = true
+                      "
+                      tooltip="Edit"
+                    ></i>
+                  </td> -->
+               
                 <!-- <tr *ngFor="let policyNo of documentSummary.licMasterList">
               <td>{{ policyNo.policyNo }}</td>
               <td>{{ documentSummary.receiptAmount | number: "1.2-2" }}</td>
@@ -886,7 +933,7 @@
         </div>
         <div class="col-3 pr-0">
           <label
-            class="font-12 text-ellipsis mt-1"
+          placement="left" class= "font-12 text-ellipsis mt-1"
             tooltip="{{ item.policyNo }}"
           >
             {{ item.policyNo }}</label
@@ -897,7 +944,7 @@
         </div>
         <div class="col-2">
           <label
-            class="font-12 text-ellipsis mt-1"
+          placement="left" class="font-12 text-ellipsis mt-1"
             tooltip="{{ item.policyholdername }}"
           >
             {{ item.policyholdername }}</label
@@ -908,7 +955,7 @@
         </div>
         <div class="col-2">
           <label
-            class="font-12 text-ellipsis mt-1"
+          placement="left" class="font-12 text-ellipsis mt-1"
             tooltip="{{ item.frequency }}"
           >
             {{ item.frequency }}</label
@@ -924,16 +971,16 @@
                   <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
                   </th>
-                  <th rowspan="2" class="wd-4 font700">
+                  <!-- <th rowspan="2" class="wd-4 font700">
                     <span tooltip="Electronic Clearing Service">ECS</span>
-                  </th>
+                  </th> -->
                   <th rowspan="2" class="wd-11 font700">Due Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-8">PS ID</th>
                   <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -943,14 +990,14 @@
               </thead>
               <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
                 <tr>
-                  <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
+                  <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                   <th rowspan="2" class="wd-11 font700">Due Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
-                  <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                  <th rowspan="2" class="wd-8">PS ID</th>
                   <th rowspan="2" class="wd-15 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -970,22 +1017,20 @@
                     <select
                       name="Previous Employer Name"
                       class="form-control custom-select"
-                      (change)="updatePreviousEmpId($event, i, j)"
-                      [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
-                    >
+                      (change)="updatePreviousEmpIdInEditCase($event, i, j)"
+                      [disabled]="summary.transactionStatus === 'Submitted'">
                       <option [ngValue]="0">Select Previous Emp.</option>
                       <option
                         *ngFor="let previousEmployee of previousEmployeeList"
                         [value]="previousEmployee.value"
-                        [selected]="previousEmployee.value == summary.previousEmployerId"
-                      >
+                        [selected]="previousEmployee.value == summary.previousEmployerId">
                         {{ previousEmployee.label }}
                       </option>
                     </select>
                   </td>
-                  <td>
+                  <!-- <td>
                     <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
-                  </td>
+                  </td> -->
                   <td>
                     <div class="custom_icon_badge">
                       <input
@@ -995,8 +1040,8 @@
                         [minDate]="financialYearStartDate"
                         [maxDate]="financialYearEndDate"
                         [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
-                        [disabled]="initialArrayIndex[j] > i || summary.isECS === 1"
-                        (ngModelChange)="summary.dueDate = $event.toLocaleDateString();onDueDateChange(summary, i, j)"
+                        [disabled]="!summary.additionalPayment"
+                        (ngModelChange)="summary.dueDate = $event.toLocaleDateString();onDueDateChangeInEditCase(summary, i, j)"
                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                         data-provide="datepicker"
                         bsDatepicker
@@ -1008,44 +1053,79 @@
                     <div class="custom_icon_badge">
                       <input
                         type="text"
-                        id="declaredAmount{{ summary.licTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
+                        id="declaredAmount{{ summary.investmentGroup1TransactionId }}" 
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
+                        name="declaredAmount{{ summary.investmentGroup1TransactionId }}"
+                        [(ngModel)]="summary.declaredAmount"
+                        class="form-control align-right"
+                        (change)="onDeclaredAmountChangeInEditCase(summary, i, j)"
+                        [disabled]="!summary.additionalPayment"
+                      />
+                    </div>
+                  </td>
+                  <!-- <td>
+                    <div class="custom_icon_badge">
+                      <input
+                        type="text"
+                        id="declaredAmount{{ summary.licTransactionId }}" 
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{ summary.licTransactionId }}"
                         [(ngModel)]="summary.declaredAmount"
                         class="form-control align-right"
                         (change)="onDeclaredAmountChange(summary, i, j)"
                         [disabled]="initialArrayIndex[j] > i"
                       />
+                       </div>
+                         </td> -->
                       <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                                 (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                                 class=" fa fa-files-o cursor-pointer"></i> </span> -->
-                    </div>
-                  </td>
+                   
+                
                   <td>
                     <input
                       type="text"
                       [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                      [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate"
+                     
+                      [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
                       data-date-autoclose="true"
-                      (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();setDateOfPayment(summary, i, j)"
-                      [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
+                      (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
+                      setDateOfPaymentInEditCase(summary, i, j)" 
+                      [disabled]="summary.transactionStatus=='Approved' || !viewDocumentDetail"
                       class="form-control"
                       bsDatepicker
                     />
                   </td>
+                  <!-- [minDate]="financialYearStartDate" -->
+                  <!-- [disabled]="isDisabled || summary.transactionStatus === 'Submitted'" -->
+                      
+                  <!-- <td>
+                    <input
+                      type="text"
+                      id="actualAmount{{ summary.licTransactionId }}" 
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
+                      name="actualAmount{{ summary.licTransactionId }}"
+                      [disabled]="!summary.additionalPayment=='Approved'"
+                      [(ngModel)]="summary.actualAmount"
+                    (change)="onActualAmountChangeInEditCase(summary, i, j)"
+                      class="form-control align-right"
+                    />
+                  </td> -->
                   <td>
                     <input
                       type="text"
-                      id="actualAmount{{ summary.licTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="actualAmount{{ summary.licTransactionId }}"
-                      [disabled]="initialArrayIndex[j] > i"
+                      id="actualAmount{{ summary.investmentGroup1TransactionId }}" 
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
+                      name="actualAmount{{ summary.investmentGroup1TransactionId }}"
+                      [disabled]="!summary.additionalPayment=='Approved' || !viewDocumentDetail"
                       [(ngModel)]="summary.actualAmount"
-                      (change)="onActualAmountChange(summary, i, j)"
+                      (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
                     />
                   </td>
+                  <!-- [disabled]="initialArrayIndex[j] > i" -->
                   <td>
                     <input
                       type="text"
@@ -1068,10 +1148,12 @@
                     </span>
                   </td>
                   <td>
-                    <span tooltip="{{ summary.proofSubmissionId }}">
-                      {{ summary.proofSubmissionId }}
-                    </span>
-                  </td>
+                    <span tooltip="{{ summary.proofSubmissionId }}" 
+                    *ngIf="summary.transactionStatus === 'Submitted'">
+  <i class="fa fa-clipboard font-16 text-cyan" aria-hidden="true"></i>
+   <!-- {{ summary.proofSubmissionId }} -->
+   </span>
+    </td>
                   <td class="text-orange font700">
                     <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
@@ -1122,43 +1204,35 @@
                     *ngIf="previousEmployeeList?.length"
                     class="bg-lightgray font-18 font700 align-right"
                   ></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+               
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span
-                      tooltip=" {{ item.declarationTotal | number: '1.2-2' }}"
-                      class="padding-right-12"
-                    >
+                    <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
                       {{ item.declarationTotal | number: "1.2-2" }}
                     </span>
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span
-                      tooltip="{{ item.actualTotal | number: '1.2-2' }}"
-                      class="padding-right-12"
-                    >
+                    <span tooltip="{{ item.actualTotal | number: '1.2-2' }}" class="padding-right-12">
                       {{ item.actualTotal | number: "1.2-2" }}
                     </span>
                   </td>
+                
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span
-                      tooltip=" {{ item.totalRejectedAmount | number: '1.2-2' }}"
-                      class="padding-right-12"
-                    >
+                    <span tooltip=" {{
+                      item.totalRejectedAmount | number: '1.2-2'
+                    }}" class="padding-right-12">
                       {{ item.totalRejectedAmount | number: "1.2-2" }}
                     </span>
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span
-                      tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}"
-                      class="padding-right-12"
-                    >
+                    <span tooltip="{{ item.totalApprovedAmount | number: '1.2-2' }}" class="padding-right-12">
                       {{ item.totalApprovedAmount | number: "1.2-2" }}
                     </span>
                   </td>
                   <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700"></td>
+                  <!-- <td class="bg-lightgray font-18 font700"></td> -->
                 </tr>
               </tbody>
             </table>
@@ -1176,39 +1250,33 @@
           >
             <tbody>
               <tr>
-                <td class="bg-gray font-18 font700 wd-14">Grand Total</td>
+                <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
                 <!-- <td class="bg-gray font-18 font700 align-right wd-2"></td> -->
-                <td class="bg-gray font-18 font700 align-right wd-10"></td>
+                <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span
-                    class="padding-right-12"
-                    tooltip="{{ grandDeclarationTotalEditModal | number: '1.2-2' }}"
-                  >
+                  <span class="padding-right-12" placement="left" tooltip="{{
+                    grandDeclarationTotalEditModal | number: '1.2-2'
+                  }}">
                     {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span
-                    class="padding-right-12"
-                    tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}"
-                  >
+                  <span class="padding-right-12" tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}">
                     {{ grandActualTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span
-                    class="padding-right-12"
-                    tooltip=" {{ grandRejectedTotalEditModal | number: '1.2-2' }}"
-                  >
+                  <span class="padding-right-12" placement="left" tooltip=" {{
+                    grandRejectedTotalEditModal | number: '1.2-2'
+                  }}">
                     {{ grandRejectedTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span
-                    class="padding-right-12"
-                    tooltip="{{ grandApprovedTotalEditModal | number: '1.2-2' }}"
-                  >
+                  <span class="padding-right-12" placement="left" tooltip="{{
+                    grandApprovedTotalEditModal | number: '1.2-2'
+                  }}">
                     {{ grandApprovedTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
@@ -1226,37 +1294,32 @@
               <tr>
                 <td class="bg-gray font-18 font700 wd-8">Grand Total</td>
                 <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
-                <td class="bg-gray font-18 font700 align-right wd-11"></td>
+                <td class="bg-gray font-18 font700 align-right wd-7"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
-                  <span
-                    class="padding-right-12"
-                    tooltip="{{ grandDeclarationTotalEditModal | number: '1.2-2' }}"
-                  >
+                  <span class="padding-right-12" placement="left" tooltip="{{
+                    grandDeclarationTotalEditModal | number: '1.2-2'
+                  }}">
                     {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd_9">
-                  <span
-                    class="padding-right-12"
-                    tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}"
-                  >
+                  <span class="padding-right-12" placement="left"
+                    tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}">
                     {{ grandActualTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd_8">
-                  <span
-                    class="padding-right-12"
-                    tooltip=" {{ grandRejectedTotalEditModal | number: '1.2-2' }}"
-                  >
+                  <span class="padding-right-12" placement="left" tooltip=" {{
+                    grandRejectedTotalEditModal | number: '1.2-2'
+                  }}">
                     {{ grandRejectedTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd_8">
-                  <span
-                    class="padding-right-12"
-                    tooltip="{{ grandApprovedTotalEditModal | number: '1.2-2' }}"
-                  >
+                  <span class="padding-right-12" placement="left" tooltip="{{
+                    grandApprovedTotalEditModal | number: '1.2-2'
+                  }}">
                     {{ grandApprovedTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
@@ -1299,7 +1362,7 @@
             </div>
 
             <div *ngIf="editfilesArray.length > 0" class="fileuploadbox">
-              Selected Files
+              <span class="text-purple font-14 font700">Selected Files</span>
               <label
                 *ngFor="let item of editfilesArray; let index = index"
                 class="filelabeldisplay"
@@ -1345,7 +1408,7 @@
       <div class="col-md-12">
         <div class="row clearfix mt-10">
           <div class="col-md-12" *ngFor="let doc of urlArray">
-            <div class="labelbox" tooltip="{{ doc.fileName }}">
+            <div class="labelbox" placement="left" tooltip="{{ doc.fileName }}">
               <i class="fa fa-paperclip text-orange"></i> &nbsp;
               {{ doc.fileName }}
             </div>
@@ -1354,13 +1417,18 @@
                  <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)'></i>
                  </div> -->
         </div>
-        <div class="row mt-10 mb-10">
+        </div>
+        </div>
+        </div>
+        
+        <!-- <div class="row mt-10 mb-10">
           <div class="col-md-12">
-            <div class="float-right">
+            <div class="float-right"> -->
+              <div class="modal-footer">
               <button
                 type="button"
                 tooltip="View Document"
-                (click)="modalRef.hide(); docViewer(template3)"
+                (click)="modalRef.hide(); docViewer(template3,urlArray)"
                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
               >
                 <b><i class="fa fa-eye"></i></b> View
@@ -1369,18 +1437,18 @@
               <button
                 *ngIf="viewDocumentDetail"
                 type="button"
-                tooltip="View Document"
+                tooltip="Save Document"
                 (click)="modalRef.hide(); uploadUpdateTransaction()"
                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
               >
-                <b><i class="fa fa-copy"></i></b> Save
+                <b><i class="fa fa-save"></i></b> Save
               </button>
             </div>
+          <!-- </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+          </div>
+          </div>
+          </div> -->
   <!-- <div class="modal-footer">
      <button type="button" class="btn btn-primary">Save</button>
      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
@@ -1388,6 +1456,8 @@
         class="fa fa-save"></i></b> Save</button>
      </div> -->
 </ng-template>
+
+<!-- dOC VIEWER -->
 <ng-template #template3>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>

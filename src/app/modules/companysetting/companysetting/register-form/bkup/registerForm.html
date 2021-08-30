@@ -1,0 +1,784 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+
+<div class="page">
+    <app-header></app-header>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="section-body mt-3">
+            <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+                <div class="tabview-contents">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body p-0">
+                                    <div class="register-part" *ngIf="registerPost">
+                                    <div class="col-12">
+                                        <fieldset>
+                                            <legend>Registration Details</legend>
+                                            <div class="row">
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Template Name</label>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="regTemplateName"
+                                                            placeholder="Template name"
+                                                            [ngClass]="{'is-invalid': submitted && f.regTemplateName.errors}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Description</label>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="description" placeholder="Description"
+                                                            [ngClass]="{'is-invalid' : submitted && f.description.errors}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Status</label>
+                                                        <label class="custom-control custom-checkbox checkbox-  center">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                name="select" formControlName="isActive"
+                                                                (change)="activeRemark($event.target.checked)" checked>
+                                                            <span class="custom-control-label">Active</span>
+                                                            
+                                                        </label>    
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Remark</label>
+                                                        <textarea type="text" formControlName="remark" class="form-control" rows="1"
+                                                            placeholder="Remark..." ></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+
+                                        <h3 class="font-14 text-purple font-bold mt-3">Field List</h3>
+                                        <div class="row ">
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-3 mb-2">
+                                                <div class="table-responsive Custom_Table my-registertable">
+                                                    <table class="table table-striped table-hover table-bordered m-b-0">
+                                                        <thead class="thead-dark">
+
+                                                            <tr>
+                                                                <th>Enable</th>
+                                                                <th>Field Name</th>
+                                                                <th>Display Name</th>
+
+                                                                <th>Mandatory</th>
+                                                                <th>Dropdown Values</th>
+                                                                <th>Claim Form</th>
+                                                                <th>Sequence</th>
+                                                                <!-- <th>nature</th> -->
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let getfields of registersList; index as i">
+                                                                <td> <label
+                                                                        class="custom-control custom-checkbox checkbox-  center">
+                                                                        <input type="checkbox"
+                                                                            (change)="checkModel(i, $event.target.checked)"
+                                                                            class="custom-control-input"
+                                                                            [checked]="getfields.enable" name="select"
+                                                                            [value]="getfields.srno" />
+                                                                        <span class="custom-control-label"></span>
+                                                                    </label></td>
+                                                                <td>{{getfields.fieldName}}</td>
+                                                                <td><input type="text" class="form-control"
+                                                                        [disabled]="!getfields.enable"
+                                                                        [value]="getfields.displayName"
+                                                                        (change)="displayChange(i, $event.target.value)">
+                                                                </td>
+
+                                                                <td>
+                                                                    <select name="" class="form-control custom-select"
+                                                                        [disabled]="!getfields.enable"
+                                                                        (change)="mindatoryChange(i, $event.target.value)">
+                                                                        <option value="false">No</option>
+                                                                        <option value="true">Yes</option>
+                                                                       
+                                                                    </select>
+
+                                                                </td>
+                                                                <td [disabled]="!getfields.enable">
+                                                                    {{getfields.dropDownValues}}
+                                                                    <i *ngIf="getfields.nature === 'List' && getfields.enable"
+                                                                        class="fa fa-caret-square-o-down text-blue  float-right"
+                                                                        tooltip="Add List"
+                                                                        (click)="modalRegistration2(template2, getfields.srno)"
+                                                                        aria-hidden="true"></i>
+                                                                </td>
+                                                                <td> <select name="" class="form-control custom-select"
+                                                                        [disabled]="!getfields.enable"
+                                                                        (change)="claimChange(i, $event.target.value)">
+                                                                        <option value="false">No</option>
+                                                                        <option value="true">Yes</option>
+                                                                       
+                                                                    </select>
+                                                                </td>
+                                                                <td>{{getfields.sequence}}</td>
+                                                                <!-- <td>{{getfields.nature}}</td> -->
+                                                                <!-- <td><select name="" class="form-control custom-select"
+                                                                        [disabled]="!getfields.enable"
+                                                                        (change)="sequencyChange($event.target.value)">
+                                                                        <option
+                                                                            *ngFor="let sequences of getfields.length"
+                                                                            [value]="sequence">{{getfields.sequence}}
+                                                                        </option>
+
+                                                                    </select></td> -->
+
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+
+
+                                            </div>
+
+
+
+                                            <div class="col-12">
+
+                                                <h3 class="font-14 text-purple font-bold mt-3">Summary </h3>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                        <div class="form-group">
+                                                            <div class="table-responsive Custom_Table my-registertable">
+                                                                <table
+                                                                    class="table table-striped table-hover table-bordered m-b-0">
+                                                                    <thead class="thead-dark">
+
+                                                                        <tr>
+                                                                            <th>Sr.no</th>
+                                                                            <th>Template Name</th>
+                                                                            <th>Description</th>
+                                                                            <th>Action</th>
+
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr
+                                                                            *ngFor="let userdata of templateData; index as i">
+                                                                            <td>{{i+1}}</td>
+                                                                            <td>{{userdata.regTemplateName}}</td>
+                                                                            <td>{{userdata.description}}</td>
+                                                                            <td>
+                                                                                <i class="fa fa-eye btn font-16 text-blue cursor-pointer"
+                                                                                    tooltip="View" (click)="getTemplateViewData(userdata.regTemplateId)"></i>
+                                                                                <i class="fa fa-edit btn font-16 text-dark-green cursor-pointer"
+                                                                                    tooltip="Edit"
+                                                                                    (click)="editTemplateViewData(userdata.regTemplateId)"></i>
+
+                                                                            </td>
+
+
+                                                                        </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="col-12 mt-20">
+                                                    <div class="float-right mb-15">
+
+                                                        <button type="submit"
+                                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left"
+                                                            tooltip="Save" [disabled]="subLoading">
+                                                            <b><i class="fa fa-floppy-o"></i></b> Save</button>
+
+                                                        <button type="button" tooltip="Reset"
+                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                    class="fa  fa-refresh"></i></b> Reset</button>
+
+
+                                                        <!-- <button type="button"
+                                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                            Cancel</button> -->
+
+
+                                                    </div>
+                                                </div>
+                                            </div> <!-- <end of div col-6 -->
+                                        </div>
+                                    </div>
+                                </div>
+
+ 
+                                    <div class="view-part"  *ngIf="registerView">
+                                       
+                                        <div class="col-12">
+                                            <h3 class="font-14 text-purple font-bold mb-3">Registration View Details </h3>
+                                        <fieldset>
+                                            <!-- <legend>Registration View Details</legend> -->
+                                            <div class="row">
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Template Name</label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{templateView.regTemplateName}}"
+                                                            disabled
+                                                            placeholder="Template name"
+                                                     >
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Description</label>
+                                                        <input type="text" class="form-control"
+                                                        disabled
+                                                        value="{{templateView.description}}"
+                                                         placeholder="Description"
+                                                         >
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Status</label>
+                                                        <label class="custom-control custom-checkbox checkbox-  center">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                            disabled
+                                                                name="select"  
+                                                                (change)="activeRemark($event.target.checked)" checked>
+                                                            <span class="custom-control-label">Active</span>
+                                                            
+                                                        </label>    
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Remark</label>
+                                                        <textarea type="text"  class="form-control" rows="1"
+                                                        disabled
+                                                            placeholder="Remark..." ></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+
+                                        <h3 class="font-14 text-purple font-bold mt-3">Field List Details</h3>
+                                        <div class="row ">
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-3 mb-2">
+                                                <div class="table-responsive Custom_Table my-registertables">
+                                                    <table class="table table-striped table-hover table-bordered m-b-0">
+                                                        <thead class="thead-dark">
+
+                                                            <tr>
+                                                                <th>Enable</th>
+                                                                <th>Field Name</th>
+                                                                <th>Display Name</th>
+
+                                                                <th>Mandatory</th>
+                                                                <th>Dropdown Values</th>
+                                                                <th>Claim Form</th>
+                                                                <th>Sequence</th>
+                                                                <!-- <th>nature</th> -->
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let getfields of selectFieldList; index as i">
+                                                                <td> <label
+                                                                        class="custom-control custom-checkbox checkbox-  center">
+                                                                        <input type="checkbox"
+                                                                            class="custom-control-input"
+                                                                            [checked]="getfields.enable" name="select"
+                                                                            [value]="getfields.srno"
+                                                                            disabled
+                                                                            />
+                                                                        <span class="custom-control-label"></span>
+                                                                    </label></td>
+                                                                <td>{{getfields.fieldName}}</td>
+                                                                <td>{{getfields.displayName}}</td>
+                                                          
+                                                                <!-- <td><input type="text" class="form-control"
+                                                                        [disabled]="!getfields.enable"
+                                                                        [value]="getfields.displayName"
+                                                                        (change)="displayChange(i, $event.target.value)">
+                                                                </td> -->
+
+                                                                <td>
+                                                                    <select name="" class="form-control custom-select"
+                                                                        disabled  [value]="getfields.mandatory" >
+                                                                        <option value="false">No</option>
+                                                                        <option value="true">Yes</option>
+                                                                       
+                                                                    </select>
+
+                                                                </td>
+                                                                <td >
+                                                                    {{getfields.dropDownValues}}
+                                                                   
+                                                                </td>
+                                                                <td> <select name="" class="form-control custom-select"
+                                                                   disabled [value]="getfields.claimForm">
+                                                                        <option value="false">No</option>
+                                                                        <option value="true">Yes</option>
+                                                                       
+                                                                    </select>
+                                                                </td>
+                                                                <td>{{getfields.sequence}}</td>
+        
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+
+
+                                            </div>
+
+
+
+      
+                                            <div class="col-12">
+                                                <div class="col-12 mt-20">
+                                                    <div class="float-right mb-15">
+ 
+                                                        <button type="button" tooltip="Reset"
+                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="cancelForm()"><b><i
+                                                                    class="fa  fa-refresh"></i></b> Cancel</button>
+
+
+                                                        <!-- <button type="button"
+                                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                            Cancel</button> -->
+
+
+                                                    </div>
+                                                </div>
+                                            </div> <!-- <end of div col-6 -->
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="register-part" *ngIf="registerUpdate">
+                                    <div class="col-12">
+                                        <fieldset>
+                                            <legend>Registration Update</legend>
+                                            <div class="row">
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Template Name</label>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="regTemplateName"
+                                                            placeholder="Template name"
+                                                            [ngClass]="{'is-invalid': submitted && f.regTemplateName.errors}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Description</label>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="description" placeholder="Description"
+                                                            [ngClass]="{'is-invalid' : submitted && f.description.errors}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Status</label>
+                                                        <label class="custom-control custom-checkbox checkbox-  center">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                name="select" formControlName="isActive"
+                                                                (change)="activeRemark($event.target.checked)" checked>
+                                                            <span class="custom-control-label">Active</span>
+                                                            
+                                                        </label>    
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Remark</label>
+                                                        <textarea type="text" formControlName="remark" class="form-control" rows="1"
+                                                            placeholder="Remark..." ></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+
+                                        <h3 class="font-14 text-purple font-bold mt-3">Field List</h3>
+                                        <div class="row ">
+                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-3 mb-2">
+                                                <div class="table-responsive Custom_Table my-registertable">
+                                                    <table class="table table-striped table-hover table-bordered m-b-0">
+                                                        <thead class="thead-dark">
+
+                                                            <tr>
+                                                                <th>Enable</th>
+                                                                <th>Field Name</th>
+                                                                <th>Display Name</th>
+
+                                                                <th>Mandatory</th>
+                                                                <th>Dropdown Values</th>
+                                                                <th>Claim Form</th>
+                                                                <th>Sequence</th>
+                                                                <!-- <th>nature</th> -->
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let getfields of registersList; index as i">
+                                                                <td> <label
+                                                                        class="custom-control custom-checkbox checkbox-  center">
+                                                                        <input type="checkbox"
+                                                                            (change)="checkModel(i, $event.target.checked)"
+                                                                            class="custom-control-input"
+                                                                            [checked]="getfields.enable" name="select"
+                                                                            [value]="getfields.srno" />
+                                                                        <span class="custom-control-label"></span>
+                                                                    </label></td>
+                                                                <td>{{getfields.fieldName}}</td>
+                                                                <td><input type="text" class="form-control"
+                                                                        [disabled]="!getfields.enable"
+                                                                        [value]="getfields.displayName"
+                                                                        (change)="displayChange(i, $event.target.value)">
+                                                                </td>
+
+                                                                <td>
+                                                                    <select name="" class="form-control custom-select"
+                                                                        [disabled]="!getfields.enable"
+                                                                        (change)="mindatoryChange(i, $event.target.value)">
+                                                                        <option value="false">No</option>
+                                                                        <option value="true">Yes</option>
+                                                                       
+                                                                    </select>
+
+                                                                </td>
+                                                                <td [disabled]="!getfields.enable">
+                                                                    {{getfields.dropDownValues}}
+                                                                    <i *ngIf="getfields.nature === 'List' && getfields.enable"
+                                                                        class="fa fa-caret-square-o-down text-blue  float-right"
+                                                                        tooltip="Add List"
+                                                                        (click)="modalRegistration2(template2, getfields.srno)"
+                                                                        aria-hidden="true"></i>
+                                                                </td>
+                                                                <td> <select name="" class="form-control custom-select"
+                                                                        [disabled]="!getfields.enable"
+                                                                        (change)="claimChange(i, $event.target.value)">
+                                                                        <option value="false">No</option>
+                                                                        <option value="true">Yes</option>
+                                                                       
+                                                                    </select>
+                                                                </td>
+                                                                <td>{{getfields.sequence}}</td>
+                                                                <!-- <td>{{getfields.nature}}</td> -->
+                                                                <!-- <td><select name="" class="form-control custom-select"
+                                                                        [disabled]="!getfields.enable"
+                                                                        (change)="sequencyChange($event.target.value)">
+                                                                        <option
+                                                                            *ngFor="let sequences of getfields.length"
+                                                                            [value]="sequence">{{getfields.sequence}}
+                                                                        </option>
+
+                                                                    </select></td> -->
+
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+
+
+                                            </div>
+
+ 
+                                            <div class="col-12">
+                                                <div class="col-12 mt-20">
+                                                    <div class="float-right mb-15">
+
+                                                        <button type="button"
+                                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left"
+                                                            tooltip="Update" [disabled]="subLoading">
+                                                            <b><i class="fa fa-floppy-o"></i></b> Update</button>
+
+                                                        <button type="button" tooltip="Cancel"
+                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                    class="fa  fa-refresh"></i></b> Cancel</button>
+
+
+                                                        <!-- <button type="button"
+                                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                            Cancel</button> -->
+
+
+                                                    </div>
+                                                </div>
+                                            </div> <!-- <end of div col-6 -->
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                    
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+                            <button type="button" class="btn active" data-toggle="button" aria-pressed="true"
+                                tooltip="Top" (click)="scrollToTop()">
+                                <i class="fa fa-angle-double-up text-white font-18"></i>
+                            </button>
+                        </div>
+                        <ng-template #template>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="UploadModalLabel">Edit Summary</h5>
+                                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                    aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="cards">
+                                    <div class="card-bodys">
+                                        <div class="row clearfix">
+                                            <div class="col-12">
+
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <fieldset>
+                                                            <legend>Registration Details</legend>
+                                                            <div class="row">
+                                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Template Name</label>
+                                                                        <input type="text" class="form-control"
+                                                                            formControlName="regTemplateName"
+                                                                            placeholder="Template name"
+                                                                            [ngClass]="{'is-invalid': submitted && f.regTemplateName.errors}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Description</label>
+                                                                        <input type="text" class="form-control"
+                                                                            formControlName="description" placeholder="Description"
+                                                                            [ngClass]="{'is-invalid' : submitted && f.description.errors}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Status</label>
+                                                                        <label class="custom-control custom-checkbox checkbox-  center">
+                                                                            <input type="checkbox" class="custom-control-input"
+                                                                                name="select" formControlName="isActive"
+                                                                                (change)="activeRemark($event.target.checked)" checked>
+                                                                            <span class="custom-control-label">Active</span>
+                                                                            
+                                                                        </label>    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Remark</label>
+                                                                        <textarea type="text" formControlName="remark" class="form-control" rows="1"
+                                                                            placeholder="Remark..." ></textarea>
+                                                                    </div>
+                                                                </div>
+                
+                                                            </div>
+                                                        </fieldset>
+                
+                                                        <h3 class="font-14 text-purple font-bold mt-3">Field List</h3>
+                                                        <div class="row ">
+                                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-3 mb-2">
+                                                                <div class="table-responsive Custom_Table my-registertable">
+                                                                    <table class="table table-striped table-hover table-bordered m-b-0">
+                                                                        <thead class="thead-dark">
+                
+                                                                            <tr>
+                                                                                <th>Enable</th>
+                                                                                <th>Field Name</th>
+                                                                                <th>Display Name</th>
+                
+                                                                                <th>Mandatory</th>
+                                                                                <th>Dropdown Values</th>
+                                                                                <th>Claim Form</th>
+                                                                                <th>Sequence</th>
+                                                                               
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr *ngFor="let getfields of registersList; index as i">
+                                                                                <td> <label
+                                                                                        class="custom-control custom-checkbox checkbox-  center">
+                                                                                        <input type="checkbox"
+                                                                                            (change)="checkModel(i, $event.target.checked)"
+                                                                                            class="custom-control-input"
+                                                                                            [checked]="getfields.enable" name="select"
+                                                                                            [value]="getfields.srno" />
+                                                                                        <span class="custom-control-label"></span>
+                                                                                    </label></td>
+                                                                                <td>{{getfields.fieldName}}</td>
+                                                                                <td><input type="text" class="form-control"
+                                                                                        [disabled]="!getfields.enable"
+                                                                                        [value]="getfields.displayName"
+                                                                                        (change)="displayChange(i, $event.target.value)">
+                                                                                </td>
+                
+                                                                                <td>
+                                                                                    <select name="" class="form-control custom-select"
+                                                                                        [disabled]="!getfields.enable"
+                                                                                        (change)="mindatoryChange(i, $event.target.value)">
+                                                                                        <option value="false">No</option>
+                                                                                        <option value="true">Yes</option>
+                                                                                       
+                                                                                    </select>
+                
+                                                                                </td>
+                                                                                <td [disabled]="!getfields.enable">
+                                                                                    {{getfields.dropDownValues}}
+                                                                                    <i *ngIf="getfields.nature === 'List' && getfields.enable"
+                                                                                        class="fa fa-caret-square-o-down text-blue  float-right"
+                                                                                        tooltip="Add List"
+                                                                                        (click)="modalRegistration2(template2, getfields.srno)"
+                                                                                        aria-hidden="true"></i>
+                                                                                </td>
+                                                                                <td> <select name="" class="form-control custom-select"
+                                                                                        [disabled]="!getfields.enable"
+                                                                                        (change)="claimChange(i, $event.target.value)">
+                                                                                        <option value="false">No</option>
+                                                                                        <option value="true">Yes</option>
+                                                                                       
+                                                                                    </select>
+                                                                                </td>
+                                                                                <td>{{getfields.sequence}}</td>
+                            
+                                                                            </tr>
+                
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                
+                
+                
+                
+                                                            </div>
+                
+                 
+                                                            <div class="col-12">
+                                                                <div class="col-12 mt-20">
+                                                                    <div class="float-right mb-15">
+                
+                                                                        <button type="submit"
+                                                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left"
+                                                                            tooltip="Save" [disabled]="subLoading">
+                                                                            <b><i class="fa fa-floppy-o"></i></b> Save</button>
+                
+                                                                        <button type="button" tooltip="Reset"
+                                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                                    class="fa  fa-refresh"></i></b> Reset</button>
+                
+                
+                                                                        <!-- <button type="button"
+                                                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                                            Cancel</button> -->
+                
+                
+                                                                    </div>
+                                                                </div>
+                                                            </div> <!-- <end of div col-6 -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+     
+                        </ng-template>
+
+                        <ng-template #template2>
+
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="UploadModalLabel">Add Dropdown Values</h5>
+                                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                    aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="cards">
+                                    <div class="card-bodys">
+                                        <div class="row clearfix">
+                                            <div class="col-12">
+
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                 
+                                                        <table class="table table-bordered">
+                                                            <tr>
+                                                                <th colspan="2"><input type="text" class="form-control"
+                                                                        [(ngModel)]="usernameModel"
+                                                                        placeholder="Write dropdown list.." #username
+                                                                        [ngModelOptions]="{standalone: true}"></th>
+                                                                <th width="150px"><button type="button" 
+                                                                        [disabled]="username.value == 0"
+                                                                        (click)="getUsers(username.value, dropno)"
+                                                                        class="btn btn-primary">Add New</button>
+                                                                </th>
+                                                            </tr>
+                                                            <tr *ngFor="let user of users; index as i">
+                                                                <td colspan="2">
+                                                                    {{user}}
+                                                                </td>
+                                                                <td>
+                                                                    <button (click)="getremoveone(i)"
+                                                                        class="btn btn-danger">Remove</button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+
+                                                        <!-- {{this.productForm.value | json}} -->
+
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    (click)="modalRef.hide()">Submit</button>
+
+                                <!-- <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Cancel</button> -->
+                            </div>
+
+                        </ng-template>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <app-footer></app-footer>
+</div>

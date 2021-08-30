@@ -68,7 +68,12 @@ import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.mod
 import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 import { LockModule } from './modules/lock/lock.module';
+<<<<<<< HEAD
 import {FlexiModule} from './modules/flexi/flexi.module'
+=======
+import { DemoModule} from './modules/demo/demo.module'
+
+>>>>>>> origin/Sandhya-Ahire
 
 
 
@@ -90,8 +95,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
 import { ReimbursementModule } from './modules/reimbursement/reimbursement.module';
 import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
-
-
+import { TestComponent } from './test/test.component';
 
 
 @NgModule( {
@@ -100,6 +104,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     ProfileComponent,
     ShortenStringPipe,
     SettingsComponent,
+    TestComponent,
   ],
 
   exports: [],
@@ -119,9 +124,13 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     /////////////////
     //  payrollModule,
     LockModule,
+<<<<<<< HEAD
     FlexiModule,
    
     ReimbursementModule,
+=======
+    DemoModule,
+>>>>>>> origin/Sandhya-Ahire
     ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,
@@ -131,6 +140,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
@@ -160,8 +170,8 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     EmployeemasterlistpageModule,
     EmailSmsModule,
     LoanMasterModule,
-    SignaturePadModule
-
+    SignaturePadModule,
+   
   ],
 
   providers: [BsDatepickerModule,

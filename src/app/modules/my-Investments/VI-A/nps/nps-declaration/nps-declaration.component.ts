@@ -164,6 +164,7 @@ export class NpsDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   public canEdit : boolean;
   public licDeclarationData: any;
+  dateOfJoining: Date;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -208,8 +209,12 @@ export class NpsDeclarationComponent implements OnInit {
       this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      if (input.canView === true){
+        this.isDisabled = true;
+      } else {
       this.isDisabled = false;
       this.canEdit = input.canEdit;
+      }
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -222,10 +227,16 @@ export class NpsDeclarationComponent implements OnInit {
     // Get API call for All previous employee Names
     this.Service.getpreviousEmployeName().subscribe((res) => {
       console.log('previousEmployeeList::', res);
+
       if (!res.data.results[0]) {
         return;
       }
-      res.data.results.forEach((element) => {
+      console.log(res.data.results[0].joiningDate);
+
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+ console.log(this.dateOfJoining)
+ res.data.results.forEach((element) => {
+        
         const obj = {
           label: element.name,
           value: element.previousEmployerId,
@@ -234,14 +245,8 @@ export class NpsDeclarationComponent implements OnInit {
       });
     });
 
-    // Get All Previous Employer
-    this.Service.getAllPreviousEmployer().subscribe((res) => {
-      console.log(res.data.results);
-      if (res.data.results.length > 0) {
-        this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
-      }
-    });
+ 
+  
 
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
@@ -410,7 +415,7 @@ export class NpsDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -420,12 +425,11 @@ export class NpsDeclarationComponent implements OnInit {
       this.transactionDetail[j].groupTransactionList[i].isECS
     );
     if (checked) {
+      if (this.transactionDetail[j].frequency !== 'As & When') {
       if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
-        this.transactionDetail[j].groupTransactionList[
-          i
-        ].dateOfPayment = new Date(data.dueDate);
+        this.transactionDetail[j].groupTransactionList[i].dateOfPayment = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
           this.transactionDetail[j].groupTransactionList[i].actualAmount
@@ -435,14 +439,16 @@ export class NpsDeclarationComponent implements OnInit {
           this.transactionDetail[j].groupTransactionList[i].dateOfPayment
         );
       } else {
+        console.log('in else actualamount')
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
       }
+    }
 
       formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -456,7 +462,7 @@ export class NpsDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].groupTransactionList[
         i
@@ -477,7 +483,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -542,12 +548,13 @@ export class NpsDeclarationComponent implements OnInit {
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
+    // this.declarationTotal = 0;
     // this.declaredAmount=0;
 
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -555,7 +562,18 @@ export class NpsDeclarationComponent implements OnInit {
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+
+       // console.log(element.declaredAmount.toString().replace(',', ""));
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
   }
+  
 
   // ------------ ON change of DueDate in line----------
   onDueDateChange(
@@ -616,13 +634,25 @@ export class NpsDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log(this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -732,37 +762,37 @@ export class NpsDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService();
   }
 
-  submitDeclaration() {
-    // this.tabIndex = 0;
-    console.log(this.transactionDetail);
-    this.tabIndex = 0;
-    this.transactionDetail.forEach((element) => {
-      element.groupTransactionList.forEach((element) => {
-        element.dateOfPayment = this.datePipe.transform(
-          element.dateOfPayment,
-          'yyyy-MM-dd'
-        );
-      });
-    });
-    const data = this.transactionDetail;
-    this.npsService
-      .postNpsDeclarationTransaction(data)
-      .subscribe((res) => {
-        console.log(res);
-        this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
-        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        this.transactionDetail.forEach((element) => {
-          element.groupTransactionList.forEach((element) => {
-            element.dateOfPayment = new Date(element.dateOfPayment);
-          });
-        });
-      });
-    this.resetAll();
-  }
+  // submitDeclaration() {
+  //   // this.tabIndex = 0;
+  //   console.log(this.transactionDetail);
+  //   this.tabIndex = 0;
+  //   this.transactionDetail.forEach((element) => {
+  //     element.groupTransactionList.forEach((element) => {
+  //       element.dateOfPayment = this.datePipe.transform(
+  //         element.dateOfPayment,
+  //         'yyyy-MM-dd'
+  //       );
+  //     });
+  //   });
+  //   const data = this.transactionDetail;
+  //   this.npsService
+  //     .postNpsDeclarationTransaction(data)
+  //     .subscribe((res) => {
+  //       console.log(res);
+  //       this.transactionDetail =
+  //         res.data.results[0].investmentGroupTransactionDetail;
+  //       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+  //       this.grandActualTotal = res.data.results[0].grandActualTotal;
+  //       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+  //       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+  //       this.transactionDetail.forEach((element) => {
+  //         element.groupTransactionList.forEach((element) => {
+  //           element.dateOfPayment = new Date(element.dateOfPayment);
+  //         });
+  //       });
+  //     });
+  //   this.resetAll();
+  // }
 
   // Reset All
   resetAll() {
@@ -825,14 +855,14 @@ export class NpsDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -852,13 +882,14 @@ export class NpsDeclarationComponent implements OnInit {
     });
 
     if(this.licDeclarationData.previousEmployerId == 0){
-      this.alertService.sweetalertError(
+      // this.alertService.sweetalertError(
         // 'Please make sure that you have selected previous employer for all selected lines',
-        'Please Select Previous Employer',
-      );
-      return false;
+        // 'Please Select Previous Employer',
+      // );
+      // return false;
     }
     if (this.licDeclarationData.dateOfPayment == null) {
+      
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected date of payment for all selected lines',
         'Please Select Date Of Payment',
@@ -887,7 +918,7 @@ export class NpsDeclarationComponent implements OnInit {
       return false;
     }
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       investmentGroupTransactionDetail: this.transactionDetail,
       groupTransactionIDs: this.uploadGridData,
@@ -901,44 +932,45 @@ export class NpsDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.selectedTransactionInstName(this.globalInstitution);
+         
+          // this.transactionDetail =
+          //   res.data.results[0].investmentGroupTransactionDetail;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-          this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          // this.initialArrayIndex = [];
 
-          this.initialArrayIndex = [];
+          // this.transactionDetail.forEach((element) => {
+          //   this.initialArrayIndex.push(element.groupTransactionList.length);
 
-          this.transactionDetail.forEach((element) => {
-            this.initialArrayIndex.push(element.groupTransactionList.length);
+          //   element.groupTransactionList.forEach((innerElement) => {
 
-            element.groupTransactionList.forEach((innerElement) => {
+          //     if (innerElement.dateOfPayment !== null) {
+          //       innerElement.dateOfPayment = new Date(
+          //         innerElement.dateOfPayment
+          //       );
+          //     }
 
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
-
-              if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              }
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
-              );
-            });
-          });
+          //     if (innerElement.isECS === 0) {
+          //       this.glbalECS == 0;
+          //     } else if (innerElement.isECS === 1) {
+          //       this.glbalECS == 1;
+          //     } else {
+          //       this.glbalECS == 0;
+          //     }
+          //     innerElement.declaredAmount = this.numberFormat.transform(
+          //       innerElement.declaredAmount
+          //     );
+          //     innerElement.actualAmount = this.numberFormat.transform(
+          //       innerElement.actualAmount
+          //     );
+          //   });
+          // });
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
@@ -1034,7 +1066,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
       console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
     });
@@ -1105,7 +1137,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
       console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1195,12 +1227,12 @@ export class NpsDeclarationComponent implements OnInit {
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
-        //console.log('converted:: ', this.urlArray);
+        // this.urlArray.forEach((element) => {
+        //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+        //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        // });
+        // //console.log('converted:: ', this.urlArray);
       });
   }
 
@@ -1229,6 +1261,7 @@ export class NpsDeclarationComponent implements OnInit {
         this.initialArrayIndex = [];
 
         this.transactionDetail.forEach((element) => {
+
           this.initialArrayIndex.push(element.groupTransactionList.length);
 
           element.groupTransactionList.forEach((innerElement) => {
@@ -1272,14 +1305,14 @@ export class NpsDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -1328,43 +1361,46 @@ export class NpsDeclarationComponent implements OnInit {
             ''
           );
 
-          this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          this.selectedTransactionInstName(this.globalInstitution);
 
-          this.initialArrayIndex = [];
 
-          this.transactionDetail.forEach((element) => {
-            this.initialArrayIndex.push(element.groupTransactionList.length);
+          // this.transactionDetail =
+          //   res.data.results[0].investmentGroupTransactionDetail;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-            element.groupTransactionList.forEach((innerElement) => {
+          // this.initialArrayIndex = [];
 
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
+          // this.transactionDetail.forEach((element) => {
+          //   this.initialArrayIndex.push(element.groupTransactionList.length);
 
-              if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              }
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
-              );
-            });
-          });
+          //   element.groupTransactionList.forEach((innerElement) => {
+
+          //     if (innerElement.dateOfPayment !== null) {
+          //       innerElement.dateOfPayment = new Date(
+          //         innerElement.dateOfPayment
+          //       );
+          //     }
+
+          //     if (innerElement.isECS === 0) {
+          //       this.glbalECS == 0;
+          //     } else if (innerElement.isECS === 1) {
+          //       this.glbalECS == 1;
+          //     } else {
+          //       this.glbalECS == 0;
+          //     }
+          //     innerElement.declaredAmount = this.numberFormat.transform(
+          //       innerElement.declaredAmount
+          //     );
+          //     innerElement.actualAmount = this.numberFormat.transform(
+          //       innerElement.actualAmount
+          //     );
+          //   });
+          // });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }

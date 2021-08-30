@@ -133,7 +133,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       issueType: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
       accountHolderName: new FormControl(
-        { value: null, disabled: true },
+        { value: null, },
         Validators.required
       ),
       relationship: new FormControl(
@@ -145,7 +145,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
       remark: new FormControl(null),
-      frequencyOfPayment: new FormControl(null, Validators.required),
+      frequencyOfPayment: new FormControl('OneTime', Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
         { value: null, disabled: true },
@@ -154,13 +154,14 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl(0),
-      masterPaymentDetailId: new FormControl(0),
+      investmentGroup2MasterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
       proofSubmissionId: new FormControl(''),
     });
 
     this.frequencyOfPaymentList = [{ label: 'One Time', value: 'OneTime' }];
+  
 
     this.issueTypeOfList = [
       { label: 'VIII th Issue', value: 'VIII' },
@@ -195,7 +196,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Self') {
+        if (element.relation === 'Self'|| ((element.relation === 'Son' || element.relation === 'Daughter' ) &&  element.ageBracket === 'Minor'))  {
+
           this.familyMemberName.push(obj);
         }
       });
@@ -374,7 +376,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('Post Office Data::', data);
 
@@ -458,7 +460,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     ) {
       let installment = this.form.value.premiumAmount;
 
-      // installment = installment.toString().replace(',', '');
+      // installment = installment.toString().replace(/,/g, '');
 
       // console.log(installment);
       if (!this.form.value.frequencyOfPayment) {

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
+import {AuthService} from '../../../auth/auth.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,9 @@ export class Mediclaim80DService {
 
   apiUrl = environment.baseUrl8085;
 
-  constructor(private _HTTP: HttpClient) { }
+  constructor(private _HTTP: HttpClient ,
+     private authService: AuthService,
+     ) { }
 
 //Summary services
   getMediclaimSummary() {
@@ -104,6 +108,12 @@ export class Mediclaim80DService {
   }
 
   uploadMultipleMediclaimMasterFiles(files: File[], data:any): Observable<any> {
+
+    let token = this.authService.getJwtToken()
+    const headers = new HttpHeaders()
+    .set('X-Authorization', token);
+     console.log("headers::", headers)
+
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -124,9 +134,18 @@ export class Mediclaim80DService {
       {
 
       });
+
+      headers: headers
+
   }
 
   uploadMediclaim80DDocument(files: File[], data:any): Observable<any> {
+
+    let token = this.authService.getJwtToken()
+    const headers = new HttpHeaders()
+    .set('X-Authorization', token);
+     console.log("headers::", headers)
+
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {

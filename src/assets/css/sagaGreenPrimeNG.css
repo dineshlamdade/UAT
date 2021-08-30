@@ -388,7 +388,7 @@ p-calendar.ng-dirty.ng-invalid>.p-calendar>.p-inputtext {
 }
 
 .p-checkbox {
-    width: 20px;
+    width: 20px!important;
     height: 20px;
 }
 
@@ -398,6 +398,7 @@ p-calendar.ng-dirty.ng-invalid>.p-calendar>.p-inputtext {
     width: 20px;
     height: 20px;
     color: #495057;
+    font-size: 10px!important;
     border-radius: 3px;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
@@ -405,7 +406,11 @@ p-calendar.ng-dirty.ng-invalid>.p-calendar>.p-inputtext {
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
     transition-duration: 0.2s;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 10px;
+    line-height: 16px;
+    font-weight: 900!important;
+    margin-left: 3px;
+    text-align: center;
 }
 
 .p-checkbox .p-checkbox-box.p-highlight {
@@ -967,8 +972,11 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
 }
 
 .p-input-icon-left>i:first-of-type {
-    left: 0.5rem;
+    top: 25px;
+    z-index: 1;
+    right: 24px;
     color: #6c757d;
+    position: absolute;
 }
 
 .p-input-icon-left>.p-inputtext {
@@ -1113,7 +1121,8 @@ p-listbox.ng-dirty.ng-invalid>.p-listbox {
 }
 
 .p-multiselect .p-multiselect-label {
-    padding: 0.5rem 0.5rem;
+    padding: 6px;
+    font-size: 12px;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -1143,7 +1152,7 @@ p-listbox.ng-dirty.ng-invalid>.p-listbox {
 }
 
 .p-multiselect-panel .p-multiselect-header {
-    padding: 0.5rem 1rem;
+    padding: 5px;
     border-bottom: 0 none;
     color: #495057;
     background: #f8f9fa;
@@ -1194,7 +1203,7 @@ p-listbox.ng-dirty.ng-invalid>.p-listbox {
 
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item {
     margin: 0;
-    padding: 0.5rem 1rem;
+    padding: 5px;
     border: 0 none;
     color: #495057;
     background: transparent;
@@ -1219,7 +1228,7 @@ p-listbox.ng-dirty.ng-invalid>.p-listbox {
 }
 
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item .p-checkbox {
-    margin-right: 0.5rem;
+    margin-right: 10px;
 }
 
 .p-multiselect-panel .p-multiselect-items .p-multiselect-empty-message {
@@ -2265,11 +2274,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-datatable .p-paginator-bottom {
     border-width: 0 0 1px 0;
-    border-radius: 0;
-}
-
-.p-datatable {
-    overflow: auto!important;
+    border: 1px solid #ddd;
 }
 
 .p-datatable .p-datatable-header {
@@ -2282,11 +2287,11 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-datatable .p-datatable-footer {
-    background: #f8f9fa;
-    color: #495057;
+    background: #f2f2f2;
+    color: #999;
     border: 1px solid #e9ecef;
     border-width: 0 0 1px 0;
-    padding: 1rem 1rem;
+    padding: 10px;
     font-weight: 600;
 }
 
@@ -2294,10 +2299,8 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     border: 1px solid #e9ecef;
     color: #fff;
     transition: box-shadow 0.2s;
-    /* padding-top: 7px!important;
-    padding-bottom: 7px!important; */
-    padding-top: 3px!important;
-    padding-bottom: 3px!important;
+    padding-top: 7px!important;
+    padding-bottom: 7px!important;
     padding-left: 5px!important;
     padding-right: 5px!important;
     font-size: 12px!important;
@@ -2325,7 +2328,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-datatable .p-sortable-column .p-sortable-column-icon {
-    color: #6c757d;
+    color: #fff;
     margin-left: 0.5rem;
 }
 
@@ -2340,34 +2343,34 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-datatable .p-sortable-column:not(.p-highlight):hover {
-    background: #e9ecef;
-    color: #495057;
+    /* background: #e9ecef; */
+    color: #fff;
 }
 
 .p-datatable .p-sortable-column:not(.p-highlight):hover .p-sortable-column-icon {
-    color: #6c757d;
+    color: #fff;
 }
 
 .p-datatable .p-sortable-column.p-highlight {
-    background: #f8f9fa;
-    color: #4CAF50;
+    /* background: #f8f9fa; */
+    color: #fff;
 }
 
 .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
-    color: #4CAF50;
+    color: #fff;
 }
 
 .p-datatable .p-sortable-column.p-highlight:hover {
-    background: #e9ecef;
-    color: #4CAF50;
+    /* background: #e9ecef; */
+    color: #fff;
 }
 
 .p-datatable .p-sortable-column.p-highlight:hover .p-sortable-column-icon {
-    color: #4CAF50;
+    color: #fff;
 }
 
 .p-datatable .p-sortable-column:focus {
-    box-shadow: inset 0 0 0 0.2rem #b7e0b8;
+    /* box-shadow: inset 0 0 0 0.2rem #b7e0b8; */
     outline: 0 none;
 }
 
@@ -2422,6 +2425,11 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-datatable .p-datatable-tbody>tr>td .p-row-editor-save {
     margin-right: 0.5rem;
+}
+
+.p-datatable {
+    position: relative;
+    overflow: scroll!important;
 }
 
 .p-datatable .p-datatable-tbody>tr.p-highlight {
@@ -2873,12 +2881,13 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-paginator {
-    background: #ffffff;
+    background: #f2f2f2;
     color: #6c757d;
-    border: solid #e9ecef;
+    border: solid #ddd;
     border-width: 0;
-    padding: 0.5rem 1rem;
-    border-radius: 3px;
+    padding: 0px;
+    font-size: 13px;
+    font-family: Montserrat, sans-serif!important;
 }
 
 .p-paginator .p-paginator-first,
@@ -2916,7 +2925,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-paginator .p-dropdown {
     margin-left: 0.5rem;
-    height: 2.357rem;
+    /* height: 2.357rem; */
 }
 
 .p-paginator .p-dropdown .p-dropdown-label {
@@ -2945,8 +2954,9 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background: #E8F5E9;
-    border-color: #E8F5E9;
+    background: #ddd;
+    border-color: #999;
+    font-weight: 500;
     color: #495057;
 }
 
@@ -3705,7 +3715,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-scrollpanel .p-scrollpanel-bar {
-    background: #f8f9fa;
+    background: #ddd;
     border: 0 none;
 }
 
@@ -3915,7 +3925,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 .p-sidebar {
     background: #ffffff;
     color: #495057;
-    padding: 1rem;
+    /* padding: 1rem; */
     border: 0 none;
     box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
 }
@@ -5658,7 +5668,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-column-filter-menu-button {
     width: 2rem;
-    height: 2rem;
+    /* height: 2rem; */
     color: #fff;
     border: 0 none;
     background: transparent;
@@ -5666,25 +5676,29 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
-
-/* .p-column-filter-menu-button:hover {
-    color: #495057;
+.p-column-filter-menu-button:hover {
+    /* color: #495057;
     border-color: transparent;
-    background: #e9ecef;
-} */
+    background: #e9ecef; */
+}
 
-
-/* .p-column-filter-menu-button.p-column-filter-menu-button-open,
+.p-column-filter-menu-button.p-column-filter-menu-button-open,
 .p-column-filter-menu-button.p-column-filter-menu-button-open:hover {
-    background: #e9ecef;
-    color: #495057;
+    /* background: #e9ecef; */
+    color: #fff;
+}
+
+.Sort_Filter_Position {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .p-column-filter-menu-button.p-column-filter-menu-button-active,
 .p-column-filter-menu-button.p-column-filter-menu-button-active:hover {
-    background: #E8F5E9;
-    color: #495057;
-} */
+    /* background: #E8F5E9; */
+    color: #fff;
+}
 
 .p-column-filter-menu-button:focus {
     /* outline: 0 none;
@@ -5807,6 +5821,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 .p-column-filter-overlay {
     position: absolute;
     width: 10%!important;
+    z-index: 1055!important;
     /* left: 123px!important; */
     /* display: flow-root; */
 }
@@ -5829,40 +5844,6 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     width: auto!important;
 }
 
-.p-datatable-scrollable-footer,
-.p-datatable-scrollable-header {
-    overflow: visible!important;
-}
-
-.p-datatable-scrollable-wrapper {
-    overflow: auto!important;
-}
-
-.Sort_Filter_Position {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.p-sortable-column-icon {
-    font-size: 12px!important;
-}
-
-.pi-filter-icon {
-    font-size: 12px!important;
-}
-
-.p-column-filter-menu-button {
-    width: auto!important;
-    height: auto!important;
-    color: #fff;
-    border: 0 none;
-    background: transparent;
-    border-radius: 50%;
-    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-}
-
-/* added  by Komal */
 .p-inputright .p-inputnumber-input {
-  text-align: right!important;
+    text-align: right!important;
 }

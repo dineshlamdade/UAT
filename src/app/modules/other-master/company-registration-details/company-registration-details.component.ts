@@ -213,17 +213,18 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
   onBsValueChangeDateOfIncorporation() { }
   onSelectCompanyRegistrationId( evt: any ) {
     console.log( evt );
-    if ( evt == '' ) {
+    // if ( evt == '' ) {
 
 
-      this.form.patchValue( {
-        companyName: '',
-        companyGroupName: '',
-        pan: ''
-      } );
+    //   this.form.patchValue( {
+    //     companyName: '',
+    //     companyGroupName: '',
+    //     pan: ''
+    //   } );
 
 
-    } else {
+    // } 
+    // else {
       let temp = this.tempObjForCompanyRegistration.find( o => o.code == this.form.get( 'companyRegistrationId' ).value );
       this.companyMasterId = temp.companyMasterId;
       console.log( temp.companyMasterId );
@@ -235,7 +236,7 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
         pan: ''
       } );
 
-    }
+    // }
 
 
   }
