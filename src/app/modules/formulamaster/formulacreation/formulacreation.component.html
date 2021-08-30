@@ -111,9 +111,31 @@
 
                                         <div class="form-group">
                                             <label class="form-label">Formula</label>
-                                            <textarea formControlName="originalFormula" name="query" cols="60" rows="8" class="form-control"
+                                            <!-- <textarea formControlName="originalFormula" name="query" cols="60" rows="8" class="form-control"
                                                 class="u-full-width" maxlength="1500" required="" value=" CTC * 0.04">
-                                               </textarea>
+                                               </textarea> -->
+
+                                               <div class="ng-autocomplete">
+                                                <ng-autocomplete 
+                                                  formControlName="originalFormula"
+                                                  placeholder="Enter Formula Here"
+                                                  [data]="formulaData"
+                                                  [searchKeyword]="keyword"
+                                                  (selected)='selectEvent($event)'
+                                                  (inputChanged)='onChangeSearch($event)'
+                                                  (inputFocused)='onFocused($event)'
+                                                  [itemTemplate]="itemTemplate"
+                                                  [notFoundTemplate]="notFoundTemplate">                                 
+                                                </ng-autocomplete>
+                                                
+                                                <ng-template #itemTemplate let-item>
+                                                <a [innerHTML]="item.name"></a>
+                                                </ng-template>
+                                                
+                                                <ng-template #notFoundTemplate let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                                </div>   
 
                                         </div>
                                     </div>
@@ -183,6 +205,14 @@
                                             tooltip="Save" [disabled]="loading">
                                             <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
                                             Save</button>
+                                            <button type="submit" *ngIf="editflag && !viewflag"
+                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                            tooltip="Save" [disabled]="loading" (click)="updateFormula()">
+                                            <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
+                                            Update</button>
+                                        <button type="button" tooltip="Reset" *ngIf="!editflag && !viewflag"
+                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+                                            <b><i class="fa  fa-refresh"></i></b> Reset</button>
 
 
                                         <button type="button" tooltip="Reset"
@@ -300,7 +330,7 @@
                                             class="form-lable mb-0">{{formula.originalFormula}}</label></td>
                                     <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0"></label>
-                                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editSummaryData(key)"
+                                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editFormulaSummaryData(key)"
                                             tooltip="Edit"></i>&nbsp;
                                         <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewSummaryData(key)"
                                             tooltip="View"></i>&nbsp;

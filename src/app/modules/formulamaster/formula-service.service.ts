@@ -36,4 +36,10 @@ GetByFormulaName(formulaName) : Observable<any> {
   return this.HttpClient.post<any>(this.url + `formula-master/GetByFormulaName?formulaName=`+ formulaName,'');
 }
 
+
+getFormulaAllData():Observable<any>{
+  return this.HttpClient.get<any>(this.url + `KeywordMasterDetails`);
+}
+
+
 }

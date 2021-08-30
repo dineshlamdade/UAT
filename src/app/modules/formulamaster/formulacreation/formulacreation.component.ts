@@ -24,9 +24,20 @@ interface User1 {
 })
 export class FormulacreationComponent implements OnInit {
     public modalRef: BsModalRef;
-    users1: User1[];
+  
+  users1: User1[];
   formulaform: any;
   formulaSummeryData: any;
+  formulaData:any = [];
+  keyword = 'name';
+  editData: any;
+  editflag: boolean = false;
+  viewflag: boolean = false;
+  FormulaId: any;
+  formulaDataById: any;
+
+
+
   constructor(private modalService: BsModalService,private formulaService: FormulaServiceService,
     private alertService: AlertServiceService) {
 
@@ -42,8 +53,10 @@ export class FormulacreationComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-    this.FormulaMasterDetailsSummery()
+  ngOnInit() {
+    this.formulaSearchList();
+    this.FormulaMasterDetailsSummery();
+    
     
   }
   mediumpopup(template: TemplateRef<any>) {
@@ -90,8 +103,8 @@ saveFormulaMasters() {
     this.alertService.sweetalertMasterSuccess(res.status.messsage, "" );
     //this.KeywordMasterDetailsSummery();
     this.formulaform.reset()
-    // this.editflag = false
-    // this.viewflag = false
+    this.editflag = false
+    this.viewflag = false
   },
   ( error: any ) => {
     this.alertService.sweetalertError( error["error"]["status"]["message"] );
@@ -106,4 +119,101 @@ FormulaMasterDetailsSummery(){
     this.alertService.sweetalertError( error["error"]["status"]["message"] );
   })
 }
+
+
+formulaSearchList() {
+  this.formulaService.getFormulaAllData().subscribe(res => {
+    // this.data = res.data.results;
+    res.data.results.forEach((element: any) => {
+      this.formulaData.push({
+        "id": element.keywordId,
+        "name": element.keywordName
+      })
+    });
+  });
+}
+
+selectEvent(item: any) {
+  // do something with selected item
+}
+
+onChangeSearch(val: string) {
+  // fetch remote data from here
+  // And reassign the 'data' which is binded to 'data' property.
+}
+
+onFocused(e: any) {
+  // do something when input is focused
+}
+
+editFormulaSummaryData(data){
+  this.editData = data
+  this.editflag = true;
+  this.viewflag = false;
+  this.formulaform.enable()
+  this.formulaform.patchValue(data)
+  this.FormulaId = data.FormulaId
+  this.getDataById()
+}
+
+viewSummaryData(data){
+  this.editflag = false;
+  this.viewflag = true;
+  this.formulaform.disable()
+  this.formulaform.patchValue(data)
+}
+
+deleteSummaryData(data){
+  const formData = new FormData();
+
+  formData.append('FormulaId', this.FormulaId)
+
+  this.formulaService.DeleteById(formData).subscribe(res => {
+    // this.toster.success("","Keyword Deleted successfully")
+    this.alertService.sweetalertMasterSuccess(res.status.messsage, "" );
+    this.FormulaMasterDetailsSummery()
+   },
+   ( error: any ) => {
+     this.alertService.sweetalertError( error["error"]["status"]["message"] );
+   })
+}
+
+getDataById(){
+  const formData = new FormData();
+
+  formData.append('FormulaId', this.FormulaId)
+
+  this.formulaService.EditByFormulaById(formData).subscribe(res => {
+   this.formulaDataById = res.data.result;
+   this.formulaform.patchValue(this.formulaDataById)
+  })
+}
+
+updateFormula(){
+//   this.formulaform.controls['formulaId'].setValue(this.FormulaId)
+//   this.formulaform.controls['isActive'].setValue(1)
+//  this.formulaform.controls['nature'].setValue(this.natureValue)
+//  this.formulaform.controls['formulaRelation'].setValue('Formula')
+
+
+  this.formulaService.UpdateFormula(this.formulaform.value).subscribe(res => {
+    // this.toster.success("", "Keyword data updated successfully")
+    this.alertService.sweetalertMasterSuccess(res.status.messsage, "" );
+    this.FormulaMasterDetailsSummery();
+    this.formulaform.reset()
+    this.editflag = false
+    this.viewflag = false
+  },
+  ( error: any ) => {
+    this.alertService.sweetalertError( error["error"]["status"]["message"] );
+  })
+}
+
+reset(){
+  this.formulaform.reset();
+  this.editflag = false;
+  this.viewflag = false;
+  this.formulaform.enable()
+}
+
 }
