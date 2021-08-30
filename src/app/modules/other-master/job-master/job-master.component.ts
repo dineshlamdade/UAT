@@ -158,55 +158,7 @@ export class JobMasterComponent implements OnInit {
     this.getCopyCompany();
     this.companyDataInDetails();
     console.log("getAllMappingDetailListNew", this.getAllMappingDetailListNew[0]);
-      // this.getAllJobMasters();
 
-    // this.jobMasterService.get( 'business-area-master/details' ).subscribe( ( res ) => {
-    //   console.log( 'getBusinessAreaMasterDetails', res );
-    // } );
-    // this.jobMasterService.get( 'business-area-master-mapping/details' ).subscribe( ( res ) => {
-    //   console.log( 'getBusinessAreaMasterMappingDetails', res );
-    // } );
-
-
-
-
-
-
-    //New added 01/07/2021
-    // this.jobMasterService.getAllOtheMappingDetails().subscribe( ( res ) => {
-    //   console.log( 'getAllOtheMappingDetails bank company', res );
-    //   this.companyListResponse = res.data.results;
-    //   let i = 0;
-    //   res.data.results.forEach( ( element ) => {
-    //     if ( element.companyActive == true ) {
-    //       const obj = {
-
-
-    //         SrNo: i++,
-    //         masterMappingId: element.jobMasterMappingId,
-    //         masterId: element.jobMasterValueId,
-    //         groupCompanyId: element.groupCompanyId,
-    //         masterMappingType: element.jobMasterType,
-    //         masterCode: element.masterCode,
-    //         companyName: element.masterDescription,
-    //         isSelected: false,
-    //         companyActive: element.active,
-
-
-    //         // id: i++,
-    //         // groupCompanyId: element.groupCompanyId,
-    //         // companyName: element.masterCode,
-    //         // companyActive: element.companyActive,
-    //         // isSelected: false,
-    //       };
-    //       this.groupCompanyDetailsList.push( { id: element.groupCompanyId, itemName: element.companyName } );
-    //       this.summaryCompanyHtmlDataList.push( obj );
-    //       this.summaryCompanyHtmlDataList1.push( obj );
-    //     }
-    //   } );
-    // } );
-
-    // this.getAllOtheMappingDetails();
   }
 
   companyDataInDetails(){
@@ -321,39 +273,7 @@ export class JobMasterComponent implements OnInit {
   }
 
 
-  //Mapping Execl
-  // exportApprovalSummaryAsExcelMapping(): void {
-  //   this.excelData = [];
-  //   if(this.getAllMappingDetailListNew.length>0){
-  //    // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
-  //    //this.employeeList =  this.getAllMappingDetailListNew;
-  //    this.getAllMappingDetailListNew.forEach((element) => {
-  //     let obj = {
-  //       jobMasterType: element.jobMasterType,
-  //       masterCode: element.masterCode,
-  //       masterDescription: element.masterDescription,
-  //       companyName : element.companyName,
-  //       toDate:  new Date(element.toDate),
-  //      fromDate: new Date(element.fromDate),
-  //     };
-  //     this.excelData.push(obj);
-  //   });
-  //     console.log('this.employeeList::', this.employeeList);
 
-  //   } else{
-  //     this.employeeList.forEach((element) => {
-  //       let obj = {
-
-  //         jobMasterType: element.jobMasterType,
-  //          masterCode: element.masterCode,
-  //          masterDescription: element.masterDescription,
-  //          companyName : element.companyName,
-  //          toDate:  new Date(element.toDate),
-  //         fromDate: new Date(element.fromDate),
-  //       };
-  //       this.excelData.push(obj);
-  //     });
-  //   }
 
   //   this.excelservice.exportAsExcelFile(this.excelData, 'Job-Master-Assignment-Summary', 'Job-Master-Assignment-Summary' ,this.header);
   // }

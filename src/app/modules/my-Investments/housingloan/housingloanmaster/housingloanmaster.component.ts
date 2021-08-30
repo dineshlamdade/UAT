@@ -488,7 +488,17 @@ export class HousingloanmasterComponent implements OnInit {
     this.alertService.sweetalertWarning('Owner name is already exists');
     return;
   }
-
+  
+  if(  this.masterGridData.find((element) => {
+    return element.housePropertyOwerDetailList.find((item) => {
+  
+      return item.ownerName === this.HPOwnerDetailForm.value.ownerName;
+    });
+  })) {
+    this.alertService.sweetalertWarning('Owner name is already exists');
+    return;
+  }
+  
 
     // this.houseLoanOwnerTypeList.find(
     //   (owner) =>
