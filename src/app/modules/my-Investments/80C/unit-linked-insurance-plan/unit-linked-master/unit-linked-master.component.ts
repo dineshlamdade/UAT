@@ -78,11 +78,13 @@ export class UnitLinkedMasterComponent implements OnInit {
   documentPassword =[];
   remarkList =[];
   documentDataArray = [];
+  filesUrlArray = [];
   public receiptNumber: number;
   public receiptAmount: string;
   public receiptDate: Date;
   public selectedInstitution: string;
   public policyDuplicate: string;
+  public isEdit: boolean = false;
   public sumDeclared: any;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
@@ -116,6 +118,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   documentArray: any[] =[];
+  isVisibleTable = false;
   public proofSubmissionId;
 
   constructor(
@@ -505,13 +508,18 @@ export class UnitLinkedMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+    // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -548,6 +556,7 @@ export class UnitLinkedMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -619,10 +628,14 @@ export class UnitLinkedMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
       this.getInitialData();
       this.getDetails();
-    }
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -687,6 +700,7 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   //  On Master  from summary page as well as edit master page summary table Edit functionality --------------------
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.unitLinkedInsurancePlanService.getULIPMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -708,7 +722,8 @@ export class UnitLinkedMasterComponent implements OnInit {
         this.Index = obj.accountNumber;
         this.showUpdateButton = true;
         this.isClear = true;
-        this.urlArray = obj.documentInformationList;
+        // this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
         this.showdocument = false;
         this.proofSubmissionId = obj.proofSubmissionId;
         this.documentArray = [];
@@ -727,6 +742,7 @@ export class UnitLinkedMasterComponent implements OnInit {
           
         });
         console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
       }
     });
   }
@@ -812,9 +828,11 @@ export class UnitLinkedMasterComponent implements OnInit {
     console.log('---in doc viewer--');
     this.urlIndex = index;
 
+    console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
     //this.urlSafe
