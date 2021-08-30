@@ -546,13 +546,13 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         }
       });
     }
-    if(this.documentRemarkValidation){
-      this.alertService.sweetalertWarning(
-        'Please give Remark for Discarded Document'
-      );
-      this.documentRemarkValidation = false;
-      return;
-    }
+    // if(this.documentRemarkValidation){
+    //   this.alertService.sweetalertWarning(
+    //     'Please give Remark for Discarded Document'
+    //   );
+    //   this.documentRemarkValidation = false;
+    //   return;
+    // }
 
     this.documentList.forEach((doc) => {
       doc.documentStatus = status;
