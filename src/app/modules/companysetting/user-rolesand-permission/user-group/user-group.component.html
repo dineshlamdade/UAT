@@ -10,15 +10,19 @@
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" placeholder="Enter Name" 
                             [ngClass]="{'is-invalid' : form.get('groupName').status == 'INVALID'}"
-                            
-                            onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
+                            [maxlength]="25"
+                            onkeypress="return /[0-9a-zA-Z_%-]/i.test(event.key)"
                              formControlName="groupName">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" name="example-textarea-input"
+                            <input type="text" class="form-control" placeholder="Enter Description" 
                             [ngClass]="{'is-invalid' : form.get('groupDescription').status == 'INVALID'}"
-                             formControlName="groupDescription"  rows="1" placeholder="Content.."> </textarea>
+                            [maxlength]="50"
+                             formControlName="groupDescription">
+                            <!-- <textarea class="form-control" name="example-textarea-input"
+                            [ngClass]="{'is-invalid' : form.get('groupDescription').status == 'INVALID'}"
+                             formControlName="groupDescription"  rows="1" placeholder="Content.."> </textarea> -->
 
                         </div>
                         <div class="col-md-3">
@@ -26,13 +30,16 @@
                         </div>
                         <div class="col-md-3 text-center mt-15">
                             <button type="button" tooltip="Assign / Un-Assign Group" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" 
-                            (click)="AssignedGroup(template)"><b><i class="fa fa-file"></i></b> Assign To Group</button>
+                            (click)="AssignedGroup(template)"><b><i class="fa fa-adn font-17" aria-hidden="true"></i>
+                                </b> Assign To Group</button>
                         </div>
                     </div>
                     <div class="row mt-10">
                         <div class="col-md-3">
                             <label class="custom-control custom-checkbox checkbox-center mt-30">
-                             <input type="checkbox" formControlName="default"   class="custom-control-input" name="default" [value]="false"/>
+                             <input type="checkbox" formControlName="default"   class="custom-control-input"
+                              name="default" 
+ />
                              <span class="custom-control-label">Default</span>
                                          </label>
                         </div>
@@ -40,7 +47,8 @@
                             <label class="custom-control custom-checkbox custom-control-inline mt-30">
                             <input formControlName="active" type="checkbox" class="custom-control-input"
                             name="active" [value]="true?1:0"  value="option1"  checked
-                               (change)="deactivateRemark()">
+                               (change)="deactivateRemark()"
+                               [ngClass]="{'is-invalid' : form.get('active').status == 'INVALID'}">
                             <span class="custom-control-label">Active </span>
                             </label>
                          </div>
@@ -58,8 +66,8 @@
                     <ng-container *ngIf="showButtonSaveAndReset">
                         <ng-container *ngIf="isSaveAndReset; else newDeb">
                             <button type="submit"  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                            tooltip="Save" (click)="save()" [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}"
-                          >
+                           tooltip="Save" (click)="save()" [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}"
+                         >
                          <b><i class="fa fa-floppy-o"></i></b> Save</button>
        
                          <button type="button" tooltip="Reset" (click)="cancelView()"
@@ -84,10 +92,47 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-10">
+
+      
+        <div class="row">
             <div class="col-md-8">
-                <p-table [value]="userGridData" [(selection)]="selecteduserGridData" dataKey="id" styleClass="p-datatable-userGridData" [rowHover]="true"
-                [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+        <span class="font-14 text-purple font-bold">Summary</span>
+   </div>
+          </div>
+        <div class="row">
+            <div class="col-md-8">
+                <p-table #dt1 [value]="userGridData" [(selection)]="selecteduserGridData" dataKey="id" 
+                styleClass="p-datatable-userGridData" [rowHover]="true"
+                [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                totalRecords={{userGridData.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                                [globalFilterFields]="[
+                                'groupName',
+                                'groupDescription',]">
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <div class="d-flex">
+                                                    <span
+                                                    class="p-input-icon-left p-ml-auto">
+                                                    <i class="pi pi-search"
+                                                        style="top: 9px !important; right: 59px;"></i>
+                                                    <input pInputText type="text"
+                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                        placeholder="Search " />
+                
+                                                </span>
+                                                <i
+                                                    class="fa fa-file-excel-o text-dark-green   fa-2x ml-2  mr-2"
+                                                    (click)="exportApprovalAllSummaryAsExcel()"></i>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </ng-template>
                     <ng-template pTemplate="header" >
                         <tr>
                             <th class="wd-10 text-center">
@@ -125,7 +170,7 @@
                             <td><label class="mb-0 text-link" (click)="Grouplist(template2,summary.groupName)">{{summary.groupName}} </label></td>
                             <td>{{summary.groupDescription}}</td>
                             <td class="wd-5 text-center">
-                                <i class="fa fa-edit font-16 text-blue cursor-pointer" tooltip="Edit" (click)="editUserGroup(summary)"></i> &nbsp;&nbsp;
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit" (click)="editUserGroup(summary)"></i> &nbsp;&nbsp;
                                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View" (click)="viewUserGroup(summary)"></i>
                             </td>
                         </tr>
@@ -157,43 +202,69 @@
         <div class="card mb-0">
             <div class="card-body">
                 <div class="row clearfix">
+                   
                     <div class="col-md-4">
                         <label class="form-label">User Group</label>
                         <input type="text" class="form-control" [(ngModel)]="userGroupName" disabled>
 
                     </div>
-                    <div class="col-md-4">
-
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group mt-20">
-
-                            <div class="input-group">
-                               <!-- // <input type="text" class="form-control" placeholder="Search for..." [(ngModel)]="data"> -->
-                                <input class="form-control-sm" type="text" name="search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" autocomplete="off"
-            placeholder=" &#61442; Search" >
-                                <!-- <span class="input-group-append"><button class="btn btn-bg-green" type="button" >Go!</button></span> -->
-                            </div>
-                        </div>
-                    </div>
+                  
                 </div>
-                <div class="row">
+                <div class="row mt-25">
                     <div class="col-md-12">
-                        <p-table [value]="assignGroupData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                        <p-table #dt1 [value]="assignGroupData" [paginator]="true" [rows]="10"
+                         [showCurrentPageReport]="true"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          totalRecords={{assignGroupData.length}}
+                          [rowsPerPageOptions]="[10,25,50,100,200]"
+                        [globalFilterFields]="[
+                                  'companyGroupCode',
+                                  'shortName',
+                                  'companyGroupName',
+                                 
+                                ]">
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <div class="d-flex">
+                                                    <span
+                                                    class="p-input-icon-left p-ml-auto">
+                                                    <i class="pi pi-search"
+                                                        style="top: 9px !important; right: 59px;"></i>
+                                                    <input pInputText type="text"
+                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                        placeholder="Search " />
+                
+                                                </span>
+                                                <i
+                                                    class="fa fa-file-excel-o text-dark-green   fa-2x ml-2  mr-2"
+                                                    (click)="exportApprovalSummaryAssignGroupAsExcel()"></i>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </ng-template>
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th class="wd-10 text-center">
                                         <label class="custom-control custom-checkbox checkbox-center" >
-                                        <input type="checkbox"   class="custom-control-input" name="select"/> <span class="custom-control-label"></span>
+                                        <input type="checkbox" [checked]="selectAllGroupFlag"  (change) ="selectAll($event.target)"  class="custom-control-input" name="select"/> 
+                                        <span class="custom-control-label"></span>
                                   </label>
 
                                     </th>
+                                    <!-- <th style="width: 3rem">
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                      </th> -->
                                     <th class="wd-25">
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                             Group Code &nbsp;
                                             <div class="Sort_Filter_Position d-flex ">
-                                                <p-sortIcon field="grupcode" pSortableColumn="grupcode"></p-sortIcon>
-                                                <p-columnFilter field="grupcode" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                <p-sortIcon field="companyGroupCode" pSortableColumn="companyGroupCode"></p-sortIcon>
+                                                <p-columnFilter field="companyGroupCode" display="menu" class="p-ml-auto"></p-columnFilter>
                                             </div>
                                         </div>
                                     </th>
@@ -201,8 +272,8 @@
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                             Short Name &nbsp;&nbsp;
                                             <div class="Sort_Filter_Position d-flex ">
-                                                <p-sortIcon field="shrtname" pSortableColumn="shrtname"></p-sortIcon>
-                                                <p-columnFilter field="shrtname" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                <p-sortIcon field="shortName" pSortableColumn="shortName"></p-sortIcon>
+                                                <p-columnFilter field="shortName" display="menu" class="p-ml-auto"></p-columnFilter>
                                             </div>
                                         </div>
                                     </th>
@@ -210,8 +281,8 @@
                                         <div class="p-d-flex p-jc-center p-ai-center">
                                             Group Name &nbsp;&nbsp;
                                             <div class="Sort_Filter_Position d-flex ">
-                                                <p-sortIcon field="grupname" pSortableColumn="grupname"></p-sortIcon>
-                                                <p-columnFilter field="grupname" display="menu" class="p-ml-auto">
+                                                <p-sortIcon field="companyGroupName" pSortableColumn="companyGroupName"></p-sortIcon>
+                                                <p-columnFilter field="companyGroupName" display="menu" class="p-ml-auto">
 
                                                 </p-columnFilter>
                                             </div>
@@ -220,14 +291,20 @@
 
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-assigndata | filter:searchText>
+                            <ng-template pTemplate="body" let-assigndata let-rowIndex="rowIndex">
                                 <tr class="p-selectable-row">
                                     <td class="text-center">
                                         <label class="custom-control custom-checkbox checkbox-center">
-                                      <input type="checkbox" [checked]="assigndata.active"  class="custom-control-input" name="select" (click)="assignuserGrpData(assigndata)" /> <span class="custom-control-label"></span>
+                                            <input type="checkbox"  [disabled]= "!isSaveAndReset && !showButtonSaveAndReset" [checked]="assigndata.active || selectAllGroupFlag"  class="custom-control-input" name="select" 
+                                            (click)="assignuserGrpData(assigndata,$event.target)" /> <span class="custom-control-label"></span>
                                       </label>
 
                                     </td>
+                                    <!-- <td>
+                                        <p-tableCheckbox [value]="assigndata" 
+                                        (click)="assignuserGrpData(e.checked,assigndata)" #e>
+                                      </p-tableCheckbox>
+                                      </td> -->
                                     <td>{{assigndata.companyGroupCode}}</td>
                                     <td>{{assigndata.shortName}}</td>
                                     <td>{{assigndata.companyGroupName}}</td>
@@ -250,8 +327,12 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-3" (click)="saveAssignGroupData();modalRef.hide()" ><b><i class="fa fa-save"></i></b> Save</button>
-        <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" (click)="modalRef.hide()"><b><i class="fa fa-refresh"></i></b> Reset</button>
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-3" *ngIf="isSaveAndReset"  (click)="saveAssignGroupData();modalRef.hide()" ><b><i class="fa fa-save"></i></b> Save</button>
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-3" *ngIf="editflag" (click)="saveAssignGroupData();modalRef.hide()" ><b><i class="fa fa-edit"></i></b> Update</button>
+        <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" *ngIf = "isSaveAndReset && showButtonSaveAndReset" (click)="resetAssignGroup();modalRef.hide()"><b><i class="fa fa-refresh"></i></b> Reset</button>
+        <button type="button" class="btn btn-secondary"  *ngIf = "!editflag" (click)="resetAssignGroup();modalRef.hide()"> Close</button>
+        
+       
     </div>
 </ng-template>
 
@@ -270,30 +351,52 @@
                         <input type="text" class="form-control" [(ngModel)]="userGroupList" disabled>
 
                     </div>
-                    <div class="col-md-2">
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mt-20">
-
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-append"><button class="btn btn-bg-green" type="button">Go!</button></span>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
-                <div class="row">
+                <div class="row mt-10">
                     <div class="col-md-12">
-                        <p-table [value]="Grplistdata" [paginator]="true" appendTo="body" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [scrollable]="true" scrollHeight="200px">
-                            <ng-template pTemplate="header">
+                        <p-table  #dt1 [value]="Grplistdata" [paginator]="true" [rows]="10"
+                                  [showCurrentPageReport]="true"
+                                  (sortFunction)="customSort($event)"
+                                  [customSort]="true" [pageLinks]="5"
+                                  currentPageReportTemplate=""
+                                  totalRecords={{Grplistdata.length}}
+                                   [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
+                                  'companyGroupName'
+                                 
+                                ]">
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="float-right">
+                                                <div class="d-flex">
+                                                    <span
+                                                    class="p-input-icon-left p-ml-auto">
+                                                    <i class="pi pi-search"
+                                                        style="top: 9px !important; right: 59px;"></i>
+                                                    <input pInputText type="text"
+                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                        placeholder="Search " />
+                
+                                                </span>
+                                                <i
+                                                    class="fa fa-file-excel-o text-dark-green   fa-2x ml-2  mr-2"
+                                                    (click)="exportApprovalSummaryAsExcel()"></i>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </ng-template>
+                                <ng-template pTemplate="header">
                                 <tr>
                                     <th class="wd-25">
                                         <div class="p-d-flex  p-ai-center">
                                             Group Name &nbsp;
                                             <div class="Sort_Filter_Position d-flex">
-                                                <p-sortIcon field="grupcode" pSortableColumn="grupcode"></p-sortIcon>
-                                                <p-columnFilter field="grupcode" display="menu" class="p-ml-auto" appendTo="body"></p-columnFilter>
+                                                <p-sortIcon field="companyGroupName" pSortableColumn="companyGroupName"></p-sortIcon>
+                                                <p-columnFilter field="companyGroupName" display="menu" class="p-ml-auto" appendTo="body"></p-columnFilter>
                                             </div>
                                         </div>
                                     </th>
@@ -326,6 +429,7 @@ Available</span>
     </div>
     <div class="modal-footer">
         <!-- <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-3"><b><i class="fa fa-save"></i></b> Save</button> -->
-        <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" (click)="modalRef.hide()">close</button>
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+        <!-- <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" (click)="modalRef.hide()">Close</button> -->
     </div>
 </ng-template>

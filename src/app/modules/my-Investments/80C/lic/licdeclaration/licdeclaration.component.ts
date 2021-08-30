@@ -38,8 +38,8 @@ export class LicdeclarationComponent implements OnInit {
   @Input() public institution: string;
   @Input() public policyNo: string;
   @Input() public data: any;
-public testPolicy = ''; 
-public selectPolicyName = '';
+  public testPolicy = '';
+  public selectPolicyName = '';
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -61,6 +61,8 @@ public selectPolicyName = '';
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
+  documentDataArray = [];
+  editdDocumentDataArray = [];
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
@@ -92,6 +94,14 @@ public selectPolicyName = '';
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
 
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
@@ -179,6 +189,11 @@ public selectPolicyName = '';
   public testnumber2: number =5000;
   licDeclarationData: any;
   dateOfJoining: Date;
+   masterGridsData: any;
+   documentsArray: any;
+   dateofsubmission: any;
+   disableRemarkList = false
+   disableRemark: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -225,8 +240,8 @@ public selectPolicyName = '';
       if (input.canView === true){
         this.isDisabled = true;
       } else{
-      this.isDisabled = false;
-      this.canEdit = input.canEdit;
+        this.isDisabled = false;
+        this.canEdit = input.canEdit;
       }
     }
 
@@ -247,9 +262,9 @@ public selectPolicyName = '';
       console.log(res.data.results[0].joiningDate);
 
       this.dateOfJoining = new Date(res.data.results[0].joiningDate);
- console.log(this.dateOfJoining)
- res.data.results.forEach((element) => {
-        
+      console.log(this.dateOfJoining)
+      res.data.results.forEach((element) => {
+
         const obj = {
           label: element.name,
           value: element.previousEmployerId,
@@ -429,7 +444,7 @@ public selectPolicyName = '';
 
   // ------- On Transaction Status selection show all transactions list accordingly all policies------
   selectedTransactionStatus(transactionStatus: any) {
-    
+
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,
@@ -437,6 +452,23 @@ public selectPolicyName = '';
     );
   }
 
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
+  }
+
+  // Remove LicMaster Document
+  public removeSelectedLicMasterDocument(index: number) {
+    this.masterfilesArray.splice(index, 1);
+  }
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
     data: any,
@@ -444,7 +476,10 @@ public selectPolicyName = '';
     i: number,
     j: number,
   ) {
-   
+
+if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+  this.disableRemarkList = true;
+}
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
         'Please Enter Declared Amount'
@@ -474,7 +509,7 @@ public selectPolicyName = '';
           data.declaredAmount;
         this.transactionDetail[j].lictransactionList[
           i
-        ].dateOfPayment = new Date(data.dueDate);
+          ].dateOfPayment = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
           this.transactionDetail[j].lictransactionList[i].actualAmount,
@@ -509,7 +544,7 @@ public selectPolicyName = '';
       );
       this.transactionDetail[j].lictransactionList[
         i
-      ].actualAmount = this.numberFormat.transform(0);
+        ].actualAmount = this.numberFormat.transform(0);
       this.transactionDetail[j].lictransactionList[i].dateOfPayment = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
@@ -546,7 +581,7 @@ public selectPolicyName = '';
         element.actualTotal.toString().replace(/,/g, '')
       );
       // console.log("Actual Total")(this.actualTotal);
-     console.log("Actual Total::" , this.actualTotal);
+      console.log("Actual Total::" , this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
@@ -560,8 +595,8 @@ public selectPolicyName = '';
   // ------------ To Check / Uncheck All  Checkboxes-------------
   checkUncheckAll(item: any,event: { target: { checked: any } } , j: any) {
 
-      console.log(event.target.checked);
-      this.isCheckAll=event.target.checked;
+    console.log(event.target.checked);
+    this.isCheckAll=event.target.checked;
     console.log(this.isCheckAll);
     if (!this.isCheckAll) {
       console.log('CHECK ALL IS FALSE ');
@@ -605,14 +640,14 @@ public selectPolicyName = '';
 
     this.transactionDetail[j].lictransactionList[
       i
-    ].declaredAmount = this.declarationService.declaredAmount;
+      ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.transactionDetail[j].lictransactionList[i].declaredAmount,
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
     this.transactionDetail[j].lictransactionList[
       i
-    ].declaredAmount = formatedDeclaredAmount;
+      ].declaredAmount = formatedDeclaredAmount;
 
 
     this.declarationTotal = 0;
@@ -635,10 +670,10 @@ public selectPolicyName = '';
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declarationTotal.toString().replace(/,/g, '')
-    );
-  });
-      this.grandDeclarationTotal = this.declarationTotal;
-}
+      );
+    });
+    this.grandDeclarationTotal = this.declarationTotal;
+  }
 
   // --------------- ON change of declared Amount Edit Modal-------------
   onDeclaredAmountChangeInEditCase(
@@ -655,12 +690,12 @@ public selectPolicyName = '';
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onDeclaredAmountChangeInEditCase Amount change::' +
-        summary.declaredAmount,
+      summary.declaredAmount,
     );
 
     this.editTransactionUpload[j].lictransactionList[
       i
-    ].declaredAmount = this.declarationService.declaredAmount;
+      ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].lictransactionList[i].declaredAmount,
     );
@@ -668,7 +703,7 @@ public selectPolicyName = '';
 
     this.editTransactionUpload[j].lictransactionList[
       i
-    ].declaredAmount = formatedDeclaredAmount;
+      ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
 
@@ -741,7 +776,7 @@ public selectPolicyName = '';
 
     this.transactionDetail[j].lictransactionList[
       i
-    ].actualAmount = this.declarationService.actualAmount;
+      ].actualAmount = this.declarationService.actualAmount;
     // console.log("Actual Amount changed::" , this.transactionDetail[j].lictransactionList[i].actualAmount);
     const formatedActualAmount = this.numberFormat.transform(
       this.transactionDetail[j].lictransactionList[i].actualAmount,
@@ -749,11 +784,11 @@ public selectPolicyName = '';
     // console.log(`formatedActualAmount::`,formatedActualAmount);
     this.transactionDetail[j].lictransactionList[
       i
-    ].actualAmount = formatedActualAmount;
+      ].actualAmount = formatedActualAmount;
 
     if (
       this.transactionDetail[j].lictransactionList[i].actualAmount !==
-        Number(0) ||
+      Number(0) ||
       this.transactionDetail[j].lictransactionList[i].actualAmount !== null
     ) {
       // console.log(`in if::`,this.transactionDetail[j].lictransactionList[i].actualAmount);
@@ -783,7 +818,7 @@ public selectPolicyName = '';
         element.actualTotal.toString().replace(/,/g, '')
       );
       // console.log("Actual Total")(this.actualTotal);
-     console.log("Actual Total::" , this.actualTotal);
+      console.log("Actual Total::" , this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
@@ -815,7 +850,7 @@ public selectPolicyName = '';
 
     this.editTransactionUpload[j].lictransactionList[
       i
-    ].actualAmount = this.declarationService.actualAmount;
+      ].actualAmount = this.declarationService.actualAmount;
     console.log(
       'Actual Amount changed::',
       this.editTransactionUpload[j].lictransactionList[i].actualAmount,
@@ -828,11 +863,11 @@ public selectPolicyName = '';
 
     this.editTransactionUpload[j].lictransactionList[
       i
-    ].actualAmount = formatedActualAmount;
+      ].actualAmount = formatedActualAmount;
 
     if (
       this.editTransactionUpload[j].lictransactionList[i].actualAmount !==
-        Number(0) ||
+      Number(0) ||
       this.editTransactionUpload[j].lictransactionList[i].actualAmount !== null
     ) {
       console.log(
@@ -900,7 +935,7 @@ public selectPolicyName = '';
     this.declarationService.amountApproved = 0.0;
     this.declarationService.licMasterPaymentDetailsId = this.transactionDetail[
       j
-    ].lictransactionList[0].licMasterPaymentDetailsId;
+      ].lictransactionList[0].licMasterPaymentDetailsId;
     this.transactionDetail[j].lictransactionList.push(this.declarationService);
     console.log('addRow::', this.transactionDetail[j].lictransactionList);
   }
@@ -955,10 +990,10 @@ public selectPolicyName = '';
     }
     this.transactionDetail[
       j
-    ].declarationTotal += this.declarationService.declaredAmount;
+      ].declarationTotal += this.declarationService.declaredAmount;
     this.transactionDetail[
       j
-    ].actualTotal += this.declarationService.actualAmount;
+      ].actualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
     this.transactionDetail[j].lictransactionList.push(this.declarationService);
@@ -1009,7 +1044,8 @@ public selectPolicyName = '';
     this.displayUploadFile = true;
   }
 
-  onUpload(event) {
+  onUpload(event, password?, remark?) {
+    
     console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
@@ -1048,6 +1084,21 @@ public selectPolicyName = '';
   }
 
   upload() {
+
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
 
     console.log(JSON.stringify(this.licDeclarationData))
 
@@ -1094,42 +1145,42 @@ public selectPolicyName = '';
     // for (let i = 0; i < this.transactionDetail.length; i++) {
     //   const transactionId = this.uploadGridData;
     //   this.transactionDetail[0].lictransactionList.forEach(element => {
-        // if (element.licTransactionId == transactionId[i]) {
-          if(this.licDeclarationData.previousEmployerId == 0){
-            // this.alertService.sweetalertError(
-            //   // 'Please make sure that you have selected previous employer for all selected lines',
-            //   'Please Select Previous Employer',
-            // );
-            // return false;
-          }
-          if (this.licDeclarationData.dateOfPayment == null) {
-            this.alertService.sweetalertError(
-              // 'Please make sure that you have selected date of payment for all selected lines',
-              'Please Select Date Of Payment',
-            );
-            return false;
-          }
-          if (this.licDeclarationData.dueDate == null) {
-            this.alertService.sweetalertError(
-              // 'Please make sure that you have selected due date for all selected lines',
-              'Please Select Date Of DueDate',
-            );
-            return false;
-          }
-          if (this.licDeclarationData.declaredAmount == null) {
-            this.alertService.sweetalertError(
-              // 'Please make sure that you have selected declared amount for all selected lines',
-              'Please Select Date Of Declared Amount',
-            );
-            return false;
-          }
-          if (this.licDeclarationData.actualAmount == null) {
-            this.alertService.sweetalertError(
-              // 'Please make sure that you have selected actual amount for all selected lines',
-              'Please Select Date Of Actual Amount',
-            );
-            return false;
-          }
+    // if (element.licTransactionId == transactionId[i]) {
+    if(this.licDeclarationData.previousEmployerId == 0){
+      // this.alertService.sweetalertError(
+      //   // 'Please make sure that you have selected previous employer for all selected lines',
+      //   'Please Select Previous Employer',
+      // );
+      // return false;
+    }
+    if (this.licDeclarationData.dateOfPayment == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected date of payment for all selected lines',
+        'Please Select Date Of Payment',
+      );
+      return false;
+    }
+    if (this.licDeclarationData.dueDate == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected due date for all selected lines',
+        'Please Select Date Of DueDate',
+      );
+      return false;
+    }
+    if (this.licDeclarationData.declaredAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected declared amount for all selected lines',
+        'Please Select Date Of Declared Amount',
+      );
+      return false;
+    }
+    if (this.licDeclarationData.actualAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected actual amount for all selected lines',
+        'Please Select Date Of Actual Amount',
+      );
+      return false;
+    }
     //     }
     //   });
     // }
@@ -1140,6 +1191,9 @@ public selectPolicyName = '';
       licTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
+      //   documentPassword: this.documentPassword,
+      // remarkList: this.remarkList,
+      remarkPasswordList: this.documentDataArray
     };
     console.log('data::', data);
 
@@ -1148,8 +1202,41 @@ public selectPolicyName = '';
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
           this.selectedTransactionInstName(this.globalInstitution);
-          // this.transactionDetail = 
+          // this.transactionDetail =
           // res.data.results[0].licTransactionDetail;
           // this.documentDetailList = res.data.results[0].documentInformation;
           // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
@@ -1161,7 +1248,7 @@ public selectPolicyName = '';
 
           // this.transactionDetail.forEach((element) => {
 
-        
+
           //   this.initialArrayIndex.push(element.lictransactionList.length);
 
           //   element.lictransactionList.forEach((innerElement) => {
@@ -1202,16 +1289,16 @@ public selectPolicyName = '';
   }
 
   changeReceiptAmountFormat() {
-      // tslint:disable-next-line: variable-name
-      let receiptAmount_: number;
-      let globalSelectedAmount_ : number; 
+    // tslint:disable-next-line: variable-name
+    let receiptAmount_: number;
+    let globalSelectedAmount_ : number;
 
-      receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
-      globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
+    receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+    globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
 
-      console.log(receiptAmount_);
-      console.log(globalSelectedAmount_);
-      if (receiptAmount_ < globalSelectedAmount_) {
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    if (receiptAmount_ < globalSelectedAmount_) {
       this.alertService.sweetalertError(
         'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
       );
@@ -1226,7 +1313,7 @@ public selectPolicyName = '';
       // this.receiptAmount = '0.00';
       // return false;
     }
-      this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
+    this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
 
   UploadModal(template: TemplateRef<any>) {
@@ -1250,7 +1337,7 @@ public selectPolicyName = '';
     );
     this.proofSubmissionFileList = this.documentDetailList[
       documentIndex
-    ].documentDetailList;
+      ].documentDetailList;
   }
 
   deactiveCopytoActualDate() {
@@ -1266,7 +1353,7 @@ public selectPolicyName = '';
     this.transactionDetail[0].lictransactionList[i].dateOfPayment = dueDate;
     this.declarationService.dateOfPayment = this.transactionDetail[0].lictransactionList[
       i
-    ].dateOfPayment;
+      ].dateOfPayment;
     // this.dateOfPayment = dueDate;
     alert('hiiii');
     console.log('Date OF PAyment' + this.declarationService.dateOfPayment);
@@ -1287,10 +1374,12 @@ public selectPolicyName = '';
 
     this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
+        
         console.log('edit Data:: ', res);
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          this.disableRemark = res.data.results[0].licTransactionDetail[0].lictransactionList[0].transactionStatus;
         this.editTransactionUpload = res.data.results[0].licTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
@@ -1317,12 +1406,66 @@ public selectPolicyName = '';
             );
           });
         });
+        this.masterGridData = res.data.results;
+
+        this.masterGridData.forEach((element) => {
+          // element.policyStartDate = new Date(element.policyStartDate);
+          // element.policyEndDate = new Date(element.policyEndDate);
+          // element.fromDate = new Date(element.fromDate);
+          // element.toDate = new Date(element.toDate);
+          element.documentInformation.forEach(element => {
+            this.dateofsubmission = element.dateOfSubmission;
+            // this.documentArray.push({
+            //   'dateofsubmission': ,
+            // })
+            element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              // 'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            })
+            })
+          });
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
+          //
+          // })
+        });
         // console.log('converted:: ', this.urlArray);
       },
     );
+    this.documentArray = [];
   }
 
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
 
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
   // -----------Common Function for filter to call API---------------
   getTransactionFilterData(
@@ -1330,53 +1473,98 @@ public selectPolicyName = '';
     policyNo: String,
     transactionStatus: String,
   ) {
-    
+
     // this.Service.getTransactionInstName(data).subscribe(res => {
     this.Service.getTransactionFilterData(institution,policyNo,transactionStatus,)
-    .subscribe((res) => {
-      console.log('getTransactionFilterData', res);
-      this.transactionDetail = 
-      res.data.results[0].licTransactionDetail;
-      this.documentDetailList = res.data.results[0].documentInformation;
-      this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-      this.grandActualTotal = res.data.results[0].grandActualTotal;
-      this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-      this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+      .subscribe((res) => {
+        console.log('getTransactionFilterData', res);
+        this.transactionDetail =
+          res.data.results[0].licTransactionDetail;
+        this.documentDetailList = res.data.results[0].documentInformation;
+        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+        this.grandActualTotal = res.data.results[0].grandActualTotal;
+        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
 
-      this.initialArrayIndex = [];
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
+        // this.documentArray.push({
+        //   'dateofsubmission':element.creatonTime,
+        //   'documentType':element.documentType,
+        //   'documentName': element.fileName,
+        //   'documentPassword':element.documentPassword,
+        //   'documentRemark':element.documentRemark,
+        //   'status' : element.status,
+        //   'lastModifiedBy' : element.lastModifiedBy,
+        //   'lastModifiedTime' : element.lastModifiedTime,
 
-      this.transactionDetail.forEach((element) => {
+        // })
 
-        this.initialArrayIndex.push(element.lictransactionList.length);
+        this.initialArrayIndex = [];
 
-        element.lictransactionList.forEach((innerElement) => {
+        this.transactionDetail.forEach((element) => {
 
-          if (innerElement.dateOfPayment !== null) {
-            innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-          }
+          this.initialArrayIndex.push(element.lictransactionList.length);
 
-          if (innerElement.isECS === 0) {
-            this.glbalECS == 0;
-          } else if (innerElement.isECS === 1) {
-            this.glbalECS == 1;
-          } else {
-            this.glbalECS == 0;
-          }
+          element.lictransactionList.forEach((innerElement) => {
 
-          innerElement.declaredAmount = this.numberFormat.transform(
-            innerElement.declaredAmount,
-          );
+            if (innerElement.dateOfPayment !== null) {
+              innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
+            }
 
-          innerElement.actualAmount = this.numberFormat.transform(
-            innerElement.actualAmount,
-          );
+            if (innerElement.isECS === 0) {
+              this.glbalECS == 0;
+            } else if (innerElement.isECS === 1) {
+              this.glbalECS == 1;
+            } else {
+              this.glbalECS == 0;
+            }
+
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount,
+            );
+
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount,
+            );
+          });
         });
       });
-    });
   }
 
   // Upload Document And save Edited Transaction
   public uploadUpdateTransaction() {
+
+
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+    console.log(JSON.stringify(this.licDeclarationData))
+
 
     console.log(
       'uploadUpdateTransaction editTransactionUpload::',
@@ -1431,6 +1619,8 @@ public selectPolicyName = '';
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      // documentPassword: this.documentPassword,
+      remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -1439,7 +1629,44 @@ public selectPolicyName = '';
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
-      
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             '',
@@ -1559,6 +1786,7 @@ public selectPolicyName = '';
   }
 
   docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    
     console.log("documentDetailList::", documentDetailList)
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
@@ -1576,7 +1804,7 @@ public selectPolicyName = '';
 }
 
 
- class DeclarationService {
+class DeclarationService {
   public licTransactionId = 0;
   public licMasterPaymentDetailsId: number;
   public previousEmployerId = 0;

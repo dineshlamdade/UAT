@@ -25,6 +25,7 @@ import { InvestmentApprovalDocumentRemarkInfo } from '../interfaces/investment-a
 })
 export class InvestmentMasterApprovalComponent implements OnInit {
   public documentList: Array<any> = [];
+  public approved1Disabled= false;
   public documentSafeURL: SafeResourceUrl;
   public modalRef: BsModalRef;
   public documentURLIndex: number;
@@ -41,6 +42,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   public documentDetailList: InvestmentApprovalMasterDocumentInfo[] = [];
   public previousDisabled: boolean = true;
   public nextDisabled: boolean = false;
+  public test = [];
 
   public employeeInfo: InvestmentApprovalEmployeeInfo = {
     employeeMasterId: 0,
@@ -82,6 +84,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   };
   public remarkValidation: boolean = false;
   public approvedDisabled: boolean = true;
+  public approvedDiscardDisabled = false;
   public documentRemarkValidation: boolean = false;
 
   constructor(
@@ -144,17 +147,40 @@ export class InvestmentMasterApprovalComponent implements OnInit {
       .subscribe((res: InvestmentApprovalMasterInfo) => {
         console.log('res masterinfo::', res);
         if (res != null || res != undefined) {
+         
           this.masterInfo = res;
+          
           this.documentDetailList =
             this.masterInfo.masterDetail.documentDetailList;
             this.documentDetailList.forEach((doc)=>{
-              if(doc.documentStatus =="Approved") {
-                this.approvedDisabled = false;
-              }
+              
+              this.test.push(doc.documentStatus);
+              
+              if (this.test.includes('Submitted')) {
+                this.approved1Disabled = true;
+            } else if (this.test.includes('Approved')) {
+              this.approved1Disabled = false;
+            } else if (this.test.includes('Discarded')) {
+              this.approved1Disabled = true;
+            }
+                       // if(doc.documentStatus =="Approved") {
+              //   this.approved1Disabled = false;
+              // }  if (doc.documentStatus =="Discarded") {
+              //     this.approvedDiscardDisabled = true;
+                
+              // }
+              // if(doc.documentStatus =="Submitted") {
+              //   this.approvedDisabled = true;
+              // }
+            
             });
           this.getEmployeeInfo(60);
+          console.log(this.test);
+      
+    
 
         }
+        this.test = [];
       });
   }
 
@@ -285,6 +311,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
   // ------------ Change PSID Status of Master --------------------------------------
   changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any) {
+    
     console.log('status::', status);
     console.log('remarkValidation::', this.remarkValidation);
     if (status == 'SendBack') {
@@ -361,6 +388,22 @@ export class InvestmentMasterApprovalComponent implements OnInit {
     psid: any,
     operationType: string
   ) {
+    // if (status == 'SendBack') {
+    //   console.log('masterRemark::', this.masterRemark);
+    //   if (
+    //     this.masterRemark == '' ||
+    //     this.masterRemark == undefined ||
+    //     this.masterRemark == null
+    //   ) {
+    //     this.remarkValidation = true;
+    //     console.log('remarkValidation::', this.remarkValidation);
+    //     return;
+    //   }
+    // }
+    // this.changeStatus(masterDetails, status);
+    // this.changePSID(psid, operationType);
+    console.log('status::', status);
+    console.log('remarkValidation::', this.remarkValidation);
     if (status == 'SendBack') {
       console.log('masterRemark::', this.masterRemark);
       if (
@@ -373,8 +416,116 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         return;
       }
     }
-    this.changeStatus(masterDetails, status);
-    this.changePSID(psid, operationType);
+    if (status == 'Approved') {
+      this.masterInfo.masterDetail.documentDetailList.forEach((doc) => {
+        console.log('doc.documentStatus::', doc.documentStatus);
+        if (doc.documentStatus != 'Approved') {
+          this.alertService.sweetalertWarning(
+            'Make all Documents either Approved or Discarded'
+          );
+          return;
+        }
+      });
+    }
+
+    const data = {
+      masterId: masterDetails.masterDetail.masterId,
+      proofSubmissionId: masterDetails.psidDetail.psid,
+      policyNo: masterDetails.masterDetail.policyNo,
+      masterStatus: status,
+      remark: this.masterRemark,
+      group: masterDetails.psidDetail.groupName,
+      section: masterDetails.psidDetail.section,
+    };
+
+    console.log('data::', data);
+
+    let formData: any = new FormData();
+
+    formData.append('approvalMasterRequestDTO', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key, ' ', value);
+    });
+
+    this.investmentMasterApprovalService
+      .changeMasterStatus(formData)
+      .subscribe((res: any) => {
+        console.log('res asterinfo::', res);
+
+        //if (res != null || res != undefined) {
+        this.alertService.sweetalertMasterSuccess(
+          'Master ' + status + ' sucessfully.',
+          ''
+        );
+        // this.masterInfo = res.data.results[0].masterDetail;
+        // this.proofSubmissionIdList = this.masterInfo.psidDetailList;
+        console.log('proofSubmissionId::', res.data.results[0].psidDetail.psid);
+        // }
+        this.getMasterInfo(res.data.results[0].psidDetail.psid);
+        console.log('psid::', psid);
+        let index = 0;
+    
+        index = this.localStorageProofSubmissionIdList.findIndex(
+          (psidEle) => psidEle.psid == psid
+        );
+    
+        if (operationType == 'Next') {
+          this.proofSubmissionIdListIndex = index + 1;
+        } else if (operationType == 'Previous') {
+          this.proofSubmissionIdListIndex = index - 1;
+        }
+    
+        if (
+          this.localStorageProofSubmissionIdList[this.proofSubmissionIdListIndex]
+            .type == 'M'
+        ) {
+          this.globalPSID =
+            this.localStorageProofSubmissionIdList[
+              this.proofSubmissionIdListIndex
+            ].psid;
+          if (
+            this.proofSubmissionIdListIndex ==
+            this.localStorageProofSubmissionIdList.length - 1
+          ) {
+            this.nextDisabled = true;
+            this.previousDisabled = false;
+          } else if (this.proofSubmissionIdListIndex == 0) {
+            this.previousDisabled = true;
+            this.nextDisabled = false;
+          } else {
+            this.previousDisabled = false;
+            this.nextDisabled = false;
+          }
+    
+          console.log('index::', index);
+          this.getMasterInfo(this.globalPSID);
+        } else if (
+          this.localStorageProofSubmissionIdList[this.proofSubmissionIdListIndex]
+            .type == 'T'
+        ) {
+          localStorage.setItem(
+            'localStorageProofSubmissionIdList',
+            JSON.stringify(this.localStorageProofSubmissionIdList)
+          );
+    
+          localStorage.setItem(
+            'localStorageProofSubmissionIdListIbex',
+            this.proofSubmissionIdListIndex.toString()
+          );
+    
+          this.router.navigate(['/investment-approval/transaction']);
+        } else {
+          this.router.navigate(['/investment-approval/dashboard']);
+        }
+    
+        this.remarkValidation = false;
+        this.approvedDisabled = true;
+        this.masterRemark = '';
+        this.remarkValidation = false;
+      });
   }
 
   //  ------------ Change Document Status ------------------

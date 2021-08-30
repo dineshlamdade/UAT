@@ -51,7 +51,6 @@ import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 //import { investmentOthersModule } from './modules/my-Investments/others/others.module';
-import { PayrollModule } from './modules/companysetting/payroll/payroll.module';
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
@@ -82,6 +81,7 @@ import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { InvestmentApprovalModule } from './modules/investment-approval/investment-approval.module';
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
+import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
 
 
 
@@ -103,7 +103,6 @@ import { ApprovedInvestmentModule } from './modules/approved-investment/approved
     PrimeNGModule,
     AccordionModule,
     DashboardModule,
-    PayrollModule,
     QueryModule,
     LoanModule,
     CompanySettingModule,
@@ -122,6 +121,7 @@ import { ApprovedInvestmentModule } from './modules/approved-investment/approved
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    OnetimeInvestmentsApprovalModule,
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,

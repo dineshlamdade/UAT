@@ -4,6 +4,7 @@ import { DocumentviewerComponent } from './documentviewer/documentviewer.compone
 import { InvestmentApprovalComponent } from './investment-approval.component';
 import { InvestmentMasterApprovalComponent } from './investment-master-approval/investment-master-approval.component';
 import { InvestmentTransactionApprovalComponent } from './investment-transaction-approval/investment-transaction-approval.component';
+import { InvestmentOnetimetransactionApprovalComponent } from './investment-onetimetransaction-approval/investment-onetimetransaction-approval.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,16 @@ const routes: Routes = [
         path: 'transaction',
         component: InvestmentTransactionApprovalComponent,
         data: { title: ':: Delizia-HR :: Investment-Approval-Transaction' },
+      },
+    ],
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: 'onetimetransaction',
+        component: InvestmentOnetimetransactionApprovalComponent,
+        data: { title: ':: Delizia-Hr :: Investment-Approval-OneTimeTransaction' },
       },
     ],
   },

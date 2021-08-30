@@ -1,0 +1,1387 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form [formGroup]="queryCommunicationForm" >
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <fieldset>
+                                            <legend>Query </legend>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="row " *ngIf="perticularEmpDetails">
+                                                        <div class="col-md-12 ">
+                                                            <div class="card2">
+                                                                <div class="row" >
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label mt-1 mb-0">Employee
+                                                                            No. & Name</label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                          {{perticularEmpDetails.employeeCode  +' - '+  perticularEmpDetails.fullName}}</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label mt-1 mb-0">Date
+                                                                            of Joining</label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                          {{perticularEmpDetails.joiningDate | date:'dd-MMM-yyyy hh:mm a'}}
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label
+                                                                            class="form-label mt-1 mb-0">Establishment</label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                          {{perticularEmpDetails.establishment}}
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label mt-1 mb-0">Employee
+                                                                            Type</label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                          {{perticularEmpDetails.employeeType}}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-10 mt-0">
+                                                                    <div class="col-md-6">
+                                                                        <label
+                                                                            class="form-label mt-1 mb-0">Grade</label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                          {{perticularEmpDetails.grade}}
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label
+                                                                            class="form-label mt-1 mb-0">Designation</label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                          {{perticularEmpDetails.designation}}
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label
+                                                                            class="form-label mt-1 mb-0">Emp. Status</label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                        <label class="font-12 text-ellipsis mt-1 mb-0">
+                                                                          {{perticularEmpDetails.status}}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <div class="row mt-25" *ngIf="getAllQueryGenerationData">
+                                                    <div class="card1" >
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label class="form-label">Company
+                                                                    Name</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.companyName}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label class="form-label">Creator
+                                                                    Name</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.createdBy}}" createdBy disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label class="form-label">Query
+                                                                    Number</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.queryNumber}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label class="form-label">Submission
+                                                                    Date &
+                                                                    Time</label></div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="input-group">
+
+                                                                        <input data-provide="datepicker"
+                                                                            data-date-autoclose="true"
+                                                                            class="form-control" placeholder="Date"
+                                                                            bsDatepicker disabled value="{{getAllQueryGenerationData.submissionDate | date:'dd-MMM-yyyy hh:mm a'}}">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10 mt-0">
+                                                            <div class="col-md-6 "> <label class="form-label">Module
+                                                                    Name</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.applicationModuleName}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label class="form-label">Query
+                                                                    Type</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.queryTypeCode}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label class="form-label">Sub-Query
+                                                                    Type</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.subQueryTypeCode}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label
+                                                                    class="form-label">Priority</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.priority}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label class="form-label">Q & A
+                                                                    Template</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.queAnsDescription}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label
+                                                                    class="form-label">Subject</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.subject}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10">
+                                                            <div class="col-md-6"> <label class="form-label">Last
+                                                                    Update Date & Time</label></div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="input-group">
+
+                                                                        <input data-provide="datepicker"
+                                                                            data-date-autoclose="true"
+                                                                            class="form-control" placeholder="Date"
+                                                                            bsDatepicker  disabled value="{{getAllQueryGenerationData.updatedDateTime | date:'dd-MMM-yyyy hh:mm a'}}"/>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-10 mt-0">
+                                                            <div class="col-md-6"> <label
+                                                                    class="form-label">Status</label></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" value="{{getAllQueryGenerationData.status}}" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8" >
+
+                                                    <div class="row ">
+                                                        <div class="col-md-12">
+                                                            <div class="card1">
+
+                                                                <div class="tabset" >
+                                                                    <input type="radio" name="tabset" id="Communication"
+                                                                        aria-controls="Communication" checked="">
+                                                                    <label class="backcolor" for="Communication">Communication</label>
+                                                                    <input type="radio" name="tabset" id="Attachment"  *ngIf="docName.length > 0"
+                                                                        aria-controls="Attachment"  >
+                                                                    <label class="backcolor" for="Attachment"   *ngIf="docName.length > 0">Attachment</label>
+                                                                    <input type="radio" name="tabset" id="Status"
+                                                                        aria-controls="Status">
+                                                                    <label class="backcolor" for="Status">Status Log</label>
+                                                                    <input type="radio" name="tabset" id="Contact"
+                                                                        aria-controls="Contact">
+                                                                    <label class="backcolor" for="Contact">Contact</label>
+                                                                    <div class="tab-panels">
+                                                                        <section id="Communication" class="tab-panel">
+                                                                            <div class="" id="com" [hidden]="isShowDiv">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="float-right">
+                                                                                            <button type="button"
+                                                                                                tooltip="Reply" *ngIf="status !='Closed' && status !='Draft'"
+                                                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
+                                                                                                (click)="toggleDisplayDiv();getReplayDataById(queryGenerationEmpId)"><b><i
+                                                                                                        class="fa fa-reply"></i></b>
+                                                                                                Reply</button>
+                                                                                            <button type="button" *ngIf="forwardWorkflowId != 0 && status !='Closed' && status !='Draft'"
+                                                                                                tooltip="Forward"
+                                                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"  (click)="toggleDisplayforwarddiv();getReplayDataById(queryGenerationEmpId)"><b><i
+                                                                                                        class="fa fa-share"
+                                                                                                        aria-hidden="true"></i></b>
+                                                                                                Forward</button>
+
+                                                                                                <button type="button"
+                                                                                                tooltip="Close" *ngIf="status !='Closed'"
+                                                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"   (click)="Popup1(templateemoji);getReplayDataById(queryGenerationEmpId)"><b><i
+                                                                                                        class="fa fa-times-circle" aria-hidden="true" aria-hidden="true"></i></b>
+                                                                                                Close</button>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="card2 mt-25" *ngFor="let GetIterationdetailsbyQueryIDData of attachementData ">
+
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-2">
+                                                                                            <div _ngcontent-kmp-c585=""
+                                                                                                class="custom_Label_badge bagde1">
+                                                                                                <button class="btn defaultbtn" > Document</button>
+                                                                                                <!-- docViewer(template1,GetIterationdetailsbyQueryIDData); -->
+                                                                                                <span class="Label_badge" style="text-align: center;"  (click)="navigateToDocmentViewer(GetIterationdetailsbyQueryIDData)"
+                                                                                                >{{GetIterationdetailsbyQueryIDData.numberOfDocuments}}</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!-- oninput="this.parentNode.dataset.value = this.value" rows="4" -->
+                                                                                        <div class="col-md-10" >
+                                                                                          <textarea style="overflow:hidden;"
+                                                                                              class="form-control owl-carousel"  [innerHTML]="getInnerHTML(GetIterationdetailsbyQueryIDData.queryDescription)"
+                                                                                             disabled value="GetIterationdetailsbyQueryIDData.queryDescription"></textarea>
+                                                                                      </div>
+                                                                                    </div>
+                                                                                    <div class="row mt-10">
+                                                                                        <div class="col-md-2">
+                                                                                            <span
+                                                                                                class="tag tag-lightgray dark" >Ref : {{GetIterationdetailsbyQueryIDData.refNumber}}</span>
+                                                                                        </div>
+                                                                                        <div class="col-md-4 status">
+                                                                                            <span
+                                                                                                class="tag updated"> <span class="dark">Updated By : </span>&nbsp;{{GetIterationdetailsbyQueryIDData.refUpdatedByName}}</span>
+                                                                                        </div>
+                                                                                        <div class="col-md-3">
+                                                                                            <div class="form-group">
+                                                                                                <div
+                                                                                                    class="input-group">
+
+                                                                                                    <input
+                                                                                                        data-provide="datepicker"
+                                                                                                        data-date-autoclose="true"
+                                                                                                        class="form-control"
+                                                                                                        placeholder="Date"
+                                                                                                        bsDatepicker disabled value="{{GetIterationdetailsbyQueryIDData.updatedDateTime | date:'dd-MMM-yyyy hh:mm a'}}">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                        <!-- <div class="col-md-3">
+                                                                                            <span  class="tag tag-gray">Status :&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                        </div> -->
+                                                                                        <div class="col-md-3 status">
+                                                                                          <span  class=" tag Closed" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Closed'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Submit" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Submit'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Draft" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Draft'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Replied" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Replied'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+                                                                                          <span  class=" tag Redirect" *ngIf="GetIterationdetailsbyQueryIDData.status == 'Redirect'"><span class="dark">Status :</span>&nbsp;{{GetIterationdetailsbyQueryIDData.status}}</span>
+
+                                                                                          <!-- <span class="badge" [ngClass]="{'
+                                                                                          badge-primary': GetIterationdetailsbyQueryIDData.status=='Re-Open',
+                                                                                        ' badge-success': GetIterationdetailsbyQueryIDData.status=='Approved',
+                                                                                        ' badge-danger': GetIterationdetailsbyQueryIDData.status=='SendBack',
+                                                                                        ' badge-info': GetIterationdetailsbyQueryIDData.status=='Submit'}"></span> -->
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!-- .....................budge document view..........................................................  -->
+                                                                                <ng-template #template1>
+                                                                                  <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+                                                                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                      <span aria-hidden="true">×</span>
+                                                                                    </button>
+                                                                                  </div>
+                                                                                  <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
+                                                                                <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
+                                                                                  <div class="card-body">
+                                                                                    <div class="row">
+                                                                                      <div class="col-md-1">
+                                                                                        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+                                                                                          (click)="previousDocViewer()" [disabled]="urlIndex == 0">
+                                                                                          <i class="fa fa-angle-left text-white font-30 p-10"></i>
+                                                                                        </button>
+                                                                                      </div>
+                                                                                      <div class="col-md-10">
+                                                                                        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+                                                                                      </div>
+                                                                                      <div class="col-md-1">
+                                                                                        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
+                                                                                          [disabled]="urlIndex == urlArray.length - 1">
+                                                                                          <i class="fa fa-angle-right text-white font-30 p-10"></i>
+                                                                                        </button>
+                                                                                      </div>
+                                                                                    </div>
+                                                                                  </div>
+                                                                                  <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+                                                                                      Ok
+                                                                                    </button>
+                                                                                  </div>
+                                                                                </ng-template>
+                                                                            </div>
+
+                                                                            <div id="reply" [hidden]="isRelyDiv" *ngIf="getReplayDataByIdData">
+                                                                                <div class="card1">
+                                                                                    <div class="row">
+                                                                                        <!-- <div class="col-md-3">
+                                                                                            <label
+                                                                                                class="form-label">Ref. No.</label>
+                                                                                            <input class="form-control"
+                                                                                                disabled>
+                                                                                        </div> -->
+                                                                                        <div class="col-md-3">
+                                                                                            <label
+                                                                                                class="form-label">Addressed
+                                                                                                To</label>
+                                                                                            <input class="form-control"
+                                                                                            value="{{getReplayDataByIdData.addressedToEmpName}}" disabled>
+
+                                                                                        </div>
+                                                                                        <div class="col-md-3">
+                                                                                            <label
+                                                                                                class="form-label">Addressed
+                                                                                                to Role</label>
+                                                                                            <input class="form-control"
+                                                                                            value="{{getReplayDataByIdData.addressedToEmpRole}}" disabled>
+
+                                                                                        </div>
+                                                                                        <!-- <div class="col-md-3">
+                                                                                            <label
+                                                                                                class="form-label">Updated
+                                                                                                Date & Time</label>
+                                                                                            <div class="form-group">
+                                                                                                <div
+                                                                                                    class="input-group">
+
+                                                                                                    <input
+                                                                                                        data-provide="datepicker"
+                                                                                                        data-date-autoclose="true"
+                                                                                                        class="form-control"
+                                                                                                        placeholder="Date"
+                                                                                                        bsDatepicker
+                                                                                                        disabled
+                                                                                                        >
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div> -->
+                                                                                    </div>
+                                                                                    <div class="row mt-25">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="row">
+                                                                                                <label
+                                                                                                    class="form-label">Answer
+                                                                                                    Template</label>
+                                                                                                <select formControlName="queAnsMasterId"   class="form-control custom-select" (change)="answerTempChange($event.target.value)"
+                                                                                                [ngClass]="{'is-invalid':queryCommunicationForm.get('queAnsMasterId').status == 'INVALID'}">
+                                                                                                  <option [ngValue]="null" selected >Select</option>
+                                                                                                  <option value="{{module.queAnsMasterId}}" *ngFor="let module of getQueAnstemplistByIdData ">
+                                                                                                    {{module.questionSubject}}</option>
+                                                                                                </select>
+                                                                                            </div>
+
+
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                    <div class="row mt-25">
+                                                                                        <div class="col-md-12">
+                                                                                            <label
+                                                                                                class="form-label">Description</label>
+                                                                                            <ckeditor  formControlName="queryDescription"
+                                                                                            [ngClass]="{'is-invalid':queryCommunicationForm.get('queryDescription').status == 'INVALID'}">
+                                                                                            >
+                                                                                            </ckeditor>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="row mt-25" >
+                                                                                      <div class="col-md-8">
+                                                                                        <div class="table-responsive Custom_Table">
+                                                                                            <table class="table table-striped table-hover table-bordered">
+                                                                                                <thead class="thead-dark">
+                                                                                                    <tr>
+                                                                                                        <th scope="col" class="font700 wd-8">Sr No.</th>
+                                                                                                        <!-- <th scope="col" class="font700 wd-40">Document Name</th> -->
+                                                                                                        <th scope="col" class="font700 wd-40">Attachment</th>
+                                                                                                        <th scope="col" class="font700 wd-12" >Action</th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                    <tr >
+                                                                                                        <th scope="row"><span tooltip="1">1</span></th>
+
+                                                                                                        <!-- <td><span tooltip="Premium Receipt/ Premium Statement"></span>Rent Agreement</td> -->
+
+                                                                                                        <td>
+                                                                                                          <span *ngFor="let item of listDoc" class="text-orange" tooltip="{{item.name}},"><i
+                                                                                                          class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                                                                                                              <div class="col-md-12" *ngFor="let doc of listDoc; let i = index"> {{ doc.fileName }}
+                                                                                                                                  <!-- <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
+                                                                                                                                      <i class="fa fa-paperclip text-orange"  (click)="docViewer(template1,i)"></i> &nbsp;
+                                                                                                                                      {{ doc.fileName }}
+                                                                                                                                  </div> -->
+                                                                                                                              </div>
+                                                                                                        </td>
+
+                                                                                                        <td >
+                                                                                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal" >
+                                                                                                 </i>&nbsp;&nbsp;
+                                                                                                        </td>
+                                                                                                    </tr>
+
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <!-- upload document pop up  -->
+                                                                                    <ng-template #template>
+                                                                                      <div class="modal-header">
+                                                                                          <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+                                                                                          <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                                                          aria-hidden="true">×</span></button>
+                                                                                      </div>
+                                                                                      <div class="modal-body">
+                                                                                          <div class="card">
+                                                                                              <div class="card-body">
+                                                                                                  <div class="row clearfix">
+                                                                                                      <!-- <div class="col-md-12">
+                                                                                                     <label class="form-label">Upload File here :</label>
+                                                                                                  </div> -->
+                                                                                                      <div class="col-md-12">
+                                                                                                          <div class="fileuploadbox bg-color-lightgray">
+                                                                                                              <label class="filelabel">
+                                                                                                  <i class="fa fa-upload">
+                                                                                                  </i>
+                                                                                                  <span class="title">
+                                                                                                    Choose file
+                                                                                                  </span>
+                                                                                                  <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event,'listDoc');"
+                                                                                                    accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+                                                                                                </label>
+                                                                                                          </div>
+                                                                                                          <div *ngIf="listDoc.length > 0 " class="fileuploadbox">
+                                                                                                              <span class="text-purple font-14 font700">Selected Files</span>
+                                                                                                              <label *ngFor="let item of listDoc;  let index = index;" class="filelabeldisplay">
+                                                                                                  <div class="text-ellipsis"><i class="fa fa-paperclip">
+                                                                                                    </i>
+                                                                                                    <span class="title" tooltip="{{item.name}}">
+                                                                                                      {{ item.name }}
+                                                                                                    </span>
+                                                                                                  </div>
+                                                                                                  <div>
+                                                                                                    <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index ,'listDoc')"></i>
+                                                                                                  </div>
+                                                                                                </label>
+                                                                                                          </div>
+                                                                                                      </div>
+                                                                                                      <div class="col-md-12 mt-10">
+                                                                                                          <label class="form-label">Remark</label>
+                                                                                                      </div>
+                                                                                                      <div class="col-md-12">
+                                                                                                          <textarea class="form-control"  rows="2"></textarea>
+                                                                                                      </div>
+                                                                                                  </div>
+                                                                                              </div>
+                                                                                          </div>
+                                                                                      </div>
+                                                                                      <div class="modal-footer">
+                                                                                          <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                                                                                      </div>
+                                                                                  </ng-template>
+
+                                                                                  <!-- Document view  -->
+                                                                                      <ng-template #template1>
+                                                                                        <div class="modal-header">
+                                                                                          <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+                                                                                          <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                            <span aria-hidden="true">×</span>
+                                                                                          </button>
+                                                                                        </div>
+
+                                                                                        <div class="card-body">
+                                                                                          <div class="row">
+                                                                                            <div class="col-md-1">
+                                                                                              <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+                                                                                                (click)="previousDocViewer()" [disabled]="urlIndex == 0">
+                                                                                                <i class="fa fa-angle-left text-white font-30 p-10"></i>
+                                                                                              </button>
+                                                                                            </div>
+                                                                                            <div class="col-md-10">
+                                                                                              <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+
+                                                                                            </div>
+                                                                                            <div class="col-md-1">
+                                                                                              <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
+                                                                                                [disabled]="urlIndex == urlArray.length - 1">
+                                                                                                <i class="fa fa-angle-right text-white font-30 p-10"></i>
+                                                                                              </button>
+                                                                                            </div>
+                                                                                          </div>
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+
+                                                                                          <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+                                                                                            Ok
+                                                                                          </button>
+                                                                                        </div>
+                                                                                      </ng-template>
+
+                                                                                    </div>
+
+                                                                                    <div class="row mt-25">
+                                                                                        <div class="col-md-12">
+                                                                                            <label
+                                                                                                class="form-label">Root
+                                                                                                Cause(RCA) of
+                                                                                                Query</label>
+                                                                                                <select formControlName="queryRootCause"   class="form-control custom-select" >
+                                                                                                  <option [ngValue]="null" selected >Select</option>
+                                                                                                  <option *ngFor="let module of getRootCasuelistData ">
+                                                                                                    {{module.queryRootCause}}</option>
+                                                                                                </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row mt-25">
+                                                                                        <div class="col-md-12">
+                                                                                            <label
+                                                                                                class="form-label">RCA
+                                                                                                Description</label>
+                                                                                            <textarea
+                                                                                                class="form-control" formControlName="rootCauseDescription" placeholder="RCA Description"> </textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- ...................replay screen btns............................................  -->
+                                                                                    <div class="row mt-25">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="float-right">
+
+                                                                                                <button type="button"  tooltip="Save Draft"
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Draft');toggleReplyDiv()"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green':queryCommunicationForm.controls.queAnsMasterId.invalid}"
+                                                                                                    [disabled]="queryCommunicationForm.controls.queAnsMasterId.invalid"
+                                                                                                    >
+
+                                                                                                    <b><i class="fa fa-floppy-o"></i></b>Save Draft </button>
+
+                                                                                                <button type="button" tooltip="Save"
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addQueryIteration('Save');toggleReplyDiv()"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green':queryCommunicationForm.controls.queAnsMasterId.invalid}"
+                                                                                                    [disabled]="queryCommunicationForm.controls.queAnsMasterId.invalid">
+                                                                                                    <b><i  class="fa fa-floppy-o"></i></b> Save </button>
+
+                                                                                                <button type="button"tooltip="Reset"
+                                                                                                   class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " (click)="reset()"><b><i
+                                                                                                  class="fa fa-refresh"></i></b> Reset</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div id="Forward" [hidden]="isforwardDiv">
+                                                                                <div class="card1">
+
+
+                                                                                    <fieldset>
+                                                                                        <legend>Forward</legend>
+
+                                                                                    <div class="row" *ngIf="GetIterationdetailsbyQueryIDData">
+                                                                                        <!-- <div class="col-md-3">
+                                                                                            <label
+                                                                                                class="form-label">Ref. No.</label>
+                                                                                            <input class="form-control"
+                                                                                            disabled>
+                                                                                        </div> -->
+                                                                                        <div class="col-md-3">
+                                                                                            <label
+                                                                                                class="form-label">Forward
+                                                                                                To</label>
+                                                                                                <select  class="form-control custom-select" (change)="roleChange($event.target.value)" formControlName="addressedToEmpId"
+                                                                                                [ngClass]="{'is-invalid':queryCommunicationForm.get('addressedToEmpId').status == 'INVALID'}">
+                                                                                                 >
+                                                                                                  <option [ngValue]="null" selected >Select</option>
+                                                                                                  <option value="{{module.approverId}}" *ngFor="let module of addressedTodropdownData">
+                                                                                                    {{module.approverName}}</option>
+                                                                                                </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-3">
+                                                                                            <label
+                                                                                                class="form-label"> Role</label>
+                                                                                            <input class="form-control"  *ngIf="approverEmpRoleName"
+                                                                                            value="{{approverEmpRoleName}}"  disabled>
+
+                                                                                        </div>
+                                                                                        <!-- <div class="col-md-3">
+                                                                                            <label
+                                                                                                class="form-label">Updated
+                                                                                                Date & Time</label>
+                                                                                            <div class="form-group">
+                                                                                                <div
+                                                                                                    class="input-group">
+                                                                                                    <div
+                                                                                                        class="input-group-prepend">
+                                                                                                        <span
+                                                                                                            class="input-group-text">
+                                                                                                            <i
+                                                                                                                class="fa fa-calendar"></i>
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                    <input
+                                                                                                        data-provide="datepicker"
+                                                                                                        data-date-autoclose="true"
+                                                                                                        class="form-control"
+                                                                                                        placeholder="Date"
+                                                                                                        bsDatepicker
+                                                                                                        disabled >
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div> -->
+                                                                                    </div>
+
+                                                                                    <!-- <div class="row mt-25">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="row">
+                                                                                                <label
+                                                                                                    class="form-label">Answer
+                                                                                                    Template</label>
+                                                                                                    <select formControlName="queAnsMasterId"   class="form-control custom-select"
+                                                                                                    [ngClass]="{'is-invalid':queryCommunicationForm.get('queAnsMasterId').status == 'INVALID'}" >
+                                                                                                      <option [ngValue]="null" selected >Select</option>
+                                                                                                      <option value="{{module.queAnsMasterId}}" *ngFor="let module of getQueAnstemplistByIdData ">
+                                                                                                        {{module.questionSubject}}</option>
+                                                                                                    </select>
+                                                                                            </div>
+
+
+                                                                                        </div>
+
+                                                                                    </div> -->
+                                                                                    <div class="row mt-25">
+                                                                                        <div class="col-md-12">
+                                                                                            <label
+                                                                                                class="form-label">Description</label>
+
+                                                                                            <ckeditor formControlName="queryDescription"
+                                                                                            [ngClass]="{'is-invalid':queryCommunicationForm.get('queryDescription').status == 'INVALID'}" >
+                                                                                            >
+                                                                                            </ckeditor>
+                                                                                        </div>
+                                                                                    </div>
+<!-- ......................................................................................forward screen btns....................................................  -->
+                                                                                    <div class="row mt-25">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="float-right">
+
+                                                                                                <button type="button" tooltip=" Save Draft"
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="addForwordScreen('Draft');toggleforwardDiv()"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green':queryCommunicationForm.controls.queryDescription.invalid || queryCommunicationForm.controls.addressedToEmpId.invalid}"
+                                                                                                    [disabled]="queryCommunicationForm.controls.queryDescription.invalid || queryCommunicationForm.controls.addressedToEmpId.invalid">
+
+                                                                                                    <b><i class="fa fa-floppy-o"></i></b>  Save Draft </button>
+
+                                                                                                <button type="button" tooltip="Save"
+                                                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
+                                                                                                    (click)="addForwordScreen('Save');toggleforwardDiv()"
+                                                                                                    [ngClass]="{'disabled-btn-bg-green':queryCommunicationForm.controls.queryDescription.invalid || queryCommunicationForm.controls.addressedToEmpId.invalid}"
+                                                                                                    [disabled]="queryCommunicationForm.controls.queryDescription.invalid || queryCommunicationForm.controls.addressedToEmpId.invalid">
+
+                                                                                                    <b><i class="fa fa-floppy-o"></i></b> Save </button>
+
+                                                                                                <button type="button"
+                                                                                                    tooltip="Reset"
+                                                                                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "  (click)="reset()"><b><i
+                                                                                                      class="fa fa-refresh"></i></b>
+                                                                                                    Reset</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </fieldset>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+                                                                        <section id="Attachment" class="tab-panel"  *ngIf="docName.length > 0">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <fieldset>
+                                                                                        <legend>Attachment</legend>
+                                                                                        <div class="row" >
+                                                                                            <div class="col-md-12">
+                                                                                                <div
+                                                                                                class="table-responsive Custom_Table table-striped table-hover table-bordered mt-25">
+                                                                                                    <p-table
+                                                                                                        [value]="attachementData">
+                                                                                                        <ng-template
+                                                                                                            pTemplate="header">
+                                                                                                            <tr>
+                                                                                                                <th rowspan="2"
+                                                                                                                    class="wd-10">
+                                                                                                                    Sr.
+                                                                                                                    No.
+                                                                                                                </th>
+
+                                                                                                                <th rowspan="2"
+                                                                                                                    class="wd-10">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Ref. No.
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon pSortableColumn="refNumber"
+                                                                                                                                field="date">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                type="date"
+                                                                                                                                field="refNumber"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+
+                                                                                                                <th rowspan="2"
+                                                                                                                    class="wd-20">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Documents
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon pSortableColumn="fileName"
+                                                                                                                                field="status">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="fileName"
+                                                                                                                                matchMode="equals"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                                <!-- <th rowspan="2"
+                                                                                                                    class="wd-24">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex justify-content-center p-ai-center">
+                                                                                                                        Description
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon pSortableColumn="queryDescription"
+                                                                                                                                field="activity">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="queryDescription"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th> -->
+                                                                                                                <th colspan="2"
+                                                                                                                    class="wd-25">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center" style="margin-left:70px;">
+                                                                                                                        Created / Updated
+
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <th>
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        By
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon pSortableColumn="createdBy"
+                                                                                                                                field="activity">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="createdBy"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                                <th>
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Date
+                                                                                                                        &
+                                                                                                                        Time
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon  pSortableColumn="createdDateTime"
+                                                                                                                                field="activity">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="createdDateTime"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                            </tr>
+
+                                                                                                        </ng-template>
+                                                                                                        <ng-template pTemplate="body" let-documentlist let-rowIndex="rowIndex" >
+                                                                                                            <tr
+                                                                                                                class="p-selectable-row">
+                                                                                                                <td
+                                                                                                                    class="text-center">
+                                                                                                                    {{rowIndex + 1}}
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                  <!-- {{ documents | json }} -->
+                                                                                                                    <label
+                                                                                                                        class="form-lable mb-0 ">{{documentlist.refNumber}}</label>
+                                                                                                                </td>
+                                                                                                                <td >
+                                                                                                                    <label *ngIf="docName"
+                                                                                                                        class="form-lable mb-0 ">
+                                                                                                                        <span *ngFor="let doc of documentlist.documents">{{doc.fileName}},<br></span>
+                                                                                                                        <!-- <span class="Label_badge" style="text-align: center;" (click)="docViewer(template1,documents)">
+                                                                                                                        {{documents}}</span> -->
+                                                                                                                      </label>
+                                                                                                                </td>
+
+                                                                                                                <!-- <td> <label
+                                                                                                                        class="form-lable mb-0 ">{{documentlist.queryDescription}}</label>
+                                                                                                                </td> -->
+                                                                                                                <td > <label  *ngIf="documentlist.documents.length > 0"
+                                                                                                                        class="form-lable mb-0 ">{{docName[0][0].createdBy}}</label>
+
+                                                                                                                </td>
+                                                                                                                <td  > <label *ngIf="documentlist.documents.length > 0"
+                                                                                                                        class="form-lable mb-0 ">{{docName[0][0].createdDateTime | date :'dd-MMM-yyyy hh:mm a' }}</label>
+                                                                                                                </td>
+
+
+
+                                                                                                            </tr>
+                                                                                                        </ng-template>
+                                                                                                        <ng-template
+                                                                                                            pTemplate="emptymessage">
+                                                                                                            <tr>
+                                                                                                                <td colspan="15"
+                                                                                                                    class="font-14 font500 text-center text-red">
+                                                                                                                    <span>No
+                                                                                                                        Data
+                                                                                                                        Available</span>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </ng-template>
+                                                                                                    </p-table>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </fieldset>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+                                                                        <section id="Status" class="tab-panel">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <fieldset>
+                                                                                        <legend>Status</legend>
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-12">
+                                                                                                <div
+                                                                                                class="table-responsive Custom_Table table-striped table-hover table-bordered mt-25">
+                                                                                                    <p-table [value]="attachementData"  >
+                                                                                                        <ng-template
+                                                                                                            pTemplate="header">
+                                                                                                            <tr>
+                                                                                                                <th rowspan="2"
+                                                                                                                    class="wd-10">
+                                                                                                                    Sr.
+                                                                                                                    No.
+                                                                                                                </th>
+
+                                                                                                                <th rowspan="2"
+                                                                                                                    class="wd-10">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Ref. No.
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="date"  pSortableColumn="refNumber">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                type="date"
+                                                                                                                                field="refNumber"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+
+
+                                                                                                                <th colspan="2"
+                                                                                                                    class="wd-30">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center" style="margin-left:70px !important;">
+                                                                                                                        Created / Updated
+
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                                <th rowspan="2"
+                                                                                                                    class="wd-10">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Status
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="activity"  pSortableColumn="status">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="status"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <th>
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        By
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="activity"  pSortableColumn="createdBy">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="createdBy"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                                <th>
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Date
+                                                                                                                        &
+                                                                                                                        Time
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="activity"  pSortableColumn="createdDateTime">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="createdDateTime"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                            </tr>
+
+                                                                                                        </ng-template>
+                                                                                                        <ng-template
+                                                                                                            pTemplate="body"
+                                                                                                            let-status let-rowIndex="rowIndex" >
+                                                                                                            <tr
+                                                                                                                class="p-selectable-row">
+                                                                                                                <td
+                                                                                                                    class="text-center">
+                                                                                                                    {{rowIndex + 1}}
+                                                                                                                    <!-- {{status |json}} -->
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <label
+                                                                                                                        class="form-lable mb-0 ">{{status.refNumber}}</label>
+                                                                                                                </td>
+                                                                                                                <td> <label
+                                                                                                                        class="form-lable mb-0 ">{{status.refUpdatedByName}}</label>
+
+                                                                                                                </td>
+                                                                                                                <td> <label
+                                                                                                                        class="form-lable mb-0 ">{{status.updatedDateTime | date:'dd-MMM-yyyy hh:mm a'}}</label>
+                                                                                                                </td>
+                                                                                                                <td> <label
+                                                                                                                        class="form-lable mb-0 ">{{status.status}}</label>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </ng-template>
+                                                                                                        <ng-template
+                                                                                                            pTemplate="emptymessage">
+                                                                                                            <tr>
+                                                                                                                <td colspan="15"
+                                                                                                                    class="font-14 font500 text-center text-red">
+                                                                                                                    <span>No
+                                                                                                                        Data
+                                                                                                                        Available</span>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </ng-template>
+                                                                                                    </p-table>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </fieldset>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+                                                                        <section id="Contact" class="tab-panel">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <fieldset>
+                                                                                        <legend>Contact</legend>
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-12">
+                                                                                                <div
+                                                                                                class="table-responsive Custom_Table table-striped table-hover table-bordered mt-25">
+                                                                                                    <p-table
+                                                                                                        [value]="contact1">
+                                                                                                        <ng-template
+                                                                                                            pTemplate="header">
+                                                                                                            <tr>
+                                                                                                                <th
+                                                                                                                    class="wd-14">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Role
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="date">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                type="date"
+                                                                                                                                field="date"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                                <th class="wd-15">
+                                                                                                                    <div  class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Company
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="date">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                type="date"
+                                                                                                                                field="date"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+
+                                                                                                                <th
+                                                                                                                    class="wd-15">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Name
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="status">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="status"
+                                                                                                                                matchMode="equals"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                                <th
+                                                                                                                    class="wd-24">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Tel.No.
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="date">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                type="date"
+                                                                                                                                field="date"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                                <th
+                                                                                                                    class="wd-15">
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Email.Id
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="date">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                type="date"
+                                                                                                                                field="date"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+
+
+                                                                                                                <th>
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Grade
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="activity">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="activity"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+                                                                                                                <th>
+                                                                                                                    <div
+                                                                                                                        class="p-d-flex p-jc-between p-ai-center">
+                                                                                                                        Designation
+                                                                                                                        <div
+                                                                                                                            class="Sort_Filter_Position">
+                                                                                                                            <p-sortIcon
+                                                                                                                                field="activity">
+                                                                                                                            </p-sortIcon>
+                                                                                                                            <p-columnFilter
+                                                                                                                                field="activity"
+                                                                                                                                display="menu"
+                                                                                                                                class="p-ml-auto">
+                                                                                                                            </p-columnFilter>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </th>
+
+                                                                                                            </tr>
+                                                                                                        </ng-template>
+                                                                                                        <ng-template
+                                                                                                            pTemplate="body"
+                                                                                                            let-contact>
+                                                                                                            <tr class="p-selectable-row">
+                                                                                                                <td
+                                                                                                                    class="text-center">
+                                                                                                                    {{contact.role}}
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <label  class="form-lable mb-0 ">{{contact.Comapny}}</label>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <label
+                                                                                                                        class="form-lable mb-0 ">{{contact.Name}}</label>
+                                                                                                                </td>
+
+                                                                                                                <td> <label
+                                                                                                                        class="form-lable mb-0 ">{{contact.Tel_No}}</label>
+
+                                                                                                                <td> <label
+                                                                                                                        class="form-lable mb-0 ">{{contact.Email}}</label>
+
+                                                                                                                </td>
+                                                                                                                <td> <label
+                                                                                                                        class="form-lable mb-0 ">{{contact.Grade}}</label>
+                                                                                                                </td>
+                                                                                                                <td> <label
+                                                                                                                    class="form-lable mb-0 ">{{contact.Designation}}</label>
+                                                                                                            </td>
+
+                                                                                                            </tr>
+                                                                                                        </ng-template>
+                                                                                                        <ng-template
+                                                                                                            pTemplate="emptymessage">
+                                                                                                            <tr>
+                                                                                                                <td colspan="15"
+                                                                                                                    class="font-14 font500 text-center text-red">
+                                                                                                                    <span>No
+                                                                                                                        Data
+                                                                                                                        Available</span>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </ng-template>
+                                                                                                    </p-table>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </fieldset>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </form>
+
+
+
+
+
+
+
+                            <ng-template #templateemoji>
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="UploadModalLabel">Feedback</h5>
+                                    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                           <div class="tab-containts">
+
+                                                               <div class="row emorow" >
+
+                                                                   <div class="col-md-2" >
+                                                                    <p  (click)="changeemoji1(1,'Highly Dissatisfied')"  tooltip="Highly Dissatisfied" [class.emoji]="!emoji1" [class.emoji2]="emoji1" >
+                                                                    🙁
+
+                                                                </p>
+                                                                   </div>
+                                                                   <div class="col-md-2">
+                                                                    <p  (click)="changeemoji5(2,'Dissatisfied')" tooltip="Dissatisfied" [class.emoji]="!emoji5" [class.emoji2]="emoji5" >
+
+                                                                        😐
+                                                                </p>
+                                                                   </div>
+                                                                   <div class="col-md-2">
+                                                                    <p (click)="changeemoji2(3,'Neutral')" tooltip="Neutral" [class.emoji]="!emoji2" [class.emoji2]="emoji2">
+
+                                                                     😦
+
+
+                                                                    </p>
+                                                                   </div>
+                                                                   <div class="col-md-2">
+                                                                    <p (click)="changeemoji3(4,'Satisfied')"  tooltip="Satisfied" [class.emoji]="!emoji3" [class.emoji2]="emoji3">
+
+
+                                                                     😀
+
+                                                                    </p>
+                                                                   </div>
+                                                                   <div class="col-md-2">
+                                                                    <p  (click)="changeemoji4(5,'Highly Satisfied')"  tooltip="Highly Satisfied" [class.emoji]="!emoji4" [class.emoji2]="emoji4" >
+
+                                                                     🤩
+                                                                    </p>
+                                                                   </div>
+                                                               </div>
+                                                            <div class="row mt-15">
+                                                                <div class="col-md-12 ">
+                                                                    <label class="form-label"> Rating</label>
+                                                                <!-- <div class="middle">
+                                                                    <div class="bar-container">
+                                                                      <div class="bar-3"></div>
+                                                                    </div>
+                                                                  </div> -->
+
+                                                                  <input class="form-control" [value]="ratingName" disabled>
+
+                                                                </div>
+                                                            </div>
+                                                                <div class="row mt-10">
+                                                                    <div class="col-md-12">
+                                                                        <label class="form-label">Remark</label>
+
+                                                                      <textarea class="form-control" [(ngModel)]="feedbackRemark" [required]="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'"
+                                                                      [ngClass]="{'is-invalid':(ratingName == 'Highly Dissatisfied' && feedbackRemark == '') || (ratingName == 'Dissatisfied' && feedbackRemark == '')}"></textarea>
+                                                                      <!-- <pre>{{ratingName |json}}</pre> -->
+                                                                    </div>
+                                                                </div>
+                                                           </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" tooltip="Skip"  class="custom_button custom_btn btn-bg-green bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="skipScreen()" >
+                                      <b><i class="fa fa-step-forward"></i></b> Skip </button>
+
+                                    <button type="button" *ngIf="ratingName == 'Highly Dissatisfied' || ratingName == 'Dissatisfied'" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                    (click)="closeScreen();modalRef.hide()"
+                                    [disabled]="feedbackRemark == '' "
+                                    [ngClass]="{'disabled-btn-bg-green': feedbackRemark == '' }">
+                                    <b><i class="fa fa-floppy-o"></i></b> Save </button>
+
+                                    <button type="button" *ngIf="ratingName != 'Highly Dissatisfied' && ratingName != 'Dissatisfied'" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                    (click)="closeScreen();modalRef.hide()">
+                                    <b><i class="fa fa-floppy-o"></i></b> Save </button>
+
+                                    <button type="button"tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " (click)="resetFeedbackForm()"><b><i
+                                     class="fa fa-refresh"></i></b> Reset</button>
+                                    <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button> -->
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

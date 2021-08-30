@@ -71,6 +71,7 @@ export class AffirmationComponent implements OnInit {
 
     
     this.getaffirmationSummarySummary();
+    
   }
 
 
@@ -143,7 +144,7 @@ export class AffirmationComponent implements OnInit {
 
   onImageChange(e) {
     const reader = new FileReader();
-    
+
     if(e.target.files && e.target.files.length) {
       const [file] = e.target.files;
       reader.readAsDataURL(file);
