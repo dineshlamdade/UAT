@@ -2,6 +2,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -102,6 +103,15 @@ public getBankMasterDetails(){
 
 public getCompanyBankMasterDetails(){
   return this.HttpClient.get<any>(this.apiUrl3 + 'company-bankmaster-mapping/details/');
+}
+
+ //get all Loan summary
+ getAllLoanSummary() {
+
+  return this.HttpClient.get( this.apiUrl + 'loanApplication/getAll' )
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
 }
 
 }

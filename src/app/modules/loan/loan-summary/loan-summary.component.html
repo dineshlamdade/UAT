@@ -88,10 +88,10 @@
 
 
 
-              <form [formName]="LoanForm" (ngSubmit)="loanFormSubmit()">
+              <form (ngSubmit)="loanFormSubmit()" [formGroup]="LoanForm">
                 <div class="row mt-25">
-                  <p-table #dt1 [value]="customers" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                    (sortFunction)="customSort($event)" [customSort]="true"
+                  <p-table #dt1 [value]="loanAppList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                    (sortFunction)="customSort($event)" [customSort]="true" totalRecords={{loanAppList.length}}
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]"
                     [globalFilterFields]="['applNo','Date','empCode','empName','loanType','Amount','loanAmnt','noOInstallmnts','interest','Status']">
@@ -195,7 +195,7 @@
                           <div class="p-d-flex p-ai-center justify-content-center">Payroll Area
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
-                              <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                              <p-columnFilter type="text" field="proofsubmission" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
@@ -232,7 +232,7 @@
                           <div class="p-d-flex p-ai-center justify-content-center">Deviation
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
-                              <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto">
+                              <p-columnFilter type="text" field="proofsubmission" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
@@ -272,26 +272,26 @@
 
                     </ng-template>
 
-                    <ng-template pTemplate="body" let-customer>
+                    <ng-template pTemplate="body" let-user >
                       <tr class="p-selectable-row">
                         <td>
                           <p-tableCheckbox [value]="customer"></p-tableCheckbox>
                         </td>
                         <!-- <td>1</td> -->
-                        <td>{{ customer.applNo}}</td>
-                        <td>{{customer.Date}}</td>
+                        <td>{{ user.loanApplicationId}}</td>
+                        <td>{{user.createDateTime}}</td>
                         <td>
                           <a class="text-link text-center" tooltip=" Display Popup"
-                            (click)="largepopup (template1)">{{ customer.empCode}}</a></td>
-                        <td>{{ customer.empName}}</td>
+                            (click)="largepopup (template1)">{{ user.employeeCode}}</a></td>
+                        <td>{{ user.fullName}}</td>
                         <td></td>
                         
-                        <td>{{ customer.loanType}}</td>
-                        <td>{{ customer.Type}}</td>
-                        <td class="text-right">{{ customer.Amount}}</td>
+                        <td>{{ user.loanType}}</td>
+                        <td>{{ user.Type}}</td>
+                        <td class="text-right">{{ user.Amount}}</td>
                         <td><i class="fa fa-deviantart font-16 text-blue cursor-pointer" aria-hidden="true" tooltip=" Deviation"
                           (click)="largepopup (template)"></i>
-                          <span class="Label_badge" style="text-align: center;">{{customer.loanAmnt}}</span></td>
+                          <span class="Label_badge" style="text-align: center;">{{user.loanAmnt}}</span></td>
 
                           
                         <!-- <a class="text-link text-center" tooltip=" Display Popup"
@@ -300,7 +300,7 @@
                         <td>{{customer.interest}}</td> -->
                        
                         <td><input type="text" class="form-control" formControlName="repaymentType"  /></td>
-                        <td style="color:darkcyan">{{customer.Status}}</td>
+                        <td style="color:darkcyan">{{user.Status}}</td>
 
                         <td>Approver 2 or Mahesh Joshi</td>
 

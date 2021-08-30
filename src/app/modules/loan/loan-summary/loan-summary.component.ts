@@ -11,35 +11,36 @@ import * as _html2canvas from "html2canvas";
 import { Router } from '@angular/router';
 import { SortEvent } from 'primeng/api';
 const html2canvas: any = _html2canvas;
+import { AlertServiceService } from '../../../core/services/alert-service.service';
 
-export interface Customer {
-  applNo;
-  Date;
-   empCode;
-   empName;
-   loanType;
-   Type;
-  //  Group;
-   Amount;
-   loanAmnt;
-   noOInstallmnts;
-   interest;
-   remark;
-   Status;
- }
+// export interface Customer {
+//   applNo;
+//   Date;
+//    empCode;
+//    empName;
+//    loanType;
+//    Type;
+//   //  Group;
+//    Amount;
+//    loanAmnt;
+//    noOInstallmnts;
+//    interest;
+//    remark;
+//    Status;
+//  }
 
- export interface user1 {
-  Group;
-  ITSection;
-  // noemployees;
-  // nopsid;
-  proofsubmitted;
-  actioned;
-  yettoactioned;
-  submitted;
-  sendback;
-  approved;
- }
+//  export interface user1 {
+//   Group;
+//   ITSection;
+//   // noemployees;
+//   // nopsid;
+//   proofsubmitted;
+//   actioned;
+//   yettoactioned;
+//   submitted;
+//   sendback;
+//   approved;
+//  }
  interface City {
   name: string
   
@@ -63,17 +64,18 @@ export class LoanSummaryComponent implements OnInit {
   loandata: any = '';
   searchText:string;
   editflag: boolean = false;
-  customers: Customer[];
+  // customers: Customer[];
   cities: City[];
-  users1: user1[];
+  // users1: user1[];
   group:groups[];
   first = 0;
   rows = 10;
   loanApplicationSummary: any;
+  loanAppList = [];
 
   constructor(public formBuilder : FormBuilder,
     private modalService: BsModalService, private loanservice:LoanService,public toster : ToastrService ,
-    private datePipe: DatePipe,private excelservice: ExcelService, public sanitizer: DomSanitizer,private router: Router) {
+    private datePipe: DatePipe,private excelservice: ExcelService,private alertService: AlertServiceService, public sanitizer: DomSanitizer,private router: Router) {
       this.LoanForm = this.formBuilder.group({
 
         // "searchText": new FormControl(''),
@@ -82,37 +84,36 @@ export class LoanSummaryComponent implements OnInit {
      }
 
   ngOnInit(): void {
-
-    this.customers = [
-      {applNo: '551', Date:'12Apr2021', empCode: '001',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'10,000.00',loanAmnt:'1',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '11', Date:'12Apr2021',empCode: '002', empName:'bbb',loanType:'House Rent',Type:'Settlement', Amount:'50,000.00', loanAmnt:'2',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'In Process'},
-      {applNo: '11', Date:'12Apr2021',empCode: '003',empName:'SSS', loanType:'House Rent',Type:'Disbursement', Amount:'30,000.00', loanAmnt:'3',noOInstallmnts:'44',interest:'2',remark:'Approved',Status:'In Process'},
-      {applNo: '555',Date:'12Apr2021', empCode: '004',empName:'AAA', loanType:'House Rent',Type:'Reschedule', Amount:'1,20,000.00',loanAmnt:'2',noOInstallmnts:'6',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '11', Date:'12Apr2021',empCode: '005',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'1,80,000.00',loanAmnt:'2',noOInstallmnts:'8',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '006',empName:'LLL', loanType:'House Rent', Type:'Adhoc',Amount:'80,000.00', loanAmnt:'234234',noOInstallmnts:'9',interest:'2',remark:'Approved',Status:'In Process'},
-      {applNo: '1',Date:'12Apr2021', empCode: '007',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'40,000.00',loanAmnt:'234234',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '008',empName:'PPP', loanType:'House Rent', Type:'Adhoc',Amount:'30,000.00', loanAmnt:'234234',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '009',empName:'CCC', loanType:'dddddd', Type:'Adhoc',Amount:'20,000.00',loanAmnt:'234234',noOInstallmnts:'11',interest:'2',remark:'Approved',Status:'In Process'},
-      {applNo: '888',Date:'12Apr2021', empCode: '010',empName:'DDD', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'14',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '011',empName:'JJJ', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'15',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '1',Date:'12Apr2021', empCode: '012',empName:'MMM', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'17',interest:'2',remark:'Approved',Status:'Submitted'},
-      {applNo: '66',Date:'12Apr2021', empCode: '013',empName:'BBB', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'1',interest:'2',remark:'Approved',Status:'Submitted'},
+this.getAllLoanSummary();
+    // this.customers = [
+    //   {applNo: '551', Date:'12Apr2021', empCode: '001',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'10,000.00',loanAmnt:'1',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
+    //   {applNo: '11', Date:'12Apr2021',empCode: '002', empName:'bbb',loanType:'House Rent',Type:'Settlement', Amount:'50,000.00', loanAmnt:'2',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'In Process'},
+    //   {applNo: '11', Date:'12Apr2021',empCode: '003',empName:'SSS', loanType:'House Rent',Type:'Disbursement', Amount:'30,000.00', loanAmnt:'3',noOInstallmnts:'44',interest:'2',remark:'Approved',Status:'In Process'},
+    //   {applNo: '555',Date:'12Apr2021', empCode: '004',empName:'AAA', loanType:'House Rent',Type:'Reschedule', Amount:'1,20,000.00',loanAmnt:'2',noOInstallmnts:'6',interest:'2',remark:'Approved',Status:'Submitted'},
+    //   {applNo: '11', Date:'12Apr2021',empCode: '005',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'1,80,000.00',loanAmnt:'2',noOInstallmnts:'8',interest:'2',remark:'Approved',Status:'Submitted'},
+    //   {applNo: '1',Date:'12Apr2021', empCode: '006',empName:'LLL', loanType:'House Rent', Type:'Adhoc',Amount:'80,000.00', loanAmnt:'234234',noOInstallmnts:'9',interest:'2',remark:'Approved',Status:'In Process'},
+    //   {applNo: '1',Date:'12Apr2021', empCode: '007',empName:'AAA', loanType:'House Rent', Type:'Adhoc',Amount:'40,000.00',loanAmnt:'234234',noOInstallmnts:'3',interest:'2',remark:'Approved',Status:'Submitted'},
+    //   {applNo: '1',Date:'12Apr2021', empCode: '008',empName:'PPP', loanType:'House Rent', Type:'Adhoc',Amount:'30,000.00', loanAmnt:'234234',noOInstallmnts:'12',interest:'2',remark:'Approved',Status:'Submitted'},
+    //   {applNo: '1',Date:'12Apr2021', empCode: '009',empName:'CCC', loanType:'dddddd', Type:'Adhoc',Amount:'20,000.00',loanAmnt:'234234',noOInstallmnts:'11',interest:'2',remark:'Approved',Status:'In Process'},
+    //   {applNo: '888',Date:'12Apr2021', empCode: '010',empName:'DDD', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'14',interest:'2',remark:'Approved',Status:'Submitted'},
+    //   {applNo: '1',Date:'12Apr2021', empCode: '011',empName:'JJJ', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'15',interest:'2',remark:'Approved',Status:'Submitted'},
+    //   {applNo: '1',Date:'12Apr2021', empCode: '012',empName:'MMM', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'17',interest:'2',remark:'Approved',Status:'Submitted'},
+    //   {applNo: '66',Date:'12Apr2021', empCode: '013',empName:'BBB', loanType:'dddddd',Type:'Adhoc', Amount:'20,000.00', loanAmnt:'234234',noOInstallmnts:'1',interest:'2',remark:'Approved',Status:'Submitted'},
      
-    ];
+    // ];
 
-    this.users1 = [
-      {Group:'80-c',
-      ITSection:'LIC',
-      // noemployees:'Rihan',
-      // nopsid:'123',
-       proofsubmitted:'yes',
-      actioned:'submitted',
-      yettoactioned:'ABCS',
-      submitted:'yes',
-      sendback:'No',
-      approved:'yes'}  ];
+    // this.users1 = [
+    //   {Group:'80-c',
+    //   ITSection:'LIC',
+      
+    //    proofsubmitted:'yes',
+    //   actioned:'submitted',
+    //   yettoactioned:'ABCS',
+    //   submitted:'yes',
+    //   sendback:'No',
+    //   approved:'yes'}  ];
     this.cities = [
-      // {name: 'All'},
+      
       {name: 'Loan Application'},
       {name: 'Disbursement'},
       {name: 'Adhoc'},
@@ -201,6 +202,17 @@ this.loanservice.getAll().subscribe(res =>
   })
 }
 
+getAllLoanSummary(): void {
+  this.loanAppList = [];
+  this.loanservice.getAllLoanSummary().subscribe( res => {
+    this.loanAppList = res.data.results[0];
+    console.log( 'Business year list', this.loanAppList );
+  },
+    ( error: any ) => {
+      this.alertService.sweetalertError( error["error"]["status"]["message"] );
+    } );
+}
+
 navigateToAdd(){
   localStorage.removeItem('EditLoanData');
   localStorage.removeItem('ViweLoanData');
@@ -278,13 +290,13 @@ reset() {
     this.first = 0;
 }
 
-isLastPage(): boolean {
-    return this.customers ? this.first === (this.customers.length - this.rows): true;
-}
+// isLastPage(): boolean {
+//     return this.customers ? this.first === (this.customers.length - this.rows): true;
+// }
 
-isFirstPage(): boolean {
-    return this.customers ? this.first === 0 : true;
-}
+// isFirstPage(): boolean {
+//     return this.customers ? this.first === 0 : true;
+// }
   }
 
 
