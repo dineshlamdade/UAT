@@ -21,8 +21,8 @@ export class AdminQuryGenerationComponent implements OnInit {
   getAllQueryGenerationData: any;
   querySubQueryTypeQAData: any;
   subQueryType: any;
-  isSave:boolean = true;
-  isSave2:boolean = false;
+  isSave:boolean = false;
+  isSave2:boolean = true;
   isReset:boolean = true;
   isUpdate:boolean = false;
   isCancle :boolean = false;
@@ -118,7 +118,7 @@ export class AdminQuryGenerationComponent implements OnInit {
     })
 
     this.userData = this.authService.getprivileges()
-      console.log("userData::", this.userData);
+      // console.log("userData::", this.userData);
       this.employeeMasterId = this.userData.UserDetails.employeeMasterId;
 
 
@@ -140,11 +140,14 @@ export class AdminQuryGenerationComponent implements OnInit {
         this.isUpdate = false;
         this.isSaveDraft = false;
         this.isSave = true;
+        this.isSave2 = false;
+
        }else{
        this.isUpdate = true;
        this.isUpdateDraft = false;
        this.isSaveDraft = true;
        this.isSave = false;
+       this.isSave2 = false;
 
        }
        localStorage.removeItem('dashboardSummary');
@@ -179,7 +182,7 @@ export class AdminQuryGenerationComponent implements OnInit {
       });
       this.index =0
       this.selectedEmployee = this.emplData[this.index]
-    console.log("this.selectedEmployee",this.selectedEmployee)
+      console.log("this.selectedEmployee",this.selectedEmployee)
 
       this.employeeMasterId = this.selectedEmployee.employeeMasterId
       this.getEmpMasterDetails(this.employeeMasterId);
@@ -187,6 +190,7 @@ export class AdminQuryGenerationComponent implements OnInit {
 
       if(localStorage.getItem('emlpoyeeSelectionData') != null){
         this.emlpoyeeSelectionData = JSON.parse(localStorage.getItem('emlpoyeeSelectionData'))
+        // localStorage.clear();
 
         if(this.employeeListId.length == 1){
           this.isPrevious = false;
@@ -238,7 +242,7 @@ export class AdminQuryGenerationComponent implements OnInit {
           this.queryGenerationForm.controls['sameContentForAllEmp'].setValue(false);
         }
 
-      localStorage.clear();
+      // localStorage.clear();
 
       }
 
@@ -267,6 +271,8 @@ export class AdminQuryGenerationComponent implements OnInit {
   ngOnInit(): void {
     this.getModuleName();
     this.getAllQueryListSummary();
+    // localStorage.clear();
+
   }
 
   queryGenerationFormSubmit(value)
@@ -870,7 +876,7 @@ else{
           console.log(JSON.stringify(queryGenerationEmployeeData));
           const formData  = new FormData();
           formData.append('queryGenerationEmployeeData', JSON.stringify(queryGenerationEmployeeData));
-          this.employeeMasterId = this.employeeMasterId;
+          // this.employeeMasterId = this.employeeMasterId;
           console.log("employeeMasterId",this.employeeMasterId)
           for (const queryDoc of this.listDoc) {
             formData.append('queryDocs', queryDoc,this.employeeMasterId + queryDoc.name);

@@ -41,6 +41,7 @@ export class PayrollListComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
+    // localStorage.clear();
   }
 
   public getAllEmployeeDetails(): void {
@@ -74,7 +75,6 @@ export class PayrollListComponent implements OnInit {
     }
     this.service.setEmployeeListArray(this.checkedEmployeeList);
   }
-
 
   /** get selected employee data */
   getSelectedEmployee(user){

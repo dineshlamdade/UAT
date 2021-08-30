@@ -2326,7 +2326,7 @@ export class UploadexcelhomeComponent implements OnInit {
     this.previewTableData = [];
     for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
       if (this.selectedSummaryCheckBoxHtmlDataList[i].tab == this.form.get('filterTemplateDropDown').value) {
-        this.previewTableData.push(this.selectedSummaryCheckBoxHtmlDataList[i]);
+        this.previewTableData.push(this.selectedSummaryCheckBoxHtmlDataList[i=0]);
       }
     }
   }
@@ -2402,7 +2402,7 @@ export class UploadexcelhomeComponent implements OnInit {
     this.editMaster(templateMasterId, true);
     this.form.patchValue();
     this.form.disable();
-this.viewFlag = true;
+    this.viewFlag = true;
 
   }
   forReadOnlyAllCheckBox() {
@@ -2434,7 +2434,7 @@ this.viewFlag = true;
   }
   // ......................Pooja Katkar ......................................................................
 
-  exportAsXLSX(): void {
+  exportErrorSummaryAsXLSX(): void {
     this.excelData = [];
     this.header = []
     this.header =["Query No.","Sumbit Date","Emp. Code","Emp. Name","Company Name", "Module Name", "Query Type",
