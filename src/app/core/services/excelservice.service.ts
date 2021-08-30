@@ -80,6 +80,14 @@ export class ExcelserviceService {
 
   }
 
+  public exportAsExcelFile1(json: any[], excelFileName: string): void {
+
+    const myworksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    const myworkbook: XLSX.WorkBook = { Sheets: { 'data': myworksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(myworkbook, { bookType: 'xlsx', type: 'array' });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+
   public exportAsExcelFilewithHeaders(json: any[], excelFileName: string, sheetname: string,header): void {
 
     //Excel Title, Header, Data

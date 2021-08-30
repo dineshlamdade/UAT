@@ -2934,7 +2934,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			}
 			this.excelData.push(obj)
 		});
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary');
+		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-Summary');
 	}
 
 
@@ -2960,7 +2960,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.AllNonRecurringTransactionScheduledData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-All-Schedules');
+		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-All-Schedules');
 	}
 
 
@@ -2986,7 +2986,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.NonRecurringTransactionScheduleEMPdData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Schedules');
+		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
 	
 
