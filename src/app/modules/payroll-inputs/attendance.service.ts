@@ -41,20 +41,11 @@ export class AttendanceService {
     return this.HttpClient.post<any>(this.url + `AttendanceInput/attendanceInputGetAPIPreviouscycle` , data);
   }
 
-<<<<<<< HEAD
-  attendanceInputGetAPIFuturecycles(data):Observable<any>{
-    return this.HttpClient.get<any>(this.url + `AttendanceInput/attendanceInputGetAPIFuturecycle`, data);
-  }
-=======
-
->>>>>>> 95c8ae45611a172db39d01487906d38e066e741f
 
   AttendanceInput(data):Observable<any>{
     return this.HttpClient.post<any>(this.url + `AttendanceInput`, data);
 
   }
-<<<<<<< HEAD
-=======
 
   payrollAreaDetails(payRollAreaId):Observable<any>{
     return this.HttpClient.get<any>(this.url + `payrollArea-details/`+ payRollAreaId);
@@ -96,5 +87,4 @@ export class AttendanceService {
   attendanceInputGetHistoryfuturecycle(data):Observable<any>{
     return this.HttpClient.post<any>(this.url + `AttendanceInput/attendanceInputGetHistoryfuturecycle` , data);
   }
->>>>>>> 95c8ae45611a172db39d01487906d38e066e741f
 }
