@@ -31,7 +31,7 @@ getAllRecords(empId) {
 
 postfinancialMaster(data) {
 
-  return this._HTTP.post(this.apiUrl + '/financial-master', data)
+  return this._HTTP.post(this.apiUrl + 'financial-master', data)
   .pipe(map((res: any) => {
     return res;
   }));
