@@ -302,8 +302,7 @@
                       (input)="dt.filterGlobal($event.target.value, 'contains')"
                       style="width: 203px;margin-right: 37px;">
 
-                      <a tooltip="Download" style="cursor: pointer;float: right;"
-                      (click)="exportAsXLSX()"><i
+                    <a tooltip="Download" style="cursor: pointer;float: right;" (click)="exportAsXLSX()"><i
                         class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10" aria-hidden="true"></i></a>
 
                     <!-- <a tooltip="Download" style="cursor: pointer;float: right;"
@@ -613,7 +612,8 @@
         <th class="wd-10" style="background-color: yellow !important;border: 1px solid black;">Sr No. </th>
         <th class="wd-10" style="background-color: yellow !important;border: 1px solid black;">Code </th>
         <th class="wd-20" style="background-color: yellow !important;border: 1px solid black;">Description </th>
-        <th class="wd-20" style="background-color: yellow !important;border: 1px solid black;">No. of Approval Level </th>
+        <th class="wd-20" style="background-color: yellow !important;border: 1px solid black;">No. of Approval Level
+        </th>
         <th class="wd-8" style="background-color: yellow !important;border: 1px solid black;">No. of Approvers</th>
         <th class="wd-8" style="background-color: yellow !important;border: 1px solid black;">Auto Approval</th>
       </tr>
@@ -634,8 +634,8 @@
             class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.description}}</label>
         </td>
         <td class="bg-color-light_gray" style="border: 1px solid black;"><label
-          class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprovalLevel}}</label>
-      </td>
+            class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprovalLevel}}</label>
+        </td>
         <td class="bg-color-light_gray" style="border: 1px solid black;"><label
             class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.numberOfApprover}}</label>
         </td>
@@ -643,7 +643,8 @@
                             color: item.workflowMasterHeaderResponseDTO.autoApproval
                               ? 'hsl(141, 53%, 53%)'
                               : 'hsl(348, 100%, 61%)'
-                          }" style="border: 1px solid black;"><label class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.autoApproval |
+                          }" style="border: 1px solid black;"><label
+            class="form-lable mb-0">{{item.workflowMasterHeaderResponseDTO.autoApproval |
             yesNo}}</label>
         </td>
       </tr>
