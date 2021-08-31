@@ -79,12 +79,12 @@
                     <div class="col-md-3">
                       <label class="form-label">Loan Amount</label>
                       <input type="text" class="form-control" formControlName="loanAmount" placeholder="Loan Amount"
-                        value="{{loanAmount | number:'1.2-2'}}"
+                        value="{{loanAmount }}"
                         [ngClass]="{'is-invalid' : AddLoanForm.get('loanAmount').status == 'INVALID'}"
                         (focusout)="calculateInstallmentAmount($event.target.value)" />
                       <label style="font-size: 10px;">As per Policy :- 5,00,000</label>
 
-                      <!-- <p-inputNumber class="form-contro| number:'1.2-2'l" formControlName="loanAmount"
+                      <!-- <p-inputNumber class="form-control" formControlName="loanAmount"
                     mode="decimal"
                     locale="en-IN" [minFractionDigits]="2"  placeholder="Loan Amount"
                     [ngClass]="{'is-invalid' : AddLoanForm.get('loanAmount').status == 'INVALID'}"
@@ -119,7 +119,7 @@
                       <label class="form-label">Installment Amount</label>
                       <input type="text" class="form-control" formControlName="installmentAmount"
                         placeholder="Installment Amount" (focusout)="calculateInstallments($event.target.value)"
-                        value="{{installmentAmount| number:'1.2-2'}}" />
+                        value="{{installmentAmount}}" />
                       <label style="font-size: 10px;">As per Policy :- 45234</label>
 
                       <!--
@@ -145,12 +145,9 @@
                     </div>
                   </div>
                   <br />
-                  <!-- <script>
-                    $('#UploadModal').modal({backdrop: 'static', keyboard: false})
-                    </script> -->
                   <div class="float-right">
-                    <button type="button" class="btn btn-danger"  data-toggle="modal"  (click)="schedule(template)" data-target="#UploadModal"
-                    [disabled]="!AddLoanForm.valid"
+                    <button type="button" class="btn btn-danger" (click)="schedule(template)" data-target="#UploadModal"
+                      [disabled]="!AddLoanForm.valid"
                       [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
                       <i class="fa fa-clock-o" aria-hidden="true"> </i>&nbsp;Schedule
                     </button>
@@ -158,13 +155,12 @@
                   <br />
                   <br />
 
-                  <ng-template #template let-c="close" >
-                    <div class="modal-header" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="UploadModal" aria-hidden="true">
+                  <ng-template #template let-c="close">
+                    <div class="modal-header">
                       <h5 class="modal-title" id="UploadModalLabel">Schedule</h5>
                       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
-                        aria-label="Close" ><span aria-hidden="true">×</span></button>
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
-
                     <div class="modal-body">
                       <div class="cards">
                         <div class="card-bodys">
@@ -279,10 +275,10 @@
                               <span *ngIf="data.deviationType == 'noOfInstallment'"> No. Of Installment</span>
                               <span *ngIf="data.deviationType == 'interestRate'"> Interest Rate</span>
                             </td>
-                            <td>{{data.deviationValue | number:'1.2-2'}}</td>
-                            <td>{{data.userLimit | number:'1.2-2'}}</td>
-                            <td *ngIf="data.deviationType != 'interestRate'">{{data.deviationValue - data.userLimit | number:'1.2-2'}}</td>
-                            <td *ngIf="data.deviationType == 'interestRate'">{{data.userLimit - data.deviationValue | number:'1.2-2'}}</td>
+                            <td>{{data.deviationValue}}</td>
+                            <td>{{data.userLimit}}</td>
+                            <td *ngIf="data.deviationType != 'interestRate'">{{data.deviationValue - data.userLimit}}</td>
+                            <td *ngIf="data.deviationType == 'interestRate'">{{data.userLimit - data.deviationValue | number: '1.0-0'}}</td>
                             <td><input type="text" class="form-control" value="{{data.reason}}"
                               (focusout)="reasons($event.target.value, index)" [disabled]="viewFlag"
                               [ngClass]="{'is-invalid' : data.reason == undefined || data.reason == ''}"></td>

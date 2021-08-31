@@ -306,7 +306,7 @@ export class EmiCalculatorComponent {
 
           this.minimumLoanAmount =  parseInt(element.minLoanAmount)
 
-
+          
           if(element.principalAmountWithNode ==  true){
             this.nodeStepLoanAmount = element.principalAmountNode
           }else{
@@ -346,7 +346,7 @@ export class EmiCalculatorComponent {
             showTicks = false
           }
 
-          //
+          // 
           this.roptions = { // interest rate
             floor: 1,
             ceil: this.allowedRateInterest,
@@ -422,12 +422,9 @@ export class EmiCalculatorComponent {
       interestRate: this.query.interest,
       noOfInstallment: this.query.tenureMo,
       installmentAmount: this.result.emi
-
     };
     this.applyLoanData = data;
-    localStorage.setItem('loanApplyData',JSON.stringify(data));
-    localStorage.removeItem('EditLoanData');
-    localStorage.removeItem('ViweLoanData');
+    localStorage.setItem('loanApplyData',JSON.stringify(data))
     //console.log("evn: "+JSON.stringify(data))
     this.router.navigate(['/loan/add-new-loan'])
 

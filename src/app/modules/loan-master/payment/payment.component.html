@@ -1,261 +1,603 @@
 <app-loan-master></app-loan-master>
-<!-- <div class="section-body">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12"> -->
-                <div class="card" style="width: 1274px !important; margin-left: 72px !important;">
-                    <div class="card-body">
-                        <div class="tabs about-page">
-                            <form [formGroup]="paymentLoanForm">
-                                <fieldset>
-                                    <fieldset>
-                                        <legend>Payment</legend>
-                                        <div class="tabview-contents">
-                                            <div class="row">
-                                                <div class="col-sm-4 col-md-4 mt-10">
-                                                    <label class="form-label">Adhoc Payments Treatment</label>
-                                                    <div class="col-sm-6 col-md-6 mt-10">
-                                                        <!-- <label class="form-label">Treatment</label> -->
-                                                        <select class="form-control " formControlName="adhocPaymentsTreatment">
-                                                            <option value="">Select</option>
-                                                            <option>Reduce Installment</option>
-                                                            <option>Reduce Tenure</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 mt-10">
-                                                    <label class="form-label">Skipped payments - Recovery in next
-                                                        cycle</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">Principal</label>
-                                                            <select class="form-control"
-                                                                (click)="paymentRecoveryInNextCyclePri($event.target.value)">
-                                                                <option value="">Select</option>
-                                                                <option [selected]="paymentRecoveryInNextCyclePriVal == 'Yes'">Yes
-                                                                </option>
-                                                                <option [selected]="paymentRecoveryInNextCyclePriVal == 'No'">No
-                                                                </option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">Interest</label>
-                                                            <select class="form-control "
-                                                                (click)="paymentRecoveryInNextCycleInt($event.target.value)">
-                                                                <option value="">Select</option>
-                                                                <option [selected]="paymentRecoveryInNextCycleIntVal=='Yes'">Yes
-                                                                </option>
-                                                                <option [selected]="paymentRecoveryInNextCycleIntVal=='No'">No</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>Assignment</legend>
-                                        <div class="tabview-contents">
-                                            <div class="row">
-                                                <div class="col-sm-6 col-md-6 mt-10">
-                                                    <label class="form-label">Deduction Heads</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">Interest</label>
-                                                            <select class="form-control " formControlName="assignmentsIntHead">
-                                                                <option value="">Select</option>
-                                                                <option *ngFor="let head of deductionHeadData">
-                                                                    {{head.standardName}}</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">Principal</label>
-                                                            <select class="form-control " formControlName="assignmentsPriHead">
-                                                                <option value="">Select</option>
-                                                                <option *ngFor="let head of deductionHeadData">
-                                                                    {{head.standardName}}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 mt-10">
-                                                    <label class="form-label">Earning Head</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">Loan Payment</label>
-                                                            <select class="form-control " formControlName="assignmentsLoanPayment">
-                                                                <option value="">Select</option>
-                                                                <option *ngFor="let head of earningHeadData">
-                                                                    {{head.standardName}}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tabview-contents">
-                                            <div class="row">
-                                                <div class="col-sm-12 col-md-12 mt-10">
-                                                    <label class="form-label">Tax settings - Perquisites</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3 col-md-3 mt-10">
-                                                            <label class="form-label">Head</label>
-                                                            <select class="form-control " formControlName="taxSettingPerquisiteHead">
-                                                                <option value="">Select</option>
-                                                                <option>Head Master</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-3 col-md-3 mt-10">
-                                                            <label class="form-label">Loan Category</label>
-                                                            <select class="form-control "
-                                                                formControlName="taxSettingPerquisiteLoanCategory">
-                                                                <option value="">Select</option>
-                                                                <option>Education Loan</option>
-                                                                <option>Housing Loan</option>
-                                                                <option>Two Wheeler</option>
-                                                                <option>Other Loan</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-3 col-md-3 mt-10">
-                                                            <label class="form-label">Loan Sub-Category</label>
-                                                            <select class="form-control "
-                                                                formControlName="taxSettingPerquisiteSubCategory">
-                                                                <option value="">Select</option>
-                                                                <option>First Hand</option>
-                                                                <option>Second Hand</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-3 col-md-3 mt-10">
-                                                            <label class="form-label">Calculation on</label>
-                                                            <select class="form-control "
-                                                                formControlName="taxSettingCalculatePerquisiteOn">
-                                                                <option value="">Select</option>
-                                                                <option>Opening Balance</option>
-                                                                <option>Closing Balance</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>Guarantor Details</legend>
-                                        <div class="tabview-contents">
-                                            <div class="row">
-                                                <div class="col-sm-6 col-md-6 mt-10">
-                                                    <label class="form-label">No. of Guarantor</label>
-                                                    <select class="form-control " formControlName="noOfGuarantor">
-                                                        <option value="">Select</option>
-                                                        <option>0</option>
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-
-                                    <div class="row">
-                                        <div class="col-sm-6 col-md-6 mt-10">
-                                            <label class="form-label">Document Required</label>
-                                            <div class="table-responsive Custom_Table">
-                                                <table class="table table-striped table-hover table-bordered m-b-0">
-                                                    <thead class="thead-dark">
-                                                        <tr>
-                                                            <th>Document Name</th>
-                                                            <th>Remark</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <input class="form-control" [(ngModel)]="documentName" name="documentName" [ngModelOptions]="{standalone: true}">
-                                                            </td>
-                                                            <td>
-                                                                <input class="form-control" [(ngModel)]="documentRemark" name="documentRemark" [ngModelOptions]="{standalone: true}">
-                                                            </td>
-                                                            <td><a (click)="documentSubmit()">
-                                                                <i class=" fa fa-plus-circle"></i>
-                                                            </a></td>
-                                                        </tr>
-                                                        <tr *ngFor="let doc of filesArray;let index = index;">
-                                                            <td>
-                                                                <input class="form-control" value="{{doc.documentName}}">
-                                                            </td>
-                                                            <td>
-                                                                <input class="form-control" value="{{doc.documentRemark}}">
-                                                            </td>
-                                                            <td><a (click)="removeDocument(index)">
-                                                                <i class=" fa fa-times"></i>
-                                                            </a></td>
-                                                        </tr>
-                                                        
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-right" style="margin: 10px; float:right;">
-                                        <button type="button" class="btn btn-success" (click)="previousTab()">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Previous</button>&nbsp;
-                                        <button type="button" class="btn btn-success" (click)="submitPaymentForm()">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Submit</button>&nbsp;
-                                        <button type="button" class="btn btn-dark" (click)="resetPaymentForm()"
-                                            [disabled]="loandata != '' || editloandata != '' ">
-                                            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-<!-- </div>
-        </div>
-    </div>
-</div> -->
-<app-footer></app-footer>
-
-
-<ng-template #template4>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-        </button>
-    </div>
-    <div class="modal-body">
+<app-leftmenu></app-leftmenu>
+<div class="page">
+<div class="section-body">
+  <div >
+    <div class="row">
+      <div class="col-12">
         <div class="card">
-            <div class="card-body">
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="fileuploadbox bg-color-lightgray">
-                            <label class="filelabel">
-                                <i class="fa fa-upload"> </i>
-                                <span class="title"> Choose file </span>
-                                <input class="FileUpload1" class="dropify" (change)="onUpload($event)"
-                                    accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" />
-                            </label>
+          <div class="card-body" >
+            <div class="tabs about-page">
+              <form [formGroup]="paymentLoanForm">
+                <fieldset>
+                  <legend>Loan Eligibility</legend>
+                  <div class="tabview-contents">
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Service Period</label>
+                        <select
+                          class="form-control"
+                          formControlName="servicePeriod"
+                        >
+                          <option value="">Select</option>
+                          <option>SDM1</option>
+                          <option>SDM2</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Derived Name</label>
+                        <select
+                          class="form-control"
+                          formControlName="servicePeriodDerivedName"
+                        >
+                          <option value="">Select</option>
+                          <option>1</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">% Of Underlining Asset</label>
+                        <select
+                          class="form-control"
+                          formControlName="underliningAsset"
+                        >
+                          <option value="">Select</option>
+                          <option>SDM1</option>
+                          <option>SDM2</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Derived Name</label>
+                        <select
+                          class="form-control"
+                          formControlName="underlyingAssetDerivedName"
+                        >
+                          <option value="">Select</option>
+                          <option>1</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row mt-15">
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label"
+                          >Number of times of salary</label
+                        >
+                        <select
+                          class="form-control"
+                          formControlName="noOfTimesOfSalary"
+                        >
+                          <option value="">Select</option>
+                          <option>SDM1</option>
+                          <option>SDM2</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Derived Name</label>
+                        <select
+                          class="form-control"
+                          formControlName="noOfTimeOfSalaryDerivedName"
+                        >
+                          <option value="">Select</option>
+                          <option>1</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Salary Definition</label>
+                        <select
+                          class="form-control"
+                          formControlName="salaryDefinition"
+                        >
+                          <option value="">Select</option>
+                          <option>Formula</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row mt-15">
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Max Amount Allowed</label>
+                        <select
+                          class="form-control"
+                          formControlName="maxAmountLoan"
+                        >
+                          <option value="">Select</option>
+                          <option>SDM1</option>
+                          <option>SDM2</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 mt-15">
+                        <label class="form-label">Derived Name</label>
+                        <select
+                          class="form-control"
+                          formControlName="maxAmountAllowedDerivedName"
+                        >
+                          <option value="">Select</option>
+                          <option>1</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label"
+                          >Gap - Earlier loan application & New loan Application
+                          (Months)</label
+                        >
+                        <select
+                          class="form-control"
+                          formControlName="gapBetTwoLoanApp"
+                        >
+                          <option value="">Select</option>
+                          <option>SDM1</option>
+                          <option>SDM2</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 mt-15">
+                        <label class="form-label">Derived Name</label>
+                        <select
+                          class="form-control"
+                          formControlName="gapEarilerLoanDerivedName"
+                        >
+                          <option value="">Select</option>
+                          <option>1</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label"
+                          >Gap - End of Earlier Loan & Loan Application
+                          (Months)</label
+                        >
+                        <select
+                          class="form-control"
+                          formControlName="gapEndOfEarlierLoanAndNewLoanApp"
+                        >
+                          <option value="">Select</option>
+                          <option>SDM1</option>
+                          <option>SDM2</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 mt-15">
+                        <label class="form-label">Derived Name</label>
+                        <select
+                          class="form-control"
+                          formControlName="gapEndLoanDerivedName"
+                        >
+                          <option value="">Select</option>
+                          <option>1</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- <div class="col-sm-6 col-md-6 mt-10"></div> -->
+                    <!-- <div class="row"> -->
+                    <!-- <div class="col-sm-6 col-md-6 mt-10"> -->
+                    <label class="form-label mt-15"
+                      >Minimum Remaining Service</label
+                    >
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3 mt-10">
+                        <label class="form-label">Loan Application</label>
+                        <select
+                          class="form-control"
+                          formControlName="minRemainingServiceLoanApplication"
+                        >
+                          <option value="">Select</option>
+                          <option>SDM1</option>
+                          <option>SDM2</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 mt-10">
+                        <label class="form-label">Derived Name</label>
+                        <select
+                          class="form-control"
+                          formControlName="loanAppplicationDerivedName"
+                        >
+                          <option value="">Select</option>
+                          <option>1</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 mt-10">
+                        <label class="form-label">Loan Completion</label>
+                        <select
+                          class="form-control"
+                          formControlName="minRemainingServiceLoanCompletion"
+                        >
+                          <option value="">Select</option>
+                          <option>SDM1</option>
+                          <option>SDM2</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 mt-10">
+                        <label class="form-label">Derived Name</label>
+                        <select
+                          class="form-control"
+                          formControlName="loanCompletionDerivedName"
+                        >
+                          <option value="">Select</option>
+                          <option>1</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row mt-15">
+                      <div class="col-sm-6 col-md-6">
+                        <label class="form-label">No. Of Instances</label>
+                        <div class="table-responsive Custom_Table">
+                          <table
+                            class="
+                              table table-striped table-hover table-bordered
+                              m-b-0
+                            "
+                          >
+                            <thead class="thead-dark">
+                              <tr>
+                                <th>No. of Loans</th>
+                                <th>Month</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <div class="input-container">
+                                    <input
+                                      class="form-control"
+                                      type="text"
+                                      [ngModelOptions]="{ standalone: true }"
+                                      [(ngModel)]="loanValue"
+                                      (focusout)="
+                                        getInstanceNoLoan($event.target.value)
+                                      "
+                                      [disabled]="loandata != ''"
+                                      style="width: 200px"
+                                    />
+                                    &nbsp;&nbsp;&nbsp;
+                                    <span style="margin-top: 8px">in</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <input
+                                    class="form-control"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    [(ngModel)]="monthValue"
+                                    (focusout)="
+                                      getInstanceMonth($event.target.value)
+                                    "
+                                    [disabled]="loandata != ''"
+                                    style="width: 200px"
+                                  />
+                                </td>
+                                <td>
+                                  <i
+                                    class="fa fa-plus-circle"
+                                    aria-hidden="true"
+                                    (click)="setInstanceData()"
+                                  ></i>
+                                </td>
+                              </tr>
+                              <tr
+                                *ngFor="
+                                  let instance of Instances;
+                                  let index = index
+                                "
+                              >
+                                <td>
+                                  <div class="input-container">
+                                    <input
+                                      class="form-control"
+                                      value="{{ instance.noOfLoan }}"
+                                      [disabled]="loandata != ''"
+                                    />
+                                    &nbsp;&nbsp;&nbsp;
+                                    <span style="margin-top: 8px">IN</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <input
+                                    class="form-control"
+                                    value="{{ instance.month }}"
+                                    [disabled]="loandata != ''"
+                                  />
+                                </td>
+                                <td>
+                                  <i
+                                    class="fa fa-times"
+                                    aria-hidden="true"
+                                    (click)="removeInstanceData(index)"
+                                  ></i>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
+                      </div>
                     </div>
-                    <div class="col-md-12 mt-10">
-                        <label class="form-label">Remark</label>
+                    <!-- </div> -->
+                    <!-- </div> -->
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend>Node Settings</legend>
+                  <div class="tabview-contents">
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Principal Amount</label>
+                        <div class="custom-controls-stacked">
+                          <label class="custom-control custom-radio">
+                            <input
+                              type="radio"
+                              class="custom-control-input"
+                              name="principalradio"
+                              value="withNode"
+                              (change)="getPrincipalAmount($event.target)"
+                              [checked]="principalWithNodeFlag == 'withNode'"
+                            />
+                            <div class="custom-control-label">With Node</div>
+                          </label>
+                          <label class="custom-control custom-radio">
+                            <input
+                              type="radio"
+                              class="custom-control-input"
+                              name="principalradio"
+                              value="withoutNode"
+                              (change)="getPrincipalAmount($event.target)"
+                              [checked]="principalWithNodeFlag == 'withoutNode'"
+                            />
+                            <div class="custom-control-label">Without Node</div>
+                          </label>
+                        </div>
+                        <div class="mt-10" *ngIf="PricipalNode == 'withNode'">
+                          <label class="form-label">Node Value</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Gap between two nodes"
+                            formControlName="principalAmountNode"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Rate of Interest</label>
+                        <div class="custom-controls-stacked">
+                          <label class="custom-control custom-radio">
+                            <input
+                              type="radio"
+                              class="custom-control-input"
+                              name="interestradio"
+                              value="withNode"
+                              (change)="getInterestAmount($event.target)"
+                              [checked]="intrestWithNodeFlag == 'withNode'"
+                            />
+                            <div class="custom-control-label">With Node</div>
+                          </label>
+                          <label class="custom-control custom-radio">
+                            <input
+                              type="radio"
+                              class="custom-control-input"
+                              name="interestradio"
+                              value="withoutNode"
+                              (change)="getInterestAmount($event.target)"
+                              [checked]="intrestWithNodeFlag == 'withoutNode'"
+                            />
+                            <div class="custom-control-label">Without Node</div>
+                          </label>
+                          <div class="mt-10" *ngIf="InterestNode == 'withNode'">
+                            <label class="form-label">Node Value</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Gap between two nodes"
+                              formControlName="principalAmountNode"
+                            />
+                          </div>
+                          <!-- <input type="text" class="form-control" placeholder="Gap between two nodes"
+                                    *ngIf="InterestNode == 'withNode'" formControlName = "interestNode"> -->
+                        </div>
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">No Of Installment</label>
+                        <div class="custom-controls-stacked">
+                          <label class="custom-control custom-radio">
+                            <input
+                              type="radio"
+                              class="custom-control-input"
+                              name="noinstallmentradio"
+                              value="withNode"
+                              (change)="getTenureValue($event.target)"
+                              [checked]="noOfInstallWithNodeFlag == 'withNode'"
+                            />
+                            <div class="custom-control-label">With Node</div>
+                          </label>
+                          <label class="custom-control custom-radio">
+                            <input
+                              type="radio"
+                              class="custom-control-input"
+                              name="noinstallmentradio"
+                              value="withoutNode"
+                              (change)="getTenureValue($event.target)"
+                              [checked]="
+                                noOfInstallWithNodeFlag == 'withoutNode'
+                              "
+                            />
+                            <div class="custom-control-label">Without Node</div>
+                          </label>
+                          <div class="mt-10" *ngIf="TenureNode == 'withNode'">
+                            <label class="form-label">Node Value</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Gap between two nodes"
+                              formControlName="principalAmountNode"
+                            />
+                          </div>
+                          <!-- <input type="text" class="form-control" placeholder="Gap between two nodes"
+                                    *ngIf="TenureNode == 'withNode'" formControlName = "noOfInstallmentNode"> -->
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-md-12">
-                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend>Permissible Deviation (%)</legend>
+                  <div class="tabview-contents">
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Loan Amount</label>
+                        <!-- <select class="form-control" (change)="getdeviationAmount($event.target.value)">
+                                                    <option value="">Select</option>
+                                                    <option [selected]="deviationAmount =='Yes'">Yes</option>
+                                                    <option [selected]="deviationAmount =='No'">No</option>
+                                                </select> -->
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="deviationAmount"
+                        />
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">Rate of Interest</label>
+                        <!-- <select class="form-control" (change)="getdeviationIntrest($event.target.value)">
+                                                    <option value="">Select</option>
+                                                    <option [selected]="deviationIntrest =='Yes'">Yes</option>
+                                                    <option [selected]="deviationIntrest =='No'">No</option>
+                                                </select> -->
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="deviationInterest"
+                        />
+                      </div>
+                      <div class="col-sm-3 col-md-3">
+                        <label class="form-label">No Of Installment</label>
+                        <!-- <select class="form-control" (change)="getdeviationNoOfInstallment($event.target.value)">
+                                                    <option value="">Select</option>
+                                                    <option [selected]="deviationNoOfInstallment =='Yes'">Yes</option>
+                                                    <option [selected]="deviationNoOfInstallment =='No'">No</option>
+                                                </select> -->
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="deviationNoOfInstallment"
+                        />
+                      </div>
                     </div>
+                  </div>
+                </fieldset>
+
+                <div class="row text-right" style="margin: 10px; float: right">
+                  <button
+                    type="button"
+                    tooltip="Reset"
+                    class="
+                      custom_button custom_btn
+                      bg-teal-400
+                      btn-labeled btn-labeled-left
+                      mr-10
+                    "
+                  >
+                    <b><i class="fa fa-angle-double-left"></i></b>
+                    Previous</button
+                  >&nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    (click)="submitPaymentForm()"
+                  >
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i
+                    >&nbsp;&nbsp;Submit</button
+                  >&nbsp;
+                  <button
+                    type="submit"
+                    tooltip="Update"
+                    class="
+                      custom_button custom_btn
+                      btn-labeled btn-labeled-left
+                    "
+                    [disabled]="!AddLoanForm.valid"
+                    (click)="updateLoan()"
+                    [ngClass]="{
+                      'disabled-btn-bg-green': AddLoanForm.invalid,
+                      'btn-bg-green': !AddLoanForm.invalid
+                    }"
+                    *ngIf="isVisibleee"
+                  >
+                    <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b
+                    >Save</button
+                  >&nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    (click)="resetPaymentForm()"
+                    [disabled]="loandata != '' || editloandata != ''"
+                  >
+                    <i class="fa fa-refresh" aria-hidden="true"></i
+                    >&nbsp;&nbsp;Reset</button
+                  >&nbsp;
                 </div>
+              </form>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="documentSubmit();modalRef.hide()">
-            Ok
-        </button>
+<app-footer></app-footer>
+</div>
+</div>
+</div>
+<ng-template #template4>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+          <div class="col-md-12">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
+                <i class="fa fa-upload"> </i>
+                <span class="title"> Choose file </span>
+                <input
+                  class="FileUpload1"
+                  class="dropify"
+                  (change)="onUpload($event)"
+                  accept=".jpg , .jpeg, .pdf , .png"
+                  id="FileInput"
+                  type="file"
+                />
+              </label>
+            </div>
+          </div>
+          <div class="col-md-12 mt-10">
+            <label class="form-label">Remark</label>
+          </div>
+          <div class="col-md-12">
+            <textarea
+              class="form-control"
+              [(ngModel)]="documentRemark"
+              rows="2"
+            ></textarea>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="documentSubmit(); modalRef.hide()"
+    >
+      Ok
+    </button>
+  </div>
 </ng-template>

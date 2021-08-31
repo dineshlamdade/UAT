@@ -2,13 +2,13 @@ import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { LoanService } from '../loan.service';
+import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import jspdf from 'jspdf';
 import * as _html2canvas from "html2canvas";
 import { Router } from '@angular/router';
-import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 const html2canvas: any = _html2canvas;
 
 
@@ -80,18 +80,18 @@ export class AddNewLoanComponent implements OnInit {
   editLoanData: any;
   isVisible: boolean = true;
   isVisiblee: boolean = false;
-  isVisibleee:boolean= false;
+  isVisibleee: boolean = false;
   viewFlag: boolean = false;
-  viewAppNo:boolean = false;
+  viewAppNo: boolean = false;
   applicationNo: any;
   applicationDate: any;
-  display: boolean;
-  // config="{backdrop: static, keyboard: false}";
 
   constructor(public formBuilder: FormBuilder,
     private router: Router,
-    private modalService: BsModalService, public loanservice: LoanService, private alertService: AlertServiceService,
+    private modalService: BsModalService, public loanservice: LoanService, public toster: ToastrService,
     private datePipe: DatePipe, private excelservice: ExcelService, public sanitizer: DomSanitizer,) {
+
+
     this.AddLoanForm = this.formBuilder.group(
       {
 
@@ -137,59 +137,61 @@ export class AddNewLoanComponent implements OnInit {
       this.isVisibleee = true;
       this.viewFlag = false;
       this.viewAppNo = true;
-      this.loanservice.getAllLoanType().subscribe(res => {
-        this.loanTypeData = res.data.results[0];
-        this.loanTypeData.forEach(element => {
-          if (element.loanCode == this.loanType) {
-            this.AddLoanForm.controls['repaymentType'].setValue(element.recoveryMethod);
-            if (element.loanCode == 'Car Loan') {
-              this.carType = true;
-              this.instituteType = false;
-              this.isAssetValue = true;
-              // this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
-              this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
-              this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
-            }
-            else
-              if (element.loanCode == 'Education Loan') {
-                this.instituteType = true;
-                this.carType = false;
-                this.isAssetValue = true;
-              // this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
+      // this.loanservice.getAllLoanType().subscribe(res => {
+      //   this.loanTypeData = res.data.results[0];
+      //   this.loanTypeData.forEach(element => {
+      //     if (element.loanCode == this.loanType) {
+      //       this.AddLoanForm.controls['repaymentType'].setValue(element.recoveryMethod);
+      //       if (element.loanCode == 'Car Loan') {
+      //         this.carType = true;
+      //         this.instituteType = false;
+      //         this.isAssetValue = true;
+      //         // this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
+      //         this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
+      //         this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
+      //       }
+      //       else
+      //         if (element.loanCode == 'Education Loan') {
+      //           this.instituteType = true;
+      //           this.carType = false;
+      //           this.isAssetValue = true;
+      //           // this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
 
-                this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
-                this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
-              } else {
-                this.isAssetValue = false;
-                this.carType = false;
-                this.instituteType = false;
-                this.AddLoanForm.controls["underlineAssestValue"].clearValidators()
-                this.AddLoanForm.controls["carOrInstitutionType"].clearValidators()
-                this.AddLoanForm.controls["underlineAssestValue"].setValue('')
-                this.AddLoanForm.controls["carOrInstitutionType"].setValue('')
-              }
-            this.flatIntrest = element.intRate;
-            this.deviationAmount = element.deviationAmount;
-            this.deviationIntrest = element.deviationIntrest;
-            this.deviationNoOfInstallment = element.deviationNoOfInstallment;
-            this.documentList = element.document;
-            this.documentList.forEach(element => {
-              element.fileName = ''
-            });
-            this.guarentedCount = [];
-            let length = element.noOfGuarantor;
-            this.editLoanData.guarantors.forEach(ele => {
-              this.guarentedCount.push({
-                'empCode': ele.employeeCode,
-                'fullName': ele.employeeFullName
-              })
-            });
+      //           this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
+      //           this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
+      //         } else {
+      //           this.isAssetValue = false;
+      //           this.carType = false;
+      //           this.instituteType = false;
+      //           this.AddLoanForm.controls["underlineAssestValue"].clearValidators()
+      //           this.AddLoanForm.controls["carOrInstitutionType"].clearValidators()
+      //           this.AddLoanForm.controls["underlineAssestValue"].setValue('')
+      //           this.AddLoanForm.controls["carOrInstitutionType"].setValue('')
+      //         }
+      //       this.flatIntrest = element.intRate;
+      //       this.deviationAmount = element.deviationAmount;
+      //       this.deviationIntrest = element.deviationIntrest;
+      //       this.deviationNoOfInstallment = element.deviationNoOfInstallment;
+      //       this.documentList = element.document;
+      //       this.documentList.forEach(element => {
+      //         element.fileName = ''
+      //       });
+      //       this.guarentedCount = [];
+      //       let length = element.noOfGuarantor;
+      //       this.editLoanData.guarantors.forEach(ele => {
+      //         this.guarentedCount.push({
+      //           'empCode': ele.employeeCode,
+      //           'fullName': ele.employeeFullName
+      //         })
+      //       });
 
-            this.devaiationData = this.editLoanData.deviations;
+      //       this.devaiationData = this.editLoanData.deviations;
 
-          }
-        })
-      })
+      //     }
+      //   })
+      // })
+
+
 
     }
 
@@ -206,58 +208,58 @@ export class AddNewLoanComponent implements OnInit {
       this.isVisibleee = false;
       this.viewFlag = true;
       this.viewAppNo = true;
-      this.loanservice.getAllLoanType().subscribe(res => {
-        this.loanTypeData = res.data.results[0];
-        this.loanTypeData.forEach(element => {
-          if (element.loanCode == this.loanType) {
-            this.AddLoanForm.controls['repaymentType'].setValue(element.recoveryMethod);
-            if (element.loanCode == 'Car Loan') {
-              this.carType = true;
-              this.instituteType = false;
-              this.isAssetValue = true;
-              // this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
-              this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
-              this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
-            }
-            else
-              if (element.loanCode == 'Education Loan') {
-                this.instituteType = true;
-                this.carType = false;
-                this.isAssetValue = true;
-                this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
-                this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
-              } else {
-                this.isAssetValue = false;
-                this.carType = false;
-                this.instituteType = false;
-                this.AddLoanForm.controls["underlineAssestValue"].clearValidators()
-                this.AddLoanForm.controls["carOrInstitutionType"].clearValidators()
-                this.AddLoanForm.controls["underlineAssestValue"].setValue('')
-                this.AddLoanForm.controls["carOrInstitutionType"].setValue('')
-              }
-            this.flatIntrest = element.intRate;
-            this.deviationAmount = element.deviationAmount;
-            this.deviationIntrest = element.deviationIntrest;
-            this.deviationNoOfInstallment = element.deviationNoOfInstallment;
-            this.documentList = element.document;
-            this.documentList.forEach(element => {
-              element.fileName = ''
-            });
-            this.guarentedCount = [];
-            let length = element.noOfGuarantor;
-            this.editLoanData.guarantors.forEach(ele => {
-              this.guarentedCount.push({
-                'empCode': ele.employeeCode,
-                'fullName': ele.employeeFullName
-              })
-            });
+      // this.loanservice.getAllLoanType().subscribe(res => {
+      //   this.loanTypeData = res.data.results[0];
+      //   this.loanTypeData.forEach(element => {
+      //     if (element.loanCode == this.loanType) {
+      //       this.AddLoanForm.controls['repaymentType'].setValue(element.recoveryMethod);
+      //       if (element.loanCode == 'Car Loan') {
+      //         this.carType = true;
+      //         this.instituteType = false;
+      //         this.isAssetValue = true;
+      //         // this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
+      //         this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
+      //         this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
+      //       }
+      //       else
+      //         if (element.loanCode == 'Education Loan') {
+      //           this.instituteType = true;
+      //           this.carType = false;
+      //           this.isAssetValue = true;
+      //           this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
+      //           this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
+      //         } else {
+      //           this.isAssetValue = false;
+      //           this.carType = false;
+      //           this.instituteType = false;
+      //           this.AddLoanForm.controls["underlineAssestValue"].clearValidators()
+      //           this.AddLoanForm.controls["carOrInstitutionType"].clearValidators()
+      //           this.AddLoanForm.controls["underlineAssestValue"].setValue('')
+      //           this.AddLoanForm.controls["carOrInstitutionType"].setValue('')
+      //         }
+      //       this.flatIntrest = element.intRate;
+      //       this.deviationAmount = element.deviationAmount;
+      //       this.deviationIntrest = element.deviationIntrest;
+      //       this.deviationNoOfInstallment = element.deviationNoOfInstallment;
+      //       this.documentList = element.document;
+      //       this.documentList.forEach(element => {
+      //         element.fileName = ''
+      //       });
+      //       this.guarentedCount = [];
+      //       let length = element.noOfGuarantor;
+      //       this.editLoanData.guarantors.forEach(ele => {
+      //         this.guarentedCount.push({
+      //           'empCode': ele.employeeCode,
+      //           'fullName': ele.employeeFullName
+      //         })
+      //       });
 
-            this.devaiationData = this.editLoanData.deviations;
-            // this.devaiationData = this.editLoanData.deviationReason.disable();
+      //       this.devaiationData = this.editLoanData.deviations;
+      //       // this.devaiationData = this.editLoanData.deviationReason.disable();
 
-          }
-        })
-      })
+      //     }
+      //   })
+      // })
     }
 
     if (localStorage.getItem('loanApplyData') != null) {
@@ -278,60 +280,60 @@ export class AddNewLoanComponent implements OnInit {
       this.installmentAmount = parseFloat(this.installmentAmount);
       this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
-      this.loanservice.getAllLoanType().subscribe(res => {
-        this.loanTypeData = res.data.results[0];
-        this.loanTypeData.forEach(element => {
+      // this.loanservice.getAllLoanType().subscribe(res => {
+      //   this.loanTypeData = res.data.results[0];
+      //   this.loanTypeData.forEach(element => {
 
 
-          if (element.loanCode == this.loanType) {
-            this.AddLoanForm.controls['repaymentType'].setValue(element.recoveryMethod);
-            if (element.loanCode == 'Car Loan') {
-              this.carType = true;
-              this.instituteType = false;
-              this.isAssetValue = true;
-              this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
-              this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
-              this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
-            }
-            else
-              if (element.loanCode == 'Education Loan') {
-                this.instituteType = true;
-                this.carType = false;
-                this.isAssetValue = true;
-                this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
-                this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
-              } else {
-                this.isAssetValue = false;
-                this.carType = false;
-                this.instituteType = false;
-                this.AddLoanForm.controls["underlineAssestValue"].clearValidators()
-                this.AddLoanForm.controls["carOrInstitutionType"].clearValidators()
-                this.AddLoanForm.controls["underlineAssestValue"].setValue('')
-                this.AddLoanForm.controls["carOrInstitutionType"].setValue('')
-              }
+      //     if (element.loanCode == this.loanType) {
+      //       this.AddLoanForm.controls['repaymentType'].setValue(element.recoveryMethod);
+      //       if (element.loanCode == 'Car Loan') {
+      //         this.carType = true;
+      //         this.instituteType = false;
+      //         this.isAssetValue = true;
+      //         this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
+      //         this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
+      //         this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
+      //       }
+      //       else
+      //         if (element.loanCode == 'Education Loan') {
+      //           this.instituteType = true;
+      //           this.carType = false;
+      //           this.isAssetValue = true;
+      //           this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
+      //           this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
+      //         } else {
+      //           this.isAssetValue = false;
+      //           this.carType = false;
+      //           this.instituteType = false;
+      //           this.AddLoanForm.controls["underlineAssestValue"].clearValidators()
+      //           this.AddLoanForm.controls["carOrInstitutionType"].clearValidators()
+      //           this.AddLoanForm.controls["underlineAssestValue"].setValue('')
+      //           this.AddLoanForm.controls["carOrInstitutionType"].setValue('')
+      //         }
 
-            this.flatIntrest = element.intRate;
-            this.deviationAmount = element.deviationAmount;
-            this.deviationIntrest = element.deviationIntrest;
-            this.deviationNoOfInstallment = element.deviationNoOfInstallment;
-            this.documentList = element.document;
-            this.documentList.forEach(element => {
-              element.fileName = ''
-            });
+      //       this.flatIntrest = element.intRate;
+      //       this.deviationAmount = element.deviationAmount;
+      //       this.deviationIntrest = element.deviationIntrest;
+      //       this.deviationNoOfInstallment = element.deviationNoOfInstallment;
+      //       this.documentList = element.document;
+      //       this.documentList.forEach(element => {
+      //         element.fileName = ''
+      //       });
 
-            this.recoveryAllMethod = element.recoveryMethod;
+      //       this.recoveryAllMethod = element.recoveryMethod;
 
-            this.guarentedCount = [];
-            let length = element.noOfGuarantor;
-            for (let i = 0; i < length; i++) {
-              this.guarentedCount.push({
-                'empCode': '',
-                'fullName': ''
-              })
-            }
-          }
-        })
-      })
+      //       this.guarentedCount = [];
+      //       let length = element.noOfGuarantor;
+      //       for (let i = 0; i < length; i++) {
+      //         this.guarentedCount.push({
+      //           'empCode': '',
+      //           'fullName': ''
+      //         })
+      //       }
+      //     }
+      //   })
+      // })
 
       let currentdate = new Date();
       var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
@@ -346,7 +348,7 @@ export class AddNewLoanComponent implements OnInit {
   ngOnInit(): void {
     this.getAllData();
     this.getAllLoanType();
-    // this.getApproverDetails();
+    //this.getApproverDetails();
   }
   get f() {
     return this.AddLoanForm.controls;
@@ -399,23 +401,20 @@ export class AddNewLoanComponent implements OnInit {
       this.AddLoanForm.removeControl('loanMasterId');
       this.loanservice.addLoan(this.AddLoanForm.value).subscribe(res => {
         this.approvalData = res.data.results.approverDetails;
-        console.log("approverDetails*******", this.approvalData);
-      this.alertService.sweetalertMasterSuccess('Loan Application Added Successfully.', '' );
-
+        console.log("approverDetails*****************", this.approvalData);
+        this.toster.success("", 'Loan Added Successfully');
         this.reset();
+        // this.toster.success("", 'You Dont have apply same Loan');
         this.router.navigate(['/loan/application']);
         this.getAllData();
-      },error => {
-        // console.log(JSON.stringify(error))
-        // console.log(JSON.stringify(error.error.status));
-        if(error.error.status.code == '409'){
-      this.alertService.sweetalertMasterSuccess('Provided  employeeeCode is Already Exist!.', '' );
-
+      }, error => {
+        if (error.status.code == '409') {
+          this.toster.error("", 'Provided  employeeeCode is Already Exist!');
         }
       });
     } else {
       this.updateLoan();
-
+      // this.reset();
     }
 
     if (this.AddLoanForm.invalid) {
@@ -440,14 +439,14 @@ export class AddNewLoanComponent implements OnInit {
   }
 
   schedule(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template,
+    this.modalRef = this.modalService.show(
+      template,
       Object.assign({}, { class: 'gray modal-lg' })
 
     );
-    // this.modalRef = this.modalService._showModal(this.config);
     this.allScheduleData();
-  }
 
+  }
 
   getAllData() {
     this.loanservice.getAll().subscribe(res => {
@@ -510,6 +509,8 @@ export class AddNewLoanComponent implements OnInit {
         'empCode': this.empCode,
         'fullName': this.guarantorDataForTable.fullName,
       })
+
+
       if (this.fullName  != null) {
         if (this.guarentor.length > 0) {
          // console.log("fname" + this.fullName)
@@ -573,18 +574,21 @@ export class AddNewLoanComponent implements OnInit {
       }
     })
   }
+
   getEmpcode(value, index) {
     if (value != '' || value != undefined) {
       this.empCode = value;
       this.empIndex = index;
+
       this.getGuarantorData();
     }
+
   }
 
   assetValueShowHide($event) {
     this.loanType = ''
-    this.AddLoanForm.controls['installmentAmount'].reset();
-    this.AddLoanForm.controls['loanAmount'].reset();
+    this.AddLoanForm.controls['installmentAmount'].reset()
+    this.AddLoanForm.controls['loanAmount'].reset()
     this.loanType = $event;
     this.loanTypeData.forEach(element => {
       if (element.loanCode == this.loanType) {
@@ -798,8 +802,7 @@ export class AddNewLoanComponent implements OnInit {
 
 
     } else {
-      this.alertService.sweetalertMasterSuccess('Please Enter Eligible.', '' + this.allowedLoanAmount + " amount");
-
+      this.toster.success("Please Enter Eligible" + ' ' + this.allowedLoanAmount + " amount")
       this.devaiationData.forEach((ele, index) => {
         if (ele.deviationType == 'LoanAmount') {
           let ind = index;
@@ -872,7 +875,9 @@ export class AddNewLoanComponent implements OnInit {
 
   calculateNoOfInstallment(value) {
     this.EndDate = null;
+
     this.AddLoanForm.controls['noOfInstallment'].setValue(parseInt(value));
+
     this.calculatedDeviationIntallment = 48 * parseInt(this.deviationNoOfInstallment) / 100
     this.allowedInstallment = 48 + this.calculatedDeviationIntallment
 
@@ -881,11 +886,11 @@ export class AddNewLoanComponent implements OnInit {
 
       if (this.recoveryAllMethod == 'Reducing Balance' || this.recoveryAllMethod == 'Principal First & then Interest') {
         this.installmentAmount = this.loanAmount / this.noOfInstallment;
-        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
       }
       else if (this.recoveryAllMethod == 'EMI') {
         this.installmentAmount = this.loanAmount / this.noOfInstallment;
-        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
 
 
         //  let diff = currentdate.getTime() - lastDay.getTime()
@@ -909,10 +914,10 @@ export class AddNewLoanComponent implements OnInit {
 
         //this.installmentAmount = this.flatIntrest / (12 * 100)
       }
-      else{
+      else {
         // alert(this.loanAmount)
-          this.installmentAmount = this.loanAmount / this.noOfInstallment;
-          this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
       }
 
       this.installmentAmount = parseFloat(this.installmentAmount)
@@ -932,6 +937,8 @@ export class AddNewLoanComponent implements OnInit {
           this.devaiationData.forEach((ele, index) => {
             if (ele.deviationType == 'noOfInstallment') {
               let ind = index;
+              this.devaiationData.splice(ind, 1)
+            
               this.devaiationData.splice(ind, 1, {
                 "deviationType": 'noOfInstallment',
                 "userLimit": 48,
@@ -944,6 +951,7 @@ export class AddNewLoanComponent implements OnInit {
                 "active": true
               })
             } else {
+           
               if (ele.deviationType == 'noOfInstallment') {
                 let ind = index;
                 this.devaiationData.splice(ind, 1)
@@ -962,6 +970,7 @@ export class AddNewLoanComponent implements OnInit {
             }
           })
         } else {
+          
           this.devaiationData.push({
             "deviationType": 'noOfInstallment',
             "userLimit": 48,
@@ -990,8 +999,7 @@ export class AddNewLoanComponent implements OnInit {
 
     }
     else {
-      this.alertService.sweetalertMasterSuccess('Please Enter Eligible.', '' + this.allowedLoanAmount + " installment");
-
+      this.toster.success("Please Enter Eligible " + ' ' + this.allowedInstallment + " installment")
       this.noOfInstallment = this.allowedInstallment;
 
       this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
@@ -1036,7 +1044,7 @@ export class AddNewLoanComponent implements OnInit {
       var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
       this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
       this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
-      this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+      // this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
 
       this.devaiationData.forEach((ele, index) => {
         if (ele.deviationType == 'noOfInstallment') {
@@ -1064,107 +1072,106 @@ export class AddNewLoanComponent implements OnInit {
 
 
     if (parseInt(this.noOfInstallment) <= this.allowedInstallment) {
-        if (this.devaiationData.length > 0) {
-          this.devaiationData.forEach((ele, index) => {
-            if (ele.deviationType == 'noOfInstallment') {
-              let ind = index;
-              this.devaiationData.splice(ind, 1, {
-                "deviationType": 'noOfInstallment',
-                "userLimit": 48,
-                "deviationValue": parseInt(this.noOfInstallment),
-                "reason": null,
-                "createdBy": 'ajay',
-                "createDateTime": null,
-                "lastModifiedBy": null,
-                "lastModifiedDateTime": null,
-                "active": true
-              })
-            } else {
-              if (ele.deviationType == 'noOfInstallment') {
-                let ind = index;
-                this.devaiationData.splice(ind, 1)
-              }
-              this.devaiationData.push({
-                "deviationType": 'noOfInstallment',
-                "userLimit": 48,
-                "deviationValue": parseInt(this.noOfInstallment),
-                "reason": null,
-                "createdBy": 'ajay',
-                "createDateTime": null,
-                "lastModifiedBy": null,
-                "lastModifiedDateTime": null,
-                "active": true
-              })
-            }
-          })
-        } else {
-          this.devaiationData.push({
-            "deviationType": 'noOfInstallment',
-            "userLimit": 48,
-            "deviationValue": parseInt(this.noOfInstallment),
-            "reason": null,
-            "createdBy": 'ajay',
-            "createDateTime": null,
-            "lastModifiedBy": null,
-            "lastModifiedDateTime": null,
-            "active": true
-          })
-        }
-      }else {
-      this.alertService.sweetalertMasterSuccess('Please Enter Eligible.', '' + this.allowedLoanAmount + " installment");
-
-        this.noOfInstallment = this.allowedInstallment;
-
-        this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
-
-        if (this.recoveryAllMethod == 'Reducing Balance' || this.recoveryAllMethod == 'Principal First & then Interest') {
-          this.installmentAmount = this.loanAmount / this.noOfInstallment;
-          this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
-        }
-        if (this.recoveryAllMethod == 'EMI') {
-          this.installmentAmount = this.loanAmount / this.noOfInstallment;
-          this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
-        }
-        if (this.recoveryAllMethod == 'Flat Interest') {
-
-        }
-
-        if (this.recoveryAllMethod == 'Perpetual') {
-          this.installmentAmount = this.loanAmount / this.noOfInstallment;
-          this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
-
-          //this.installmentAmount = this.flatIntrest / (12 * 100)
-        }
-
-        this.installmentAmount = parseFloat(this.installmentAmount)
-
-        this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
-
-        // ..........................end date calculation..............................................
-        let currentdate = new Date();
-        var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
-        this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
-        this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
-        this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
-
+      if (this.devaiationData.length > 0) {
         this.devaiationData.forEach((ele, index) => {
           if (ele.deviationType == 'noOfInstallment') {
             let ind = index;
-            this.devaiationData.splice(ind, 1)
+            this.devaiationData.splice(ind, 1, {
+              "deviationType": 'noOfInstallment',
+              "userLimit": 48,
+              "deviationValue": parseInt(this.noOfInstallment),
+              "reason": null,
+              "createdBy": 'ajay',
+              "createDateTime": null,
+              "lastModifiedBy": null,
+              "lastModifiedDateTime": null,
+              "active": true
+            })
+          } else {
+            if (ele.deviationType == 'noOfInstallment') {
+              let ind = index;
+              this.devaiationData.splice(ind, 1)
+            }
+            this.devaiationData.push({
+              "deviationType": 'noOfInstallment',
+              "userLimit": 48,
+              "deviationValue": parseInt(this.noOfInstallment),
+              "reason": null,
+              "createdBy": 'ajay',
+              "createDateTime": null,
+              "lastModifiedBy": null,
+              "lastModifiedDateTime": null,
+              "active": true
+            })
           }
         })
-        this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+      } else {
+        this.devaiationData.push({
+          "deviationType": 'noOfInstallment',
+          "userLimit": 48,
+          "deviationValue": parseInt(this.noOfInstallment),
+          "reason": null,
+          "createdBy": 'ajay',
+          "createDateTime": null,
+          "lastModifiedBy": null,
+          "lastModifiedDateTime": null,
+          "active": true
+        })
+      }
+    } else {
+      this.toster.success("Please Enter Eligible " + ' ' + this.allowedInstallment + " installment")
+      this.noOfInstallment = this.allowedInstallment;
+
+      this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
+
+      if (this.recoveryAllMethod == 'Reducing Balance' || this.recoveryAllMethod == 'Principal First & then Interest') {
+        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+      }
+      if (this.recoveryAllMethod == 'EMI') {
+        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+      }
+      if (this.recoveryAllMethod == 'Flat Interest') {
+
       }
 
+      if (this.recoveryAllMethod == 'Perpetual') {
+        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
 
+        //this.installmentAmount = this.flatIntrest / (12 * 100)
+      }
 
+      this.installmentAmount = parseFloat(this.installmentAmount)
+
+      this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
       // ..........................end date calculation..............................................
+      let currentdate = new Date();
+      var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
+      this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
+      this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
+      // this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+
+      this.devaiationData.forEach((ele, index) => {
+        if (ele.deviationType == 'noOfInstallment') {
+          let ind = index;
+          this.devaiationData.splice(ind, 1)
+        }
+      })
+      this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+    }
+
+
+
+
+    // ..........................end date calculation..............................................
     let currentdate = new Date();
     var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
     this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
     this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
-    this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+    // this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
 
   }
 
@@ -1176,10 +1183,10 @@ export class AddNewLoanComponent implements OnInit {
 
     this.calculatedDeviationInt = 12 * parseInt(this.deviationIntrest) / 100
     this.allowedRateInterest = 12 - this.calculatedDeviationInt
- //debugger
+    //debugger
     if (parseInt(value) <= 12 && parseInt(value) >= this.allowedRateInterest) {
 
-      if ( parseInt(value) >= this.allowedRateInterest && parseInt(value) < 12) {
+      if (parseInt(value) >= this.allowedRateInterest && parseInt(value) < 12) {
 
         if (this.devaiationData.length > 0) {
           this.devaiationData.forEach((ele, index) => {
@@ -1226,7 +1233,8 @@ export class AddNewLoanComponent implements OnInit {
 
     }
     else {
-      this.alertService.sweetalertMasterSuccess('Please Enter Eligible.', '' + this.allowedRateInterest + " interest rate");
+      this.toster.success("Please Enter Eligible" + ' ' + this.allowedRateInterest + " interest rate")
+
       this.devaiationData.forEach((ele, index) => {
         if (ele.deviationType == 'interestRate') {
           let ind = index;
@@ -1320,7 +1328,7 @@ export class AddNewLoanComponent implements OnInit {
 
   deleteLoanScheduleByID() {
     this.loanservice.deleteLoanScheduleByID(this.tempLoanMasterScheduleId).subscribe(res => {
-
+      // this.toster.success("Schedule Data Deleted Successfully");
     })
   }
   // public getApproverDetails()
@@ -1397,8 +1405,8 @@ export class AddNewLoanComponent implements OnInit {
 
     this.loanservice.updateLoan(this.AddLoanForm.value).subscribe(res => {
       this.updatedData = res.data.results;
-     // console.log("&&&&&&&&&&&&", this.updatedData);
-      this.alertService.sweetalertMasterSuccess('Updated loanApplication details Successfully.', '');
+      // console.log("&&&&&&&&&&&&", this.updatedData);
+      this.toster.success("Updated loanApplication details Successfully.");
       this.router.navigate(['/loan/application']);
 
     })
