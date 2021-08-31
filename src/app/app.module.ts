@@ -82,6 +82,7 @@ import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { InvestmentApprovalModule } from './modules/investment-approval/investment-approval.module';
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
+import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
 import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
 
 
@@ -123,6 +124,7 @@ import { FormulamasterModule } from './modules/formulamaster/formulamaster.modul
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    OnetimeInvestmentsApprovalModule,
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,

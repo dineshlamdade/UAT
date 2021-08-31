@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 export class KeywordserviceService {
 
   url = environment.baseUrl8084;
-  url1 = environment.devbaseUrl8084;
+  url1 = environment.baseUrl8084;
+  // url1 = environment.devbaseUrl8084;
   constructor(private HttpClient: HttpClient) { }
 
 

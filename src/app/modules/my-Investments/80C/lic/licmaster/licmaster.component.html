@@ -90,10 +90,11 @@
             </div>
 
             <div class="col-sm-6 col-md-3">
-              <label class="form-label">Premium Amount</label>
+              <label class="form-label">Premium Amount Test</label>
               <p-inputNumber class="p-inputright" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"
                              min="0"></p-inputNumber>
               <!-- <p-inputNumber class="align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
+
 
               <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
@@ -101,7 +102,7 @@
             </div>
 
             <div class="col-sm-6 col-md-3">
-              <label class="form-label">Annual Amount</label>
+              <label class="form-label">Annual Amount Test</label>
               <p-inputNumber formControlName="annualAmount" class="p-inputright" name="Annual Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
               <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
@@ -266,7 +267,7 @@
                     <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                       class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                       <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
-                        <div class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
+                        <div *ngIf="showdocument" class="labelbox mb-0" placement="bottom" tooltip="{{ doc.fileName }}">
                           <i class="fa fa-paperclip text-orange" (click)="docViewer(template3,i)"></i> &nbsp; {{ doc.fileName }}
                         </div>
                       </div>
@@ -279,11 +280,11 @@
                     <th scope="row"><span tooltip="2">2</span></th>
                     <td><span tooltip="Receipt for Stamp Duty & Registration Charges"></span>Policy Document/Bank Statement/Reciept
                     </td>
-      
+
                     <td><span *ngFor="let item of PremiumFileArray" class="text-orange" tooltip="{{item.name}},"><i
                       class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                       <div class="col-md-12" *ngFor="let doc of PremiumurlArray; let i = index">
-                  
+
                         <div *ngIf="doc.documentType=='Policy Document/Bank Statement/Reciept'" class="labelbox" placement="top" tooltip="{{ doc.PremiumurlArray}}">
                           <i class="fa fa-paperclip text-orange" (click)="docViewer(template3,i)"></i> &nbsp;
                           {{ doc.fileName }}
@@ -734,7 +735,9 @@
                   <td class="wd-10 text-light-green font700"><span tooltip="Submitted">{{summary.masterStatus}}</span>
                   </td>
                   <td class="wd-5">
-                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.licMasterId)" tooltip="Edit"></i> &nbsp;&nbsp;
+                    <i [ngClass]="{'disableEdit': summary.masterStatus === 'Re-Open'}" class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.licMasterId)" tooltip="Edit"></i> &nbsp;&nbsp;
+
+
                   </td>
                 </tr>
                 <tr *ngIf="!masterGridData?.length">

@@ -28,7 +28,7 @@ export class PaymentTrackingMasterComponent implements OnInit {
   bankName: any;
   branchName: any;
   accountNumber: any;
-  
+
   row: any=[];
   rowV: any=[];
   bankDetailssummary: any;
@@ -57,8 +57,8 @@ export class PaymentTrackingMasterComponent implements OnInit {
   jobField: any;
   modalRef: any;
 
-  
- 
+
+
   constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private service:PaymenttrackingMasterService,
     private alertService: AlertServiceService,) {
       this.paymenttrackingForm = this.formBuilder.group({
@@ -84,12 +84,12 @@ export class PaymentTrackingMasterComponent implements OnInit {
         "paymentTrackingMasterBankDetails": new FormControl([]),
         "remark": new FormControl(""),
         "workflowMasterHeaderId": new FormControl(""),
-        
-      
-      //  "applicationModuleName" : new FormControl('')
-      
 
-      
+
+      //  "applicationModuleName" : new FormControl('')
+
+
+
 
 
     })
@@ -110,16 +110,16 @@ export class PaymentTrackingMasterComponent implements OnInit {
     this.getSDM()
     // this.getSummaryData()
 
-   
-   
+
+
  }
- 
+
 
  getApplicaationModuleName(){
   this.service.getModuleName().subscribe((res) => {
 
     this.applicationModuleNameList = res.data.results;
-    
+
  });
  }
 
@@ -180,7 +180,7 @@ getJobMasterMapping(){
 //         'branchName':element.branchName,
 //         'accountNumber' : element.mappingDetails.accountNumber
 //       })
-      
+
 //     });
 //   })
 // }
@@ -194,7 +194,7 @@ getJobMasterMapping(){
         label : element.masterCode,
         value: element.jobMasterMappingId
       });
-       
+
      });
    })
  }
@@ -203,7 +203,7 @@ getJobMasterMapping(){
    this.service.getBankMasterDetails().subscribe(res =>{
      this.ifscCodeList = res.data.results;
    })
-  
+
  }
 
  getSDM(){
@@ -222,11 +222,11 @@ getJobMasterMapping(){
 
 
  getSummary() {
-  
+
   this.summary =[];
   this.service.getAll().subscribe((res) => {
      let ressultdata = res.data.results[0];
-      
+
         ressultdata.forEach(element => {
            this.summary.push({
               'code': element.code,
@@ -241,9 +241,9 @@ getJobMasterMapping(){
             //   'payHead': element.paymentTrackingAddPayVoucherMaster.payHead,
             //   'formulaMasterId': element.formulaMasterId,
             //   'logicMethod': element.logicMethod,
-             
+
            })
-        }); 
+        });
         console.log(JSON.stringify(this.summary))
 
   });
@@ -257,11 +257,11 @@ getJobMasterMapping(){
   this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].setValue(this.paymentTrackingAddPayVoucherMaster);
   this.paymenttrackingForm.controls['paymentTrackingJobFieldMaster'].setValue(this.paymentTrackingJobFieldMaster);
   this.paymenttrackingForm.controls['paymentTrackingMasterBankDetails'].setValue(this.paymentTrackingMasterBankDetails);
-  
+
 
   console.log(JSON.stringify(this.paymenttrackingForm.value));
-  
-  
+
+
   if(!this.editFlag){
    this.service.addPayment(this.paymenttrackingForm.value).subscribe(res =>{
 
@@ -276,7 +276,7 @@ getJobMasterMapping(){
     this.updatePaymentTracking()
   }
 
-  
+
  }
 
  updatePaymentTracking(){
@@ -286,7 +286,7 @@ getJobMasterMapping(){
 
   console.log(JSON.stringify(this.paymenttrackingForm.value));
   this.service.updatePayment(this.paymenttrackingForm.value).subscribe(res =>{
-    this.updatePaymentTrackingData = res.data.results; 
+    this.updatePaymentTrackingData = res.data.results;
     this.getSummary();
     this.isVisible = false;
     this.isShown = true;
@@ -294,7 +294,7 @@ getJobMasterMapping(){
     this.reset();
   })
  }
- 
+
  editSummary(summary){
   this.paymenttrackingForm.patchValue(summary)
   this.paymenttrackingForm.enable();
@@ -328,7 +328,7 @@ console.log(event);
       "jobField": this.jobField,
       "payTrackJobFieldMasterId": 0,
       "paymentTrackingJobFieldValueMapping":this.paymentTrackingJobFieldValueMapping
-      
+
 
      })
   this.service.getJobMasterMapping().subscribe(res =>{
@@ -353,7 +353,7 @@ console.log(event);
       'ifscCode':row.ifscCode,
       'bankName':row.bankName,
       'branchName':row.branchName,
-      
+
      })
      console.log("Row Data is: "+ JSON.stringify(this.row))
 
@@ -368,21 +368,21 @@ console.log(event);
     branchName: this.branchName,
     accountNumber: this.accountNumber,
     active: this.active,
-  
+
 
   };
 
 
   this.row.push(obj);
- 
+
 }
 deleteRows(x) {
   this.row.splice(x, 1);
-  
+
 }
 addTableVoucher(){
 
-  
+
 
    const obj ={
 
@@ -392,21 +392,21 @@ addTableVoucher(){
     active: true,
     paymentTrackingAddPayVoucherMasterid: 0
       };
-   
-  
-  
+
+
+
 
    this.paymentTrackingAddPayVoucherMaster.push(obj)
 
 
-  
+
  this.rowV.push({
    'Head': this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].value,
    'Logic' : this.logicValue,
    'FormulaValue': this.selectedFormulaname,
   'paymentTrackingAddPayVoucherMasterid' :0
  });
- 
+
  this.paymenttrackingForm.controls['paymentTrackingAddPayVoucherMaster'].reset()
  this.paymenttrackingForm.controls['formulaMasterId'].reset()
  this.paymenttrackingForm.controls['logicMethod'].reset()
@@ -415,15 +415,15 @@ addTableVoucher(){
 }
 deleteRowsV(x) {
   this.rowV.splice(x, 1);
-   
+
 }
 
 onSelectBankDetails(){
- 
+
 }
 
 onSelectFormula(value){
-  this.logicValue = value 
+  this.logicValue = value
 
   if(value=='Formula'){
     this.service.getFormula().subscribe(res =>{
@@ -452,7 +452,7 @@ reset(){
 
 }
 cancel(){
-         this.paymenttrackingForm.enable();    
+         this.paymenttrackingForm.enable();
          this.reset();
          this.isShown = true;
          this.isVisible = false;

@@ -84,6 +84,8 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
   public documentDetailList: InvestmentApprovalMasterDocumentInfo[] = [];
   public documentRemarkList: InvestmentApprovalDocumentRemarkInfo[] = [];
   public globalPSID: any = '';
+  test = [];
+  approved1Disabled: boolean = true;
   public previousDisabled: boolean = true;
   public nextDisabled: boolean = false;
   public transactionList: Array<any> = [];
@@ -191,6 +193,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       .getTransactionInfoByPSID(psid)
       .subscribe((res: InvestmentApprovalTransactionInfo) => {
         console.log('res transactionInfo::', res);
+        
         if (res != null || res != undefined) {
           this.transactionInfo = res;
           this.documentDetailList = this.transactionInfo.documentList;
@@ -201,9 +204,18 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
             });
           });
           this.documentDetailList.forEach((doc)=>{
-            if(doc.documentStatus =="Approved") {
-              this.approvedDisabled = false;
-            }
+            this.test.push(doc.documentStatus);
+            
+            if (this.test.includes('Submitted')) {
+              this.approved1Disabled = true;
+          } else if (this.test.includes('Approved')) {
+            this.approved1Disabled = false;
+          } else if (this.test.includes('Discarded')) {
+            this.approved1Disabled = true;
+          }
+            // if(doc.documentStatus =="Approved") {
+            //   this.approvedDisabled = false;
+            // }
           });
         }
       });
@@ -341,6 +353,8 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
         }
         this.documentList = [];
       });
+      this.approvedDisabled=true;
+      this.transactionList=[];
   }
 
   //-------- For selecting transaction For Processing of Approval, SendBack and Forward ----------
@@ -385,14 +399,14 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
      }
      if(status=='Approved'){
 
-      //  this.masterInfo.masterDetail.documentDetailList.forEach((doc)=>
-      //  {
-      //    console.log("doc.documentStatus::",doc.documentStatus)
-      //    if(doc.documentStatus!='Approved'){
-      //      this.alertService.sweetalertWarning("Make all Documents either Approved or Discarded");
-      //      return;
-      //    }
-      //  });
+       this.transactionInfo.documentList.forEach((doc)=>
+       {
+         console.log("doc.documentStatus::",doc.documentStatus)
+         if(doc.documentStatus!='Approved'){
+           this.alertService.sweetalertWarning("Make all Documents either Approved or Discarded");
+           return;
+         }
+       });
      }
      if (this.transactionList.length == 0) {
       this.alertService.sweetalertWarning('Please Select Atleast One Transaction');
@@ -446,7 +460,8 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
         this.previousDisabled = false;
         this.nextDisabled = false;
       }
-
+      this.transactionList=[];
+      this.approvedDisabled =true;
       console.log('index::', index);
       this.getTransactionInfoByPSID(this.globalPSID);
     } else if (
