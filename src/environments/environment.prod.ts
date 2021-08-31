@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   baseUrl8080: 'https://test.deliziahr.com:8080/hrms/v1/',
   baseUrl8081: 'https://test.deliziahr.com:8081/hrms/v1/',
   baseUrl8082: 'https://test.deliziahr.com:8082/hrms/v1/',
