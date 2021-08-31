@@ -40,7 +40,7 @@
                                             </div>
 
                                             <div class="row mt-20">
-                                               
+
                                                 <div class="col-md-12 bg-color-light_gray p-10 m-0">
 
                                                     <label style="display: inline-grid;"
@@ -437,7 +437,7 @@
                                                                         (change)="getSelectedPayrollAreaByEmp($event.target.value)">
                                                                         <option value="">Select</option>
                                                                         <option *ngFor="let payroll of payrollListData"
-                                                                        [selected]="selectedPayrollAreaCode == payroll.payrollAreaCode"> 
+                                                                        [selected]="selectedPayrollAreaCode == payroll.payrollAreaCode">
                                                                         {{payroll.payrollAreaCode}}</option>
                                                                         <!-- <option> PA-Worker</option> -->
                                                                     </select>
@@ -449,9 +449,9 @@
                                                                         class="form-control custom-select"
                                                                         (change)="getSelectedCycleByEmp($event.target.value)">
                                                                         <option value="">Select</option>
-                                                                        <option value="{{cycleIdName.id}},{{cycleIdName.periodName}}" 
+                                                                        <option value="{{cycleIdName.id}},{{cycleIdName.periodName}}"
                                                                         *ngFor="let cycleIdName of businessCycleIDData">{{cycleIdName.periodName}}</option>
-                                                                       
+
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-2">
@@ -535,9 +535,9 @@
                                                                     <label class="form-label mt-1 mb-0">Cycle</label>
                                                                     <label class="font-12 text-ellipsis mt-1 mb-0">
                                                                         {{selectedEmpData[index].cycleName}}
-                                                                       
+
                                                                     </label>
-                                                                   
+
                                                                 </div>
                                                                 <div class="col-md-2" *ngIf="businessFrequencyName">
                                                                     <label
@@ -583,7 +583,7 @@
                                                     <select name="BusinessYear" class="form-control custom-select" formControlName="businessYear">
                                                         <option value="">Select Business Year</option>
                                                         <option *ngFor="let bussYear of getAllActiveBussinessYearData">{{bussYear.businessYear}}</option>
-                                                      
+
                                                     </select>
                                                 </div> -->
                                                     <!-- <div class="col-md-2">
@@ -597,7 +597,7 @@
                                                 </div> -->
                                                     <!-- <div class="col-md-1">
                                                     <label class="form-label">Frequency</label>
-                                                    <input  type="text" class="form-control" [value]="frequencyArray  ? frequencyArray.name : '' " disabled formControlName="frequency"> 
+                                                    <input  type="text" class="form-control" [value]="frequencyArray  ? frequencyArray.name : '' " disabled formControlName="frequency">
                                                 </div> -->
                                                     <!-- <div class="col-md-2">
                                                     <label class="form-label">Start Date</label>
@@ -641,7 +641,7 @@
                                                     <!-- <div class="col-md-2" *ngIf="selectedEmpData[index]">
                                                     <label class="form-label">Current Cycle</label>
                                                     <input  value="{{selectedEmpData[index].cycle}}" type="text" class="form-control" disabled>
-                                                   
+
                                                 </div> -->
                                                 </div>
                                                 <div class="d-flex justify-content-spacearound mt-15"
@@ -863,7 +863,7 @@
                                                             <p>for previous cycles</p>
                                                         </span><span class="count-badge"
                                                             style="top: -36px !important;">{{attendanceInputGetAPIPreviouscycleData.length}}</span></label>
-                                                  
+
                                                     <section id="content1" class="bordered-tab-content" *ngIf="attendanceInputAPIRecordsUIData">
                                                         <div class="row mt-20">
                                                             <div class="col-md-12">
@@ -887,7 +887,7 @@
                                                                                 </div>
                                                                             </th>
 
-                                                                           
+
                                                                             <th class="wd-10">
                                                                                 <div
                                                                                     class="p-d-flex p-jc-center p-ai-center">
@@ -1017,7 +1017,7 @@
                                                                                     class="p-d-flex p-jc-center p-ai-center">
                                                                                     Payable Day &nbsp;&nbsp;
                                                                                     <div class="Sort_Filter_Position">
-                                                                                        <p-sortIcon field="paidDays" pSortableColumn="paidDays"> 
+                                                                                        <p-sortIcon field="paidDays" pSortableColumn="paidDays">
                                                                                         </p-sortIcon>
                                                                                         <p-columnFilter
                                                                                             field="paidDays"
@@ -1110,7 +1110,7 @@
                                                                             </td>
                                                                             <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
-                                                                                    <!-- <select name="holiday" class="form-control custom-select attendance_dropdown" 
+                                                                                    <!-- <select name="holiday" class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getCurrentHoliday($event.target.value,presentCycle,rowIndex)">
                                                                                     <option value="0.00" [selected]="presentCycle.holiday == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="presentCycle.holiday == '0.25'"> 0.25</option>
@@ -1149,7 +1149,7 @@
                                                                             <td *ngIf="selectedEmpData[this.index]">
                                                                                 <div class="d-flex">
                                                                                     <!-- <select name="leaveWithoutPay"
-                                                                                    class="form-control custom-select attendance_dropdown" 
+                                                                                    class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getCurrentLeaveWithoutPay($event.target.value,presentCycle,rowIndex)">
                                                                                     <option value="0.00" [selected]="presentCycle.leaveWithoutPay == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="presentCycle.leaveWithoutPay == '0.25'"> 0.25</option>
@@ -1288,7 +1288,7 @@
                                                             <div class="col-md-12">
                                                                 <div class="float-right">
                                                                     <button *ngIf="!showEmpSelectionFlag" [disabled]="selectedEmpData.length <= 1"
-                                                                        type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled 
+                                                                        type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled
                                                                     btn-labeled-left ripple"
                                                                         (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                             <i class="fa fa-floppy-o"></i></b> Save &
@@ -1563,7 +1563,7 @@
                                                                                     <!-- <select name="holiday"
                                                                                     class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getFutureHoliday($event.target.value, futureCycle,rowIndex)">
-                                                                                  
+
                                                                                     <option value="0.00" [selected]="futureCycle.holiday == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="futureCycle.holiday == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="futureCycle.holiday == '0.50'"> 0.50</option>
@@ -1587,7 +1587,7 @@
                                                                                     <!-- <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getFuturePaidLeaves($event.target.value, futureCycle,rowIndex)">
-                                                                                  
+
                                                                                     <option value="0.00" [selected]="futureCycle.paidLeaves == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="futureCycle.paidLeaves == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="futureCycle.paidLeaves == '0.50'"> 0.50</option>
@@ -1611,7 +1611,7 @@
                                                                                     <!-- <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getFutureLeaveWithoutPay($event.target.value, futureCycle,rowIndex)">
-                                                                                 
+
                                                                                     <option value="0.00" [selected]="futureCycle.leaveWithoutPay == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="futureCycle.leaveWithoutPay == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="futureCycle.leaveWithoutPay == '0.50'"> 0.50</option>
@@ -1738,7 +1738,7 @@
                                                         <div class="row mt-20">
                                                             <div class="col-md-12">
                                                                 <div class="float-right">
-                                                                    <button *ngIf="!showEmpSelectionFlag" type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled 
+                                                                    <button *ngIf="!showEmpSelectionFlag" type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled
                                                                 btn-labeled-left ripple"
                                                                         (click)="AttendanceInput();attendanceForNextEmp()"><b>
                                                                             <i class="fa fa-floppy-o"></i></b> Save &
@@ -1990,7 +1990,7 @@
                                                                                     <!-- <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)">
-                                                                                   
+
                                                                                     <option value="0.00" [selected]="previousCycle.weeklyOff == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="previousCycle.weeklyOff == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="previousCycle.weeklyOff == '0.50'"> 0.50</option>
@@ -2014,7 +2014,7 @@
                                                                                     <!-- <select name="holiday"
                                                                                     class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)">
-                                                                                 
+
                                                                                     <option value="0.00" [selected]="previousCycle.holiday == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="previousCycle.holiday == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="previousCycle.holiday == '0.50'"> 0.50</option>
@@ -2038,7 +2038,7 @@
                                                                                     <!-- <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)">
-                                                                                   
+
                                                                                     <option value="0.00" [selected]="previousCycle.paidLeaves == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="previousCycle.paidLeaves == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="previousCycle.paidLeaves == '0.50'"> 0.50</option>
@@ -2062,7 +2062,7 @@
                                                                                     <!-- <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown"
                                                                                     (change)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)">
-                                                                                  
+
                                                                                     <option value="0.00" [selected]="previousCycle.leaveWithoutPay == '0.00'"> 0.00</option>
                                                                                     <option value="0.25" [selected]="previousCycle.leaveWithoutPay == '0.25'"> 0.25</option>
                                                                                     <option value="0.50" [selected]="previousCycle.leaveWithoutPay == '0.50'"> 0.50</option>
@@ -2079,7 +2079,7 @@
                                                                                         (keyup)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
                                                                                         class="timeinput mr-1 form-control"
                                                                                         [value]="previousCycle.leaveWithoutPay">
-                                                                                    <!-- 
+                                                                                    <!--
                                                                                 <input *ngIf="defaultAttendace == '0'" disabled
                                                                                 class="timeinput mr-1 form-control" [value]="previousCycle.leaveWithoutPay_0" appTwoDigitDecimaNumber> -->
                                                                                     <input
@@ -2192,7 +2192,7 @@
                                                         <div class="row mt-20">
                                                             <div class="col-md-12">
                                                                 <div class="float-right">
-                                                                    <button *ngIf="!showEmpSelectionFlag" type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled 
+                                                                    <button *ngIf="!showEmpSelectionFlag" type="submit" tooltip="Save & Next" class="custom_button btn-bg-green custom_btn btn-labeled
                                                                 btn-labeled-left ripple"
                                                                         [ngClass]="{'disabled-btn-bg-green' :  selectedEmpData.length <= 1 }"
                                                                         (click)="AttendanceInput();attendanceForNextEmp()"><b>
@@ -2445,49 +2445,49 @@
                                                                             <td *ngIf="selectedEmpData[this.index]" class="bg-color-light_gray">
                                                                                 <!-- <div class="d-flex">
                                                                                     (keyup)="getPreviousWeeklyOff($event.target.value, previousCycle,rowIndex)"
-                                                                                    
+
                                                                                     <input class="timeinput mr-1 form-control"
                                                                                         [value]="allCycle.weeklyOff">
-                                                                                        
+
                                                                                 </div> -->
                                                                                 <label class="form-lable mb-0">{{allCycle.weeklyOff.toFixed(2)}}</label>
-                                                                                
+
                                                                             </td>
                                                                             <td *ngIf="selectedEmpData[this.index]" class="bg-color-light_gray">
                                                                                 <!-- <div class="d-flex">
-                                                                                    
+
                                                                                     (keyup)="getPreviousHoliday($event.target.value, previousCycle,rowIndex)"
                                                                                     <input  class="timeinput mr-1 form-control" [value]="allCycle.holiday">
-                                                                                    
+
                                                                                 </div> -->
                                                                                 <label class="form-lable mb-0">{{allCycle.holiday.toFixed(2)}}</label>
-                                                                                
+
                                                                             </td>
                                                                             <td *ngIf="selectedEmpData[this.index]" class="bg-color-light_gray">
                                                                                 <!-- <div class="d-flex">
-                                                                                    
+
                                                                                     (keyup)="getPreviousPaidLeaves($event.target.value, previousCycle,rowIndex)"
                                                                                     <input  class="timeinput mr-1 form-control" [value]="allCycle.paidLeaves">
-                                                                                    
+
                                                                                 </div> -->
                                                                                 <label class="form-lable mb-0">{{allCycle.paidLeaves.toFixed(2)}}</label>
-                                                                                
+
                                                                             </td>
                                                                             <td *ngIf="selectedEmpData[this.index]" class="bg-color-light_gray">
                                                                                 <!-- <div class="d-flex">
                                                                                     (keyup)="getPreviousLeaveWithoutPay($event.target.value, previousCycle,rowIndex)"
-                                                                                   
+
                                                                                     <input  class="timeinput mr-1 form-control"
                                                                                         [value]="allCycle.leaveWithoutPay">
-                                                                                       
+
                                                                                 </div> -->
                                                                                 <label class="form-lable mb-0">{{allCycle.leaveWithoutPay.toFixed(2)}}</label>
-                                                                                
+
                                                                             </td>
                                                                             <td class="bg-color-light_gray"
                                                                                 *ngIf="selectedEmpData[this.index]">
                                                                                 <label class="form-lable mb-0 d-flex">
-                                                                                   
+
                                                                                     <!-- <input  [value]="allCycle.presentDay"
                                                                                         placeholder="00:00"
                                                                                         class="timeinput mr-1"> -->
@@ -2557,7 +2557,7 @@
                                                                 </p-table>
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </section>
                                                 </div>
                                             </div>
@@ -2796,7 +2796,7 @@
     </p-scrollPanel>
 </p-sidebar> -->
 
-<!-- 
+<!--
 <ng-template #template>
     <div class="modal-header">
         <h5 class="modal-title" id="UploadModalLabel">Attendance Details</h5>

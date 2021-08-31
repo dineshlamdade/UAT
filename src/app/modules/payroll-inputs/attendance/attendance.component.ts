@@ -213,7 +213,7 @@ export class AttendanceComponent implements OnInit {
     this.header =["Emp. Code","Emp. Name","Payroll Area", "Cycle", "Total Days", "Weekly Off", "Holiday", "Paid Leave", "Leave Without Pay", "Before-DOJ/After-DOL", "Adjustment Days", "Present Days", "Future Days", "Payable Days"]
     //this.excelData = this.attendanceData
     this.attendanceData.forEach(element => {
-      
+
 
 			let obj = {
 				"Emp. Code": element.empcode,
@@ -226,7 +226,7 @@ export class AttendanceComponent implements OnInit {
         "Paid Leave":element.paidLeave,
         "Leave Without Pay":element.leaveWithoutPay,
         "Before-DOJ/After-DOL":element.beforeDOJOrAfterDOL,
-        "Adjustment Days":element.adjustment, 
+        "Adjustment Days":element.adjustment,
         "Present Days":element.presentDays,
         "Future Days":element.futureDays,
         "Payable Days":element.paidDays
@@ -357,7 +357,7 @@ export class AttendanceComponent implements OnInit {
     //alert(this.selectedPayrollKey)
   }
 
-  // ****************************Current Cycle Functions Starts******************************************  
+  // ****************************Current Cycle Functions Starts******************************************
 
   /** Set Leave data for Holiday leave - Current Cycle */
   getCurrentHoliday(holidayvalue, presentcycle, rowIndex) {
@@ -940,14 +940,14 @@ export class AttendanceComponent implements OnInit {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           } else {
             payableDay = presentCycle.paidDays
-            //payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));    
+            //payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           }
         } else if (cycle == 'previous') {
           if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           } else {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
-            // payableDay = 0 - (parseFloat(presentCycle.presentDay_0)  + parseFloat(presentCycle.adjustment));    
+            // payableDay = 0 - (parseFloat(presentCycle.presentDay_0)  + parseFloat(presentCycle.adjustment));
           }
         }
         //payableDay = presentCycle.paidDays
@@ -1240,7 +1240,7 @@ export class AttendanceComponent implements OnInit {
     return total.toFixed(2);
   }
 
-  // ****************************Current Cycle Functions Ends******************************************  
+  // ****************************Current Cycle Functions Ends******************************************
 
   // **********************************Future cycle history function starts****************************
   attendanceInputGetHistoryfuturecycle(data) {
@@ -1291,7 +1291,7 @@ export class AttendanceComponent implements OnInit {
               }else{
                 holiday = parseFloat(holidayvalue) - parseFloat(tempAttendanceFutureData[rowIndex].holiday)
               }
-            
+
             holiday = holiday.toFixed(2)
             // }else{
             //   holiday = parseFloat(this.attendanceInputAPIRecordsUIData[rowIndex].holiday) - parseFloat(holidayvalue)
@@ -1414,7 +1414,7 @@ export class AttendanceComponent implements OnInit {
   /** Set Leave data for Weekly leave - Future Cycle */
   getFutureWeeklyOff(weeklyOffvalue, futureCycle, rowIndex) {
     const formData = new FormData()
-    
+
     formData.append('employeeMasterId', this.selectedEmpData[this.index].employeeMasterId)
     formData.append('processingCycle', futureCycle.processingCycle)
     formData.append('pertainingCycle', futureCycle.pertainingCycle)
@@ -1554,7 +1554,7 @@ export class AttendanceComponent implements OnInit {
   /** Set Leave data for Paid leave - Future Cycle */
   getFuturePaidLeaves(paidLeavesvalue, futureCycle, rowIndex) {
     const formData = new FormData()
-    
+
     formData.append('employeeMasterId', this.selectedEmpData[this.index].employeeMasterId)
     formData.append('processingCycle', futureCycle.processingCycle)
     formData.append('pertainingCycle', futureCycle.pertainingCycle)
@@ -1694,7 +1694,7 @@ export class AttendanceComponent implements OnInit {
   /** Set Leave data for Paid leave - Future Cycle */
   getFutureLeaveWithoutPay(leaveWithoutPayvalue, futureCycle, rowIndex) {
     const formData = new FormData()
-    
+
     formData.append('employeeMasterId', this.selectedEmpData[this.index].employeeMasterId)
     formData.append('processingCycle', futureCycle.processingCycle)
     formData.append('pertainingCycle', futureCycle.pertainingCycle)
@@ -1810,13 +1810,13 @@ export class AttendanceComponent implements OnInit {
           console.log("this.leaveWithoutPay: " + JSON.stringify(this.attendanceSaveData))
           this.getFutureCycleLeaveWithoutPayTotal();
         }
-      })  
+      })
   }
 
 
   getFuturePresentDay(Presentdayvalue, presentcycle, rowIndex) {
     const formData = new FormData()
-    
+
     formData.append('employeeMasterId', this.selectedEmpData[this.index].employeeMasterId)
     formData.append('processingCycle', presentcycle.processingCycle)
     formData.append('pertainingCycle', presentcycle.pertainingCycle)
@@ -1932,9 +1932,9 @@ export class AttendanceComponent implements OnInit {
 
           // console.log("this.leaveWithoutPay: " + JSON.stringify(this.attendanceSaveData))
           this.getFutureCyclePresentDayTotal();
-    
+
         }
-      })  
+      })
   }
 
 

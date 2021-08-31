@@ -1,0 +1,341 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
+              <form [formGroup]="addRescheduleForm">
+                <fieldset>
+                  <legend>Employee Details</legend>
+                  <div class="row" *ngIf="perticularEmpDetails">
+                    <div class="col-md-12 pl-0 pr-0">
+                      <div class="border-dark-card radius-10 p-2">
+                        <div class="row">
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Employee No. & Name </label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0" value="">{{perticularEmpDetails.employeeCode
+                              +''+ perticularEmpDetails.fullName}}</label>
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Date of Joining</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.joiningDate|date:
+                              'dd-MMM-yyyy'}}</label>
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Establishment</label>
+                            <label
+                              class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.establishment}}</label>
+
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Department</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.employeeType}}</label>
+
+                          </div>
+                          <div class="col-md-1">
+                            <label class="form-label mt-1 mb-0">Grade</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.grade}}</label>
+
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label mt-1 mb-0">Designation</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.designation}}</label>
+                            <!-- <input type="text" class="form-control"  value="UI Developer" disabled /> -->
+
+                          </div>
+                          <div class="col-md-1">
+                            <label class="form-label mt-1 mb-0">Status</label>
+                            <label class="font-12 text-ellipsis mt-1 mb-0">{{perticularEmpDetails.status}}</label>
+                            <!-- <input type="text" class="form-control"  value="Probation" disabled /> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <!-- </div> -->
+
+                <!-- <div class="col-md-12 pl-0 pr-0">
+                  <div class="border-dark-card radius-10 p-2 mt-3">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label class="form-label mt-1 mb-0" >Emp.Code</label >
+                         <input type="text" class="form-control"  value="{{perticularEmpDetails.employeeCode  +''+  perticularEmpDetails.fullName}}"
+                          disabled />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label mt-1 mb-0">Emp.Name</label  >
+
+                        <input type="text" class="form-control" value="{{perticularEmpDetails.establishment}}" disabled />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label mt-1 mb-0">Loan No.</label>
+                        <input type="text" class="form-control" value="{{perticularEmpDetails.employeeType}}"  disabled />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label mt-1 mb-0">Application Date</label >
+                        <input type="text" class="form-control" value="{{perticularEmpDetails.joiningDate|date: 'dd-MMM-yyyy'}}"
+                         disabled />
+                      </div>
+                      
+                     
+                    </div>
+                  </div>
+                </div> -->
+                <!-- </fieldset> -->
+                <br>
+                <fieldset>
+                  <legend>Loan Details</legend>
+                  <div class=" row" *ngIf="loanDetails">
+                  <div class="col-md-12 pl-0 pr-0">
+                    <div class="border-dark-card radius-10 p-2">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="form-label">Loan Type</label>
+                          <input type="text" class="form-control" value="{{loanDetails.loanType}}" disabled />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Description</label>
+                          <input type="text" class="form-control" value="{{loanDetails.carOrInstitutionType}}" disabled />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label ">Loan No.</label>
+                          <input type="text" class="form-control" value="{{loanDetails.loanApplicationNumber}}" disabled />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">
+                            Application Date
+                          </label>
+
+                          <div class="form-group mb-0  mt-1 SMDatepickerWidth" disabled>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="fa fa-calendar"></i>
+                                </span>
+                              </div>
+                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="Date" value="{{loanDetails.createDateTime|date:
+                                  'dd-MMM-yyyy'}}" bsDatepicker>
+                            </div>
+                          </div>
+                        </div>
+</div>
+                      <br>
+                      
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="form-label">Repayment Type</label>
+                          <input type="text" class="form-control"  value="{{loanDetails.repaymentType}}" disabled />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Payroll Area</label>
+                          <input type="text" class="form-control" value="{{loanDetails.payrollArea}}" disabled />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Scheduled EMI</label>
+                          <input type="text" class="form-control" value="{{loanDetails.loanAmount}}" disabled />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Loan Balance</label>
+                          <input type="text" class="form-control" value="{{loanDetails.loanAmount}}" disabled />
+                        </div>
+</div>
+                      <br />
+                    </div>
+                  </div>
+                  </div>
+                </fieldset>
+                <br>
+                <fieldset>
+                  <legend>Rescheduling Details</legend>
+                  <div class="col-md-12 pl-0 pr-0">
+                    <div class="border-dark-card radius-10 p-2 ">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="form-label">Transaction No.</label>
+                          <input type="text" class="form-control" formControlName="transactionNo" />
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label">
+                            Application Date
+                          </label>
+                          <div class="form-group mb-0  mt-1 SMDatepickerWidth" disabled>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="fa fa-calendar"></i>
+                                </span>
+                              </div>
+                              <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="Date" bsDatepicker formControlName="createDateTime">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label ">Rescheduling Type</label>
+                          <select class="form-control" placeholder="Select" formControlName="rescheduleType">
+                            <option selected value=''>Select </option>
+                        <option selected value='Reducing Balance'>Reducing Balance </option>
+                          </select>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">No. Of Installments to Reschedule</label>
+                          <input type="text" class="form-control" formControlName="noOfInstallmentToReschedule" />
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row mt-1 mb-0">
+
+                        <div class="col-md-3">
+                          <label class="form-label">Effective From</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              placeholder="Date" bsDatepicker formControlName="effectiveDate">
+                          </div>
+                        </div>
+
+                        <!-- <div class="col-md-3">
+                          <label class="form-label">Remark</label>
+                          <textarea type="text" rows="1" class="form-control"></textarea>
+                        </div> -->
+                      </div>
+                      <br>
+                      <!-- <div class="row">
+                        <div class="col-md-6">
+                          
+                          <legend>Installments to Reschedule </legend>
+                          <div class="table-responsive Custom_Table">
+                            <table class="table table-striped table-bordered table-hover m-b-0 bg-color-light_gray">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th scope="col">Date</th>
+                                  <th scope="col">Scheduled Principal</th>
+                                  <th scope="col">Proposed Principal</th>
+                                  <th scope="col">Scheduled EMI</th>
+                                  <th scope="col">Proposed EMI</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>12-Apr-2021</td>
+                                  <td></td>
+                                  <td> <input type="text" class="form-control" formControlName="propsedPrincipal" /></td>
+                                  <td></td>
+                                  <td> <input type="text" class="form-control" formControlName="propsedEMI" /></td>
+                                </tr>
+
+                                <tr>
+                                  <td>2-June-2021</td>
+                                  <td></td>
+                                  <td> <input type="text" class="form-control" /></td>
+                                  <td></td>
+                                  <td> <input type="text" class="form-control" /></td>
+
+                                </tr>
+
+                                <tr>
+                                  <td>1-May-2021</td>
+                                  <td></td>
+                                  <td> <input type="text" class="form-control" /></td>
+                                  <td></td>
+                                  <td> <input type="text" class="form-control" /></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                         
+                        </div>
+                      </div> -->
+                    </div>
+                  </div>
+                </fieldset>
+
+                <br><br>
+
+                <div class="row mt-30" >
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="mb-0 row">
+                        <div class="col-md-6">
+                          <h3 class="font-14 text-purple font-bold">Approval Details</h3>
+                        </div>
+                        <div class="col-md-6 ">
+                          <h6 class="font-12 mb-3 font-normal float-right">
+                            <strong>Overall Status : </strong>&nbsp;&nbsp;
+                            <strong class="btn-bg-green p-2">Pending </strong>
+                          </h6>
+                        </div>
+                      </div>
+                      <div class="row" >
+                        <div class="col-md-12">
+                          <div class="table-responsive Custom_Table">
+                            <table class="table table-striped table-hover table-bordered m-b-0">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th scope="col" class="font700 ">Level</th>
+                                  <th scope="col" class="font700 ">Approver code</th>
+                                  <th scope="col" class="font700 ">Approver Name</th>
+                                  <th scope="col" class="font700 ">Action Date & Time</th>
+
+                                  <th scope="col" class="font700 ">Status</th>
+                                  <th scope="col" class="font700 ">Remark</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngIf="loanDetails" let i = index>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><span tooltip="{{loanDetails.SrNo}}">{{loanDetails.SrNo}}</span></td>
+                                <td><textarea type="text" rows="1" class="form-control"></textarea></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br><br>
+
+                <ng-container class="float-right">
+
+                  <div class="row float-right" style="margin: 10px">
+                    <button type="button" tooltip="Button"
+                      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-2 mr-2 "
+                      aria-hidden="true" (click)="addRescheduleData()"><b><i class="fa fa-check-square-o"></i></b>Save
+                    </button>
+                    <button type="button" tooltip="Button"
+                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-2 mr-2 "
+                      aria-hidden="true"><b><i class="fa  fa-reply"></i></b>Cancel
+                    </button>
+                    <button type="button" tooltip="Cancel" (click)="cancel()"
+                      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10">
+                      <b><i class="fa fa-times"></i></b> Close
+                    </button>
+                  </div>
+                </ng-container>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

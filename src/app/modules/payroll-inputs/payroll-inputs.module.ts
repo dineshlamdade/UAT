@@ -83,16 +83,16 @@ import { Component2Component } from './component2/component2.component';
       positionClass: 'toast-top-center',
     }),
     NgMultiSelectDropDownModule.forRoot(),
-  
+
     SharedlayoutModule,
-    
+
     TableModule,
     CalendarModule,
 		SliderModule,
 		DialogModule,
 		MultiSelectModule,
 		ContextMenuModule,
-		
+
 		ButtonModule,
 		ToastModule,
     InputTextModule,
@@ -104,6 +104,6 @@ import { Component2Component } from './component2/component2.component';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  
+
 })
 export class PayrollInputsModule { }

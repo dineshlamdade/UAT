@@ -59,7 +59,8 @@ public isCollapsedQuery = true;
   companyGroupMasterId: any;
   userRoleId: any;
   menuData: any;
-  isCollapsedpayrollinput: boolean;
+  public isQuery = true;
+ public isCollapsedpayrollinput = true;
   isCollapsedKeywordinput:boolean;
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
@@ -190,29 +191,17 @@ public isCollapsedQuery = true;
         //this.menuData = res.data.results
         this.menuData = []
         let actualMenuData = res.data.results
-        let privillegemenu 
+        let privillegemenu
         this.RoleRrivilegeService.getUserPrivilegeByRoleId(6).subscribe(res =>{
           privillegemenu = res.data.results
           actualMenuData.forEach(actualmenu => {
             privillegemenu.forEach(privillege => {
-             // alert(privillege.accessibleMenuDetail.applicationMenuId )
-             
               if(privillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
-                // console.log("main menu")
-                // console.log(actualmenu)
+                console.log("main menu")
+                console.log(actualmenu)
                 if(privillege.modifyAccess == 1 || privillege.readAccess == 1 || privillege.writeAccess == 1 || privillege.deleteAccess == 1){
                   this.menuData.push(actualmenu)
                 }
-              }
-              if(actualmenu.childItems != null){
-                actualmenu.childItems.forEach(childitem => {
-                if(privillege.accessibleMenuDetail.applicationMenuId == childitem.applicationMenuId){
-                  console.log("child")
-                  if(privillege.modifyAccess == 1 || privillege.readAccess == 1 || privillege.writeAccess == 1 || privillege.deleteAccess == 1){
-                    this.menuData.push(actualmenu)
-                  }
-                }
-              })
               }
               if(privillege.childItems != null){
                 privillege.childItems.forEach(childprivillege => {
@@ -232,7 +221,7 @@ public isCollapsedQuery = true;
                       }
                     })
                   }
-                }) 
+                })
               }
             });
           });
@@ -240,8 +229,8 @@ public isCollapsedQuery = true;
       })
     })
 
-    
- 
+
+
 
   }
 
