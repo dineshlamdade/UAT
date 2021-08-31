@@ -1,0 +1,30 @@
+
+// .text-link {
+//     color: white !important;
+//     text-decoration: underline !important;
+//     cursor: pointer !important;
+// }
+
+.my-registertable{
+    height: 180px;
+    margin-top:10px;
+
+  }
+  .table-responsive.Custom_Table.my-registertable::-webkit-scrollbar {
+    width: 5px;
+    height: 7px;
+    transition: .3s background;
+  }
+  .card1[_ngcontent-saq-c672] {
+    box-shadow: 1px 4px 6px grey;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  .toggle-box{
+    cursor: pointer;
+    display: block;
+    font-weight: bold;
+    line-height: 21px;
+    margin-bottom: 10px !important;
+    font-size:25px;
+}

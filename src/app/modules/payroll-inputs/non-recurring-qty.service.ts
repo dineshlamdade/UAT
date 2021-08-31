@@ -44,13 +44,53 @@ export class NonRecurringQtyService {
 
   /** Schedule History - summary page */
   NonSalaryTransactionScheduleEMP(data):Observable<any>{
-    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionSchedule/NonSalaryTransactionScheduleEMP`, data);  
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionSchedule/NonSalaryTransactionScheduleEMP`, data);
   }
-  
-  /** Head wise history */
+
+  /** Head wise history - summary page*/
   NonSalaryTransactionGroupHeadwiseHistory(data):Observable<any>{
-    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupHeadwiseHistory`, data);  
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupHeadwiseHistory`, data);
 
   }
-  
+
+  /** All schedule data  - schedule tab*/
+  getAllScheduleData():Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl + `NonSalaryTransactionSchedule`);
+  }
+
+  /** Get Schedule popup data - schedule tab */
+  NonSalaryTransactionScheduleRemarkHistorybyScheduleId(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionScheduleRemarkHistory/NonSalaryTransactionScheduleRemarkHistorybyScheduleId`,data);
+  }
+
+  /** Update schedule - schedule tab */
+  NonRecurringSalaryScheduleupdateById(data):Observable<any>{
+    return this.HttpClient.put<any>(this.apiUrl + `NonSalaryTransactionSchedule/updateById`,data);
+  }
+
+  /** Get Salary transaction data  - Transaction tab */
+  NonRecurringTransactionGroupAPIEmpwise(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupAPIAllEmp`,data);
+  }
+
+  /** Save salary transaction - Transaction tab */
+  NonSalaryTransactionGroup(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup`,data);
+  }
+
+  /** deviation calculate - save transaction */
+  NonRecurringTransactionGrouprangeValidation(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGrouprangeValidation`,data);
+  }
+
+  /** get edit data for selected non salar id - transaction tab */
+  NonRecurringTransactionGroupAPIbyId(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonSalaryTransactionGroup/NonSalaryTransactionGroupHistoryAPI_ID`,data);
+  }
+
+  /** Update transaction - transaction tab */
+  attendanceInputAPIRecordsUI(data):Observable<any>{
+    return this.HttpClient.put<any>(this.apiUrl + `NonSalaryTransactionGroup/updateById/`, data);
+  }
+
 }

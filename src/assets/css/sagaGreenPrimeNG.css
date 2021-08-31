@@ -2429,7 +2429,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-datatable {
     position: relative;
-    overflow: scroll!important;
+    /* overflow: scroll!important; */
 }
 
 .p-datatable .p-datatable-tbody>tr.p-highlight {

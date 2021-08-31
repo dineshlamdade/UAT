@@ -48,19 +48,11 @@ export class ExcelserviceService {
         worksheet.addRow(eachRow);
       }
     })
-    worksheet.getColumn(1).width = 10;
-    worksheet.getColumn(2).width = 10;
-    worksheet.getColumn(3).width = 10;
-    worksheet.getColumn(4).width = 15;
-    worksheet.getColumn(5).width = 15;
-    worksheet.getColumn(6).width = 10;
-    worksheet.getColumn(7).width = 30;
-    worksheet.getColumn(8).width = 30;
-    worksheet.getColumn(9).width = 10;
-    worksheet.getColumn(10).width = 10;
-    worksheet.getColumn(11).width = 10;
-    worksheet.getColumn(12).width = 10;
-
+    worksheet.getColumn(3).width = 15;
+    worksheet.getColumn(4).width = 20;
+    worksheet.getColumn(5).width = 30;
+    worksheet.getColumn(6).width = 30;
+    worksheet.getColumn(7).width = 10;
     worksheet.addRow([]);
     //Generate Excel File with given name
     workbook.xlsx.writeBuffer().then((data) => {

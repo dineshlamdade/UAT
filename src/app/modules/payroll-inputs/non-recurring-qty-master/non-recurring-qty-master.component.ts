@@ -16,12 +16,14 @@ export class NonRecurringQtyMasterComponent implements OnInit {
   nonSalaryName: any = ''
   users1: { head: string; nature: string; }[];
   nonSalaryNature: any;
-  nonSalaryRate: any;
-  nonSalaryMultiplier: any;
+  nonSalaryRate: any = 0;
+  nonSalaryMultiplier: any = 0;
   valueUpdationThrough: string = 'NRQ';
   valueUpdateflag: boolean = true;
   editFlag: boolean = false;
   viewFlag: boolean = false;
+  natureData: any[];
+  getNatureValue: any;
 
   constructor(private nonrecqtyservice: NonRecurringQtyService, private toaster: ToastrService) {
     this.masterForm = new FormGroup({
@@ -37,6 +39,15 @@ export class NonRecurringQtyMasterComponent implements OnInit {
       "createdBy": new FormControl('rahul'),
       "nonSalaryOptionList": new FormControl([])
     })
+
+    this.natureData = [{
+      id :'rate',
+      name:'Rate'
+    },
+    {
+      id :'multiplier',
+      name:'Multiplier'
+    }]
   }
 
   ngOnInit(): void {
@@ -52,20 +63,37 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     })
   }
 
+  getNatureData(value){
+    this.getNatureValue = value
+    this.natureData.forEach((ele,index) =>{
+      if(ele.id == value){
+
+      }else{
+        let ind = index
+        this.natureData.splice(index,1)
+      }
+    })
+  }
+
   addNRQType() {
     this.nonSalaryOptionList.push(
       {
         "name": this.nonSalaryName,
         "nature": this.nonSalaryNature,
-        "rate": 0.0,
-        "multipier": 0.0,
-        "derivedRate": this.nonSalaryRate,
-        "derivedmultipier": this.nonSalaryMultiplier,
+        "rate": this.nonSalaryRate,
+        "multipier": this.nonSalaryMultiplier,
+        "derivedRate": 0.0,
+        "derivedmultipier": 0.0,
         "isActive": 1
       }
     )
 
     this.masterForm.controls['nonSalaryOptionList'].setValue(this.nonSalaryOptionList)
+
+    this.nonSalaryName = ''
+    // this.nonSalaryNature = ''
+    this.nonSalaryRate = 0
+    this.nonSalaryMultiplier = 0
   }
 
   removeNRQType(index) {
@@ -88,10 +116,12 @@ export class NonRecurringQtyMasterComponent implements OnInit {
   }
 
   saveNonSalary() {
+    this.masterForm.removeControl('nonSalaryDetailId')
     this.masterForm.controls['unit'].setValue('HR')
     this.masterForm.controls['valueUpdationThrough'].setValue(this.valueUpdationThrough)
     this.masterForm.controls['createdBy'].setValue('rahul')
     this.masterForm.controls['isActive'].setValue(1)
+    this.masterForm.controls['sdmName'].setValue('')
     let data = [this.masterForm.value]
     this.nonrecqtyservice.nonsalary(data).subscribe(
       res => {
@@ -101,6 +131,7 @@ export class NonRecurringQtyMasterComponent implements OnInit {
         this.editFlag = false;
         this.viewFlag = false;
         this.nonSalaryOptionList = []
+        this.resetNonSalary()
       }
     )
   }
@@ -111,6 +142,19 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     this.viewFlag = false;
     this.masterForm.enable()
     this.nonSalaryOptionList = []
+    this.nonSalaryName = ''
+    this.nonSalaryNature = ''
+    this.nonSalaryRate = 0
+    this.nonSalaryMultiplier = 0
+    this.natureData = []
+    this.natureData = [{
+      id :'rate',
+      name:'Rate'
+    },
+    {
+      id :'multiplier',
+      name:'Multiplier'
+    }]
   }
 
   editMasterData(data) {

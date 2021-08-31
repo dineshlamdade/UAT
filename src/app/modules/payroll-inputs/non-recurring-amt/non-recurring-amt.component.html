@@ -3114,7 +3114,7 @@
                                             Period </option>
                                         <option [selected]="selectedClawbackInputType == 'Specific Date'"
                                             *ngIf="selectedApplicableAt != 'Schedule'">
-                                            Specific Date {{selectedApplicableAt == 'Schedule'}}
+                                            Specific Date
                                         </option>
                                     </select>
                                 </div>
@@ -3922,7 +3922,7 @@
 
 <!-- Edit deviation and repeat-->
 <ng-template #editdeviationPopup>
-    
+
     <div class="modal-header">
         <h5 class="modal-title" id="UploadModalLabel">Deviation</h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span

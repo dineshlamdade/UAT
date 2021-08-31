@@ -1,0 +1,2361 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part -->
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+      <div class="tabview-contents">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0">
+                <br>
+
+                <!--stepper indexes exit-->
+                <!--Source-->
+                <div class="mb-0">
+                  <h3 class="font-14 text-purple font-bold">Summary</h3>&nbsp;
+                </div>
+
+                <div [@slideInOut]>
+
+                  <div class="row">
+
+                    <div class="col-12">
+                      <div class="row mt-15 float-right">
+
+                        <div class="" style="margin-left: 12px;">
+
+                          <button type="submit"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple "
+                            tooltip="Save" style="margin-left:20px ;"><b>
+                              <i class="fa fa-plus-circle"></i></b> Add New</button>&nbsp;
+
+                        </div>
+                      </div>
+                      <div class="card">
+
+                        <br>
+                        <div class="table-responsive Custom_Table">
+                          <p-table [value]="users1">
+                            <ng-template pTemplate="header">
+                              <tr>
+
+
+
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Sr. No.
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Code
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+
+
+
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Description
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+
+
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Module
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th colspan="5" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center" style="margin-left: 200px;">Source
+
+
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Range applicable
+
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">No. of Derived
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+
+
+
+
+                                <th rowspan="2" class="wd-8 text-center">
+                                  Action
+
+                                </th>
+
+
+
+
+
+
+                              </tr>
+                              <tr>
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">1
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">2
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">3
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">4
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">5
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="date"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                              </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-user1>
+                              <tr class="p-selectable-row">
+
+
+
+                                <td class="text-center">1</td>
+                                <td class="text-center">SDM 1</td>
+                                <td class="text-center"> For Financial Master </td>
+
+
+                                <td class="text-center"> </td>
+                                <td class="text-center">Department </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"></td>
+                                <td class="text-center"> Yes</td>
+                                <td class="text-center"> 3 </td>
+
+
+                                <td class="text-center">
+
+                                  <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>&nbsp;
+                                  <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>&nbsp;
+                                  <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="View"></i>
+                                </td>
+
+                              </tr>
+                              <tr class="p-selectable-row">
+
+
+
+                                <td class="text-center">2</td>
+                                <td class="text-center">SDM 2</td>
+                                <td class="text-center"> For Loan </td>
+
+
+                                <td class="text-center"> </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center">Grade </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"> Payroll Area</td>
+                                <td class="text-center"> No </td>
+                                <td class="text-center"> 4 </td>
+
+
+                                <td class="text-center">
+
+                                  <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>&nbsp;
+                                  <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>&nbsp;
+                                  <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="View"></i>
+                                </td>
+
+                              </tr>
+
+                              <tr class="p-selectable-row">
+
+
+
+                                <td class="text-center">3</td>
+                                <td class="text-center">SDM 3</td>
+                                <td class="text-center"> For Workflow </td>
+
+
+                                <td class="text-center"> </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"> SBU </td>
+                                <td class="text-center"> Cycle </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"> </td>
+                                <td class="text-center"> 5 </td>
+
+
+                                <td class="text-center">
+
+                                  <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>&nbsp;
+                                  <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>&nbsp;
+                                  <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="View"></i>
+                                </td>
+
+                              </tr>
+                              <tr class="p-selectable-row">
+
+
+
+                                <td class="text-center">4</td>
+                                <td class="text-center">SDM 4</td>
+                                <td class="text-center"> For Leave </td>
+
+
+                                <td class="text-center"> </td>
+                                <td class="text-center">LeaveArea </td>
+                                <td class="text-center"> Grade</td>
+                                <td class="text-center"> Department </td>
+                                <td class="text-center"> SBU </td>
+                                <td class="text-center"> Emp.Status
+                                </td>
+                                <td class="text-center"> No </td>
+                                <td class="text-center"> 5 </td>
+
+
+                                <td class="text-center">
+
+                                  <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>&nbsp;
+                                  <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>&nbsp;
+                                  <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="View"></i>
+                                </td>
+
+                              </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                              <tr>
+                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                    Available</span>
+                                </td>
+                              </tr>
+                            </ng-template>
+                          </p-table>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                  <div class="row mt-15 float-right">
+
+
+
+
+                  </div>
+                </div>
+
+                <div class="mb-0">
+                  <h3 class="font-14 text-purple font-bold"> Matrix
+                  </h3>&nbsp;
+                </div>
+
+                <br>
+
+
+                <div class="rup" style="margin-top: -30px;">
+                  <!--stepper indexes open-->
+                  <div class="row divided">
+                    <!-- <div class="col-sm-3">
+                         <button class="stepbutton">Summary</button>
+                       </div> -->
+                    <div class="col-sm-1 "></div>
+                    <div class="col-sm-3 ">
+                      <button class="stepbutton" style="background-color: #713f93;" (click)="stepNavigation(1)">
+                        <ng-template #elseBlock1>
+                          <i class="fa fa-edit font-18 font-bold" *ngIf="stepperIndex === 1"></i>
+                          <span *ngIf="stepperIndex !=1">1</span>
+                        </ng-template>
+                      </button>
+                    </div>
+                    <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 2"></span>
+                    <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 2"></span>
+                    <div class="col-sm-3">
+                      <button class="stepbutton" (click)="stepNavigation(2)" style="background-color: #713f93;">
+                        <div *ngIf="stepperIndex > 2 then thenBlock2 else elseBlock2"></div>
+                        <ng-template #thenBlock2>
+                          <i class="fa fa-check font-18 font-bold" style="color: white;"></i>
+                        </ng-template>
+                        <ng-template #elseBlock2>
+                          <i class="fa fa-edit font-bold font-18" *ngIf="stepperIndex === 2"></i>
+                          <span *ngIf="stepperIndex !=2">2</span>
+                        </ng-template>
+                      </button>
+                    </div>
+                    <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 3"></span>
+                    <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 3"></span>
+                    <div class="col-sm-3">
+                      <!-- style="background-color: #713f93;" -->
+                      <button class="stepbutton" (click)="stepNavigation(3)" style="background-color: #713f93;">
+                        <div *ngIf="stepperIndex > 3 then thenBlock3 else elseBlock3"></div>
+                        <ng-template #thenBlock3>
+                          <i class="fa fa-check font-18 font-bold" style="color: white;"></i>
+                        </ng-template>
+                        <ng-template #elseBlock3>
+                          <i class="fa fa-edit font-18 font-bold" *ngIf="stepperIndex === 3"></i>
+
+
+                          <span *ngIf="stepperIndex !=3">3</span>
+                        </ng-template>
+
+
+                      </button>
+                    </div>
+                    <span [@stateAnimation] class="divider-grey" *ngIf="stepperIndex < 4"></span>
+                    <span [@stateAnimation] class="divider-green" *ngIf="stepperIndex >= 4"></span>
+                    <div class="col-sm-3">
+                      <button class="stepbutton" (click)="stepNavigation(4)">
+                        <div *ngIf="stepperIndex > 4 then thenBlock4 else elseBlock4"></div>
+                        <ng-template #thenBlock4>
+                          <i class="fa fa-check"></i>
+                        </ng-template>
+                        <ng-template #elseBlock4>
+                          <i class="fa fa-edit font-bold font-18" *ngIf="stepperIndex === 4"></i>
+                          <span *ngIf="stepperIndex !=4">4</span>
+                        </ng-template>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="row divided">
+                    <div class="col-sm-3 stepperIndex" style="margin-left: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;Source</div>
+                    <div class="col-sm-3 stepperIndex" style="margin-left: 80px;">&nbsp;&nbsp;&nbsp;&nbsp;Source
+                      Combination
+                    </div>
+
+                    <div class="col-sm-3 stepperIndex" style="margin-left: 125px;">Derived
+                    </div>
+
+                    <div class="col-sm-3 stepperIndex" style="margin-left: 80px;">Matrix
+
+                    </div>
+                  </div>
+
+                </div>
+                <br>
+
+                <div [@slideInOut]>
+                  <div class="row d-flex"
+                    style="border: 1px solid #ccc; background-color: #fff;padding-top: 25px ;padding-bottom:25px;border-radius:2px;">
+                    <div class="ml-2 pl-1 pr-0">
+                      <label class="form-label mt-2">
+                        Module<span class="text-red"></span></label>
+                    </div>
+                    <div class="col-2">
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="">Loan </option>
+                        <option value="">Approval Workflow</option>
+                        <option value="">Compliance</option>
+                        <option value="">Financial </option>
+                      </select>
+                    </div>
+
+                    <div class="ml-2 pl-1 pr-0">
+                      <label class="form-label mt-2">
+                        Code<span class="text-red"></span></label>
+                    </div>
+                    <div class="col-2">
+                      <input type="text" class="form-control" value="">
+                    </div>
+
+                    <div class="ml-2 pl-1 pr-0">
+                      <label class="form-label mt-2">
+                        Description<span class="text-red"></span></label>
+
+                    </div>
+                    <div class="col-2">
+                      <input type="text" class="form-control" value="">
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="float-left d-flex justify-content">
+                      <input type="checkbox" class="mt-2" />&nbsp;
+                      <label
+                        class="form-label mt-2 margin-right:30px;">Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <label class="form-label mt-2">Remark</label>&nbsp;
+                      <textarea type="text"></textarea>
+                    </div>
+                  </div>
+                  <br>
+                  <fieldset>
+                    <legend>Source</legend>
+
+                    <div class="row">
+
+                      <div class="col-8">
+
+                        <div class="card">
+
+                          <div class="table-responsive Custom_Table">
+                            <p-table [value]="users1" [paginator]="true" [rows]="10">
+                              <ng-template pTemplate="header">
+                                <tr>
+
+
+                                  <th rowspan="2" class=" text-center">
+                                    <div class="p-d-flex p-jc-between p-ai-center text-center">Sr. No.
+
+
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="SrNo" pSortableColumn="SrNo"></p-sortIcon>
+                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
+
+                                  <th rowspan="2" class="text-center">
+                                    <div class="p-d-flex p-jc-between p-ai-center">Table Name
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="TableName" pSortableColumn="TableName"></p-sortIcon>
+                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
+                                  <th rowspan="2" class="text-center">
+                                    <div class="p-d-flex p-jc-between p-ai-center">Field Type
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="FieldType" pSortableColumn="FieldType"></p-sortIcon>
+                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
+                                  <th rowspan="2" class=" text-center">
+                                    <div class="p-d-flex p-jc-between p-ai-center">Values
+                                      <div class="Sort_Filter_Position">
+                                        <p-sortIcon field="Values" pSortableColumn="Values"></p-sortIcon>
+                                        <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                        </p-columnFilter>
+                                      </div>
+                                    </div>
+                                  </th>
+
+                                  <th rowspan="2" class="text-center">
+                                    <div class="p-d-flex p-jc-between p-ai-center">Action
+
+                                    </div>
+                                  </th>
+                                </tr>
+
+                              </ng-template>
+                              <ng-template pTemplate="body" let-user1>
+                                <tr class="p-selectable-row text-center">
+                                  <td class="text-center">1 </td>
+
+                                  <td class="text-center">
+                                    <select name="Select" class="form-control">
+                                      <option value="Select"> PA</option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""></option>
+                                    </select>
+                                  </td>
+
+                                  <td class="text-center">
+                                    <select name="Select" class="form-control">
+                                      <option value="Select"> PA_01 </option>
+                                      <option value="">Grade </option>
+                                      <option value="">SBU/option>
+                                      <option value=""> Emp Type</option>
+                                      <option value="">Location</option>
+
+                                    </select>
+                                  </td>
+                                  <td class="text-center">
+                                    <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name"
+                                      placeholder="Select All"></p-multiSelect>
+                                  </td>
+
+
+                                  <td class="text-center">
+                                    <i class="fa fa-plus-circle font-16 text-dark-green cursor-pointer"
+                                      tooltip="Add"></i>&nbsp;
+                                  </td>
+                                </tr>
+
+                                <tr class="p-selectable-row">
+                                  <td class="text-center">2</td>
+
+                                  <td class="text-center">
+                                    <select name="Select" class="form-control">
+                                      <option value="Select">Organization Details
+                                      </option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""></option>
+                                    </select>
+                                  </td>
+
+                                  <td class="text-center">
+                                    <select name="Select" class="form-control">
+                                      <option value="Select"> Departments </option>
+                                      <option value="">Grade </option>
+                                      <option value="">SBU/option>
+                                      <option value=""> Emp Type</option>
+                                      <option value="">Location</option>
+
+                                    </select>
+                                  </td>
+                                  <td class="text-center">
+                                    <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name"
+                                      placeholder="Select All"></p-multiSelect>
+                                  </td>
+
+                                  <td class="text-center">
+                                    <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Add"></i>&nbsp;
+                                  </td>
+
+                                </tr>
+
+                                <tr class="p-selectable-row">
+                                  <td class="text-center">3</td>
+
+                                  <td class="text-center">
+                                    <select name="Select" class="form-control">
+                                      <option value="Select">Position Details
+                                      </option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""></option>
+                                    </select>
+                                  </td>
+
+                                  <td class="text-center">
+                                    <select name="Select" class="form-control">
+                                      <option value="Select"> Grade </option>
+                                      <option value="">Grade </option>
+                                      <option value="">Grade </option>
+                                      <option value="">SBU/option>
+                                      <option value=""> Emp Type</option>
+                                      <option value="">Location</option>
+
+                                    </select>
+                                  </td>
+                                  <td class="text-center">
+                                    <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name"
+                                      placeholder="Select All"></p-multiSelect>
+                                  </td>
+
+                                  <td class="text-center">
+                                    <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Add"></i>&nbsp;
+                                  </td>
+
+                                </tr>
+
+                                <tr class="p-selectable-row">
+                                  <td class="text-center">4</td>
+
+                                  <td class="text-center">
+                                    <select name="Select" class="form-control">
+                                      <option value="Select">Emp Age
+
+                                      </option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""></option>
+                                    </select>
+                                  </td>
+
+                                  <td class="text-center">
+
+                                  </td>
+                                  <td class="text-center">
+                                  </td>
+
+
+                                  <td class="text-center">
+                                    <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Add"></i>&nbsp;
+                                  </td>
+                                </tr>
+                                <tr class="p-selectable-row">
+                                  <td class="text-center">5</td>
+
+                                  <td class="">
+
+                                    <select name="Select" class="form-control">
+                                      <option value="Select"> Service Age
+
+                                      </option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""> </option>
+                                      <option value=""></option>
+                                      <option value=""></option>
+                                    </select>
+                                  </td>
+
+                                  <td class="text-center">
+
+                                  </td>
+                                  <td class="text-center">
+                                  </td>
+
+                                  <td class="text-center">
+                                    <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Add"></i>&nbsp;
+                                  </td>
+
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="emptymessage">
+                                <tr>
+                                  <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                      Available</span>
+                                  </td>
+                                </tr>
+                              </ng-template>
+                            </p-table>
+                          </div>
+
+
+
+                        </div>
+
+                      </div>
+
+
+                    </div>
+                    <br>
+                    <div class="row d-flex">
+                      <div class="ml-2 pl-1 pr-0">
+                        <label class="form-label mt-2">
+                          Source Period
+                          <span class="text-red"></span></label>
+
+                      </div>
+                      <div class="col-2">
+                        <select name="Select" class="form-control">
+                          <option value="Select"> Select </option>
+                          <option value="">Current Cycle End</option>
+                          <option value="">Current Cycle Start </option>
+                          <option value=""> Previous Cycle End</option>
+                          <option value="">Previous Cycle Start</option>
+                          <option value="">Current Month End</option>
+
+                          <option value="">Current Month Start</option>
+                          <option value="">Previous Month End</option>
+                          <option value="">Previous Month Start</option>
+                          <option value="">Previous BY End</option>
+                          <option value="">Previous BY Start </option>
+                          <option value="">Current Cal. Year End</option>
+                          <option value="">Current Cal. Year End</option>
+
+                          <option value="">Previous Cal. Year End</option>
+                          <option value="">Previous Cal. Year Start</option>
+                          <option value="">During Current Cycle</option>
+                          <option value="">During Current Month</option>
+                          <option value="">During Current BY</option>
+                          <option value="">During Current Cal. Year</option>
+
+
+                        </select>
+                      </div>
+
+
+                    </div>
+                    <br>
+                    <div class="row mt-15 float-right">
+
+                      <div class="float-right ">
+                        <button type="submit"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                          tooltip="Save"><b>
+                            <i class="fa fa-floppy-o"></i></b>Save</button>&nbsp;
+                        <button type="submit"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                          tooltip="Reset"><b>
+                            <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+
+
+                      </div>
+
+                    </div>
+                  </fieldset>
+
+                </div>
+
+                <br>
+                <br>
+                <br>
+                <br>
+
+
+                <!--Source Combination-->
+                <div class="mb-0">
+                  <h3 class="font-14 text-purple font-bold">
+                  </h3>&nbsp;
+                </div>
+                <br>
+
+                <div [@slideInOut]>
+                  <br>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <label class="form-label font-bold font-14">Total :(0) &nbsp;&nbsp;Selected Count :(0) </label>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <div class="col-8">
+
+                      <div class="card">
+
+
+                        <div class="table-responsive Custom_Table">
+                          <p-table [value]="users3" [paginator]="true" [rows]="10">
+                            <ng-template pTemplate="header">
+                              <tr>
+
+
+                                <th rowspan="3" class="wd-2 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center text-center">Select
+
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Select" pSortableColumn="Select"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th colspan="5" class="wd-6 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center" style="margin-left: 200px;">Source
+                                    Fields
+
+
+
+                                  </div>
+                                </th>
+                              </tr>
+
+                              <tr>
+                                <th rowspan="2" class=" text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center text-center">Payroll Area
+
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="PayrollArea" pSortableColumn="PayrollArea"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class=" text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center text-center">Department
+
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Department" pSortableColumn="Department"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center text-center">Grade
+
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Grade" pSortableColumn="Grade"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+
+
+
+                              </tr>
+
+
+
+                            </ng-template>
+                            <ng-template pTemplate="body" let-user1>
+                              <tr class="p-selectable-row">
+                                <td class="text-center">
+                                  <label class="custom-control custom-checkbox checkbox-center">
+                                    <input type="checkbox" class="custom-control-input" name="select" />
+                                    <span class="custom-control-label"></span>
+                                  </label>
+
+                                </td>
+                                <td class="text-center">
+                                  PA1
+                                </td>
+                                <td class="text-center">
+                                  D1
+                                </td>
+
+                                <td class="text-center">
+                                  G1
+                                </td>
+
+
+
+                              </tr>
+
+                              <tr class="p-selectable-row">
+                                <td class="text-center">
+                                  <label class="custom-control custom-checkbox checkbox-center">
+                                    <input type="checkbox" class="custom-control-input" name="select" />
+                                    <span class="custom-control-label"></span>
+                                  </label>
+
+                                </td>
+                                <td class="text-center">
+                                  PA2
+                                </td>
+                                <td class="text-center">
+                                  D1
+                                </td>
+
+                                <td class="text-center">
+                                  G1
+                                </td>
+
+
+                              </tr>
+
+                              <tr class="p-selectable-row">
+                                <td class="text-center">
+                                  <label class="custom-control custom-checkbox checkbox-center">
+                                    <input type="checkbox" class="custom-control-input" name="select" />
+                                    <span class="custom-control-label"></span>
+                                  </label>
+
+                                </td>
+                                <td class="text-center">
+                                  PA3
+                                </td>
+                                <td class="text-center">
+                                  D1
+                                </td>
+
+                                <td class="text-center">
+                                  G1
+                                </td>
+
+
+
+                              </tr>
+                              <tr class="p-selectable-row">
+                                <td class="text-center">
+                                  <label class="custom-control custom-checkbox checkbox-center">
+                                    <input type="checkbox" class="custom-control-input" name="select" />
+                                    <span class="custom-control-label"></span>
+                                  </label>
+
+                                </td>
+                                <td class="text-center">
+                                  PA4
+                                </td>
+                                <td class="text-center">
+                                  D1
+                                </td>
+
+                                <td class="text-center">
+                                  G1
+                                </td>
+
+
+
+                              </tr>
+                              <tr class="p-selectable-row">
+                                <td class="text-center">
+                                  <label class="custom-control custom-checkbox checkbox-center">
+                                    <input type="checkbox" class="custom-control-input" name="select" />
+                                    <span class="custom-control-label"></span>
+                                  </label>
+
+                                </td>
+                                <td class="text-center">
+                                  PA5
+                                </td>
+                                <td class="text-center">
+                                  D1
+                                </td>
+
+                                <td class="text-center">
+                                  G1
+                                </td>
+
+
+
+
+                              </tr>
+                              <tr class="p-selectable-row">
+                                <td class="text-center">
+                                  <label class="custom-control custom-checkbox checkbox-center">
+                                    <input type="checkbox" class="custom-control-input" name="select" />
+                                    <span class="custom-control-label"></span>
+                                  </label>
+
+                                </td>
+                                <td class="text-center">
+                                  PA6
+                                </td>
+                                <td class="text-center">
+                                  D1
+                                </td>
+
+                                <td class="text-center">
+                                  G1
+                                </td>
+
+
+                              </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                              <tr>
+                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                    Available</span>
+                                </td>
+                              </tr>
+                            </ng-template>
+                          </p-table>
+                        </div>
+
+
+
+                      </div>
+
+                    </div>
+
+
+                  </div>
+
+                  <div class="row mt-15 float-right">
+
+                    <div class="float-right ">
+                      <button type="submit"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                        tooltip="Previous"><b>
+                          <i class="fa fa-angle-double-left"></i></b> Previous</button>&nbsp;
+                      <button type="submit"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                        tooltip="Save"><b>
+                          <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
+                      <button type="submit"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                        tooltip="Reset"><b>
+                          <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+                    </div>
+
+
+                  </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+
+
+                <!-- Derived-->
+                <div class="mb-0">
+                  <h3 class="font-14 text-purple font-bold">
+
+                  </h3>&nbsp;
+
+
+                </div>
+                <br>
+                <div [@slideInOut]>
+                  <div class="row mt-10">
+                    <div class="col-sm-3">
+                      <label class="form-label"> Derived Name</label>
+                      <input type="text" class="form-control" placeholder="">
+                    </div>
+                    <div class="col-sm-3">
+                      <label class="form-label">Module</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="">
+                        </option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                      </select>
+
+                    </div>
+                    <div class="col-sm-3">
+                      <label class="form-label">Derived Type</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="">Amount
+                        </option>
+                        <option value="">% Percentage</option>
+                        <option value="">Job Field Type</option>
+                        <option value="">Not Applicable</option>
+                      </select>
+
+                    </div>
+                    <div class="col-sm-3">
+                      <label class="form-label">Percentage (%) of
+                      </label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value=""> </option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""> </option>
+                      </select>
+
+                    </div>
+
+
+
+
+
+                  </div>
+                  <div class="row mt-10">
+                    <div class="col-sm-3">
+                      <label class="form-label">Table Name</label>
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                      </select>
+
+                    </div>
+                    <div class="col-sm-3">
+                      <label class="form-label">Field Name</label>
+
+                      <select name="custom-select" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="">Service Period</option>
+                        <option value="">Max Amount Allowed</option>
+                      </select>
+
+                    </div>
+
+
+                  </div>
+                  <br>
+
+                  <br>
+                  <div class="row mt-15">
+
+                    <div class="col-12">
+                      <div class="float-left d-flex justify-content">
+                        <input type="checkbox" />&nbsp;
+                        <label class="form-label margin-right:30px;">Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="form-label">Remark</label>&nbsp;
+                        <textarea type="text"></textarea>
+                      </div>
+                      <div class="float-right ">
+                        <button type="submit"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                          tooltip="Add"><b>
+                            <i class="fa fa-plus"></i></b> Add</button>&nbsp;
+
+
+                        <button type="button" tooltip="Next"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left">
+                          <b><i class="fa fa-refresh"></i></b> Next</button>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <div class="row">
+
+                    <div class="col-12">
+
+                      <div class="card">
+
+                        <div class="table-responsive Custom_Table">
+                          <p-table [value]="users1" [paginator]="true" [rows]="10">
+                            <ng-template pTemplate="header">
+                              <tr>
+
+
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center text-center">Sr. No.
+
+
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="SrNo" pSortableColumn="SrNo"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Derived Name
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="DerivedName" pSortableColumn="DerivedName"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Module
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Module" pSortableColumn="Module"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Derived Type
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="DerivedType" pSortableColumn="DerivedType"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Percentage (%) of
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Percentageof" pSortableColumn="Percentageof"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Table Name
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="TableName" pSortableColumn="TableName"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Field Name
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="FieldName" pSortableColumn="FieldName"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+
+
+                              </tr>
+
+                            </ng-template>
+                            <ng-template pTemplate="body" let-user1>
+                              <tr class="p-selectable-row">
+                                <td class="text-center">1 </td>
+
+                                <td class="text-center">
+                                  Derived 1
+                                </td>
+
+                                <td class="text-center">
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td class="text-center">
+                                  Value
+                                </td>
+
+                                <td>
+
+
+
+                                </td>
+                              </tr>
+
+                              <tr class="p-selectable-row">
+                                <td class="text-center">2 </td>
+
+                                <td class="text-center">
+                                  Derived 2
+                                </td>
+
+                                <td class="text-center">
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td class="text-center">
+                                  Percentage (%) of
+
+                                </td>
+
+
+                                <td>
+
+                                </td>
+
+                              </tr>
+
+                              <tr class="p-selectable-row">
+                                <td class="text-center">3 </td>
+
+                                <td class="text-center">
+                                  Derived 3
+                                </td>
+
+                                <td class="text-center">
+
+                                </td>
+                                <td class="text-center">
+
+                                </td>
+                                <td class="text-center">
+
+                                </td>
+                                <td class="text-center">
+                                  Job field type
+
+                                </td>
+
+                                <td>
+
+                                </td>
+
+
+
+                              </tr>
+
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                              <tr>
+                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                    Available</span>
+                                </td>
+                              </tr>
+                            </ng-template>
+                          </p-table>
+                        </div>
+
+
+
+                      </div>
+
+                    </div>
+
+
+                  </div>
+
+
+
+
+                  <div class="row mt-15 float-right">
+
+                    <div class="float-right ">
+                      <button type="submit"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                        tooltip="Previous"><b>
+                          <i class="fa fa-angle-double-left"></i></b> Previous</button>&nbsp;
+                      <button type="submit"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                        tooltip="Save"><b>
+                          <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
+                      <button type="submit"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                        tooltip="Reset"><b>
+                          <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+
+                    </div>
+
+
+                  </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <!-- Matrix-->
+
+                <div class="mb-0">
+                  <h3 class="font-14 text-purple font-bold"></h3>&nbsp;
+                </div>
+                <br>
+                <div [@slideInOut]>
+
+                  <br>
+                  <div class="row mt-20">
+                    <div class="col-md-12">
+                    </div>
+                    <div class="col-md-12 bg-color-light_gray p-10 m-0">
+                      <div class="float-left d-flex justify-content">
+
+                        <label class="form-label mb-0  mt-2 float-left">Derived Name</label>&nbsp;
+                        <select name="custom-select" class="form-control" style="width:100px;">
+                          <option value="Select">Select</option>
+                          <option value="">D1 </option>
+                          <option value="">D2</option>
+                          <option value="">D3</option>
+                          <option value="">D4</option>
+                        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="form-label mb-0 mt-2">Derived Type</label>
+                        &nbsp;&nbsp;&nbsp; <span
+                          style="margin-right: 20px;margin-top: 7px;font-size: 13px;">Value</span>
+
+                      </div>
+                      <div class="float-right d-flex justify-content-end">
+                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                          <div class="input-group">
+                            <label class="form-label mt-2">From &nbsp;</label>
+
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              placeholder="Date" bsDatepicker>
+                          </div>
+                        </div>
+                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                          <div class="input-group">
+                            <label class="form-label mt-2">To &nbsp;</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              placeholder="Date" bsDatepicker>
+                          </div>
+                        </div>
+
+                        <button type="button" tooltip=""
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i
+                              class="fa fa-download"></i></b> Format For Upload</button> &nbsp;
+                        <button type="button" tooltip=""
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i
+                              class="fa fa-upload"></i></b> Upload</button> &nbsp;
+                        <i class="fa fa-file-excel-o font-24 mt-2 text-dark-green cursor-pointer" tooltip="View"></i>
+                      </div>
+
+
+
+
+                    </div>
+
+                  </div>
+
+                  <br>
+                  <div class="row">
+
+                    <div class="col-12">
+
+                      <div class="card">
+
+                        <div class="table-responsive Custom_Table">
+                          <p-table [value]="users2" [paginator]="true" [rows]="10" (sortFunction)="customSort($event)"
+                            [customSort]="true">
+                            <ng-template pTemplate="header">
+                              <tr>
+
+                                <th colspan="3" class="wd-16 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center text-center"
+                                    style="margin-left: 120px;">Source
+                                  </div>
+                                </th>
+
+                                <th colspan="2" class="wd-21 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:100px;">Service Age
+
+
+                                  </div>
+                                </th>
+                                <th colspan="1" class="wd-6 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Derived
+
+                                  </div>
+                                </th>
+                                <th colspan="2" class="wd-8 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:140px;">Date Range
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Payroll" pSortableColumn="Payroll"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th rowspan="3" class="wd-4 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">
+                                    Action
+                                  </div>
+                                </th>
+                              </tr>
+                              <tr>
+                                <th rowspan="2" class=" text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Payroll
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Payroll" pSortableColumn="Payroll"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th rowspan="2" class=" text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Grade
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Grade" pSortableColumn="Grade"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class=" text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Department
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Department" pSortableColumn="Department"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+
+                                <th rowspan="2" class="text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center"> From
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="DateRange" pSortableColumn="DateRange"></p-sortIcon>
+
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class=" text-center ">
+                                  <div class="p-d-flex p-jc-between p-ai-center" style="margin-left: 70px;"> To
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="DateRange" pSortableColumn="DateRange"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th rowspan="2" class=" text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Value
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="Value" pSortableColumn="Value"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+                                <th rowspan="2" class="text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">From Date
+                                    <div class="Sort_Filter_Position">
+
+                                      <p-sortIcon field="FromDate" pSortableColumn="FromDate"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th rowspan="2" class=" text-center ">
+                                  <div class="p-d-flex p-jc-between p-ai-center">To Date
+                                    <div class="Sort_Filter_Position">
+                                      <p-sortIcon field="ToDate" pSortableColumn="ToDate"></p-sortIcon>
+                                      <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                                      </p-columnFilter>
+                                    </div>
+                                  </div>
+                                </th>
+
+
+
+                              </tr>
+
+
+                            </ng-template>
+                            <ng-template pTemplate="body" let-User2>
+                              <tr class="p-selectable-row">
+                                <td>PA_01
+
+                                </td>
+                                <td>G1 </td>
+                                <td> Finance</td>
+                                <td>
+
+                                  <input type="text" class="form-control" placeholder="" value="1">
+                                </td>
+                                <td>
+
+                                  <input type="text" class="form-control" placeholder="" value="10,000.00">
+
+
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value="10,000.00">
+
+                                </td>
+
+                                <td class="p-d-inline-flex">
+                                  <div class="p-d-inline-flex">
+                                    <span (click)="copyDateFromTableRow()"><i
+                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                                    <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                          </span>
+                                        </div>
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                          placeholder="Date" bsDatepicker>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td>
+
+                                  <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                          <i class="fa fa-calendar"></i>
+                                        </span>
+                                      </div>
+                                      <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                        placeholder="Date" bsDatepicker>
+                                    </div>
+                                  </div>
+
+                                </td>
+
+
+
+                                <td class="text-center">
+
+
+                                </td>
+                              </tr>
+
+                              <tr class="p-selectable-row">
+                                <td>PA_01
+                                </td>
+                                <td>G1 </td>
+                                <td>HR</td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value=" 10,001">
+                                </td>
+                                <td>
+                                  <div class="p-d-inline-flex">
+                                    <input type="text" class="form-control" placeholder="" value=" 15,000.00">
+
+                                  </div>
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value=" 175">
+                                </td>
+
+                                <td>
+                                  <div class="p-d-inline-flex">
+                                    <span (click)="copyDateFromTableRow()"><i
+                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                                    <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                          </span>
+                                        </div>
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                          placeholder="Date" bsDatepicker>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td>
+
+
+                                  <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                          <i class="fa fa-calendar"></i>
+                                        </span>
+                                      </div>
+                                      <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                        placeholder="Date" bsDatepicker>
+                                    </div>
+                                  </div>
+
+                                </td>
+                                <td class="text-center">
+
+
+                                </td>
+                              </tr>
+
+                              <tr class="p-selectable-row">
+                                <td>PA_01
+                                </td>
+                                <td>G1 </td>
+                                <td> Production</td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value=" ">
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value=" ">
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value=" ">
+
+
+                                </td>
+
+                                <td>
+                                  <div class="p-d-inline-flex">
+                                    <span (click)="copyDateFromTableRow()"><i
+                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                                    <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                          </span>
+                                        </div>
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                          placeholder="Date" bsDatepicker>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td>
+
+
+                                  <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                          <i class="fa fa-calendar"></i>
+                                        </span>
+                                      </div>
+                                      <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                        placeholder="Date" bsDatepicker>
+                                    </div>
+                                  </div>
+
+                                </td>
+                                <td class="text-center">
+
+                                  <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
+                                    (click)=" extralargepopup(template)">
+                                  </i>&nbsp;
+                                  <i class="fa fa-plus-circle font-18 text-dark-green cursor-pointer" tooltip="Add">
+                                  </i>
+                                </td>
+                              </tr>
+
+                              <tr class="p-selectable-row">
+                                <td>PA_01 </td>
+
+                                <td>G2 </td>
+                                <td> HR</td>
+                                <td>
+
+                                  <input type="text" class="form-control" placeholder="" value="1">
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value="10,000.00">
+
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value="0">
+                                </td>
+
+
+                                <td>
+                                  <div class="p-d-inline-flex">
+                                    <span (click)="copyDateFromTableRow()"><i
+                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                                    <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                          </span>
+                                        </div>
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                          placeholder="Date" bsDatepicker>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td>
+
+
+                                  <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                          <i class="fa fa-calendar"></i>
+                                        </span>
+                                      </div>
+                                      <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                        placeholder="Date" bsDatepicker>
+                                    </div>
+                                  </div>
+
+                                </td>
+                                <td class="text-center">
+
+
+                                </td>
+                              </tr>
+                              <tr class="p-selectable-row">
+                                <td>PA_01
+                                </td>
+                                <td>G2 </td>
+                                <td> Production</td>
+                                <td>
+
+                                  <input type="text" class="form-control" placeholder="" value="1">
+                                </td>
+
+
+                                <td>
+                                  <div class="p-d-inline-flex">
+                                    <input type="text" class="form-control" placeholder="& Above">
+
+                                  </div>
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" placeholder="" value="0">
+                                </td>
+
+                                <td class="">
+                                  <div class="d-flex">
+                                    <span (click)="copyDateFromTableRow()"><i
+                                        class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                                    <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">
+                                            <i class="fa fa-calendar"></i>
+                                          </span>
+                                        </div>
+                                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                          placeholder="Date" bsDatepicker>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td>
+
+
+                                  <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                          <i class="fa fa-calendar"></i>
+                                        </span>
+                                      </div>
+                                      <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                        placeholder="Date" bsDatepicker>
+                                    </div>
+                                  </div>
+
+                                </td>
+                                <td class="text-center">
+
+                                </td>
+
+                              </tr>
+
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                              <tr>
+                                <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                    Available</span>
+                                </td>
+                              </tr>
+                            </ng-template>
+                          </p-table>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+                  </div>
+                  <div class="row mt-15 float-right">
+
+                    <div class="float-right ">
+
+                      <button type="submit"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                        tooltip="Previous"><b>
+                          <i class="fa fa-angle-double-left"></i></b> Previous</button>&nbsp;
+
+                      <button type="submit"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                        tooltip="Save"><b>
+                          <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
+                      <button type="submit"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
+                        tooltip="Reset"><b>
+                          <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
+
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <br>
+
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">History</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+          <div class="col-md-12">
+            <div class="table-responsive Custom_Table">
+              <p-table [value]="users2" [paginator]="true" [rows]="10" (sortFunction)="customSort($event)"
+                [customSort]="true">
+                <ng-template pTemplate="header">
+                  <tr>
+
+                    <th colspan="3" class="wd-16 text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center text-center" style="margin-left: 140px;">Source
+                      </div>
+                    </th>
+
+                    <th colspan="2" class="wd-70 text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">Gross Earning
+                        <!-- style="margin-left: 60px;" -->
+                      </div>
+                    </th>
+                    <th colspan="1" class="wd-6 text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">Derived
+
+                      </div>
+                    </th>
+                    <th colspan="2" class="wd-8 text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center" style="margin-left:150px;">Date Range
+
+                      </div>
+                    </th>
+
+
+                  </tr>
+                  <tr>
+                    <th rowspan="2" class=" text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">Payroll
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="Source" pSortableColumn="Source"></p-sortIcon>
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+
+                    <th rowspan="2" class=" text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">Grade
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="Source" pSortableColumn="Source"></p-sortIcon>
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th rowspan="2" class=" text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">Department
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="Source" pSortableColumn="Source"></p-sortIcon>
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+
+
+                    <th rowspan="2" class="text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center"> From
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="DateRange" pSortableColumn="DateRange"></p-sortIcon>
+
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th rowspan="2" class=" text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center"> To
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="DateRange" pSortableColumn="DateRange"></p-sortIcon>
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+
+                    <th rowspan="2" class=" text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">Value
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="Source" pSortableColumn="Source"></p-sortIcon>
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+
+                    <th rowspan="2" class="text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">From Date
+                        <div class="Sort_Filter_Position">
+
+                          <p-sortIcon field="Source" pSortableColumn="Source"></p-sortIcon>
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th rowspan="2" class=" text-center">
+                      <div class="p-d-flex p-jc-between p-ai-center">To Date
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="Source" pSortableColumn="Source"></p-sortIcon>
+                          <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+
+
+
+                  </tr>
+
+
+                </ng-template>
+                <ng-template pTemplate="body" let-User2>
+                  <tr class="p-selectable-row">
+                    <td>PA_01
+
+                    </td>
+                    <td>G1 </td>
+                    <td> Gross Salary</td>
+                    <td>
+
+                      <input type="text" class="form-control" placeholder="" value="1">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value="10,000">
+
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value="10,000">
+
+                    </td>
+
+                    <td class="p-d-inline-flex">
+                      <div class="p-d-inline-flex">
+                        <span (click)="copyDateFromTableRow()"><i
+                            class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              placeholder="Date" bsDatepicker>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+
+
+                      <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-calendar"></i>
+                            </span>
+                          </div>
+                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                            placeholder="Date" bsDatepicker>
+                        </div>
+                      </div>
+
+                    </td>
+
+
+
+
+                  </tr>
+
+                  <tr class="p-selectable-row">
+                    <td>PA_01
+                    </td>
+                    <td>G1 </td>
+                    <td> Gross Salary</td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value=" 10,001">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value=" 15,000">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value=" 175">
+                    </td>
+
+                    <td>
+                      <div class="p-d-inline-flex">
+                        <span (click)="copyDateFromTableRow()"><i
+                            class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              placeholder="Date" bsDatepicker>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+
+
+                      <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-calendar"></i>
+                            </span>
+                          </div>
+                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                            placeholder="Date" bsDatepicker>
+                        </div>
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                  <tr class="p-selectable-row">
+                    <td>PA_01
+                    </td>
+                    <td>G1 </td>
+                    <td> Gross Salary</td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value=" ">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value=" ">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value=" ">
+
+
+                    </td>
+
+                    <td>
+                      <div class="p-d-inline-flex">
+                        <span (click)="copyDateFromTableRow()"><i
+                            class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              placeholder="Date" bsDatepicker>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+
+
+                      <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-calendar"></i>
+                            </span>
+                          </div>
+                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                            placeholder="Date" bsDatepicker>
+                        </div>
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                  <tr class="p-selectable-row">
+                    <td>PA_01 </td>
+
+                    <td>G1 </td>
+                    <td> Gross Salary</td>
+                    <td>
+
+                      <input type="text" class="form-control" placeholder="" value="1">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value="10,000">
+
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value="0">
+                    </td>
+
+
+                    <td>
+                      <div class="p-d-inline-flex">
+                        <span (click)="copyDateFromTableRow()"><i
+                            class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              placeholder="Date" bsDatepicker>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+
+
+                      <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-calendar"></i>
+                            </span>
+                          </div>
+                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                            placeholder="Date" bsDatepicker>
+                        </div>
+                      </div>
+
+                    </td>
+
+                  </tr>
+                  <tr class="p-selectable-row">
+                    <td>PA_01
+                    </td>
+                    <td>G1 </td>
+                    <td> Gross Salary</td>
+                    <td>
+
+                      <input type="text" class="form-control" placeholder="" value="1">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value="10,000">
+
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" value="0">
+                    </td>
+
+                    <td class="">
+                      <div class="d-flex">
+                        <span (click)="copyDateFromTableRow()"><i
+                            class="fa fa-clone text-blue font-16 mr-2 mt-2"></i></span>
+                        <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                              </span>
+                            </div>
+                            <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                              placeholder="Date" bsDatepicker>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>
+
+
+                      <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-calendar"></i>
+                            </span>
+                          </div>
+                          <input data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                            placeholder="Date" bsDatepicker>
+                        </div>
+                      </div>
+
+                    </td>
+
+
+                  </tr>
+
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                        Available</span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
+</ng-template>

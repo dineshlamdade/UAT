@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { QueryService } from '../../query/query.service';
@@ -31,17 +30,16 @@ export class PayrollListComponent implements OnInit {
   public checkedEmployeeList: Array<any> = [];
   public modalRef: BsModalRef;
   selectedEmployeeData: any = [];
-  form:FormGroup;
   generationFormData: any;
   onBehalfValue:any = '';
   sameContentValue: any ='';
   sameContentViewFlag:boolean = false;
+
   constructor(private service: PayrollInputsService, private router: Router,private modalService: BsModalService
-    ,public queryService :QueryService ) { }
+    ,public queryService :QueryService) { }
 
   public ngOnInit(): void {
     this.getAllEmployeeDetails();
-    // localStorage.clear();
   }
 
   public getAllEmployeeDetails(): void {
@@ -76,29 +74,32 @@ export class PayrollListComponent implements OnInit {
     this.service.setEmployeeListArray(this.checkedEmployeeList);
   }
 
+
   /** get selected employee data */
-  getSelectedEmployee(user){
+  getSelectedEmployee(user) {
     this.selectedEmployeeData.push(user)
-
-    if(this.selectedEmployeeData.length == 1){
-      if(this.onBehalfValue = 'yes'){
-        this.sameContentViewFlag = true;
-      }
-     }else{
-       this.sameContentViewFlag = false;
-     }
-
-
   }
 
-  navigateToNRAmt(){
-    localStorage.setItem('payrollListEmpData',JSON.stringify(this.selectedEmployeeData))
+  navigateToNRAmt() {
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
     this.router.navigate(['/PayrollInputs/Non-Recurring-Amount'])
   }
 
-// ............................................Add Query....................................................
-  navigateToQuery(){
-    localStorage.setItem('queryListEmpData',JSON.stringify(this.selectedEmployeeData))
+  navigateToNRQty() {
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Non-Recurring-qty'])
+  }
+
+  navigateToGarnishmentApplication(){
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Garnishment-Transaction'])
+  }
+
+
+
+  // ............................................Add Query....................................................
+  navigateToQuery() {
+    localStorage.setItem('queryListEmpData', JSON.stringify(this.selectedEmployeeData))
     this.router.navigate(['/admin-query-generation'])
   }
   smallpopup(template: TemplateRef<any>) {
@@ -108,23 +109,23 @@ export class PayrollListComponent implements OnInit {
     );
   }
 
-  addQueryGeneration(){ //post api for saving data
-    let data ={
-      'onBehalf':this.onBehalfValue,
-      'sameContent':this.sameContentValue
+  addQueryGeneration() { //post api for saving data
+    let data = {
+      'onBehalf': this.onBehalfValue,
+      'sameContent': this.sameContentValue
     }
-localStorage.setItem('emlpoyeeSelectionData',JSON.stringify(data))
+    localStorage.setItem('emlpoyeeSelectionData', JSON.stringify(data))
 
-}
-onBehalf(value)
-{
-this.onBehalfValue = value;
+  }
+  onBehalf(value) {
+    this.onBehalfValue = value;
 
-}
+  }
 
-sameContent(value)
-{
-this.sameContentValue = value;
+  sameContent(value) {
+    this.sameContentValue = value;
 
-}
+  }
+
+
 }

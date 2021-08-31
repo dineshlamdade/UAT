@@ -60,7 +60,9 @@ public isCollapsedQuery = true;
   userRoleId: any;
   menuData: any;
   public isQuery = true;
-public isCollapsedpayrollinput = true;
+ public isCollapsedpayrollinput = true;
+  isCollapsedKeywordinput:boolean;
+
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService,
     private RoleRrivilegeService : RolePrivilegeService, private authService: AuthService ) {
@@ -68,8 +70,11 @@ public isCollapsedpayrollinput = true;
     if ( ( this.router.url ).includes( 'payroll' ) ) {
       this.isCollapsed = false;
     }
+    if ( ( this.router.url ).includes( 'formula' ) ) {
+      this.isCollapsedKeywordinput = false;
+    }
     if ( ( this.router.url ).includes( 'PayrollInputs' ) ) {
-      this.isPayrollInputsCollapsed = false;
+      this.isCollapsedpayrollinput = false;
     }
     if ( ( this.router.url ).includes( 'investment' ) ) {
       this.isInvestmentCollapsed = false;

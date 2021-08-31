@@ -113,7 +113,6 @@ export class NonRecurringAmtComponent implements OnInit {
 	devationRemarkText: any = '';
 	selectedDeviationdata: any;
 	repeatRemarkText: any;
-  header: any[];
 
 	constructor(private modalService: BsModalService, private nonRecService: NonRecurringAmtService,
 		private toaster: ToastrService, private datepipe: DatePipe,
@@ -888,6 +887,14 @@ export class NonRecurringAmtComponent implements OnInit {
 				} else {
 					let length = this.saveTransactionData.length - 1;
 					if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+
+				// 	let index = this.saveTransactionData.length - 1
+                //   if (this.saveTransactionData[length].headMasterId == data.headId) { return; }
+                //   if (this.saveTransactionData[index].headMasterId == data.headId) { return; }
+                //   for (let i = 0; i < index; i++) {
+                //      if (this.saveTransactionData[i].headMasterId == data.headId) { return; }
+                //   }
+
 					else {
 						this.saveTransactionData.push({
 							"employeeMasterId": this.selectedEmployeeMasterId,
@@ -2927,7 +2934,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			}
 			this.excelData.push(obj)
 		});
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
+		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-Summary');
 	}
 
 
@@ -2953,7 +2960,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.AllNonRecurringTransactionScheduledData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
+		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-All-Schedules');
 	}
 
 
@@ -2979,7 +2986,7 @@ export class NonRecurringAmtComponent implements OnInit {
 			this.excelData.push(obj)
 		});
 		//this.excelData = this.NonRecurringTransactionScheduleEMPdData
-		this.excelservice.exportAsExcelFile(this.excelData, 'NonRecurring-Amount-Summary','NonRecurring-Amount-Summary',this.header);
+		this.excelservice.exportAsExcelFile1(this.excelData, 'NonRecurring-Amount-Schedules');
 	}
 
 
