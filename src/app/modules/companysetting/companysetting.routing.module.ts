@@ -1,8 +1,4 @@
 import { AttributeDependencyComponent } from './attribute-dependency/attribute-dependency.component';
-
-
-import { GarnishmentMasterComponent } from './payroll/garnishment-master/garnishment-master.component';
-
 import { AttributeCreationComponent } from './attribute-creation/attribute-creation.component';
 import { BusinessCycleComponent } from './business-cycle/business-cycle.component';
 import { HeadCreationComponent } from './head-creation/head-creation.component';
@@ -59,13 +55,6 @@ const routes: Routes = [
     component: PaymentTrackingMasterComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
-
-  {
-    path: 'Garnishment-Master',
-    component: GarnishmentMasterComponent,
-    data: { title: ':: Garnishment-Master' },
-  },
-
   {
     path: 'userrolesandpermission',
     component: UserRolesandPermissionComponent,

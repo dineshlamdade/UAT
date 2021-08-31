@@ -1264,7 +1264,6 @@ export class SdmStepperComponent implements OnInit {
   }
 
   saveDerived() {
-   
     this.sdmService.saveDerived(this.saveDerivedData).subscribe(( res: any ) => {
       
      // this.alertService.sweetalertMasterSuccess("", "Derived data saved successfully.")
@@ -1274,12 +1273,7 @@ export class SdmStepperComponent implements OnInit {
      // this.duplicateDataErrorMessage = res.status.messsage[1];
      
       this.sdmFormStep3.reset();
-      localStorage.setItem('tempDerivedTable', JSON.stringify(this.tempDerivedTable))
-      //this.derivedMasterData = res.data.results;
-
-    },
-        ( error: any ) => {
-          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+          // this.alertService.sweetalertError( error["error"]["status"]["message"] );
         })
   }
 

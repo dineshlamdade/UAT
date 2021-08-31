@@ -9,3 +9,7 @@
 .tabs {
   grid-column-end: span 4 !important;
 }
+
+.page .section-light, .page .section-dark, .page .section-white, .page .section-gray, .page .section-body {
+  padding: 0 0 !important;
+}
