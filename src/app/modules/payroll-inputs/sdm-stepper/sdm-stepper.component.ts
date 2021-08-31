@@ -1415,6 +1415,47 @@ export class SdmStepperComponent implements OnInit {
     } else {
       this.addbtnflag = false
     }
+
+    if(this.saveMatrixData.length > 0)
+    {
+      
+    }
+    this.saveMatrixData.push({
+      "sdmCombinationId": "0",
+      "sdmMasterId": this.sdmMasterId,
+      "sdmDerivedMasterId": this.matrixDerivedMasterId,
+      "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
+      "sourceRangeFrom": this.sourceRangeFrom,
+      "sourceRangeTo": this.sourceRangeTo,
+      "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
+      "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
+      "applicableValue": this.applicableValue
+    })
+
+    this.tempMatrixData.push({
+      "sdmCombinationId": "0",
+      "sdmMasterId": this.sdmMasterId,
+      "sdmDerivedMasterId": this.matrixDerivedMasterId,
+      "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
+      "sourceRangeFrom": this.sourceRangeFrom,
+      "sourceRangeTo": this.sourceRangeTo,
+      "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
+      "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
+      "applicableValue": this.applicableValue,
+      'selectedCombData': this.selectedCombData
+    })
+
+    console.log("this.saveMatrixData: " + JSON.stringify(this.saveMatrixData))
+
+    this.sourceRangeFrom = ''
+    this.sourceRangeTo = ''
+    this.derivedFromDate = ''
+    this.derivedToDate = ''
+    this.applicableValue = ''
+    this.addbtnflag = false
+    this.selectedIndex = -1
+    this.selectedFromDateForSave = ''
+    this.selectedToDateForSave = ''
   }
 
   sourceRangeToData(value) {
