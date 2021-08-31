@@ -60,7 +60,7 @@ public isCollapsedQuery = true;
   userRoleId: any;
   menuData: any;
   public isQuery = true;
-
+public isCollapsedpayrollinput = true;
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService,
     private RoleRrivilegeService : RolePrivilegeService, private authService: AuthService ) {
