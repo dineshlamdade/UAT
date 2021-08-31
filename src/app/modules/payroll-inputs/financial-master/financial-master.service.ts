@@ -22,7 +22,7 @@ getAllRecords(empId) {
     "employeeMasterId":empId,
     "payrollArea":"PA-Staff"
   }
-  return this._HTTP.get('http://localhost:8084/hrms/v1/financial-master/financialMasterAPIRecordsUI?employeeMasterId=1&payrollArea=PA-Staff')
+  return this._HTTP.get(this.apiUrl+'financial-master/financialMasterAPIRecordsUI?employeeMasterId=1&payrollArea=PA-Staff')
   .pipe(map((res: any) => {
     return res;
   }
