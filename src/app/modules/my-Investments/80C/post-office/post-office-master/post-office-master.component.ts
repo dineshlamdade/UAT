@@ -64,6 +64,7 @@ export class PostOfficeMasterComponent implements OnInit {
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
   public urlIndex: number;
+  public isEdit: boolean = false;
   public glbalECS: number;
   public form: FormGroup;
   public Index: number;
@@ -114,12 +115,14 @@ export class PostOfficeMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   documentArray: any[] =[];
+  filesUrlArray = [];
  
   public proofSubmissionId ;
   policyToDate: any;
   paymentDetailsToDate: any;
   policyMaxDate: any;
   selectedPolicyFromDate: any;
+  isVisibleTable = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -498,14 +501,19 @@ export class PostOfficeMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
     console.log("urlArray.length",this.urlArray.length)
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
-      console.log('urlArray.length', this.urlArray.length);
+      // console.log('urlArray.length', this.urlArray.length);
       return;
-    } else {
+    }
+    } 
+    // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -549,6 +557,7 @@ export class PostOfficeMasterComponent implements OnInit {
           if (res)
           {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -620,10 +629,14 @@ export class PostOfficeMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
       this.getInitialData();
       this.getDetails();
-    }
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -719,6 +732,7 @@ export class PostOfficeMasterComponent implements OnInit {
 
    //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
    editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -741,7 +755,8 @@ export class PostOfficeMasterComponent implements OnInit {
       this.Index = obj.accountNumber;
       this.showUpdateButton = true;
       this.isClear = true;
-      this.urlArray = obj.documentInformationList;
+      // this.urlArray = obj.documentInformationList;
+      this.filesUrlArray = obj.documentInformationList;
       this.showdocument = false;
       this.proofSubmissionId = obj.proofSubmissionId;
       this.documentArray = [];
@@ -760,6 +775,7 @@ export class PostOfficeMasterComponent implements OnInit {
         
       });
       console.log("documentArray::",this.documentArray);
+      this.isVisibleTable = true;
     }
     });
     }
@@ -848,9 +864,11 @@ export class PostOfficeMasterComponent implements OnInit {
     console.log("---in doc viewer--");
     this.urlIndex = index;
 
+    console.log('urlIndex::' , this.urlIndex);
     console.log("urlArray::", this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      // this.urlArray[this.urlIndex].blobURI,
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     console.log("urlSafe::",  this.urlSafe);
     this.modalRef = this.modalService.show(

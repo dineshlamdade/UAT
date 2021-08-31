@@ -193,6 +193,7 @@ export class InvestmentTransactionApprovalComponent implements OnInit {
       .getTransactionInfoByPSID(psid)
       .subscribe((res: InvestmentApprovalTransactionInfo) => {
         console.log('res transactionInfo::', res);
+        
         if (res != null || res != undefined) {
           this.transactionInfo = res;
           this.documentDetailList = this.transactionInfo.documentList;
