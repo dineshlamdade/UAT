@@ -584,7 +584,7 @@ export class WorkflowMasterComponent implements OnInit {
   exportAsXLSX(): void {
     this.excelData = [];
     this.header = []
-    this.header =["Code","Description","No. Of Approval Level","No. Of Approvers", "Auto Approval", "Create By", "Created Date"]
+    this.header =["Code","Description","No. of Approval Level","No.Of Approvers", "Auto Approval", "Created By", "Created Date"]
     //this.excelData = this.workflowMasterHeaderResponseDTO
     this.workflowMasterHeaderResponseDTO.forEach(element => {
       if(element.autoApproval == true){
@@ -603,6 +603,7 @@ export class WorkflowMasterComponent implements OnInit {
 			}
 			this.excelData.push(obj)
 		});
+    //console.log(this.excelData)
     this.excelservice.exportAsExcelFile(this.excelData, 'Workflow-Summary','Workflow-Master',this.header);
   }
 

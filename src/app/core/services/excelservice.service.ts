@@ -131,7 +131,7 @@ export class ExcelserviceService {
     //Generate Excel File with given name
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: EXCEL_TYPE });
-      fs.saveAs(blob, excelFileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+      fs.saveAs(blob, excelFileName + 'export' + new Date().getTime() + EXCEL_EXTENSION);
     })
   }
 

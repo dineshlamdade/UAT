@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AttendanceComponent } from './attendance/attendance.component';
-import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
-import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
+import { Component2Component } from './component2/component2.component';
 import { FinancialMasterComponent } from './financial-master/financial-master.component';
 import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
 import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
@@ -11,7 +10,7 @@ import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-r
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { PayrollListComponent } from './payroll-list/payroll-list.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
-import { SdmComponent } from './steppersdm/sdm.component';
+import { SdmComponent } from './sdm/sdm.component';
 
 
 const routes: Routes = [
@@ -43,41 +42,22 @@ const routes: Routes = [
         
       },
       {
-        path:   'Non-Recurring-qty-master',
-        component:  NonRecurringQtyMasterComponent,
-        data: { title: ':: DelziaHR :: Non-Recurring-qty' },
-        
-      },
-      {
         path:   'attendance',
         component:  AttendanceComponent,
         data: { title: ':: DelziaHR :: Attendance' },
         
       },
       {
-        path: 'FastEntry-Non-Recurring-Amount',
-        component: FastentryNRAmtComponent,
-        data: { title: ':: DelziaHR :: Fast Entry NR Amount'}
+        path:   'sdm-creation',
+        component:  SdmStepperComponent,
+        data: { title: ':: DelziaHR :: SDM Creation' },
+        
       },
       {
-        path: 'SDM',
-        component: SdmStepperComponent,
-        data: { title: ':: DelziaHR :: SDM'}
-      },
-      {
-        path: 'FastEntry-Non-Recurring-Quantity',
-        component: FastentryNrQtyComponent,
-        data: { title: ':: DelziaHR :: Fast Entry NR Quantity'}
-      },
-      {
-        path: 'Garnishment-Master',
-        component: GarnishmentMasterComponent,
-        data: { title: ':: DelziaHR :: Garnishment Master'}
-      },
-      {
-        path: 'Garnishment-Transaction',
-        component: GarnishmentTransactionComponent,
-        data: { title: ':: DelziaHR :: Garnishment Transaction'}
+        path:   'component2',
+        component:  Component2Component,
+        data: { title: ':: DelziaHR :: component2' },
+        
       },
     ],
   },
