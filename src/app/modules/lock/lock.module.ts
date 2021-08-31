@@ -29,6 +29,7 @@ import { SupplementryCycleComponent } from './supplementry-cycle/supplementry-cy
 import { SummaryComponent } from './summary/summary.component';
 import { AreaComponent } from './area/area.component';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { CKEditorModule } from 'ckeditor4-angular';
 // import { NewlockComponent } from './newlock/newlock.component';
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import { MultiSelectModule } from 'primeng/multiselect';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    MultiSelectModule,
     MatSliderModule,
+    CKEditorModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),

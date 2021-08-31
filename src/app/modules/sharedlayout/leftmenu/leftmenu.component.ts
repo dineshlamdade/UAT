@@ -59,6 +59,8 @@ public isCollapsedQuery = true;
   companyGroupMasterId: any;
   userRoleId: any;
   menuData: any;
+  isCollapsedpayrollinput: boolean;
+  isCollapsedKeywordinput:boolean;
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService,
@@ -67,8 +69,11 @@ public isCollapsedQuery = true;
     if ( ( this.router.url ).includes( 'payroll' ) ) {
       this.isCollapsed = false;
     }
+    if ( ( this.router.url ).includes( 'formula' ) ) {
+      this.isCollapsedKeywordinput = false;
+    }
     if ( ( this.router.url ).includes( 'PayrollInputs' ) ) {
-      this.isPayrollInputsCollapsed = false;
+      this.isCollapsedpayrollinput = false;
     }
     if ( ( this.router.url ).includes( 'investment' ) ) {
       this.isInvestmentCollapsed = false;
