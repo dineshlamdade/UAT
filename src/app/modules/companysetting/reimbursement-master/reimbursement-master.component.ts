@@ -9,13 +9,19 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class ReimbursementMasterComponent implements OnInit {
   public tabIndex = 0;
-  public policyNumber: string;
+  public generalFormTab: string;
   public windowScrolled: boolean;
   public data: any;
-
+  public rembsettingid:number;
+  public policyNumber: string;
+  public policyNumber1: string;
   constructor() { }
 
   ngOnInit(): void {
+    console.log("rembsettingid", this.rembsettingid);
+  }
+  rembsetting(){
+    console.log("rembsettingid2", this.rembsettingid);
   }
 
   changeTabIndexForRedirect(event: any) {
@@ -29,15 +35,22 @@ export class ReimbursementMasterComponent implements OnInit {
     this.policyNumber = event;
   }
 
+  redirectToMaster1(event: any) {
+    this.tabIndex = 2;
+    this.policyNumber1 = event;
+  }
 
   changeTabIndex(index: number)
   {
+    console.log(this.policyNumber)
     if(index !== 2) {
       this.data = undefined;
     }
+    if(index !== 1) {
+      this.policyNumber = undefined;
+    }
     this.tabIndex = index;
   }
-
   public modalRef: BsModalRef;
 
   @HostListener('window:scroll', [])

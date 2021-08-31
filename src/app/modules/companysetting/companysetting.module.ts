@@ -1,6 +1,6 @@
 import { AttributeDependencyComponent } from './attribute-dependency/attribute-dependency.component';
 import { CommonModule, DatePipe } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -105,6 +105,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   ],
 
   providers: [DatePipe, NumberFormatPipe],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 
 } )
 export class CompanySettingModule { }
