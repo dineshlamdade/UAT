@@ -128,4 +128,9 @@ export class PayrollListComponent implements OnInit {
   }
 
 
+  navigateToFinancialmaster(){
+    localStorage.setItem('payrollListEmpData', JSON.stringify(this.selectedEmployeeData))
+    this.router.navigate(['/PayrollInputs/Financial-Master'])
+  }
+
 }
