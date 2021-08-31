@@ -2,7 +2,7 @@
   <div class="col-md-12">
 
     <div class="card">
-      <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" (ngSubmit)="save()" method="post"
+      <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" (ngSubmit)="getTypeAndID()" method="post"
         novalidate>
         <div class="card-body">
           <div class="fourtabview-contents">
@@ -18,13 +18,6 @@
             <div class="row">
               <div class="col-md-4">
                 <label class="form-label">Company Name</label>
-                <!-- <select name="Gender"
-                              class="form-control custom-select">
-                              <option selected value="">Select</option>
-                              <option value="Male"> Paysquare</option>
-                              <option value="Female"> Infosys</option>
-                          </select> -->
-
                 <select name="companyName" id="companyName"
                   [ngClass]="{'is-invalid' : form.get('companyName').status == 'INVALID'}" class="form-control  "
                   formControlName="companyName">
@@ -33,8 +26,6 @@
                     {{companyNames.label}}
                   </option>
                 </select>
-
-
               </div>
               <div class="col-md-4">
                 <label class="form-label">Type</label>
@@ -119,10 +110,10 @@
 </div>
 <div class="row mt-10">
   <div class="col-md-12">
-    <p-table #dt1 [value]="lockTableDataList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+    <p-table #dt1 [value]="goAsandWhenList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
       (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      totalRecords={{lockTableDataList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
+      totalRecords={{goAsandWhenList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
         'companyName',
         'serviceName',
         'type',
@@ -134,20 +125,19 @@
       <ng-template pTemplate="caption">
         <div class="row">
           <div class="col-md-6 mt-10 d-flex ">
-            <label class="form-label mr-5">Total records ({{lockTableDataList.length}})</label>
+            <label class="form-label mr-5">Total records ({{goAsandWhenList.length}})</label>
             <label class="form-label">Selected records ({{selectedUser.length}})</label>
           </div>
           <div class="col-md-6">
             <div class="float-right">
               <button type="submit"
-                 [ngClass]="{'disabled-btn-bg-green' : checkedSummaryList.length == 0, 'btn-bg-green': !checkedSummaryList.length == 0}"
+                [ngClass]="{'disabled-btn-bg-green' : checkedSummaryList.length == 0, 'btn-bg-green': !checkedSummaryList.length == 0}"
                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
-                (click)="lockCycle(template2)" tooltip="Lock Cycle"
-           ><b>
+                (click)="lockCycle(template2)" tooltip="Lock Cycle"><b>
                   <i class="fa fa-lock" aria-hidden="true"></i>
                 </b> Lock
               </button>
-              <i class="fa fa-file-excel-o text-dark-green fa-2x " (click)="exportApprovalSummaryAsExcel()"></i>
+              <i class="fa fa-file-excel-o text-dark-green fa-2x" (click)="exportApprovalSummaryAsExcel()"></i>
 
 
             </div>
@@ -234,8 +224,8 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-          <tr [class.active]="user1.isHighlight"
-          (dblclick)="doubleClickOnLeftTable(user1)" [ngClass]="{'outofstock':user1.isHighlight == true}">
+        <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
+          [ngClass]="{'outofstock':user1.isHighlight == true}">
           <td>
             <p-tableCheckbox [value]="user1" (click)="onCheckArea(e.checked,user1,rowIndex)" #e>
             </p-tableCheckbox>
@@ -247,6 +237,13 @@
           <td>{{ user1.createDateTime | date :"dd-MMM-yyyy" }} </td>
           <td>{{ user1.fromDate | date :"dd-MMM-yyyy" }} </td>
           <td>{{ user1.toDate | date :"dd-MMM-yyyy"}} </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+              Available</span>
+          </td>
         </tr>
       </ng-template>
     </p-table>
@@ -266,11 +263,11 @@
 
                 <div class="row mt-10">
                   <div class="col-md-12">
-
-                      <p-table #dt1 [value]="checkedSummaryList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                      (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
-                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                      totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
+                    <p-table #dt1 [value]="checkedSummaryList" [paginator]="true" [rows]="10"
+                      [showCurrentPageReport]="true" (sortFunction)="customSort3($event)" [customSort3]="true"
+                      [pageLinks]="5" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                      [globalFilterFields]="[
                         'companyName',
                         'serviceName',
                         'type',
@@ -282,13 +279,13 @@
                       <ng-template pTemplate="caption">
                         <div class="row">
                           <div class="col-md-6 mt-10 d-flex ">
-                              <label class="form-label mr-5">Total records ({{checkedSummaryList.length}})</label>
-                              <label class="form-label">Selected records ({{selectedUserAsAndWhen.length}})</label>
-                              </div>
+                            <label class="form-label mr-5">Total records ({{checkedSummaryList.length}})</label>
+                            <label class="form-label">Selected records ({{selectedUserAsAndWhen.length}})</label>
+                          </div>
                           <div class="col-md-6">
                             <div class="float-right">
-                              <!-- <i class="fa fa-file-excel-o text-dark-green fa-2x "></i> -->
-                              <i class="fa fa-file-excel-o text-dark-green fa-2x " (click)="AsWhenExportApprovalSummaryAsExcel()"></i>
+                              <i class="fa fa-file-excel-o text-dark-green fa-2x "
+                                (click)="AsWhenExportApprovalSummaryAsExcel()"></i>
                             </div>
                           </div>
                         </div>
@@ -321,7 +318,7 @@
                             </div>
                           </th>
                           <th>
-                               <div class="p-d-flex p-jc-between p-ai-center">Type
+                            <div class="p-d-flex p-jc-between p-ai-center">Type
                               <div class="Sort_Filter_Position">
                                 <p-sortIcon field="type" pSortableColumn="type">
                                 </p-sortIcon>
@@ -345,7 +342,8 @@
                               Cycle Creation Date
                               <div class="Sort_Filter_Position">
                                 <p-sortIcon field="createDateTime" pSortableColumn="createDateTime"></p-sortIcon>
-                                <p-columnFilter field="createDateTime" display="menu" class="p-ml-auto"></p-columnFilter>
+                                <p-columnFilter field="createDateTime" display="menu" class="p-ml-auto">
+                                </p-columnFilter>
                               </div>
                             </div>
                           </th>
@@ -370,13 +368,12 @@
                           </th>
                         </tr>
                       </ng-template>
-                        <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                          <tr [class.active]="user1.isHighlight"
-                          (dblclick)="doubleClickOnLeftTable(user1)" [ngClass]="{'outofstock':user1.isHighlight == true}">
+                      <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                        <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
+                          [ngClass]="{'outofstock':user1.isHighlight == true}">
                           <td>
-                            <p-tableCheckbox [value]="user1"
-                            (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e>
-                          </p-tableCheckbox>
+                            <p-tableCheckbox [value]="user1" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e>
+                            </p-tableCheckbox>
                           </td>
                           <td>{{ user1.companyName }} </td>
                           <td>{{ user1.serviceName }} </td>
@@ -385,6 +382,13 @@
                           <td>{{ user1.createDateTime | date :"dd-MMM-yyyy" }} </td>
                           <td>{{ user1.fromDate | date :"dd-MMM-yyyy" }} </td>
                           <td>{{ user1.toDate | date :"dd-MMM-yyyy"}} </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                              Available</span>
+                          </td>
                         </tr>
                       </ng-template>
                     </p-table>
@@ -396,19 +400,18 @@
         </div>
       </div>
       <div class="modal-footer">
-            <button type="submit"
-            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-            tooltip="Save" (click)="saveLockProceed()"  [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockList.length == 0, 'btn-bg-green': !checkedFinalLockList.length == 0}"><b>
-                <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
-                <button type="button" tooltip="Cancel" (click)="resetLock()"
-                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b>
-                 <i class="fa fa-refresh"></i></b> Reset</button>
+        <!-- saveLockProceed -->
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+          tooltip="Save" (click)="save()"
+          [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockList.length == 0, 'btn-bg-green': !checkedFinalLockList.length == 0}"><b>
+            <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        <button type="button" tooltip="Cancel" (click)="resetLock()"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b>
+            <i class="fa fa-refresh"></i></b> Reset</button>
       </div>
     </ng-template>
-
   </div>
 </div>
-
 <ng-template #aswhen2>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Pending For Lock</h5>
@@ -420,19 +423,13 @@
       <div class="card-body">
         <div class="row clearfix">
           <div class="col-md-12">
-
             <div class="row mt-10">
               <div class="col-md-12">
-                <!-- <p-table #dt2 [value]="pendingLockList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-                  (sortFunction)="customSort($event)" [customSort]="true"
-                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                  [rowsPerPageOptions]="[10,25,50]"
-                  [globalFi -->
-
-                  <p-table #dt1 [value]="pendingLockList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                <p-table #dt1 [value]="pendingLockList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                   (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                  totalRecords={{pendingLockList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
+                  totalRecords={{pendingLockList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                  [globalFilterFields]="[
                     'companyName',
                     'serviceName',
                     'type',
@@ -441,8 +438,6 @@
                     'fromDate',
                     'toDate',
                   ]">
-
-
                   <ng-template pTemplate="caption">
                     <div class="row">
                       <div class="col-md-6 mt-10 d-flex ">
@@ -451,7 +446,8 @@
                       </div>
                       <div class="col-md-6">
                         <div class="float-right">
-                          <i class="fa fa-file-excel-o text-dark-green fa-2x " (click)="exportApprovalPendingForLock()"></i>
+                          <i class="fa fa-file-excel-o text-dark-green fa-2x "
+                            (click)="exportApprovalPendingForLock()"></i>
                         </div>
                       </div>
                     </div>
@@ -484,7 +480,7 @@
                         </div>
                       </th>
                       <th>
-                           <div class="p-d-flex p-jc-between p-ai-center">Type
+                        <div class="p-d-flex p-jc-between p-ai-center">Type
                           <div class="Sort_Filter_Position">
                             <p-sortIcon field="type" pSortableColumn="type">
                             </p-sortIcon>
@@ -512,7 +508,6 @@
                           </div>
                         </div>
                       </th>
-
                       <th>
                         <div class="p-d-flex p-jc-between p-ai-center">From Date
                           <div class="Sort_Filter_Position">
@@ -520,7 +515,6 @@
                             <p-columnFilter field="fromDate" display="menu" class="p-ml-auto"></p-columnFilter>
                           </div>
                         </div>
-
                       </th>
                       <th>
                         <div class="p-d-flex p-jc-between p-ai-center">
@@ -534,13 +528,11 @@
                     </tr>
                   </ng-template>
                   <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                    <tr [class.active]="user1.isHighlightPending"
-                      (dblclick)="doubleClickOnLeftTable(user1)"
+                    <tr [class.active]="user1.isHighlightPending" (dblclick)="doubleClickOnLeftTable(user1)"
                       [ngClass]="{'outofstock':user1.isHighlightPending == true}">
                       <td>
-                        <p-tableCheckbox [value]="user1"
-                        (click)="inPendingForLock(e.checked,user1,rowIndex)" #e>
-                      </p-tableCheckbox>
+                        <p-tableCheckbox [value]="user1" (click)="inPendingForLock(e.checked,user1,rowIndex)" #e>
+                        </p-tableCheckbox>
                       </td>
                       <td>{{ user1.companyName }} </td>
                       <td>{{ user1.serviceName }} </td>
@@ -551,29 +543,28 @@
                       <td>{{ user1.toDate | date :"dd-MMM-yyyy"}} </td>
                     </tr>
                   </ng-template>
-
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                          Available</span>
+                      </td>
+                    </tr>
+                  </ng-template>
                 </p-table>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <!-- <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-      tooltip="Save"><b>
+    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+      tooltip="Save" (click)="savePenidngForLock()"
+      [ngClass]="{'disabled-btn-bg-green' : finalpendingLockList.length == 0, 'btn-bg-green': !finalpendingLockList.length == 0}"><b>
         <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
-    <button type="button" tooltip="Cancel"
-      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i class="fa fa-refresh"></i></b>
-      Reset</button> -->
-      <button type="submit"
-      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-      tooltip="Save" (click)="saveLockProceed()"  [ngClass]="{'disabled-btn-bg-green' : finalpendingLockList.length == 0, 'btn-bg-green': !finalpendingLockList.length == 0}"><b>
-          <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
-          <button type="button" tooltip="Cancel" (click)="resetPendingForLock()"
-          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b>
-           <i class="fa fa-refresh"></i></b> Reset</button>
+    <button type="button" tooltip="Cancel" (click)="resetPendingForLock()"
+      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b>
+        <i class="fa fa-refresh"></i></b> Reset</button>
   </div>
 </ng-template>

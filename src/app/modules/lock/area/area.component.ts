@@ -114,7 +114,8 @@ export class AreaComponent implements OnInit {
   public areTableList : Array<any> = []
   public checkedSummaryList : Array<any> = []
   public checkedFinalLockList  :  Array<any> = [];
-  public AreaCodes  :  Array<any> = [];
+  public checkedFinalPendingList  :  Array<any> = [];
+    public AreaCodes  :  Array<any> = [];
   public employeeList : Array<any> = [];
 
     disabled: boolean = true;
@@ -125,10 +126,10 @@ export class AreaComponent implements OnInit {
     public HighlightRight: any;
     public selectedUser: Array<any> = [];
     public selectedUserInLock: Array<any> = [];
-
+    public cycleNamePending : any;
     HighlightRow: number;
 //
-
+public selectedArea = null;
 
 cycleDefinationListEmp: Array<any> = [];
 NameofCycleDefinationEmp: Array<any> = [];
@@ -147,9 +148,18 @@ areTableListEmp: Array<any> = [];
 selectedUserEmp: Array<any> = [];
 excelDataLock: Array<any> = [];
 
+selectedUserPending: Array<any> = [];
+pendingAreTableList: Array<any> = [];
+checkedSummaryListPending: Array<any> = [];
+
+
+
   excelData: any[];
   header: any[];
   excelDataAreaLock: any[];
+  pendingAreaList: any;
+  public pendingForm: any = FormGroup;
+  public lockForm : any = FormGroup;
   constructor(
     private formBuilder: FormBuilder,
     private alertService: AlertServiceService,
@@ -159,6 +169,8 @@ excelDataLock: Array<any> = [];
   ) {
     this.reactiveAreaForm();
     this.reactiveEmpForm();
+    this.pendingReactiveForm();
+    this.lockReactiveForm();
   }
 
   ngOnInit(): void {
@@ -173,6 +185,7 @@ excelDataLock: Array<any> = [];
     this.getAllCompanyNameEmp();
     // this.getAllCycleName();
     this.getAllServiceNameEmp();
+    this.pendingForLockAsWhen();
 
     this.customers = [
       {
@@ -394,8 +407,27 @@ excelDataLock: Array<any> = [];
       groupCompanyId: new FormControl(''),
       serviceMasterId: new FormControl(''),
       areaMasterCode: new FormControl('', Validators.required),
+
     });
+    console.log(this.areaForm)
   }
+
+  pendingReactiveForm(){
+   this.pendingForm = this.formBuilder.group({
+    pendingCycleName: new FormControl(''),
+    fromDate: new FormControl(''),
+    toDate: new FormControl(''),
+   })
+  }
+
+
+  lockReactiveForm(){
+    this.lockForm = this.formBuilder.group({
+     lockCycleName: new FormControl(''),
+     fromDate: new FormControl(''),
+     toDate: new FormControl(''),
+    })
+   }
 
   //Cycle Defination Service
   getAllCycleDefination() {
@@ -456,19 +488,47 @@ excelDataLock: Array<any> = [];
   //Get Cycle Name
   onSelectCycleName(evt: any) {
     if (evt != '') {
+      this.lockService.pendingLockEmptyArea(evt).subscribe((res) =>{
+        console.log("pendingLockEmptyArea",res);
+        this.pendingAreTableList = res.data.results[0];
+      });
       this.cycleNameList.forEach((element) => {
         if (element.periodName == evt) {
           this.areaForm.patchValue({
             fromDate: new Date(element.fromDate),
             toDate: new Date(element.toDate),
+            cycleNamePending : element.periodName,
           });
+          this.pendingForm.patchValue({
+            pendingCycleName : evt,
+            fromDate: new Date(element.fromDate),
+            toDate: new Date(element.toDate),
+          });
+          this.lockForm.patchValue({
+            lockCycleName : evt,
+            fromDate: new Date(element.fromDate),
+            toDate: new Date(element.toDate),
+          });
+
         }
       });
+
     } else {
       this.areaForm.patchValue({
         fromDate: '',
         toDate: '',
       });
+      this.pendingForm.patchValue({
+        pendingCycleName: '',
+        fromDate: '',
+        toDate: '',
+      });
+      this.lockForm.patchValue({
+        lockCycleName: '',
+        fromDate: '',
+        toDate: '',
+      });
+
     }
   }
 
@@ -633,13 +693,13 @@ excelDataLock: Array<any> = [];
         );
       }
     });
-    this.areaForm.reset();
-    this.areaForm.patchValue({
-      companyName : '',
-      serviceName : '',
-      periodName : '',
-      name : '',
-    })
+    // this.areaForm.reset();
+    // this.areaForm.patchValue({
+    //   companyName : '',
+    //   serviceName : '',
+    //   periodName : '',
+    //   name : '',
+    // })
   }
 
   getServiceName(serviceCode: any) {
@@ -675,21 +735,41 @@ excelDataLock: Array<any> = [];
       if(res.data.results.length > 0){
         this.areTableList = res.data.results[0];
         console.log("areTableList",this.areTableList)
+        this.areTableList.forEach((element, i) => {
+          if (i == this.HighlightRow) {
+            element.isHighlightright = false;
+            // if (isContain == true) {
+            //   element.isHighlight = false;
+            // } else {
+            //   if (i == this.HighlightRow) {
+            //     element.isHighlight = true;
+            //   }
+            // }
+          }
+        });
       }
     });
   }
 
+
   //OnCheck check box in area summary table
-  onCheckArea(checkValue, element){
+  onCheckArea(checkValue, element, rowIndex){
+    this.RowSelected(element, rowIndex);
     if(checkValue){
       const data = {
         companyName : element.companyName,
         payrollAreaCode : element.payrollAreaCode,
         serviceName : element.serviceName,
         cycleLockPayrollAreaTempId : element.cycleLockPayrollAreaTempId,
+        // selectedArea : element.cycle,
+        cycle : element.cycle,
+        fromDate :new Date(element.fromDate),
+        toDate :new Date(element.toDate),
+
       };
       this.checkedSummaryList.push(data);
       console.log("checkedSummaryList", this.checkedSummaryList)
+      console.log("selectedArea", this.selectedArea)
     }
     else {
       const index = this.checkedSummaryList.indexOf((item) => (item.cycleLockPayrollAreaTempId == element.cycleLockPayrollAreaTempId));
@@ -817,14 +897,24 @@ excelDataLock: Array<any> = [];
 
 
    //OnCheck check box in area summary table On Check Area after click on  Lock button
-   onCheckAreaInLock(checkValue, element){
+   onCheckAreaInLock(checkValue, element, rowIndex){
+    this.RowSelectedInLock(element, rowIndex);
     if(checkValue){
       this.checkedFinalLockList.push(element.cycleLockPayrollAreaTempId);
     }else {
        const index = this.checkedFinalLockList.indexOf((p) => (p.cycleLockPayrollAreaTempId = element.jobMasterValueId));
       this.checkedFinalLockList.splice(index, 1);
     }
+  }
 
+  //Checked Pending for lock popup
+  onCheckedPendigLock(checkValue, element){
+    if(checkValue){
+      this.checkedFinalPendingList.push(element.processingCycleId);
+    }else {
+       const index = this.checkedFinalPendingList.indexOf((p) => (p.processingCycleId = element.processingCycleId));
+      this.checkedFinalPendingList.splice(index, 1);
+    }
   }
 
   //Reset Lock
@@ -841,7 +931,8 @@ excelDataLock: Array<any> = [];
 
     this.lockService.postAreaInLock(data).subscribe((res) =>{
       if(res){
-        if(res.data.results.length >= 1) {
+        if(res.data.results) {
+           this.getAreaTableSummaryList();
           this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
@@ -851,19 +942,67 @@ excelDataLock: Array<any> = [];
           'Something went wrong. Please try again.'
         );
       }
-      this.alertService.sweetalertMasterSuccess( '', 'Records added Successfully' );
-      this.modalRef.hide()
+      this.modalRef.hide();
+      this.selectedUser = [];
       this.checkedSummaryList = [];
-      this.getAreaTableSummaryListEmp ();
+      this.getAreaTableSummaryList();
+      this.areaForm.reset();
+      this.areaForm.patchValue({
+        companyName : '',
+        serviceName : '',
+        periodName : '',
+        name : '',
+      })
     });
   }
 
+  //Save Pending For lock
+    pendingLockProceed(){
+    const data = { businessCycleIds : this.checkedFinalPendingList }
+    this.lockService.postPendingAreaLock(data).subscribe((res) =>{
+      if(res){
+        if(res.data.results) {
+          this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        } else {
+          this.alertService.sweetalertWarning(res.status.messsage);
+        }
+      }else {
+        this.alertService.sweetalertError(
+          'Something went wrong. Please try again.'
+        );
+      }
+      this.modalRef.hide();
+      this.pendingAreTableList = [];
+          this.areaForm.reset();
+          this.areaForm.patchValue({
+            companyName : '',
+            serviceName : '',
+            periodName : '',
+            name : '',
+          })
+    });
+  }
+
+  //resetPendingLock
+  resetPendingLock(){
+    this.pendingAreTableList = [];
+    this.checkedFinalPendingList = [];
+    this.modalRef.hide()
+  }
 
 getReturnCycleTempID(cycleLockPayrollAreaTempId: any) {
   const toSelect = this.checkedFinalLockList.find(
     (element) => element.cycleLockPayrollAreaTempId == cycleLockPayrollAreaTempId
   );
   return toSelect.cycleLockPayrollAreaTempId;
+  console.log('toSelect', toSelect);
+}
+
+getReturnCycleTem(processingCycleId: any) {
+  const toSelect = this.checkedFinalPendingList.find(
+    (element) => element.processingCycleId == processingCycleId
+  );
+  return toSelect.processingCycleId;
   console.log('toSelect', toSelect);
 }
 
@@ -887,14 +1026,12 @@ reactiveEmpForm(){
     periodName: new FormControl('', Validators.required),
     fromDate: new FormControl(''),
     toDate: new FormControl(''),
-    // companyName : new FormControl ('', Validators.required),
     companyName: new FormControl(''),
     serviceName: new FormControl('', Validators.required),
     groupCompanyId: new FormControl(''),
     serviceMasterId: new FormControl(''),
     employeeCode: new FormControl(''),
     areaMasterCode: new FormControl('', Validators.required),
-
   });
 }
 
@@ -903,7 +1040,6 @@ getAllCycleDefinationEmp() {
   this.lockService.getAllCycleData().subscribe((res) => {
     this.cycleDefinationListEmp = res;
     console.log('cycleDefinationListEmp', this.cycleDefinationListEmp);
-
     res.data.results[0].forEach((element) => {
       const obj = {
         label: element.name,
@@ -1194,15 +1330,15 @@ saveEmp() {
      );
    }
  });
- this.empForm.reset();
- this.empForm.patchValue({
-  companyName : '',
-  serviceName : '',
-  periodName : '',
-  name : '',
-  employeeCode : '',
-  areaMasterCode : '',
-})
+//  this.empForm.reset();
+//  this.empForm.patchValue({
+//   companyName : '',
+//   serviceName : '',
+//   periodName : '',
+//   name : '',
+//   employeeCode : '',
+//   areaMasterCode : '',
+// })
 }
 
 
@@ -1211,15 +1347,16 @@ saveEmp() {
 exportApprovalSummaryAsExcel(): void {
   this.excelData = [];
   this.header = []
-  this.header =["companyName", "payrollAreaCode", "serviceName"];
+  this.header =["companyName", "payrollArea", "serviceName"];
   this.excelData = [];
-  if(this.areTableList.length>0){
+  if(this.pendingAreTableList.length>0){
    // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
    //this.employeeList =  this.areTableList;
-   this.areTableList.forEach((element) => {
+   this.pendingAreTableList.forEach((element) => {
     let obj = {
       companyName: element.companyName,
-      payrollAreaCode: element.payrollAreaCode,
+      payrollArea: element.payrollArea,
+      // payrollAreaCode: element.payrollAreaCode,
       serviceName: element.serviceName,
     };
     this.excelData.push(obj);
@@ -1307,6 +1444,18 @@ getAreaTableSummaryListEmp(){
   this.lockService.getAllAreaTableList().subscribe((res) => {
     if(res.data.results.length > 0){
       this.areTableListEmp = res.data.results[0];
+      this.areTableList.forEach((element, i) => {
+        if (i == this.HighlightRow) {
+          element.isHighlightright = false;
+          // if (isContain == true) {
+          //   element.isHighlight = false;
+          // } else {
+          //   if (i == this.HighlightRow) {
+          //     element.isHighlight = true;
+          //   }
+          // }
+        }
+      });
       console.log("areTableListEmp",this.areTableListEmp)
     }
   });
@@ -1384,5 +1533,78 @@ doubleClickOnLeftTableEmp(evt: any) {}
       employeeCode : '',
     })
     }
+
+    //Pending for lock
+
+//     selectedUserPending
+// pendingAreTableList
+// checkedSummaryListPending
+
+  //Row select in table
+   //Select Row in left table of PHG
+   RowSelectedPending(u: any, ind: number) {
+    this.HighlightRow = ind;
+
+    let temp = this.pendingAreTableList;
+    this.pendingAreTableList = new Array();
+    let index = this.selectedUserPending.findIndex(
+      (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
+    );
+    let isContain = this.selectedUserPending.some(
+      (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
+    );
+    if (isContain == true) {
+      this.selectedUserPending.splice(index, 1);
+    } else {
+      this.selectedUserPending.push(u);
+    }
+
+    this.pendingAreTableList = temp;
+
+    this.pendingAreTableList.forEach((element, i) => {
+      if (i == this.HighlightRow) {
+        element.isHighlightright = false;
+        if (isContain == true) {
+          element.isHighlight = false;
+        } else {
+          if (i == this.HighlightRow) {
+            element.isHighlight = true;
+          }
+        }
+      }
+    });
+  }
+
+  // doubleClickOnLeftTable(evt: any) {}
+
+     //Area Table List
+    //  getAreaFromPending(){
+    //   this.lockService.getAllAreaTableList().subscribe((res) => {
+    //     if(res.data.results.length > 0){
+    //       this.pendingAreTableList = res.data.results[0];
+    //       console.log("pendingAreTableList",this.pendingAreTableList)
+    //     }
+    //   });
+    // }
+
+
+    pendingForLockAsWhen() {
+      this.lockService.pendingForLockArea().subscribe((res) => {
+        this.pendingAreaList = res.data.results[0];
+        console.log('pendingAreaList',
+        this.pendingAreaList);
+        res.data.results[0].forEach((element) => {
+          const obj = {
+            serviceName: element.serviceName,
+            companyName: element.companyName,
+            processingCycleId: element.processingCycleId,
+            payrollArea: element.payrollArea,
+
+          };
+          this.pendingAreTableList.push(obj);
+        });
+      });
+    }
+
 
 }

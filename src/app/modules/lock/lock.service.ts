@@ -123,6 +123,17 @@ export class LockService {
             } ) );
         }
 
+        //Post Pending for lock in Area
+        //Post  AreaAPI
+        postPendingAreaLock(data:any){
+          const headers = new HttpHeaders()
+          .set('content-type', 'application/json')
+          .set('X-TenantId', 'PaysquareDefault');
+          return this._HTTP.post( environment.baseUrl8084 + 'payrollArea-lock/lockDataAdd',  data,)
+            .pipe( map( ( res: any ) => {
+              return res;
+            } ) );
+        }
 
         // EMP COde
          //Get APIs Cycle Name
@@ -209,6 +220,7 @@ getCycleName(cycleName) {
       return res;
     } ) );
 }
+
 //Post As and when
 postAsAndWhen(data:any){
   const headers = new HttpHeaders()
@@ -245,6 +257,41 @@ pendingForLockAsWhen() {
     } ) );
 }
 
+//Call on Go
+// cycleLockAs&WhenAndSupp-lock/GETAllCycle/Supplementry/5
+
+
+getGoCycleName(type, cycleName) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock/GETAllCycle/' + type + '/' + cycleName)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Area Penidng for lock API
+pendingForLockArea() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'PayrollOutput/GETAllPendingCycles')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Area Penidng for lock API Empty
+pendingLockEmptyArea(areaName) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'PayrollOutput/GETAllPendingCycles/' + areaName)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
 
 }
 
