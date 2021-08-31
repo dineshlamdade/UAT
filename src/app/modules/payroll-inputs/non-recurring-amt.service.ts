@@ -17,6 +17,10 @@ export class NonRecurringAmtService {
     return this.HttpClient.get<any>(this.apiUrl + `NonRecurringTransactionGroup`);
   }
 
+  getAllScheduleData(){
+    return this.HttpClient.get<any>(this.apiUrl + `NonRecurringTransactionSchedule`);
+  }
+
   /**  Popup summary - Schedule details */
   NonRecurringTransactionScheduleEMP(data):Observable<any>{
     return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionSchedule/NonRecurringTransactionScheduleEMP`, data);
@@ -52,7 +56,7 @@ export class NonRecurringAmtService {
 
   /** Update Transaction */
   attendanceInputAPIRecordsUI(data,id):Observable<any>{
-    return this.HttpClient.put<any>(this.apiUrl + `NonRecurringTransactionGroup/updateById/` + id , data);
+    return this.HttpClient.put<any>(this.apiUrl + `NonRecurringTransactionGroup/updateById/`  , data);
   }
   
   
@@ -60,14 +64,36 @@ export class NonRecurringAmtService {
     return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup`, data);
   }
   
-  
-  
-  
-  
   NonRecurringTransactionGroupAPIbyId(data):Observable<any>{
     return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupAPIbyId`, data);
   }
   
+  NonRecurringTransactionGroupHistoryAPIbyId(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupHistoryAPIbyId`, data);
+  }
   
+  PayrollAreaByPayrollAreaCode(data):Observable<any>{
+    return this.HttpClient.post<any>(this.apiUrl + `payrollArea-details/PayrollAreaByPayrollAreaCode`, data);
+  }
   
+  payrollAreaDetails(headGroupDefinitionId):Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl + `payrollArea-details/`+headGroupDefinitionId);
+ 
+  }
+
+  getEmployeeWisePayrollList(employeeMasterId):Observable<any>{
+    return this.HttpClient.get<any>(this.apiUrl1 + `payroll-information/payrollAssigned/`+employeeMasterId);
+  }
+
+  NonRecurringTransactionGroupGetSDMValue(data){
+    return this.HttpClient.post(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGroupGetSDMValue` , data)
+  }
+
+  NonRecurringTransactionGrouprangeValidation(data){
+    return this.HttpClient.post(this.apiUrl + `NonRecurringTransactionGroup/NonRecurringTransactionGrouprangeValidation` , data)
+  }
+
+  nonRecurringTransactionGroupDeviation_RepeateBynonTransactionId(nonRecurringTransactionGroupId){
+    return this.HttpClient.get(this.apiUrl + `NonRecurringTransactionGroup/nonRecurringTransactionGroupDeviation_RepeateBynonTransactionId?nonRecurringTransactionGroupId=`+nonRecurringTransactionGroupId)
+  }
 }
