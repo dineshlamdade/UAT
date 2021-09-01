@@ -369,15 +369,15 @@
         <a href="javascript:void(0)" (click)="isCollapsedpayrollinput = !isCollapsedpayrollinput" [attr.aria-expanded]="!isCollapsedpayrollinput" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
               class="icon-credit-card"></i><span>Payroll Inputs</span></a>
         <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedpayrollinput" [isAnimated]="true">
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
             [routerLink]="['/PayrollInputs/Payroll-List']" href="javascript:void(0)">
             <span>Payroll</span></a>
           </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
             [routerLink]="['/PayrollInputs/attendance']" href="javascript:void(0)">
             <span>Attendance</span></a>
           </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" 
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
             [routerLink]="['/PayrollInputs/sdm-creation']" href="javascript:void(0)">
             <span>SDM Creation</span></a>
           </li>
@@ -912,8 +912,8 @@
                   [routerLink]="['/admin-dashboard']" href="javascript:void(0)"><span>Query Dashboard</span></a></li>
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                   [routerLink]="['/admin-query-generation']" href="javascript:void(0)"><span>Admin Query Generation</span></a></li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                  [routerLink]="['/Query-Communication']" href="javascript:void(0)"><span>Query Communication</span></a></li>
+              <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                  [routerLink]="['/Query-Communication']" href="javascript:void(0)"><span>Query Communication</span></a></li> -->
             </ul>
       </li>
 
