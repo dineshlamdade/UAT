@@ -10,10 +10,11 @@
             <div class="card-body">
               <div class="tabview">
                 <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
-                  [checked]="tabIndex == 1" />
+                  [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
-                  <app-remb-summary *ngIf="tabIndex == 1" (myEvent)="changeTabIndexForRedirect($event)"
-                    (policyNumber)="redirectToMaster($event)">
+                  <app-remb-summary *ngIf="tabIndex == 0" 
+                   (myEvent)="changeTabIndexForRedirect($event)"
+                  (policyNumber)="redirectToMaster($event)">
                   </app-remb-summary>
                 </div>
                 <label class="nav" for="summary">
@@ -21,23 +22,24 @@
                 </label>
 
                 <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
-                  [checked]="tabIndex == 0" />
+                  [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
                   <!-- <app-remb-general *ngIf="tabIndex == 0" [policyNumber]="policyNumber"> </app-remb-general> -->
-                  <app-remb-general *ngIf="tabIndex == 0"> </app-remb-general>
+                  <app-remb-general *ngIf="tabIndex == 1" [policyNumber]="policyNumber" (policyNumber1)="redirectToMaster1($event)"
+                   > </app-remb-general>
                 </div>
                 <label class="nav" for="Master">
-                  <span> General </span>
+                  <span>Master General </span>
                 </label>
 
                 <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
                 <div class="tabs about-page">
-                  <app-remb-computation #licdeclaration [data]="data" *ngIf="tabIndex == 2"></app-remb-computation>
+                  <app-remb-computation [policyNumber]="policyNumber"  *ngIf="tabIndex == 2"></app-remb-computation>
                 </div>
 
                 <label class="nav" for="Declaration">
-                  <span> Computation </span>
+                  <span>Master Computation </span>
                 </label>
               </div>
             </div>

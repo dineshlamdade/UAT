@@ -60,7 +60,16 @@ return this._HTTP.get(environment.baseUrl8080 + 'employeeRoleAssignment/user/'+s
   }
 
 
-  
+  countCompanyGroupAndUserGroupId(subid,companyGroupMasterId,globalCompanyMasterId,userGroupId) : Observable<any> {
+    return this._HTTP.get<any>(environment.baseUrl8080 + `employeeRoleAssignment/dashboard/user/`+subid+`/`+companyGroupMasterId+`/`+globalCompanyMasterId+`/`+userGroupId);
+  }
+
+  countCompanyGroup(subid,companyGroupMasterId) : Observable<any> {
+    return this._HTTP.get<any>(environment.baseUrl8080 + 'employeeRoleAssignment/dashboard/user/'+subid+'/'+companyGroupMasterId);
+  }
+
+
+
 
 
 

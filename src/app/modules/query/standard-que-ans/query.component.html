@@ -1,15 +1,6 @@
 <app-leftmenu></app-leftmenu>
 <div class="page">
   <app-header></app-header>
-  <!-- <script src="https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js"></script>
-  <textarea cols="80" id="editor2" name="editor2" rows="10" data-sample-short>&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href=&quot;https://ckeditor.com/&quot;&gt;CKEditor&lt;/a&gt;.&lt;/p&gt;</textarea>
-  <script>
-    CKEDITOR.replace('editor2', {
-      height: 250,
-      extraPlugins: 'colorbutton'
-    });
-  </script> -->
-
   <div class="section-body mt-3">
     <div class="container-fluid">
       <div class="row">
@@ -30,6 +21,7 @@
                           class="form-control"
                           placeholder="Code" disabled
                         />
+                        <!-- value="{{queryListData.code}}" -->
                       </div>
                       <div class="col-sm-6 col-md-4">
                         <label class="form-label">Description</label>
@@ -48,26 +40,63 @@
                          [ngClass]="{'is-invalid' : queryForm.get('moduleId').status == 'INVALID'}">
                           <option [ngValue]="null" selected >Select</option>
                           <option value="{{module.applicationModuleId}}" *ngFor="let module of moduleListData " >{{module.applicationModuleName}}</option>
-
                         </select>
                       </div>
                     </div>
                   </div>
-                      <div class="row tabview-contents">
-                        <fieldset class="col-md-4" style="height: 250px;">
-                          <legend>Keywords</legend>
-                          <div class="row">
-                                <ul style="height: 100px; width: 200px;">
-                                    <div *ngFor="let key of keyword">
-                                        <li id="{{key.name}}" draggable="true"
-                                            (dragstart)="drag($event)">
-                                            {{key.description}}
-                                        </li>
-                                    </div>
-                                </ul>
-                        </div>
-                        </fieldset>
-                        <div class="col-md-7">
+                      <div class="row">
+                        <!-- <h6  style="color:darkmagenta;">Keywords</h6> -->
+                       <br><br>
+                       <fieldset class="col-md-4">
+                        <legend>Keywords</legend>
+                        <div id="page" style="margin-left: 20px;">
+                            <div>
+                              <input class="toggle-box" id="identifier-1" type="checkbox" value=true />
+                              <label for="identifier-1">Employee</label>
+                              <div class="ml-30">
+                                <a class="p-0 d-flex">
+                                  <label class="custom-control custom-checkbox ">
+                                    <ul>
+                                        <div *ngFor="let key of keyword">
+                                            <li id="{{key.displayName}}" draggable="true"
+                                                (dragstart)="drag($event)">
+                                                {{key.displayName}}
+                                            </li>
+                                        </div>
+                                  </ul>
+                                  </label>
+                                </a>
+                              </div>
+                            </div>
+                            <div>
+                              <input class="toggle-box" id="identifier-2" type="checkbox" value=true />
+                              <label for="identifier-2" class="mt-10">Company</label>
+                              <div class="ml-30">
+                                <a class="p-0 position_relative">
+                                  <label class="custom-control custom-checkbox mr-15">
+                                    <ul>
+                                      <li>Company Name</li>
+                                    </ul>
+                                  </label>
+                                </a>
+                              </div>
+                            </div>
+                            <div >
+                              <input class="toggle-box" id="identifier-3" type="checkbox" value=true />
+                              <label for="identifier-3" class="mt-10">Date</label>
+                              <div class="ml-30">
+                                <a class="p-0 position_relative">
+                                  <label class="custom-control custom-checkbox mr-15">
+                                    <ul>
+                                      <li>Date</li>
+                                    </ul>
+                                  </label>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                         </fieldset>
+                         <div class="col-md-8">
                           <div class="col-md-12">
                             <h6  style="color:darkmagenta;">Question</h6>
                             <label class="form-label">Subject</label>
@@ -75,10 +104,8 @@
                             [ngClass]="{'is-invalid' : queryForm.get('questionSubject').status == 'INVALID'}"/>
                             <br>
                             <label class="form-label">Description</label>
-                            <!-- <ckeditor data="hello" formControlName="questionDescription">
-                            </ckeditor> -->
-                            <ckeditor [config]="editorConfig"  formControlName="questionDescription"
-                            (drop)="drop($event)" (dragover)="allowDrop($event)" >
+
+                            <ckeditor [config]="editorConfig" formControlName="questionDescription" >
                             </ckeditor>
                           </div>
                           <br><br>
@@ -94,8 +121,6 @@
                             <label class="form-label">Description</label>
                             <ckeditor [config]="editorConfig" (drop)="drop($event)" (dragover)="allowDrop($event)" formControlName="answerDescription">
                             </ckeditor>
-                            <!-- <ckeditor data="hello" formControlName="answerDescription">
-                            </ckeditor> -->
                           </div>
                         </div>
                       </div>
@@ -114,10 +139,9 @@
                     <div class="col-md-3"  *ngIf="hideRemarkDiv">
                       <label class="form-label">Remark</label>
                       <textarea formControlName="remark"
-                        autocomplete="off"
-
-                        class="form-control" rows="2" placeholder="Enter Remark"
-                        [required]="hideRemarkDiv"></textarea>
+                        autocomplete="off" class="form-control" rows="2" placeholder="Enter Remark">
+                        <!-- [ngClass]="{'is-invalid' : queryForm.get('remark').status == 'INVALID'}" -->
+                      </textarea>
                     </div>
                   </div>
                 </ng-container>
@@ -139,7 +163,7 @@
                    <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
                   >&nbsp;
 
-                  <button type="button" tooltip="Cancel" *ngIf="isVisible" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="cancel()" >
+                  <button type="button" tooltip="Cancel" *ngIf="isVisiblee" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="cancel()" >
                    <b> <i class="fa fa-times-circle"  aria-hidden="true"></i></b>Cancel</button>
                 </div>
               </ng-container>
@@ -147,42 +171,115 @@
                   <h3 class="font-14 text-purple font-bold ">Summary</h3>
                   <div class="row mt-20">
                     <div class="col-12 col-md-12 col-sm-12">
-                      <div class="table-responsive Custom_Table">
-                        <table
-                          class="table table-striped table-bordered table-hover m-b-0"
-                        >
-                          <thead class="thead-dark">
-                            <tr >
-                              <th scope="col" class="wd-9">Sr No.</th>
-                              <th scope="col" class="wd-14">Module Name</th>
-                              <th scope="col" class="wd-14">Code</th>
-                              <th scope="col" class="wd-20">Description</th>
-                              <th scope="col" class="wd-19">Status</th>
-                              <th scope="col" class="wd-14">Action</th>
+                      <div class="table-responsive Custom_Table table-striped table-hover table-bordered">
+
+                        <p-table [value]="queryListData"
+                        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+                         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  >
+                         <!-- (onPage)="paginate($event)" -->
+                          <ng-template pTemplate="header">
+                            <tr class="textcenter">
+                              <th class="wd-5">Sr.No.</th>
+                              <th class="wd-15">
+                                <div class="p-d-flex p-jc-between p-ai-center ">
+                                  Module Name
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="applicationModuleName" pSortableColumn="applicationModuleName"></p-sortIcon>
+                                    <p-columnFilter
+                                      type="text"
+                                      field="applicationModuleName"
+                                      display="menu"
+                                      class="p-ml-auto"
+                                    >
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th class="wd-10">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Code
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="code" pSortableColumn="code"></p-sortIcon>
+                                    <p-columnFilter
+                                    type="text"
+                                      field="code"
+                                      display="menu"
+                                      class="p-ml-auto"
+                                    >
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th class="wd-29">
+                                <div class="p-d-flex p-jc-between p-ai-center">
+                                  Description
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="description" pSortableColumn="description"></p-sortIcon>
+                                    <p-columnFilter
+                                    type="text"
+                                    field="description"
+                                    display="menu"
+                                    class="p-ml-auto"
+                                    >
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+
+                              <th class="wd-15">
+                                <div
+                                  class="p-d-flex p-ai-center "
+                                >
+                                  Status
+                                  <div class="Sort_Filter_Position">
+                                    <p-sortIcon field="status" pSortableColumn="status"></p-sortIcon>
+                                    <p-columnFilter
+                                      field="status"
+                                      display="menu"
+                                      class="p-ml-auto" >
+                                    </p-columnFilter>
+                                  </div>
+                                </div>
+                              </th>
+                              <th class="wd-10">Action</th>
                             </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
-                              <td class="wd-9">{{i+1}}</td>
-                              <!-- <td class="wd-14">{{query.moduleId}}</td> -->
-                              <td class="wd-14">{{getModuleNamefortable(query.moduleId)}}</td>
-                              <td class="wd-14">{{query.code}}</td>
-                              <td class="wd-20">{{query.description}}</td>
-                              <td class="wd-19" *ngIf="query.active">Active</td>
-                              <td class="wd-19" *ngIf="!query.active">Inactive</td>
+                          </ng-template>
+
+                          <ng-template pTemplate="body" let-query let-rowIndex="rowIndex" >
+                            <tr class="p-selectable-row textcenter" >
+                              <td>{{ rowIndex + 1}}</td>
                               <td>
-                                <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
-                                >&nbsp;
-                                <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
-                                >&nbsp;
+                                <label class="form-lable mb-0">{{getModuleNamefortable(query.moduleId)}} </label>
+                              </td>
+                              <td>
+                                <label class="form-lable mb-0">{{query.code}}</label>
+                              </td>
+                              <td>
+                                <label class="form-lable mb-0">{{query.description}}</label>
+                              </td>
+                              <td>
+                                <label class="form-lable mb-0" *ngIf="query.active">Active</label>
+                                <label class="form-lable mb-0"  *ngIf="!query.active">Inactive</label>
+                             </td>
+                              <td>
+                                <span class="ml-1 mt-2">
+                                   <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i>
+                                  <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i >
+                                 </span>
                               </td>
                             </tr>
-                            <tr></tr>
-                          </tbody>
-                        </table>
-                        <div style=" margin-top: 20px; float: right;">
-                        <pagination-controls (pageChange)="p = $event">
-                        </pagination-controls></div>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td
+                                colspan="15"
+                                class="font-14 font500 text-center text-red"
+                              >
+                                <span>No Data Available</span>
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
                       </div>
                     </div>
                   </div>

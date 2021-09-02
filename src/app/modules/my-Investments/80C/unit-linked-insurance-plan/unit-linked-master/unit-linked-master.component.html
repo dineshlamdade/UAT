@@ -645,6 +645,7 @@
                                         <th scope="col" class="wd-10">Policy End Date</th>
                                         <th scope="col" class="wd-10">Frequency</th>
                                         <th scope="col" class="wd-10">Premium Amount</th>
+                                        <th scope="col" class="wd-10">Remark</th>
                                         <th scope="col" class="wd-10">Status</th>
                                         <th scope="col" class="wd-5">Action</th>
                                     </tr>
@@ -669,6 +670,8 @@
                                         </td>
                                         <td class="wd-10 align-right"><span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">{{summary.premiumAmount
                         | number:'1.2-2'}}</span>
+                                        </td>
+                                        <td class="wd-10"><span tooltip="Remark">{{summary.remark}}</span>
                                         </td>
                                         <td class="wd-10"><span class="text-light-green font700" tooltip="Submitted">Submitted</span>
                                         </td>

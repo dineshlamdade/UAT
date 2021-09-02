@@ -168,6 +168,9 @@ export class PPFDeclarationComponent implements OnInit {
   ppfDeclarationData: any;
   dateOfJoining: Date;
   selectedFrequency: any;
+  disableRemarkList = false
+  disableRemark: any;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -476,7 +479,15 @@ export class PPFDeclarationComponent implements OnInit {
     j: number,
     frequency: any,
 
-  ) {
+  ) 
+ 
+  {
+    
+    if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
     this.selectedFrequency = frequency;
     // if (frequency == 'As & When' && data.actualAmount <= 0)
     // {
@@ -1438,7 +1449,8 @@ export class PPFDeclarationComponent implements OnInit {
         console.log('edit Data:: ', res);
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-        this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
+        this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
+         this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
@@ -1470,10 +1482,11 @@ export class PPFDeclarationComponent implements OnInit {
             // this.documentArray.push({
             //   'dateofsubmission': ,
             // })
+            
             element.documentDetailList.forEach(element => {
             // if(element!=null)
             this.documentArray.push({
-              // 'dateofsubmission': element.dateOfSubmission,
+              'dateofsubmission': element.dateOfSubmission,
               'documentType':element.documentType,
               'documentName': element.fileName,
               'documentPassword':element.documentPassword,
@@ -1499,6 +1512,22 @@ export class PPFDeclarationComponent implements OnInit {
       }
     );
     this.documentArray = [];
+  }
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
   }
 
   nextDocViewer() {
@@ -1683,7 +1712,7 @@ export class PPFDeclarationComponent implements OnInit {
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
-      documentPassword: this.documentPassword,
+      // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
@@ -1695,6 +1724,7 @@ export class PPFDeclarationComponent implements OnInit {
         if (res.data.results.length > 0) {
           this.editremarkList = [];
           this.editdocumentPassword = [];
+          this.editfilesArray = [];
 
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({

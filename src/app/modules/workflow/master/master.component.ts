@@ -1,7 +1,7 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators   } from '@angular/forms';
-import {AlertServiceService} from './../../../core/services/alert-service.service';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { AlertServiceService } from './../../../core/services/alert-service.service';
 import { workflowService } from './../workflow.service';
 
 @Component({
@@ -24,28 +24,28 @@ export class MasterComponent implements OnInit {
     this.form = this.formBuilder.group({
       workflowMasterHeaderId: new FormControl(0),
       workflowServiceMasterId: new FormControl(0),
-     workflowCode: new FormControl(null, Validators.required),
-     description:  new FormControl(null, Validators.required),
-     workflowType: new FormControl(null, Validators.required),
-    numberOfApprover: new FormControl(null, [Validators.required, Validators.min(1)]),
+      workflowCode: new FormControl(null, Validators.required),
+      description: new FormControl(null, Validators.required),
+      workflowType: new FormControl('Reimbursement', Validators.required),
+      numberOfApprover: new FormControl(null, [Validators.required, Validators.min(1)]),
     });
-   // this.serviceName = ['','LMS', 'Reimbursement'];
+    // this.serviceName = ['','LMS', 'Reimbursement'];
   }
 
   ngOnInit() {
-    this.summaryGridData = [{
-      numberOfApprover: 3,
-      workflowType: "Reimbursement",
-workflowCode: "1",
-workflowDescription: "2",
-workflowMasterheaderId: 0,
-workflowServiceMasterId: 0,
-    }]
-    this.service.getMasterServiceList().subscribe((res)=>{
+    // this.summaryGridData = [{
+    //   numberOfApprover: 3,
+    //   workflowType: "Reimbursement",
+    //   workflowCode: "1",
+    //   workflowDescription: "2",
+    //   workflowMasterheaderId: 0,
+    //   workflowServiceMasterId: 0,
+    // }]
+    this.service.getMasterServiceList().subscribe((res) => {
       this.service = res.data.results;
-     // console.log('servicelist ::',this.service);
+      // console.log('servicelist ::',this.service);
     })
-    this.service.getMasterSummaryData().subscribe((res)=>{
+    this.service.getMasterSummaryData().subscribe((res) => {
       //console.log('SummaryData ::',res);
       this.summaryGridData = res.data.results;
     })
@@ -61,16 +61,16 @@ workflowServiceMasterId: 0,
 
     console.log('workflow ::', data);
     console.log(this.index);
-    if (this.index>=0)  {
+    if (this.index >= 0) {
       //this.summaryGridData[this.index]= this.form.getRawValue();
       this.service.putMasterFormData(data)
     }
-    else{
-     // this.summaryGridData.push(this.form.getRawValue());
-     this.service.postMasterFormData(data).subscribe((res)=>{
-       console.log(res)
-      this.summaryGridData = res.data.results;
-    })
+    else {
+      // this.summaryGridData.push(this.form.getRawValue());
+      this.service.postMasterFormData(data).subscribe((res) => {
+        console.log(res)
+        this.summaryGridData = res.data.results;
+      })
 
     }
 
@@ -86,15 +86,15 @@ workflowServiceMasterId: 0,
     this.form.patchValue(this.summaryGridData[i]);
     this.form.disable();
     this.cancelButton = true;
-    }
+  }
 
   edit(i) {
     this.form.patchValue(this.summaryGridData[i]);
     this.showUpdateButton = true;
     this.index = i;
-    }
+  }
 
-  cancel(formDirective: FormGroupDirective){
+  cancel(formDirective: FormGroupDirective) {
     this.form.enable();
     this.cancelButton = false;
     formDirective.resetForm();

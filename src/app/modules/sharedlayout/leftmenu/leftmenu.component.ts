@@ -59,6 +59,9 @@ public isCollapsedQuery = true;
   companyGroupMasterId: any;
   userRoleId: any;
   menuData: any;
+  public isQuery = true;
+ public isCollapsedpayrollinput = true;
+  isCollapsedKeywordinput:boolean;
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService,
@@ -67,8 +70,11 @@ public isCollapsedQuery = true;
     if ( ( this.router.url ).includes( 'payroll' ) ) {
       this.isCollapsed = false;
     }
+    if ( ( this.router.url ).includes( 'formula' ) ) {
+      this.isCollapsedKeywordinput = false;
+    }
     if ( ( this.router.url ).includes( 'PayrollInputs' ) ) {
-      this.isPayrollInputsCollapsed = false;
+      this.isCollapsedpayrollinput = false;
     }
     if ( ( this.router.url ).includes( 'investment' ) ) {
       this.isInvestmentCollapsed = false;
@@ -185,7 +191,7 @@ public isCollapsedQuery = true;
         //this.menuData = res.data.results
         this.menuData = []
         let actualMenuData = res.data.results
-        let privillegemenu 
+        let privillegemenu
         this.RoleRrivilegeService.getUserPrivilegeByRoleId(6).subscribe(res =>{
           privillegemenu = res.data.results
           actualMenuData.forEach(actualmenu => {
@@ -215,7 +221,7 @@ public isCollapsedQuery = true;
                       }
                     })
                   }
-                }) 
+                })
               }
             });
           });
@@ -223,8 +229,8 @@ public isCollapsedQuery = true;
       })
     })
 
-    
- 
+
+
 
   }
 

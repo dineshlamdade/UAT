@@ -311,6 +311,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
   // ------------ Change PSID Status of Master --------------------------------------
   changeStatus(masterDetails: InvestmentApprovalMasterInfo, status: any) {
+    
     console.log('status::', status);
     console.log('remarkValidation::', this.remarkValidation);
     if (status == 'SendBack') {
@@ -545,13 +546,13 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         }
       });
     }
-    if(this.documentRemarkValidation){
-      this.alertService.sweetalertWarning(
-        'Please give Remark for Discarded Document'
-      );
-      this.documentRemarkValidation = false;
-      return;
-    }
+    // if(this.documentRemarkValidation){
+    //   this.alertService.sweetalertWarning(
+    //     'Please give Remark for Discarded Document'
+    //   );
+    //   this.documentRemarkValidation = false;
+    //   return;
+    // }
 
     this.documentList.forEach((doc) => {
       doc.documentStatus = status;
