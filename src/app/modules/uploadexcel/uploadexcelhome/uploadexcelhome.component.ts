@@ -17,6 +17,8 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 import { ExcelService } from './excel.service';
 import { UploadExcelHomeService } from './upload-excel-home.service';
 import { NgIfContext } from '@angular/common';
+import { ExcelserviceService } from '../../excel_service/excelservice.service';
+
 @Component({
   selector: 'app-uploadexcelhome',
   templateUrl: './uploadexcelhome.component.html',
@@ -111,8 +113,14 @@ export class UploadexcelhomeComponent implements OnInit {
   public mergeSelected = [];
   public dropdownSettings = {};
   public dropdownList1 = [];
+
+  errorExcelData: any;
+  excelData: any[];
+  header: any[];
+  assignValueArray:any;
+  viewFlag:boolean = false;
   constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private excelService: ExcelService,
-    private uploadeExcelHomeService: UploadExcelHomeService, private alertService: AlertServiceService) {
+    private uploadeExcelHomeService: UploadExcelHomeService, private alertService: AlertServiceService,private excelservice: ExcelserviceService) {
     this.excelDataList = [];
 
     this.form = this.formBuilder.group({
@@ -205,6 +213,7 @@ export class UploadexcelhomeComponent implements OnInit {
     const companyId = 1;
     this.uploadeExcelHomeService.getAllExcelTemplate(companyId).subscribe((res) => {
       this.masterOfExcelTemplate = res.data.results;
+      console.log("masterOfExcelTemplate",this.masterOfExcelTemplate)
       let i = 1;
       res.data.results.forEach((element) => {
         const obj = {
@@ -217,6 +226,7 @@ export class UploadexcelhomeComponent implements OnInit {
           templateDescription: element.templateDescription,
           templateMasterId: element.templateMasterId,
           templateName: element.templateName,
+          blobURI:element.blobURI,
         };
         this.summaryOfExcelTemplate.push(obj);
       });
@@ -1123,9 +1133,12 @@ export class UploadexcelhomeComponent implements OnInit {
     FileSaver.saveAs(pre, 'nameFile' + '.xlsx');
 
   }
-  downloadFile(i: number) {
-    this.saveAsBlob(this.masterOfExcelTemplate[i].excelFile);
+  downloadFile() {
+    console.log(JSON.stringify(this.masterOfExcelTemplate))
+    this.saveAsBlob(this.masterOfExcelTemplate.blobURI);
+
   }
+
   deleteTemplate(templateMasterId: number) {
     this.uploadeExcelHomeService.deleteExcelTemplate(templateMasterId).subscribe((res) => {
       console.log(res);
@@ -1692,6 +1705,7 @@ export class UploadexcelhomeComponent implements OnInit {
 
 
     const assignValueArray = [...new Set(this.employeeMasterModuleList.map((item) => item.assignValue))];
+    // Array.form(new Set[(this.employeeMasterModuleList.map((item) => item.assignValue))])
     console.log('assignVAlue array', assignValueArray);
     const removeBlankspace = assignValueArray.findIndex(o => o == '');
     console.log('removeBlanck space index', removeBlankspace);
@@ -2312,7 +2326,7 @@ export class UploadexcelhomeComponent implements OnInit {
     this.previewTableData = [];
     for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
       if (this.selectedSummaryCheckBoxHtmlDataList[i].tab == this.form.get('filterTemplateDropDown').value) {
-        this.previewTableData.push(this.selectedSummaryCheckBoxHtmlDataList[i]);
+        this.previewTableData.push(this.selectedSummaryCheckBoxHtmlDataList[i=0]);
       }
     }
   }
@@ -2386,6 +2400,10 @@ export class UploadexcelhomeComponent implements OnInit {
   }
   viewTemplate(templateMasterId: number) {
     this.editMaster(templateMasterId, true);
+    this.form.patchValue();
+    this.form.disable();
+    this.viewFlag = true;
+
   }
   forReadOnlyAllCheckBox() {
     for (let i = 0; i < this.sequenceArray.length; i++) {
@@ -2414,5 +2432,52 @@ export class UploadexcelhomeComponent implements OnInit {
     // this.isViewFieldNameArrayList = true;
     this.isViewMode = true;
   }
+  // ......................Pooja Katkar ......................................................................
+
+  exportErrorSummaryAsXLSX(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Query No.","Sumbit Date","Emp. Code","Emp. Name","Company Name", "Module Name", "Query Type",
+     "Sub-Query Type", "Subject", "Priority", "Last Updated", "Status",]
+    // this.excelData = this.getAllQueryGenerationData;
+    this.errorExcelData.forEach(element => {
+      let obj = {
+        "Query No.":element.queryNumber,
+        "Sumbit Date":element.submissionDate,
+        "Emp. Code": element.employeeCode,
+        "Emp. Name": element.empName,
+        "Company Name": element.companyName,
+        "Module Name": element.applicationModuleName,
+        "Query Type": element.queryDescription,
+        "Sub-Query Type": element.subqueryDescription,
+        "Subject": element.subject,
+        "Priority":element.priority,
+        "Last Updated":element.escalationDate,
+        "Status":element.status,
+      }
+      this.excelData.push(obj)
+    });
+   // console.log(this.excelData)
+    // this.excelservice.exportAsExcelFile(this.excelData, 'Attandence','Attendance',this.header);
+    this.excelservice.exportAsExcelFile(this.excelData, 'Query Summary','Query Summary',this.header);
+
+  }
+
+  exportAsXLSXSummary(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Template Name"]
+    this.masterOfExcelTemplate.forEach(element => {
+      let obj = {
+        "Template Name":element.templateName,
+      }
+      this.excelData.push(obj)
+      console.log("obj",obj);
+    });
+    console.log("this.masterOfExcelTemplate",this.masterOfExcelTemplate)
+    this.excelservice.exportAsExcelFile(this.excelData, 'Template Summary','Template Summary',this.header);
+  }
+
+
 }
 

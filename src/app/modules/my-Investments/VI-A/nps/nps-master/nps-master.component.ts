@@ -665,6 +665,9 @@ export class NpsMasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.urlArray = [];
     this.isCancel = false;
+    this.form.get('accountHolderName').setValue('Aishwarya Malviya');
+    this.form.get('relationship').setValue('Self');
+    this.form.get('accountType').setValue('Tier_1');
   }
 
   // On View Cancel

@@ -82,7 +82,10 @@ import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { InvestmentApprovalModule } from './modules/investment-approval/investment-approval.module';
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
+import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
+import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
 import { MultiSelectModule } from 'primeng/multiselect';
+
 
 
 
@@ -93,6 +96,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     ProfileComponent,
     ShortenStringPipe,
     SettingsComponent,
+    
   ],
 
   exports: [],
@@ -121,6 +125,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    OnetimeInvestmentsApprovalModule,
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
@@ -153,7 +158,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
     LoanMasterModule,
     SignaturePadModule,
     InvestmentApprovalModule,
-    ApprovedInvestmentModule
+    ApprovedInvestmentModule,
+    FormulamasterModule
 
   ],
 

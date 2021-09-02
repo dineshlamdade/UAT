@@ -25,19 +25,31 @@ import {TableModule} from 'primeng/table';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AdhocComponent } from './adhoc/adhoc.component';
+import { SupplementryCycleComponent } from './supplementry-cycle/supplementry-cycle.component';
+import { SummaryComponent } from './summary/summary.component';
+import { AreaComponent } from './area/area.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CKEditorModule } from 'ckeditor4-angular';
+// import { NewlockComponent } from './newlock/newlock.component';
 @NgModule({
   declarations: [
     LockComponent,
     BusinessYearComponent,
     CycleComponent,
     EmployeeComponent,
-    AdhocComponent
+    AdhocComponent,
+    AreaComponent,
+    SupplementryCycleComponent,
+    SummaryComponent,
+    // NewlockComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    MultiSelectModule,
     MatSliderModule,
+    CKEditorModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),
@@ -52,6 +64,7 @@ import { AdhocComponent } from './adhoc/adhoc.component';
     BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    MultiSelectModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),

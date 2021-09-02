@@ -63,6 +63,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
+  documentDataArray = [];
+  editdDocumentDataArray = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
 
@@ -93,6 +95,14 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
   public grandRejectedTotal: number;
@@ -165,6 +175,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   public canEdit: boolean;
   dateOfJoining: Date;
   taxsavingDeclarationData
+  disableRemarkList = false
+  disableRemark: any;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -400,6 +412,26 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     );
   }
 
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
+  }
+
+  // Remove LicMaster Document
+  public removeSelectedLicMasterDocument(index: number) {
+    this.masterfilesArray.splice(index, 1);
+  }
+
+
+
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
     data: any,
@@ -407,6 +439,12 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
+
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
         'Please Enter Declared Amount'
@@ -855,6 +893,22 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
 
   upload() {
 
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+
 
     console.log(JSON.stringify(this.taxsavingDeclarationData))
 
@@ -936,6 +990,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       groupTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
+      remarkPasswordList: this.documentDataArray
     };
     console.log('data::', data);
 
@@ -950,6 +1005,39 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
           this.selectedTransactionInstName(this.globalInstitution);
 
 
@@ -991,20 +1079,33 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   changeReceiptAmountFormat() {
+    let receiptAmount_: number;
+    let globalSelectedAmount_ : number;
+
+    receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+    globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
     // let formatedReceiptAmount = this.numberFormat.transform(this.receiptAmount)
     // console.log('formatedReceiptAmount::', formatedReceiptAmount);
     // this.receiptAmount = formatedReceiptAmount;
-    this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
-    if (this.receiptAmount < this.globalSelectedAmount) {
+    // 
+    // this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    if (receiptAmount_ < globalSelectedAmount_) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
       );
-    } else if (this.receiptAmount > this.globalSelectedAmount) {
+      this.receiptAmount = '0.00';
+      return false;
+    } else if (receiptAmount_ > globalSelectedAmount_) {
+      console.log(receiptAmount_);
+      console.log(globalSelectedAmount_);
       this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
+        'Receipt Amount is greater than Selected line Actual Amount',
       );
     }
-    console.log('receiptAmount::', this.receiptAmount);
+    // console.log('receiptAmount::', this.receiptAmount);
+    this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
 
      // Update Previous Employee in Edit Modal
@@ -1211,6 +1312,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].transactionStatus;
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
@@ -1222,6 +1324,44 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
+          this.masterGridData = res.data.results;
+
+          this.masterGridData.forEach((element) => {
+            // element.policyStartDate = new Date(element.policyStartDate);
+            // element.policyEndDate = new Date(element.policyEndDate);
+            // element.fromDate = new Date(element.fromDate);
+            // element.toDate = new Date(element.toDate);
+            element.documentInformation.forEach(element => {
+              // this.dateofsubmission = element.dateOfSubmission;
+              // this.documentArray.push({
+              //   'dateofsubmission': ,
+              // })
+              element.documentDetailList.forEach(element => {
+              // if(element!=null)
+              this.documentArray.push({
+                // 'dateofsubmission': element.dateOfSubmission,
+                'documentType':element.documentType,
+                'documentName': element.fileName,
+                'documentPassword':element.documentPassword,
+                'documentRemark':element.documentRemark,
+                'status' : element.status,
+                'lastModifiedBy' : element.lastModifiedBy,
+                'lastModifiedTime' : element.lastModifiedTime,
+              })
+              })
+            });
+            // this.documentArray.push({
+            //   'dateofsubmission':element.creatonTime,
+            //   'documentType':element.documentType,
+            //   'documentName': element.fileName,
+            //   'documentPassword':element.documentPassword,
+            //   'documentRemark':element.documentRemark,
+            //   'status' : element.status,
+            //   'lastModifiedBy' : element.lastModifiedBy,
+            //   'lastModifiedTime' : element.lastModifiedTime,
+            //
+            // })
+          });
         //console.log(this.urlArray);
         // this.urlArray.forEach((element) => {
         //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
@@ -1230,6 +1370,23 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         // });
         //console.log('converted:: ', this.urlArray);
       });
+      this.documentArray = [];
+  }
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
   }
 
   nextDocViewer() {
@@ -1278,6 +1435,33 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
+        // this.documentArray.push({
+        //   'dateofsubmission':element.creatonTime,
+        //   'documentType':element.documentType,
+        //   'documentName': element.fileName,
+        //   'documentPassword':element.documentPassword,
+        //   'documentRemark':element.documentRemark,
+        //   'status' : element.status,
+        //   'lastModifiedBy' : element.lastModifiedBy,
+        //   'lastModifiedTime' : element.lastModifiedTime,
+  
+        // })
+  
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
 
         this.initialArrayIndex = [];
@@ -1312,6 +1496,26 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   public uploadUpdateTransaction() {
+
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+    console.log(JSON.stringify(this.taxsavingDeclarationData))
+
+
+
 
     this.editTransactionUpload.forEach((element) => {
       element.group2TransactionList.forEach((innerElement) => {
@@ -1360,6 +1564,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
+      // documentPassword: this.documentPassword,
+      remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -1368,6 +1574,46 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''

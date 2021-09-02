@@ -172,7 +172,8 @@ export class MediclaimMasterComponent implements OnInit {
         value: 'Preventive Health Check Up',
       },
       {
-        label: 'Medical Expenses For Parents(Senior Citizen/S)',
+      //  label: 'Medical Expenses For Parents(Senior Citizen/S)',
+        label: 'Medical Expenses for Sr. Citzen/s',
         value: 'Medical Expenses for Parents',
       },
 
@@ -773,7 +774,6 @@ export class MediclaimMasterComponent implements OnInit {
       }else{
         console.log("!!Mediclaim",element)
             if ((element.relation === 'Father' || element.relation === 'Mother') && element.ageBracket === 'Senior Citizen') {
-
             let familyNameWithRelation =
               element.familyMemberName + '(' + element.relation + ')';
             familyMember.push({

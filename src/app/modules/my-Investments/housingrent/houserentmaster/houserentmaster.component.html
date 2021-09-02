@@ -158,10 +158,10 @@
                   <span class="form-label">Landlord PAN</span>
                </label>
                <input type="text" maxlength="12" minlength="10" formControlName="landLordPan"
-                  placeholder="Enter PAN " class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN"
+                  placeholder="Enter PAN " class="form-control" pattern="^[A-Z]{5}[0-9]{4}[A-Z]$" name="PAN"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors" class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.landLordPan.errors.required">PAN Number is Mandatory</div>
+                  <div *ngIf="landLordDetailForm.landLordPan.errors.required">PAN is Mandatory</div>
                   <div *ngIf="landLordDetailForm.landLordPan.errors?.pattern">Enter valid PAN Number</div>
                </div>
             </div>
@@ -172,8 +172,7 @@
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.percentageShareOfRent.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.percentageShareOfRent.errors"
                   class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.percentageShareOfRent.errors.required">% Total Rent is Mandatory
-                     mandatory</div>
+                  <div *ngIf="landLordDetailForm.percentageShareOfRent.errors.required">% Total Rent is Mandatory</div>
                   <div *ngIf="landLordDetailForm.percentageShareOfRent.errors?.max">Max 100 is allowed</div>
                </div>
             </div>
@@ -245,7 +244,7 @@
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                      </div>
-                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"                    
+                     <input [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"                    
                         data-provide="datepicker" data-date-autoclose="true" class="form-control" 
                          placeholder="Start Date" bsDatepicker (bsValueChange)="getAgreementFrom()" 
                           [ngClass]="{ 'is-invalid': agreementDetailssubmitted }">

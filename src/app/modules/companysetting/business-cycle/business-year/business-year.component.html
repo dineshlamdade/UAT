@@ -261,11 +261,9 @@
 
                   <button type="button" class="btn btn-icon text-blue" tooltip="View"
                   (click)="GetBussinessyearById(user1.businessYearDefinitionId, false)"
-
-                  (click)="UploadModal1(template1);getBussinessyear(user1.businessYear,user1.businessCycleDefinition.businessYearDefinitionId)"
-
                   data-toggle="modal" data-target="#UploadModal">
                   <i class="fa fa-eye"></i></button>
+                  <!-- (click)="UploadModal1(template1);getBussinessyear(user1.businessYear,user1.businessCycleDefinition.businessYearDefinitionId)" -->
 
                   <button *ngIf="!user1.used" type="button" (click)="UploadModal1(template12);" data-toggle="modal"
                     data-target="#UploadModal" class="btn btn-icon js-sweetalert text-blue" tooltip="Delete"

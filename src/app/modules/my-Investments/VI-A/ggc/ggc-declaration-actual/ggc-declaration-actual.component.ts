@@ -1131,15 +1131,15 @@ export class GgcDeclarationActualComponent implements OnInit {
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
+       // this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //  element.blobURI = 'data:image/image;base64,' + element.blobURI;
           // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+       // });
         //console.log('converted:: ', this.urlArray);
         // console.log('proofSubmissionId::', this.proofSubmissionId);
 
-      });
+     // });
       // .subscribe((res) => {
       //   console.log('edit Data:: ', res);
       //   this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
@@ -1159,7 +1159,21 @@ export class GgcDeclarationActualComponent implements OnInit {
       //     );
       //   });
       // });
-  }
+  //}
+  this.editTransactionUpload.forEach((element) => {
+    element.donations80GGTransactionList.forEach((innerElement) => {
+      innerElement.declaredAmount = this.numberFormat.transform(
+        innerElement.declaredAmount,
+      );
+      innerElement.actualAmount = this.numberFormat.transform(
+        innerElement.actualAmount,
+      );
+    });
+  });
+
+});
+
+}
 
      //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {

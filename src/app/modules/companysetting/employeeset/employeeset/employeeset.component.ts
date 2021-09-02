@@ -352,7 +352,7 @@ this.downloadExcel(this.excelData, this.header);
   }
 
   downloadExcel(excelData, header){
-    this.excelservice.exportAsExcelFile(excelData, header);
+    this.excelservice.exportAsExcelFile(excelData,'empData','empData',header);
   }
 
   exportApprovalSummaryAsExcel1(): void {

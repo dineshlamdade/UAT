@@ -23,7 +23,7 @@ export interface User1 {
   styleUrls: ['./employee.component.scss']
 })
 export class EmployeeComponent implements OnInit {
-  
+
   users = [];
   areaSection = true;
   employeeSection = false;
@@ -99,7 +99,7 @@ export class EmployeeComponent implements OnInit {
     this.users.push({
       name:uname.value
     })
- 
+
   }
   removeUsers(item){
     this.users.splice(item, 1)
@@ -110,5 +110,19 @@ export class EmployeeComponent implements OnInit {
   //     Object.assign({}, { class: 'gray modal-lg' })
   //   );
   // }
+
+  Emplist(emplist: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      emplist,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
+  Arealistpop(arealist: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      arealist,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
+
 
 }

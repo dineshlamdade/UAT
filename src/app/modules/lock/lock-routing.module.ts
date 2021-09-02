@@ -4,6 +4,7 @@ import { BusinessYearComponent } from './business-year/business-year.component';
 import { CycleComponent } from './cycle/cycle.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { LockComponent } from './lock.component'; 
+import {NewlockComponent} from './newlock/newlock.component'
 const routes: Routes = [
 
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
       {
         path: 'employee',
         component: EmployeeComponent,
+        data: { title: ':: Epic :: Lock' }
+      },
+      {
+        path: 'LockNew',
+        component: NewlockComponent,
         data: { title: ':: Epic :: Lock' }
       },
     ],

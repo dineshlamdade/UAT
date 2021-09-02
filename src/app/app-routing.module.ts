@@ -47,6 +47,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'one-time-investments-approval',
+    loadChildren: () =>
+      import('./modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module').then(
+        (m) => m.OnetimeInvestmentsApprovalModule
+      ),
+  },
+  {
     path: 'investment-approval-new',
     loadChildren: () =>
       import('./modules/approved-investment/approved-investment.module').then(
@@ -58,6 +65,12 @@ const routes: Routes = [
     path: 'PayrollInputs',
     loadChildren:
       './modules/payroll-inputs/payroll-inputs.module#PayrollInputsModule',
+  },
+
+  {
+    path: 'formula',
+    loadChildren:
+      './modules/formulamaster/formulamaster.module#FormulamasterModule',
   },
 
   { path: 'lms', loadChildren: './modules/lms/lms.module#LMSModule' },

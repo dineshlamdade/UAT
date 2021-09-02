@@ -1,6 +1,9 @@
 <app-leftmenu></app-leftmenu>
+
 <div class="page">
+   <!-- Header -->
   <app-header></app-header>
+   <!-- Header End-->
 
   <div class="section-body mt-3">
     <div class="container-fluid">
@@ -8,8 +11,11 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+
               <div class="row">
                 <div class="col-md-8">
+
+                  <!-- Filter Data Group and IT section -->
                   <div class="row">
                     <div class="col-md-6">
                       <label class="form-label">Group</label>
@@ -26,6 +32,8 @@
                       ></p-multiSelect>
                     </div>
                   </div>
+                  <!-- Filter Data Group and IT section End -->
+
                 </div>
                    <!-- <div class="col-md-4">
                   <div class="row mt-10 float-right">
@@ -50,6 +58,8 @@
                   </div>
                 </div> -->
               </div>
+
+              <!-- Master Count -->
               <div class="row mt-15">
                 <div class="col-md-12">
                   <h6
@@ -60,6 +70,7 @@
                   </h6>
                 </div>
               </div>
+
               <div class="row mt-15">
                 <div class="col-md-2">
                   <div
@@ -69,7 +80,9 @@
                       align-items-center align-items-stretch
                       border-0
                       text-number-card
+                      pointer-cursor
                     "
+                    (click)="filterPSIDListByStatus('Submitted','M')"
                   >
                     <div
                       class="
@@ -81,6 +94,7 @@
                         rounded-left
                         text-number-card-icon
                       "
+
                     >
                       <em class="fa fa-check-square-o font-30"></em>
                     </div>
@@ -110,7 +124,9 @@
                       align-items-center align-items-stretch
                       border-0
                       text-number-card
+                      pointer-cursor
                     "
+                    (click)="filterPSIDListByStatus('SendBack','M')"
                   >
                     <div
                       class="
@@ -151,7 +167,9 @@
                       align-items-center align-items-stretch
                       border-0
                       text-number-card
+                      pointer-cursor
                     "
+                    (click)="filterPSIDListByStatus('Approved','M')"
                   >
                     <div
                       class="
@@ -163,6 +181,7 @@
                         rounded-left
                         text-number-card-icon
                       "
+
                     >
                       <em class="fa fa-thumbs-o-up font-30"></em>
                     </div>
@@ -190,7 +209,9 @@
                       align-items-center align-items-stretch
                       border-0
                       text-number-card
+                      pointer-cursor
                     "
+                    (click)="filterPSIDListByStatus('Re-Open','M')"
                   >
                     <div
                       class="
@@ -202,8 +223,9 @@
                         rounded-left
                         text-number-card-icon
                       "
+
                     >
-                      <em class="fa fa-google-wallet font-30"></em>
+                      <em class="fa fa fa-repeat font-30"></em>
                     </div>
                     <div
                       class="
@@ -215,6 +237,50 @@
                       "
                     >
                       <div class="h2 mt-0">
+                        {{ dashboardEmployeeInfo.masterStatusCount.reOpen }}
+                      </div>
+                      <div class="text-uppercase font-12 font900">Re-Open</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div
+                    class="
+                      card
+                      flex-row
+                      align-items-center align-items-stretch
+                      border-0
+                      text-number-card
+                      pointer-cursor
+                    "
+                    (click)="filterPSIDListByStatus('Total','M')"
+                  >
+                    <div
+                      class="
+                        col-4
+                        d-flex
+                        align-items-center
+                        bg-primary-dark
+                        justify-content-center
+                        rounded-left
+                        text-number-card-icon
+
+                      "
+
+                    >
+                      <em class="fa fa-google-wallet font-30"></em>
+                    </div>
+                    <div
+                      class="
+                        col-8
+                        py-3
+                        bg-primary
+                        rounded-right
+                        text-number-card-text
+
+                      "
+                    >
+                      <div class="h2 mt-0">
                         {{ dashboardEmployeeInfo.masterStatusCount.total }}
                       </div>
                       <div class="text-uppercase font-12 font900">Total</div>
@@ -222,6 +288,9 @@
                   </div>
                 </div>
               </div>
+              <!-- Master Count End -->
+
+              <!-- Transaction Count -->
               <div class="row mt-25">
                 <div class="col-md-12">
                   <h6
@@ -241,7 +310,9 @@
                       align-items-center align-items-stretch
                       border-0
                       text-number-card
+                      pointer-cursor
                     "
+                    (click)="filterPSIDListByStatus('Submitted','T')"
                   >
                     <div
                       class="
@@ -282,7 +353,9 @@
                       align-items-center align-items-stretch
                       border-0
                       text-number-card
+                      pointer-cursor
                     "
+                    (click)="filterPSIDListByStatus('SendBack','T')"
                   >
                     <div
                       class="
@@ -323,7 +396,9 @@
                       align-items-center align-items-stretch
                       border-0
                       text-number-card
+                      pointer-cursor
                     "
+                    (click)="filterPSIDListByStatus('Approved','T')"
                   >
                     <div
                       class="
@@ -362,7 +437,53 @@
                       align-items-center align-items-stretch
                       border-0
                       text-number-card
+                      pointer-cursor
                     "
+                    (click)="filterPSIDListByStatus('Re-Open','T')"
+                  >
+                    <div
+                      class="
+                        col-4
+                        d-flex
+                        align-items-center
+                        bg-primary-dark
+                        justify-content-center
+                        rounded-left
+                        text-number-card-icon
+                        pointer-cursor
+                    "
+                    (click)="filterPSIDListByStatus('Submitted','M')"
+
+                    >
+                      <em class="fa fa fa-repeat font-30"></em>
+                    </div>
+                    <div
+                      class="
+                        col-8
+                        py-3
+                        bg-primary
+                        rounded-right
+                        text-number-card-text
+                      "
+                    >
+                      <div class="h2 mt-0">
+                        {{ dashboardEmployeeInfo.transactionCount.reOpen }}
+                      </div>
+                      <div class="text-uppercase font-12 font900">Re-Open</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div
+                    class="
+                      card
+                      flex-row
+                      align-items-center align-items-stretch
+                      border-0
+                      text-number-card
+                      pointer-cursor
+                      "
+                      (click)="filterPSIDListByStatus('Total','T')"
                   >
                     <div
                       class="
@@ -394,6 +515,7 @@
                   </div>
                 </div>
               </div>
+              <!-- Transaction Count End -->
 
               <!-- Employee Table List is started -->
               <div class="row mt-25">
@@ -453,7 +575,7 @@
                                 "
                                (click)="navigateToApproval()"
                               >
-                                <b><i class="fa fa-check"></i></b> Approval
+                                <b><i class="fa fa-check"></i></b> GO
                               </button>
 
                               <!-- Export Excel and Download -->
@@ -666,7 +788,10 @@
                           <p-tableCheckbox [value]="employee" (click)="
                           selectEmployeeForApproval(
                             e.checked,
-                            employee.proofSubmissionId
+                            employee.proofSubmissionId,
+                            employee.type,
+                            employee.itSection
+
                           )
                         "
                         #e></p-tableCheckbox>
@@ -885,6 +1010,7 @@
                   </button>
                 </div>
               </ng-template>
+
             </div>
           </div>
         </div>

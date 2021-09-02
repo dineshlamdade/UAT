@@ -8,6 +8,7 @@ RUN yum install nodejs -y
 RUN yum install npm -y
 
 #RUN yum install  ng-common 
+
 #RUN npm install -g @angular/cli
 
 # Create a directory where our app will be placed
@@ -41,10 +42,13 @@ ENV NODE_OPTIONS="--max-old-space-size=8192"
 
 RUN npm run build --prod --aot --outputHashing=all
 
+
 #Stage 2
 FROM nginx:alpine
 COPY --from=web app/mysite.conf /etc/nginx/conf.d/default.conf
 COPY --from=web app/dist/ /srv/mysite/
 COPY --from=web app/ssl/ /etc/ssl/
+RUN apk add tzdata
+RUN cp /usr/share/zoneinfo/Asia/Calcutta /etc/localtime
 EXPOSE 80
 EXPOSE 443

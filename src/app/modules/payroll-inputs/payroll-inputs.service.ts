@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 @Injectable({
@@ -52,6 +53,11 @@ public getAllEmployeeDetails() {
     .pipe(map((res: any) => {
       return res;
     }));
+}
+
+getPayrollWiseEmployeeList(payrollArea):Observable<any>{
+  // https://dev.deliziahr.com:8082/hrms/v1/payroll-information/payrollAreaWiseEmployee/%7bPAyrollAreaId%7d
+  return this.http.get<any>(this.apiUrlEmployeeDetails + 'payroll-information/payrollAreaWiseEmployee/'+payrollArea);
 }
 
 getEmployeeListArray() {

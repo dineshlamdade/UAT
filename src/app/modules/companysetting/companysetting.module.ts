@@ -1,6 +1,6 @@
 import { AttributeDependencyComponent } from './attribute-dependency/attribute-dependency.component';
 import { CommonModule, DatePipe } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -42,12 +42,14 @@ import { UserRoleComponent } from './user-rolesand-permission/user-role/user-rol
 import { UserGroupComponent } from './user-rolesand-permission/user-group/user-group.component';
 import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
 import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
+import { PaymentTrackingMasterComponent } from './payment-tracking-master/payment-tracking-master.component';
 import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
 import { AreasetComponent } from './areaset/areaset.component';
 import { EmployeesetComponent } from './employeeset/employeeset/employeeset.component';
 import { AdhocComponent } from './business-cycle/adhoc/adhoc.component';
 import { SupplementaryComponent } from './business-cycle/supplementary/supplementary.component';
 
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 
@@ -68,6 +70,7 @@ import { SupplementaryComponent } from './business-cycle/supplementary/supplemen
     UserGroupComponent,
     RolePrivilegeComponent,
      UserDashboardComponent,
+     PaymentTrackingMasterComponent,
      PayRollStructureComponent,
      AreasetComponent,
      EmployeesetComponent,
@@ -78,6 +81,7 @@ import { SupplementaryComponent } from './business-cycle/supplementary/supplemen
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    OverlayPanelModule,
     FormsModule,
     MatSliderModule,
     TooltipModule.forRoot(),
@@ -106,10 +110,12 @@ import { SupplementaryComponent } from './business-cycle/supplementary/supplemen
     ToastModule,
     InputTextModule,
     ProgressBarModule,
-    MultiSelectModule
+    MultiSelectModule,
+   
   ],
 
   providers: [DatePipe, NumberFormatPipe],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 
 } )
 export class CompanySettingModule { }

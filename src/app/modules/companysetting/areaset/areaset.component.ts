@@ -527,7 +527,7 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
 //    // });
      console.log('this.areaList::', this.areaList);
 //     }
-  this.excelservice.exportAsExcelFile(this.excelData, this.header);
+  this.excelservice.exportAsExcelFile(this.excelData,'areaData','areaData', this.header);
 
  }
 

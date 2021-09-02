@@ -63,11 +63,21 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     public fixedDepositTransactionForm: FormGroup;
 
   public editTransactionUpload: Array<any> = [];
+  documentDataArray = [];
+  editdDocumentDataArray = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
   public editfilesArray: File[] = [];
@@ -173,6 +183,11 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   globalSelectedAmounts: any = '0.00';
   public addNewRow: boolean = true;
   public showDeleteButton: boolean = false;
+  public enableButton : boolean = false;
+  disableRemarkList = false
+  disableRemark: any;
+
+  
   
   constructor(
     private formBuilder: FormBuilder,
@@ -220,6 +235,13 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public ngOnInit(): void {
     this.getTransactionFilterData();
     if (this.data) {
+      
+      if(this.data.canEdit == true) {
+        this.isDisabled = false;
+      } else if (this.data.canView == true) {
+        this.isDisabled = true;
+        this.enableButton = true;
+      }
     this.selectrow = this.data.accountNumber;
     } else {
       this.selectrow = "any";
@@ -441,6 +463,8 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+         
+          this.disableRemark = res.data.results[0].investmentGroup3TransactionDetailList[0].transactionStatus;
         // this.urlArray.forEach((element) => {
         //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
         //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
@@ -467,14 +491,90 @@ export class FixedDepositsDeclarationComponent implements OnInit {
           res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
+        this.masterGridData = res.data.results;
+
+        this.masterGridData.forEach((element) => {
+          // element.policyStartDate = new Date(element.policyStartDate);
+          // element.policyEndDate = new Date(element.policyEndDate);
+          // element.fromDate = new Date(element.fromDate);
+          // element.toDate = new Date(element.toDate);
+          element.documentInformation.forEach(element => {
+            // this.dateofsubmission = element.dateOfSubmission;
+            // this.documentArray.push({
+            //   'dateofsubmission': ,
+            // })
+            element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              // 'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            })
+            })
+          });
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
+          //
+          // })
+        });
 
 
 
       });
+      this.documentArray = [];
+  }
+
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
   }
 
   //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
+
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+    // console.log(JSON.stringify(this.ppfDeclarationData))
+
+
+
     console.log(
       'uploadUpdateTransaction editTransactionUpload::',
       this.editTransactionUpload
@@ -508,6 +608,8 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
       groupTransactionIDs:this.uploadGridData,
+      // documentPassword: this.documentPassword,
+      remarkPasswordList: this.editdDocumentDataArray
       
     };
     console.log('uploadUpdateTransaction data::', data);
@@ -517,6 +619,44 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
         
           this.transactionDetail =
             res.data.results[0].investmentGroup3TransactionDetailList;
@@ -729,6 +869,25 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   //   );
   // }
 
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
+  }
+
+  // Remove LicMaster Document
+  public removeSelectedLicMasterDocument(index: number) {
+    this.masterfilesArray.splice(index, 1);
+  }
+
+
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
    
@@ -740,9 +899,17 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       declaredAmount: number;
       actualAmount: number;
       dateOfPayment: Date;
+      transactionStatus: any;
     },
   
   ) {
+    
+
+    if (summary.transactionStatus == 'Approved' || summary.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
     
     
     // if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
@@ -1381,6 +1548,22 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   }
 
   upload() {
+
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
     if (this.investmentGroup3TransactionDetailList[0].institution == null || this.investmentGroup3TransactionDetailList[0].accountNumber == null || this.investmentGroup3TransactionDetailList[0].dateOfPayment == null || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0.00") {
       if (this.investmentGroup3TransactionDetailList[0].institution == null) {
         this.requiredInstitution = true;
@@ -1479,6 +1662,7 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       groupTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
+      remarkPasswordList: this.documentDataArray
     };
     console.log('data::', data);
 
@@ -1493,6 +1677,40 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
         
             this.transactionDetail =
               res.data.results[0].investmentGroup3TransactionDetailList;
@@ -1530,6 +1748,8 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     this.globalSelectedAmount = '0.00';
     this.globalSelectedAmounts = '0.00';
     this.investmentGroup3TransactionDetailList = [];
+    this.uploadGridData = [];
+    this.globalAddRowIndex = 0;
   }
 
   changeReceiptAmountFormat() {
@@ -1812,6 +2032,33 @@ export class FixedDepositsDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
+        // this.documentArray.push({
+        //   'dateofsubmission':element.creatonTime,
+        //   'documentType':element.documentType,
+        //   'documentName': element.fileName,
+        //   'documentPassword':element.documentPassword,
+        //   'documentRemark':element.documentRemark,
+        //   'status' : element.status,
+        //   'lastModifiedBy' : element.lastModifiedBy,
+        //   'lastModifiedTime' : element.lastModifiedTime,
+  
+        // })
+  
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
 
         this.initialArrayIndex = [];
