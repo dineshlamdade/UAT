@@ -237,7 +237,7 @@ export class MediclaimDeclarationComponent implements OnInit {
         value: 'Preventive Health Check Up',
       },
       {
-        label: 'Medical Expenses For Parents(Senior Citizen/s)',
+        label: 'Medical Expenses for Sr.Citzen/s',
         value: 'Medical Expenses for Parents',
       },
     ];
@@ -273,6 +273,8 @@ export class MediclaimDeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      //Sutej Check
+      
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -314,7 +316,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   }
 
   // Update Previous Employee in Main Page
-  updatePreventive_PreviousEmpId(event: any, i: number) {
+  updatePreventive_PreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
     this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[
       i
@@ -322,7 +324,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   }
 
   // Update Previous Employee in Main Page
-  updateExpense_PreviousEmpId(event: any, i: number) {
+  updateExpense_PreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
     this.medicalExpenseTransactionDetail.medicalExpenseTransactionDetailList[
       i
@@ -669,7 +671,7 @@ export class MediclaimDeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-   // j: number
+    //j: number
   ) {
     const checked = event.target.checked;
 
@@ -1187,7 +1189,7 @@ export class MediclaimDeclarationComponent implements OnInit {
       actualAmount: number;
     },
     i: number,
-   // j: number
+    j: number
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
@@ -1965,9 +1967,9 @@ export class MediclaimDeclarationComponent implements OnInit {
     }
     data.mediclaimTransactionIds = this.uploadGridData;
     data.receiptAmount = this.receiptAmount;
-    data.documentRemark = this.documentRemark;
+   // data.documentRemark = this.documentRemark;
     console.log('data::', data);
-    data.proofSubmissionId = '';
+   // data.proofSubmissionId = '';
 
     this.mediclaim80DService
       .uploadMediclaim80DDocument(this.filesArray, data)
