@@ -84,6 +84,7 @@ import { InvestmentApprovalModule } from './modules/investment-approval/investme
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
 import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
 import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 
@@ -128,6 +129,7 @@ import { FormulamasterModule } from './modules/formulamaster/formulamaster.modul
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
+    MultiSelectModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
     ToastrModule.forRoot( {

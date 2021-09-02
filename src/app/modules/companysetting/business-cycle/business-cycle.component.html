@@ -8,18 +8,125 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <div class="tabview">
-                <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
+              <div class="apprtabview">
+                <input name="nav" type="radio" class="about-radio" id="Tab1" checked/>
+                <div class="apprtabs about-page">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                              <app-business-year></app-business-year>
+                              <!-- <app-business-year *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"
+                              (accountNo)="redirectToMaster($event)"
+                              ></app-business-year> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <label class="nav" for="Tab1"><span> Business Year Definition </span></label>
+                <input name="nav" type="radio" class="nav home-radio" id="Tab2" />
+                <div class="apprtabs  about-page">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                              <!-- <app-cycle-definition *ngIf="tabIndex == 1"
+                              [accountNo]="accountNo" > </app-cycle-definition> -->
+                              <app-cycle-definition></app-cycle-definition>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <label class="nav" for="Tab2"><span> Business Cycle Definition </span></label>
+                <input name="nav" type="radio" class="about-radio" id="Tab3" />
+                <div class="apprtabs about-page">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                              <!-- <app-cycle-creation [data]="data" *ngIf="tabIndex == 2"></app-cycle-creation> -->
+                              <app-cycle-creation></app-cycle-creation>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <label class="nav" for="Tab3"><span> Business Cycle</span></label>
+                <input name="nav" type="radio" class="about-radio" id="Tab4" />
+                <div class="apprtabs about-page">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                             <app-adhoc></app-adhoc>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <label class="nav" for="Tab4"><span> Adhoc Cycle</span></label>
+
+                <input name="nav" type="radio" class="about-radio" id="Tab5" />
+                <div class="apprtabs about-page">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <app-supplementary></app-supplementary>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <label class="nav" for="Tab5"><span> Supplementary Cycle</span></label>
+            </div>
+
+
+            <br>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+        <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+          (click)="scrollToTop()">
+          <i class="fa fa-angle-double-up text-white font-18"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+</div>
+
+            
+            <!-- <div class="tabview">
+
+
+
+            <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
                   [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
+                  
                   <app-business-year *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"
                   (accountNo)="redirectToMaster($event)"
                   ></app-business-year>
-                </div>
+               
+              </div>
+              
                 <label class="nav" for="summary">
                   <span> Business Year Definition </span>
                 </label>
-
+            
+              
                 <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
                   [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
@@ -29,7 +136,8 @@
                 <label class="nav" for="Master">
                   <span> Business Cycle Definition </span>
                 </label>
-
+              
+                
                 <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
                 <div class="tabs about-page">
@@ -39,22 +147,20 @@
                 <label class="nav" for="Declaration">
                   <span> Cycle Creation </span>
                 </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
-          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
-            (click)="scrollToTop()">
-            <i class="fa fa-angle-double-up text-white font-18"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-    <app-footer></app-footer>
-  </div>
-</div>
+             
+               
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(3)"
+                  [checked]="tabIndex == 3" />
+                <div class="tabs about-page">
+                  <app-adhoc [data]="data" *ngIf="tabIndex == 3"></app-adhoc>
+                </div>
 
+                <label class="nav" for="Declaration">
+                  <span> Adhoc  </span>
+                </label>
+            
+              </div> -->
+           
 
 
 
