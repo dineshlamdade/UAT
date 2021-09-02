@@ -46,7 +46,7 @@ export class AreasetComponent implements OnInit {
   areasetForm : FormGroup;
   areaMaster : any = [];
   serviceListData: any;
-  areaListData: any;
+  areaListData: Array<any> = [];
   summaryData: any;
   editFormFlag: boolean = false;
   viewFormFlag: boolean = false;
@@ -76,6 +76,9 @@ export class AreasetComponent implements OnInit {
   header1: any;
 
   users1: User1[];
+  displayedColumns: any;
+  employeedata: any[] = [];
+  empdataSource: any;
   constructor(public fb : FormBuilder,public areasetService : AreasetService,private http: HttpClient,
     private toaster : ToastrService, private primengConfig: PrimeNGConfig,
     public alertService : AlertServiceService,private excelservice: ExcelserviceService,
@@ -96,7 +99,8 @@ export class AreasetComponent implements OnInit {
       numberOfArea : new FormControl(''),
       isActive : new FormControl(1),
       areaList : new FormControl(''),
-      areaSetMasterDetailsList: new FormControl([]) 
+      
+     areaSetMasterDetailsList: new FormControl([]) 
     })
 
   }
@@ -168,11 +172,11 @@ export class AreasetComponent implements OnInit {
         //  this.summaryData = res.data.results;
           this.alertService.sweetalertMasterSuccess('Success','Area Set Saved Successfully');
           this.getSummaryData();
-          this.areaListData = [];
+         // this.areaListData = [];
        // this.toaster.success('','Area set saved succefully');
        // this.areaList = [];
       //  this.areasetForm.controls.areaList.setValue("");
-      this.areaMaster=[];
+     this.areaMaster=[];
        this.areasetForm.controls['areaList'].setValue([]);
        this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
       
@@ -290,7 +294,7 @@ getAreaMasterId(e){
           serviceName : element.serviceName})
         });
       }
-      console.log(this.serviceData)
+      console.log("servic list is",this.serviceData)
    
       })
   }
@@ -301,33 +305,34 @@ getAreaMasterId(e){
     console.log('service id is',serviceid);
        this.areaListData = [];
        this.areaList = [];
+       let servicName = this.serviceData.find(x=>x.serviceMasterId == serviceid)
        this.areasetService.getByServiceName(serviceid).subscribe((res)=>{
       //  this.areaListData = res.data.results[0];
         res.data.results[0].forEach(element => {
-           if(serviceid==1){
+           if(servicName.serviceName=="payroll"){
             this.areaListData.push({
               label: element.payrollAreaCode, 
               value: element.payrollAreaId
           })
-        }else if(serviceid==2) {
+        }else if(servicName.serviceName=="leave") {
           this.areaListData.push({
             label: element.leaveAreaCode, 
             value: element.leaveAreaId
         })
-        }else if(serviceid==5) {
+        }else if(servicName.serviceName=="Attendance") {
           this.areaListData.push({
             label: element.attendanceAreaCode, 
             value: element.attendanceAreaId
         })
         }
-        else if(serviceid==4) {
+        else if(servicName.serviceName=="Reimbursement") {
           this.areaListData.push({
             label: element.reimbursementAreaCode, 
             value: element.reimbursementAreaId
         })
         }
 
-         
+         console.log("area list is",this.areaListData)
          
          
        })
@@ -387,7 +392,8 @@ getAreaMasterId(e){
       data.areaSetMasterDetailsList.forEach(element => {
         abc.push({
       label : element.areaCode,
-      value : element.areaId 
+      value : element.areaId
+      
       // label : element.serviceMaster.serviceCode,
       //value : element.serviceMaster.serviceMasterId
         })
@@ -546,7 +552,7 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
     
    let obj={ 
       areaSetName : areaName,
-      serviceName :servName.serviceName,
+     serviceName :servName.serviceName,
       areacode :areaCode.label 
  }
     this.excelData1.push(obj)
@@ -615,7 +621,65 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
     );
   }
   
+  //area list radio button//
+areaListPasteData(event: ClipboardEvent) {
+  let clipboardData = event.clipboardData;
+  let pastedText = clipboardData.getData('text');
+  let row_data = pastedText.split('\n');
+  // this.displayedColumns = row_data[0].split('\t');
+  // this.displayedColumns = ["employeeCode", "employeeName"]
+  this.displayedColumns = ["areaCode"]
+let area=[];
+for(let i= 0;i<row_data.length;i++){
+  let data=row_data[i].replace('\r','');
+  if(data!=''){
+const areas=this.areaListData.find(a=>a.label == data)
+let obj=areas?.value;
+
+area.push(obj)
+}
+}
+
+  this.areasetForm.get('areaList').setValue(area);
+  this.excelData=row_data;
+  this.excelData1=row_data;
+
+  //delete row_data[0];
+  // Create table dataSource
+  row_data.forEach(row_data => {
+    let row = {};
+    this.displayedColumns.forEach((a, index) => {
+      row[a] = row_data.split('\t')[index]
+    });
+    // console.log(row)
+    this.employeedata.push(row);
+  })
+  this.empdataSource = this.employeedata;
+  this.empdataSource.splice(this.empdataSource.length-1,1)
+
+  console.log("Before: " + JSON.stringify(this.empdataSource));
   
+  this.areaListData.forEach(element => {
+    this.empdataSource.forEach(area => {
+      let areacode = area.areaCode.split('\r')
+      
+   //   let serName = this.areasetForm.get('serviceMasterId').value;
+//let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
+      if(element.areaCode+',' == areacode){
+       area.serviceMasterId = element.serviceMasterId
+     //  area.serviceName = element.serviceName
+      
+       
+     // area.servName = element.serviceName
+       // emp.fullName = element.fullName 
+      }
+    
+    });
+  });
+
+  console.log("After: " + JSON.stringify(this.empdataSource));
+}
+
 
 
 }

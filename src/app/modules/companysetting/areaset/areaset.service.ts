@@ -28,8 +28,8 @@ public apiUrl = environment.baseUrl8084;
 
     /**get Summary data */
     getSummaryData():Observable<any>{
-       return this.http.get<any>(this.apiUrl+ `Areamaster/getAllAreaMasters`);
-      // return this.http.get(this.apiUrl+`Areamaster/SummaryData`)
+      return this.http.get<any>(this.apiUrl+ `Areamaster/getAllAreaMasters`);
+      //return this.http.get(this.apiUrl+`Areamaster/SummaryData`)
     }
 
     /**save areaset */

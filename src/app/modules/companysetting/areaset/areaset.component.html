@@ -252,9 +252,9 @@
                             <th rowspan="2" class="wd-8 text-center">
                               <div class="p-d-flex p-jc-between p-ai-center ml-90">No. of Areas
                                 <div class="Sort_Filter_Position">
-                                  <p-sortIcon field="areaSetMasterDetailsList.length"
-                                    pSortableColumn="areaSetMasterDetailsList.length"></p-sortIcon>
-                                  <p-columnFilter field="areaSetMasterDetailsList.length" display="menu"
+                                  <p-sortIcon field="areaSetMasterDetailsList?.length"
+                                    pSortableColumn="areaSetMasterDetailsList?.length"></p-sortIcon>
+                                  <p-columnFilter field="areaSetMasterDetailsList?.length" display="menu"
                                     class="p-ml-auto">
                                   </p-columnFilter>
                                 </div>
@@ -276,7 +276,7 @@
 
                             </td>
                             <td class="text-center">
-                              {{data.areaSetMasterDetailsList.length}}
+                              {{data.areaSetMasterDetailsList?.length}}
 
                             </td>
 
@@ -521,7 +521,7 @@
         <div class="card-body">
           <div class="row  ">
             <div class="col-md-12">
-              <textarea rows="3" cols="60"></textarea>
+              <textarea rows="3" cols="60" (paste)="areaListPasteData($event)"></textarea>
             </div>
           </div>
 
@@ -534,6 +534,7 @@
           <i class="fa fa-times"></i></b> Close</button>
       <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button> -->
       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+      (click)="modalRef.hide()"
         tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
     </div>
   </ng-template>
