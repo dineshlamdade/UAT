@@ -8,7 +8,7 @@ import { SortEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map,debounceTime } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-
+import { Workbook } from 'exceljs';
 import { TemplateRef} from '@angular/core';
 
 //import { ExcelserviceService } from  './../../core/services/excelservice.service';
@@ -311,9 +311,9 @@ export class EmployeesetComponent implements OnInit {
   exportApprovalSummaryAsExcel(): void {
     this.excelData = [];
     this.header = []
-    this.header =["Emp.SetName", "No.Of Emp"];
+    this.header =["employeeCode"];
     this.excelData = [];
-
+//this.empData = []
    //let empname = this.employeesetForm.get('employeeSetName').value;
    //console.log("employee list",this.employeeList)
   // let emp = this.employeesetForm.get('empList').value
@@ -374,7 +374,7 @@ this.downloadExcel(this.excelData, this.header);
   let obj={ 
      EmployeeSetName : empname,
     employeeCode : empCode.label,
- empName : empCode.name
+    empName : empCode.name
 }
     this.excelData1.push(obj)
  })
