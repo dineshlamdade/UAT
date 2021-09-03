@@ -1,0 +1,540 @@
+<!-- <p>areaset works!</p> -->
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+      <div class="tabview-contents">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0">
+
+                <div class="col-12 mt-10">
+                  <form class="card" role="form" [formGroup]="areasetForm">
+                    <div class="row">
+                      <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 form-group">
+                        <label class="form-label">Area Set Name</label>
+                        <input type="text" class="form-control" formControlName="areaSetName" maxlength="25"
+                          (keypress)="keyPressAlphaNumericWithCharacters($event)" placeholder="Enter Area Set Name"
+                          [ngClass]="{'is-invalid' : areasetForm.get('areaSetName').status == 'INVALID'}">
+                        <!-- <small id="areaHelp" class="form-text text-muted errorMessageP"
+                          *ngIf="!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.required">
+                          Name is required
+                        </small> -->
+                        <!-- <small id="areaHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.pattern">
+                          Name not valid
+                        </small> -->
+                        <!-- <small id="areaHelp" class="form-text text-muted errorMessageP"
+                          *ngIf="!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetName').errors?.maxlength">
+                          Name can be max 25 characters long.
+                        </small> -->
+                        <!-- [ngClass]="{'is-invalid' : areasetForm.get('areaSetName').status == 'INVALID'}" -->
+                      </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+
+                      <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                        <fieldset>
+                          <legend>Service Selection</legend>
+                          <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                            <div class="form-group ">
+
+                              <label class="form-label">Service</label>
+                              <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Selected All"></p-multiSelect> -->
+                              <select class="form-control" (change)="getAreasetByService($event.target.value)"
+                                formControlName="serviceMasterId"
+                                [ngClass]="{'is-invalid' : areasetForm.get('serviceMasterId').status == 'INVALID'}">
+                                <option>Select Service</option>
+                                <option *ngFor="let service of serviceData" value="{{service.serviceMasterId}}">
+                                  {{service.serviceName}}
+                                </option>
+                              </select>
+                              <!-- <small id="serviceHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('serviceMasterId').errors?.required">
+                           </small> -->
+
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+
+                        <fieldset>
+                          <legend>Area Selection </legend>
+
+                          <div class="row">
+                            <!-- [(ngModel)]="areaList"  -->
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                              <div class="form-group ">
+
+                                <label class="form-label">Area</label>
+                                <p-multiSelect [options]="areaListData" class="multiselect-custom"
+                                formControlName="areaList" defaultLabel="Select Area"
+                                  resetFilterOnHide=true [(ngModel)]="areaList" [ngModelOptions]="{standalone: true}"
+                                  (onChange)="getArea(areaList,$event)" [filter]="true"
+                                  [ngClass]="{'is-invalid' : areasetForm.get('areaList').status == 'INVALID'}" >
+
+                                </p-multiSelect>
+                                <!-- <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name"></p-multiSelect>  -->
+
+                                <!-- display="chip" -->
+                                <!-- <p-multiSelect [options]="areaListData" class="multiselect-custom"
+                                    [disabled]="viewFlag" [virtualScroll]="true"
+                                    formControlName="areaMaster" [filterPlaceHolder]="'Select'" [placeholder]="'Select Area'"
+                                    ngDefaultControl>
+                                    </p-multiSelect> -->
+
+
+                                <!-- <select class="form-control" (change)="getAreaMasterId($event.target.value)" formControlName = "areaSetMasterId">
+                                        <option>Select</option>
+                                        <option *ngFor="let area of areaListData" value="{{area.value}}">
+                                            {{area.label}}
+                                        </option>
+                                      </select> -->
+                                <!-- <small id="areaSetMasteIdHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('areaSetMasterId').errors?.required">
+                                        Area is required</small> -->
+                              </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                              <div class="form-group mt-20">
+
+                                <div class="custom-controls-stacked ml-5">
+                                  <label class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="example- radios"
+                                      value="option1" (click)="Arealistpop(arealistpop)" [checked]="radioStatus"
+                                      (change)="example($event)">
+                                    <div class="custom-control-label form-label">Area List</div>
+                                  </label>
+                                </div>
+
+
+
+
+                              </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 ">
+                              <div class="form-group mt-20 p-d-inline-flex">
+
+
+                                <label class="form-label text-link text-bold mr-2" (click)="largepopup (template);exportApprovalSummaryAsExcel1()"> Selected
+                                  Area List
+                                </label>
+                            
+                              <div>
+                                <i class="fa fa-file-excel-o text-dark-green font-20"
+                                  (click)="exportApprovalSummaryAsExcel()" style="cursor: pointer;"></i>
+                                </div>
+
+
+
+                              </div>
+                             
+
+
+                            </div>
+
+
+
+                          </div>
+
+
+
+                        </fieldset>
+                      </div>
+                      <!-- mt-50 ml-40 -->
+
+                    </div>
+
+                    <br>
+                    <ng-container>
+                      <div class="row mt-10">
+                        <div class="col-md-3 form-group">
+                          <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                            <input autocomplete="off" type="checkbox" class="custom-control-input"
+                              name="example-inline-checkbox1" [checked]='!hideRemarkDiv2'
+                              (change)="changeEvent2($event)" readonly />
+                            <span class="custom-control-label">Active </span>
+                          </label>
+                        </div>
+                        <div class="col-md-3 form-group" *ngIf="hideRemarkDiv2">
+                          <label class="form-label">Remark</label>
+                          <textarea autocomplete="off" class="form-control" rows="2" placeholder="Enter Remark"
+                            [required]="hideRemarkDiv2" formControlName="remark"
+                            [ngClass]="{'is-invalid' : areasetForm.get('remark').status == 'INVALID'}"></textarea>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <!-- <div class="float-left d-flex justify-content form-group">
+                <input type="checkbox"  class="mt-2">&nbsp;
+              <label class="form-label mt-2 margin-right:30px;" >Active</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="form-label mt-2">Remark</label>&nbsp;
+              <textarea type="text" formControlName = "remark">
+              
+              </textarea>
+              <small id="areaSetMasteIdHelp" class="form-text text-muted errorMessageP" *ngIf = "!areasetForm.valid &&areasetForm.touched && areasetForm.get('remark').errors?.required">
+                </small>
+              </div>  -->
+
+                    <div class="row mt-10">
+                      <div class="col-12">
+                        <div class="float-right ">
+                          <!-- <button type="submit" [disabled]="areasetForm.invalid"
+                          class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" 
+                          [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid, 'btn-bg-green': !areasetForm.invalid}">
+                          <b><i class="fa fa-floppy-o"></i></b> Save</button> -->
+                          <!-- <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
+                      [disabled] = "areasetForm.invalid || areaList.length == 0" (click)="onSubmit()"
+                      [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid || areaList.length == 0, 'btn-bg-green': !areasetForm.invalid}"><b>
+                      
+                      <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;  -->
+                          <!-- [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid || areaList.length == 0, 'btn-bg-green': !areasetForm.invalid}" -->
+                          <!-- [disabled] = "areasetForm.invalid"  -->
+                          <button type="submit"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                            tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag" (click)="onSubmit()"
+                            [disabled]="areasetForm.invalid"
+                            [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid, 'btn-bg-green': !areasetForm.invalid }"><b>
+
+                              <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                          <!-- [disabled] = "areasetForm.invalid" 
+                      [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid, 'btn-bg-green': !areasetForm.invalid }" -->
+                          <button type="submit"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                            tooltip="Update" *ngIf="editFormFlag" (click)="onUpdate()"
+                            [disabled]="areasetForm.invalid || areaList.length == 0"
+                            [ngClass]="{'disabled-btn-bg-green' : areasetForm.invalid || areaList.length == 0, 'btn-bg-green': !areasetForm.invalid}"><b>
+                              <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+
+
+
+                          <button type="button" *ngIf="viewFormFlag || editFormFlag" (click)="formReset()"
+                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                            Cancel</button>
+
+                          <button type="button"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"
+                            (click)="formReset()" *ngIf="!viewFormFlag && !editFormFlag"><b>
+                              <i class="fa fa-refresh"></i></b> Reset</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </form>
+                  <br>
+                  <div class="mb-0">
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <p-table [value]="summaryData" [paginator]="true" [rows]="10"
+                        [rowsPerPageOptions]="[10,25,50,100,200]" (sortFunction)="customSort3($event)"
+                        [customSort3]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        >
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th rowspan="2" class="wd-6 text-center">Sr. No.</th>
+
+                            <th rowspan="2" class="wd-8 text-center">
+                              <div class="p-d-flex p-jc-between p-ai-center ml-100">Area Set Name
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="areaSetName" pSortableColumn="areaSetName"></p-sortIcon>
+                                  <p-columnFilter type="text" field="areaSetName" display="menu" class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+                            <th rowspan="2" class="wd-8 text-center">
+                              <div class="p-d-flex p-jc-between p-ai-center ml-90">No. of Areas
+                                <div class="Sort_Filter_Position">
+                                  <p-sortIcon field="areaSetMasterDetailsList?.length"
+                                    pSortableColumn="areaSetMasterDetailsList?.length"></p-sortIcon>
+                                  <p-columnFilter field="areaSetMasterDetailsList?.length" display="menu"
+                                    class="p-ml-auto">
+                                  </p-columnFilter>
+                                </div>
+                              </div>
+                            </th>
+
+
+                            <th rowspan="2" class="wd-4 text-center"> Action </th>
+
+                          </tr>
+
+                        </ng-template>
+                        <ng-template pTemplate="body" let-data let-rowIndex=rowIndex>
+                          <tr class="p-selectable-row">
+                            <td class="text-center">{{rowIndex+1}}</td>
+
+                            <td class="text-center">
+                              {{data.areaSetName}}
+
+                            </td>
+                            <td class="text-center">
+                              {{data.areaSetMasterDetailsList?.length}}
+
+                            </td>
+
+
+                            <td class="text-center">
+
+                              <i class="fa fa-edit  font-18 text-dark-green cursor-pointer" tooltip="Edit"
+                                aria-hidden="true" (click)="editAreaSet(data)"></i>&nbsp;
+                              <i class="fa fa-eye font-18 text-blue cursor-pointer" tooltip="View"
+                                (click)="viewAreaSet(data)" aria-hidden="true"></i>&nbsp;
+                              <i class="fa fa-trash font-18 text-red cursor-pointer"
+                                (click)="deleteData(data.areaSetMasterId)" aria-hidden="true"
+                                tooltip="Delete"></i>&nbsp;
+
+                            </td>
+                          </tr>
+
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                          <tr>
+                            <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                Available</span>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div> <!-- card body -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+
+
+  <!-- <p-multiSelect [options]="queryListData" class="multiselect-custom"
+                        [disabled]="viewFlag" [virtualScroll]="true"
+                        formControlName="assignQATemplate1" [filterPlaceHolder]="'Select'" [placeholder]="'Select Template'"
+                        ngDefaultControl>
+                        </p-multiSelect> -->
+
+  <ng-template #template>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Selected Area List</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+
+
+          <div class="row clearfix">
+
+            <div class="col-md-12">
+              <!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" -->
+
+              <p-table #dt2 [value]="excelData1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+              (sortFunction)="customSort3($event)" [customSort3]="true"
+               [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['areacode','Status']">
+                <ng-template pTemplate="caption">
+                  <div class="row">
+
+                    <div class="col-md-12">
+                      <div class="float-right">
+                        <span class="p-input-icon-left p-ml-auto">
+                          <i class="pi pi-search" style="top: 9px !important;"></i>
+                          <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Search " />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                  <tr>
+                    <!--                                                       
+                                                      <th rowspan="2">
+                                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                                          Select 
+                                            
+                                            
+                                                            <div class="Sort_Filter_Position">
+                                                              <p-sortIcon field="Attribute"
+                                                              pSortableColumn="Attribute"></p-sortIcon>
+                                                                <p-columnFilter type="text" field="name" display="menu"
+                                                                    class="p-ml-auto"></p-columnFilter>
+                                                            </div>
+                                                        </div>
+                                                    </th> -->
+
+                    <th rowspan="2">
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Area Set Name
+
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="areacode" pSortableColumn="areacode"></p-sortIcon>
+                          <p-columnFilter type="text" field="areacode" display="menu" class="p-ml-auto"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+
+
+                    <!-- <th rowspan="2" >
+                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                              No.of Areas
+                                                    <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="Attribute"
+                                                      pSortableColumn="Attribute"></p-sortIcon>
+                                                        <p-columnFilter type="date" field="date" display="menu"
+                                                            class="p-ml-auto"></p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th> -->
+
+                  </tr>
+
+
+                </ng-template>
+
+
+                <ng-template pTemplate="body" let-data1 let-rowIndex=rowIndex>
+                  <tr class="p-selectable-row">
+
+                    <!-- <td class="text-center bg-color-light_gray">
+                                                        <label class="custom-control custom-checkbox checkbox-center">
+                                                          <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                                          <span class="custom-control-label"></span>
+                                                     </label>
+                                                     
+                                                      </td> -->
+
+                    <td class="bg-color-light_gray">{{data1.areacode}}
+                      <label class="form-lable mb-0"> </label>
+                      <!-- {{data.areaSetName}} -->
+                    </td>
+                    <!-- <td class="bg-color-light_gray"> 
+                        
+                                                    </td>
+                                                     -->
+
+
+                  </tr>
+                  <!-- <tr class="p-selectable-row"> -->
+
+                    <!-- <td class="text-center bg-color-light_gray">
+                                                      <label class="custom-control custom-checkbox checkbox-center">
+                                                        <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                                        <span class="custom-control-label"></span>
+                                                   </label>
+                                                   
+                                                    </td> -->
+
+                    <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td> -->
+                    <!-- <td class="bg-color-light_gray">
+                                                  
+                                                    </td> -->
+
+
+
+                  <!-- </tr> -->
+                  <!-- <tr class="p-selectable-row"> -->
+
+                    <!-- <td class="text-center bg-color-light_gray">
+                                                    <label class="custom-control custom-checkbox checkbox-center">
+                                                      <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                                      <span class="custom-control-label"></span>
+                                                 </label>
+                                                 
+                                                  </td> -->
+
+                    <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0"> </label></td> -->
+                    <!-- <td class="bg-color-light_gray">        
+                                             
+                                                  </td> -->
+
+
+
+                  <!-- </tr> -->
+                  <!-- <tr class="p-selectable-row"> -->
+
+                    <!-- <td class="text-center bg-color-light_gray">
+                                                  <label class="custom-control custom-checkbox checkbox-center">
+                                                    <input type="checkbox"  class="custom-control-input" name="select"/> 
+                                                    <span class="custom-control-label"></span>
+                                               </label>
+                                               
+                                                </td> -->
+
+                    <!-- <td class="bg-color-light_gray"></td> -->
+                    <!-- <td class="bg-color-light_gray">
+                                                
+                                                </td> -->
+
+
+
+                  <!-- </tr> -->
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                        Available</span></td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" 
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2" tooltip="Reset"><b>
+                            <i class="fa fa-refresh"></i></b> Reset</button>
+                            -->
+      <button type="button" class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left " tooltip="Close"
+        (click)="modalRef.hide()"><b>
+          <i class="fa fa-times"></i></b> Close</button>
+    </div>
+  </ng-template>
+
+
+  <!-- areaList -->
+
+  <ng-template #arealistpop>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Area List</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row  ">
+            <div class="col-md-12">
+              <textarea rows="3" cols="60" (paste)="areaListPasteData($event)"></textarea>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left" tooltip="Close"
+        (click)="modalRef.hide()"><b>
+          <i class="fa fa-times"></i></b> Close</button>
+      <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button> -->
+      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+      (click)="modalRef.hide()"
+        tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+    </div>
+  </ng-template>

@@ -870,6 +870,28 @@
 
             </ul>
           </li>
+          <li
+            [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a
+              class="submenu"
+              [routerLink]="['/companysetting/areaset']"
+              href="javascript:void(0)"
+              >Area Set</a
+            >
+          </li>
+          <li
+            [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a
+              class="submenu"
+              [routerLink]="['/companysetting/employeeset']"
+              href="javascript:void(0)"
+              >Employee Set</a
+            >
+          </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/reimbursement']" href="javascript:void(0)">Reimbursement Master</a></li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"

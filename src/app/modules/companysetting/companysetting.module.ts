@@ -44,6 +44,11 @@ import { RolePrivilegeComponent } from './user-rolesand-permission/role-privileg
 import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
 import { PaymentTrackingMasterComponent } from './payment-tracking-master/payment-tracking-master.component';
 import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
+import { AreasetComponent } from './areaset/areaset.component';
+import { EmployeesetComponent } from './employeeset/employeeset/employeeset.component';
+import { AdhocComponent } from './business-cycle/adhoc/adhoc.component';
+import { SupplementaryComponent } from './business-cycle/supplementary/supplementary.component';
+
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
@@ -67,6 +72,11 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
      UserDashboardComponent,
      PaymentTrackingMasterComponent,
      PayRollStructureComponent,
+     AreasetComponent,
+     EmployeesetComponent,
+     AdhocComponent,
+     SupplementaryComponent
+    
   ],
   imports: [
     CommonModule,
