@@ -171,7 +171,7 @@
                   <div class="float-right">
                     <button type="submit"
                       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
-                      (click)="lockTemp (template2)" tooltip="Area Lock"
+                      (click)="lockTemp(template2)" tooltip="Area Lock"
                       [ngClass]="{'disabled-btn-bg-green' : checkedSummaryList.length == 0, 'btn-bg-green': !checkedSummaryList.length == 0}"><b>
                         <i class="fa fa-lock" aria-hidden="true"></i>
                       </b> Lock
@@ -397,7 +397,7 @@
                         <div class="float-right">
                           <button type="submit"
                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
-                            (click)="smallpopup (template) " tooltip="Lock Employee"><b> <i class="fa fa-lock"
+                            (click)="smallpopup(templateEmp) " tooltip="Lock Employee"><b> <i class="fa fa-lock"
                                 aria-hidden="true"></i> </b>Lock
                           </button> <i class="fa fa-file-excel-o text-dark-green fa-2x "></i>
                         </div>
@@ -532,8 +532,7 @@
           <div class="row">
             <div class="col-md-4">
               <label class="form-label">Cycle</label>
-              <!-- <input type="text" class="form-control" value="2020" disabled>  formControlName="pendingCycleName" -->
-              <input type="text" class="form-control" formControlName="pendingCycleName" disabled>
+                 <input type="text" class="form-control" formControlName="pendingCycleName" disabled>
             </div>
             <div class="col-md-4">
               <label class="form-label">From Date</label>
@@ -733,7 +732,7 @@
       tooltip="Save"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
   </div>
 </ng-template>
-<ng-template #template>
+<ng-template #templateEmp>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Employee Lock </h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -742,10 +741,11 @@
   <div class="modal-body">
     <div class="card">
       <div class="card-body">
+        <form class="card" role="form" [formGroup]="lockEmpForm" #formDirective="ngForm" novalidate>
         <div class="row">
           <div class="col-md-4">
             <label class="form-label">Cycle</label>
-            <input type="text" class="form-control" disabled>
+            <input type="text" class="form-control" formControlName="empCycleName" placeholder="Cycle Name" disabled>
           </div>
           <div class="col-md-4">
             <label class="form-label">From Date</label>
@@ -754,8 +754,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
                 </div>
-                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                  data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
+                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                bsDatepicker disabled>
               </div>
             </div>
           </div>
@@ -765,15 +766,16 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                 </div>
-                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                  data-date-autoclose="true" class="form-control" placeholder="Date" bsDatepicker disabled>
+                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+                data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Date"
+                bsDatepicker disabled>
               </div>
             </div>
           </div>
         </div>
+        </form>
         <div class="row clearfix">
           <div class="col-md-12">
-
             <p-table #dt2 [value]="customers" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               (sortFunction)="customSort($event)" [customSort]="true"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -1058,7 +1060,7 @@
           <div class="col-md-4">
             <label class="form-label">Cycle</label>
             <!-- <input type="text" class="form-control" value="2020" disabled> -->
-            <input type="text" class="form-control" formControlName="lockCycleName" disabled>
+            <input type="text" class="form-control" formControlName="lockCycleName"  placeholder="Cycle Name" disabled>
           </div>
           <div class="col-md-4">
             <label class="form-label">From Date</label>
@@ -1117,7 +1119,8 @@
               <ng-template pTemplate="header">
                 <tr>
                   <th style="width: 3rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
+                   <p-tableCheckbox></p-tableCheckbox>
                   </th>
                   <th>
                     <div class="p-d-flex p-jc-between p-ai-center">
@@ -1153,11 +1156,15 @@
               </ng-template>
 
               <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
-                <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
-                  [ngClass]="{'outofstock':user1.isHighlight == true}">
+                <!-- <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
+                  [ngClass]="{'outofstock':user1.isHighlight == true}"> -->
+                  <tr class="p-selectable-row"
+                  [pSelectableRow]="user1">
+
                   <td>
-                    <p-tableCheckbox [value]="user1" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e>
-                    </p-tableCheckbox>
+                    <p-checkbox [value]="user1.cycleLockPayrollAreaTempId" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIds">
+                      </p-checkbox>
+                      <!-- <p-tableCheckbox [value]="customer"> </p-tableCheckbox> -->
                   </td>
                   <td>{{ user1.payrollAreaCode }} </td>
                   <td>{{ user1.companyName }} </td>
@@ -1178,14 +1185,12 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-      tooltip="Save" (click)="saveLockProceed()"
-      [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockList.length == 0, 'btn-bg-green': !checkedFinalLockList.length == 0}"><b>
-        <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
-    <button type="button" tooltip="Cancel" (click)="resetLock()"
-      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i class="fa fa-refresh"></i></b>
+        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+        tooltip="Save" (click)="saveLockProceed()"
+        [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockList.length == 0, 'btn-bg-green': !checkedFinalLockList.length == 0}"><b>
+          <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+        <button type="button" tooltip="Cancel" (click)="resetLock()"
+      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"><b><i class="fa fa-refresh"></i></b>
       Reset</button>
-    <!-- <button type="button" class="btn btn-secondary"
-          (click)="modalRef.hide()">Clear</button> -->
   </div>
 </ng-template>

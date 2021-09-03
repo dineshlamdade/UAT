@@ -117,7 +117,7 @@ export class AreaComponent implements OnInit {
   public checkedFinalPendingList  :  Array<any> = [];
     public AreaCodes  :  Array<any> = [];
   public employeeList : Array<any> = [];
-
+  public selectedAreaIds = [];
     disabled: boolean = true;
     customers: Customer[];
     users1: User1[];
@@ -755,7 +755,12 @@ checkedSummaryListPending: Array<any> = [];
   //OnCheck check box in area summary table
   onCheckArea(checkValue, element, rowIndex){
     this.RowSelected(element, rowIndex);
+    console.log("checkValue Number onCheckArea", checkValue);
+    console.log("checkValue rowIndex", rowIndex);
+    console.log("checkValue element", element);
     if(checkValue){
+      this.selectedAreaIds.push(element.cycleLockPayrollAreaTempId);
+      this.checkedFinalLockList.push(element.cycleLockPayrollAreaTempId);
       const data = {
         companyName : element.companyName,
         payrollAreaCode : element.payrollAreaCode,
@@ -765,16 +770,17 @@ checkedSummaryListPending: Array<any> = [];
         cycle : element.cycle,
         fromDate :new Date(element.fromDate),
         toDate :new Date(element.toDate),
-
+        canPost : true,
       };
       this.checkedSummaryList.push(data);
-      console.log("checkedSummaryList", this.checkedSummaryList)
-      console.log("selectedArea", this.selectedArea)
+      this.selectedUserInLock.push(data);
     }
     else {
       const index = this.checkedSummaryList.indexOf((item) => (item.cycleLockPayrollAreaTempId == element.cycleLockPayrollAreaTempId));
       this.checkedSummaryList.splice(index, 1);
-      console.log("checkedSummaryList", this.checkedSummaryList)
+      this.selectedUserInLock.splice(index, 1);
+      this.checkedFinalLockList.splice(index, 1);
+
     }
   }
 
@@ -826,15 +832,20 @@ checkedSummaryListPending: Array<any> = [];
    //Select Row in left table of PHG
    RowSelected(u: any, ind: number) {
     this.HighlightRow = ind;
-
+    console.log("ind",ind);
+    console.log("u",u);
     let temp = this.areTableList;
     this.areTableList = new Array();
     let index = this.selectedUser.findIndex(
       (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
     );
+    console.log("selectedUser",this.selectedUser);
+
     let isContain = this.selectedUser.some(
       (o) => o.cycleLockPayrollAreaTempId == u.cycleLockPayrollAreaTempId
     );
+    console.log("selectedUser isContain",isContain);
+
     if (isContain == true) {
       this.selectedUser.splice(index, 1);
     } else {
@@ -864,7 +875,7 @@ checkedSummaryListPending: Array<any> = [];
    //Select Row in left table of PHG
    RowSelectedInLock(u: any, ind: number) {
     this.HighlightRow = ind;
-
+    console.log("HighlightRow", this.HighlightRow)
     let temp = this.checkedSummaryList;
     this.checkedSummaryList = new Array();
     let index = this.selectedUserInLock.findIndex(
@@ -897,21 +908,27 @@ checkedSummaryListPending: Array<any> = [];
 
 
    //OnCheck check box in area summary table On Check Area after click on  Lock button
-   onCheckAreaInLock(checkValue, element, rowIndex){
-    this.RowSelectedInLock(element, rowIndex);
-    if(checkValue){
+   onCheckAreaInLock(checkValue, element, rowIndex) {
+    // this.RowSelectedInLock(element, rowIndex);
+    console.log("rowIndex",rowIndex);
+    console.log("checkValue Number", checkValue);
+    if(checkValue) {
+      // element.canPost = true;
+      this.selectedUserInLock.push(element);
       this.checkedFinalLockList.push(element.cycleLockPayrollAreaTempId);
-    }else {
+    } else {
+      // element.canPost = false;
        const index = this.checkedFinalLockList.indexOf((p) => (p.cycleLockPayrollAreaTempId = element.jobMasterValueId));
       this.checkedFinalLockList.splice(index, 1);
+      this.selectedUserInLock.splice(index, 1);
     }
   }
 
   //Checked Pending for lock popup
-  onCheckedPendigLock(checkValue, element){
+  onCheckedPendigLock(checkValue, element) {
     if(checkValue){
       this.checkedFinalPendingList.push(element.processingCycleId);
-    }else {
+    } else {
        const index = this.checkedFinalPendingList.indexOf((p) => (p.processingCycleId = element.processingCycleId));
       this.checkedFinalPendingList.splice(index, 1);
     }
@@ -927,6 +944,10 @@ checkedSummaryListPending: Array<any> = [];
 
   // Update Lock
   saveLockProceed(){
+
+    if(this.checkedFinalLockList.length == 0){
+      return;
+    }
     const data = { cycleLockPayrollAreaTempIds : this.checkedFinalLockList }
 
     this.lockService.postAreaInLock(data).subscribe((res) =>{
@@ -952,7 +973,18 @@ checkedSummaryListPending: Array<any> = [];
         serviceName : '',
         periodName : '',
         name : '',
-      })
+      });
+      this.pendingForm.patchValue({
+        pendingCycleName: '',
+        fromDate: '',
+        toDate: '',
+      });
+      this.lockForm.patchValue({
+        lockCycleName: '',
+        fromDate: '',
+        toDate: '',
+      });
+
     });
   }
 
@@ -979,6 +1011,16 @@ checkedSummaryListPending: Array<any> = [];
             serviceName : '',
             periodName : '',
             name : '',
+          });
+          this.pendingForm.patchValue({
+            pendingCycleName: '',
+            fromDate: '',
+            toDate: '',
+          });
+          this.lockForm.patchValue({
+            lockCycleName: '',
+            fromDate: '',
+            toDate: '',
           })
     });
   }
@@ -1463,6 +1505,7 @@ getAreaTableSummaryListEmp(){
 
 //OnCheck check box in area summary table
 onCheckAreaEmp(checkValue, element){
+  console.log("checkValue Number", checkValue);
   if(checkValue){
     const data = {
       companyName : element.companyName,

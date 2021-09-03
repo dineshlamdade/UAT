@@ -67,23 +67,7 @@ import {
     `,
   ],
 })
-// export class SupplementryCycleComponent implements OnInit {
 
-//   constructor() { }
-
-//   ngOnInit(): void {
-//   }
-
-// }
-
-// export class AreaComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit(): void {
-//   }
-
-// }
 export class SupplementryCycleComponent implements OnInit {
   public modalRef: BsModalRef;
 
@@ -113,6 +97,7 @@ export class SupplementryCycleComponent implements OnInit {
   public selectedUserAsAndWhen: Array<any> = [];
   public checkedFinalLockList: Array<any> = [];
   public finalpendingLockList: Array<any> = [];
+  public selectedAreaIds = [];
 
   areTableList: any;
   excelData: any[];
@@ -387,6 +372,8 @@ export class SupplementryCycleComponent implements OnInit {
   onCheckArea(checkValue, element, rowIndex) {
     this.RowSelected(element, rowIndex);
     if (checkValue) {
+      this.selectedAreaIds.push(element.businessCycleId);
+      this.checkedFinalLockList.push(element.businessCycleId);
       const data = {
         companyName: element.companyName,
         serviceName: element.serviceName,
@@ -396,8 +383,10 @@ export class SupplementryCycleComponent implements OnInit {
         fromDate: new Date(element.fromDate),
         toDate: new Date(element.toDate),
         businessCycleId: element.businessCycleId,
+        canPost : true,
       };
       this.checkedSummaryList.push(data);
+      this.selectedUserAsAndWhen.push(data);
       console.log('checkedSummaryList', this.checkedSummaryList);
     } else {
       const index = this.checkedSummaryList.indexOf(
@@ -578,8 +567,8 @@ export class SupplementryCycleComponent implements OnInit {
     }
     this.excelservice.exportAsExcelFile(
       this.excelDataAsAndWhen,
-      'As & When /Supplementry Cycle Lock',
-      'As & When /Supplementry Cycle Lock',
+      'As and When Supplementry Cycle Lock',
+      'As and When Supplementry Cycle Lock',
       this.header
     );
     console.log('this.excelDataAsAndWhen::', this.excelDataAsAndWhen);
@@ -650,16 +639,16 @@ export class SupplementryCycleComponent implements OnInit {
   //On Check Cycle lock poup Check box
   //OnCheck check box in area summary table On Check Area after click on  Lock button
   onCheckAreaInLock(checkValue, element, rowIndex) {
-
-
     this.RowSelectedInLock(element, rowIndex);
     if (checkValue) {
+      this.selectedUserAsAndWhen.push(element);
       this.checkedFinalLockList.push(element.businessCycleId);
     } else {
       const index = this.checkedFinalLockList.indexOf(
         (p) => (p.businessCycleId = element.businessCycleId)
       );
       this.checkedFinalLockList.splice(index, 1);
+      this.selectedUserAsAndWhen.splice(index, 1);
     }
   }
 
@@ -720,12 +709,28 @@ export class SupplementryCycleComponent implements OnInit {
     });
   }
 
-  Aswhen2(aswhen2: TemplateRef<any>) {
+  // clickOnLock(temp1: TemplateRef<any>) {
+  //   this.modalRef = this.modalService.show(
+  //     template2,
+  //     Object.assign({}, { class: 'gray modal-lg' })
+  //   );
+
+  //   if(this.checkedSummaryList.length > 0){
+  //     this.modalRef = this.modalService.show(
+  //       temp1,
+  //       Object.assign({}, { class: 'gray modal-lg' })
+  //     );
+  //    }
+
+  // }
+
+  clickOnLock(temp1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
-      aswhen2,
+      temp1,
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
+
 
   //Lock Poup
   // lock(lockTemp: TemplateRef<any>) {

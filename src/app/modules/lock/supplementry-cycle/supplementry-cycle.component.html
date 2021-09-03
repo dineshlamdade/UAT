@@ -9,7 +9,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="float-right">
-                  <buttton class="btn btn-bg-green  mr-2" tooltip="Pending For Lock" (click)="Aswhen2(aswhen2)">Pending
+                  <buttton class="btn btn-bg-green  mr-2" tooltip="Pending For Lock" (click)="clickOnLock(temp1)">Pending
                     for Lock
                   </buttton>
                 </div>
@@ -115,7 +115,6 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       totalRecords={{goAsandWhenList.length}} [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="[
         'companyName',
-        'serviceName',
         'type',
         'cycle',
         'createDateTime',
@@ -157,17 +156,6 @@
                 <p-sortIcon field="companyName" pSortableColumn="companyName">
                 </p-sortIcon>
                 <p-columnFilter type="text" field="companyName" display="menu" class="p-ml-auto">
-                </p-columnFilter>
-              </div>
-            </div>
-          </th>
-          <th>
-            <div class="p-d-flex p-jc-between p-ai-center">
-              Service
-              <div class="Sort_Filter_Position">
-                <p-sortIcon field="serviceName" pSortableColumn="serviceName">
-                </p-sortIcon>
-                <p-columnFilter type="text" field="serviceName" display="menu" class="p-ml-auto">
                 </p-columnFilter>
               </div>
             </div>
@@ -231,7 +219,6 @@
             </p-tableCheckbox>
           </td>
           <td>{{ user1.companyName }} </td>
-          <td>{{ user1.serviceName }} </td>
           <td>{{ user1.type }} </td>
           <td>{{ user1.cycle }} </td>
           <td>{{ user1.createDateTime | date :"dd-MMM-yyyy" }} </td>
@@ -260,7 +247,6 @@
           <div class="card-body">
             <div class="row clearfix">
               <div class="col-md-12">
-
                 <div class="row mt-10">
                   <div class="col-md-12">
                     <p-table #dt1 [value]="checkedSummaryList" [paginator]="true" [rows]="10"
@@ -269,7 +255,6 @@
                       totalRecords={{checkedSummaryList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
                       [globalFilterFields]="[
                         'companyName',
-                        'serviceName',
                         'type',
                         'cycle',
                         'createDateTime',
@@ -302,17 +287,6 @@
                                 <p-sortIcon field="companyName" pSortableColumn="companyName">
                                 </p-sortIcon>
                                 <p-columnFilter type="text" field="companyName" display="menu" class="p-ml-auto">
-                                </p-columnFilter>
-                              </div>
-                            </div>
-                          </th>
-                          <th>
-                            <div class="p-d-flex p-jc-between p-ai-center">
-                              Service
-                              <div class="Sort_Filter_Position">
-                                <p-sortIcon field="serviceName" pSortableColumn="serviceName">
-                                </p-sortIcon>
-                                <p-columnFilter type="text" field="serviceName" display="menu" class="p-ml-auto">
                                 </p-columnFilter>
                               </div>
                             </div>
@@ -372,11 +346,13 @@
                         <tr [class.active]="user1.isHighlight" (dblclick)="doubleClickOnLeftTable(user1)"
                           [ngClass]="{'outofstock':user1.isHighlight == true}">
                           <td>
-                            <p-tableCheckbox [value]="user1" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e>
-                            </p-tableCheckbox>
+                            <!-- <p-tableCheckbox [value]="user1" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e>
+                            </p-tableCheckbox> -->
+                            <p-checkbox [value]="user1.businessCycleId" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIds">
+                            </p-checkbox>
+
                           </td>
                           <td>{{ user1.companyName }} </td>
-                          <td>{{ user1.serviceName }} </td>
                           <td>{{ user1.type }} </td>
                           <td>{{ user1.cycle }} </td>
                           <td>{{ user1.createDateTime | date :"dd-MMM-yyyy" }} </td>
@@ -412,7 +388,7 @@
     </ng-template>
   </div>
 </div>
-<ng-template #aswhen2>
+<ng-template #temp1>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Pending For Lock</h5>
     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -431,7 +407,6 @@
                   totalRecords={{pendingLockList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
                   [globalFilterFields]="[
                     'companyName',
-                    'serviceName',
                     'type',
                     'cycle',
                     'createDateTime',
@@ -464,17 +439,6 @@
                             <p-sortIcon field="companyName" pSortableColumn="companyName">
                             </p-sortIcon>
                             <p-columnFilter type="text" field="companyName" display="menu" class="p-ml-auto">
-                            </p-columnFilter>
-                          </div>
-                        </div>
-                      </th>
-                      <th>
-                        <div class="p-d-flex p-jc-between p-ai-center">
-                          Service
-                          <div class="Sort_Filter_Position">
-                            <p-sortIcon field="serviceName" pSortableColumn="serviceName">
-                            </p-sortIcon>
-                            <p-columnFilter type="text" field="serviceName" display="menu" class="p-ml-auto">
                             </p-columnFilter>
                           </div>
                         </div>
@@ -535,7 +499,6 @@
                         </p-tableCheckbox>
                       </td>
                       <td>{{ user1.companyName }} </td>
-                      <td>{{ user1.serviceName }} </td>
                       <td>{{ user1.type }} </td>
                       <td>{{ user1.cycle }} </td>
                       <td>{{ user1.createDateTime | date :"dd-MMM-yyyy" }} </td>
