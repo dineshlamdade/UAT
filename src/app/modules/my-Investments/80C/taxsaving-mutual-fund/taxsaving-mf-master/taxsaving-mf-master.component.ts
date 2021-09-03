@@ -59,6 +59,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
   documentPassword =[];
   remarkList =[];
   documentDataArray = [];
+  filesUrlArray = [];
   public transactionInstitutionNames: Array<any> = [];
   public editTransactionUpload: Array<any> = [];
   public transactionPolicyList: Array<any> = [];
@@ -88,6 +89,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
   public greaterDateValidations: boolean;
   public policyMinDate: Date;
   public paymentDetailMinDate: Date;
+  public isEdit: boolean = false;
   public paymentDetailMaxDate: Date;
   public minFormDate: Date;
   public maxFromDate: Date;
@@ -116,6 +118,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   documentArray: any[] =[];
+  isVisibleTable = false;
   public proofSubmissionId;
 
   constructor(
@@ -514,13 +517,18 @@ export class TaxsavingMfMasterComponent implements OnInit {
       console.log(this.form)
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Please submit tax saver fund receipt',
       );
       return;
-    } else {
+    } 
+  }
+    // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd',
@@ -559,6 +567,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
               this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -627,10 +636,14 @@ export class TaxsavingMfMasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
       this.getInitialData();
       this.getDetails();
-    }
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -694,6 +707,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
 
   //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.Service.getELSSMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -716,7 +730,8 @@ export class TaxsavingMfMasterComponent implements OnInit {
       this.Index = obj.accountNumber;
       this.showUpdateButton = true;
       this.isClear = true;
-      this.urlArray = obj.documentInformationList;
+      // this.urlArray = obj.documentInformationList;
+      this.filesUrlArray = obj.documentInformationList;
       this.showdocument = false;
       this.proofSubmissionId = obj.proofSubmissionId;
       this.documentArray = [];
@@ -735,6 +750,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
         
       });
       console.log("documentArray::",this.documentArray);
+      this.isVisibleTable = true;
 
       }
     });
@@ -824,9 +840,12 @@ export class TaxsavingMfMasterComponent implements OnInit {
     console.log("---in doc viewer--");
     this.urlIndex = index;
 
+
+    console.log('urlIndex::' , this.urlIndex);
     console.log("urlArray::", this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      // this.urlArray[this.urlIndex].blobURI,
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     console.log("urlSafe::",  this.urlSafe);
     this.modalRef = this.modalService.show(

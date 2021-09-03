@@ -175,6 +175,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   public canEdit: boolean;
   dateOfJoining: Date;
   taxsavingDeclarationData
+  disableRemarkList = false
+  disableRemark: any;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -437,6 +439,12 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
+
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
         'Please Enter Declared Amount'
@@ -1079,7 +1087,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     // let formatedReceiptAmount = this.numberFormat.transform(this.receiptAmount)
     // console.log('formatedReceiptAmount::', formatedReceiptAmount);
     // this.receiptAmount = formatedReceiptAmount;
-    // debugger
+    // 
     // this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
@@ -1304,6 +1312,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].group2TransactionList[0].transactionStatus;
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
@@ -1362,6 +1371,22 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         //console.log('converted:: ', this.urlArray);
       });
       this.documentArray = [];
+  }
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
   }
 
   nextDocViewer() {
@@ -1539,7 +1564,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
-      documentPassword: this.documentPassword,
+      // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
@@ -1551,6 +1576,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         if (res.data.results.length > 0) {
           this.editremarkList = [];
           this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
 
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({

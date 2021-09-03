@@ -83,6 +83,8 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { InvestmentApprovalModule } from './modules/investment-approval/investment-approval.module';
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
 import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
+import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 
@@ -127,6 +129,7 @@ import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
+    MultiSelectModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
     ToastrModule.forRoot( {
@@ -155,7 +158,8 @@ import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-
     LoanMasterModule,
     SignaturePadModule,
     InvestmentApprovalModule,
-    ApprovedInvestmentModule
+    ApprovedInvestmentModule,
+    FormulamasterModule
 
   ],
 

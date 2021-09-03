@@ -47,6 +47,7 @@ import {CheckboxModule} from 'primeng/checkbox';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    MultiSelectModule,
     MatSliderModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),

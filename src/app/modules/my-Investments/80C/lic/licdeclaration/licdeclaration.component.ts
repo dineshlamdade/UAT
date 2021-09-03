@@ -192,6 +192,8 @@ export class LicdeclarationComponent implements OnInit {
    masterGridsData: any;
    documentsArray: any;
    dateofsubmission: any;
+   disableRemarkList = false
+   disableRemark: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -475,6 +477,9 @@ export class LicdeclarationComponent implements OnInit {
     j: number,
   ) {
 
+if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+  this.disableRemarkList = true;
+}
     if(data.declaredAmount == null || data.declaredAmount <= 0){
       this.alertService.sweetalertError(
         'Please Enter Declared Amount'
@@ -1369,10 +1374,12 @@ export class LicdeclarationComponent implements OnInit {
 
     this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
+        
         console.log('edit Data:: ', res);
         this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          this.disableRemark = res.data.results[0].licTransactionDetail[0].lictransactionList[0].transactionStatus;
         this.editTransactionUpload = res.data.results[0].licTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
@@ -1612,7 +1619,7 @@ export class LicdeclarationComponent implements OnInit {
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
-      documentPassword: this.documentPassword,
+      // documentPassword: this.documentPassword,
       remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
@@ -1624,6 +1631,7 @@ export class LicdeclarationComponent implements OnInit {
         if (res.data.results.length > 0) {
           this.editremarkList = [];
           this.editdocumentPassword = [];
+          this.editfilesArray = [];
 
           this.masterGridData.forEach((element, index) => {
             this.documentArray.push({

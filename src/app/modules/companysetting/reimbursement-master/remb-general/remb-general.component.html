@@ -11,9 +11,51 @@
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
                                             <label class="form-label">Reimbursement Head</label>
-                                            <select class="form-control"
-                                                formControlName="reimbursementMasterGeneralSettingId"
-                                                (change)="headerChangeEvent($event.target.value)">
+                                            <select class="form-control" formControlName="headMasterId"
+                                                (change)="headerChangeEvent($event.target.value)"
+                                                [ngClass]="{'is-invalid' : generalForm.get('headMasterId').status == 'INVALID'}">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let headList of headtypelist"
+                                                    value="{{headList.headMasterId}}">{{headList.standardName}}</option>
+                                            </select>
+                                            <!-- <div *ngIf="submitted && f.headMasterId.errors" class="invalid-feedback">
+                                                <div *ngIf="f.headMasterId.errors.required">
+                                                    Reimbursement Head is required
+                                                </div>
+                                            </div> -->
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Display Name</label>
+                                            <input type="text" class="form-control" placeholder="Description"
+                                                formControlName="displayName"
+                                                [ngClass]="{'is-invalid' : generalForm.get('displayName').status == 'INVALID'}">
+                                            <!-- <div *ngIf="submitted && f.displayName.errors" class="invalid-feedback">
+                                                <div *ngIf="f.displayName.errors.required">
+                                                    Display Name is required
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Limit Tracking In</label>
+                                            <select  formControlName="trakingMethod" (change)="trakingChange($event.target.value)"
+                                                class="form-control">
+                                             
+                                                <option value="same-head">Same Head</option>
+                                                <option value="attributes-same-head">Attributes Of Same Head</option>
+                                                <option value="another-head">Another Head</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="headOprationShow">
+                                        <div class="form-group">
+                                            <label class="form-label">Head</label>
+                                            <select class="form-control" formControlName="trackingOnAnotherHeadId">
                                                 <option value="">Select</option>
                                                 <option *ngFor="let headList of headtypelist"
                                                     value="{{headList.headMasterId}}">{{headList.standardName}}</option>
@@ -21,15 +63,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Display Name</label>
-                                            <input type="text" class="form-control" placeholder="Description"
-                                            formControlName="displayName"
-                                                [ngClass]="{'is-invalid' : submitted && f.description.errors}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                    <!-- <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                         <label class="form-label">Limit tracking in</label>
                                         <div class="row">
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
@@ -37,9 +71,10 @@
 
                                                     <div class="custom-controls-stacked">
                                                         <label class="custom-control  custom-radio"
-                                                            (click)="headSameOprationShowClick()">
+                                                            (click)="headSameOprationShowClick($event.target.value)">
                                                             <input type="radio" class="custom-control-input"
-                                                                name="radio" value="option1" checked="checked">
+                                                                formControlName="trakingMethod" name="trakingMethod"
+                                                                value="Same head" checked="checked">
                                                             <div class="custom-control-label">Same head</div>
                                                         </label>
                                                     </div>
@@ -48,9 +83,10 @@
                                             <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                 <div class="custom-controls-stacked">
                                                     <label class="custom-control  custom-radio"
-                                                        (click)="headTableOprationShowClick()">
-                                                        <input type="radio" class="custom-control-input" name="radio"
-                                                            value="option2">
+                                                        (click)="headTableOprationShowClick($event.target.value)">
+                                                        <input type="radio" class="custom-control-input"
+                                                            name="trakingMethod" formControlName="trakingMethod"
+                                                            value="Attributes of same head">
                                                         <div class="custom-control-label">Attributes of same head</div>
                                                     </label>
                                                 </div>
@@ -58,31 +94,22 @@
                                             <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                                 <div class="custom-controls-stacked">
                                                     <label class="custom-control  custom-radio"
-                                                        (click)="headOprationShowClick()">
-                                                        <input type="radio" class="custom-control-input" name="radio"
-                                                            value="option3">
+                                                        (click)="headOprationShowClick($event.target.value)">
+                                                        <input type="radio" class="custom-control-input"
+                                                            name="trakingMethod" formControlName="trakingMethod"
+                                                            value="Another head">
                                                         <div class="custom-control-label">Another head</div>
                                                     </label>
                                                 </div>
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
 
                                 <div class="row">
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="headOprationShow">
-                                        <div class="form-group">
-                                            <label class="form-label">Head</label>
-                                            <select class="form-control" formControlName="headMasterId">
-                                                <option value="">Select</option>
-                                                <option *ngFor="let headList of headtypelist"
-                                                    value="{{headList.standardName}}">{{headList.standardName}}</option>
 
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-3 mb-2"
                                         *ngIf="headTableOprationShow">
                                         <div class="table-responsive Custom_Table">
@@ -92,30 +119,44 @@
                                                     <tr>
                                                         <th>Sr.no</th>
                                                         <th>Attributes</th>
+                                                        <th>Once Every</th>
                                                         <th>Amount Limit</th>
                                                         <th>Quantity Limit</th>
-                                                        <th>Once Every</th>
+                                                     
                                                         <th>Frequency</th>
-                                                        <th>Gap between 2 claims (in days)</th>
+                                                        <th>Gap Between 2 Claims (In Days)</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr
-                                                        *ngFor="let attributeList of this.headAllattributes; index as i">
+                                                    <tr *ngFor="let attributeList of headAllattributes; index as i">
                                                         <td>{{i+1}}</td>
                                                         <td>{{attributeList.typeValue}}</td>
-                                                        <td> <input type="text" placeholder="" class="form-control" formControlName="amountLimit"></td>
-                                                        <td><input type="text" placeholder="" class="form-control" formControlName="quantityLimit"> </td>
-                                                        <td> <input type="text" placeholder="" class="form-control" formControlName="onesEvery">
+                                                        <td> <input type="number" min="0" placeholder="Once Every"
+                                                            class="form-control"
+                                                            (change)="onceEveryChange(i, $event.target.value, attributeList.typeValue)">
+                                                    </td>
+                                                        <td> <input type="number" placeholder="Amount Limit" min="0"
+                                                                class="form-control"
+                                                                (change)="amountLimitChange(i, $event.target.value, attributeList.typeValue)">
                                                         </td>
-                                                        <td> <select class="form-control" formControlName="frequency">
+                                                        <td> <input type="number" min="0" placeholder="Quantity Limit	"
+                                                                class="form-control"
+                                                                (change)="quantityLimitChange(i, $event.target.value, attributeList.typeValue)">
+                                                        </td>
+                                                    
+
+                                                        <td> <select class="form-control"
+                                                                (change)="frequencyChange(i, $event.target.value, attributeList.typeValue)">
                                                                 <option value="">Select</option>
                                                                 <option *ngFor="let headFrequency of headAllSequency"
                                                                     value="{{headFrequency.frequencyName}}">
                                                                     {{headFrequency.frequencyName}}</option>
 
                                                             </select> </td>
-                                                        <td> <input type="text" placeholder="" class="form-control" formControlName="gapsBetTwoAttributeClaims">
+                                                        <td> <input type="number" min="0"
+                                                                placeholder="Gap Between 2 Claims (In Days)"
+                                                                class="form-control"
+                                                                (change)="claimDaysChange(i, $event.target.value, attributeList.typeValue)">
                                                         </td>
 
                                                     </tr>
@@ -130,38 +171,62 @@
                                 <div class="row mt-4">
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
+
                                             <label class="form-label">Claim Taxable</label>
-                                            <div class="row">
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                            formControlName="claimTaxable"
-                                                                name="radio1" value="claim">
-                                                            <div class="custom-control-label">Yes</div>
-                                                        </label>
+                                         
+                                                    <div class="custom-controls-stacked  ">
+                                                      <label class="custom-control custom-radio custom-control-inline">
+                                                        <input formControlName="claimTaxable" type="radio" class="custom-control-input"  value="true" [checked]="editClaimtaxable == 'true'" >
+                                                        <span class="custom-control-label">Yes</span>
+                                                      </label>
+                                                      <label class="custom-control custom-radio custom-control-inline">
+                                                        <input formControlName="claimTaxable" type="radio" class="custom-control-input" value="false"  [checked]="editClaimtaxable == 'false'" >
+                                                        <span class="custom-control-label">No</span>
+                                                      </label>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                            formControlName="claimTaxable"
-                                                                name="radio1" value="claim" checked="checked">
-                                                            <div class="custom-control-label">No</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
+  
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Enable In Investment Declaration</label>
+                                            <div class="custom-controls-stacked  ">
+                                                <label class="custom-control custom-radio custom-control-inline">
+                                                  <input formControlName="enableInvestmentDeclaration" type="radio" class="custom-control-input" value="true" [checked]="editInvestmentDeclaration == 'true'" >
+                                                  <span class="custom-control-label">Yes</span>
+                                                </label>
+                                                <label class="custom-control custom-radio custom-control-inline">
+                                                  <input formControlName="enableInvestmentDeclaration" type="radio" class="custom-control-input"   value="false"  [checked]="editInvestmentDeclaration == 'false'">
+                                                  <span class="custom-control-label">No</span>
+                                                </label>
+                                              </div>
+
+  
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Cycle Wise Balance Tracking</label>
+                                            <div class="custom-controls-stacked  ">
+                                                <label class="custom-control custom-radio custom-control-inline">
+                                                  <input formControlName="cyclewiseBalanceTracking" type="radio" class="custom-control-input" name="cyclewiseBalanceTracking" value="true"  [checked]="editCyclewiseBalance == 'true'" >
+                                                  <span class="custom-control-label">Yes</span>
+                                                </label>
+                                                <label class="custom-control custom-radio custom-control-inline">
+                                                  <input formControlName="cyclewiseBalanceTracking" type="radio" class="custom-control-input" name="cyclewiseBalanceTracking" value="false"  [checked]="editCyclewiseBalance == 'false'">
+                                                  <span class="custom-control-label">No</span>
+                                                </label>
+                                              </div>
+   
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
                                             <label class="form-label">Bill Submission Limit</label>
-                                            <select class="form-control" [(ngModel)]="selectedvalue"
-                                            formControlName="billSubLimitMethod"
-                                                [ngModelOptions]="{standalone: true}">
-                                                <option>Select</option>
+                                            <select class="form-control" (change)="selectedChangeBill($event.target.value)"
+                                                formControlName="billSubLimitMethod">
+                                                <option value="" selected>Select</option>
                                                 <option value="Till Accural Limit">Till Accural Limit</option>
                                                 <option value="Till Annual Limit">Till Annual Limit</option>
                                                 <option value="No Limit">No Limit</option>
@@ -169,72 +234,18 @@
 
                                             </select>
                                         </div>
-                                        <div class="form-group" *ngIf="selectedvalue == 'SDM'">
+                                        <div class="form-group" *ngIf="selectedBillLimitValue">
                                             <label class="form-label">SDM List</label>
                                             <select class="form-control" formControlName="billSubLimitSDMId">
-                                                <option>Select</option>
-                                                <option value="">Abc</option>
-                                                <option value="">Abc</option>
-                                                <option value="">Abc</option>
-                                                <option value="">Abc </option>
+                                                <option value="" selected>Select</option>
+                                                <option value="1">Abc</option>
+                                                <option value="2">Lmn</option>
+                                                <option value="3">sss</option>
+                                                <option value="4">dff </option>
 
                                             </select>
                                         </div>
 
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Enable in Investment Declaration</label>
-                                            <div class="row">
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                            formControlName="enableInvestmentDeclaration"
-                                                                name="radio3" value="option1" checked>
-                                                            <div class="custom-control-label">Yes</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                            formControlName="enableInvestmentDeclaration"
-                                                                name="radio3" value="option1" checked="checked">
-                                                            <div class="custom-control-label">No</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Cycle Balance Tracking</label>
-                                            <div class="row">
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                            formControlName="cyclewiseBalanceTracking"
-                                                                name="radio2" value="cycle" checked>
-                                                            <div class="custom-control-label">Yes</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                            formControlName="cyclewiseBalanceTracking"
-                                                                name="radio2" value="cycle" checked="checked">
-                                                            <div class="custom-control-label">No</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -242,49 +253,62 @@
                                     <fieldset>
                                         <legend>Registration</legend>
                                         <div class="row">
-                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-10 col-lg-10 col-sm-10 col-xs-12">
                                                         <label class="form-label">Registration Template</label>
-                                                        <select class="form-control" formControlName="regTemplateId">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
+
+                                                        <select class="form-control" formControlName="regTemplateId"
+                                                        [ngClass]="{'is-invalid' : generalForm.get('regTemplateId').status == 'INVALID'}">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let headTempList of headTemplateList1"
+                                                                value="{{headTempList.regTemplateId}}">
+                                                                {{headTempList.regTemplateName}}</option>
 
                                                         </select>
+                                                        <!-- <div *ngIf="submitted && f.regTemplateId.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.regTemplateId.errors.required">
+                                                                Registration template is required
+                                                            </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
-                                                        <a href="" tooltip="View Template"><i class="fa fa-eye"
+                                                        <a (click)="registerNavigate()" routerLink="" href=""
+                                                            tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
                                                         <br>
-                                                        <a href="" tooltip="Edit Template"> Registration Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                        <a (click)="registerNavigate()" routerLink="" href=""
+                                                            tooltip="Edit Template"><i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Max number of registration - limit
-                                                            on</label>
+                                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                        <label class="form-label">Max Number Of Registration </label>
                                                         <div class="row">
+             
                                                             <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12"
                                                                 *ngIf="headRembType">
                                                                 <div class="custom-controls-stacked">
                                                                     <label class="custom-control  custom-radio">
                                                                         <input type="radio" class="custom-control-input"
                                                                             (click)="headTableClick()" name="radio4"
-                                                                            value="headyes">
+                                                                            value="headyes" checked>
                                                                         <div class="custom-control-label">Head</div>
                                                                     </label>
                                                                 </div>
                                                             </div>
+
+
 
                                                             <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12"
                                                                 *ngIf="headAttribute">
@@ -298,48 +322,52 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-12 col-lg-12 col-sm-5 col-xs-12">
+                                                                <div class="" *ngIf="headRembType2">
+
+                                                                    <input type="text" class="form-control"
+                                                                        formControlName="maxCountOfRegiOfHead"
+                                                                        placeholder="No of registration">
+                                                                </div>
+                                                            </div>
                                                         </div>
 
 
                                                     </div>
-                                                    <!-- *ngIf="form.controls.controlname.value == 'headyes'" -->
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12"
-                                                        *ngIf="headRembType">
-                                                        <div class="" *ngIf="headRembType2">
-                                                            <label class="form-label">No of registration</label>
-                                                            <input type="text" class="form-control"
-                                                            formControlName="maxCountOfRegiOfHead"
-                                                                placeholder="No of registration">
-                                                        </div>
-                                                    </div>
+  
                                                 </div>
 
-                                                <div class="table-responsive Custom_Table mt-3"
-                                                    *ngIf="headAttributeTable == true">
-                                                    <table class="table table-striped table-hover table-bordered m-b-0">
-                                                        <thead class="thead-dark">
-
-                                                            <tr>
-                                                                <th>Sr.no</th>
-                                                                <th>Attributes</th>
-                                                                <th>No of registration</th>
-
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr
-                                                                *ngFor="let attributeList of this.headAllattributes; index as i">
-                                                                <td>{{i + 1}}</td>
-                                                                <td>{{attributeList.typeValue}}</td>
-                                                                <td><input type="number" class="form-control" min="1"
-                                                                        placeholder="No of registration"></td>
-
-                                                            </tr>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                
                                             </div>
+
+                                            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                            <div class="table-responsive Custom_Table mt-3"
+                                            *ngIf="headAttributeTable == true">
+                                            <table class="table table-striped table-hover table-bordered m-b-0">
+                                                <thead class="thead-dark">
+
+                                                    <tr>
+                                                        <th>Sr.no</th>
+                                                        <th>Attributes</th>
+                                                        <th>No of registration</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let attributeList of this.headAllattributes; index as i">
+                                                        <td>{{i + 1}}</td>
+                                                        <td>{{attributeList.typeValue}}</td>
+                                                        <td><input type="number" class="form-control" min="1"
+                                                                (change)="claimDaysChange2(i, $event.target.value, attributeList.typeValue)"
+                                                                placeholder="No of registration"></td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                         </div>
                                     </fieldset>
                                 </div>
@@ -348,55 +376,58 @@
                                         <legend>Approval Workflow</legend>
                                         <div class="row">
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                <h6 class="mb-3 text-secondary">For Registration</h6>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Approval Workflow</label>
-                                                        <select class="form-control" formControlName="regiApprWorkflowId">
-                                                            <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                        </select>
+                                                <fieldset>
+                                                    <h3 class="font-14 text-purple mb-3 font-bold">For Registration</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <label class="form-label">Approval Workflow</label>
+                                                            <select class="form-control"
+                                                                formControlName="regiApprWorkflowId">
+                                                                <option value="" >Select</option>
+                                                                <option *ngFor="let workflowList of headTemplateList5" value="{{workflowList.workflowMasterHeaderId}}">{{workflowList.workflowCode}}</option>
+                                                               
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <label class="form-label">Approval SDM</label>
+                                                            <select class="form-control"
+                                                                formControlName="regiApprSDMId">
+                                                                <option value="" selected>Select</option>
+                                                                <option value="1">Abc</option>
+                                                                <option value="2">Abc</option>
+                                                                <option value="3">Abc</option>
+                                                                <option value="4">Abc</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Approval SDM</label>
-                                                        <select class="form-control" formControlName="regiApprSDMId">
-                                                            <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                </fieldset>
                                             </div>
 
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                <h6 class="mb-3 text-secondary">For Claim</h6>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Approval Workflow</label>
-                                                        <select class="form-control" formControlName="claimApprWorkflowId">
-                                                            <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                        </select>
+                                                <fieldset>
+                                                    <h3 class="font-14 text-purple mb-3 font-bold">For Claim</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <label class="form-label">Approval Workflow</label>
+                                                            <select class="form-control"
+                                                                formControlName="claimApprWorkflowId">
+                                                                <option value="" >Select</option>
+                                                                <option *ngFor="let workflowList of headTemplateList5" value="{{workflowList.workflowMasterHeaderId}}">{{workflowList.workflowCode}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <label class="form-label">Approval SDM</label>
+                                                            <select class="form-control"
+                                                                formControlName="claimApprSDMId">
+                                                                <option value="" selected>Select</option>
+                                                                <option value="1">Abc</option>
+                                                                <option value="2">Abc</option>
+                                                                <option value="3">Abc</option>
+                                                                <option value="4">Abc</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Approval SDM</label>
-                                                        <select class="form-control" formControlName="claimApprSDMId">
-                                                            <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                </fieldset>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -409,47 +440,91 @@
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12">
                                                         <label class="form-label">List of summary heads</label>
-                                                        <select class="form-control" formControlName="reiListSummaryHeadTempId">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
+
+                                                        <select class="form-control"
+                                                            formControlName="reiListSummaryHeadTempId"
+                                                            [ngClass]="{'is-invalid' : generalForm.get('reiListSummaryHeadTempId').status == 'INVALID'}">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let headTempList of headTemplateList3"
+                                                                value="{{headTempList.reiListSummaryHeadTempId}}">
+                                                                {{headTempList.listSummaryHeadTemplateName}}</option>
 
                                                         </select>
+                                                        <!-- <div *ngIf="submitted && f.reiListSummaryHeadTempId.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.reiListSummaryHeadTempId.errors.required">
+                                                                Summary Template is required
+                                                            </div>
+                                                        </div> -->
+
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
-                                                        <a href="" tooltip="View Template"><i class="fa fa-eye"
+                                                        <a (click)="summaryNavigate()" routerLink="" href=""
+                                                            tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg- col-sm-1 col-xs-12">
                                                         <br>
-                                                        <a href="" tooltip="Edit Template">Summary Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                        <a (click)="summaryNavigate()" routerLink="" href=""
+                                                            tooltip="Edit Template"><i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                        <label class="form-label">Declaration Message</label>
-                                                        <select class="form-control" formControlName="declarationTemplateMappingId">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
+                                                   <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                        <label class="form-label">Declaration Message For
+                                                            Taxable</label>
+                                                        <select class="form-control"
+                                                            formControlName="declarationMessageTaxableId"
+                                                            [ngClass]="{'is-invalid' : generalForm.get('declarationMessageTaxableId').status == 'INVALID'}">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let headTempList of headTemplateList4"
+                                                                value="{{headTempList.declarationMessageId}}">
+                                                                {{headTempList.declarationMessageName}}</option>
 
                                                         </select>
-                                                    </div>
-                                                    <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
+                                                        <!-- <div *ngIf="submitted && f.declarationMessageTaxableId.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.declarationMessageTaxableId.errors.required">
+                                                                Declaration template is required
+                                                            </div>
+                                                        </div> -->
+                                                    </div> 
+                                                  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                        <label class="form-label">Declaration Message For Non
+                                                            Taxable</label>
+                                                        <select class="form-control"
+                                                            formControlName="declarationMessageNonTaxableId"
+                                                            [ngClass]="{'is-invalid' : generalForm.get('declarationMessageNonTaxableId').status == 'INVALID'}">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let headTempList of headTemplateList4"
+                                                                value="{{headTempList.declarationMessageId}}">
+                                                                {{headTempList.declarationMessageName}}</option>
+
+                                                        </select>
+                                                        <!-- <div *ngIf="submitted && f.declarationMessageNonTaxableId.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.declarationMessageNonTaxableId.errors.required">
+                                                                Declaration template is required
+                                                            </div>
+                                                        </div> -->
+                                                    </div>   
+                                                    <!-- <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
-                                                        <a href="" tooltip="View Template"><i class="fa fa-eye"
+                                                        <a (click)="declarationNavigate()" routerLink="" href=""
+                                                            tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
-                                                    </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    </div> -->
+                                                    <div class="col-md-1 col-lg- col-sm-1 col-xs-12">
                                                         <br>
-                                                        <a href="" tooltip="Edit Template"> Declaration Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                        <a (click)="declarationNavigate()" routerLink="" href=""
+                                                            tooltip="Edit Template"><i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -458,13 +533,18 @@
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12">
                                                         <label class="form-label">Form Activation Template</label>
                                                         <select class="form-control" formControlName="formActiveTempid">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
-
+                                                            <option value="" selected>Select</option>
+                                                            <!-- <option *ngFor="let headTempList of headTemplateList"
+                                                                value="{{headTempList.regTemplateId}}">{{headTempList.regTemplateName}}</option> -->
+                                                            <option value="1">fff</option>
+                                                            <option value="2">aaa</option>
+                                                            <option value="3">sss</option>
+                                                            <option value="4">ddd</option>
+                                                            <option value="5">ccc</option>
+                                                            <option value="6">vvv</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
@@ -472,10 +552,10 @@
                                                         <a href="" tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg- col-sm-1 col-xs-12">
                                                         <br>
-                                                        <a href="" tooltip="Edit Template"> Activation Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                        <a href="" tooltip="Edit Template"> <i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
 
@@ -483,24 +563,34 @@
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12">
                                                         <label class="form-label">Claim Template</label>
-                                                        <select class="form-control" formControlName="claimTempId">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
+                                                        <select class="form-control" formControlName="claimTempId"
+                                                        [ngClass]="{'is-invalid' : generalForm.get('claimTempId').status == 'INVALID'}">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let headTempList of headTemplateList2"
+                                                                value="{{headTempList.claimTempId}}">
+                                                                {{headTempList.claimTemplateName}}</option>
 
                                                         </select>
+                                                        <!-- <div *ngIf="submitted && f.claimTempId.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.claimTempId.errors.required">
+                                                                Claim Template name is required
+                                                            </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
-                                                        <a href="" tooltip="View Template"><i class="fa fa-eye"
+                                                        <a (click)="claimNavigate()" routerLink="" href=""
+                                                            tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg- col-sm-1 col-xs-12">
                                                         <br>
-                                                        <a href="" tooltip="Edit Template"> Claim Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                        <a (click)="claimNavigate()" routerLink="" href=""
+                                                            tooltip="Edit Template"> <i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -508,25 +598,161 @@
                                     </fieldset>
                                 </div>
                             </fieldset>
+                            <div class="approval-form">
+                                <fieldset>
+                                    <legend>Document Required</legend>
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                            <fieldset>
+                                                <h3 class="font-14 text-purple mb-3 font-bold">For Registration</h3>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                                        <div class="form-group">
+                                                            <div class="table-responsive Custom_Table my-registertable">
+                                                                <table
+                                                                    class="table table-striped table-hover table-bordered m-b-0">
+                                                                    <thead class="thead-dark">
+
+                                                                        <tr>
+                                                                            <th>Sr.no</th>
+                                                                            <th>Document Name</th>
+                                                                            <th>Action</th>
+
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <th>0</th>
+                                                                            <th><input type="text"
+                                                                                    class="form-control"
+                                                                                    [(ngModel)]="dropListModel"
+                                                                                    placeholder="Write document name..."
+                                                                                    #dropList
+                                                                                    [ngModelOptions]="{standalone: true}">
+                                                                            </th>
+                                                                            <th width="150px"><button type="button"
+                                                                                    [disabled]="dropList.value == 0"
+                                                                                    (click)="getRegistrationDocList(dropList.value, dropdownListid)"
+                                                                                    class="btn"> <i tooltip="Add" class="fa fa-plus-circle font-20  text-dark-green" ></i> 
+                                                                                </button>
+                                                                               
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tr
+                                                                            *ngFor="let dropList of dropdownListData; index as i">
+                                                                            <td>{{i+1}}</td>
+                                                                            <td colspan="1">
+                                                                                {{dropList}}
+                                                                            </td>
+                                                                            <td>
+                                                                                <button
+                                                                                    (click)="getRegistrationDocRemove(i, dropdownListid)"
+                                                                                    class="btn"><i tooltip="Add" class="fa fa-minus-circle font-20 text-red" ></i> </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                            <fieldset>
+                                                <h3 class="font-14 text-purple mb-3 font-bold">For Claim</h3>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                                        <div class="form-group">
+                                                            <div class="table-responsive Custom_Table my-registertable">
+                                                                <table
+                                                                class="table table-striped table-hover table-bordered m-b-0">
+                                                                <thead class="thead-dark">
+
+                                                                    <tr>
+                                                                        <th>Sr.no</th>
+                                                                        <th>Document Name</th>
+                                                                        <th>Action</th>
+
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th>0</th>
+                                                                        <th  ><input type="text"
+                                                                                class="form-control"
+                                                                                [(ngModel)]="dropListModel1"
+                                                                                placeholder="Write document name..."
+                                                                                #dropList1
+                                                                                [ngModelOptions]="{standalone: true}">
+                                                                        </th>
+                                                                        <th width="150px"><button type="button"
+                                                                                [disabled]="dropList1.value == 0"
+                                                                                (click)="getClaimDocList(dropList1.value, dropdownListid1)"
+                                                                                class="btn"> <i tooltip="Add" class="fa fa-plus-circle font-20  text-dark-green" ></i> 
+                                                                            </button>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr
+                                                                        *ngFor="let dropList1 of dropdownListData1; index as i">
+                                                                        <td>{{i+1}}</td>
+                                                                        <td colspan="1">
+                                                                            {{dropList1}}
+                                                                        </td>
+                                                                        <td>
+                                                                            <button
+                                                                                (click)="getClaimDocRemove(i, dropdownListid1)"
+                                                                                class="btn"><i tooltip="Add" class="fa fa-minus-circle font-20 text-red" ></i> </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
                             <div class="row">
 
                                 <div class="col-12">
                                     <div class="col-12 mt-20">
                                         <div class="float-right mb-15">
 
-                                            <button type="submit"
+                                            <!-- <button type="submit"
                                                 class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left"
                                                 tooltip="Save" [disabled]="loading">
                                                 <b><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>
-                                                Previous</button>
+                                                Previous</button> -->
 
-                                            <button type="submit"
+                                            <!-- <button type="submit"
                                                 class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
                                                 tooltip="Save" [disabled]="loading">
-                                                <b><i class="fa fa-floppy-o"></i></b> Next</button>
+                                                <b><i class="fa fa-floppy-o"></i></b> Next</button> -->
 
+                                                <button type="submit" [disabled]="generalForm.invalid"
+                                                [ngClass]="{'disabled-btn-bg-green' : generalForm.invalid,'btn-bg-green': !generalForm.invalid}"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                                tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>
+                                                {{isEdit?'Update':
+                                                'Next'}}
+                                            </button>
 
-                                            <button type="button" tooltip="Reset"
+                                            <button type="button" tooltip="Reset" (click)="jumpToMasterPage()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa  fa-refresh"></i></b> Reset</button>
 
@@ -544,12 +770,7 @@
 
                 </div>
             </div>
-            <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
-                <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
-                    (click)="scrollToTop()">
-                    <i class="fa fa-angle-double-up text-white font-18"></i>
-                </button>
-            </div>
+
         </div>
     </div>
 
