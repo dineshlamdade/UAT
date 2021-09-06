@@ -6,7 +6,6 @@
         <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
             <div class="row">
 
-
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
@@ -14,7 +13,6 @@
                             <div class="mb-0" *ngIf="!summeryFlag">
                                 <h3 class="font-14 text-purple font-bold">Summary</h3>&nbsp;
                             </div>
-
 
                             <div [@slideInOut]>
 
@@ -1385,7 +1383,7 @@
                                                                         <input type="text" class="form-control"
                                                                             placeholder=""
                                                                             [value]="selectedIndex == rowIndex ? sourceRangeTo : '' "
-                                                                            (focusout)="sourceRangeToData($event.target.value)">
+                                                                            (focusout)="sourceRangeToData($event.target.value,rowIndex,srcCombData)">
                                                                     </td>
                                                                     <td>
                                                                         <div class="input-group">
@@ -1522,24 +1520,42 @@
 
                                                                     </td>
                                                                     <td><input type="text" class="form-control"
-                                                                            placeholder=""
+                                                                            placeholder="" (focusout)="getEditedSourceRangeFrom($event.target.value,data)"
                                                                             value="{{data.sourceRangeFrom}}">
                                                                     </td>
                                                                     <td><input type="text" class="form-control"
-                                                                            placeholder=""
+                                                                            placeholder=""  (focusout)="getEditedSourceRangeTo($event.target.value,data)"
                                                                             value="{{data.sourceRangeTo}}">
                                                                     </td>
                                                                     <td><input type="text" class="form-control"
-                                                                            placeholder=""
+                                                                            placeholder="" (focusout)="getEditedApplicableValue($event.target.value,data)"
                                                                             value="{{data.applicableValue}}">
                                                                     </td>
-                                                                    <td><input type="text" class="form-control"
+                                                                    <td>
+                                                                        
+                                                                        <input data-provide="datepicker"
+                                                                                    data-date-autoclose="true"
+                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                                    class="form-control"
+                                                                                    value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}"
+                                                                                    (bsValueChange)="getEditFromDateForSave($event,data)"
+                                                                                    placeholder="Date" bsDatepicker>
+                                                                        <!-- <input type="text" class="form-control"
                                                                             placeholder=""
-                                                                            value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}">
+                                                                            value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}"> -->
                                                                     </td>
-                                                                    <td><input type="text" class="form-control"
+                                                                    <td>
+                                                                        <input data-provide="datepicker"
+                                                                                    data-date-autoclose="true"
+                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                                    class="form-control"
+                                                                                    value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"
+                                                                                    (bsValueChange)="getEditToDateForSave($event,data)"
+                                                                                    placeholder="Date" bsDatepicker>
+                                                                        
+                                                                        <!-- <input type="text" class="form-control"
                                                                             placeholder=""
-                                                                            value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}">
+                                                                            value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"> -->
                                                                     </td>
                                                                     <td></td>
                                                                 </tr>
@@ -1587,7 +1603,6 @@
                                     <div *ngSwitchDefault>Saved Successfully<i class="fa-check-circle"></i></div>
                                 </div>
                             </div>
-
 
                         </div>
                     </div>

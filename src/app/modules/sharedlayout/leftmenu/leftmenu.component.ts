@@ -60,7 +60,7 @@ public isCollapsedQuery = true;
   companyGroupMasterId: any;
   userRoleId: any;
   menuData: any;
-  isCollapsedpayrollinput: boolean;
+  // isCollapsedpayrollinput: boolean;
   isCollapsedKeywordinput:boolean;
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,

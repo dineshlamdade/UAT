@@ -12,9 +12,9 @@
               <legend>Ganishment Details</legend>
               <div class="row">
                 <div class="col-sm-3">
-                  <label class="form-label">ComplianceHeadName</label>
+                  <label class="form-label">Compliance Head Name</label>
                   <select name="complianceHeadName" id="complianceHeadName" class="form-control"
-                    formControlName="complianceHeadName">
+                    formControlName="headMasterId">
                     <option value="">Select</option>
                     <option *ngFor="let data of complianceHeadNanedata" value="{{data.complianceHeadId}}">
                       {{data.complianceHeadName}}
@@ -47,17 +47,17 @@
                   <label class="form-label">Phone Number</label>
                   <div class="form-group">
                     <div class="input-group">
-                      <div class="input-group-prepend">
+                      <!-- <div class="input-group-prepend">
                         <span class="input-group-text"><i class=""></i></span>
-                      </div>
-                      <input type="text" formControlName="contactNumber" class="form-control" minlength="10"
+                      </div> -->
+                      <input type="text" formControlName="phoneNumber" class="form-control" minlength="10"
                         maxlength="12" name="contactNumber">
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Email Id</label>
-                  <input type="text" formControlName="emailId" class="form-control">
+                  <input type="email" formControlName="emailId" class="form-control">
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Address1</label>
@@ -129,31 +129,43 @@
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Formula</label>
-                  <select name="formula" id="formula" formControlName="formula" class="form-control custom-select">
+                  <!-- formControlName="formula" -->
+                  <select name="formula" id="formula"  class="form-control custom-select">
                     <option value="">Select</option>
                     <option>Formula</option>
                   </select>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">SDM</label>
-                  <select name="sdm" id="sdm" formControlName="sdm" class="form-control custom-select">
+                  <!-- formControlName="sdm" -->
+                  <select name="sdm" id="sdm"  class="form-control custom-select">
                     <option value="">Select</option>
                     <option>SDM1</option>
                   </select>
                 </div>
                 <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Frequency/ies</label>
-                  <select name="frequency" id="frequency" formControlName="frequency"
+                  <label class="form-label">Frequency</label>
+                  <select name="frequency" id="frequency" (change)="getFrequencyData($event.target.value)"
                     class="form-control custom-select">
                     <option value="">Select</option>
-                    <option *ngFor="let data of frequencyData">{{data.name}}</option>
+                    <!-- <option *ngFor="let data of frequencyData">{{data.name}}</option> -->
+                    <option value="">Select</option>
+                    <option value="Monthly" selected>Month
+                    </option>
+                    <option value="Quarterly">Quarter </option>
+                    <option value="HalfYearly">HalfYear</option>
+                    <option value="Yearly">Year </option>
+                    <option value="SemiMonthly">SemiMonth
+                    </option>
+                    <option value="Weekly">Week </option>
+                    <option value="BiWeekly">BiWeek </option>
                   </select>
                 </div>
               </div>
               <div class="row mt-4 mb-10">
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Income Tax Section</label>
-                  <select name="investmentSection" id="investmentSection" formControlName="investmentSection"
+                  <select name="investmentSection" id="investmentSection" formControlName="incomeTaxSection"
                     class="form-control custom-select">
                     <option value="">Select</option>
                     <!-- <option *ngFor="let data of incomeTaxData"></option> -->
@@ -165,12 +177,12 @@
                   <div class="custom-controls-stacked ml-15 mt-10">
                     <label class="custom-control custom-radio custom-control-inline">
                       <input formControlName="familyMember" type="radio" class="custom-control-input"
-                        name="familyMember" [value]="true?0:1">
+                        name="familyMember" [value]="0">
                       <span class="custom-control-label">Yes</span>
                     </label>
                     <label class="custom-control custom-radio custom-control-inline">
                       <input formControlName="familyMember" type="radio" class="custom-control-input"
-                        name="familyMember" [value]="false?0:1">
+                        name="familyMember" [value]="1">
                       <span class="custom-control-label">No</span>
                     </label>
                   </div>
@@ -187,14 +199,15 @@
         <div class="row mt-25">
           <div class="col-md-3">
             <label class="custom-control custom-checkbox custom-control-inline pl-45">
-              <input formControlName="active" type="checkbox" class="custom-control-input"
+              <input type="checkbox" class="custom-control-input"
                 name="example-inline-checkbox1" value="option1" checked>
               <span class="custom-control-label">Active </span>
             </label>
           </div>
           <div class="col-md-3" *ngIf="hideRemarkDiv">
             <label class="form-label pl-10">General Remark</label>
-            <textarea formControlName="generalRemark" class="form-control ml-10" rows="1"></textarea>
+            <!-- formControlName="generalRemark" -->
+            <textarea  class="form-control ml-10" rows="1"></textarea>
           </div>
         </div>
       </form>
@@ -212,7 +225,7 @@
                 </button>
                 <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                   *ngIf="editFlag" (click)="updateMasterData()">
-                  <b><i class="fa fa-floppy-o"></i></b> Save
+                  <b><i class="fa fa-floppy-o"></i></b> Update
                 </button>
                 <button type="button" tooltip="Reset" *ngIf="!viewFlag" (click)="resetData()"
                   class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
@@ -242,6 +255,7 @@
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col" class="wd-15">Sr. No.</th>
+                    <th scope="col" class="wd-15"> Description</th>
                     <th scope="col" class="wd-15"> Institution</th>
                     <th scope="col" class="wd-20">deduction Head</th>
                     <th scope="col" class="wd-20">Formula</th>
@@ -258,7 +272,8 @@
                   <tr *ngFor="let summary of garnishmentData; let i = index">
                     <td class="wd-10"><span tooltip="{{i+1}}">{{i+1}}</span>
                     </td>
-
+                    <td class="wd-10"><span tooltip="{{summary.description}}">{{summary.description}}</span>
+                    </td>
 
                     <td class="wd-10"><span tooltip="{{summary.code}}">{{summary.nameOfInstitution}}</span>
                     </td>
