@@ -6,13 +6,13 @@ import { environment } from 'src/environments/environment';
 import { AreasetService } from './areaset.service';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { SelectItem, PrimeNGConfig } from "primeng/api";
-import { ExcelserviceService } from 'src/app/core/services/excelservice.service';
+//import { ExcelserviceService } from 'src/app/core/services/excelservice.service';
 import { SortEvent } from 'primeng/api';
 import { element } from 'protractor';
 import { threadId } from 'node:worker_threads';
 import { ColumnFilterFormElement } from 'primeng/table';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-
+import { ExcelserviceService } from './../../../core/services/excelservice.service';
 import { TemplateRef} from '@angular/core';
 import { interval } from 'rxjs';
 import { setTime } from 'ngx-bootstrap/chronos/utils/date-setters';
@@ -177,6 +177,7 @@ export class AreasetComponent implements OnInit {
        // this.areaList = [];
       //  this.areasetForm.controls.areaList.setValue("");
      this.areaMaster=[];
+    
        this.areasetForm.controls['areaList'].setValue([]);
        this.areasetForm.controls['areaSetMasterDetailsList'].setValue([]);
       
@@ -482,11 +483,11 @@ let datatest = []
 
    //Area set Excel
   exportApprovalSummaryAsExcel(): void {
- this.excelData = [];
-this.header = []
- this.header =["Service" ,'No.Of.Area'];
+  this.excelData = [];
+  this.header = []
+  this.header = ["serviceName","areacode"];
 // this.header =["AreaSetName", "Service" ,'No.Of.Area'];
-this.excelData = [];
+   this.excelData = [];
 
 //let areaName = this.areasetForm.get('areaSetName').value;
 
@@ -503,11 +504,12 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
    
   let obj={ 
      //areaSetName : areaName,
-     serviceName :servName.serviceName,
-     areacode :areaCode.label 
+     serviceName : servName.serviceName,
+     areacode : areaCode.label 
 }
    this.excelData.push(obj)
 })
+console.log('this.areaList::', this.areaList);
 }
 
 
@@ -525,9 +527,10 @@ let servName = this.serviceData.find(x=>x.serviceMasterId==serName)
 //     //   };
       
 //    // });
-     console.log('this.areaList::', this.areaList);
+     
 //     }
-  this.excelservice.exportAsExcelFile(this.excelData,'areaData','areaData', this.header);
+
+   this.excelservice.exportAsExcelFile(this.excelData,'areaData','areaData',this.header);
 
  }
 
@@ -673,7 +676,7 @@ area.push(obj)
      // area.servName = element.serviceName
        // emp.fullName = element.fullName 
       }
-    
+     
     });
   });
 
