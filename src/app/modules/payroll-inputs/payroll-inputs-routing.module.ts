@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AttendanceComponent } from './attendance/attendance.component';
-import { Component2Component } from './component2/component2.component';
 import { FinancialMasterComponent } from './financial-master/financial-master.component';
 import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
 import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
@@ -10,7 +9,6 @@ import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-r
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { PayrollListComponent } from './payroll-list/payroll-list.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
-import { SdmComponent } from './sdm/sdm.component';
 
 
 const routes: Routes = [
@@ -53,12 +51,7 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: SDM Creation' },
         
       },
-      {
-        path:   'component2',
-        component:  Component2Component,
-        data: { title: ':: DelziaHR :: component2' },
-        
-      },
+     
     ],
   },
 ];

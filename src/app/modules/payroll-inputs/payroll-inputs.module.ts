@@ -39,12 +39,12 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { GarnishmentComponent } from './garnishment/garnishment.component';
 import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-recurring-dashboard.component';
 import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
-import { SdmComponent } from './sdm/sdm.component';
+
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ChartsModule } from 'ng2-charts';
 import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
-import { Component2Component } from './component2/component2.component';
+
 
 @NgModule({
   declarations: [
@@ -56,10 +56,10 @@ import { Component2Component } from './component2/component2.component';
      GarnishmentComponent,
      NonRecurringDashboardComponent,
      TwoDigitDecimaNumberDirective,
-     SdmComponent,
+     
      SdmStepperComponent,
      EllipsisPipe,
-     Component2Component
+     
     ],
   imports: [
     CommonModule,

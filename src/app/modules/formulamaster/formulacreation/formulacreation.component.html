@@ -44,7 +44,8 @@
                                                             <i class="fa fa-calendar"></i>
                                                         </span>
                                                     </div>
-                                                    <input formControlName="effectiveFromDate" data-provide="datepicker" data-date-autoclose="true"
+                                                    <input formControlName="effectiveFromDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                     data-provide="datepicker" data-date-autoclose="true"
                                                         class="form-control" placeholder="Date" bsDatepicker>
                                                 </div>
                                             </div>
@@ -60,8 +61,13 @@
                                                             <i class="fa fa-calendar"></i>
                                                         </span>
                                                     </div>
-                                                    <input formControlName="effectiveToDate" data-provide="datepicker" data-date-autoclose="true"
-                                                        class="form-control" placeholder="Date" bsDatepicker>
+                                                    <input formControlName="effectiveToDate" 
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                    data-provide="datepicker"
+                                                    data-date-autoclose="true"
+                                                    placeholder="Date"
+                                                    bsDatepicker
+                                                    class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -115,19 +121,22 @@
                                                 class="u-full-width" maxlength="1500" required="" value=" CTC * 0.04">
                                                </textarea> -->
 
-                                               <!-- <div class="ng-autocomplete">
+                                               <div class="ng-autocomplete">
                                                 <ng-autocomplete 
-                                                  formControlName="originalFormula"
+                                                  
                                                   placeholder="Enter Formula Here"
                                                   [data]="formulaData"
                                                   [searchKeyword]="keyword"
                                                   (selected)='selectEvent($event)'
                                                   (inputChanged)='onChangeSearch($event)'
                                                   (inputFocused)='onFocused($event)'
+                                                  
+                                                  [ngModelOptions]="{standalone : true}"
+                                                  (keyup)="getFormulaData($event.target.value)"
                                                   [itemTemplate]="itemTemplate"
                                                   [notFoundTemplate]="notFoundTemplate">                                 
                                                 </ng-autocomplete>
-                                                
+                                                <!-- [(ngModel)]="selectedFormula" -->
                                                 <ng-template #itemTemplate let-item>
                                                 <a [innerHTML]="item.name"></a>
                                                 </ng-template>
@@ -135,7 +144,7 @@
                                                 <ng-template #notFoundTemplate let-notFound>
                                                 <div [innerHTML]="notFound"></div>
                                                 </ng-template>
-                                                </div>    -->
+                                                </div>   
 
                                         </div>
                                     </div>
@@ -151,9 +160,10 @@
                                                 style="border:1px solid #ccc;">
                                                 <table class="my-registertable">
                                                     <ol>
-                                                        <li>BASICM</li>
-                                                        <li>HRAM</li>
-                                                        <li>CTCM</li>
+                                                        <li *ngIf="originalFormula">{{originalFormula.toString()}}</li>
+                                                        <!-- <li>BASICM</li> -->
+                                                        <!-- <li>HRAM</li>
+                                                        <li>CTCM</li> -->
                                                     </ol>
                                                 </table>
                                             </div>
@@ -200,7 +210,7 @@
 
 
 
-                                        <button type="submit" (click)="saveFormulaMasters()"
+                                        <button type="submit" *ngIf="!editflag && !viewflag" (click)="saveFormulaMasters()"
                                             class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
                                             tooltip="Save" [disabled]="loading">
                                             <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
@@ -316,7 +326,7 @@
                                 <tr class="p-selectable-row">
                                     <td class="bg-color-light_gray text-center"></td>
                                     <td class="bg-color-light_gray text-center"><label class="form-lable mb-0 text-link"
-                                        (click)=" extralargepopup(template4)" >{{formula.formulaName}}</label>
+                                        (click)=" GetByFormulaName(formula);extralargepopup(template4)" >{{formula.formulaName}}</label>
 
                                     </td>
 
@@ -330,11 +340,11 @@
                                             class="form-lable mb-0">{{formula.originalFormula}}</label></td>
                                     <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0"></label>
-                                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editFormulaSummaryData(key)"
+                                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editFormulaSummaryData(formula)"
                                             tooltip="Edit"></i>&nbsp;
-                                        <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewSummaryData(key)"
+                                        <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewSummaryData(formula)"
                                             tooltip="View"></i>&nbsp;
-                                        <i class="fa fa-trash font-16 text-red cursor-pointer" (click)="deleteSummaryData(key)"
+                                        <i class="fa fa-trash font-16 text-red cursor-pointer" (click)="deleteSummaryData(formula)"
                                             tooltip="Delete"></i>
                                     </td>
 
