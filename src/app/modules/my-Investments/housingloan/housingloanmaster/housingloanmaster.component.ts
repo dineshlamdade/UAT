@@ -1011,6 +1011,7 @@ export class HousingloanmasterComponent implements OnInit {
       this.housePropertyLoanDetailList.reset()
       this.showUpdateButton = false;
       this.loanDetailGridData = [];
+      this.houseLoanOwnerTypeList = [];
       this.propertyIndex = [];
       this.urlArray = [];
       this.stampDutyUrlArray = [];
@@ -1390,6 +1391,7 @@ export class HousingloanmasterComponent implements OnInit {
     this.HPUsageDetailForm.reset();
     this.houseLoanUsageTypeList = [];
     this.loanDetailGridData = [];
+   // this.houseLoanOwnerTypeList = [];
     this.houseLoanUsageTypeList = [];
     this.housingLoanForm.reset();
     this.housePropertyLoanDetailList.reset();

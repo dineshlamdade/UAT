@@ -85,6 +85,8 @@ export class MediclaimSummaryComponent implements OnInit {
   // Summary get Call
   summaryPage() {
     this.mediclaim80DService.getMediclaimSummary().subscribe((res) => {
+
+      console.log(res);
       if(res.data.results.length > 0){
       this.summaryGridData = res.data.results[0];
       this.mediclaimPremiumMasterTransactionList =
