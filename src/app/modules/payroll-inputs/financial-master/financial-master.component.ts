@@ -38,22 +38,13 @@ public employeeListsArray = [];
 public employeeListIndex = 0;
 public modalRef: BsModalRef;
 public headDescriptionName: string;
-  selectedEmpData: any;
-  index: number = 0;
 
   constructor(private service: FinancialMasterService,
               private datePipe: DatePipe,
               private modalService: BsModalService,
               private commonService: PayrollInputsService,
               private router: Router
-    ) {
-
-      if (localStorage.getItem('payrollListEmpData') != null) {
-        this.selectedEmpData = JSON.parse(localStorage.getItem('payrollListEmpData'))
-        localStorage.removeItem('payrollListEmpData')
-        this.index = 0
-      } 
-    }
+    ) {}
 
   public ngOnInit(): void {
     // this.employeeListsArray = this.commonService.getEmployeeListArray();
@@ -244,7 +235,7 @@ public headDescriptionName: string;
                 fromDate: this.masterGridData[i].fromdate,
                 headMasterId: this.masterGridData[i].id,
                 payrollAreaId: 1,
-               todate: tempDate2,
+                toDate: tempDate2,
                 // toDate: this.masterGridData[i].todate,
                 value: closingAmount,
                   });
@@ -260,7 +251,7 @@ public headDescriptionName: string;
                 fromDate: this.masterGridData[i].fromdate,
                 headMasterId: this.masterGridData[i].id,
                 payrollAreaId: 1,
-               todate: tempDate2,
+               toDate: tempDate2,
                 // toDate: this.masterGridData[i].todate,
                 value: closingAmount,
                   });
@@ -276,7 +267,7 @@ public headDescriptionName: string;
                   fromDate: this.masterGridData[i].fromdate,
                   headMasterId: this.masterGridData[i].id,
                   payrollAreaId: 1,
-                 todate: tempDate2,
+                  toDate: tempDate2,
                   // toDate: this.masterGridData[i].todate,
                   value: closingAmount,
                     });
