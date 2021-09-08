@@ -146,7 +146,7 @@
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 3rem">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            <p-tableHeaderCheckbox (click)="allCheckInCycleLockTable(e.checked)" #e></p-tableHeaderCheckbox>
           </th>
 
           <th>
@@ -351,6 +351,9 @@
                             <p-checkbox [value]="user1.businessCycleId" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIds">
                             </p-checkbox>
 
+                            <!-- <p-tableCheckbox [value]="user1.businessCycleId" (click)="onCheckAreaInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIds">
+                            </p-tableCheckbox> -->
+
                           </td>
                           <td>{{ user1.companyName }} </td>
                           <td>{{ user1.type }} </td>
@@ -430,7 +433,7 @@
                   <ng-template pTemplate="header">
                     <tr>
                       <th style="width: 3rem">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        <p-tableHeaderCheckbox (click)="allCheckUncheck(e.checked)" #e ></p-tableHeaderCheckbox>
                       </th>
                       <th>
                         <div class="p-d-flex p-jc-between p-ai-center">

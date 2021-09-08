@@ -334,6 +334,18 @@ export class SupplementryCycleComponent implements OnInit {
       if (res) {
         if (res.data.results) {
           this.alertService.sweetalertMasterSuccess(res.status.message, '');
+          // remove selected rows from pending for lock table
+          this.finalpendingLockList.forEach(element => {
+            const index = this.pendingLockList.indexOf(
+              (p) => (p.businessCycleId == element)
+            );
+            this.pendingLockList.splice(index, 1);
+            // this.selectedUserPending.splice(index, 1);
+          });
+
+          this.finalpendingLockList = [];
+          this.selectedUserPending = [];
+          // this.pendingForLockAsWhen();
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -343,6 +355,8 @@ export class SupplementryCycleComponent implements OnInit {
         );
       }
       this.modalRef.hide();
+      this.finalpendingLockList = [];
+      this.selectedUserPending = [];
       this.form.reset();
       this.form.patchValue({
         companyName : '',
@@ -466,6 +480,7 @@ export class SupplementryCycleComponent implements OnInit {
     this.HighlightRow = ind;
     let temp = this.pendingLockList;
     this.pendingLockList = new Array();
+    // this.pendingLockList = [];
     let index = this.selectedUserPending.findIndex(
       (o) => o.businessCycleId == u.businessCycleId
     );
@@ -498,7 +513,7 @@ export class SupplementryCycleComponent implements OnInit {
     this.header = [];
     this.header = [
       'companyName',
-      'serviceName',
+      // 'serviceName',
       'type',
       'cycle',
       'createDateTime',
@@ -507,12 +522,10 @@ export class SupplementryCycleComponent implements OnInit {
     ];
     this.excelData = [];
     if (this.goAsandWhenList.length > 0) {
-      // this.employeeList = this.employeeList.filter((emp)=>this.psidList.some((p)=>p.psid=emp.proofSubmissionId));
-      //this.employeeList =  this.areTableList;
       this.goAsandWhenList.forEach((element) => {
         let obj = {
           companyName: element.companyName,
-          serviceName: element.serviceName,
+          // serviceName: element.serviceName,
           type: element.type,
           cycle: element.cycle,
           createDateTime: new Date(element.createDateTime),
@@ -539,7 +552,7 @@ export class SupplementryCycleComponent implements OnInit {
     this.header = [];
     this.header = [
       'companyName',
-      'serviceName',
+      // 'serviceName',
       'type',
       'cycle',
       'createDateTime',
@@ -553,7 +566,7 @@ export class SupplementryCycleComponent implements OnInit {
       this.checkedSummaryList.forEach((element) => {
         let obj = {
           companyName: element.companyName,
-          serviceName: element.serviceName,
+          // serviceName: element.serviceName,
           type: element.type,
           cycle: element.cycle,
           createDateTime: new Date(element.createDateTime),
@@ -579,7 +592,7 @@ export class SupplementryCycleComponent implements OnInit {
     this.header = [];
     this.header = [
       'companyName',
-      'serviceName',
+      // 'serviceName',
       'type',
       'cycle',
       'createDateTime',
@@ -593,7 +606,7 @@ export class SupplementryCycleComponent implements OnInit {
       this.pendingLockList.forEach((element) => {
         let obj = {
           companyName: element.companyName,
-          serviceName: element.serviceName,
+          // serviceName: element.serviceName,
           type: element.type,
           cycle: element.cycle,
           createDateTime: new Date(element.createDateTime),
@@ -639,31 +652,111 @@ export class SupplementryCycleComponent implements OnInit {
   //On Check Cycle lock poup Check box
   //OnCheck check box in area summary table On Check Area after click on  Lock button
   onCheckAreaInLock(checkValue, element, rowIndex) {
-    this.RowSelectedInLock(element, rowIndex);
+    // this.RowSelectedInLock(element, rowIndex);
     if (checkValue) {
-      this.selectedUserAsAndWhen.push(element);
+      this.selectedUserAsAndWhen.push(element.businessCycleId);
       this.checkedFinalLockList.push(element.businessCycleId);
     } else {
       const index = this.checkedFinalLockList.indexOf(
-        (p) => (p.businessCycleId = element.businessCycleId)
+        (p) => (p.businessCycleId == element.businessCycleId)
       );
       this.checkedFinalLockList.splice(index, 1);
-      this.selectedUserAsAndWhen.splice(index, 1);
+
+      const index1 = this.checkedSummaryList.indexOf(
+        (p) => (p.businessCycleId == element.businessCycleId)
+      );
+      this.selectedUserAsAndWhen.splice(index1, 1);
     }
   }
 
   //Pending for lock On Row Selection
   inPendingForLock(checkValue, element, rowIndex) {
-    this.RowSelectedPendingforLock(element, rowIndex);
+    // this.RowSelectedPendingforLock(element, rowIndex);
     if (checkValue) {
+      this.selectedUserPending.push(element.businessCycleId);
       this.finalpendingLockList.push(element.businessCycleId);
     } else {
       const index = this.finalpendingLockList.indexOf(
-        (p) => (p.businessCycleId = element.businessCycleId)
+        (p) => (p.businessCycleId == element.businessCycleId)
       );
       this.finalpendingLockList.splice(index, 1);
+
+      const index1 = this.pendingLockList.indexOf(
+        (p) => (p.businessCycleId == element)
+      );
+      this.selectedUserPending.splice(index1, 1);
     }
   }
+
+
+  //click on Check All In Pending for lock add and remove element from array
+  allCheckUncheck(checkValue){
+    if(checkValue){
+    this.pendingLockList.forEach((element) => {
+      this.selectedUserPending.push(element.businessCycleId);
+      this.finalpendingLockList.push(element.businessCycleId);
+    });
+    }else {
+      this.pendingLockList.forEach((element) => {
+      const index = this.finalpendingLockList.indexOf(
+        (p) => (p.businessCycleId == element.businessCycleId));
+      this.finalpendingLockList.splice(index, 1);
+
+      const index1 = this.pendingLockList.indexOf(
+        (p) => (p.businessCycleId == element)
+      );
+      this.selectedUserPending.splice(index1, 1);
+    });
+    }
+  }
+
+
+
+//click on Check All In Pending for lock add and remove element from array
+  allCheckInCycleLockTable(checkValue){
+    if(checkValue){
+    this.goAsandWhenList.forEach((element) => {
+      this.selectedUser.push(element.businessCycleId);
+      this.checkedSummaryList.push(element.businessCycleId);
+    });
+    }else {
+      this.goAsandWhenList.forEach((element) => {
+      const index = this.checkedSummaryList.indexOf(
+        (p) => (p.businessCycleId == element.businessCycleId));
+      this.checkedSummaryList.splice(index, 1);
+
+      const index1 = this.goAsandWhenList.indexOf(
+        (p) => (p.businessCycleId == element)
+      );
+      this.selectedUser.splice(index1, 1);
+    });
+    }
+  }
+
+  // <label class="form-label mr-5">Total records ({{checkedSummaryList.length}})</label>
+  // <label class="form-label">Selected records ({{selectedUserAsAndWhen.length}})</label>
+
+  //click on Check All In Pending for lock add and remove element from array
+  allCheckInCycleLock(checkValue){
+    if(checkValue){
+    this.checkedSummaryList.forEach((element) => {
+      this.selectedUserAsAndWhen.push(element.businessCycleId);
+      this.checkedSummaryList.push(element.businessCycleId);
+    });
+    }else {
+      this.checkedSummaryList.forEach((element) => {
+      const index = this.checkedSummaryList.indexOf(
+        (p) => (p.businessCycleId == element.businessCycleId));
+      this.checkedSummaryList.splice(index, 1);
+
+      const index1 = this.checkedSummaryList.indexOf(
+        (p) => (p.businessCycleId == element)
+      );
+      this.selectedUserAsAndWhen.splice(index1, 1);
+    });
+    }
+  }
+
 
   //Reset Cycle table
   resetLock() {
@@ -725,6 +818,8 @@ export class SupplementryCycleComponent implements OnInit {
   // }
 
   clickOnLock(temp1: TemplateRef<any>) {
+    this.selectedUserPending = [];
+    this.finalpendingLockList = [];
     this.modalRef = this.modalService.show(
       temp1,
       Object.assign({}, { class: 'gray modal-lg' })
