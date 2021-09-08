@@ -3,10 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { Component2Component } from './component2/component2.component';
 import { FinancialMasterComponent } from './financial-master/financial-master.component';
+import { HoldreleaseComponent } from './hold and release/holdrelease/holdrelease.component';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { PayrollListComponent } from './payroll-list/payroll-list.component';
+import { ReleaseComponent } from './release/release/release.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 import { SdmComponent } from './sdm/sdm.component';
 
@@ -51,6 +53,18 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: SDM Creation' },
 
       },
+      {
+        path:   'hold-release',
+        component:  HoldreleaseComponent,
+        data: { title: ':: DelziaHR :: Hold Release' },
+
+      },
+      // {
+      //   path:   'release',
+      //   component:  ReleaseComponent,
+      //   data: { title: ':: DelziaHR :: Release' },
+
+      // },
       {
         path:   'component2',
         component:  Component2Component,

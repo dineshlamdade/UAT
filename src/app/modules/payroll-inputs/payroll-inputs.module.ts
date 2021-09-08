@@ -45,6 +45,12 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ChartsModule } from 'ng2-charts';
 import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
 import { Component2Component } from './component2/component2.component';
+import { HoldreleaseComponent } from './hold and release/holdrelease/holdrelease.component';
+import { ReleaseComponent } from './release/release/release.component';
+import { HoldComponent } from './hold and release/holdrelease/hold/hold.component';
+import { ReleaseNewComponent } from './hold and release/holdrelease/release-new/release-new.component';
+// import { HoldComponent } from './hold and release/hold/hold.component';
+// import { ReleaseNewComponent } from './hold and release/release-new/release-new.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +65,11 @@ import { Component2Component } from './component2/component2.component';
      SdmComponent,
      SdmStepperComponent,
      EllipsisPipe,
-     Component2Component
+     Component2Component,
+     HoldreleaseComponent,
+     ReleaseComponent,
+     HoldComponent,
+     ReleaseNewComponent
     ],
   imports: [
     CommonModule,
