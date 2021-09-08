@@ -113,11 +113,11 @@ export class KeywordmasterComponent implements OnInit {
     this.keywordForm.patchValue(data)
   }
 
-  deleteSummaryData(data){
+  deleteSummaryData(key){
     const formData = new FormData();
 
-    formData.append('keywordId', this.keywordId)
-
+    formData.append('keywordId', key.keywordId)
+alert(key.keywordId)
     this.keywordservice.KeywordMasterDetailsDelete(formData).subscribe(res => {
       this.toster.success("","Keyword Deleted successfully")
       this.keywordSummeryData()

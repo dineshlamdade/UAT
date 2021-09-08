@@ -118,6 +118,7 @@ export class AttendanceComponent implements OnInit {
   payrollListData: any;
   attendanceInputGetHistoryfuturecyclesData: any;
   header: any[];
+  
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
     private payrollservice: PayrollInputsService,
@@ -493,11 +494,12 @@ export class AttendanceComponent implements OnInit {
         //  if(parseFloat(this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff) < parseFloat(weeklyOffvalue)){
 
         weeklyOff = parseFloat(weeklyOffvalue) - parseFloat(tempAttendancePresentData[rowIndex].weeklyOff)
-
+        
         // }else{
         //   weeklyOff = parseFloat(this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff) - parseFloat(weeklyOffvalue)
         // }
       } else {
+        
         weeklyOff = weeklyOffvalue
       }
       // debugger
@@ -2749,6 +2751,7 @@ export class AttendanceComponent implements OnInit {
 
 
   payrollAreaDetails() {
+   // alert(this.payRollAreaId)
     // this.PayrollAreaByPayrollAreaCode();
     // console.log("payrollareadetails",this.payRollAreaId);
     this.attendanceService.payrollAreaDetails(this.payRollAreaId).subscribe(
@@ -2966,7 +2969,7 @@ export class AttendanceComponent implements OnInit {
     })
     this.selectedEmpData[this.index].cycleName = this.selectedProcessingCyclename;
     this.selectedEmpData[this.index].currentcycleName = this.selectedProcessingCyclename;
-    this.payrollAreaDetails();
+    //this.payrollAreaDetails();
     this.currentCycle = parseInt(this.selectedEmpData[this.index].pertainingCycle);
     this.attendanceInputGetTotalAPIRecordsUI(this.index);
     this.attendanceInputAPIRecordsUI();

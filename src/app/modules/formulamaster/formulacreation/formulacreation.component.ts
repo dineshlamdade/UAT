@@ -41,6 +41,13 @@ export class FormulacreationComponent implements OnInit {
   formulaNameData: any;
 
 
+  cars = [
+    { id: 1, name: 'Volvo' },
+    { id: 2, name: 'Saab' },
+    { id: 3, name: 'Opel' },
+    { id: 4, name: 'Audi' },
+];
+
 
   constructor(private modalService: BsModalService,private formulaService: FormulaServiceService,
     private datepipe: DatePipe,
@@ -107,7 +114,7 @@ export class FormulacreationComponent implements OnInit {
 saveFormulaMasters() {
 
   this.formulaform.removeControl('keywordId')
-  this.formulaform.controls['isActive'].setValue(1),
+  this.formulaform.controls['isActive'].setValue(1)
 //   this.formulaform.controls['formulaName'].setValue('formulaName')
 // this.formulaform.controls['formulaDescription'].setValue('formulaDescription');
 //   this.formulaform.controls['displayName'].setValue('displayName');
@@ -115,7 +122,18 @@ saveFormulaMasters() {
 //   this.formulaform.controls['effectiveToDate'].setValue('effectiveToDate');
 //   this.formulaform.controls['remark'].setValue('remark');
 //   this.formulaform.controls['originalFormula'].setValue('originalFormula');
-  
+     
+let fromDate = new Date(this.formulaform.controls['effectiveFromDate'].value )
+let effectiveFromDate = this.datepipe.transform(fromDate , 'yyyy-MM-dd')
+ this.formulaform.controls['effectiveFromDate'].setValue(effectiveFromDate + ' 00:00:00')
+
+ let toDate = new Date(this.formulaform.controls['effectiveToDate'].value )
+let effectiveToDate = this.datepipe.transform(toDate , 'yyyy-MM-dd')
+
+//  let effectiveToDate = new Date(this.datepipe.transform('yyyy-MM-dd' , this.formulaform.controls['effectiveToDate'].value ))
+ this.formulaform.controls['effectiveToDate'].setValue(effectiveToDate + ' 00:00:00')
+
+
  this.formulaService.formulamasterSave(this.formulaform.value).subscribe(res => {
     this.alertService.sweetalertMasterSuccess(res.status.messsage, "" );
     this.FormulaMasterDetailsSummery();
@@ -140,13 +158,13 @@ FormulaMasterDetailsSummery(){
 
 formulaSearchList() {
   this.formulaService.getFormulaAllData().subscribe(res => {
-    // this.data = res.data.results;
-    res.data.results.forEach((element: any) => {
-      this.formulaData.push({
-        "id": element.keywordId,
-        "name": element.keywordName
-      })
-    });
+    this.formulaData = res.data.results;
+    // res.data.results.forEach((element: any) => {
+    //   this.formulaData.push({
+    //     id: element.keywordId,
+    //     name: element.keywordName
+    //   })
+    // });
     
   });
 }
@@ -159,8 +177,11 @@ selectEvent(item: any) {
 }
 
 getFormulaData(value){
+  console.log(JSON.stringify(value))
   this.originalFormula = []
-  this.originalFormula.push(value)
+  value.forEach(element => {
+    this.originalFormula.push(element.keywordName)
+  });
 
 }
 
@@ -261,7 +282,8 @@ GetByFormulaName(data){
   formData.append('formulaName', data.formulaName)
 
   this.formulaService.GetByFormulaName(data.formulaName).subscribe(res => {
-    this.formulaNameData= res.data.result;
+    this.formulaNameData= res.data.results;
+    
   },
   ( error: any ) => {
     this.alertService.sweetalertError( error["error"]["status"]["message"] );
