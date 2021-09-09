@@ -85,6 +85,7 @@ import { ApprovedInvestmentModule } from './modules/approved-investment/approved
 import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
 import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ExcelserviceService } from './core/services/excelservice.service';
 
 
 
@@ -165,6 +166,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 
   providers: [BsDatepickerModule,
     BnNgIdleService,
+    ExcelserviceService,
     AuthGuard,
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
