@@ -172,6 +172,7 @@ checkedSummaryListPending: Array<any> = [];
   public pendingForm: any = FormGroup;
   public lockEmpForm: any = FormGroup;
   public lockForm : any = FormGroup;
+  isChecked: boolean = false
   constructor(
     private formBuilder: FormBuilder,
     private alertService: AlertServiceService,
@@ -541,7 +542,7 @@ checkedSummaryListPending: Array<any> = [];
     }
 
     const data = {
-            areaMasterId: this.getAreaMasterID(),
+      areaMasterId: this.getAreaMasterID(),
       businessCycleId: this.getBusinessID(),
       cycle: this.areaForm.get('periodName').value,
       serviceName: this.getServiceName(this.areaForm.get('serviceName').value),
@@ -555,6 +556,11 @@ checkedSummaryListPending: Array<any> = [];
        if(res){
         if(res.data.results.length >= 1) {
           this.areTableList = res.data.results,
+           this.isChecked = false;
+          // this.selectedUser = [];
+          // this.selectedAreaIds= [];
+          // this.selectedUserInLock = [];
+          // this.areTableList = [];
           // this.getAreaTableSummaryList()
           this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         } else {
@@ -637,6 +643,8 @@ checkedSummaryListPending: Array<any> = [];
     console.log("checkValue rowIndex", rowIndex);
     console.log("checkValue element", element);
     if(checkValue){
+      this.isChecked = true;
+      this.selectedUser.push(element.payrollAreaCode);
       this.selectedAreaIds.push(element.payrollAreaCode);
       this.selectedUserInLock.push(element.payrollAreaCode);
       const data = {
@@ -672,6 +680,9 @@ checkedSummaryListPending: Array<any> = [];
 
       const index1 = this.checkedFinalLockList.indexOf((p) => (p.payrollAreaCode == element.payrollAreaCode));
       this.checkedFinalLockList.splice(index1, 1);
+
+      const index11 = this.areTableList.indexOf((p) => (p.payrollAreaCode == element.payrollAreaCode));
+      this.selectedUser.splice(index11, 1);
 
     }
   }
