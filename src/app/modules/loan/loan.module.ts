@@ -8,7 +8,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { EmiCalculatorComponent } from './loan/emi-calculator/emi-calculator.component';
 import { ChartsModule } from 'ng2-charts';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
+// import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {TableModule} from 'primeng/table';
 
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
@@ -53,7 +53,7 @@ import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
     ChartsModule,
     NgxSliderModule,
     FormsModule,
-    Ng2SearchPipeModule,
+    // Ng2SearchPipeModule,
     TableModule,
     BsDatepickerModule.forRoot(),
     TooltipModule,
