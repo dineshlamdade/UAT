@@ -49,6 +49,7 @@ import { HoldreleaseComponent } from './hold and release/holdrelease/holdrelease
 import { ReleaseComponent } from './release/release/release.component';
 import { HoldComponent } from './hold and release/holdrelease/hold/hold.component';
 import { ReleaseNewComponent } from './hold and release/holdrelease/release-new/release-new.component';
+import { CheckboxModule } from 'primeng/checkbox';
 // import { HoldComponent } from './hold and release/hold/hold.component';
 // import { ReleaseNewComponent } from './hold and release/release-new/release-new.component';
 
@@ -108,7 +109,9 @@ import { ReleaseNewComponent } from './hold and release/holdrelease/release-new/
     InputTextModule,
     ProgressBarModule,
     PayrollInputsRoutingModule,
-    ChartsModule
+    ChartsModule,
+    CheckboxModule,
+
   ],
   providers: [ DatePipe],
   schemas: [

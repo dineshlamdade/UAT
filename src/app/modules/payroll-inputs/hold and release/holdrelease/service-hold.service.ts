@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class ServiceHoldService {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/' + cycleName)
+    return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/holdEmployee/' + cycleName)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -44,6 +45,15 @@ export class ServiceHoldService {
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
     return this._HTTP.get( environment.baseUrl8084 + 'PayrollOutput/GETAllPendingCycles/' + areaName)
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+  pendingLockEmptyArea1(areaName) {
+    const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get( environment.baseUrl8084 + 'HoldEmployee/' + areaName)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -90,11 +100,20 @@ export class ServiceHoldService {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.get( environment.baseUrl8084 + 'employee-lock/' + empCode)
+    return this._HTTP.get( environment.baseUrl8084 + 'HoldEmployee/' + empCode)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
   }
+  // getEmpCode(empCode) {
+  //   const headers = new HttpHeaders()
+  //   .set('content-type', 'application/json')
+  //   .set('X-TenantId', 'PaysquareDefault');
+  //   return this._HTTP.get( environment.baseUrl8084 + 'employee-lock/' + empCode)
+  //     .pipe( map( ( res: any ) => {
+  //       return res;
+  //     } ) );
+  // }
 
   getAllAreaTableList() {
     const headers = new HttpHeaders()
@@ -106,24 +125,80 @@ export class ServiceHoldService {
       } ) );
   }
 
+  //go table data / save data
   postEmpForm(data){
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.post( environment.baseUrl8084 + 'employee-lock/cycleName/', data)
+    return this._HTTP.post( environment.baseUrl8084 + 'HoldEmployee/cycleName/', data)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
   }
+
+  //hold to proceed table data
   postLockCheckedEmp(data){
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.post( environment.baseUrl8084 + 'employee-lock', data)
+    return this._HTTP.post( environment.baseUrl8084 + 'HoldEmployee/AddHold', data)
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+  getEmpListUsingCycleName(cycleName) {
+    const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock/GETAllCycle/' +  cycleName,)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
   }
   
+  getSummaryData():Observable<any>{
+    //return this.http.get<any>(this.apiUrl+ `EmployeeMaster/SummaryData`);
+    return this._HTTP.get(environment.baseUrl8084 +`EmployeeMaster/getAllEmployeeSet`);
+   }
+
+//    //Area Penidng for lock API
+//  pendingForLockArea() {
+//   const headers = new HttpHeaders()
+//   .set('content-type', 'application/json')
+//   .set('X-TenantId', 'PaysquareDefault');
+//   return this._HTTP.get( environment.baseUrl8084 + 'PayrollOutput/GETAllPendingCycles')
+//     .pipe( map( ( res: any ) => {
+//       return res;
+//     } ) );
+// }
+//Area Penidng for lock API
+pendingForLockArea() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'HoldEmployee/')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+
+
+    //Post Pending for lock in Area
+        //Post  AreaAPI
+        postPendingAreaLock(data:any){
+          const headers = new HttpHeaders()
+          .set('content-type', 'application/json')
+          .set('X-TenantId', 'PaysquareDefault');
+          return this._HTTP.post( environment.baseUrl8084 + 'payrollArea-lock/lockDataAdd',  data,)
+            .pipe( map( ( res: any ) => {
+              return res;
+            } ) );
+        }
+
+        
 
 }
+
+// pending for release api
+// http://localhost:8084/hrms/v1/HoldEmployee/

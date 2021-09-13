@@ -9,7 +9,8 @@
 <!-- <div class="col-12"> -->
 <!-- <div class="card"> -->
 <!-- <div class="card-body p-0"> -->
-<form class="card" [formGroup]="holdform" #formDirective="ngForm" (ngSubmit)="saveEmp()">
+<form class="card" [formGroup]="holdform" #formDirective="ngForm" (ngSubmit)="saveEmp()"
+>
     <div class="row mt-20">
         <div class="col-md-12">
             <fieldset>
@@ -19,7 +20,7 @@
                             <label class="form-label">Cycle Definition</label>
                             <select class="form-control" formControlName="name" id="name"
                                 [ngClass]="{'is-invalid' : holdform.get('name').status == 'INVALID'}"
-                                class="form-control  " (change)="onChangeDefinationEmp($event.target.value)" id="name">
+                                class="form-control" (change)="onChangeDefinationEmp($event.target.value)" id="name">
                                 <option selected value=''>Select </option>
                                 <option *ngFor="let cycleNameDefination of NameofCycleDefinationEmp"
                                     [value]="cycleNameDefination.value">
@@ -34,7 +35,7 @@
                             <label class="form-label">Cycle Name</label>
                             <select class="form-control"
                                 [ngClass]="{'is-invalid' : holdform.get('periodName').status == 'INVALID'}"
-                                class="form-control  " (change)="onSelectCycleNameEmp($event.target.value)"
+                                class="form-control" (change)="onSelectCycleNameEmp($event.target.value)"
                                 id="periodName" class="form-control" formControlName="periodName">
                                 <option selected value=''>Select </option>
                                 <option *ngFor="let cycleList of periodNameListEmp" [value]="cycleList.label">
@@ -157,19 +158,24 @@
 
                             <label class="form-label mb-3">Employee Code</label>
                             <p-multiSelect [options]="employeeCodes" formControlName="employeeCode"
-                                [ngClass]="{'is-invalid' : holdform.get('employeeCode').status == 'INVALID'}"
-                                [options]="employeeCodes" optionLabel="name"
-                                [ngClass]="{'is-invalid' : holdform.get('employeeCode').status == 'INVALID'}"
+                            [ngClass]="{'is-invalid' : holdform.get('employeeCode').status == 'INVALID'}"
+                         optionLabel="name" resetFilterOnHide = "true"
+                        
+                              
                                 placeholder="Selected All"></p-multiSelect>
 
 
                         </div>
+                        <!-- [ngClass]="{'is-invalid' : holdform.get('employeeCode').status == 'INVALID'}" -->
                     </div>
                     <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                         <div class="form-group">
                             <label class="form-label mb-3">Employee Set</label>
 
-                            <p-multiSelect [options]="" [(ngModel)]="selectedCities" optionLabel="name"
+                            <p-multiSelect [options]="empSetList" formControlName="employeeSet"
+                            optionLabel="name" resetFilterOnHide = "true"
+                            
+                            [ngClass]="{'is-invalid' : holdform.get('employeeSet').status == 'INVALID'}"
                                 placeholder="Selected All"></p-multiSelect>
                         </div>
                     </div>
@@ -178,10 +184,11 @@
                             <div class="custom-controls-stacked mb-2">
                                 <label class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input" name="example- radios"
-                                        value="option1" (click)="Emplist(emplist)" checked>
+                                        value="option1" (click)="Emplist(emplist)">
                                     <div class="custom-control-label"> Employee List </div>
                                 </label>
                             </div>
+
 
                         </div>
 
@@ -235,7 +242,8 @@
             ({{selectedUserEmp.length}})
             <span class="float-right">
                 <button type="submit" class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
-                    tooltip="Hold" (click)="smallpopup(holdtemplate)">
+                    tooltip="Hold" (click)="smallpopup(holdtemplate)"
+                    [ngClass]="{'disabled-btn-bg-green' : checkedSummaryListEmp.length == 0, 'btn-bg-green': !checkedSummaryListEmp.length == 0}">
                     <b><i class="fa fa-hand-paper-o" aria-hidden="true"></i></b>
                     Hold</button>&nbsp;
                 <i class="fa fa-file-excel-o font-34 text-dark-green  mr-10 float-right" (click)="exportExcelEmpTable()"
@@ -245,7 +253,7 @@
     <p-table [value]="getEmpTableList" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         totalRecords={{getEmpTableList.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
-        [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','serviceName','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']"
+        [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']"
         [rowsPerPageOptions]="[10,25,50]" (sortFunction)="customSort3($event)" [customSort3]="true">
         <ng-template pTemplate="header">
             <tr>
@@ -296,7 +304,7 @@
                         </div>
                     </div>
                 </th>
-                <th rowspan="2" class="wd-8">
+                <!-- <th rowspan="2" class="wd-8">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Service
                         <div class="Sort_Filter_Position">
@@ -305,7 +313,7 @@
                             </p-columnFilter>
                         </div>
                     </div>
-                </th>
+                </th> -->
                 <th rowspan="2">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Area
@@ -399,7 +407,7 @@
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullName}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.companyName}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td>
+                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td> -->
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1?.payrollAreaCode}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.establishment}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.department}}</label></td>
@@ -437,7 +445,9 @@
 <ng-template #holdtemplate>
     <div class="modal-header">
         <h5 class="modal-title" id="UploadModalLabel">Hold</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        <button type="button" (click)="modalRef.hide()" 
+        class = "close"
+        data-dismiss="modal" aria-label="Close"><span
                 aria-hidden="true">×</span></button>
     </div>
     <div class="modal-body">
@@ -477,19 +487,18 @@
                                </div>
                                </div>
                         </div> -->
-                        <p-table [value]="checkedSummaryListEmp
-                        " [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        <p-table [value]="checkedSummaryListEmp" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                         (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        totalRecords={{checkedSummaryListEmp
-                            .length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+                        totalRecords={{checkedSummaryListEmp.length}} [rowsPerPageOptions]="[10,25,50,100,200]"
+                        [globalFilterFields]="['employeeMasterId','businessCycleId','cycle','payrollAreaCode','createDateTime','employeeMasterIdList','employeeCode','fullName','companyName']">
             
 
                             <ng-template pTemplate="caption">
                                 <div class="row">
                                     <div class="col-md-6 mt-10 d-flex ">
-                                        <label class="form-label mr-5">Total records ({{checkedSummaryListEmp?.length}})</label>
-                                       <label class="form-label">Selected records ({{selectedUserInLockEmp?.length}})</label>
+                                        <label class="form-label mr-5">Total records ({{checkedSummaryListEmp.length}})</label>
+                                       <label class="form-label">Selected records ({{selectedUserInLockEmp.length}})</label>
 
                                     </div>
                                     <div class="col-md-6">
@@ -541,6 +550,7 @@
                                             </div>
                                         </div>
                                     </th>
+                                    
                                     <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Company Name
@@ -553,7 +563,7 @@
                                             </div>
                                         </div>
                                     </th>
-                                    <th>
+                                    <!-- <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Service
                                             <div class="Sort_Filter_Position">
@@ -564,7 +574,7 @@
                                                 </p-columnFilter>
                                             </div>
                                         </div>
-                                    </th>
+                                    </th> -->
                                     <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">Area
                                             <div class="Sort_Filter_Position">
@@ -628,28 +638,29 @@
 
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" users1 let-customer>
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
                         
-                                <tr class="p-selectable-row">
+                                <tr class="p-selectable-row"
+                                [pSelectableRow]="user1">
                                     <td>
-                                        <p-tableCheckbox [value]="users1.employeeMasterId" (click)="onCheckEmpInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIdsEmp">
+                                        <p-checkbox [value]="user1.employeeMasterId" (click)="onCheckEmpInLock(e.checked,user1,rowIndex)" #e [(ngModel)]="selectedAreaIdsEmp">
 
-                                          </p-tableCheckbox>
+                                          </p-checkbox>
                                       </td>
                     
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.employeeCode}}</label>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.employeeCode}}</label>
                     
                                     </td>
                     
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.fullName}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.cycle}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.companyName}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.serviceName}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.payrollAreaCode}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.establishment}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.department}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.grade}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{users1.chngamount}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullName}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.companyName}}</label></td>
+                                    <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td> -->
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.payrollAreaCode}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.establishment}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.department}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.grade}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td>
 
                                 </tr>
                             </ng-template>
@@ -671,12 +682,159 @@
     </div>
     <div class="modal-footer">
         <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-            tooltip="Proceed"><b> <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+            tooltip="Proceed"
+            [ngClass]="{'disabled-btn-bg-green' : checkedFinalLockListEmp.length == 0, 'btn-bg-green': !checkedFinalLockListEmp.length == 0}"
+            (click)="saveCheckedEmp()"><b> <i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
         <button type="button" tooltip="Reset"
+        (click)="resetEmpLock()"
             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "><b><i
+               
                     class="fa fa-refresh"></i></b> Reset</button>
     </div>
 </ng-template>
+
+<ng-template #emplist>
+    <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Employee List</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body">
+          <div class="row  ">
+            <div class="col-md-12">
+              <textarea (paste)="employeeListPasteData($event)" rows="3" cols="60"></textarea>
+            </div>
+          </div>
+          <div class="row mt-15">
+            <div class="col-md-12">
+              <!-- <p-table #dt2 [value]="customers" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                (sortFunction)="customSort($event)" [customSort]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10,25,50]"
+                [globalFilterFields]="['empcode','empName','Group','Frequency','Type','proofsubmission','PSIdDetails','SubmissionDate','Status']"> -->
+                <!-- <p-table #dt1 [value]="" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                (sortFunction)="customSort3($event)" [customSort3]="true" [pageLinks]="5"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50,100,200]" [globalFilterFields]="">
+                <ng-template pTemplate="caption">
+                  <div class="row">
+                    <div class="col-md-6 mt-10 d-flex ">
+                      <label class="form-label mr-5">Total Records (10) </label>
+                      <label class="form-label">Selected Records (2) </label>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="float-right">
+                        <i class="fa fa-file-excel-o text-dark-green fa-2x mr-2"></i>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center"> Emp.Code
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="empcode" pSortableColumn="empcode"></p-sortIcon>
+                          <p-columnFilter field="empcode" display="menu" class="p-ml-auto"> </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">Emp Name
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="empName" pSortableColumn="empName"></p-sortIcon>
+                          <p-columnFilter type="text" field="empName" display="menu" class="p-ml-auto"> </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center"> Company Name
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="PSIdDetails" pSortableColumn="PSIdDetails"> </p-sortIcon>
+                          <p-columnFilter type="text" field="PSIdDetails" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center"> Service
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="SubmissionDate" pSortableColumn="SubmissionDate"></p-sortIcon>
+                          <p-columnFilter type="text" field="SubmissionDate" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">Area
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="proofsubmission" pSortableColumn="proofsubmission"></p-sortIcon>
+                          <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"> </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center"> Establishment
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                          <p-columnFilter type="text" field="Type" display="menu" class="p-ml-auto"> </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center"> Department
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="Type" pSortableColumn="Type"></p-sortIcon>
+                          <p-columnFilter type="text" field="Type" display="menu" class="p-ml-auto"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">Grade
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="ItSection" pSortableColumn="ItSection"> </p-sortIcon>
+                          <p-columnFilter type="text" field="ItSection" display="menu" class="p-ml-auto">
+                          </p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center"> Designation
+                        <div class="Sort_Filter_Position">
+                          <p-sortIcon field="ItSection" pSortableColumn="Group"></p-sortIcon>
+                          <p-columnFilter type="text" field="Group" display="menu" class="p-ml-auto"></p-columnFilter>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body">
+                  <tr class="p-selectable-row">
+                    <td>{{ customer.empcode}}</td>
+                    <td>{{ customer.empName}}</td>
+                    <td> {{customer.companyname}}</td>
+                    <td> {{customer.service}}</td>
+                    <td> {{customer.area}}</td>
+                    <td> {{ customer.establishment}}</td>
+                    <td> {{ customer.department}}</td>
+                    <td> {{ customer.grade}}</td>
+                    <td> {{ customer.designation}}</td>
+                  </tr>
+                </ng-template>
+              </p-table> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
+      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+        tooltip="Save" (click)="modalRef.hide()"><b><i class="fa fa-arrow-circle-o-right "></i></b> Proceed</button>
+    </div>
+  </ng-template>
 
 
 <!-- <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">

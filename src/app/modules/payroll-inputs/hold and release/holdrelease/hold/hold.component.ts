@@ -5,6 +5,8 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ServiceHoldService } from '../service-hold.service';
 import { ExcelserviceService } from 'src/app/modules/excel_service/excelservice.service';
+import {CheckboxModule} from 'primeng/checkbox';
+
 
 interface City {
   name: string,
@@ -18,7 +20,12 @@ interface User1 {
   Attachment;
  
 }
-
+export interface emplist {
+  empno;
+  area;
+  service;
+  cmpnyname;
+}
 @Component({
   selector: 'app-hold',
   templateUrl: './hold.component.html',
@@ -61,6 +68,7 @@ export class HoldComponent implements OnInit {
  public areTableList: Array<any> = [];
   HighlightRow: number;
   public allAreaCodesEmp:  Array<any> = [];
+  public allEmpSetList : Array<any> = [];
   public getEmpTableList : Array<any> = [];
   selectedUserEmp: Array<any> = [];
   public checkedFinalLockListEmp : Array<any> = [];
@@ -71,6 +79,12 @@ export class HoldComponent implements OnInit {
   excelDataEmp: any[];
   header: any[];
   excelDataEmpLock: any[];
+  public summaryData: Array<any> = [];
+  public empSetList: Array<any> = [];
+  displayedColumns: string[];
+  public serviceListData: any;
+  public employeedata: Array<any> = [];
+  empdataSource:  Array<any> = [];
 
 
  
@@ -85,6 +99,15 @@ export class HoldComponent implements OnInit {
       this.lockReactiveForm();
       this.pendingReactiveForm();
       this.empLockReactiveForm();
+
+      this.holdform.setErrors({required: true});
+    this.holdform.valueChanges.subscribe(newValue => {
+    if(this.holdform.get('employeeCode').value || this.holdform.get('employeeSet').value){
+        this.holdform.setErrors(null);
+    } else {
+        this.holdform.setErrors({required: true});
+    } 
+});
      }
 
   ngOnInit(): void {
@@ -93,6 +116,7 @@ export class HoldComponent implements OnInit {
     this.getAllCycleDefinationEmp();
     this.getAllCompanyNameEmp();
     this.getAllServiceNameEmp()
+    this.getSummaryData();
     // this.getAllServiceName()
     this.cities = [
       {name: 'New York', code: 'NY'},
@@ -173,6 +197,7 @@ export class HoldComponent implements OnInit {
       serviceMasterId: new FormControl(''),
       employeeCode: new FormControl(''),
       areaMasterCode: new FormControl('', Validators.required),
+      employeeSet : new FormControl('')
     });
   }
   
@@ -463,13 +488,21 @@ export class HoldComponent implements OnInit {
       saveEmp() {
         this.allAreaCodesEmp = [];
         const selectedPayrollAreaCodes = this.holdform.get('employeeCode').value;
+        const selectedPayrollEmpSet = this.holdform.get('employeeSet').value;
+        
         if (selectedPayrollAreaCodes.length > 0) {
           selectedPayrollAreaCodes.forEach((element) => {
             this.allAreaCodesEmp.push(element.code);
           });
-        } else {
-          this.alertService.sweetalertWarning('Please select Employee Code');
+        } else if(selectedPayrollEmpSet.length > 0) {
+          selectedPayrollEmpSet.forEach((element) => {
+            this.allEmpSetList.push(element.code);
+          });
+        } else{
+         // this.alertService.sweetalertWarning('Please select Employee Code');
+         
           return false;
+      
         }
       
       
@@ -480,7 +513,9 @@ export class HoldComponent implements OnInit {
           companyName: this.getCompanyNameEmp(this.holdform.get('companyName').value),
           serviceName: this.getServiceNameEmp(this.holdform.get('serviceName').value),
           payrollAreaCode:  this.getAreaCodesInEmp(this.holdform.get('areaMasterCode').value),
-          employeeMasterIdList:  this.allAreaCodesEmp
+        employeeMasterIdList:  this.allAreaCodesEmp,
+       //employeeMasterIdList : this.allEmpSetList
+
       
         };
       
@@ -500,15 +535,17 @@ export class HoldComponent implements OnInit {
            );
          }
        });
-       this.holdform.reset();
-       this.holdform.patchValue({
-        companyName : '',
-        serviceName : '',
-        periodName : '',
-        name : '',
-        employeeCode : '',
-        areaMasterCode : '',
-      })
+       
+       //this.employeeCodes = [];
+      // this.holdform.reset();
+      //  this.holdform.patchValue({
+      //   companyName : '',
+      //   serviceName : '',
+      //   periodName : '',
+      //   name : '',
+      //   employeeCode : '',
+      //   areaMasterCode : '',
+      // })
       }
       
     
@@ -560,6 +597,35 @@ export class HoldComponent implements OnInit {
         });
       }
 
+      onCheckEmpInLock(checkValue, element, rowIndex) {
+        // this.RowSelectedInLockEmp(element,rowIndex);
+        console.log("rowIndex",rowIndex);
+        console.log("checkValue Number", checkValue);
+        if(checkValue) {
+  
+          // element.canPost = true;
+          this.selectedUserInLockEmp.push(element);
+          const data = {
+            cycleLockEmployeeId : element.cycleLockEmployeeId,
+            employeeMasterId: element.employeeMasterId,
+            areaMasterId: element.areaMasterId,
+            businessCycleId: element.businessCycleId,
+            cycle: element.cycle,
+            serviceName: element.serviceName,
+            payrollAreaCode :  element.payrollAreaCode,
+            isActive : 1,
+          }
+          this.checkedFinalLockListEmp.push(data);
+          console.log("checkedFinalLockListEmp", this.checkedFinalLockListEmp)
+        } else {
+          // element.canPost = false;
+           const index = this.checkedFinalLockListEmp.indexOf((p) => (p.employeeMasterId = element.jobMasterValueId));
+          this.checkedFinalLockListEmp.splice(index, 1);
+          this.selectedUserInLockEmp.splice(index, 1);
+        }
+      }
+      
+
       onCheckAreaEmp(checkValue, element, rowIndex){
         this.RowSelectedEmp(element, rowIndex);
         if(checkValue){
@@ -604,24 +670,24 @@ export class HoldComponent implements OnInit {
           this.selectedUserInLockEmp.splice(index, 1);
           const index1 = this.checkedFinalLockListEmp.indexOf((item) => (item.employeeMasterId == element.employeeMasterId));
           this.checkedFinalLockListEmp.splice(index1, 1);
-          // this.selectedAreaIdsEmp.splice(index1, 1);
+          this.selectedAreaIdsEmp.splice(index1, 1);
       
         }
       }
       
-      
       exportExcelEmpTable(): void {
         this.excelDataEmp = [];
         this.header = []
-        this.header =["employeeCode", "fullName", "companyName","serviceName", "payrollAreaCode"];
+        this.header =["employeeCode", "fullName", "companyName","payrollAreaCode"];
         this.excelDataEmp = [];
         if(this.getEmpTableList.length>0){
          this.getEmpTableList.forEach((element) => {
           let obj = {
             employeeCode: element.employeeCode,
             fullName: element.fullName,
+           // periodName : element.cycle,
             companyName: element.companyName,
-            serviceName: element.serviceName,
+           // serviceName: element.serviceName,
             payrollAreaCode: element.payrollAreaCode,
           };
           this.excelDataEmp.push(obj);
@@ -674,7 +740,7 @@ export class HoldComponent implements OnInit {
       exportExcelEmpLock(): void {
         this.excelDataEmpLock = [];
         this.header = []
-        this.header =["employeeCode", "fullName", "companyName","serviceName", "payrollAreaCode"];
+        this.header =["employeeCode", "fullName", "companyName","payrollAreaCode"];
         this.excelDataEmpLock = [];
         if(this.checkedSummaryListEmp.length>0){
          this.checkedSummaryListEmp.forEach((element) => {
@@ -682,7 +748,7 @@ export class HoldComponent implements OnInit {
             employeeCode: element.employeeCode,
             fullName: element.fullName,
             companyName: element.companyName,
-            serviceName: element.serviceName,
+            //serviceName: element.serviceName,
             payrollAreaCode: element.payrollAreaCode,
           };
           this.excelDataEmpLock.push(obj);
@@ -693,6 +759,159 @@ export class HoldComponent implements OnInit {
         console.log('this.excelDataEmpLock::', this.excelDataEmpLock);
       }
       
+      resetEmpLock(){
+        this.checkedSummaryListEmp = [];
+        this.checkedFinalLockListEmp = [];
+        this.modalRef.hide()
       
+      }
+
+      
+      getSaveEmpCycleName(){
+        if (this.holdform.invalid) {
+     return;
+   }
+
+   // this.allAreaCodesEmp = [];
+   // const selectedPayrollAreaCodes = this.empForm.get('employeeCode').value;
+   // if (selectedPayrollAreaCodes.length > 0) {
+   //   selectedPayrollAreaCodes.forEach((element) => {
+   //     this.allAreaCodesEmp.push(element.code);
+   //   });
+   // } else {
+   //   this.alertService.sweetalertWarning('Please select Employee Code');
+   //   return false;
+   // }
+
+
+
+ // const data =  {
+ //    companyName : this.empForm.get('companyName').value,
+ //     serviceName: this.getServiceNameEmp(this.empForm.get('serviceName').value),
+ //     payrollAreaCode:  this.getAreaCodesInEmp(this.empForm.get('areaMasterCode').value),
+ //     // cycle: this.empForm.get('periodName').value,
+ //     //  payrollAreaCode : this.empForm.get('areaMasterCode').value
+ //       employeeMasterIdList : this.allAreaCodesEmp,
+ //   }
+
+
+
+   const cycleName = this.holdform.get('periodName').value;
+   // const periodId = this.empForm.get('periodName').value;
+
+ console.log("cycleName", cycleName)
+ // console.log("periodId",periodId)
+
+     this.holdService.getEmpListUsingCycleName(cycleName).subscribe((res) => {
+       console.log("res", res);
+
+       if (res) {
+         if (res.data.results.length > 0) {
+           this.getEmpTableList =  res.data.results,
+           console.log("getEmpTableList", this.getEmpTableList)
+           this.alertService.sweetalertMasterSuccess(res.status.message, '');
+         } else {
+           this.alertService.sweetalertWarning(res.status.messsage);
+         }
+         this.alertService.sweetalertMasterSuccess(res.status.message, '');
+       } else {
+         this.alertService.sweetalertError(
+           'Something went wrong. Please try again.'
+         );
+       }
+
+     })
+
+   }
+
+   getSummaryData(){
+    this.holdService.getSummaryData().subscribe((res) => {
+      // this.summaryData = res.data.results[0];
+        this.summaryData = res.data.results[0];
+        console.log('summaryData is', this.summaryData);
+        res.data.results[0].forEach((element) => {
+          const obj = {
+              // label: element.payrollAreaCode,
+              // value: element.payrollAreaId,
+            name: element.employeeSetName,
+            code: element.employeeSetMasterId,
+          };
+          this.empSetList.push(obj);
+        });
+      },
+      (error: any) => {
+        this.alertService.sweetalertError(
+          error['error']['status']['message']
+        );
+      }
+    //  console.log('summary data is',this.summaryData)
+     
+    //  ,error => {
+    // // //   // if(error.error.status.code == ''){
+    // // //      //this.toaster.success( 'Duplicate Area Set Name' );
+    // // //     // this.alertService.sweetalertError('Dulicate Areaset');
+    // // //     // this.areasetForm.controls['areaSetName'].reset();
+
+    // // //   // }
+    // setTimeout(()=>{
+    //    this.summaryData = []
+    //  },200)
+     
+    //  }
+     )
+    } 
+    //emp list radio button//
+employeeListPasteData(event: ClipboardEvent) {
+  let clipboardData = event.clipboardData;
+  let pastedText = clipboardData.getData('text');
+  let row_data = pastedText.split('\n');
+  // this.displayedColumns = row_data[0].split('\t');
+  // this.displayedColumns = ["employeeCode", "employeeName"]
+  this.displayedColumns = ["employeeCode"]
+let emp=[];
+for(let i= 0;i<row_data.length;i++){
+  let data=row_data[i].replace('\r','');
+  if(data!=''){
+const employee=this.employeeCodeList.find(a=>a.label ==data)
+let obj=employee?.value;
+
+emp.push(obj)
+}
+}
+
+  this.holdform.get('employeeCode').setValue(emp);
+  //this.excelData=row_data;
+  //this.excelData1=row_data;
+
+  //delete row_data[0];
+  // Create table dataSource
+  row_data.forEach(row_data => {
+    let row = {};
+    this.displayedColumns.forEach((a, index) => {
+      row[a] = row_data.split('\t')[index]
+    });
+    // console.log(row)
+    this.employeedata.push(row);
+  })
+  this.empdataSource = this.employeedata;
+  this.empdataSource.splice(this.empdataSource.length-1,1)
+
+  console.log("Before: " + JSON.stringify(this.empdataSource));
+  
+  this.employeeCodeList.forEach(element => {
+    this.empdataSource.forEach(emp => {
+      let empcode = emp.employeeCode.split('\r')
+      if(element.employeeCode+',' == empcode){
+        emp.employeeMasterId = element.employeeMasterId
+        emp.fullName = element.fullName 
+      }
+    });
+  });
+  console.log("After: " + JSON.stringify(this.empdataSource));
+}
+
+
+
+    
   
 }
