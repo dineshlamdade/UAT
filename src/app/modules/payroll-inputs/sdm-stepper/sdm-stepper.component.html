@@ -1986,102 +1986,51 @@
                                
                                 
                                 <tr class="p-selectable-row text-center"
-                                    *ngFor="let data of tempMatrixData;let i = index;">
-                                    <td *ngFor="let header of sourceFieldListData">
-                                        <span
-                                            *ngIf="header == 'PayrollArea'">{{data.selectedCombData.payrollAreaId}}</span>
-                                        <span
-                                            *ngIf="header == 'Establishment'">{{data.selectedCombData.establishmentMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'SubLocation'">{{data.selectedCombData.subLocationMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'Location'">{{data.selectedCombData.subLocationMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'WorkLocation'">{{data.selectedCombData.workLocationMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'BusinessArea'">{{data.selectedCombData.businessAreaMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'SubArea'">{{data.selectedCombData.subAreaId}}</span>
-                                        <span
-                                            *ngIf="header == 'StrategicBusinessUnit'">{{data.selectedCombData.strategicBusinessUnitId}}</span>
-                                        <span
-                                            *ngIf="header == 'Division'">{{data.selectedCombData.divisionMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'Department'">{{data.selectedCombData.departmentMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'SubDepartment'">{{data.selectedCombData.subDepartmentId}}</span>
-                                        <span
-                                            *ngIf="header == 'CostCentre'">{{data.selectedCombData.costCentreId}}</span>
-                                        <span
-                                            *ngIf="header == 'SubCostCenter'">{{data.selectedCombData.subCostCenterId}}</span>
-                                        <span
-                                            *ngIf="header == 'ProfitCentre'">{{data.selectedCombData.profitCentreMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'Grade'">{{data.selectedCombData.gradeMasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'Designation1'">{{data.selectedCombData.designation1MasterId}}</span>
-                                        <span
-                                            *ngIf="header == 'Designation2'">{{data.selectedCombData.designation2MasterId}}</span>
-                                    </td>
-                                    <td>{{data.sourceRangeFrom}}</td>
-                                    <td>{{data.sourceRangeTo}}</td>
-                                    <td>{{data.applicableValue}}</td>
-                                    <td>{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}
-                                    </td>
-                                    <td>{{data.derivedToDate | date: 'dd-MMM-yyyy'}}
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr class="p-selectable-row text-center"
                                     *ngFor="let history of matrixHistory">
                                     <!-- let data of tempEditMatrixData; -->
-                                    <!-- <td *ngFor="let header of sourceFieldListData">
+                                    <td *ngFor="let header of sourceFieldListData">
                                         <span
-                                        *ngIf="header == 'PayrollArea'">{{data.selectedCombData.payrollAreaId}}</span>
+                                        *ngIf="header == 'PayrollArea'">{{history.selectedCombData.payrollAreaId}}</span>
                                     <span
-                                        *ngIf="header == 'Establishment'">{{data.selectedCombData.establishmentMasterId}}</span>
+                                        *ngIf="header == 'Establishment'">{{history.selectedCombData.establishmentMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'SubLocation'">{{data.selectedCombData.subLocationMasterId}}</span>
+                                        *ngIf="header == 'SubLocation'">{{history.selectedCombData.subLocationMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'Location'">{{data.selectedCombData.subLocationMasterId}}</span>
+                                        *ngIf="header == 'Location'">{{history.selectedCombData.subLocationMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'WorkLocation'">{{data.selectedCombData.workLocationMasterId}}</span>
+                                        *ngIf="header == 'WorkLocation'">{{history.selectedCombData.workLocationMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'BusinessArea'">{{data.selectedCombData.businessAreaMasterId}}</span>
+                                        *ngIf="header == 'BusinessArea'">{{history.selectedCombData.businessAreaMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'SubArea'">{{data.selectedCombData.subAreaId}}</span>
+                                        *ngIf="header == 'SubArea'">{{history.selectedCombData.subAreaId}}</span>
                                     <span
-                                        *ngIf="header == 'StrategicBusinessUnit'">{{data.selectedCombData.strategicBusinessUnitId}}</span>
+                                        *ngIf="header == 'StrategicBusinessUnit'">{{history.selectedCombData.strategicBusinessUnitId}}</span>
                                     <span
-                                        *ngIf="header == 'Division'">{{data.selectedCombData.divisionMasterId}}</span>
+                                        *ngIf="header == 'Division'">{{history.selectedCombData.divisionMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'Department'">{{data.selectedCombData.departmentMasterId}}</span>
+                                        *ngIf="header == 'Department'">{{history.selectedCombData.departmentMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'SubDepartment'">{{data.selectedCombData.subDepartmentId}}</span>
+                                        *ngIf="header == 'SubDepartment'">{{history.selectedCombData.subDepartmentId}}</span>
                                     <span
-                                        *ngIf="header == 'CostCentre'">{{data.selectedCombData.costCentreId}}</span>
+                                        *ngIf="header == 'CostCentre'">{{history.selectedCombData.costCentreId}}</span>
                                     <span
-                                        *ngIf="header == 'SubCostCenter'">{{data.selectedCombData.subCostCenterId}}</span>
+                                        *ngIf="header == 'SubCostCenter'">{{history.selectedCombData.subCostCenterId}}</span>
                                     <span
-                                        *ngIf="header == 'ProfitCentre'">{{data.selectedCombData.profitCentreMasterId}}</span>
+                                        *ngIf="header == 'ProfitCentre'">{{history.selectedCombData.profitCentreMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'Grade'">{{data.selectedCombData.gradeMasterId}}</span>
+                                        *ngIf="header == 'Grade'">{{history.selectedCombData.gradeMasterId}}</span>
                                     <span
-                                        *ngIf="header == 'Designation1'">{{data.selectedCombData.designation1MasterId}}</span>
+                                        *ngIf="header == 'Designation1'">{{history.selectedCombData.designation1MasterId}}</span>
                                     <span
-                                        *ngIf="header == 'Designation2'">{{data.selectedCombData.designation2MasterId}}</span>
-                                    </td> -->
-                                    <td></td>
-                                    <td></td>
+                                        *ngIf="header == 'Designation2'">{{history.selectedCombData.designation2MasterId}}</span>
+                                    </td>
                                     <td *ngIf="isRangeApplicableFlag == true">
                                        {{history.sourceRangeFrom}}
                                     </td>
                                     <td *ngIf="isRangeApplicableFlag == true">
                                         {{history.sourceRangeTo}}
                                     </td>
-                                    <td >
-                                        
-                                    </td>
+                                    <td >{{history.applicableValue}}</td>
                                     <td>
                                         {{history.derivedFromDate | date: 'dd-MMM-yyyy'}}
                                     </td>

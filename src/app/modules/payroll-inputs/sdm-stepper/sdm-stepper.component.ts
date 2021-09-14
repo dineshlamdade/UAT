@@ -141,7 +141,7 @@ export class SdmStepperComponent implements OnInit {
   selectedFromDateForSave: any;
   selectedToDateForSave: any;
   copyToFlag: boolean = false;
-  rangeApplicableStatus: any;
+  rangeApplicableStatus: boolean;
   isDisabled: boolean;
   editTempFlag1: boolean = false;
   selectedtableId: any;
@@ -1130,11 +1130,10 @@ export class SdmStepperComponent implements OnInit {
       this.sdmSummeryData = res.data.results;
 
       this.sdmSummeryData.forEach(element => {
-        if (element.rangeApplicable = 'false') {
-          element.rangeApplicableStatus = 'No'
-        } else {
-
+        if (element.rangeApplicable == true) {
           element.rangeApplicableStatus = 'Yes'
+        } else {
+          element.rangeApplicableStatus = 'No'
         }
       });
 
@@ -2372,6 +2371,14 @@ export class SdmStepperComponent implements OnInit {
 
     this.sdmService.getHistory(formData).subscribe(res =>{
       this.matrixHistory = res.data.results;
+      this.matrixHistory.forEach(element => {
+        this.sdmSourceCombinationListData.forEach(ele => {
+          if(element.sdmSourceCombinationId == ele.sdmSourceCombinationId){
+            console.log("element")
+            element.selectedCombData = ele
+          }
+        });   
+      });
     })
 
   }
