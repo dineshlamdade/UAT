@@ -62,6 +62,7 @@ public isCollapsedQuery = true;
   menuData: any;
   // isCollapsedpayrollinput: boolean;
   isCollapsedKeywordinput:boolean;
+  isQuery:boolean = true;
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService,

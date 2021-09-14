@@ -114,6 +114,9 @@ export class SdnCreationService {
     return this.HttpClient.get<any>(this.url + `source-derived-matrix/combination-matrix/derivedObjectName/EmployeeJobMapping/derivedFieldName/`+value);
   }  
 
-
+  //4th tab api (Matrix) History
+  getHistory(data):Observable<any>{
+    return this.HttpClient.post<any>(this.url + `source-derived-matrix/combination-matrix/History`,data);  
+  }
   
 }

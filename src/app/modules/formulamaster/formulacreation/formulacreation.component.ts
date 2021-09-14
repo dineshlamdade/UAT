@@ -36,7 +36,7 @@ export class FormulacreationComponent implements OnInit {
   viewflag: boolean = false;
   FormulaId: any;
   formulaDataById: any;
-  originalFormula: any[] = [];
+  originalFormula: any;
   selectedFormula: any;
   formulaNameData: any;
 
@@ -47,6 +47,7 @@ export class FormulacreationComponent implements OnInit {
     { id: 3, name: 'Opel' },
     { id: 4, name: 'Audi' },
 ];
+  originalFormulaElement: string;
 
 
   constructor(private modalService: BsModalService,private formulaService: FormulaServiceService,
@@ -173,15 +174,28 @@ selectEvent(item: any) {
   // do something with selected item
   this.selectedFormula = item.name
   // console.log('selectEvent',item)
-  this.formulaform.controls['originalFormula'].setValue(item.name)
+  // this.formulaform.controls['originalFormula'].setValue(item.name)
 }
 
 getFormulaData(value){
-  console.log(JSON.stringify(value))
-  this.originalFormula = []
+  // console.log(JSON.stringify(value))
+  console.log(this.originalFormulaElement)
+  
+  let originalformula = []
   value.forEach(element => {
-    this.originalFormula.push(element.keywordName)
+    originalformula.push(element.keywordName)
   });
+
+  // if(this.originalFormula != undefined){
+  //   this.originalFormula = this.originalFormulaElement + "" + originalformula.toString()
+  // }else{
+    this.originalFormula = originalformula.toString()
+  // }
+  this.originalFormulaElement = this.originalFormula.replace(',',' ')
+  console.log(this.originalFormulaElement)
+
+  this.formulaform.controls['originalFormula'].setValue(this.originalFormulaElement)
+
 
 }
 

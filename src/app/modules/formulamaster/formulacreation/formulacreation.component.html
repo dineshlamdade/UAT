@@ -149,6 +149,8 @@
                                                 </ng-template> -->
 
                                                 <ng-select [items]="formulaData" class="form-control"
+                                                style="font-size: 15px !important;
+                                                font-weight: 600 !important; padding: 6px !important;"
                                                         bindLabel="keywordName" 
                                                         appendTo="body"
                                                         multiple="true"
@@ -164,7 +166,7 @@
                                                 
                                                 
                                                 <input *ngIf="originalFormula" style="width: 350px;height: 58px;border-style: inset;border: 1px solid #ccc" 
-                                                value={{originalFormula.toString()}}>
+                                                value={{originalFormulaElement}}>
 
                                         </div>
                                     </div>

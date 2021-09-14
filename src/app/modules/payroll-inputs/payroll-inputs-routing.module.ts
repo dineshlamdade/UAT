@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { FormulamasterComponent } from '../formulamaster/formulamaster.component';
 import { AttendanceComponent } from './attendance/attendance.component';
+import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
+import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
 import { FinancialMasterComponent } from './financial-master/financial-master.component';
 import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
 import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
@@ -51,7 +54,37 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: SDM Creation' },
         
       },
-     
+      {
+        path:   'Non-Recurring-qty-master',
+        component:  NonRecurringQtyMasterComponent,
+        data: { title: ':: DelziaHR :: Non-Recurring-qty' },
+        
+      }, 
+      {
+        path: 'FastEntry-Non-Recurring-Amount',
+        component: FastentryNRAmtComponent,
+        data: { title: ':: DelziaHR :: Fast Entry NR Amount'}
+      },
+      {
+        path: 'FastEntry-Non-Recurring-Quantity',
+        component: FastentryNrQtyComponent,
+        data: { title: ':: DelziaHR :: Fast Entry NR Quantity'}
+      },
+      {
+        path: 'Garnishment-Master',
+        component: GarnishmentMasterComponent,
+        data: { title: ':: DelziaHR :: Garnishment Master'}
+      },
+      {
+        path: 'Garnishment-Transaction',
+        component: GarnishmentTransactionComponent,
+        data: { title: ':: DelziaHR :: Garnishment Transaction'}
+      },
+      {
+        path: 'formula',
+        component: FormulamasterComponent,
+        data: { title: ':: DelziaHR :: Garnishment Transaction'}
+      },
     ],
   },
 ];
