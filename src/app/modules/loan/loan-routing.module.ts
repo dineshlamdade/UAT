@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AddNewLoanComponent } from './add-new-loan/add-new-loan.component';
+import { DisbursementComponent } from './disbursement/disbursement.component';
 import { LoanComponent } from './loan/loan.component';
+import {AdhocComponent} from './adhoc/adhoc.component';
+import {RescheduleComponent} from './reschedule/reschedule.component';
+import { SettlementComponent } from './settlement/settlement.component';
+import { EmpListComponent } from './emp-list/emp-list.component';
+import { LoanSummaryComponent } from './loan-summary/loan-summary.component';
 
 const routes: Routes = [
   {
@@ -13,9 +19,39 @@ const routes: Routes = [
 
       },
       {
+        path:'disbursement',
+        component:DisbursementComponent,
+
+    },
+    {
+      path:'adhoc',
+      component:AdhocComponent,
+
+  },
+  {
+    path:'rescheduleRequest',
+    component:RescheduleComponent,
+
+},
+{
+  path:'settlementRequest',
+  component:SettlementComponent,
+
+},
+      {
         path:'application',
         component:LoanComponent,
 
+    },
+    {
+      path:'summary',
+      component:LoanSummaryComponent,
+
+  },
+    {
+      path:'empList',
+      component:EmpListComponent,
+    
     },
     ]
   },

@@ -22,37 +22,37 @@ const routes: Routes = [
         path:   'Payroll-List',
         component:  PayrollListComponent,
         data: { title: ':: DelziaHR :: Payroll-List' },
-        
+
       },
       {
         path:   'Financial-Master',
         component:  FinancialMasterComponent,
         data: { title: ':: DelziaHR :: Financial-Master' },
-        
+
       },
       {
         path:   'Non-Recurring-Amount',
         component:  NonRecurringAmtComponent,
         data: { title: ':: DelziaHR :: Non-Recurring-Amount' },
-        
+
       },
       {
         path:   'Non-Recurring-qty',
         component:  NonRecurringQtyComponent,
         data: { title: ':: DelziaHR :: Non-Recurring-qty' },
-        
+
       },
       {
         path:   'attendance',
         component:  AttendanceComponent,
         data: { title: ':: DelziaHR :: Attendance' },
-        
+
       },
       {
         path:   'sdm-creation',
         component:  SdmStepperComponent,
         data: { title: ':: DelziaHR :: SDM Creation' },
-        
+
       },
       {
         path:   'Non-Recurring-qty-master',

@@ -67,7 +67,7 @@ export class NonRecurringQtyMasterComponent implements OnInit {
     this.getNatureValue = value
     this.natureData.forEach((ele,index) =>{
       if(ele.id == value){
-        
+
       }else{
         let ind = index
         this.natureData.splice(index,1)

@@ -228,7 +228,7 @@ export class JobMasterComponent implements OnInit {
     });
   }
 
-  //komal // get Job Master Drop down API
+ // get Job Master Drop down API
 
   getJobMasterDropDownList(){
     this.jobMasterService.getAllJobMasters().subscribe((res) => {
@@ -971,7 +971,7 @@ export class JobMasterComponent implements OnInit {
     }
   }
 
-  //komal delete summary table API
+  // delete summary table API
 
   deleteBusinessAreaMaster( id ): void {
     console.log( 'delete', id );
@@ -1021,7 +1021,7 @@ export class JobMasterComponent implements OnInit {
       this.alertService.sweetalertError( error.error.status.messsage );
     }, () => { } );
   }
-// komal Delete master
+//  Delete master
   // DeleteMaster( masterId: number, jobMasterType: string ) {
   //   console.log( 'in delete master' );
 

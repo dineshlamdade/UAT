@@ -83,6 +83,8 @@ import { InvestmentApprovalModule } from './modules/investment-approval/investme
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
 import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
 import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ExcelserviceService } from './core/services/excelservice.service';
 
 
 
@@ -126,6 +128,7 @@ import { FormulamasterModule } from './modules/formulamaster/formulamaster.modul
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
+    MultiSelectModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
     ToastrModule.forRoot( {
@@ -161,6 +164,7 @@ import { FormulamasterModule } from './modules/formulamaster/formulamaster.modul
 
   providers: [BsDatepickerModule,
     BnNgIdleService,
+    ExcelserviceService,
     AuthGuard,
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
