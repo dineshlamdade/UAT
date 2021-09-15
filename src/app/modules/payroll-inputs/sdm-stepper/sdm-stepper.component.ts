@@ -1076,7 +1076,7 @@ export class SdmStepperComponent implements OnInit {
 
   derivedTablesFields() {
     this.derivedTableFieldsData = []
-    alert()
+    //alert()
     this.sdmService.derivedTablesFields().subscribe(res => {
       // this.derivedTableFieldsData = res.data.results;
 
