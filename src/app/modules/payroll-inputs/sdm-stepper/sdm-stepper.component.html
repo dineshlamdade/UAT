@@ -752,10 +752,14 @@
                                                     tooltip="Previous"><b>
                                                         <i class="fa fa-angle-double-left"></i></b>
                                                     Previous</button>&nbsp;
-                                                <button type="submit" (click)="step2Submit()"
+                                                <button type="submit" (click)="step2Submit()" *ngIf="!editFlag"
                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                                     tooltip="Save"><b>
                                                         <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+                                                        <button type="submit" (click)="step2Submit()" *ngIf="editFlag"
+                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                                    tooltip="Update"><b>
+                                                        <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
                                                         <!-- derivedTablesFields(); -->
                                                 <button type="button"
                                                     (click)="getStepper(2);next();derivedType();KeywordMasterDetails();"
@@ -986,7 +990,8 @@
                                                                                         *ngIf="derivedTypeName == 'Percentage' || showPercentageFlag">
                                                                                         <div
                                                                                             class="p-d-flex p-jc-between p-ai-center ml-55">
-                                                                                            Percentage (%) of
+                                                                                            Percentage (%) of  {{derivedTypeName == 'Percentage'}}
+                                                                                            {{showPercentageFlag}}
                                                                                             <div
                                                                                                 class="Sort_Filter_Position">
                                                                                                 <p-sortIcon
@@ -1388,15 +1393,25 @@
                                                                     <td>
                                                                         <div class="input-group">
                                                                             <input type="text" class="form-control"
-                                                                                *ngIf="!showDropdown" placeholder=""
+                                                                                *ngIf="!showDropdown && !showSearchLeans" placeholder=""
                                                                                 [value]="selectedIndex == rowIndex ? applicableValue : '' "
                                                                                 (focusout)="applicableValueData($event.target.value,srcCombData)">
+
+                                                                                <input type="text" class="form-control"
+                                                                                *ngIf="showSearchLeans && selectedIndex == rowIndex" placeholder=""
+                                                                                [value]="applicableValue"
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData)">
+
+                                                                                <input type="text" class="form-control"
+                                                                                *ngIf="showSearchLeans && selectedIndex != rowIndex" placeholder=""
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData)">
+
                                                                             <span class="input-group-append"
                                                                                 *ngIf="showSearchLeans">
                                                                                 <button class="btn btn-primary"
                                                                                     type="button">
                                                                                     <span class="fe fe-search"
-                                                                                        (click)="largepopup (template1)"><i></i>
+                                                                                        (click)="largepopup (template1,rowIndex)"><i></i>
                                                                                     </span>
                                                                                 </button>
                                                                             </span>
@@ -1623,8 +1638,9 @@
                                                         tooltip="Previous"><b>
                                                             <i class="fa fa-angle-double-left"></i></b>
                                                         Previous</button>&nbsp;
+                                                        <!-- [disabled]="saveMatrixData.length == 0" -->
                                                     <button type="submit" (click)="saveMatrix()"
-                                                        [disabled]="saveMatrixData.length == 0"
+                                                        
                                                         [ngClass]="{'disabled-btn-bg-green' : saveMatrixData.length == 0}"
                                                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                                                         tooltip="Save"><b>
@@ -1722,10 +1738,10 @@
                         <div class="mb-15">
                             <div class="form-group">
                                 <label class="form-label"></label>
-                                <div class="input-icon mb-3" style="width: 250px;">
+                                <!-- <div class="input-icon mb-3" style="width: 250px;">
                                     <input type="text" class="form-control" placeholder="Search...">
                                     <span class="input-icon-addon"><i class="fe fe-search"></i></span>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -1736,11 +1752,11 @@
 
                         <p-table [value]="EmployeeData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                            [rowsPerPageOptions]="[10,25,50]"
-                            [globalFilterFields]="['EmployeeData.employeeCode','EmployeeData.fullName']">
+                            [rowsPerPageOptions]="[10,25,50]" #dt
+                            [globalFilterFields]="['employeeCode','fullName']">
                             <ng-template pTemplate="caption">
                                 <div style="text-align: right">
-                                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                                    <!-- <i class="pi pi-search" style="margin:4px 4px 0 0"></i> -->
                                     <input type="text" pInputText size="50" placeholder="Search"
                                         (input)="dt.filterGlobal($event.target.value, 'contains')"
                                         style="width: 203px;margin-right: 37px;">
@@ -1799,7 +1815,7 @@
 
                                     <td class="text-center bg-color-light_gray">
                                         <label class="custom-control custom-checkbox checkbox-center">
-                                            <input type="checkbox" class="custom-control-input" name="select" />
+                                            <input (click)="selectedEmpId(emp,$event.target)" type="checkbox" class="custom-control-input" name="select" />
                                             <span class="custom-control-label"></span>
                                         </label>
 
