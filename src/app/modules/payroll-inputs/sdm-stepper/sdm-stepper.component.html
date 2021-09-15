@@ -6,7 +6,6 @@
         <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
             <div class="row">
 
-
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
@@ -14,7 +13,6 @@
                             <div class="mb-0" *ngIf="!summeryFlag">
                                 <h3 class="font-14 text-purple font-bold">Summary</h3>&nbsp;
                             </div>
-
 
                             <div [@slideInOut]>
 
@@ -1061,7 +1059,7 @@
                                                                                         {{data.derivedName}}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{data.moduleIdList}}
+                                                                                        {{data.modulename}}
                                                                                     </td>
                                                                                     <td>
                                                                                         {{data.sdmDerivedTypeName}}
@@ -1385,14 +1383,14 @@
                                                                         <input type="text" class="form-control"
                                                                             placeholder=""
                                                                             [value]="selectedIndex == rowIndex ? sourceRangeTo : '' "
-                                                                            (focusout)="sourceRangeToData($event.target.value)">
+                                                                            (focusout)="sourceRangeToData($event.target.value,rowIndex,srcCombData)">
                                                                     </td>
                                                                     <td>
                                                                         <div class="input-group">
                                                                             <input type="text" class="form-control"
                                                                                 *ngIf="!showDropdown" placeholder=""
                                                                                 [value]="selectedIndex == rowIndex ? applicableValue : '' "
-                                                                                (focusout)="applicableValueData($event.target.value)">
+                                                                                (focusout)="applicableValueData($event.target.value,srcCombData)">
                                                                             <span class="input-group-append"
                                                                                 *ngIf="showSearchLeans">
                                                                                 <button class="btn btn-primary"
@@ -1406,7 +1404,7 @@
                                                                         <select type="text" class="form-control"
                                                                             *ngIf="showDropdown" placeholder=""
                                                                             [value]="selectedIndex == rowIndex ? applicableValue : '' "
-                                                                            (change)="applicableValueData($event.target.value)">
+                                                                            (change)="applicableValueData($event.target.value,srcCombData)">
                                                                             <option>Select</option>
                                                                             <option
                                                                                 *ngFor="let data of derivedDropdownValue">
@@ -1519,29 +1517,85 @@
                                                                 <tr class="p-selectable-row text-center"
                                                                     *ngFor="let data of tempEditMatrixData;let i = index;">
                                                                     <td *ngFor="let header of sourceFieldListData">
-
+                                                                        <span
+                                                                        *ngIf="header == 'PayrollArea'">{{data.selectedCombData.payrollAreaId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'Establishment'">{{data.selectedCombData.establishmentMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'SubLocation'">{{data.selectedCombData.subLocationMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'Location'">{{data.selectedCombData.subLocationMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'WorkLocation'">{{data.selectedCombData.workLocationMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'BusinessArea'">{{data.selectedCombData.businessAreaMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'SubArea'">{{data.selectedCombData.subAreaId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'StrategicBusinessUnit'">{{data.selectedCombData.strategicBusinessUnitId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'Division'">{{data.selectedCombData.divisionMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'Department'">{{data.selectedCombData.departmentMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'SubDepartment'">{{data.selectedCombData.subDepartmentId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'CostCentre'">{{data.selectedCombData.costCentreId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'SubCostCenter'">{{data.selectedCombData.subCostCenterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'ProfitCentre'">{{data.selectedCombData.profitCentreMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'Grade'">{{data.selectedCombData.gradeMasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'Designation1'">{{data.selectedCombData.designation1MasterId}}</span>
+                                                                    <span
+                                                                        *ngIf="header == 'Designation2'">{{data.selectedCombData.designation2MasterId}}</span>
                                                                     </td>
-                                                                    <td><input type="text" class="form-control"
-                                                                            placeholder=""
+                                                                    <td *ngIf="isRangeApplicableFlag == true"><input type="text" class="form-control"
+                                                                            placeholder="" (focusout)="getEditedSourceRangeFrom($event.target.value,data)"
                                                                             value="{{data.sourceRangeFrom}}">
                                                                     </td>
-                                                                    <td><input type="text" class="form-control"
-                                                                            placeholder=""
+                                                                    <td *ngIf="isRangeApplicableFlag == true"><input type="text" class="form-control"
+                                                                            placeholder=""  (focusout)="getEditedSourceRangeTo($event.target.value,data)"
                                                                             value="{{data.sourceRangeTo}}">
                                                                     </td>
-                                                                    <td><input type="text" class="form-control"
-                                                                            placeholder=""
+                                                                    <td ><input type="text" class="form-control"
+                                                                            placeholder="" (focusout)="getEditedApplicableValue($event.target.value,data)"
                                                                             value="{{data.applicableValue}}">
                                                                     </td>
-                                                                    <td><input type="text" class="form-control"
+                                                                    <td>
+                                                                        
+                                                                        <input data-provide="datepicker"
+                                                                                    data-date-autoclose="true"
+                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                                    class="form-control"
+                                                                                    value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}"
+                                                                                    (bsValueChange)="getEditFromDateForSave($event,data)"
+                                                                                    placeholder="Date" bsDatepicker>
+                                                                        <!-- <input type="text" class="form-control"
                                                                             placeholder=""
-                                                                            value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}">
+                                                                            value="{{data.derivedFromDate | date: 'dd-MMM-yyyy'}}"> -->
                                                                     </td>
-                                                                    <td><input type="text" class="form-control"
+                                                                    <td>
+                                                                        <input data-provide="datepicker"
+                                                                                    data-date-autoclose="true"
+                                                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
+                                                                                    class="form-control"
+                                                                                    value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"
+                                                                                    (bsValueChange)="getEditToDateForSave($event,data)"
+                                                                                    placeholder="Date" bsDatepicker>
+                                                                        
+                                                                        <!-- <input type="text" class="form-control"
                                                                             placeholder=""
-                                                                            value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}">
+                                                                            value="{{data.derivedToDate | date: 'dd-MMM-yyyy'}}"> -->
                                                                     </td>
-                                                                    <td></td>
+                                                                    <td>
+                                                                        <i class="fa fa-eye font-18 text-dark-blue"
+                                                                            tooltip="View History"
+                                                                            (click)="viewMatrixDataHistory(data);extralargepopup(template4)">
+                                                                        </i>
+                                                                    </td>
                                                                 </tr>
                                                             </ng-template>
                                                             <ng-template pTemplate="emptymessage">
@@ -1587,7 +1641,6 @@
                                     <div *ngSwitchDefault>Saved Successfully<i class="fa-check-circle"></i></div>
                                 </div>
                             </div>
-
 
                         </div>
                     </div>
@@ -1784,5 +1837,228 @@
         <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left " tooltip="Close"
             (click)="modalRef.hide()"><b>
                 <i class="fa fa-times"></i></b> Close</button>&nbsp;
+    </div>
+</ng-template>
+
+
+<ng-template #template4>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">History</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="cycle-table mt-4">
+
+                            <p-table [value]="users1" [paginator]="true" [rows]="10"
+                            (sortFunction)="customSort($event)" [customSort]="true"
+                            [showCurrentPageReport]="true"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [rowsPerPageOptions]="[10,25,50,100,200]">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th [attr.colspan]="sourceFieldListData.length"
+                                        class="wd-16 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center text-center"
+                                            style="margin-left: 120px;">Source
+                                        </div>
+                                    </th>
+                                    <th colspan="2" class="wd-21 text-center"
+                                        *ngIf="isRangeApplicableFlag == true">
+                                        <div class="p-d-flex p-jc-between p-ai-center"
+                                            style="margin-left:100px;">Source Range
+                                        </div>
+                                    </th>
+                                    <th colspan="1" class="wd-6 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Derived
+
+                                        </div>
+                                    </th>
+                                    <th colspan="2" class="wd-8 text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center"
+                                            style="margin-left:140px;">Date Range
+                                            <!-- <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="Payroll"
+                                                    pSortableColumn="Payroll">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="date" field="text"
+                                                    display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div> -->
+                                        </div>
+                                    </th>
+                                   
+                                </tr>
+                                <tr>
+                                    <th rowspan="2" class=" text-center"
+                                        *ngFor="let header of matrixTableData">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            {{header}}
+                                            <!-- <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="Payroll"
+                                                    pSortableColumn="Payroll">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="date" field="text"
+                                                    display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div> -->
+                                        </div>
+                                    </th>
+                                    <th rowspan="2" class="text-center"
+                                        *ngIf="isRangeApplicableFlag == true">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            From
+                                            <!-- <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="DateRange"
+                                                    pSortableColumn="DateRange">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="date" field="text"
+                                                    display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div> -->
+                                        </div>
+                                    </th>
+                                    <th rowspan="2" class=" text-center "
+                                        *ngIf="isRangeApplicableFlag == true">
+                                        <div class="p-d-flex p-jc-between p-ai-center"
+                                            style="margin-left: 70px;"> To
+                                            <!-- <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="DateRange"
+                                                    pSortableColumn="DateRange">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="date" field="text"
+                                                    display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div> -->
+                                        </div>
+                                    </th>
+                                    <th rowspan="2" class=" text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            {{derivedFieldName}}
+                                            <!-- <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="Value"
+                                                    pSortableColumn="Value">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="date" field="text"
+                                                    display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div> -->
+                                        </div>
+                                    </th>
+                                    <!-- rowspan="2" -->
+                                    <th class="text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            From Date
+                                            <!-- <div class="Sort_Filter_Position">
+
+                                                <p-sortIcon field="FromDate"
+                                                    pSortableColumn="FromDate">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="date" field="text"
+                                                    display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div> -->
+                                        </div>
+                                    </th>
+                                    <!-- rowspan="2" -->
+                                    <th class=" text-center ">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            To Date
+                                            <!-- <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="ToDate"
+                                                    pSortableColumn="ToDate">
+                                                </p-sortIcon>
+                                                <p-columnFilter type="date" field="text"
+                                                    display="menu" class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div> -->
+                                        </div>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <!-- let-srcCombData let-rowIndex = rowIndex -->
+                            <ng-template pTemplate="body">
+                               
+                                
+                                <tr class="p-selectable-row text-center"
+                                    *ngFor="let history of matrixHistory">
+                                    <!-- let data of tempEditMatrixData; -->
+                                    <td *ngFor="let header of sourceFieldListData">
+                                        <span
+                                        *ngIf="header == 'PayrollArea'">{{history.selectedCombData.payrollAreaId}}</span>
+                                    <span
+                                        *ngIf="header == 'Establishment'">{{history.selectedCombData.establishmentMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'SubLocation'">{{history.selectedCombData.subLocationMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'Location'">{{history.selectedCombData.subLocationMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'WorkLocation'">{{history.selectedCombData.workLocationMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'BusinessArea'">{{history.selectedCombData.businessAreaMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'SubArea'">{{history.selectedCombData.subAreaId}}</span>
+                                    <span
+                                        *ngIf="header == 'StrategicBusinessUnit'">{{history.selectedCombData.strategicBusinessUnitId}}</span>
+                                    <span
+                                        *ngIf="header == 'Division'">{{history.selectedCombData.divisionMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'Department'">{{history.selectedCombData.departmentMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'SubDepartment'">{{history.selectedCombData.subDepartmentId}}</span>
+                                    <span
+                                        *ngIf="header == 'CostCentre'">{{history.selectedCombData.costCentreId}}</span>
+                                    <span
+                                        *ngIf="header == 'SubCostCenter'">{{history.selectedCombData.subCostCenterId}}</span>
+                                    <span
+                                        *ngIf="header == 'ProfitCentre'">{{history.selectedCombData.profitCentreMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'Grade'">{{history.selectedCombData.gradeMasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'Designation1'">{{history.selectedCombData.designation1MasterId}}</span>
+                                    <span
+                                        *ngIf="header == 'Designation2'">{{history.selectedCombData.designation2MasterId}}</span>
+                                    </td>
+                                    <td *ngIf="isRangeApplicableFlag == true">
+                                       {{history.sourceRangeFrom}}
+                                    </td>
+                                    <td *ngIf="isRangeApplicableFlag == true">
+                                        {{history.sourceRangeTo}}
+                                    </td>
+                                    <td >{{history.applicableValue}}</td>
+                                    <td>
+                                        {{history.derivedFromDate | date: 'dd-MMM-yyyy'}}
+                                    </td>
+                                    <td>
+                                        {{history.derivedToDate | date: 'dd-MMM-yyyy'}}
+                                    </td>
+                                    
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="15"
+                                        class="font-14 font500 text-center text-red">
+                                        <span>No Data
+                                            Available</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+    
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
     </div>
 </ng-template>

@@ -175,7 +175,6 @@ this.emailService.getStandardKeywords().subscribe(res =>
     this.editFlag = false;
   }
 
-
   getModuleName(moduleid){
     let modulename = ''
    this.moduleListData.forEach(element => {
