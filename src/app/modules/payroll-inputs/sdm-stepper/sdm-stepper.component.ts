@@ -164,6 +164,8 @@ export class SdmStepperComponent implements OnInit {
   sdmDerivedTypeId: any;
   showPercentageFlag: boolean = false;
   matrixHistory: any;
+  sourceMasterFieldValueDetailId: any = 0;
+  selectedEmployeeId: any = null;
 
   constructor(private formBuilder: FormBuilder, private sdmService: SdnCreationService,
     private toaster: ToastrService, private datepipe: DatePipe, private excelservice: ExcelserviceService,
@@ -673,7 +675,9 @@ export class SdmStepperComponent implements OnInit {
 
   valueListDataValue(event) {
 
-    console.log("event data: " + event)
+    console.log("event data: " + JSON.stringify(event))
+    console.log("sourceValueId data: " + this.sourceValueId)
+
     // this.sourceValueId.push(event.itemValue)
 
     this.sourceValueId.push(event.sourceValueId)
@@ -742,7 +746,7 @@ export class SdmStepperComponent implements OnInit {
       })
 
       this.sdmSourceMasterFieldValueMappingDetailList.push({
-        "sourceMasterFieldValueDetailId": "0",
+        "sourceMasterFieldValueDetailId": this.sourceMasterFieldValueDetailId,
         "sourceTableId": this.sourceTableId,
         "sourceFieldId": this.sourceFieldId,
         "sourceValueIdList": this.sourceValueId
@@ -791,10 +795,13 @@ export class SdmStepperComponent implements OnInit {
     this.editTempFlag = true;
     this.editTempIndex = index;
     this.sourceTableId = data.sourceTableId;
+    
     this.sourceFieldId = data.sourceFieldId;
-    this.sourceValueId = data.sourceValueIdList
+    this.sourceValueId.push(data.sourceValueIdList)
     this.sourceValueName.push(data.valueId)
-    this.sourceMasterName = data.valueId.toString()
+    this.sourceMasterName = data.tableName
+    this.sourceFieldTypeName = data.fieldType
+    this.sourceMasterFieldValueDetailId = data.sourceMasterFieldValueDetailId
     console.log(JSON.stringify(data))
     this.tableListData.forEach(ele => {
       if (ele.sourceMasterId == data.sourceTableId) {
@@ -878,10 +885,10 @@ export class SdmStepperComponent implements OnInit {
 
       this.sdmSourceMasterFieldValueMappingDetailList.splice(this.editTempIndex, 1,
         {
-          "sourceMasterFieldValueDetailId": "0",
+          "sourceMasterFieldValueDetailId": this.sourceMasterFieldValueDetailId,
           "sourceTableId": this.sourceTableId,
           "sourceFieldId": this.sourceFieldId,
-          "sourceValueIdList": this.sourceValueId
+          "sourceValueIdList": this.sourceValueId,
         }
       )
 
@@ -893,14 +900,11 @@ export class SdmStepperComponent implements OnInit {
       this.sourceValueId = []
       this.sourceValueName = []
 
-      this.editTempFlag = false;
+      this.editTempFlag = true;
     }
   }
 
   updateSourceDriveMatrix() {
-
-
-
     this.sdmFormStep1.controls['sdmMasterId'].setValue(this.sdmMasterId)
     console.log(this.sdmFormStep1.value)
     this.sdmService.SdmSourceUpdate(this.sdmFormStep1.value).subscribe(res => {
@@ -924,7 +928,7 @@ export class SdmStepperComponent implements OnInit {
     this.valuelist = []
     this.sourceValueId = []
     this.sourceValueName = []
-    this.editTempFlag = false;
+    // this.editTempFlag = false;
     localStorage.setItem('sdmFormStep1', JSON.stringify(this.sdmFormStep1.value))
     localStorage.setItem('tempsdmFormStep1', JSON.stringify(this.tempSourceTable))
 
@@ -977,13 +981,20 @@ export class SdmStepperComponent implements OnInit {
      this.sdmData = res.data.results;
       if (this.editFlag == true) {
         this.applicationModule()
-        this.sdmSourceMasterFieldValueMappingDetailList = this.sdmData[0].sdmSourceMasterFieldValueMappingDetailList
+        // this.sdmSourceMasterFieldValueMappingDetailList = this.sdmData[0].sdmSourceMasterFieldValueMappingDetailList
         this.sdmData[0].sdmSourceMasterFieldValueMappingDetailList.forEach(element => {
           element.sourceValueIdList = [element.sourceValueId]
           // this.step1FormDisableFlag = true
+          this.sdmSourceMasterFieldValueMappingDetailList.push({
+            "sourceMasterFieldValueDetailId": element.sourceMasterFieldValueDetailId,
+            "sourceTableId":element.sourceTableId,
+            "sourceFieldId":element.sourceFieldId,
+            "sourceValueIdList":element.sourceValueIdList
+          })
           let array =[]
           array.push(element.sourceValueName)
           this.tempSourceTable.push({
+            "sourceMasterFieldValueDetailId": element.sourceMasterFieldValueDetailId,
             'tableName': element.sourceTableName,
             'fieldType': element.sourceFieldName,
             'valueId': array,
@@ -1292,7 +1303,7 @@ export class SdmStepperComponent implements OnInit {
       console.log("derived Master data: "+ JSON.stringify(this.derivedMastersData))
       if(this.editFlag){
         this.derivedMastersData.forEach(element => {
-           if(element.percentageOf != '' || element.percentageOf != null){
+           if(element.percentageOf != null){
              this.showPercentageFlag = true
            }
           this.tempDerivedTable.push({
@@ -2522,11 +2533,12 @@ export class SdmStepperComponent implements OnInit {
   }
 
 
-  largepopup(template: TemplateRef<any>) {
+  largepopup(template: TemplateRef<any>,index) {
     this.modalRef = this.modalService.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' })
     );
+    this.selectedIndex = index
     this.getAllEmployeeDetails();
   }
 
@@ -2601,6 +2613,16 @@ export class SdmStepperComponent implements OnInit {
       this.EmployeeData = res.data.results[0];
       
     });
+  }
+
+  selectedEmpId(employeedata, event){
+    if(event.checked){
+      this.selectedEmployeeId = employeedata.employeeMasterId
+      this.applicableValue = this.selectedEmployeeId 
+    }else{
+      this.selectedEmployeeId = null
+      this.applicableValue = ''
+    }
   }
 
 
