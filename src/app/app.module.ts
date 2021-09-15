@@ -51,6 +51,7 @@ import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 //import { investmentOthersModule } from './modules/my-Investments/others/others.module';
+import { PayrollModule } from './modules/companysetting/payroll/payroll.module';
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
@@ -106,6 +107,7 @@ import { ExcelserviceService } from './core/services/excelservice.service';
     PrimeNGModule,
     AccordionModule,
     DashboardModule,
+    PayrollModule,
     QueryModule,
     LoanModule,
     CompanySettingModule,

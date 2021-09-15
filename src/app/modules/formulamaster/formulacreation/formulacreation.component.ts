@@ -48,6 +48,7 @@ export class FormulacreationComponent implements OnInit {
     { id: 4, name: 'Audi' },
 ];
   originalFormulaElement: string;
+  keywordFormula: any;
 
 
   constructor(private modalService: BsModalService,private formulaService: FormulaServiceService,
@@ -136,11 +137,12 @@ let effectiveToDate = this.datepipe.transform(toDate , 'yyyy-MM-dd')
 
 
  this.formulaService.formulamasterSave(this.formulaform.value).subscribe(res => {
-    this.alertService.sweetalertMasterSuccess(res.status.messsage, "" );
+    this.alertService.sweetalertMasterSuccess(res.status.message, "" );
     this.FormulaMasterDetailsSummery();
     this.formulaform.reset()
     this.editflag = false
     this.viewflag = false
+    this.keywordFormula = null
   },
   ( error: any ) => {
     this.alertService.sweetalertError( error["error"]["status"]["message"] );
@@ -211,6 +213,7 @@ onFocused(e: any) {
 }
 
 editFormulaSummaryData(data){
+  this.originalFormula = []
   this.editData = data
   //console.log('data',data)
   this.editflag = true;
@@ -278,11 +281,13 @@ let effectiveToDate = this.datepipe.transform(toDate , 'yyyy-MM-dd')
 
   this.formulaService.UpdateFormula(this.formulaform.value).subscribe(res => {
     // this.toster.success("", "Keyword data updated successfully")
-    this.alertService.sweetalertMasterSuccess(res.status.messsage, "" );
+    this.alertService.sweetalertMasterSuccess(res.status.message, "" );
     this.FormulaMasterDetailsSummery();
     this.formulaform.reset()
     this.editflag = false
     this.viewflag = false
+    this.keywordFormula = null
+
   },
   ( error: any ) => {
     this.alertService.sweetalertError( error["error"]["status"]["message"] );
