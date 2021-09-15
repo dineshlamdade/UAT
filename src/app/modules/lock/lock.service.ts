@@ -91,7 +91,7 @@ export class LockService {
       const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('X-TenantId', 'PaysquareDefault');
-      return this._HTTP.post( environment.baseUrl8084 + 'temppayrollArea-lock', data)
+      return this._HTTP.post( environment.baseUrl8084 + 'payrollArea-lock/getAllSelectedcycles/', data)
         .pipe( map( ( res: any ) => {
           return res;
         } ) );
@@ -114,23 +114,26 @@ export class LockService {
 
         //Post  AreaAPI
         postAreaInLock(data:any){
-          // var formData: any = new FormData();
-
           const headers = new HttpHeaders()
-
           .set('content-type', 'application/json')
           .set('X-TenantId', 'PaysquareDefault');
-          // formData.append('cycleLockPayrollAreaTempIds', JSON.stringify(data));
-
-          // formData.forEach((value, key) => {
-          //   console.log(key," ",value)
-          // });
           return this._HTTP.post( environment.baseUrl8084 + 'payrollArea-lock',  data,)
             .pipe( map( ( res: any ) => {
               return res;
             } ) );
         }
 
+        //Post Pending for lock in Area
+        //Post  AreaAPI
+        postPendingAreaLock(data:any){
+          const headers = new HttpHeaders()
+          .set('content-type', 'application/json')
+          .set('X-TenantId', 'PaysquareDefault');
+          return this._HTTP.post( environment.baseUrl8084 + 'payrollArea-lock/lockDataAdd',  data,)
+            .pipe( map( ( res: any ) => {
+              return res;
+            } ) );
+        }
 
         // EMP COde
          //Get APIs Cycle Name
@@ -177,12 +180,140 @@ postEmpForm(data){
   const headers = new HttpHeaders()
   .set('content-type', 'application/json')
   .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.post( environment.baseUrl8084 + 'employee-lock/cycleName/', data)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+postLockCheckedEmp(data){
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
   return this._HTTP.post( environment.baseUrl8084 + 'employee-lock', data)
     .pipe( map( ( res: any ) => {
       return res;
     } ) );
 }
 
+
+
+//As & When API
+
+//Company name
+getCompnays() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'groupCompany/')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+//Get type
+getAsAndWhenType() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+// get Cycle name
+getCycleName(cycleName) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock/GETAllCycle/' + cycleName)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Post As and when
+postAsAndWhen(data:any){
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.post( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock',  data,)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+
+//get As & when Summary table list
+
+getCyclesToLocktable() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock/GETAllCycle/Supplementry/')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Pending for lock in As and When
+
+pendingForLockAsWhen() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock/GETAllPendingCycle')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Call on Go
+// cycleLockAs&WhenAndSupp-lock/GETAllCycle/Supplementry/5
+
+
+getGoCycleName(type, cycleName) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock/GETAllCycle/' + type + '/' + cycleName)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Area Penidng for lock API
+pendingForLockArea() {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'PayrollOutput/GETAllPendingCycles')
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Area Penidng for lock API Empty
+pendingLockEmptyArea(areaName) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'PayrollOutput/GETAllPendingCycles/' + areaName)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
+
+//Emp Get Service
+getEmpListUsingCycleName(cycleName) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('X-TenantId', 'PaysquareDefault');
+  return this._HTTP.get( environment.baseUrl8084 + 'cycleLockAs&WhenAndSupp-lock/GETAllCycle/' +  cycleName,)
+    .pipe( map( ( res: any ) => {
+      return res;
+    } ) );
+}
 
 }
 

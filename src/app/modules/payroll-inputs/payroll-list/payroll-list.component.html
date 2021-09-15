@@ -73,7 +73,7 @@
                                 <div class="col-12 pr-0 pl-0" style="margin-bottom: 13px;">
                                     <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-bg-green"
-                                        (click)="navigateToFinancialmaster()"
+                                            [routerLink]="['/PayrollInputs/Financial-Master']"
                                             [ngClass]="{'disabled-btn-bg-green' : selectedEmployeeData.length == 0}"
                                             [disabled]="selectedEmployeeData.length == 0">
                                             <i class="fa fa-plus-circle"> Financial Master</i>
@@ -127,7 +127,7 @@
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th rowspan="2">
-                                                    <!-- <input type="checkbox" 
+                                                    <!-- <input type="checkbox"
                                                     class="custom-control-input"
                                                     name="select"
                                                     (change)="getSelectedEmployee(users)"
@@ -170,7 +170,7 @@
                                             <tr class="p-selectable-row">
                                                 <td style="width: 3rem">
                                                     <input type="checkbox"
-                                                    
+
                                                     (change)="getSelectedEmployee(user1)">
                                                 </td>
                                                 <td class="bg-color-light_gray">
@@ -212,14 +212,14 @@
                                                                         <label
                                                                             class="custom-control custom-radio custom-control-inline">
                                                                             <input type="radio" class="custom-control-input"
-  
+
                                                                                 id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('yes')">
                                                                             <span class="custom-control-label">Yes</span>
                                                                         </label>
                                                                         <label
                                                                             class="custom-control custom-radio custom-control-inline">
                                                                             <input type="radio" class="custom-control-input"
-  
+
                                                                                 id="BehalfOfEmployee"  name="querydata1" (click)="onBehalf('no')">
                                                                             <span class="custom-control-label">No</span>
                                                                         </label>
@@ -265,7 +265,7 @@
                                                         class="fa fa-times"></i></b> Cancel</button>
                                         </div>
                                     </ng-template>
-                                    
+
                                 </div>
                             </div>
                         </div>

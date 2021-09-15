@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -10,6 +11,10 @@ import { Observable } from 'rxjs';
 export class LoanMasterService {
 
   url = environment.baseUrl8087;
+  public apiUrl = environment.baseUrl8091;
+  public apiUrl1 = environment.baseUrl8083;
+  public apiUrl2 = environment.baseUrl8088;
+  public apiUrl3 = environment.baseUrl8082;
 
   constructor(private HttpClient: HttpClient) { }
 
@@ -37,4 +42,28 @@ export class LoanMasterService {
    updateLoanMasterData(data): Observable<any> {
     return this.HttpClient.put<any>(this.url + `loan-Master/update`,data);
   }
+
+  // workflow get data
+  getAllWorkflowMasters() {
+    return this.HttpClient.get(this.apiUrl2 + 'workflowmaster-header/getAllWorkflowMasters')
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+
+ // workflow get data
+ getAllapprovalWorkFlowSDM() {
+  return this.HttpClient.get(this.apiUrl1 + 'source-derived-matrix/1')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+}
+getAllDerivedSDM() {
+  return this.HttpClient.get(this.apiUrl1 + 'source-derived-matrix/derived-master/67')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+}
+
+
 }

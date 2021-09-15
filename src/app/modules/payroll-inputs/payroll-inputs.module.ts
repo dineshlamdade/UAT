@@ -39,12 +39,15 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { GarnishmentComponent } from './garnishment/garnishment.component';
 import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-recurring-dashboard.component';
 import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
-import { SdmComponent } from './sdm/sdm.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ChartsModule } from 'ng2-charts';
 import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
-import { Component2Component } from './component2/component2.component';
+import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
+import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
+import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
+import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
+import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 
 @NgModule({
   declarations: [
@@ -56,10 +59,13 @@ import { Component2Component } from './component2/component2.component';
      GarnishmentComponent,
      NonRecurringDashboardComponent,
      TwoDigitDecimaNumberDirective,
-     SdmComponent,
      SdmStepperComponent,
      EllipsisPipe,
-     Component2Component
+     GarnishmentMasterComponent,
+     GarnishmentTransactionComponent,
+     FastentryNrQtyComponent,
+     FastentryNRAmtComponent,
+     NonRecurringQtyMasterComponent
     ],
   imports: [
     CommonModule,
@@ -83,16 +89,16 @@ import { Component2Component } from './component2/component2.component';
       positionClass: 'toast-top-center',
     }),
     NgMultiSelectDropDownModule.forRoot(),
-  
+
     SharedlayoutModule,
-    
+
     TableModule,
     CalendarModule,
 		SliderModule,
 		DialogModule,
 		MultiSelectModule,
 		ContextMenuModule,
-		
+
 		ButtonModule,
 		ToastModule,
     InputTextModule,
@@ -104,6 +110,6 @@ import { Component2Component } from './component2/component2.component';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  
+
 })
 export class PayrollInputsModule { }

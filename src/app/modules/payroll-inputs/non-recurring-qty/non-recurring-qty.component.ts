@@ -508,7 +508,7 @@ export class NonRecurringQtyComponent implements OnInit {
 				this.repeatModeData = []
 				this.deviationData = []
 				this.nonRecService.NonRecurringTransactionGrouprangeValidation(inputdata).subscribe(res => {
-					// this.deviationData = res 
+					// this.deviationData = res
 					let resp: any = res;
 					resp.forEach(element => {
 						if (element.status != 'No Deviation') {

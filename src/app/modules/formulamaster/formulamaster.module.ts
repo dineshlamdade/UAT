@@ -27,6 +27,7 @@ import { KeywordmasterComponent } from './keywordmaster/keywordmaster.component'
 import { FormulacreationComponent } from './formulacreation/formulacreation.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+// import { NgSelectModule } from '@ng-select/ng-select'; 
 
 
 
@@ -56,6 +57,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     // AutocompleteLibModule
+    // NgSelectModule 
   ]
 })
 export class FormulamasterModule { }

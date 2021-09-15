@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class EmailSmsService {
 
   url = environment.baseUrl8081;
+  public apiUrl = environment.baseUrl8091;
 
   moduleurl = environment.baseUrl8083;
 
@@ -31,5 +32,10 @@ export class EmailSmsService {
 
   getModuleList(): Observable<any>{
     return this.HttpClient.get<any>(this.moduleurl + 'application-module/');
-  }
+
+ }
+ public getStandardKeywords()
+{
+  return this.HttpClient.get<any>(this.apiUrl + 'StandardKeyword/Global');
+}
 }

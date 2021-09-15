@@ -73,13 +73,7 @@ private readonly JWT_TOKEN = '%qycutr';
   }
 
   isLoggedIn() {
-    let token;
-    if(this.getJwtToken() == null){
-      token = false
-    }else{
-      token = true
-    }
-    return token;
+    return !!this.getJwtToken();
   }
 
   refreshToken() {

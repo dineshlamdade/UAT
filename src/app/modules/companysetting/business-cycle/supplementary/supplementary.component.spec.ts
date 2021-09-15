@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SdmComponent } from './sdm.component';
+import { SupplementaryComponent } from './supplementary.component';
 
-describe('SdmComponent', () => {
-  let component: SdmComponent;
-  let fixture: ComponentFixture<SdmComponent>;
+describe('SupplementaryComponent', () => {
+  let component: SupplementaryComponent;
+  let fixture: ComponentFixture<SupplementaryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SdmComponent ]
+      declarations: [ SupplementaryComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SdmComponent);
+    fixture = TestBed.createComponent(SupplementaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

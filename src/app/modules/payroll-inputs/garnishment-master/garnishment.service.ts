@@ -79,4 +79,9 @@ export class GarnishmentService {
     return this._HTTP.put<any>(this.apiUrl + 'garnishment-master/updateById',data)
   }
 
+  /** Employee Data get By Id */
+  employeeFinDetails(employeeMasterId):Observable<any>{
+    return this._HTTP.get<any>(this.apiUrl1 + `employee-fin-details/`+ employeeMasterId); 
+  }
+
 }

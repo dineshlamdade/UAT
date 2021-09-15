@@ -1,5 +1,6 @@
-<app-leftadminmenu> </app-leftadminmenu>
+<!-- <app-leftadminmenu> </app-leftadminmenu> -->
 
+<app-leftmenu></app-leftmenu>
 
 <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
 
@@ -9,7 +10,7 @@
       <div class="container-fluid p-0">
         <div class="page-header p-10 no-border">
           <div class="left">
-            <h1 class="page-title text-gray">Dashboard {{isViewFieldNameArrayList}}</h1>
+            <!-- <h1 class="page-title text-gray">Dashboard {{isViewFieldNameArrayList}}</h1> -->
           </div>
           <div class="right">
             <div class="right">
@@ -63,22 +64,22 @@
                               <div class="d-flex">
                                 <label class="custom-control custom-checkbox mr-15">
                                   <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                    (change)="onClickEmployeeMaster($event)" value="Employee_Master" checked />
+                                    (change)="onClickEmployeeMaster($event)" value="Employee_Master" [disabled]="viewFlag" checked />
                                   <span class="custom-control-label">Employee Master</span>
                                 </label>
                                 <label class="custom-control custom-checkbox mr-15">
                                   <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                    (change)="onClickPayrollMaster($event)" value="Payroll" />
+                                    (change)="onClickPayrollMaster($event)" value="Payroll" [disabled]="viewFlag" />
                                   <span class="custom-control-label">Payroll</span>
                                 </label>
                                 <label class="custom-control custom-checkbox mr-15">
                                   <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                    (change)="onClickAssetMaster($event)" value="Asset" />
+                                    (change)="onClickAssetMaster($event)" value="Asset" [disabled]="viewFlag" />
                                   <span class="custom-control-label">Asset</span>
                                 </label>
                                 <label class="custom-control custom-checkbox mr-15">
                                   <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                    (change)="onClickLeaveManagement($event)" value="Leave_Management" />
+                                    (change)="onClickLeaveManagement($event)" value="Leave_Management" [disabled]="viewFlag" />
                                   <span class="custom-control-label">Leave Management</span>
                                 </label>
                               </div>
@@ -98,11 +99,11 @@
                                   <div *ngIf="checkedEmployeeMaster == true">
                                     <input class="toggle-box" id="identifier-4" type="checkbox" value=true />
                                     <label for="identifier-4">Employee Master</label>
+
                                     <div class="ml-30">
                                       <a class="p-0 d-flex" [ngClass]="order.hide?'btn-info1':''"
                                         *ngFor="let order of ordersData; let i = index" formArrayName="orders">
                                         <label class="custom-control custom-checkbox ">
-
                                           <input type="checkbox" class="custom-control-input"
                                             (change)="leftSideMenuCheckBoxChnanged($event.target.checked,order.name)"
                                             [disabled]="order.disable" [checked]="order.checked" />
@@ -110,8 +111,8 @@
                                             <span class="notificationbadge ml-2"
                                               *ngIf="order.name !=='Select All'">{{order.counter}}</span>
                                           </span>
-
                                         </label>
+                                        <!-- <span> <i class="fa fa-compress mergeicon1" tooltip="Merge Tab/Field"></i></span> -->
 
                                         <!-- <span *ngIf="order.hide == true">
                                             <span *ngIf="order.name!=='Select All'"> <i class="fa fa-compress mergeicon"
@@ -120,13 +121,11 @@
 
                                           </span> -->
 
-
-
-
-
-                                        <span *ngIf="order.hide == false && order.name!== 'Select All'"> <i
+                                          <i *ngIf="order.name !== 'Select All'" class="fa fa-compress mergeicon1"
+                                           (click)="MergeTab(template3,order.name )"></i>
+                                        <!-- <span *ngIf="order.hide == true && order.name !== 'Select All'"> <i
                                             class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,order.name)"></i></span>
+                                            (click)="MergeTab(template3,order.name)"></i></span> -->
                                       </a>
 
                                     </div>
@@ -319,12 +318,6 @@
                         </div>
                       </div>
                     </div>
-
-
-
-
-
-
                     <div class="row mt-10" *ngIf="preview">
                       <div class="col-md-12">
                         <div class="row mt-10 mb-10">
@@ -404,58 +397,96 @@
 
 
                     <div class="row">
-                      <div class="col-md-6">
-                        <!-- <div class="mb-0"> -->
+                      <div class="col-md-8">
                         <h3 class="font-14 text-purple font-bold">Summary</h3>
-                        <!-- </div> -->
-                        <!-- <div class=""> -->
-                        <div class="table-responsive Custom_Table height-200">
-                          <table class="table table-striped table-hover table-bordered m-b-0">
-                            <thead class="thead-dark">
-                              <tr>
-                                <th scope="col" class="wd-10">Sr. No.</th>
-                                <th scope="col" class="wd-40">Template Name</th>
-                                <th scope="col" class="wd-20">Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
 
-                              <tr *ngFor="let summary of summaryOfExcelTemplate; let i = index">
-                                <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
-                                </td>
-                                <td class="wd-40"><span
-                                    tooltip="{{summary.templateName}}">{{summary.templateName}}</span>
-                                </td>
-                                <td class="wd-20"> <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                    tooltip="Edit" (click)="editMaster(summary.templateMasterId)"></i>
-                                  &nbsp;&nbsp;
-                                  <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="Delete"
-                                    (click)="deleteTemplate(summary.templateMasterId)"></i>
-                                  &nbsp;&nbsp;
-                                  <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
-                                    (click)="viewTemplate(summary.templateMasterId)"></i>&nbsp;&nbsp;
-                                  <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
-                                    (click)="downloadFile(i)"></i>
-                                  &nbsp;&nbsp;
-                                </td>
+                        <div class="table-responsive Custom_Table">
 
+                          <p-table [globalFilterFields]="['templateName']" #dt [value]="masterOfExcelTemplate" [rows]="10"
+                          [showCurrentPageReport]="true"
+                           [rowsPerPageOptions]="[10,25,50,100,200]"
+                          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
 
+                          <ng-template pTemplate="caption">
 
-                              </tr>
-                              <tr *ngIf="!summaryOfExcelTemplate?.length">
-                                <td colspan="10">
-                                  <span class="font-14 font500 align-center text-red">No Data Available</span>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                            <div style="text-align: right;">
+                                <span class="p-input-icon-left p-ml-auto">
+                                  <i class="pi pi-search" style="top: 26px !important; right:52px !important"></i>
+                                  <input pInputText type="text"
+                                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                      placeholder="Search" />
+                                </span>&nbsp;
+                                <div class="float-right">
+                                    <a tooltip="Export to Excel" style="cursor: pointer"
+                                      (click)="exportAsXLSXSummary()"><i
+                                          class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                          aria-hidden="true"></i></a>
+                              </div>
+                            </div>
+
+                          </ng-template>
+
+                          <ng-template pTemplate="header">
+                                  <tr>
+                                      <th class="wd-14">Sr. No.</th>
+                                      <th class="wd-15">
+                                          <div class="p-d-flex p-jc-between p-ai-center">Template Name
+                                              <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="name" pSortableColumn="templateName"></p-sortIcon>
+                                                  <p-columnFilter type="text"
+                                                      display="menu" class="p-ml-auto"
+                                                      field="templateName">
+                                                  </p-columnFilter>
+                                              </div>
+                                          </div>
+                                      </th>
+
+                                      <th class="wd-5">Action</th>
+                                  </tr>
+
+                              </ng-template>
+                              <ng-template pTemplate="body" let-summary let let-rowIndex="rowIndex" >
+                                  <tr class="p-selectable-row">
+                                      <td class="text-center">{{rowIndex + 1}}</td>
+
+                                      <td class="wd-40"><span
+                                        tooltip="{{summary.templateName}}">{{summary.templateName}}</span>
+                                    </td>
+                                      <td class="wd-20"> <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                        tooltip="Edit" (click)="editMaster(summary.templateMasterId)"></i>
+                                      &nbsp;&nbsp;
+                                      <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="Delete"
+                                        (click)="deleteTemplate(summary.templateMasterId)"></i>
+                                      &nbsp;&nbsp;
+                                      <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
+                                        (click)="viewTemplate(summary.templateMasterId)"></i>&nbsp;&nbsp;
+
+                                        <a href="{{summary.blobURI}}" download target="_blank">  <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
+                                          ></i></a>
+                                          <!-- (click)="downloadFile()" -->
+
+                                      &nbsp;&nbsp;
+                                    </td>
+                                  </tr>
+                              </ng-template>
+
+                              <ng-template pTemplate="emptymessage">
+                                  <tr>
+                                      <td colspan="15"
+                                          class="font-14 font500 text-center text-red">
+                                          <span>No Data
+                                              Available</span>
+                                      </td>
+                                  </tr>
+                              </ng-template>
+                          </p-table>
                         </div>
 
                       </div>
                     </div>
 
 
-
+<!-- ................................upload screen..................................................................  -->
 
                   </div>
                   <label class="nav" for="TemplateCreation">
@@ -467,18 +498,8 @@
                       <div class="col-md-6">
                         <div class="card box-line-border">
                           <div class="card-body height-188">
-                            <div class="row clearfix">
-                              <div class="col-md-4">
-                                <label class="form-label">Name</label>
-                              </div>
-                              <div class="col-md-8">
-                                <select name="beast" class="form-control custom-select">
-                                  <option value="1">Template 1</option>
-                                  <option value="4">Template 2</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="row clearfix mt-2">
+
+                            <div class="row clearfix ">
                               <div class="col-md-4">
                                 <label class="form-label">Module Name</label>
                               </div>
@@ -490,6 +511,20 @@
                                 </ng-multiselect-dropdown>
                               </div>
                             </div>
+
+                            <div class="row clearfix mt-2">
+                              <div class="col-md-4">
+                                <label class="form-label">Name</label>
+                              </div>
+                              <div class="col-md-8">
+                                <select name="beast" class="form-control custom-select">
+                                  <option value="1">Template 1</option>
+                                  <option value="4">Template 2</option>
+                                </select>
+                              </div>
+                            </div>
+
+
                           </div>
                         </div>
                       </div>
@@ -561,16 +596,24 @@
                                         Choose file
                                       </span>
                                       <input class="FileUpload1" class="dropify" accept=".xlsx"
-                                        (change)="readFile($event,fileInput)" [multiple]="multiple" #fileInput
+                                        (change)="readFile($event,fileInput)" #fileInput
                                         id="FileInput" type="file" single />
+                                        <!-- [multiple]="multiple"  -->
                                     </label>
                                   </div>
                                 </div>
                                 <div class="col-md-4 pt-1">
                                   <button type="button" tooltip="Validate"
                                     class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
-                                    (click)="uploadExcelSheet()"><b><i class="fa fa-check"></i></b> Validate</button>
+                                    (click)="uploadExcelSheet()"><b><i class="fa fa-check"></i></b> Validate</button>&nbsp;
+                                    <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                    tooltip="Upload">
+                                    <b> <i class="fa fa-upload"></i></b> Upload
+                                  </button>
                                 </div>
+
+
+
                               </div>
                               <div class="row">
                                 <div class="col-md-1"></div>
@@ -601,7 +644,7 @@
                           </div>
                           <div class="row mt-10">
                             <div class="col-md-12">
-                              <div class="table-responsive Custom_Table height-200">
+                              <div class="table-responsive Custom_Table ">
                                 <table
                                   class="table table-striped table-bordered table-hover m-b-0  mb-0 bg-color-white">
                                   <thead class="thead-dark">
@@ -659,6 +702,193 @@
                                     </tr>
                                   </tbody>
                                 </table>
+
+                                <p-table [globalFilterFields]="['queryNumber','submissionDate','employeeCode','empName','companyName','applicationModuleName'
+                                ,'queryDescription','subQueryTypeCode','queryDescription','subject','priority','escalationDate','status']" #dt [value]="" [rows]="10" [showCurrentPageReport]="true"
+                                 [rowsPerPageOptions]="[10,25,50,100,200]"
+                                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+                                <ng-template pTemplate="caption">
+
+                                  <div style="text-align: right;">
+                                      <span class="p-input-icon-left p-ml-auto">
+                                        <i class="pi pi-search" style="top: 26px !important; right:50px !important"></i>
+                                        <input pInputText type="text"
+                                            (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                            placeholder="Search" />
+                                      </span>&nbsp;
+                                      <div class="float-right">
+                                          <a tooltip="Export to Excel" style="cursor: pointer"
+                                            (click)="exportErrorSummaryAsXLSX()"><i
+                                                class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                                aria-hidden="true"></i></a>
+                                    </div>
+                                  </div>
+
+                                </ng-template>
+
+                                <ng-template pTemplate="header">
+                                        <tr>
+                                            <!-- <th class="wd-14">Sr. No.</th> -->
+                                            <th class="wd-15">
+                                                <div class="p-d-flex p-jc-between p-ai-center">Sheet Name
+                                                    <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="name" pSortableColumn="queryNumber"></p-sortIcon>
+                                                        <p-columnFilter type="text"
+                                                            display="menu" class="p-ml-auto"
+                                                            field="queryNumber">
+                                                        </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th class="wd-15">
+                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                                  Field Name
+                                                    <div class="Sort_Filter_Position">
+                                                        <p-sortIcon field="date"  pSortableColumn="submissionDate"></p-sortIcon>
+                                                        <p-columnFilter type="date" field="submissionDate"
+                                                            display="menu" class="p-ml-auto">
+                                                        </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+
+                                            <th class="wd-15">
+                                                <div class="p-d-flex p-jc-between p-ai-center"> Employee Code
+                                                    <div class="Sort_Filter_Position">
+                                                        <p-sortIcon field="status"></p-sortIcon>
+                                                        <p-columnFilter field="status"
+                                                            matchMode="equals" display="menu"
+                                                            class="p-ml-auto">
+                                                        </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th class="wd-10">
+                                                <div
+                                                    class="p-d-flex justify-content-center p-ai-center">
+                                                    Employee Name
+                                                    <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="activity" pSortableColumn="empName"></p-sortIcon>
+                                                      <p-columnFilter
+                                                        field="empName"
+                                                        display="menu"
+                                                        class="p-ml-auto"
+                                                      >
+                                                      </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th class="wd-10">
+                                                <div class="p-d-flex p-jc-between p-ai-center">Payroll Area
+                                                    <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="activity" pSortableColumn="companyName"></p-sortIcon>
+                                                      <p-columnFilter
+                                                        field="companyName"
+                                                        display="menu"
+                                                        class="p-ml-auto"
+                                                      >
+                                                      </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th class="wd-10">
+                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                                    <span tooltip="Unit of Measure">Cell No.</span>
+                                                    <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="activity" pSortableColumn="queryTypeCode"></p-sortIcon>
+                                                      <p-columnFilter
+                                                        field="queryTypeCode"
+                                                        display="menu"
+                                                        class="p-ml-auto"
+                                                      >
+                                                      </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th class="wd-10">
+                                                <div class="p-d-flex p-jc-between p-ai-center">
+                                                    <span tooltip="Unit of Measure">Value</span>
+                                                    <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="activity" pSortableColumn="queryTypeCode"></p-sortIcon>
+                                                      <p-columnFilter
+                                                        field="queryTypeCode"
+                                                        display="menu"
+                                                        class="p-ml-auto"
+                                                      >
+                                                      </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th class="wd-35">
+                                                <div
+                                                    class="p-d-flex p-ai-center justify-content-center">
+                                                    Error Description
+                                                    <div class="Sort_Filter_Position">
+                                                      <p-sortIcon field="activity" pSortableColumn="subQueryTypeCode"></p-sortIcon>
+                                                      <p-columnFilter
+                                                        field="subQueryTypeCode"
+                                                        display="menu"
+                                                        class="p-ml-auto"
+                                                      >
+                                                      </p-columnFilter>
+                                                    </div>
+                                                </div>
+                                            </th>
+
+                                        </tr>
+
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-summary let let-rowIndex="rowIndex" >
+                                        <tr class="p-selectable-row">
+                                            <td>
+                                                <label
+                                                    class="form-lable mb-0 ">{{summary.submissionDate | date :"dd-MMM-yyyy"}}</label>
+                                            </td>
+
+                                            <td> <label
+                                                    class="form-lable mb-0 ">{{summary.employeeCode}}</label>
+                                                    </td>
+
+                                            <td> <label style="width: max-content;"
+                                                    class="form-lable mb-0 ">{{summary.empName}}</label>
+
+                                            </td>
+                                            <td> <label
+                                                    class="form-lable mb-0 ">{{summary.companyName}}</label>
+                                            </td>
+
+                                            <td> <label
+                                                    class="form-lable mb-0 " >{{summary.applicationModuleName}}</label>
+                                            </td>
+
+                                            <td > <label style="width: max-content;"
+                                              class="form-lable mb-0 " ><p [innerHTML]="summary.queryTypeDescription"></p></label>
+                                            </td >
+
+                                            <td ><label style="width: max-content;"
+                                                    class="form-lable mb-0 "><p >{{summary.subQueryTypeDescription}}</p></label>
+                                            </td>
+
+                                            <td> <label
+                                                    class="form-lable mb-0 ">{{summary.priority}}</label>
+                                            </td>
+
+                                        </tr>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="15"
+                                                class="font-14 font500 text-center text-red">
+                                                <span>No Data
+                                                    Available</span>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+
+
                               </div>
                             </div>
                           </div>
@@ -831,7 +1061,7 @@
                                 class="notificationbadge ml-2">5</span></span>
                           </label>
                           <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                              (click)="MergeTab(template3)"></i></span>
+                              (click)="MergeTab(template3,checkboxNameToBeCheckedByDefault)"></i></span>
                         </a>
                         <a class="p-0 position_relative">
                           <label class="custom-control custom-checkbox mr-15">
