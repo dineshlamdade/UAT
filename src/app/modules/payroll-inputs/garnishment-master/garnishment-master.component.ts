@@ -21,43 +21,45 @@ export class GarnishmentMasterComponent implements OnInit {
   editFlag: boolean = false;
   viewFlag: boolean = false;
   editdata: { [key: string]: any; };
+  garnishmentMasterFrequencyList: any = [];
 
 
   constructor(private formbuilder: FormBuilder, private garnishmentService: GarnishmentService, private alertService: ToastrService) {
-    this.garnishmentForm = this.formbuilder.group({
-      "garnishmentMasterId":new FormControl(''),
-      "accountNoInPayeeBook":new FormControl(''),
-    "address1":new FormControl(''),
-    "address2":new FormControl(''),
-    "address3":new FormControl(''),
-    "city":new FormControl(''),
-    "contactPerson":new FormControl(''),
-    "country":new FormControl(''),
-    "description":new FormControl(''),
-    "emailId":new FormControl(''),
-    "empAccNoApplicable":new FormControl(''),
-    "empAccNoInCoBooksDisplayName":new FormControl(''),
-    "empApplicationProcess":new FormControl(''),
-    "familyMember":new FormControl(''),
-    "garnishmentMasterDocumentList":new FormControl([]),
-    "garnishmentMasterFrequencyList":new FormControl([]),
-    "garnishmentMasterInputTypeList":new FormControl(''),
-    "garnishmentMasterTransactionTypeList":new FormControl(''),
-    "goal":new FormControl(''),
-    "headMasterId":new FormControl(''),
-    "incomeTaxGroup":new FormControl(''),
-    "incomeTaxSection":new FormControl(''),
-    "isActive":new FormControl(''),
-    "nameOfInstitution":new FormControl(''),
-    "nature":new FormControl(''),
-    "pan":new FormControl(''),
-    "phoneNumber":new FormControl(''),
-    "pinCode":new FormControl(''),
-    "remark":new FormControl(''),
-    "standardName":new FormControl(''),
-    "state":new FormControl(''),
-    "villege":new FormControl(''),
+    this.garnishmentForm = new FormGroup({
+      "garnishmentMasterId": new FormControl(''),
+      "accountNoInPayeeBook": new FormControl(''),
+      "address1": new FormControl(''),
+      "address2": new FormControl(''),
+      "address3": new FormControl(''),
+      "city": new FormControl(''),
+      "contactPerson": new FormControl(''),
+      "country": new FormControl(''),
+      "description": new FormControl(''),
+      "emailId": new FormControl(''),
+      "empAccNoApplicable": new FormControl(1),
+      "empAccNoInCoBooksDisplayName": new FormControl(''),
+      "empApplicationProcess": new FormControl(0),
+      "familyMember": new FormControl(''),
+      "garnishmentMasterDocumentList": new FormControl([]),
+      "garnishmentMasterFrequencyList": new FormControl([]),
+      "garnishmentMasterInputTypeList": new FormControl([]),
+      "garnishmentMasterTransactionTypeList": new FormControl([]),
+      "goal": new FormControl(1),
+      "headMasterId": new FormControl(''),
+      "incomeTaxGroup": new FormControl(1),
+      "incomeTaxSection": new FormControl(''),
+      "isActive": new FormControl(1),
+      "nameOfInstitution": new FormControl(''),
+      "nature": new FormControl(''),
+      "pan": new FormControl(''),
+      "phoneNumber": new FormControl(''),
+      "pinCode": new FormControl(''),
+      "remark": new FormControl(''),
+      "standardName": new FormControl(''),
+      "state": new FormControl(''),
+      "villege": new FormControl(''),
     });
+
   }
 
 
@@ -131,7 +133,7 @@ export class GarnishmentMasterComponent implements OnInit {
   getALLFrequecyDetails() {
     this.garnishmentService.getALLFrequecyDetails().subscribe(res => {
       this.frequencyData = res.data.result;
-      console.log("frequenct: "+JSON.stringify(this.frequencyData))
+      console.log("frequenct: " + JSON.stringify(this.frequencyData))
     })
   }
 
@@ -142,14 +144,25 @@ export class GarnishmentMasterComponent implements OnInit {
     // })
   }
 
+  /**Get frequency data */
+  getFrequencyData(value){
+    this.garnishmentMasterFrequencyList.push({
+      "frequencyid":1,
+      "frequencyName": value
+    })
+
+    this.garnishmentForm.controls['garnishmentMasterFrequencyList'].setValue(this.garnishmentMasterFrequencyList)
+  }
+
   /** Save Master Data */
   saveMasterData() {
     this.garnishmentForm.removeControl('garnishmentMasterId')
     this.garnishmentService.savemasterdata(this.garnishmentForm.value).subscribe(res => {
-      this.alertService.success("","Garnishment master data saved successfully")
+      this.alertService.success("", "Garnishment master data saved successfully")
       this.editFlag = false;
       this.viewFlag = false;
       this.garnishmentForm.reset()
+      this.getAllMasterData()
     })
   }
 
@@ -167,10 +180,11 @@ export class GarnishmentMasterComponent implements OnInit {
   /** Save Master Data */
   updateMasterData() {
     this.garnishmentService.updatemasterdata(this.garnishmentForm.value).subscribe(res => {
-      this.alertService.success("","Garnishment master data updated successfully")
+      this.alertService.success("", "Garnishment master data updated successfully")
       this.editFlag = false;
       this.viewFlag = false;
       this.garnishmentForm.reset()
+      this.getAllMasterData()
     })
   }
 
@@ -186,10 +200,11 @@ export class GarnishmentMasterComponent implements OnInit {
   }
 
   /** Reset Data */
-  resetData(){
+  resetData() {
     this.editFlag = false;
     this.viewFlag = true;
     this.garnishmentForm.reset()
+    this.garnishmentForm.enable()
 
   }
 

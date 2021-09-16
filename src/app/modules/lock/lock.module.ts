@@ -29,7 +29,7 @@ import { SupplementryCycleComponent } from './supplementry-cycle/supplementry-cy
 import { SummaryComponent } from './summary/summary.component';
 import { AreaComponent } from './area/area.component';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { CKEditorModule } from 'ckeditor4-angular';
+import {CheckboxModule} from 'primeng/checkbox';
 // import { NewlockComponent } from './newlock/newlock.component';
 @NgModule({
   declarations: [
@@ -49,7 +49,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     FormsModule,
     MultiSelectModule,
     MatSliderModule,
-    CKEditorModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),
@@ -65,6 +64,7 @@ import { CKEditorModule } from 'ckeditor4-angular';
     CarouselModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     MultiSelectModule,
+    CheckboxModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),

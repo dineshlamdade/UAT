@@ -4,9 +4,8 @@ import { CommonModule } from '@angular/common';
 import { EmailSmsRoutingModule } from './email-sms-routing.module';
 import { EmailSmsComponent } from './email-sms/email-sms.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CKEditorModule } from 'ckeditor4-angular';
-
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 
 @NgModule({
