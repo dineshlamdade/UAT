@@ -11,6 +11,8 @@ import { UploadexcelRoutingModule } from './uploadexcel-routing.module';
  import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
  import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ExcelService } from './uploadexcelhome/excel.service';
+import {TableModule} from 'primeng/table';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -26,7 +28,10 @@ import { ExcelService } from './uploadexcelhome/excel.service';
     TooltipModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    TableModule,
+    NgxPaginationModule,
+
 
   ],
   providers:

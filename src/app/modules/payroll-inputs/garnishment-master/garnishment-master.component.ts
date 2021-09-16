@@ -59,6 +59,7 @@ export class GarnishmentMasterComponent implements OnInit {
       "state": new FormControl(''),
       "villege": new FormControl(''),
     });
+
   }
 
 

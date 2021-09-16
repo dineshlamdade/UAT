@@ -51,6 +51,7 @@ import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 //import { investmentOthersModule } from './modules/my-Investments/others/others.module';
+import { PayrollModule } from './modules/companysetting/payroll/payroll.module';
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
@@ -83,6 +84,8 @@ import { InvestmentApprovalModule } from './modules/investment-approval/investme
 import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
 import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
 import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ExcelserviceService } from './core/services/excelservice.service';
 
 
 
@@ -104,6 +107,7 @@ import { FormulamasterModule } from './modules/formulamaster/formulamaster.modul
     PrimeNGModule,
     AccordionModule,
     DashboardModule,
+    PayrollModule,
     QueryModule,
     LoanModule,
     CompanySettingModule,
@@ -126,6 +130,7 @@ import { FormulamasterModule } from './modules/formulamaster/formulamaster.modul
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
+    MultiSelectModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
     ToastrModule.forRoot( {
@@ -161,6 +166,7 @@ import { FormulamasterModule } from './modules/formulamaster/formulamaster.modul
 
   providers: [BsDatepickerModule,
     BnNgIdleService,
+    ExcelserviceService,
     AuthGuard,
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,

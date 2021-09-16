@@ -89,16 +89,16 @@ import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-r
       positionClass: 'toast-top-center',
     }),
     NgMultiSelectDropDownModule.forRoot(),
-  
+
     SharedlayoutModule,
-    
+
     TableModule,
     CalendarModule,
 		SliderModule,
 		DialogModule,
 		MultiSelectModule,
 		ContextMenuModule,
-		
+
 		ButtonModule,
 		ToastModule,
     InputTextModule,
@@ -110,6 +110,6 @@ import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-r
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  
+
 })
 export class PayrollInputsModule { }

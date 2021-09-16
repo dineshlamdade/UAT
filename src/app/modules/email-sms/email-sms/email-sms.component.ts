@@ -35,68 +35,15 @@ export class EmailSmsComponent implements OnInit {
 
   constructor(private emailService: EmailSmsService, private toaster: ToastrService) {
 
-    this.keyword = [
-      {
-        'name': 'employeeCode',
-        'id': 1,
-        'description': 'Employee Code'
-      },
-      {
-        'name': 'employeeFullName',
-        'id': 2,
-        'description': 'Employee Full Name'
-      },
-      {
-        'name': 'employeeEmail',
-        'id': 3,
-        'description': 'Employee Email'
-      },
-      {
-        'name': 'employeeContact',
-        'id': 4,
-        'description': 'Employee Contact'
-      },
-      {
-        'name': 'employeeFirstName',
-        'id': 5,
-        'description': 'Employee First Name'
-      },
-      {
-        'name': 'employeeLastName',
-        'id': 6,
-        'description': 'Employee Last Name'
-      },
-      {
-        'name': 'employee1',
-        'id': 8,
-        'description': 'Employee1'
-      },
-      {
-        'name': 'employee2',
-        'id': 9,
-        'description': 'Employee2'
-      },
-      {
-        'name': 'employee3',
-        'id': 10,
-        'description': 'Employee3'
-      },
-      {
-        'name': 'employee4',
-        'id': 11,
-        'description': 'Employee4'
-      },
-      {
-        'name': 'employee5',
-        'id': 12,
-        'description': 'Employee5'
-      }
-    ]
 
+this.emailService.getStandardKeywords().subscribe(res =>
+  {
+   this.keyword = res.data.results;
+  })
 
     this.keyword.forEach(element => {
       this.mappingData.push(
-        [element.id.toString(), '[' + element.description + ']']
+        [element.dbFieldName.toString(), '[' + element.displayName + ']']
       )
     })
 
@@ -170,9 +117,9 @@ export class EmailSmsComponent implements OnInit {
 
     let moduleId = parseInt(this.emailSmsForm.controls['applicationModuleId'].value)
     this.emailSmsForm.controls['applicationModuleId'].setValue(moduleId)
-    
 
-    
+
+
     if (!this.editFlag) {
       this.emailSmsForm.removeControl('emailSMSTemplateMasterId');
       let data = [
@@ -191,8 +138,8 @@ export class EmailSmsComponent implements OnInit {
             this.getEmailData();
             this.editFlag = false;
           }
-          
-          
+
+
         }
       )
     } else {
@@ -227,7 +174,6 @@ export class EmailSmsComponent implements OnInit {
     this.emailSmsForm.enable();
     this.editFlag = false;
   }
-
 
   getModuleName(moduleid){
     let modulename = ''

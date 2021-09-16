@@ -16,13 +16,18 @@ export class RecoveryComponent implements OnInit {
     this.recoveryLoanForm = new FormGroup({
 
       intRate: new FormControl(""),
+      ratePerAnnumDerivedName:new FormControl(""),
       methodOfComputation: new FormControl(""),
+      changeROIAsPerLoanBalance: new FormControl(""),
       intDateOfTransactions: new FormControl(""),
       intCycleOfDisbursement: new FormControl(""),
       cycleOfLastInstallment: new FormControl(""),
       intAdhocPayments: new FormControl(""),
       intBeforePriRepaymentStarts: new FormControl(""),
+      groupCompanyTransfer: new FormControl(""),
+      compoundingOfInterest: new FormControl(""),
       recoveryNoOfInstallments: new FormControl(""),
+      noOfInstallementDerivedName: new FormControl(""),
       recoveryMethod: new FormControl(""),
       firstPriThanIntNoOfInstallmentForIntRecovery: new FormControl(""),
       recoveryToStartDisbursements: new FormControl(""),
