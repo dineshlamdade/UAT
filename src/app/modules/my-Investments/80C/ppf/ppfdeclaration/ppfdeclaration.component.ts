@@ -48,6 +48,8 @@ export class PPFDeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
+  documentDataArray = [];
+  editdDocumentDataArray = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
 
@@ -78,6 +80,14 @@ export class PPFDeclarationComponent implements OnInit {
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
 
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
@@ -157,6 +167,10 @@ export class PPFDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   ppfDeclarationData: any;
   dateOfJoining: Date;
+  selectedFrequency: any;
+  disableRemarkList = false
+  disableRemark: any;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -415,6 +429,8 @@ export class PPFDeclarationComponent implements OnInit {
     }
 
     this.resetAll();
+    this.enableSelectAll=false;
+    this.isCheckAll=false;
   }
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
@@ -436,6 +452,24 @@ export class PPFDeclarationComponent implements OnInit {
     );
   }
 
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
+  }
+
+  // Remove LicMaster Document
+  public removeSelectedLicMasterDocument(index: number) {
+    this.masterfilesArray.splice(index, 1);
+  }
+
 
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
@@ -443,8 +477,42 @@ export class PPFDeclarationComponent implements OnInit {
     event: { target: { checked: any } },
     i: number,
     j: number,
+    frequency: any,
 
-  ) {
+  ) 
+ 
+  {
+    
+    if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
+    this.selectedFrequency = frequency;
+    // if (frequency == 'As & When' && data.actualAmount <= 0)
+    // {
+    //   this.alertService.sweetalertError(
+    //     'Please Enter Actual Amount'
+    //   );
+    //   this.enableSelectAll = false;
+    //   event.target.checked = false;
+    //   return;
+    // }
+    // else if ((frequency !== 'As & When') && (data.declaredAmount == null || data.declaredAmount <= 0)){
+    //   this.alertService.sweetalertError(
+    //     'Please Enter Declared Amount'
+    //   );
+    //   this.enableSelectAll = false;
+    //   event.target.checked = false;
+    //   return;
+    // }
+    if(data.declaredAmount == null || data.declaredAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
     const checked = event.target.checked;
     this.ppfDeclarationData = data
 
@@ -462,7 +530,7 @@ export class PPFDeclarationComponent implements OnInit {
     );
     if (checked) {
           //console.log('item' ,item);
-          if (this.transactionDetail[j].frequency !== 'As & When') {
+        
       if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
@@ -480,7 +548,7 @@ export class PPFDeclarationComponent implements OnInit {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
       }
-     }
+     
 
           formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
@@ -513,6 +581,7 @@ export class PPFDeclarationComponent implements OnInit {
       console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(data.investmentGroup1TransactionId);
       this.uploadGridData.splice(index, 1);
+      this.isCheckAll=false;
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
@@ -548,21 +617,32 @@ export class PPFDeclarationComponent implements OnInit {
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
   checkUncheckAll(item: any) {
+  // checkUncheckAll(item: any,event: { target: { checked: any } }) {
+
+    // console.log(event.target.checked);
+    // this.isCheckAll=event.target.checked;
     // console.log(this.isCheckAll);
-    if (this.isCheckAll) {
+    // if (!this.isCheckAll) {
+      if (this.isCheckAll) {
       // console.log('CHECK ALL IS FALSE ');
-      this.isCheckAll = false;
-      this.enableSelectAll = false;
-      this.enableCheckboxFlag2 = null;
-      this.uploadGridData = [];
-    } else {
-      // console.log('CHECK ALL IS TRUE ');
+      // this.isCheckAll = false;
+      // this.enableSelectAll = false;
       this.isCheckAll = true;
       this.enableSelectAll = true;
+      // this.enableCheckboxFlag2 = null;
       this.enableCheckboxFlag2 = item.institutionName;
+      // this.uploadGridData = [];
       item.groupTransactionList.forEach((element) => {
         this.uploadGridData.push(element.investmentGroup1TransactionId);
       });
+    // } else {
+    //   console.log('CHECK ALL IS TRUE ');
+    //   this.isCheckAll = true;
+    //   this.enableSelectAll = true;
+    //   this.enableCheckboxFlag2 = item.institutionName;
+    //   item.groupTransactionList.forEach((element) => {
+    //     this.uploadGridData.push(element.investmentGroup1TransactionId);
+    //   });
       this.enableFileUpload = true;
     }
     // console.log('enableSelectAll...',  this.enableSelectAll);
@@ -838,6 +918,57 @@ export class PPFDeclarationComponent implements OnInit {
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
     console.log(this.editTransactionUpload[j].actualTotal);
+    // this.transactionDetail[j].groupTransactionList[
+    //   i
+    // ].actualAmount = this.declarationService.actualAmount;
+    // // console.log("Actual Amount changed::" , this.transactionDetail[j].groupTransactionList[i].actualAmount);
+    // const formatedActualAmount = this.numberFormat.transform(
+    //   this.transactionDetail[j].groupTransactionList[i].actualAmount
+    // );
+    // // console.log(`formatedActualAmount::`,formatedActualAmount);
+    // this.transactionDetail[j].groupTransactionList[
+    //   i
+    // ].actualAmount = formatedActualAmount;
+
+    // if (
+    //   this.transactionDetail[j].groupTransactionList[i].actualAmount !==
+    //     Number(0) ||
+    //   this.transactionDetail[j].groupTransactionList[i].actualAmount !== null
+    // ) {
+    //   // console.log(`in if::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
+    //   this.isDisabled = false;
+    // } else {
+    //   // console.log(`in else::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
+    //   this.isDisabled = true;
+    // }
+
+    // this.actualTotal = 0;
+    // this.actualAmount = 0;
+    // this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualAmount.toString().replace(/,/g, '')
+    //   );
+    //   // console.log(this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
+
+    // this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    // this.actualTotal = 0;
+    // this.transactionDetail.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualTotal.toString().replace(/,/g, '')
+    //   );
+    //   // console.log("Actual Total")(this.actualTotal);
+    //  console.log("Actual Total::" , this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
+
+    // this.grandActualTotal = this.actualTotal;
+    // console.log(this.grandActualTotal);
+
   }
 
   // --------Add New ROw Function---------
@@ -1029,6 +1160,21 @@ export class PPFDeclarationComponent implements OnInit {
 
   upload() {
 
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
     console.log(JSON.stringify(this.ppfDeclarationData))
     // this.currentFileUpload = this.selectedFiles.item(0);
     // const data = {
@@ -1088,7 +1234,7 @@ export class PPFDeclarationComponent implements OnInit {
       );
       return false;
     }
-    if (this.ppfDeclarationData.dueDate == null) {
+    if (this.selectedFrequency !== 'As & When' && this.ppfDeclarationData.dueDate == null) {
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected due date for all selected lines',
         'Please Select Date Of DueDate',
@@ -1116,6 +1262,7 @@ export class PPFDeclarationComponent implements OnInit {
       groupTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
+      remarkPasswordList: this.documentDataArray
     };
     console.log('data::', data);
 
@@ -1130,6 +1277,39 @@ export class PPFDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
           this.selectedTransactionInstName(this.globalInstitution);
           // this.transactionDetail = res.data.results[0].investmentGroupTransactionDetail;
           // this.documentDetailList = res.data.results[0].documentInformation;
@@ -1255,6 +1435,8 @@ export class PPFDeclarationComponent implements OnInit {
   // When Edit of Document Details
   declarationEditUpload(template2: TemplateRef<any>, proofSubmissionId: string) {
 
+    this.documentRemark = '';
+
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1265,8 +1447,10 @@ export class PPFDeclarationComponent implements OnInit {
     this.Service.getPPFTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-        this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
+        this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
+         this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
@@ -1285,7 +1469,64 @@ export class PPFDeclarationComponent implements OnInit {
             );
           });
         });
+
+        this.masterGridData = res.data.results;
+
+        this.masterGridData.forEach((element) => {
+          // element.policyStartDate = new Date(element.policyStartDate);
+          // element.policyEndDate = new Date(element.policyEndDate);
+          // element.fromDate = new Date(element.fromDate);
+          // element.toDate = new Date(element.toDate);
+          element.documentInformation.forEach(element => {
+            // this.dateofsubmission = element.dateOfSubmission;
+            // this.documentArray.push({
+            //   'dateofsubmission': ,
+            // })
+            
+            element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            })
+            })
+          });
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
+          //
+          // })
+        });
       }
+    );
+    this.documentArray = [];
+  }
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
 
@@ -1329,13 +1570,40 @@ export class PPFDeclarationComponent implements OnInit {
       accountNumber,
       transactionStatus
     ).subscribe((res) => {
-      console.log(res);
+      console.log('getTransactionFilterData',res);
       this.transactionDetail = res.data.results[0].investmentGroupTransactionDetail;
       this.documentDetailList = res.data.results[0].documentInformation;
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+      res.documentDetailList.forEach(element => {
+        // if(element!=null)
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+      });
+      console.log('documentArrayTest',this.documentArray);
+      // this.documentArray.push({
+      //   'dateofsubmission':element.creatonTime,
+      //   'documentType':element.documentType,
+      //   'documentName': element.fileName,
+      //   'documentPassword':element.documentPassword,
+      //   'documentRemark':element.documentRemark,
+      //   'status' : element.status,
+      //   'lastModifiedBy' : element.lastModifiedBy,
+      //   'lastModifiedTime' : element.lastModifiedTime,
+
+      // })
+
       // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].groupTransactionList.length;
 
       this.initialArrayIndex = [];
@@ -1371,6 +1639,25 @@ export class PPFDeclarationComponent implements OnInit {
 
    // Upload Document And save Edited Transaction
    public uploadUpdateTransaction() {
+
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+    console.log(JSON.stringify(this.ppfDeclarationData))
+
+
 
     console.log(
       'uploadUpdateTransaction editTransactionUpload::',
@@ -1422,9 +1709,11 @@ export class PPFDeclarationComponent implements OnInit {
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
-      // documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      // documentPassword: this.documentPassword,
+      remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -1433,6 +1722,44 @@ export class PPFDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',

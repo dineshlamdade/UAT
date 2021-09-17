@@ -19,10 +19,11 @@ import {SidebarModule} from 'primeng/sidebar';
 import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import {TreeModule} from 'primeng/tree';
-
-// import { QueryCOmmunicationComponent } from './query-communication/query-communication.component';
-
-
+import { QueryCOmmunicationComponent } from './query-communication/query-communication.component';
+import {MultiSelectModule} from 'primeng/multiselect';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
+// import { EmployeelistComponent } from './employeelist/employeelist.component';
 // import { ChartComponent } from "ng-apexcharts";
 @NgModule({
   declarations:
@@ -30,7 +31,9 @@ import {TreeModule} from 'primeng/tree';
   QueryTypeMasterComponent,
   AdminQuryGenerationComponent,
   QueryDashboardComponent,
-  // QueryCOmmunicationComponent,
+  QueryCOmmunicationComponent,
+  DocumentViewerComponent,
+  // EmployeelistComponent,
   ],
   imports: [
     TreeModule,
@@ -48,6 +51,8 @@ import {TreeModule} from 'primeng/tree';
     SidebarModule,
     ScrollPanelModule,
     NgMultiSelectDropDownModule.forRoot(),
+    MultiSelectModule,
+    TooltipModule,
 
 
     // ChartComponent

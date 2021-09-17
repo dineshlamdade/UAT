@@ -13,24 +13,28 @@ export class FixedDepositsSummaryComponent implements OnInit {
   @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
 
-  onEditSummary(institution: string, accountNumber: string) {
+  onEditSummary(institution: string, accountNumber: string,  mode: string) {
     this.tabIndex = 2;
     const data = {
       institution: institution,
       accountNumber: accountNumber,
       tabIndex: this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
     };
     this.institution = institution;
     this.accountNumber = accountNumber;
 
     this.myEvent.emit(data);
   }
-  onViewSummary(institution: string, accountNumber: string) {
+  onViewSummary(institution: string, accountNumber: string,  mode: string) {
     this.tabIndex = 2;
     const data = {
       institution: institution,
       accountNumber: accountNumber,
       tabIndex: this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
     };
     this.institution = institution;
     this.accountNumber = accountNumber;
@@ -110,7 +114,7 @@ export class FixedDepositsSummaryComponent implements OnInit {
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-    if (this.futureNewPolicyDeclaredAmount > 0) {
+    if (this.futureNewPolicyDeclaredAmount >= 0) {
     this.addFuturePolicy();
   }else if(this.futureNewPolicyDeclaredAmount <0) {
     this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;

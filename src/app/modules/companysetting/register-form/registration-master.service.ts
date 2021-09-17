@@ -20,35 +20,35 @@ export class RegistrationMasterService {
       }));
 
   }
-  getRegisterTemplateList() {
+  getTemplateFields(){
     return this.http.get(this.apiUrl + 'registration-template/get-all-Templates')
-      .pipe(map((response: any) => {
-        return response;
-      }));
+    .pipe(map((response:any)=>{
+      return response;
+    }));
   }
-
-  postRegisterData(data) {
+  
+  postRegisterData(data){
     const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json')
-      .set('X-TenantId', 'PaysquareDefault');
-    return this.http.post(this.apiUrl + 'registration-template/create-template', data, { headers: { 'X-TenantId': 'PaysquareDefault' } })
-      .pipe(map((response: any) => {
-        return response
-      }))
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+    return this.http.post(this.apiUrl + 'registration-template/create-template', data, {headers:{'X-TenantId': 'PaysquareDefault'}}) 
+    .pipe(map((response: any)=>{
+      return response
+    }))
   }
-  getRegisterTemplateViewById(regTemplateId: String) {
+getRegisterTemplateData(regTemplateId:String){
     return this.http.get(this.apiUrl + 'registration-template/registrationtemplateid/' + regTemplateId)
-      .pipe(map((response: any) => {
-        return response
-      }));
+    .pipe(map((response:any) =>{
+      return response
+    }));
   }
 
-  editRegisterData(data) {
-    return this.http.put(this.apiUrl + 'registration-template/edit-template/', data, { headers: { 'X-TenantId': 'PaysquareDefault' } })
-      .pipe(map((response) => {
-        return response
-      }));
+  editRegisterData(data){
+    return this.http.put(this.apiUrl + 'registration-template/edit-template/', data, {headers:{'X-TenantId': 'PaysquareDefault'}})
+    .pipe(map((response)=>{
+      return response
+    }));
   }
 
 }

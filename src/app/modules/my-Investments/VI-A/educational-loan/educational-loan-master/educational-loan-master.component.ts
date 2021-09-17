@@ -94,18 +94,21 @@ export class EducationalLoanMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
+
+  public isshowHideFlag : boolean = true;
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
   public disability: string;
   public severity: string;
+  public loanAccountNumbers : any;
   public fullTimeCourse: boolean = true;
+  public validloanAccountNumber : boolean = false;
   public proofSubmissionId;
 
   constructor(
@@ -133,7 +136,7 @@ export class EducationalLoanMasterComponent implements OnInit {
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
 
-  public ngOnInit(): void {
+  public ngOnInit(): void {  
     this.initiateMasterForm();
     this.getFinacialYear();
     this.getMasterFamilyInfo();
@@ -162,6 +165,7 @@ export class EducationalLoanMasterComponent implements OnInit {
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
+     // fullTimeCourse: new FormControl('true'),
       fullTimeCourse: new FormControl('true'),
       studentName: new FormControl(null, Validators.required),
       relationship: new FormControl(
@@ -185,7 +189,7 @@ export class EducationalLoanMasterComponent implements OnInit {
   }
   // Family Member List API call
   getMasterFamilyInfo() {
-    this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
+    this.educationalLoanServiceService.getFamilyInfo().subscribe((res) => {
       console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
       res.data.results.forEach((element) => {
@@ -193,7 +197,7 @@ export class EducationalLoanMasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Daughter' || element.relation === 'Son' ||  element.relation === 'Self' || element.ageBracket === 'Minor') {
+        if (element.relation === 'Daughter' || element.relation === 'Son' ||  element.relation === 'Self' || element.relation == 'Wife') {
           this.familyMemberName.push(obj);
         }
       });
@@ -250,6 +254,7 @@ export class EducationalLoanMasterComponent implements OnInit {
       .subscribe((res) => {
         console.log('masterGridData::', res);
         this.masterGridData = res.data.results;
+        this.loanAccountNumbers = res.data;
         this.masterGridData.forEach((element) => {
           element.loanEndDate = new Date(element.loanEndDate);
         });
@@ -279,6 +284,24 @@ export class EducationalLoanMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
       data.loanEndDate = to;
       console.log('Educational Loan ::', data);
+
+        // console.log('loan Account Number ::', data);
+        if (data.loanAccountNumber) {
+
+          this.loanAccountNumbers.results.forEach(results => {
+            if (results.loanAccountNumber == data.loanAccountNumber) {
+              this.validloanAccountNumber = true;
+            }
+          });
+          if (this.validloanAccountNumber) {
+            this.validloanAccountNumber = false;
+            this.alertService.sweetalertError(
+              'Loan Account Number is already present.'
+            );
+            return;
+          }
+        }
+
 
       this.educationalLoanServiceService
         .uploadMultipleEducationalLoanMasterFiles(this.masterfilesArray, data)
@@ -338,18 +361,29 @@ export class EducationalLoanMasterComponent implements OnInit {
 
  /*  ====================hide===================== */
   show = true;
- 
-  toggle()
-   {
-    this.show = !this.show
-    if(!this.show)
+  // toggle()
+  //  {
+  //   this.show = !this.show
+  //   if(!this.show)
+  //   {
+  //     this.alertService.sweetalertWarning(
+  //       'You Have No Full Time Course Then Educational Loan Not To Apply ');
+  //   }
+  // }
+
+  onRadioChange(value){
+    console.log(value) 
+    if(value == 'true'){
+      this.isshowHideFlag = true;    
+    }
+    else
     {
+      this.isshowHideFlag = false;
       this.alertService.sweetalertWarning(
         'You Have No Full Time Course Then Educational Loan Not To Apply ');
-    } 
+    }
   }
-  
- 
+
   // Policy End Date Validations with Current Finanacial Year
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(
@@ -421,8 +455,7 @@ export class EducationalLoanMasterComponent implements OnInit {
     this.scrollToTop();
     this.educationalLoanServiceService
       .getEducationalLoanMaster()
-      .subscribe((res) => {
-        console.log('masterGridData::', res);
+      .subscribe((res) => { console.log('masterGridData::', res);
         this.masterGridData = res.data.results;
         this.masterGridData.forEach((element) => {
           element.loanEndDate = new Date(element.loanEndDate);
@@ -470,7 +503,8 @@ export class EducationalLoanMasterComponent implements OnInit {
   cancelView() {
     this.form.reset();
     // this.form.get('active').setValue(true);
-    this.form.get('fullTimeCourse').setValue(0);
+  //  this.form.get('fullTimeCourse').setValue(0);
+    this.form.get('fullTimeCourse').setValue(true);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;
@@ -485,8 +519,9 @@ export class EducationalLoanMasterComponent implements OnInit {
   //---------- On View Cancel -------------------
   resetView() {
     this.form.reset();
-    this.form.get('fullTimeCourse').setValue(0);
+   // this.form.get('fullTimeCourse').setValue(0);   
     this.showUpdateButton = false;
+    this.form.controls['fullTimeCourse'].setValue('true');
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
     this.urlArray = [];

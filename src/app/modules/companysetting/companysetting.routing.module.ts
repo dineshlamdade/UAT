@@ -1,3 +1,4 @@
+import { AttributeDependencyComponent } from './attribute-dependency/attribute-dependency.component';
 
 
 import { GarnishmentMasterComponent } from './payroll/garnishment-master/garnishment-master.component';
@@ -7,7 +8,6 @@ import { BusinessCycleComponent } from './business-cycle/business-cycle.componen
 import { HeadCreationComponent } from './head-creation/head-creation.component';
 import { AttributeSelectionComponent } from './attribute-selection/attribute-selection.component';
 import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
-import { PayrollComponent } from '../payroll/payroll.component';
 
 import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
 import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
@@ -20,6 +20,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClaimFormComponent } from './claim-form/claim-form.component';
 import { DeclarationFormComponent } from './declaration-form/declaration-form.component';
+import { AttributeGlobalComponent } from './attribute-global/attribute-global.component';
+import { UserDashboardComponent } from './user-rolesand-permission/user-dashboard/user-dashboard.component';
+import { PaymentTrackingMasterComponent } from './payment-tracking-master/payment-tracking-master.component';
+import { PayRollStructureComponent } from './pay-roll-structure/pay-roll-structure.component';
+import { AreasetComponent } from './areaset/areaset.component';
+import { EmployeesetComponent } from './employeeset/employeeset/employeeset.component';
 
 const routes: Routes = [
 
@@ -41,12 +47,18 @@ const routes: Routes = [
   },
   {
     path: 'attribute-group',
-    component: AttributeSelectionComponent,
+    component: AttributeGlobalComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
   {
     path: 'payroll-head-group-creation',
     component: PayrollHeadGroupCreationComponent,
+    data: { title: ':: Epic :: Company Settings' }
+  },
+
+  {
+    path: 'payment-tracking-master',
+    component: PaymentTrackingMasterComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
 
@@ -68,6 +80,11 @@ const routes: Routes = [
     data: { title: ':: Epic :: Company Settings' }
   },
   {
+    path: 'userDashboard',
+    component: UserDashboardComponent,
+    data: { title: ':: Epic :: Company Settings' }
+  },
+  {
     path: 'reimbursement',
     component: ReimbursementMasterComponent,
     data: { title: 'Reimbursement :: Company Setting' }
@@ -75,7 +92,7 @@ const routes: Routes = [
   {
     path: 'registerForm',
     component: RegisterFormComponent,
-    data: { title: ':: Epic :: Company Settings ' }
+    data: { title: 'Register-Form :: Company Setting' }
   },
   {
     path: 'summaryForm',
@@ -92,6 +109,35 @@ const routes: Routes = [
     component: DeclarationFormComponent,
     data: { title: 'Declaration-Message :: Company Setting' }
   },
+  // {
+  //   path: 'attribute-global',
+  //   component: AttributeGlobalComponent,
+  //   data: { title: ':: Epic :: Company Setting' }
+  // },
+  {
+    path: 'attribute-dependency',
+    component: AttributeDependencyComponent,
+    data: { title: ':: Epic :: Company Setting' }
+  },
+  {
+    path: 'pay-roll-structure',
+    component: PayRollStructureComponent,
+    data: { title: ':: Epic :: Company Setting' }
+  },
+ 
+  {
+    path: 'areaset',
+    component: AreasetComponent,
+    data: { title: ':: Epic :: Area Set' }
+  },
+  {
+    path: 'employeeset',
+    component: EmployeesetComponent,
+    data: { title: ':: Epic :: Employee Set' }
+  }
+  
+
+  
 ];
 
 @NgModule( {

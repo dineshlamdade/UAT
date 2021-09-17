@@ -63,6 +63,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
+  documentDataArray = [];
+  editdDocumentDataArray = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
 
@@ -93,6 +95,14 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
   public grandRejectedTotal: number;
@@ -165,6 +175,9 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   public canEdit: boolean;
   nscDeclarationData: any;
   dateOfJoining: Date;
+  disableRemarkList = false
+  disableRemark: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -402,6 +415,26 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     );
   }
 
+
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
+  }
+
+  // Remove LicMaster Document
+  public removeSelectedLicMasterDocument(index: number) {
+    this.masterfilesArray.splice(index, 1);
+  }
+
+
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
     data: any,
@@ -409,6 +442,18 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
+    if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
+    if(data.declaredAmount == null || data.declaredAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
     const checked = event.target.checked;
 
     this.nscDeclarationData = data
@@ -670,45 +715,45 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
-  addRowInList(
-    summarynew: {
-      investmentGroup2TransactionId: number;
-      investmentGroup2MasterPaymentDetailId: number;
-      previousEmployerId: number;
-      dueDate: Date;
-      declaredAmount: any;
-      dateOfPayment: Date;
-      actualAmount: any;
-      isECS: number;
-    },
-    j: number
-  ) {
-    // console.log('summary::',  summarynew);
-    // if (this.initialArrayIndex[j] > i) {
-    //   this.hideRemoveRow = false;
-    // } else {
-    //   this.hideRemoveRow  = true;
-    // }
-    this.declarationService = new DeclarationService(summarynew);
-    // console.log('declarationService::', this.declarationService);
-    this.globalAddRowIndex -= 1;
-    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
-    this.shownewRow = true;
-    this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
-    this.declarationService.declaredAmount = null;
-    this.declarationService.dueDate = null;
-    this.declarationService.actualAmount = null;
-    this.declarationService.dateOfPayment = null;
-    this.declarationService.isECS = 0;
-    this.declarationService.transactionStatus = 'Pending';
-    this.declarationService.amountRejected = 0.0;
-    this.declarationService.amountApproved = 0.0;
-    this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
-      j
-    ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
-    this.transactionDetail[j].group2TransactionList.push(this.declarationService);
-    console.log('addRow::', this.transactionDetail[j].group2TransactionList);
-  }
+  // addRowInList(
+  //   summarynew: {
+  //     investmentGroup2TransactionId: number;
+  //     investmentGroup2MasterPaymentDetailId: number;
+  //     previousEmployerId: number;
+  //     dueDate: Date;
+  //     declaredAmount: any;
+  //     dateOfPayment: Date;
+  //     actualAmount: any;
+  //     isECS: number;
+  //   },
+  //   j: number
+  // ) {
+  //   // console.log('summary::',  summarynew);
+  //   // if (this.initialArrayIndex[j] > i) {
+  //   //   this.hideRemoveRow = false;
+  //   // } else {
+  //   //   this.hideRemoveRow  = true;
+  //   // }
+  //   this.declarationService = new DeclarationService(summarynew);
+  //   // console.log('declarationService::', this.declarationService);
+  //   this.globalAddRowIndex -= 1;
+  //   console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+  //   this.shownewRow = true;
+  //   this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
+  //   this.declarationService.declaredAmount = null;
+  //   this.declarationService.dueDate = null;
+  //   this.declarationService.actualAmount = null;
+  //   this.declarationService.dateOfPayment = null;
+  //   this.declarationService.isECS = 0;
+  //   this.declarationService.transactionStatus = 'Pending';
+  //   this.declarationService.amountRejected = 0.0;
+  //   this.declarationService.amountApproved = 0.0;
+  //   this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
+  //     j
+  //   ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
+  //   this.transactionDetail[j].group2TransactionList.push(this.declarationService);
+  //   console.log('addRow::', this.transactionDetail[j].group2TransactionList);
+  // }
 
   sweetalertWarning(msg: string) {
     this.alertService.sweetalertWarning(msg);
@@ -853,6 +898,22 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   upload() {
 
 
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+
     console.log(JSON.stringify(this.nscDeclarationData))
 
 
@@ -933,6 +994,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       groupTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
+      remarkPasswordList: this.documentDataArray
     };
     console.log('data::', data);
 
@@ -947,6 +1009,40 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
 
           // this.selectedTransactionInstName(this.globalInstitution);
 
@@ -1222,6 +1318,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1233,8 +1330,10 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].lictransactionList[0].transactionStatus;
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
         this.grandDeclarationTotalEditModal =
@@ -1259,8 +1358,65 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
             );
           });
         });
+        this.masterGridData = res.data.results;
+
+        this.masterGridData.forEach((element) => {
+          // element.policyStartDate = new Date(element.policyStartDate);
+          // element.policyEndDate = new Date(element.policyEndDate);
+          // element.fromDate = new Date(element.fromDate);
+          // element.toDate = new Date(element.toDate);
+          element.documentInformation.forEach(element => {
+            // this.dateofsubmission = element.dateOfSubmission;
+            // this.documentArray.push({
+            //   'dateofsubmission': ,
+            // })
+            element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              // 'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            })
+            })
+          });
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
+          //
+          // })
+        });
         // console.log('converted:: ', this.urlArray);
       },
+    );
+    this.documentArray = [];
+  }
+
+
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
 
@@ -1311,6 +1467,33 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
+        // this.documentArray.push({
+        //   'dateofsubmission':element.creatonTime,
+        //   'documentType':element.documentType,
+        //   'documentName': element.fileName,
+        //   'documentPassword':element.documentPassword,
+        //   'documentRemark':element.documentRemark,
+        //   'status' : element.status,
+        //   'lastModifiedBy' : element.lastModifiedBy,
+        //   'lastModifiedTime' : element.lastModifiedTime,
+  
+        // })
+  
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
 
         this.initialArrayIndex = [];
@@ -1345,6 +1528,25 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   }
 
   public uploadUpdateTransaction() {
+
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+    console.log(JSON.stringify(this.nscDeclarationData))
+
+
 
     console.log('uploadUpdateTransaction editTransactionUpload::', this.editTransactionUpload);
 
@@ -1392,9 +1594,11 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
-      //documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      // documentPassword: this.documentPassword,
+      remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -1403,6 +1607,45 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
+
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',

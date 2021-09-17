@@ -47,10 +47,6 @@ export class RembGeneralComponent implements OnInit {
   public editClaimtaxable = '';
   public editCyclewiseBalance = '';
   public editInvestmentDeclaration = '';
-  public editMaxRegistrationMethod = '';
-  public registerFlow = false;
-  public registerFlowSdm = false;
-  public regList:any;
   @Input() policyNo: string;
   @Input() canEdit: string;
   @Output() policyNumber1 = new EventEmitter<any>();
@@ -81,14 +77,13 @@ export class RembGeneralComponent implements OnInit {
       billSubLimitMethod: new FormControl(''),
       billSubLimitSDMId: new FormControl(''),
       enableInvestmentDeclaration: new FormControl('false'),
-      regTemplateId: new FormControl(''),
+      regTemplateId: new FormControl('', Validators.required),
       cyclewiseBalanceTracking: new FormControl('false'),
-      maxRegistrationMethod: new FormControl('head'),
       maxCountOfRegiOfHead: new FormControl(''),
-      regApprWorkflowId: new FormControl({ value: '', disabled: false }),
-      regApprSDMId: new FormControl({ value: '', disabled: false }),
-      claimApprWorkflowId: new FormControl({ value: '', disabled: false }),
-      claimApprSDMId: new FormControl({ value: '', disabled: false }),
+      regiApprWorkflowId: new FormControl(''),
+      regiApprSDMId: new FormControl(''),
+      claimApprWorkflowId: new FormControl(''),
+      claimApprSDMId: new FormControl(''),
       reiListSummaryHeadTempId: new FormControl('', Validators.required),
       declarationMessageNonTaxableId: new FormControl('', Validators.required),
       declarationMessageTaxableId: new FormControl('', Validators.required),
@@ -98,20 +93,17 @@ export class RembGeneralComponent implements OnInit {
       active: new FormControl('false'),
       remark: new FormControl('ss'),
       empRegistrationDocument: new FormGroup({
-        reimbursementEmployeeRegistrationDocumentId: new FormControl(''),
         registrationDocument: new FormControl(''),
         registrationRemark: new FormControl('success'),
         active: new FormControl(true)
       }),
       empClaimDocument: new FormGroup({
-        reimbursementEmployeeClaimDocumentId: new FormControl(''),
         claimDocument: new FormControl(''),
         claimRemark: new FormControl('success'),
         active: new FormControl(true)
       }),
       reimbursementTrackingRequestDTO: new FormGroup({
         reimTrackingId: new FormControl(''),
-        reimbursementMasterGeneralSettingId: new FormControl(''),
         reimAttributeMasterId: new FormControl(''),
         amountLimit: new FormControl(''),
         quantityLimit: new FormControl(''),
@@ -165,14 +157,7 @@ export class RembGeneralComponent implements OnInit {
   }
 
   get f() { return this.generalForm.controls; }
-  private companySelect: any;
-  private btnDisable: boolean = true;
 
-  onChange(event) {
-    if (event) {
-      this.btnDisable = false;
-    }
-  }
   submitGeneralMaster() {
     window.scrollTo(0, 0);
     if (this.reimbursementGeneralId > 0) {
@@ -181,11 +166,10 @@ export class RembGeneralComponent implements OnInit {
       if (this.generalForm.invalid) {
         return;
       }
-      console.log("generalAttrSelectElement", this.generalAttrSelectElement);
+
       let saveArray = [];
       for (let i = 0; i < this.generalAttrSelectElement.length; i++) {
         let obj = {
-          reimTrackingId: this.generalAttrSelectElement[i].reimTrackingId,
           reimAttributeMasterId: this.generalAttrSelectElement[i].reimAttributeMasterId,
           amountLimit: this.generalAttrSelectElement[i].amountLimit,
           quantityLimit: this.generalAttrSelectElement[i].quantityLimit,
@@ -199,9 +183,8 @@ export class RembGeneralComponent implements OnInit {
       }
       console.log("this.generalform", this.generalForm.value);
       let postData = this.generalForm.getRawValue();
-      postData.empRegistrationDocument = this.empRegistrationDocument;
-      postData.empClaimDocument = this.empClaimDocument;
-      postData.regTemplateId = this.regList.regTemplateId;
+      postData.empRegistrationDocument = this.dropdownListData;
+      postData.empClaimDocument = this.dropdownListData1;
       // postData.reimbursementTrackingRequestDTO.method = this.eventHead;
       postData.reimbursementTrackingRequestDTO = saveArray;
       console.log("Edit postdata", postData);
@@ -218,12 +201,10 @@ export class RembGeneralComponent implements OnInit {
       if (this.generalForm.invalid) {
         return;
       }
-      console.log("generalAttrSelectElement", this.generalAttrSelectElement);
+
       let saveArray = [];
       for (let i = 0; i < this.generalAttrSelectElement.length; i++) {
         let obj = {
-          reimbursementMasterGeneralSettingId: 0,
-          reimTrackingId: 0,
           reimAttributeMasterId: this.generalAttrSelectElement[i].reimAttributeMasterId,
           amountLimit: this.generalAttrSelectElement[i].amountLimit,
           quantityLimit: this.generalAttrSelectElement[i].quantityLimit,
@@ -241,9 +222,7 @@ export class RembGeneralComponent implements OnInit {
       postData.empRegistrationDocument = this.empRegistrationDocument;
       postData.empClaimDocument = this.empClaimDocument;
       // postData.reimbursementTrackingRequestDTO.method = this.eventHead;
-      console.log("saveArray", saveArray);
       postData.reimbursementTrackingRequestDTO = saveArray;
-
       console.log("postdata", JSON.stringify(postData));
       this.service.setReimbursementSubmitData(postData);
       // this.alertService.sweetalertMasterSuccess("General setting form submitted successfully", "");
@@ -252,31 +231,25 @@ export class RembGeneralComponent implements OnInit {
 
   }
 
-
   getViewgeneralById(policyNo) {
     this.reimbursementGeneralId = policyNo;
     let modePoint = this.policyNumber.canEdit;
-    console.log("this.canEdit", modePoint)
+    //console.log("this.canEdit", modePoint)
     this.dropdownListData = []
     if (modePoint == true) {
       window.scrollTo(0, 0);
       this.service.getGeneralTemplateViewById(policyNo).subscribe((res) => {
-        console.log("results", res);
+       // console.log("results", res);
         let generalViewData = res.data.results[0];
-        console.log("generalViewData", generalViewData);
+        console.log("generalViewData", JSON.stringify(generalViewData));
         this.generalForm.patchValue(generalViewData);
         let trackId = generalViewData.trakingMethod;
-        console.log("trackId", trackId)
+        // console.log("trackId", trackId)
         this.trakingChange(trackId);
         this.rembHeadId = generalViewData.headMasterId;
-
-
         let element = generalViewData.reimbursementTrackingResponseDTO;
         for (let i = 0; i < res.data.results[0].reimbursementTrackingResponseDTO.length; i++) {
           const myobj = {
-
-            reimTrackingId: res.data.results[0].reimbursementTrackingResponseDTO[i].reimTrackingId,
-            attributeName: res.data.results[0].reimbursementTrackingResponseDTO[i].attributeName,
             reimAttributeMasterId: res.data.results[0].reimbursementTrackingResponseDTO[i].reimAttributeMasterId,
             amountLimit: res.data.results[0].reimbursementTrackingResponseDTO[i].amountLimit,
             quantityLimit: res.data.results[0].reimbursementTrackingResponseDTO[i].quantityLimit,
@@ -286,15 +259,38 @@ export class RembGeneralComponent implements OnInit {
             maxCountOfRegiOfAttribute: res.data.results[0].reimbursementTrackingResponseDTO[i].maxCountOfRegiOfAttribute,
             active: res.data.results[0].reimbursementTrackingResponseDTO[i].active,
           }
-          // let s = this.generalAttrSelectElement.findIndex(o => o.fieldName == res.data.results[0].registrationTemplateDetailsResponseDTO[i].fieldName);
-          this.generalAttrSelectElement.push(myobj);
-
+          let s = this.generalAttrSelectElement.findIndex(o => o.reimAttributeMasterId == res.data.results[0].reimbursementTrackingResponseDTO[i].reimAttributeMasterId);
+          this.generalAttrSelectElement[s] = myobj;
+          this.headAllattributes.push(myobj)
+           
+      
+          console.log("data is: "+ JSON.stringify(element)) 
+          this.rembHeadId = element[0].reimbursementMasterGeneralSettingId
+            this.getReimbursementAllAttributes() 
+          // console.log("myobj", myobj);
         }
 
-        console.log("this.generalAttrSelectElement ", this.generalAttrSelectElement);
-        this.headAllattributes = this.generalAttrSelectElement;
-        console.log("this.generalAttrSelectElement ", element);
-
+        console.log("this.generalAttrSelectElement ", JSON.stringify(this.generalAttrSelectElement));
+        // generalViewData.reimbursementTrackingResponseDTO.forEach(element =>{
+        // this.generalAttrSelectElement.push(element);
+        // let saveArray = [];
+        for (let i = 0; i < element.length; i++) {
+          let obj = {
+            reimAttributeMasterId: element[i].reimAttributeMasterId,
+            amountLimit: element[i].amountLimit,
+            quantityLimit: element[i].quantityLimit,
+            onesEvery: element[i].onesEvery,
+            frequency: element[i].frequency,
+            gapsBetTwoAttributeClaims: element[i].gapsBetTwoAttributeClaims,
+            maxCountOfRegiOfAttribute: element[i].maxCountOfRegiOfAttribute,
+            active: element[i].active
+          }
+          // console.log("obj my", obj);
+          this.generalAttrSelectElement.push(obj);
+          // console.log(" this.generalAttrSelectElement obj my", this.generalAttrSelectElement);
+        }
+        // console.log("this.generalAttrSelectElement edit", this.generalAttrSelectElement)
+        // })
         if (generalViewData.claimTaxable == true) {
           this.editClaimtaxable = 'true';
         } else {
@@ -313,39 +309,17 @@ export class RembGeneralComponent implements OnInit {
           this.editCyclewiseBalance = 'false';
         }
 
-        if (generalViewData.maxRegistrationMethod == 'head') {
-          this.editMaxRegistrationMethod = 'head';
-          this.headRembType2 = true;
-          this.headAttributeTable = false;
-        } else {
-          this.editMaxRegistrationMethod = 'attribute';
-          this.headAttributeTable = true;
-          this.headRembType2 = false;
-        }
-
         generalViewData.empRegistrationDocument.forEach(element => {
           this.dropdownListData.push(element.registrationDocument)
-
         });
         generalViewData.empClaimDocument.forEach(element => {
           this.dropdownListData1.push(element.claimDocument)
-
-
         });
-        this.empRegistrationDocument = generalViewData.empRegistrationDocument;
-        this.empClaimDocument = generalViewData.empClaimDocument;
-        console.log("this.empClaimDocument", this.empClaimDocument);
-        console.log("this.empClaimDocuments", this.empRegistrationDocument);
 
+
+        console.log("this.empClaimDocument", this.empClaimDocument);
         // this.generalForm.disable();
-        let claimFlowChange = generalViewData.claimApprWorkflowId;
-        let claimSdmFlowChange = generalViewData.claimApprSDMId;
-        let registerFlowChange = generalViewData.regApprWorkflowId;
-        let registerSdmFlowChange = generalViewData.regApprSDMId;
-        this.claimFlowChange(claimFlowChange);
-        this.claimSdmFlowChange(claimSdmFlowChange);
-        this.registerFlowChange(registerFlowChange);
-        this.registerSdmFlowChange(registerSdmFlowChange);
+
       })
     } else {
       window.scrollTo(0, 0);
@@ -368,60 +342,11 @@ export class RembGeneralComponent implements OnInit {
     console.log(items);
   }
 
-
-  //Datalist search all fields change list events
-  registrationTempChange(evalue){
-    let regName = evalue;
-     this.regList = this.headTemplateList1.filter(x => x.regTemplateName === regName)[0];
-    console.log("regList.regTemplateId", this.regList.regTemplateId);
-  }
-
-  //approval sdm value change 
-  registerFlowChange(event) {
-    console.log("registerFlowChange", event);
-    if (event == '') {
-      this.generalForm.controls.regApprSDMId.enable();
-    } else {
-      this.generalForm.controls.regApprSDMId.disable();
-    }
-  }
-  registerSdmFlowChange(event) {
-    console.log("registerFlowChange", event);
-    if (event == '') {
-      this.generalForm.controls.regApprWorkflowId.enable();
-    } else {
-      this.generalForm.controls.regApprWorkflowId.disable();
-    }
-  }
-
-  claimFlowChange(event) {
-    console.log("claimFlowChange", event);
-    if (event == '') {
-      this.generalForm.controls.claimApprSDMId.enable();
-    } else {
-      this.generalForm.controls.claimApprSDMId.disable();
-    }
-  }
-  claimSdmFlowChange(event) {
-    console.log("claimFlowChange", event);
-    if (event == '') {
-      this.generalForm.controls.claimApprWorkflowId.enable();
-    } else {
-      this.generalForm.controls.claimApprWorkflowId.disable();
-    }
-  }
-
-
   // .................Get value from fileds ......................
-  headerChangeEvent(eventid, label) {
-    console.log("label", eventid, label);
-    let index = this.headtypelist.findIndex(o => o.headMasterId == eventid);
-
+  headerChangeEvent(eventid) {
     console.log("selectbox value", eventid);
     this.rembHeadId = eventid;
-    this.generalForm.get('displayName').setValue(this.headtypelist[index].displayName);
-
-    this.getReimbursementAllAttributes(eventid);
+    this.getReimbursementAllAttributes();
   }
 
   // .....................All Get Api Call Here................
@@ -433,8 +358,9 @@ export class RembGeneralComponent implements OnInit {
       this.headtypelist = res.data.results;
     })
   }
-  getReimbursementAllAttributes(eventid: any) {
-    this.service.getReimbursementAllAttributes(eventid).subscribe((res) => {
+  getReimbursementAllAttributes() {
+    // console.log("here" + this.rembHeadId)
+    this.service.getReimbursementAllAttributes(this.rembHeadId).subscribe((res) => {
       this.headAllattributes = res.data.results[0];
       console.log("res attribute", this.headAllattributes);
       this.generalAttrSelectElement = this.headAllattributes;
@@ -492,7 +418,6 @@ export class RembGeneralComponent implements OnInit {
     this.dropdownListData.push(dropList);
 
     this.empRegistrationDocument.push({
-      reimbursementEmployeeRegistrationDocumentId: 0,
       registrationDocument: dropList,
       registrationRemark: 'Success',
       active: true,
@@ -501,23 +426,18 @@ export class RembGeneralComponent implements OnInit {
     console.log("dropdownListData", this.dropdownListData);
     this.dropListModel = '';
   }
-  getRegistrationDocEdit(id, dropdownListId) {
-    console.log("id i", id, dropdownListId)
-  }
 
-  getRegistrationDocRemove(index) {
+  getRegistrationDocRemove(index, dropdownListid) {
     this.empRegistrationDocument.splice(index, 1);
     this.dropdownListData.splice(index, 1);
     console.log("302", this.dropdownListData);
   }
-
 
   getClaimDocList(dropList, dropdownListid) {
     console.log("dropdownListid", dropList, dropdownListid);
     this.dropdownListData1.push(dropList);
 
     this.empClaimDocument.push({
-      reimbursementEmployeeClaimDocumentId: 0,
       claimDocument: dropList,
       claimRemark: 'Success',
       active: true,
@@ -574,7 +494,7 @@ export class RembGeneralComponent implements OnInit {
       this.headTableOprationShow = true;
       this.headOprationShow = false;
       this.headAttribute = true;
-      // this.headRembType2 = true;
+      this.headRembType2 = false;
       this.headRembType = true;
     } else if (event == "another-head") {
       console.log("eventtable head", event);

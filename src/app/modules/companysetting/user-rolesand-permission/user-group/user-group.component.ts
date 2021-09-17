@@ -3,21 +3,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import {FormBuilder,FormControl,FormGroup,FormGroupDirective,Validators,} from '@angular/forms';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 import { UserRolesPermissionService } from '../user-roles-permission.service';
-export interface userGridData {
-  srno;
-  groupName;
-  groupDescription;
+import { AuthService } from 'src/app/modules/auth/auth.service';
+import { ExcelserviceService } from '../excel_service/excelservice.service';
 
-}
-export interface assigndata {
-  companyGroupCode;
-  shortName;
-  companyGroupName;
 
-}
-export interface Grplistdata {
-  groupName;
-}
+
 
 @Component({
   selector: 'app-user-group',
@@ -25,65 +15,102 @@ export interface Grplistdata {
   styleUrls: ['./user-group.component.scss']
 })
 export class UserGroupComponent implements OnInit {
-  userGroupId = null;
-  userGridData: userGridData[];
-  assigndata:assigndata[];
-  Grplistdata:Grplistdata[];
-  public form: FormGroup;
+    data: string;
+  userGroupId = 0;
+   public form: FormGroup;
   public assignGroupData: Array<any> = [];
-
-  public modalRef: BsModalRef;
+ public modalRef: BsModalRef;
   userGroupName: any;
   userGroupList: any;
+  asginUserGroup: any;
+  hideRemarkDiv: boolean;
+  userGridData: any=[];
+  Grplistdata: Array<any> = [];
+  public isSaveAndReset: boolean = true;
+  public showButtonSaveAndReset: boolean = true;
+  userData: any;
+  subId: any;
+  employeeMasterId: any;
+  companyGroupMasterId: any;
+  companyMasterData: any[]=[];
+  assigndata: any = [];
+  selectedAssignData: any[];
+  
+  selectAllGroupFlag: boolean = false;
+  excelData: any[];
+  header: any[];
+  editflag: boolean = false;
+ // userData: unknown;
 
   constructor(private modalService: BsModalService,
     private service: UserRolesPermissionService,
     private formBuilder: FormBuilder,
-    private alertService: AlertServiceService,) {
+    private alertService: AlertServiceService,private authService: AuthService,
+    private excelservice : ExcelserviceService) {
+
+      
       this.form = this.formBuilder.group({
+        createdBy: new FormControl(''),
+        lastModifiedBy: new FormControl(''),
+        createdDateTime: new FormControl(''),
+        lastModifiedDateTime: new FormControl(''),
         companyGroupMasterId: new FormControl(''),
+        globalUserMasterId: new FormControl(''),
+        employeeRoleAssignmentId: new FormControl(''),
         userGroupId:new FormControl(''),
+        userRoleId:new FormControl(''),
+        companyId:new FormControl(''),
+        companyName: new FormControl(''),
+        companyGroupName: new FormControl(''),
         groupName: new FormControl(null, Validators.required),
         groupDescription: new FormControl(null, Validators.required),
         default:new FormControl(''),
-        isActive: new FormControl(1),
+        active: new FormControl(true),
         remark: new FormControl(null),
+        employeeMasterId:new FormControl('')
      
       });
+      this.userData =   this.authService.getprivileges()
+      console.log("userData::",this.userData);
+      this.subId = this.userData.sub
+
+      this.companyGroupMasterId = []
+      this.service.employeeRoleAssignmentUser(this.subId).subscribe(res =>{
+        
+        res.data.results.forEach(element => {
+          this.companyGroupMasterId.push(element.companyGroupMasterId)
+        });
+         console.log("companyGroupMasterId",this.companyGroupMasterId)
+        this.summaryPage();
+      })
+      
+      this.deactivateRemark(); 
      }
 
   ngOnInit(): void {
-    this.userGridData = [
-      { srno: '1', groupName: 'System Admin',groupDescription:'System Admin Desc' },
-      { srno: '2', groupName: 'DB Admin',groupDescription:'DB Admin Desc' },
-      { srno: '3', groupName: 'Paysquare Admin',groupDescription:'Paysquare Admin Desc' },
-      { srno: '4', groupName: 'App_Admin',groupDescription:'App_Admin Desc' },
-    ];
-    this.assigndata = [
-      { companyGroupCode: '854332', shortName: 'Eaton',companyGroupName:'Eaton Pvt Ltd' },
-      { companyGroupCode: '223434', shortName: 'TCS',companyGroupName:'Tata' },
-      { companyGroupCode: '654564', shortName: 'Abbott',companyGroupName:'Abbott Pvt ltd' },
-      { companyGroupCode: '675876', shortName: 'Schindler',companyGroupName:'Schindler Pvt ltd' },
-    ];
-    this.Grplistdata=[{groupName:'Paysquare1'},
-    {groupName:'Paysquare2'},
-    {groupName:'Paysquare3'},
-    {groupName:'Paysquare4'},
-    {groupName:'Paysquare5'},
-    {groupName:'Paysquare6'},
-    {groupName:'Paysquare7'},
-    {groupName:'Paysquare8'},
-    {groupName:'Paysquare9'}]
-
-
-
- this.summaryPage();
-
+  
  }
+ // --------------- Deactivate the Remark -------------------
+ deactivateRemark() {
+  if (this.form.value.active === false) {
+    // this.form.get('remark').enable();
+    this.hideRemarkDiv = true;
+    this.form.get('remark').setValidators([Validators.required]);
+  } else {
+    this.form.get('remark').clearValidators();
+    this.hideRemarkDiv = false;
+    //this.form.get('remark').disable();
+    this.form.get('remark').reset();
+  }
+}
+
     // Summary get Call
     public summaryPage(): void {
       this.userGridData = [];
-       this.service.getAllUserGroupData().subscribe((res) => {
+      let data = {
+        "listCompanyGroupIds":this.companyGroupMasterId
+    }
+       this.service.postUserroupGetAllDistinctByCompanyGroups(data).subscribe((res) => {
             console.log('userGridData::', res);
             this.userGridData = res.data.results;
            console.log('userGridData::', this.userGridData);
@@ -92,102 +119,269 @@ export class UserGroupComponent implements OnInit {
 
     save() {
       console.log('clcicked on new record save button');
-      let companyId = [];
-      // companyId.push(Number(this.form.get('companyGroupMasterIds').value))
-      // const data = {
-
-      //         userGroupId: this.form.get('userGroupId').value,
-      //         groupName: this.form.get('groupName').value,
-      //         groupDescription:this.form.get('groupDescription').value,
-      //          companyGroupMasterIds: companyId,
-      //         default:this.form.get('default').value,
-      //         isActive:this.form.get('isActive').value,
-      //         remark:this.form.get('remark').value,
-
-      //         userGroupId: 6085,
-      //         groupName: "IT Support",
-      //         groupDescription:"IT Support",
-      //          companyGroupMasterIds: 12,
-      //         default:true,
-      //         isActive:true,
-      //         remark:null,
-              
-      // }
-
+    // if(this.isSaveAndReset){
       const data = {
         "groupName": this.form.controls['groupName'].value,
         "groupDescription":this.form.controls['groupDescription'].value,
-        "companyGroupMasterIds": [
-            {
-                "userGroupId": this.userGroupId,
-                "companyGroupMasterId": 12,
-                "active": true
-            },
-            // {
-            //     "userGroupId": 6086,
-            //     "companyGroupMasterId": 14,
-            //     "active": true
-            // }
-        ],
+        "companyGroupMasterIds": this.companyMasterData,
         "remark": null,
         "active": true,
-        "default": false
+        "default": this.form.controls['default'].value,
     }
+    if(this.companyMasterData.length > 0){
       console.log(JSON.stringify(data));
       this.service.postUserGroupData(data).subscribe(res => {
         console.log("before save", data);
-        this.alertService.sweetalertMasterSuccess("User Group data save successfully","");
+        if(!this.showButtonSaveAndReset){
+          this.alertService.sweetalertMasterSuccess("User Group Save Successfully","");
+        }
+        else{
+          this.alertService.sweetalertMasterSuccess("User Group  Updated Successfully","");
+        }
+       
         this.summaryPage();
         this.form.reset();
+        this.form.controls['active'].setValue(true);
+        this.isSaveAndReset = true;
+        this.showButtonSaveAndReset = true;
       });
+    }else{
+
+      this.alertService.sweetalertWarning("Please Assign Group")
+
+    }
+      
     }
     
  
-  editUserGroup(summary){
-this.form.controls['groupName'].setValue(summary.groupName),
-this.form.controls['groupDescription'].setValue(summary.groupDescription)
-
-
-this.userGroupId=summary.userGroupId
-this.form.enable()
-
-  }
-
-  resetForm(){
+editUserGroup(summary){
+  this.userGroupId=summary.userGroupId
+   this.form.patchValue(summary)
+   
+   this.isSaveAndReset = false;
+    this.showButtonSaveAndReset = true;
+   this.editflag = true;
+    this.form.enable();
+    this.form.get('groupName').disable();
+    //this.form.controls['default'].setValue(true);
+    // this.form.controls['default'].setValue(summary.default);
     
-    this.form.reset()
+
+
+//this.form.reset();
+
+
+}
+
+resetForm(){
+  this.form.controls['active'].setValue(true);
+     this.form.reset()
     this.form.enable()
+    
   }
 
-  viewUserGroup(summary){
-    this.form.controls['groupName'].setValue(summary.groupName),
-this.form.controls['groupDescription'].setValue(summary.groupDescription)
+viewUserGroup(summary){
+   this.editflag = false;
+   this.userGroupId=summary.userGroupId
+   this.isSaveAndReset = false;
+    this.showButtonSaveAndReset = false;
+    this.form.reset();
+    this.form.controls['active'].setValue(true);
+    this.form.patchValue(summary);
+    this.form.controls['default'].setValue(summary.default);
 
-
-this.userGroupId=summary.userGroupId
-this.form.disable()
+    this.form.disable();
   }
 
+  cancelView() {
+    
+      this.isSaveAndReset = true;
+      this.showButtonSaveAndReset = true;
+      this.form.enable();
+      this.form.reset();
+   
+      this.form.controls['active'].setValue(true);
+     }
 
-  AssignedGroup(template: TemplateRef<any>,id: number, headname: string) {
 
-    this.modalRef = this.modalService.show(
-      template,
+AssignedGroup(template: TemplateRef<any>,id: number, headname: string) {
+this.modalRef = this.modalService.show(
+ template,
       Object.assign({}, { class: 'gray modal-lg' })
-    );
+);
 
-    this.userGroupName=this.form.controls['groupName'].value
+   this.userGroupName=this.form.controls['groupName'].value
 
     let data = {
-      "userGroupName":"IT Support",
-      "listCompanyGroupIds":[12]
-      }
+      "userGroupName":this.userGroupName,
+      "listCompanyGroupIds":this.companyGroupMasterId      }
     
     //this.companyGroupName =  headname;
     this.service.postUserGroupGetAllCompanyGroupsByUserGroup(data).subscribe((res) => {
       console.log("AssignedGroupCompanyData",res);
       this.assignGroupData = res.data.results;
+
+      if(!this.isSaveAndReset){
+        this.companyMasterData = []
+        this.assignGroupData.forEach(ele =>{
+           if(ele.active == true){
+            this.companyMasterData.push({
+              "userGroupId": ele.userGroupId,
+              "companyGroupMasterId":ele.companyGroupMasterId,
+              "active": ele.active
+            })
+           }
+          
+        })  
+      }
     });
+  }
+  // assignuserGrpData(assigndata){
+  //  this.asginUserGroup=[assigndata.companyGroupMasterId];
+  // // this.companyMasterData  = []
+  //  this.companyGroupMasterId.forEach(element => {
+  //    if(element == assigndata.companyGroupMasterId){
+  //     this.companyMasterData.push(
+  //       {
+  //         "userGroupId": this.userGroupId,
+  //         "companyGroupMasterId":element,
+  //         "active": true
+      
+  //     })
+  //    }
+     
+  //  });
+  //  console.log("selected company data: "+ JSON.stringify(this.companyMasterData))
+  // }
+
+// /* When clicked on checkedbox summary page/
+// assignuserGrpData(event, assigndata) {
+//     this.asginUserGroup=[assigndata.companyGroupMasterId];
+// 		if (event.checked) {
+// 			this.companyMasterData.push(assigndata)
+// 		} else {
+// 			if (this.companyMasterData.length > 0) {
+// 				this.companyMasterData.forEach((element, index) => {
+// 					if (element.companyGroupMasterId == assigndata.companyGroupMasterId) {
+// 						let ind = index;
+// 						this.companyMasterData.splice(ind, 1);
+// 					}
+// 				});
+// 			} else {
+// 				this.companyMasterData = []
+// 			}
+// 		}
+// 		 console.log("selectedEmpData:", JSON.stringify(this.companyMasterData))
+// 	}
+
+  assignuserGrpData(assigndata,event){
+    // console.log("assigndata : "+ JSON.stringify(assigndata))
+    if(event.checked){
+      this.asginUserGroup=[assigndata.companyGroupMasterId];
+      // this.companyMasterData  = []
+       this.companyGroupMasterId.forEach(element => {
+         if(element == assigndata.companyGroupMasterId){
+          this.companyMasterData.push(
+            {
+              "userGroupId": this.userGroupId,
+              "companyGroupMasterId":element,
+              "active": true
+          
+          })
+         }
+         
+       });
+       
+    }else{
+      if(this.companyMasterData.length > 0){
+        this.companyMasterData.forEach((element,index) => {
+         if(element.companyGroupMasterId == assigndata.companyGroupMasterId){
+           let ind = index;
+           this.companyMasterData.splice(ind,1)
+         }
+        })
+      }else{
+        this.companyMasterData = []
+      }
+     
+    }
+   
+
+   console.log("selected company data: "+ JSON.stringify(this.companyMasterData))
+  }
+  resetAssignGroup(){
+    this.companyMasterData = []
+  }
+
+  
+  // selectAll(event) {
+  //   console.log("selectAlll",this.selectedAllFlag)
+	// 	this.companyMasterData = [];
+	// 	 if (event.checked){
+      
+	// 		this.selectedAllFlag = true;
+  //     console.log("notselectAlll",this.selectedAllFlag)
+	// 		 this.assignGroupData.forEach(element =>{
+  //      // element.active =  true;
+  //       this.companyMasterData.push(
+  //         {
+  //           "userGroupId": this.userGroupId,
+  //           "companyGroupMasterId":element,
+  //           "active": true
+  //          })
+        
+
+  //     })
+  //    }
+  //    else{
+  //     this.selectedAllFlag = false;
+  //     console.log("notselectAlll",this.selectedAllFlag)
+	// 		this.companyMasterData = []
+  //    }
+    
+	// 	// } else {
+	// 	// 	this.selectedAllFlag = false;
+	// 	// 	this.companyMasterData = []
+	// 	// }
+	// 	 console.log("selectedALLLLLLEmpData:", this.companyMasterData)
+	// }
+  selectAll(event){
+    // assignGroupData
+    if(event.checked){
+      
+      this.assignGroupData.forEach((element,index)=>{
+        this.asginUserGroup=[element.companyGroupMasterId];
+        this.companyMasterData.push(
+          {
+            "userGroupId": this.userGroupId,
+            "companyGroupMasterId":element.companyGroupMasterId,
+            "active": true
+        
+        })
+      })
+
+      this.selectAllGroupFlag = true;
+    }
+    else{
+      this.companyMasterData = []
+      this.asginUserGroup = []
+      this.selectAllGroupFlag = false;
+    } 
+
+    console.log("selected all company data: "+ JSON.stringify(this.companyMasterData))
+  }
+
+  saveAssignGroupData(){
+    {
+      let data = {
+        "userGroupName": this.userGroupName,
+      "listCompanyGroupIds":this.asginUserGroup
+      } 
+      this.service.postUserGroupGetAllCompanyGroupsByUserGroup(data).subscribe((res) => {
+        console.log("AssignedGroupSave:::",res);
+        this.assignGroupData = res.data.results;
+      });
+    }
   }
 
   Grouplist(template2: TemplateRef<any>,gName) {
@@ -197,12 +391,109 @@ this.form.disable()
     );
     this.userGroupList=gName
     let data={
-      "userGroupName":"IT Support",
-      "listCompanyGroupIds":[12]
+      "userGroupName":gName,
+      "listCompanyGroupIds":this.companyGroupMasterId
       }
     this.service.postUserGroupGetAssignedCompanyGroupsByUserGroupName(data).subscribe((res) => {
       console.log("AssignedGroupCompanyNamePopUp",res);
       this.Grplistdata = res.data.results;
     });
   }
+  exportApprovalSummaryAsExcel(): void {
+    this.excelData = [];
+    this.header = []
+    this.header =["Company Group Name"];
+    this.excelData = [];
+    if(this.Grplistdata.length>0){
+   
+     this.Grplistdata.forEach((element) => {
+      let obj = {
+        'Company Group Name': element.companyGroupName,
+       
+      };
+      this.excelData.push(obj);
+    });
+     
+    }
+    this.excelservice.exportAsExcelFile(this.excelData, 'User-Group-Summary', 'User-Group-Summary' ,this.header);
+  
+  }
+  exportApprovalAllSummaryAsExcel(){
+    this.excelData = [];
+    this.header = []
+    this.header =["Group Name","Group Description"];
+    this.excelData = [];
+    if(this.userGridData.length>0){
+   
+     this.userGridData.forEach((element) => {
+      let obj = {
+        'Group Name': element.groupName,
+        'Group Description' : element.groupDescription
+       
+      };
+      this.excelData.push(obj);
+    });
+     
+    }
+    this.excelservice.exportAsExcelFile(this.excelData, 'All-Summary-UserGroup', 'All-Summary-UserGroup' ,this.header); 
+  }
+  exportApprovalSummaryAssignGroupAsExcel(){
+    this.excelData = [];
+    this.header = []
+    this.header =["Company Group Code","Short Name","Company Group Name"];
+    this.excelData = [];
+    if(this.assignGroupData.length>0){
+   
+     this.assignGroupData.forEach((element) => {
+      let obj = {
+        'Company Group Code': element.companyGroupCode,
+        'Short Name' : element.shortName,
+        'Company Group Name': element.companyGroupName
+       
+      };
+      this.excelData.push(obj);
+    });
+     
+    }
+    this.excelservice.exportAsExcelFile(this.excelData, 'Summary-Assign-Group', 'Summary-Assign-Group' ,this.header);  
+  }
 }
+
+
+
+
+
+
+
+
+
+
+// assignuserGrpData(assigndata,event){
+//   this.asginUserGroup=[assigndata.companyGroupMasterId];
+//  // this.companyMasterData  = []
+//  if(event.checked){
+//    this.companyGroupMasterId.forEach((element,index) => {
+//     if(element == assigndata.companyGroupMasterId){
+//      this.companyMasterData.push(
+//        {
+//          "userGroupId": this.userGroupId,
+//          "companyGroupMasterId":element,
+//          "active": true
+     
+//      })
+//     }  
+//   });
+//  }else{
+//    this.companyMasterData.forEach((ele,index) =>{
+//       if(ele.companyGroupMasterId == assigndata.companyGroupMasterId){
+//          let ind = index;
+//          this.companyMasterData.splice(ind,1)
+//       }
+//    })
+//  }
+  
+
+//   console.log("selected company data: "+ JSON.stringify(this.companyMasterData))
+//  }
+
+

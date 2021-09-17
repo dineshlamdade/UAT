@@ -90,6 +90,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   public addRow1: boolean;
   public addRow2: number;
   public previousEmployeeList: Array<any> = [];
+  public donations80GGTransactionList: Array<any> = [];
   donations80GGTransactionListNewRow : Array<any> = [];
   public childNameList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
@@ -960,7 +961,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
 
     const data = {
       donations80GGTransactionList: this.transactionDetail,
-      donations80GGTransactionIDs: this.uploadGridData,
+      donations80GGTransactionIds: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       // documentRemark: this.documentRemark,
       proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
@@ -1035,6 +1036,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].donations80GGTransactionList;
+        this.editProofSubmissionId = proofSubmissionId;
           this.editTransactionUpload.forEach((element) => {
             element.declaredAmount = this.numberFormat.transform(
               element.declaredAmount
@@ -1046,20 +1048,30 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotalEditModal =
-          res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotalEditModal =
-          res.data.results[0].grandApprovedTotal;
+        this.grandRejectedTotalEditModal =  res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotalEditModal =    res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
+        
         //console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
+      //  this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
+       //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
           // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+       // });
         //console.log('converted:: ', this.urlArray);
         // console.log('proofSubmissionId::', this.proofSubmissionId);
+        
+        this.editTransactionUpload.forEach((element) => {
+          element.donations80GGTransactionList.forEach((innerElement) => {
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount,
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount,
+            );
+          });
+        });
 
       });
 
@@ -1071,6 +1083,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       'uploadUpdateTransaction editTransactionUpload::',
       this.editTransactionUpload
     );
+
 
     this.editTransactionUpload.forEach((element) => {
       if (element.declaredAmount !== null) {
@@ -1085,13 +1098,32 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       } else {
         element.actualAmount = 0.0;
       }
+      this.uploadGridData.push(element.donations80GGTransactionId)
+
     });
 
 
+    const donations80GGTransactionDetail = {
+      previousEmployerId: this.editTransactionUpload[0].previousEmployerId,
+      donee: this.editTransactionUpload[0].donee,
+      purpose: this.editTransactionUpload[0].purpose,
+      dateOfPayment: this.editTransactionUpload[0].dateOfPayment,
+      declaredAmount: this.editTransactionUpload[0].declaredAmount,
+      actualAmount: this.editTransactionUpload[0].actualAmount,
+      amountApproved: this.editTransactionUpload[0].amountApproved,
+      amountRejected: this.editTransactionUpload[0].amountRejected,
+      remark: this.editTransactionUpload[0].remark,
+      proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
+      transactionStatus: this.editTransactionUpload[0].transactionStatus,
+      donations80GGTransactionId: this.editTransactionUpload[0].donations80GGTransactionId,
+    };
 
+    console.log('donations80GGTransactionDetail ', donations80GGTransactionDetail);
+
+    this.donations80GGTransactionList.push(donations80GGTransactionDetail);
     const data = {
-      donations80GGTransactionList: this.editTransactionUpload[0],
-      donations80GGTransactionIDs: this.uploadGridData,
+      donations80GGTransactionList: this.donations80GGTransactionList,
+      donations80GGTransactionIds: this.uploadGridData,
       // documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
@@ -1320,19 +1352,19 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           );
         }
 
-        this.actualTotal = 0;
+        this.grandActualTotal = 0;
         this.actualAmount = 0;
         this.editTransactionUpload[j].donations80GGTransactionList.forEach((element) => {
           console.log(element.actualAmount.toString().replace(/,/g, ''));
-          this.actualTotal += Number(
+          this.grandActualTotal += Number(
             element.actualAmount.toString().replace(/,/g, '')
           );
-          console.log(this.actualTotal);
+          console.log(this.grandActualTotal);
           // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
         });
 
-        this.editTransactionUpload[j].actualTotal = this.actualTotal;
-        console.log(this.editTransactionUpload[j].actualTotal);
+        this.editTransactionUpload[j].grandActualTotal = this.grandActualTotal;
+        console.log(this.editTransactionUpload[j].grandActualTotal);
       }
 
 

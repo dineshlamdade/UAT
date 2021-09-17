@@ -8,505 +8,491 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              <form [formGroup]="rolePrivilegeForm" (ngSubmit)="onSubmit()">
+              <form [formGroup]="rolePrivilegeForm"
+                #formDirective="ngForm">
                 <div class="box-line-border radius-10 p-3 mt-3">
                   <div class="row">
-                    <div class="col-md-2">
+
+                    <div class="col-md-2" *ngIf="viewFlag">
                       <label class="form-label mt-1 mb-0">Group Name</label>
-                      <ng-multiselect-dropdown
-                        [placeholder]="'None Selected'"
-                        [settings]="dropdownSettings"
-                        [data]="groupNamesData"
-                        (onSelect)="onItemSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                        [(ngModel)]="selectedItems"
-                        formControlName="groupName"
-                      >
+                      <select class="form-control custom-select" formControlName="companyGroupName"
+                      [ngClass]="{'is-invalid' : rolePrivilegeForm.get('companyGroupName').status == 'INVALID'}" disabled>
+                        <option value="">select</option>
+                        <option *ngFor="let companyGroupName of groupNamesData"
+                          [value]="companyGroupName.companyGroupMasterId">
+                          {{companyGroupName.companyGroupName}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2" *ngIf="!viewFlag">
+                      <label class="form-label mt-1 mb-0">Group Name</label>
+                      <select class="form-control custom-select" formControlName="companyGroupName"
+                        [ngClass]="{'is-invalid' : rolePrivilegeForm.get('companyGroupName').status == 'INVALID'}"
+                        (change)="onSelectCompanyName($event.target.value)">
+                        <option value="">select</option>
+                        <option *ngFor="let companyGroupName of groupNamesData"
+                          [value]="companyGroupName.companyGroupMasterId">
+                          {{companyGroupName.companyGroupName}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-2" *ngIf="!editFlag">
+                      <label class="form-label mt-1 mb-0">Company Name
+                      </label>
+                      <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings" [disabled]="viewFlag"
+                        [data]="companyNameList" (onSelect)="onItemSelect($event)" formControlName="companyName"
+                        [ngClass]="{'is-invalid' : rolePrivilegeForm.get('companyName').status == 'INVALID'}">
                       </ng-multiselect-dropdown>
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label mt-1 mb-0">Company Name</label>
-                        <select name="Gender" class="form-control custom-select" formControlName="companyName" (change)="onSelectCompanyName($event.target.value)">
-                            <option value="">select</option>
-                          <option *ngFor="let companyName of companyNameList" [value]="companyName.companyId"  >
-                              {{companyName.companyName}}
-                            </option>
-                         </select>
-                      </div>
-                    <div class="col-md-2">
-                      <label class="form-label mt-1 mb-0">User Group</label>
-                      <select name="userName" class="form-control custom-select" formControlName="userName" (change)="onSelectGroupName($event.target.value)">
+                    <div class="col-md-2" *ngIf="editFlag">
+                      <label class="form-label mt-1 mb-0">Company Name
+                        <!-- {{rolePrivilegeForm.controls.companyName.value | json}} -->
+                      </label>
+                      <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings"
+                        [data]="companyNameList" [ngModelOptions]="{standalone: true}" (onSelect)="onItemSelect($event)"
+                        [(ngModel)]="selectedCompanyName">
+                      </ng-multiselect-dropdown>
+                    </div>
+
+
+
+                    <div class="col-md-2" *ngIf="viewFlag">
+                      <label class="form-label mt-1 mb-0">User Group
+                        <!-- {{rolePrivilegeForm.controls.userName.value}} -->
+                      </label>
+                      <select name="userName" class="form-control custom-select" formControlName="userName"
+                      disabled
+                        [ngClass]="{'is-invalid' : rolePrivilegeForm.get('userName').status == 'INVALID'}"
+                        (change)="onSelectGroupName($event.target.value)">
                         <option value="">select</option>
-                        <option *ngFor="let userGroupName of userGroupList" [value]="userGroupName.userGroupId" >
-                            {{userGroupName.groupName}}
-                          </option>
-                       </select>
+                        <option *ngFor="let userGroupName of userGroupNameList" [value]="userGroupName.userGroupId">
+                          {{userGroupName.groupName}}
+                        </option>
+                      </select>
+
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" *ngIf="!viewFlag">
+                      <label class="form-label mt-1 mb-0">User Group
+                        <!-- {{rolePrivilegeForm.controls.userName.value}} -->
+                      </label>
+                      <select name="userName" class="form-control custom-select" formControlName="userName"
+                        [ngClass]="{'is-invalid' : rolePrivilegeForm.get('userName').status == 'INVALID'}"
+                        (change)="onSelectGroupName($event.target.value)">
+                        <option value="">select</option>
+                        <option *ngFor="let userGroupName of userGroupNameList" [value]="userGroupName.userGroupId">
+                          {{userGroupName.groupName}}
+                        </option>
+                      </select>
+
+                    </div>
+                    <div class="col-md-2" *ngIf="viewFlag">
                       <label class="form-label mt-1 mb-0">User Role</label>
-                      <select name="userRoll" class="form-control custom-select" formControlName="userRoll">
-                        <option *ngFor="let userRoleName of userRoleData" [value]="userRoleName.userRoleId">
-                            {{userRoleName.roleName}}
-                          </option>
-                        </select>
+                      <select name="roleName" class="form-control custom-select" formControlName="roleName"
+                        disabled
+                        [ngClass]="{'is-invalid' : rolePrivilegeForm.get('roleName').status == 'INVALID'}"
+                        (change)="getSelectedRole()">
+                        <option value="">select</option>
+                        <option *ngFor="let userRoleNameList of userRoleData" [value]="userRoleNameList.userRoleId">
+                          {{userRoleNameList.roleName}}
+                        </option>
+                      </select>
                     </div>
-                  
+                    <div class="col-md-2" *ngIf="!viewFlag">
+                      <label class="form-label mt-1 mb-0">User Role</label>
+                      <select name="roleName" class="form-control custom-select" formControlName="roleName"
+                        [ngClass]="{'is-invalid' : rolePrivilegeForm.get('roleName').status == 'INVALID'}"
+                        (change)="getSelectedRole()">
+                        <option value="">select</option>
+                        <option *ngFor="let userRoleNameList of userRoleData" [value]="userRoleNameList.userRoleId">
+                          {{userRoleNameList.roleName}}
+                        </option>
+                      </select>
+                    </div>
+
                   </div>
                 </div>
-                <div class="row mt-20">
-                  <div class="co-md-12">
-                    <div class="tabset">
-                      <!-- Tab 1 -->
-                      <input
-                        type="radio"
-                        name="tabset"
-                        id="tab1"
-                        aria-controls="Menu"
-                        checked
-                      />
-                      <label for="tab1">Menu</label>
-                      <!-- Tab 2 -->
-                      <input
-                        type="radio"
-                        name="tabset"
-                        id="tab2"
-                        aria-controls="Report"
-                      />
-                      <label for="tab2">Report</label>
-                      <div class="tab-panels">
-                        <section id="Menu" class="tab-panel">
-                          <p-table [value]="menuAllMasterData">
-                            <ng-template pTemplate="header">
+                <br>
+                <br>
+                <!-- <div class="card-body" > -->
+                <div class="tabset">
+
+                  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
+                  <label for="tab1">Menu</label>
+
+                  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+                  <label for="tab2">Report</label>
+                  <div class="tab-panels">
+                    <section id="marzen" class="tab-panel">
+                      <div class="card-body">
+
+                        <div class="table-responsive Custom_Table my-registertable">
+                          <table class="table  table-bordered table-hover m-b-0 bg-color-white my-registertable">
+
+
+                            <thead class="thead-dark">
                               <tr>
-                                <th>
-                                  <label
-                                    class="custom-control custom-checkbox checkbox-center"
-                                    tooltip="Select All" >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="select" />
-                                    <span class="custom-control-label" >Select All</span>
-                                  </label>
-                                </th>
-                                <th>
-                                  <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label class="custom-control custom-checkbox checkbox-center" >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label" >Full</span>
-                                    </label>
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="date"></p-sortIcon>
-                                      <p-columnFilter
-                                        field="date"
-                                        display="menu"
-                                        class="p-ml-auto"
-                                      ></p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-                                <th>
-                                  <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label  class="custom-control custom-checkbox checkbox-center" >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select" 
-                                      />
-                                      <span class="custom-control-label"  >Read</span>
-                                    </label>
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="days"></p-sortIcon>
-                                      <p-columnFilter
-                                        field="days"
-                                        display="menu"
-                                        class="p-ml-auto"
-                                      >
-                                      </p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-                                <th>
-                                  <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label class="custom-control custom-checkbox checkbox-center">
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label" >Write</span >
-                                    </label>
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="days"></p-sortIcon>
-                                      <p-columnFilter
-                                        field="days"
-                                        display="menu"
-                                        class="p-ml-auto"
-                                      >
-                                      </p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-                                <th class="wd-8">
-                                  <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label class="custom-control custom-checkbox checkbox-center" >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label">Modify</span>
-                                    </label>
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="WO"></p-sortIcon>
-                                      <p-columnFilter
-                                        field="WO"
-                                        display="menu"
-                                        class="p-ml-auto"
-                                      ></p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-                                <th class="wd-8">
-                                  <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label class="custom-control custom-checkbox checkbox-center">
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label">Delete</span>
-                                    </label>
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="holiday"></p-sortIcon>
-                                      <p-columnFilter
-                                        field="holiday"
-                                        display="menu"
-                                        class="p-ml-auto"
-                                      >
-                                      </p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
+                                <th scope="col" class="font700 wd-60 text-center" style="color: white">Name</th>
+                                <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input
+                                    type="checkbox" name="websitecheck" (click)="checkUncheckall()"> All</th>
+                                <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input
+                                    type="checkbox" name="websitecheckRead" [checked]="isChecked"
+                                    (click)="checkUncheckallRead()"> Read</th>
+                                <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input
+                                    type="checkbox" name="websitecheckWrite" [checked]="isChecked"
+                                    (click)="checkUncheckallWrite()"> Write</th>
+                                <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input
+                                    type="checkbox" name="websitecheckModify" [checked]="isChecked"
+                                    (click)="checkUncheckallModify()">Modify</th>
+                                <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input
+                                    type="checkbox" name="websitecheckDelete" [checked]="isChecked"
+                                    (click)="checkUncheckallDelete()">Delete</th>
+                                <th scope="col" class="font700 wd-8 text-center" style="color: white;">Field Level</th>
                               </tr>
-                            </ng-template>
-                            <ng-template
-                              pTemplate="body"
-                              let-menuData
-                              class="tablebodyscroll"
-                            >
-                              <tr class="p-selectable-row">
-                                <td>
-                                  <div>
-                                    <div>
-                                      <input
-                                        class="toggle-box"
-                                        id="identifier-4"
-                                        type="checkbox"
-                                        checked/>
-                                      <label for="identifier-4">{{menuData.mainMenuName}}</label>
-                                      <div class="ml-30">
-                                        <a class="p-0 d-flex">
-                                            <label class="custom-control custom-checkbox">
-                                                      <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                                         value="Personal Information" />
-                                                   <span class="custom-control-label">{{menuData.subMenuOrFormName1}}</span>
-                     
-                                              </label> </a>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let group of menusData ;let i = index">
+
+                                <td style="vertical-align:left;text-align:left;">
+
+                                  <div class="">
+                                    <input class="toggle-box" id="identifier-{{i}}" type="checkbox" />
+                                    <label for="identifier-{{i}}">{{group.menuName}}</label>
+
+                                    <div class="">
+                                      <a class="p-0 d-flex" for="identifier-1">
+                                        <label for="identifier-{{i}}" class="custom-control custom-checkbox" *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                          <ul style="list-style-type:none;position:sticky;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                            <div *ngFor="let submenu of group.childItems">
+
+                                              <li id="{{submenu.menuName}}">
+
+                                                {{submenu.menuName}}
+                                                <div class="">
+                                                  <a class="p-0 d-flex">
+                                                    <label for="identifier-{{i}}"
+                                                      class="custom-control custom-checkbox"><br>
+                                                      <ul style="list-style-type:none;line-height:45px;">
+                                                        <div *ngFor="let smenu of submenu.childItems">
+                                                          <li class="rup" id="{{submenu.menuName}}" class="mb-6">
+
+                                                            {{smenu.menuName}}
+
+                                                          </li>
+                                                        </div>
+                                                      </ul>
+                                                    </label>
+                                                  </a>
+                                                </div>
+                                              </li>
+                                            </div>
+                                          </ul>
+                                        </label>
+                                      </a>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td class="text-center">
+                                  <input type="checkbox" id="identifier-10" name="websitecheck"
+                                    [checked]="isChecked || group.allFlag " [disabled]="viewFlag"
+                                    (click)="checkUncheckAllSelectedMenu(group,$event.target)" class="mb-15">
+                                  Full
+                                  <div class="text-center">
+                                    <a class="p-0 d-flex">
+                                      <label class="custom-control custom-checkbox " for="identifier-10 ">
+                                        <ul style="list-style-type:none; text-align: center;"  *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                          <div *ngFor="let submenu of group.childItems">
+                                            <li id="{{submenu.menuName}}" style="margin-left:-75px;">
+                                              <input type="checkbox" name="websitecheckMenuFull"
+                                                [checked]="isChecked || group.allFlag || submenu.allFlag"
+                                                [disabled]="viewFlag"
+                                                (click)="checkeUncheckSingleMenuAll(submenu,$event.target)"
+                                                class="mb-6" />
+
+                                              <div class="">
+                                                <a class="p-0 d-flex" for="identifier-1">
+                                                  <label class="custom-control custom-checkbox"><br>
+                                                    <ul style="list-style-type:none;">
+                                                      <div *ngFor="let smenu of submenu.childItems">
+                                                        <li class="rup" id="{{smenu.menuName}}"
+                                                          style="margin-left:-50px;line-height: 45px;">
+
+                                                          <input type="checkbox" name="websitecheckMenuSubFull"
+                                                            [checked]="isChecked || group.allFlag || submenu.allFlag || smenu.allFlag"
+                                                            [disabled]="viewFlag"
+                                                            (click)="checkeUncheckSingleMenuAll(smenu,$event.target)" />
+
+                                                        </li>
+                                                      </div>
+                                                    </ul>
+                                                  </label>
+                                                </a>
+                                              </div>
+                                            </li>
                                           </div>
-                                    </div>
-                                    <!-- end of employee master left menu -->
+                                        </ul>
+                                      </label>
+                                    </a>
                                   </div>
                                 </td>
                                 <td class="text-center">
-                                  <div>
-                                       <label class="custom-control custom-checkbox checkbox-center">
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label">full</span>
-                                    </label>
+                                  <input type="checkbox" name="websitecheckRead"
+                                    [checked]="isCheckedRead || isChecked || group.allFlag" [disabled]="viewFlag"
+                                    (click)="checkUncheckReadSelectedMenu(group,$event.target)" class="mb-15">
+                                  Read
+                                  <div class="">
+                                    <a class="p-0 d-flex">
+                                      <label class="custom-control custom-checkbox ">
+                                        <ul style="list-style-type:none;"  *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                          <div *ngFor="let submenu of group.childItems">
+                                            <li id="{{submenu.menuName}}" style="margin-left: -85px;">
+                                              <input type="checkbox" name="websitecheckMenuMainRead"
+                                                [checked]="isChecked || isCheckedRead || group.readFlag || group.allFlag || submenu.allFlag || submenu.readAccess"
+                                                [disabled]="viewFlag"
+                                                (click)="checkeUncheckSingleMenuRead(submenu,$event.target)"
+                                                class="mb-6" />
+
+                                              <div class="">
+                                                <a class="p-0 d-flex" for="identifier-1">
+                                                  <label class="custom-control custom-checkbox"><br>
+                                                    <ul style="list-style-type:none;">
+                                                      <div *ngFor="let smenu of submenu.childItems">
+                                                        <li class="rup" id="{{smenu.menuName}}"
+                                                          style="margin-left:-50px;line-height: 45px;">
+
+                                                          <input type="checkbox" name="websitecheckMenuSubRead"
+                                                            [checked]="isChecked || isCheckedRead || group.readFlag || group.allFlag || submenu.allFlag || submenu.readAccess || smenu.allFlag"
+                                                            [disabled]="viewFlag"
+                                                            (click)="checkeUncheckSingleMenuRead(smenu,$event.target)" />
+
+
+                                                        </li>
+                                                      </div>
+                                                    </ul>
+                                                  </label>
+                                                </a>
+                                              </div>
+                                            </li>
+                                          </div>
+                                        </ul>
+                                      </label>
+                                    </a>
                                   </div>
                                 </td>
                                 <td class="text-center">
-                                    <div>
-                                         <label class="custom-control custom-checkbox checkbox-center">
-                                        <input
-                                          type="checkbox"
-                                          class="custom-control-input"
-                                          name="select" (click)= "onSelectAllReadCheckBox($event.target,menuData,'read')"
-                                        />
-                                        <span class="custom-control-label">read</span>
+                                  <input type="checkbox" name="websitecheckWrite"
+                                    [checked]="isCheckedWrite || isChecked || group.allFlag " [disabled]="viewFlag"
+                                    (click)="checkUncheckWriteSelectedMenu(group,$event.target)" class="mb-15">
+                                  Write
+                                  <div class="">
+                                    <a class="p-0 d-flex">
+                                      <label class="custom-control custom-checkbox ">
+                                        <ul style="list-style-type:none;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                          <div *ngFor="let submenu of group.childItems">
+                                            <li id="{{submenu.menuName}}" style="margin-left: -85px;">
+                                              <input type="checkbox" name="websitecheckMenuMainWrite"
+                                                [checked]="isChecked || isCheckedWrite || group.writeFlag || group.allFlag || submenu.allFlag || submenu.writeAccess "
+                                                [disabled]="viewFlag"
+                                                (click)="checkeUncheckSingleMenuWrite(submenu,$event.target)"
+                                                class="mb-6" />
+
+                                              <div class="">
+                                                <a class="p-0 d-flex" for="identifier-1">
+                                                  <label class="custom-control custom-checkbox"><br>
+                                                    <ul style="list-style-type:none;">
+                                                      <div *ngFor="let smenu of submenu.childItems">
+                                                        <li class="rup" id="{{submenu.menuName}}"
+                                                          style="margin-left:-45px;line-height: 45px;">
+
+                                                          <input type="checkbox" name="websitecheckMenuSubWrite"
+                                                            [checked]="isChecked || isCheckedWrite || group.writeFlag || group.allFlag || submenu.allFlag || submenu.writeAccess || smenu.allFlag"
+                                                            [disabled]="viewFlag"
+                                                            (click)="checkeUncheckSingleMenuWrite(smenu,$event.target)" />
+
+
+                                                        </li>
+                                                      </div>
+                                                    </ul>
+                                                  </label>
+                                                </a>
+                                              </div>
+                                            </li>
+                                          </div>
+                                        </ul>
                                       </label>
-                                    </div>
-                                  </td>
-                                  <td class="text-center">
-                                    <div>
-                                         <label class="custom-control custom-checkbox checkbox-center">
-                                        <input
-                                          type="checkbox"
-                                          class="custom-control-input"
-                                          name="select" (click)= "onSelectAllWriteCheckBox($event.target,menuData,'write')"
-                                        />
-                                        <span class="custom-control-label">write</span>
-                                      </label>
-                                    </div>
-                                  </td>
-                                  <td class="text-center">
-                                    <div>
-                                         <label class="custom-control custom-checkbox checkbox-center">
-                                        <input
-                                          type="checkbox"
-                                          class="custom-control-input"
-                                          name="select" (click)= "onSelectAllModifyCheckBox($event.target,menuData,'modify')"
-                                        />
-                                        <span class="custom-control-label">modify</span>
-                                      </label>
-                                    </div>
-                                  </td>
-                                  <td class="text-center">
-                                    <div>
-                                         <label class="custom-control custom-checkbox checkbox-center">
-                                        <input
-                                          type="checkbox"
-                                          class="custom-control-input"
-                                          name="select" (click)= "onSelectAllDeleteCheckBox($event.target,menuData,'delete')"
-                                        />
-                                        <span class="custom-control-label">delete</span>
-                                      </label>
-                                    </div>
-                                  </td>
-                              </tr>
-                            </ng-template>
-                            <ng-template pTemplate="emptymessage">
-                              <tr>
-                                <td
-                                  colspan="15"
-                                  class="font-14 font500 text-center text-red"
-                                >
-                                  <span>No Data Available</span>
-                                </td>
-                              </tr>
-                            </ng-template>
-                          </p-table>
-                        </section>
-                        <!-- <section id="Report" class="tab-panel">
-                          <p-table [value]="users2">
-                            <ng-template pTemplate="header">
-                              <tr>
-                                <th>
-                                  <label
-                                    class="custom-control custom-checkbox checkbox-center"
-                                    tooltip="Select All"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="select"
-                                    />
-                                    <span class="custom-control-label"></span>
-                                  </label>
-                                </th>
-                                <th>
-                                  <div class="p-d-flex p-jc-center p-ai-center">
-                                    Enabled/ Disabled &nbsp;&nbsp;
-                                    <div class="Sort_Filter_Position">
-                                      <p-sortIcon field="date"></p-sortIcon>
-                                      <p-columnFilter
-                                        field="date"
-                                        display="menu"
-                                        class="p-ml-auto"
-                                      ></p-columnFilter>
-                                    </div>
-                                  </div>
-                                </th>
-                              </tr>
-                            </ng-template>
-                            <ng-template
-                              pTemplate="body"
-                              let-users2
-                              class="tablebodyscroll"
-                            >
-                              <tr class="p-selectable-row">
-                                <td>
-                                  <div>
-                                    <div>
-                                      <input
-                                        class="toggle-box"
-                                        id="identifier-5"
-                                        type="checkbox"
-                                        checked
-                                      />
-                                      <label for="identifier-5">Payroll</label>
-                                      <div class="ml-30">
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-5"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="Personal Information"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Payslip
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-5"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Taxsheet
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-5"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >CTC Reconciliation
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-5"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Annual Salary Details
-                                            </span>
-                                          </label>
-                                        </a>
-                                      </div>
-                                    </div>
-                                   
+                                    </a>
                                   </div>
                                 </td>
                                 <td class="text-center">
-                                  <div class="d-flex flex-directioncol">
-                                    <label class="custom-switch mt_5 mb_5">
-                                      <input
-                                        type="checkbox"
-                                        name="custom-switch-checkbox"
-                                        class="custom-switch-input"
-                                      />
-                                      <span
-                                        class="custom-switch-indicator"
-                                      ></span
-                                      >&nbsp;
-                                      <span class="form-label"></span>
-                                    </label>
-                                    <label class="custom-switch mt_5 mb_5">
-                                      <input
-                                        type="checkbox"
-                                        name="custom-switch-checkbox"
-                                        class="custom-switch-input"
-                                      />
-                                      <span
-                                        class="custom-switch-indicator"
-                                      ></span
-                                      >&nbsp;
-                                      <span class="form-label"></span>
-                                    </label>
-                                    <label class="custom-switch mt_5 mb_5">
-                                      <input
-                                        type="checkbox"
-                                        name="custom-switch-checkbox"
-                                        class="custom-switch-input"
-                                      />
-                                      <span
-                                        class="custom-switch-indicator"
-                                      ></span
-                                      >&nbsp;
-                                      <span class="form-label"></span>
-                                    </label>
-                                    <label class="custom-switch mt_5 mb_5">
-                                      <input
-                                        type="checkbox"
-                                        name="custom-switch-checkbox"
-                                        class="custom-switch-input"
-                                      />
-                                      <span
-                                        class="custom-switch-indicator"
-                                      ></span
-                                      >&nbsp;
-                                      <span class="form-label"></span>
-                                    </label>
-                                    <label class="custom-switch mt_5 mb_5">
-                                      <input
-                                        type="checkbox"
-                                        name="custom-switch-checkbox"
-                                        class="custom-switch-input"
-                                      />
-                                      <span
-                                        class="custom-switch-indicator"
-                                      ></span
-                                      >&nbsp;
-                                      <span class="form-label"></span>
-                                    </label>
+                                  <input type="checkbox" name="websitecheckModify"
+                                    [checked]="isCheckedModify || isChecked || group.allFlag" [disabled]="viewFlag"
+                                    (click)="checkUncheckModifySelectedMenu(group,$event.target)" class="mb-15">
+                                    Modify
+
+                                  <div class="">
+                                    <a class="p-0 d-flex">
+                                      <label class="custom-control custom-checkbox ">
+                                        <ul style="list-style-type:none;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                          <div *ngFor="let submenu of group.childItems">
+                                            <li id="{{submenu.menuName}}" style="margin-left: -95px;">
+                                              <input type="checkbox" name="websitecheckMenuMainModify"
+                                                [checked]="isCheckedModify || group.modifyFlag || isChecked || group.allFlag || submenu.allFlag || submenu.modifyAccess "
+                                                [disabled]="viewFlag"
+                                                (click)="checkeUncheckSingleMenuModify(submenu,$event.target)"
+                                                class="mb-6" />
+
+                                              <div class="">
+                                                <a class="p-0 d-flex" for="identifier-1">
+                                                  <label class="custom-control custom-checkbox"><br>
+                                                    <ul style="list-style-type:none;">
+                                                      <div *ngFor="let smenu of submenu.childItems">
+                                                        <li class="rup" id="{{submenu.menuName}}"
+                                                          style="margin-left:-35px;line-height: 45px;">
+                                                          <input type="checkbox" name="websitecheckMenuSubModify"
+                                                            [checked]="isCheckedModify || group.modifyFlag || isChecked || group.allFlag || submenu.allFlag || submenu.modifyAccess || smenu.allFlag"
+                                                            [disabled]="viewFlag"
+                                                            (click)="checkeUncheckSingleMenuModify(smenu,$event.target)" class="mb-6"/>
+
+                                                        </li>
+                                                      </div>
+                                                    </ul>
+                                                  </label>
+                                                </a>
+                                              </div>
+                                            </li>
+                                          </div>
+                                        </ul>
+                                      </label>
+                                    </a>
                                   </div>
                                 </td>
-                              </tr>
-                            </ng-template>
-                            <ng-template pTemplate="emptymessage">
-                              <tr>
-                                <td
-                                  colspan="15"
-                                  class="font-14 font500 text-center text-red"
-                                >
-                                  <span>No Data Available</span>
+                                <td class="text-center">
+                                  <input type="checkbox" name="websitecheckDelete"
+                                    [checked]="isCheckedDelete || isChecked || group.allFlag " [disabled]="viewFlag"
+                                    (click)="checkUncheckDeleteSelectedMenu(group,$event.target)" class="mb-15">
+                                    Delete
+
+                                  <div class="">
+                                    <a class="p-0 d-flex">
+                                      <label class="custom-control custom-checkbox ">
+                                        <ul style="list-style-type:none;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                          <div *ngFor="let submenu of group.childItems">
+                                            <li id="{{submenu.menuName}}" style="margin-left: -95px;">
+                                              <input type="checkbox" name="websitecheckMenuMainDelete"
+                                                [checked]="isCheckedDelete || group.deleteFlag || isChecked || group.allFlag || submenu.allFlag || submenu.deleteAccess "
+                                                [disabled]="viewFlag"
+                                                (click)="checkeUncheckSingleMenuDelete(submenu,$event.target)"
+                                                class="mb-6" />
+
+                                              <div class="">
+                                                <a class="p-0 d-flex" for="identifier-1">
+                                                  <label class="custom-control custom-checkbox"><br>
+                                                    <ul style="list-style-type:none;">
+                                                      <div *ngFor="let smenu of submenu.childItems">
+                                                        <li class="rup" id="{{smenu.menuName}}"
+                                                          style="margin-left:-35px;line-height: 45px;">
+
+                                                          <input type="checkbox" name="websitecheckMenuSubDelete"
+                                                            [checked]="isCheckedDelete || group.deleteFlag || isChecked || group.allFlag || submenu.allFlag || submenu.deleteAccess || smenu.allFlag"
+                                                            [disabled]="viewFlag"
+                                                            (click)="checkeUncheckSingleMenuDelete(smenu,$event.target)" class="mb-6"/>
+
+                                                        </li>
+                                                      </div>
+                                                    </ul>
+                                                  </label>
+                                                </a>
+                                              </div>
+                                            </li>
+                                          </div>
+                                        </ul>
+                                      </label>
+                                    </a>
+                                  </div>
                                 </td>
+                                <td class="text-center">
+
+
+
+                                  <div class="">
+                                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                    &nbsp;                                 
+                                    <label class="custom-control custom-checkbox ">
+                                      <ul style="list-style-type:none;" *ngIf="rolePrivilegeForm.controls.roleName.valid">
+                                        <div *ngFor="let submenu of group.childItems">
+                                          <li style="margin-left: -70px; line-height: 42px;">
+
+                                            <a  class="text-link text-bold " (click)="onSelectFieldLevel(template1,submenu)">Field
+                                              Level</a>
+
+                                              <div *ngFor="let smenu of submenu.childItems">
+                                                <li  id="{{smenu.menuName}}"
+                                                style=" line-height: 42px;">
+
+                                                  <a  class="text-link text-bold " (click)="onSelectFieldLevel(template1,submenu)">Field
+                                                    Level</a>
+
+                                                </li>
+                                              </div>
+
+                                          </li>
+                                       
+                                        </div>
+                                      </ul>
+                                    </label>
+
+                                  </div>
+
+
+
+                                </td>
+
                               </tr>
-                            </ng-template>
-                          </p-table>
-                        </section> -->
+
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
-                    </div>
+                    </section>
+
                   </div>
+
                 </div>
+                <!-- </div> -->
 
                 <div class="row mt-20">
                   <div class="col-md-12">
                     <div class="float-right">
-                      <button
+                      <ng-container class="float-right">
+                        <div class="row float-right" style="margin: 10px">
+                          <button type="submit" *ngIf="isShown"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" (click)="onSubmit(fieldPopup)"
+                            [disabled]="!rolePrivilegeForm.valid"
+                            [ngClass]="{'disabled-btn-bg-green' : rolePrivilegeForm.invalid,'btn-bg-green': !rolePrivilegeForm.invalid}">
+                            <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
+
+                          <button type="button" tooltip="Reset" *ngIf="isShown"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                            (click)="reset()">
+                            <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>&nbsp;
+                          <button type="submit" tooltip="Update" *ngIf="isVisible"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green">
+                            <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button>&nbsp;
+
+                          <button type="button" tooltip="Cancel" *ngIf="isVisible"
+                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            (click)="cancel()">
+                            <b> <i class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
+                        </div>
+                      </ng-container>
+
+                      <!-- <button
                         type="submit" tooltip="Button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-save"></i></b> Save
                       </button>
                       <button  type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" (click)="reset()">
                         <b><i class="fa fa-refresh"></i></b> Reset
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>
@@ -516,48 +502,74 @@
                 <div class="col-md-12">
                   <div class="tabset">
                     <!-- Tab 1 -->
-                    <input
-                      type="radio"
-                      name="tabset2"
-                      id="tab3"
-                      aria-controls="Menusummary"
-                      checked
-                    />
+                    <input type="radio" name="tabset2" id="tab3" aria-controls="Menusummary" checked />
                     <label for="tab3">Menu Summary</label>
                     <!-- Tab 2 -->
-                    <input
-                      type="radio"
-                      name="tabset2"
-                      id="tab4"
-                      aria-controls="Reportsummary"
-                    />
+                    <input type="radio" name="tabset2" id="tab4" aria-controls="Reportsummary" />
                     <label for="tab4">Report Summary</label>
+
+                    <!-- <a tooltip="Download" style="cursor: pointer" (click)="exportAsXLSX()">
+                        <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                            aria-hidden="true" style="float: right;"></i>
+                    </a> -->
+
+                   <!-- <div style="float: right !important;">
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <input type="text" pInputText size="50" placeholder="Search"
+                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: 203px !important;margin-right: 37px;">
+                    </div> -->
+
                     <div class="tab-panels">
                       <section id="Menusummary" class="tab-panel">
-                        <p-table
-                          [value]="menuSummaryData"
-                          [paginator]="true"
-                          [rows]="10"
-                          [showCurrentPageReport]="true"
+                        
+                        <!-- <i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                        aria-hidden="true"></i> -->
+
+                        <p-table 
+                        [globalFilterFields]="['companyName',
+                                     'groupName',
+                                     'roleName'
+                                    ]" #dt
+                        [value]="menuSummaryData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                          [totalRecords]="totalRecords" [lazy]="true"
                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                          [rowsPerPageOptions]="[10, 25, 50]"
-                        >
-                          <ng-template pTemplate="header" >
+                          [rowsPerPageOptions]="[10,25,50,100,200]"
+                          (onPage)="paginate($event)">
+                          <ng-template pTemplate="caption">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <div class="d-flex">
+                                            <span
+                                            class="p-input-icon-left p-ml-auto">
+                                            <i class="pi pi-search"
+                                                style="top: 9px !important; right: 59px;"></i>
+                                            <input pInputText type="text"
+                                                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search " />
+        
+                                        </span>
+                                        <i
+                                            class="fa fa-file-excel-o text-dark-green   fa-2x ml-2  mr-2"
+                                            (click)="exportAsXLSX()"></i>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </ng-template>
+                          <ng-template pTemplate="header">
                             <tr>
                               <th class="wd-10 text-center">Sr. No.</th>
                               <th class="wd-20">
                                 <div class="p-d-flex p-jc-center p-ai-center">
                                   Company &nbsp;&nbsp;
                                   <div class="Sort_Filter_Position d-flex">
-                                    <p-sortIcon
-                                      field="usergrup"
-                                      pSortableColumn="usergrup"
-                                    ></p-sortIcon>
-                                    <p-columnFilter
-                                      field="usergrup"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    ></p-columnFilter>
+                                    <p-sortIcon field="companyName" pSortableColumn="companyName"></p-sortIcon>
+                                    <p-columnFilter field="companyName" display="menu" class="p-ml-auto">
+                                    </p-columnFilter>
                                   </div>
                                 </div>
                               </th>
@@ -565,15 +577,8 @@
                                 <div class="p-d-flex p-jc-center p-ai-center">
                                   User Group &nbsp;&nbsp;
                                   <div class="Sort_Filter_Position d-flex">
-                                    <p-sortIcon
-                                      field="usergrup"
-                                      pSortableColumn="usergrup"
-                                    ></p-sortIcon>
-                                    <p-columnFilter
-                                      field="usergrup"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    ></p-columnFilter>
+                                    <p-sortIcon field="groupName" pSortableColumn="groupName"></p-sortIcon>
+                                    <p-columnFilter field="groupName" display="menu" class="p-ml-auto"></p-columnFilter>
                                   </div>
                                 </div>
                               </th>
@@ -581,15 +586,8 @@
                                 <div class="p-d-flex p-jc-center p-ai-center">
                                   User Role &nbsp;&nbsp;
                                   <div class="Sort_Filter_Position d-flex">
-                                    <p-sortIcon
-                                      field="userrole"
-                                      pSortableColumn="userrole"
-                                    ></p-sortIcon>
-                                    <p-columnFilter
-                                      field="userrole"
-                                      display="menu"
-                                      class="p-ml-auto"
-                                    ></p-columnFilter>
+                                    <p-sortIcon field="roleName" pSortableColumn="roleName"></p-sortIcon>
+                                    <p-columnFilter field="roleName" display="menu" class="p-ml-auto"></p-columnFilter>
                                   </div>
                                 </div>
                               </th>
@@ -598,64 +596,42 @@
                             </tr>
                           </ng-template>
                           <ng-template pTemplate="body" let-menuSummary let-rowIndex="rowIndex">
+                            <!-- <pre>{{menuSummary | json}}</pre> -->
                             <tr class="p-selectable-row">
-                              <td class="text-center" rowspan="2">
+                              <td class="text-center">
                                 {{rowIndex + 1}}
                               </td>
-                              <td class="text-center" rowspan="2">
+                              <td class="text-center">
                                 {{ menuSummary.companyName }}
                               </td>
-                              <td class="text-center" rowspan="2">
-                                {{ menuSummary.groupName }}
+                              <td class="text-center">
+                                {{menuSummary.groupName}}
                               </td>
-                              <td>
-                                <label
-                                  class="mb-0 text-link"
-                                  (click)="largepopup(template)"
-                                  >{{ menuSummary.roleName }}</label
-                                >
-                              </td>
+                              <td class="text-center">
+                                {{menuSummary.roleName}}
 
-                              <td class="wd-5 text-center">
-                                <i
-                                  class="fa fa-edit font-16 text-blue cursor-pointer"
-                                  tooltip="Edit"
-                                ></i>
-                                &nbsp;&nbsp;
-                                <i
-                                  class="fa fa-eye font-16 text-blue cursor-pointer"
-                                  tooltip="View"
-                                ></i>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <label class="mb-0 text-link">{{
-                                  data.userrole1
-                                }}</label>
                               </td>
                               <td class="wd-5 text-center">
-                                <i class="fa fa-edit font-16 text-blue cursor-pointer" tooltip="Edit"
-                               (click)="editMenuSummary(menuSummary)" ></i>
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"
+                                  (click)="editMenuSummary(menuSummary)"></i>
                                 &nbsp;&nbsp;
                                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
-                                (click)="viewMenuSummary(menuSummary)"></i>
+                                  (click)="viewMenuSummary(menuSummary)"></i>
                               </td>
+
                             </tr>
+
                           </ng-template>
                           <ng-template pTemplate="emptymessage">
                             <tr>
-                              <td
-                                colspan="4"
-                                class="font-14 font500 text-center text-red"
-                              >
+                              <td colspan="4" class="font-14 font500 text-center text-red">
                                 <span>No Data Available</span>
                               </td>
                             </tr>
                           </ng-template>
                         </p-table>
                       </section>
-                      <section id="Reportsummary" class="tab-panel">
+                      <!-- <section id="Reportsummary" class="tab-panel">
                         <p-table
                           [value]="reportSummaryData"
                           [paginator]="true"
@@ -770,7 +746,7 @@
                             </tr>
                           </ng-template>
                         </p-table>
-                      </section>
+                      </section> -->
                     </div>
                   </div>
                 </div>
@@ -778,15 +754,9 @@
             </div>
           </div>
         </div>
-        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }" >
-          <button
-            type="button"
-            class="btn active"
-            data-toggle="button"
-            aria-pressed="true"
-            tooltip="Top"
-            (click)="scrollToTop()"
-          >
+        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
             <i class="fa fa-angle-double-up text-white font-18"></i>
           </button>
         </div>
@@ -799,13 +769,7 @@
 <ng-template #template>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">User Role Details</h5>
-    <button
-      type="button"
-      (click)="modalRef.hide()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -816,21 +780,10 @@
           <div class="col-md-12">
             <div class="tabset">
               <!-- Tab 1 -->
-              <input
-                type="radio"
-                name="tabset"
-                id="tab5"
-                aria-controls="Menudetail"
-                checked
-              />
+              <input type="radio" name="tabset" id="tab5" aria-controls="Menudetail" checked />
               <label for="tab5">Menu</label>
               <!-- Tab 2 -->
-              <input
-                type="radio"
-                name="tabset"
-                id="tab6"
-                aria-controls="Reportdetail"
-              />
+              <input type="radio" name="tabset" id="tab6" aria-controls="Reportdetail" />
               <label for="tab6">Report</label>
               <div class="tab-panels">
                 <section id="Menudetail" class="tab-panel">
@@ -838,306 +791,154 @@
                     <ng-template pTemplate="header">
                       <tr>
                         <th>
-                          <label
-                            class="custom-control custom-checkbox checkbox-center"
-                            tooltip="Select All"
-                          >
-                            <input
-                              type="checkbox"
-                              class="custom-control-input"
-                              name="select"
-                              checked
-                            />
+                          <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                            <input type="checkbox" class="custom-control-input" name="select" checked />
                             <span class="custom-control-label">Select All</span>
                           </label>
                         </th>
                         <th>
                           <div class="p-d-flex p-jc-center p-ai-center">
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label">Full</span>
                             </label>
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="date"></p-sortIcon>
-                              <p-columnFilter
-                                field="date"
-                                display="menu"
-                                class="p-ml-auto"
-                              ></p-columnFilter>
+                              <p-columnFilter field="date" display="menu" class="p-ml-auto"></p-columnFilter>
                             </div>
                           </div>
                         </th>
                         <th>
                           <div class="p-d-flex p-jc-center p-ai-center">
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label">Read</span>
                             </label>
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="days"></p-sortIcon>
-                              <p-columnFilter
-                                field="days"
-                                display="menu"
-                                class="p-ml-auto"
-                              >
+                              <p-columnFilter field="days" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
                         </th>
                         <th>
                           <div class="p-d-flex p-jc-center p-ai-center">
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label">Write</span>
                             </label>
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="days"></p-sortIcon>
-                              <p-columnFilter
-                                field="days"
-                                display="menu"
-                                class="p-ml-auto"
-                              >
+                              <p-columnFilter field="days" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
                         </th>
                         <th class="wd-8">
                           <div class="p-d-flex p-jc-center p-ai-center">
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label">Modify</span>
                             </label>
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="WO"></p-sortIcon>
-                              <p-columnFilter
-                                field="WO"
-                                display="menu"
-                                class="p-ml-auto"
-                              ></p-columnFilter>
+                              <p-columnFilter field="WO" display="menu" class="p-ml-auto"></p-columnFilter>
                             </div>
                           </div>
                         </th>
                         <th class="wd-8">
                           <div class="p-d-flex p-jc-center p-ai-center">
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label">Delete</span>
                             </label>
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="holiday"></p-sortIcon>
-                              <p-columnFilter
-                                field="holiday"
-                                display="menu"
-                                class="p-ml-auto"
-                              >
+                              <p-columnFilter field="holiday" display="menu" class="p-ml-auto">
                               </p-columnFilter>
                             </div>
                           </div>
                         </th>
                       </tr>
                     </ng-template>
-                    <ng-template
-                      pTemplate="body"
-                      let-user1
-                      class="tablebodyscroll"
-                    >
+                    <ng-template pTemplate="body" let-user1 class="tablebodyscroll">
                       <tr class="p-selectable-row">
                         <td>
                           <div>
                             <div>
-                              <input
-                                class="toggle-box"
-                                id="identifier-4"
-                                type="checkbox"
-                                checked
-                              />
+                              <input class="toggle-box" id="identifier-4" type="checkbox" checked />
                               <label for="identifier-4">Employee Master</label>
                               <div class="ml-30">
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="Personal Information"
-                                      checked
-                                    />
-                                    <span class="custom-control-label"
-                                      >
-                                    </span>
-                                  </label>
-                                </a>
-                                <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                      checked
-                                    />
-                                    <span class="custom-control-label"
-                                      >
-                                    </span>
-                                  </label>
-                                </a>
-                                <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                      checked
-                                    />
-                                    <span class="custom-control-label"
-                                      >
-                                    </span>
-                                  </label>
-                                </a>
-                                <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                      checked
-                                    />
-                                    <span class="custom-control-label"
-                                      >
-                                    </span>
-                                  </label>
-                                </a>
-                                <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                      checked
-                                    />
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="Personal Information" checked />
                                     <span class="custom-control-label">
-                                     
                                     </span>
                                   </label>
                                 </a>
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                      checked
-                                    />
-                                    <span class="custom-control-label"
-                                      >
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" checked />
+                                    <span class="custom-control-label">
                                     </span>
                                   </label>
                                 </a>
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                      checked
-                                    />
-                                    <span class="custom-control-label"
-                                      >
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" checked />
+                                    <span class="custom-control-label">
                                     </span>
                                   </label>
                                 </a>
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                      checked
-                                    />
-                                    <span class="custom-control-label"
-                                      >
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" checked />
+                                    <span class="custom-control-label">
                                     </span>
                                   </label>
                                 </a>
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-4"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                      checked
-                                    />
-                                    <span class="custom-control-label"
-                                      >
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" checked />
+                                    <span class="custom-control-label">
+
+                                    </span>
+                                  </label>
+                                </a>
+                                <a class="p-0 d-flex">
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" checked />
+                                    <span class="custom-control-label">
+                                    </span>
+                                  </label>
+                                </a>
+                                <a class="p-0 d-flex">
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" checked />
+                                    <span class="custom-control-label">
+                                    </span>
+                                  </label>
+                                </a>
+                                <a class="p-0 d-flex">
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" checked />
+                                    <span class="custom-control-label">
+                                    </span>
+                                  </label>
+                                </a>
+                                <a class="p-0 d-flex">
+                                  <label for="identifier-4" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" checked />
+                                    <span class="custom-control-label">
                                     </span>
                                   </label>
                                 </a>
@@ -1148,126 +949,53 @@
                         </td>
                         <td class="text-center">
                           <div>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
+                            <label class="custom-control custom-checkbox checkbox-center">
+                              <input type="checkbox" class="custom-control-input" name="select" checked />
                               <span class="custom-control-label"></span>
                             </label>
                           </div>
                         </td>
-                       </tr>
+                      </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                       <tr>
-                        <td
-                          colspan="15"
-                          class="font-14 font500 text-center text-red"
-                        >
+                        <td colspan="15" class="font-14 font500 text-center text-red">
                           <span>No Data Available</span>
                         </td>
                       </tr>
@@ -1279,15 +1007,8 @@
                     <ng-template pTemplate="header">
                       <tr>
                         <th>
-                          <label
-                            class="custom-control custom-checkbox checkbox-center"
-                            tooltip="Select All"
-                          >
-                            <input
-                              type="checkbox"
-                              class="custom-control-input"
-                              name="select"
-                            />
+                          <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                            <input type="checkbox" class="custom-control-input" name="select" />
                             <span class="custom-control-label"></span>
                           </label>
                         </th>
@@ -1296,94 +1017,49 @@
                             Enabled/ Disabled &nbsp;&nbsp;
                             <div class="Sort_Filter_Position">
                               <p-sortIcon field="date"></p-sortIcon>
-                              <p-columnFilter
-                                field="date"
-                                display="menu"
-                                class="p-ml-auto"
-                              ></p-columnFilter>
+                              <p-columnFilter field="date" display="menu" class="p-ml-auto"></p-columnFilter>
                             </div>
                           </div>
                         </th>
                       </tr>
                     </ng-template>
-                    <ng-template
-                      pTemplate="body"
-                      let-users2
-                      class="tablebodyscroll"
-                    >
+                    <ng-template pTemplate="body" let-users2 class="tablebodyscroll">
                       <tr class="p-selectable-row">
                         <td>
                           <div>
                             <div>
-                              <input
-                                class="toggle-box"
-                                id="identifier-5"
-                                type="checkbox"
-                                checked
-                              />
+                              <input class="toggle-box" id="identifier-5" type="checkbox" checked />
                               <label for="identifier-5">Payroll</label>
                               <div class="ml-30">
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-5"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="Personal Information"
-                                    />
-                                    <span class="custom-control-label"
-                                      >Payslip
+                                  <label for="identifier-5" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="Personal Information" />
+                                    <span class="custom-control-label">Payslip
                                     </span>
                                   </label>
                                 </a>
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-5"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                    />
-                                    <span class="custom-control-label"
-                                      >Taxsheet
+                                  <label for="identifier-5" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" />
+                                    <span class="custom-control-label">Taxsheet
                                     </span>
                                   </label>
                                 </a>
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-5"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                    />
-                                    <span class="custom-control-label"
-                                      >CTC Reconciliation
+                                  <label for="identifier-5" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" />
+                                    <span class="custom-control-label">CTC Reconciliation
                                     </span>
                                   </label>
                                 </a>
                                 <a class="p-0 d-flex">
-                                  <label
-                                    for="identifier-5"
-                                    class="custom-control custom-checkbox"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      class="custom-control-input"
-                                      name="example-checkbox1"
-                                      value="abc"
-                                    />
-                                    <span class="custom-control-label"
-                                      >Annual Salary Details
+                                  <label for="identifier-5" class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                      value="abc" />
+                                    <span class="custom-control-label">Annual Salary Details
                                     </span>
                                   </label>
                                 </a>
@@ -1395,53 +1071,28 @@
                         <td class="text-center">
                           <div class="d-flex flex-directioncol">
                             <label class="custom-switch mt_5 mb_5">
-                              <input
-                                type="checkbox"
-                                name="custom-switch-checkbox"
-                                class="custom-switch-input"
-                              />
-                              <span class="custom-switch-indicator"></span
-                              >&nbsp;
+                              <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" />
+                              <span class="custom-switch-indicator"></span>&nbsp;
                               <span class="form-label"></span>
                             </label>
                             <label class="custom-switch mt_5 mb_5">
-                              <input
-                                type="checkbox"
-                                name="custom-switch-checkbox"
-                                class="custom-switch-input"
-                              />
-                              <span class="custom-switch-indicator"></span
-                              >&nbsp;
+                              <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" />
+                              <span class="custom-switch-indicator"></span>&nbsp;
                               <span class="form-label"></span>
                             </label>
                             <label class="custom-switch mt_5 mb_5">
-                              <input
-                                type="checkbox"
-                                name="custom-switch-checkbox"
-                                class="custom-switch-input"
-                              />
-                              <span class="custom-switch-indicator"></span
-                              >&nbsp;
+                              <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" />
+                              <span class="custom-switch-indicator"></span>&nbsp;
                               <span class="form-label"></span>
                             </label>
                             <label class="custom-switch mt_5 mb_5">
-                              <input
-                                type="checkbox"
-                                name="custom-switch-checkbox"
-                                class="custom-switch-input"
-                              />
-                              <span class="custom-switch-indicator"></span
-                              >&nbsp;
+                              <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" />
+                              <span class="custom-switch-indicator"></span>&nbsp;
                               <span class="form-label"></span>
                             </label>
                             <label class="custom-switch mt_5 mb_5">
-                              <input
-                                type="checkbox"
-                                name="custom-switch-checkbox"
-                                class="custom-switch-input"
-                              />
-                              <span class="custom-switch-indicator"></span
-                              >&nbsp;
+                              <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" />
+                              <span class="custom-switch-indicator"></span>&nbsp;
                               <span class="form-label"></span>
                             </label>
                           </div>
@@ -1450,10 +1101,7 @@
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                       <tr>
-                        <td
-                          colspan="15"
-                          class="font-14 font500 text-center text-red"
-                        >
+                        <td colspan="15" class="font-14 font500 text-center text-red">
                           <span>No Data Available</span>
                         </td>
                       </tr>
@@ -1471,5 +1119,166 @@
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
       Ok
     </button>
+  </div>
+</ng-template>
+
+<ng-template #template1>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel" *ngIf="selectedSubMenuName"> Field Privilege for -  {{selectedSubMenuName}}</h5>
+    <button type="button" (click)="modalRef.hide();" class="close" data-dismiss="modal" aria-label="Close"><span
+        style="font-size: 20px;" aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive Custom_Table my-registertable">
+          <table class="table table-striped table-hover table-bordered  m-b-0 my-registertable" style=" height: 500px;">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col" class="font700 wd-30 text-center" style="color: white">Name</th>
+              <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox"
+                  name="fieldcheckRead" [checked]="isFieldChecked" (click)="checkUncheckallReadFields()"> Read</th>
+              <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox"
+                  name="fieldcheckWrite" [checked]="isFieldChecked" (click)="checkUncheckallWriteFields()"> Write</th>
+              <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox"
+                  name="fieldcheckModify" [checked]="isFieldChecked" (click)="checkUncheckallModifyFields()">Modify</th>
+              <th scope="col" class="font700 wd-8 text-center" style="color: white;"><input type="checkbox" [disabled]="fullFlag"
+                  name="fieldcheckHide" [checked]="isFieldChecked || !fullFlag" (click)="checkUncheckallHideFields()">Hide</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let fields of fieldAllMasterData; let i = index">
+              <td style="vertical-align:left;text-align:left;">
+                <!-- <pre>{{ fields | json}}</pre> -->
+                <div>
+                  <!-- <label> {{fields.applicationMenus.menuName}}</label> -->
+                  <div class="">
+                    <a class="p-0 d-flex" for="identifier-1">
+                      <label class="custom-control custom-checkbox">
+                        <ul style="list-style-type:none;position:sticky;">
+                          <div>
+                            <li id="{{fields.controlName}}">
+                              {{fields.controlName}}
+                              <!-- [{{fields.controlType}}] -->
+                            </li>
+                          </div>
+                        </ul>
+                      </label>
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                <div class="">
+                    <a class="p-0 d-flex">
+                        <label class="custom-control custom-checkbox ">
+                            <ul style="list-style-type:none;">
+                              <div>
+                                    <li id="{{fields.controlName}}" style="margin-left: -80px;">
+                                      <!-- {{fields.formFieldId}} -->
+                                        <input type="checkbox" name="websitecheckMenuMainRead"
+                                            [checked]="isCheckedReadFields || fields.readFlag || fields.allFlag " [disabled]="viewFlag"
+                                             (click)="checkeUncheckSingleReadFields(fields,$event.target)" />
+                                     </li>
+                                </div>
+                            </ul>
+                        </label>
+                    </a>
+                </div>
+            </td>
+            <td class="text-center">
+            
+              <div class="">
+                  <a class="p-0 d-flex">
+                      <label class="custom-control custom-checkbox ">
+                          <ul style="list-style-type:none;">
+                            <div>
+                                  <li id="{{fields.controlName}}" style="margin-left: -80px;">
+                                      <input type="checkbox" name="websitecheckMenuMainWrite"
+                                          [checked]="isCheckedWriteFields || fields.writeFlag || fields.allFlag"
+                                           [disabled]="viewFlag" (click)="checkeUncheckSingleWriteFields(fields,$event.target)" />
+                                   </li>
+                              </div>
+                          </ul>
+                      </label>
+                  </a>
+              </div>
+          </td>
+          <td class="text-center">
+            <div class="">
+                <a class="p-0 d-flex">
+                    <label class="custom-control custom-checkbox ">
+                        <ul style="list-style-type:none;">
+                          <div>
+                                <li id="{{fields.controlName}}" style="margin-left: -80px;">
+                                    <input type="checkbox" name="websitecheckMenuMainModify"
+                                        [checked]="isCheckedModifyFields || fields.modifyFlag || fields.allFlag"
+                                         [disabled]="viewFlag" (click)="checkeUncheckSingleModifyFields(fields,$event.target)" />
+                                 </li>
+                            </div>
+                        </ul>
+                    </label>
+                </a>
+            </div>
+        </td>
+        <td class="text-center">
+          <div class="">
+              <a class="p-0 d-flex">
+                  <label class="custom-control custom-checkbox ">
+                      <ul style="list-style-type:none;">
+                        <div>
+                              <li id="{{fields.controlName}}" style="margin-left: -80px;">
+                                  <input type="checkbox" name="websitecheckMenuMainHide"
+                                      [checked]="isCheckedHideFields || fields.HideFlag || fields.allFlag" [disabled]="viewFlag || fullFlag"
+                                       (click)="checkeUncheckSingleHideFields(fields,$event.target)" />
+                               </li>
+                          </div>
+                      </ul>
+                  </label>
+              </a>
+          </div>
+      </td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" tooltip="Save"
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"
+      (click)="saveFieldLevelData();modalRef.hide()"><b><i class="fa fa-save"></i></b> Save </button>
+
+    <button type="button" tooltip="Reset"
+      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="resetFields()"><b><i
+          class="fa fa-refresh"></i></b> Reset</button>
+
+  </div>
+</ng-template>
+
+
+<ng-template #fieldPopup>
+  <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body mb-0 pb-0 pt-0">
+      <div class="card mb-0">
+          <div class="card-body">
+              <div class="row clearfix">
+                  <div class="col-md-12">
+                      <label class="form-label"> <i class="fa fa-question-circle font-16 text-purple"></i> &nbsp;&nbsp;
+                        Field level data save
+                   </label>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="saveFieldLevelData();modalRef.hide()">Yes</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
   </div>
 </ng-template>

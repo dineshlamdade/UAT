@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,18 @@ public apiUrl = environment.baseUrl8091;
 public apiUrl1 = environment.baseUrl8083;
 public apiUrl2 = environment.baseUrl8088;
 public apiUrl3 = environment.baseUrl8082;
-constructor(private http : HttpClient ) { }
+  // authservice: any;
+
+
+constructor(private http : HttpClient ,private authService: AuthService) { }
+
+getEmpMasterDetails(id) {
+  let token = this.authService.getJwtToken()
+  const headers = new HttpHeaders()
+   .set('X-Authorization', token);
+  return this.http.get<any>(this.apiUrl3 + 'employee-fin-details/' + id ,{ headers: headers }  );
+  }
+// .................................Standard que ans api.....................................................................
 
 public getAll()
 {
@@ -32,6 +44,14 @@ public getModuleName()
 public getStandardKeywords()
 {
   return this.http.get<any>(this.apiUrl + 'StandardKeyword/Global');
+}
+public getKeywordsById(id)
+{
+  return this.http.get<any>(this.apiUrl + 'QuestionAnswer/getById/' + id);
+}
+public getKeywordsByTwoId(queAnsMasterId,empId)
+{
+  return this.http.get<any>(this.apiUrl + 'QuestionAnswer/getTemplateDataById/'+queAnsMasterId+'/'+empId);
 }
 // .................................Query Type master api.....................................................................
 public getAllSummaryData()
@@ -97,8 +117,54 @@ public getDeleteById(id)
 {
   return this.http.delete<any>(this.apiUrl + 'QueryGeneration/' +id);
 }
-public getEmpMasterDetails(id)
+// public getEmpMasterDetails(id)
+// {
+//   return this.http.get<any>(this.apiUrl3 + 'employee-fin-details/' +id );
+// }
+public addQuerywithDocs(data)
 {
-  return this.http.get<any>(this.apiUrl3 + 'employee-fin-details/' +id);
+  return this.http.post<any>(this.apiUrl + 'QueryGeneration',data);
 }
+public updateQuerywithDoc(data)
+{
+  return this.http.put<any>(this.apiUrl + 'QueryGeneration',data);
+}
+// .........................query-Communication api..........................................................
+public addQueryIteration(data)
+{
+  return this.http.post<any>(this.apiUrl + 'QueryIteration',data);
+}
+public updateQueryIteration(data)
+{
+  return this.http.put<any>(this.apiUrl + 'QueryIteration',data);
+}
+public getIterationdetailsbyQueryID(id)
+  {
+  return this.http.get<any>(this.apiUrl + 'QueryIteration/' +id);
+  }
+  // public documentInfoById(id) //not used
+  // {
+  // return this.http.get<any>(this.apiUrl + 'DocumentInfo/' +id);
+  // }
+  public getQueAnstemplistById(id)
+  {
+  return this.http.get<any>(this.apiUrl + 'QueryIteration/QA/' +id);
+  }
+  public getRootCasuelist()
+  {
+  return this.http.get<any>(this.apiUrl + 'QueryIteration/RootCause');
+  }
+  public getReplayDataById(id)
+  {
+  return this.http.get<any>(this.apiUrl + 'QueryIteration/reply/' +id);
+  }
+  public addressedTodropdown(data)
+  {
+  return this.http.post<any>(this.apiUrl2 + 'workflowMaster-report/approverDetails' , data);
+  }
+   // ........................employee List api.......................................
+  //  public getAllEmployeeDetails() {
+  //   return this.http.get<any>(this.apiUrl3 + '/employee-master')
+  //   }
+
 }

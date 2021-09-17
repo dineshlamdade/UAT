@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditorModule } from 'ckeditor4-angular';
-import { ToastrService } from 'ngx-toastr';
 import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { QueryService } from '../query.service';
 import { Table } from 'primeng/table';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
@@ -33,9 +32,14 @@ export class QueryComponent implements OnInit {
   allKeywords: any;
   isVisiblee:boolean=false;
   queryCode: any;
+  getKeywordsByIdData: any;
+  queAnsMasterId: any;
+  getKeywordsByTwoIdData: any;
+  // employeeMasterId: number;
+  employeeMasterId = 1;
 
-  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
-   )
+  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,
+    private alertService: AlertServiceService)
   {
     this.queryForm = this.formBuilder.group({
       // "createdBy": new FormControl(''),
@@ -56,9 +60,11 @@ export class QueryComponent implements OnInit {
 
     this.keyword.forEach(element => {
     this.mappingData.push(
-      [element.dbFieldName.toString(), '[' + element.displayName + ']']
+      [element.dbFieldName.toString(), '[' + '<<'+ element.displayName + '<<' +']']
     )
     })
+    console.log("keyword",this.keyword)
+
     this.fieldMap = new Map<string, string>(this.mappingData);
 
   }
@@ -77,17 +83,18 @@ export class QueryComponent implements OnInit {
       this.queryService.addQuery(this.queryForm.value).subscribe(res =>
         {
 
-          this.toster.success("",'Q&A Template Added Successfully');
+      this.alertService.sweetalertMasterSuccess('Q&A Template Added Successfully', '' );
+
           this.queryForm.controls['active'].setValue(true);
           this.getAllData();
-        })
-    }else{
-      this.updateQuery();
-      this.queryForm.controls['active'].setValue(true);
-    }
-    this.queryForm.reset();
-    if (this.queryForm.invalid) {
-      return;
+              })
+          }else{
+            this.updateQuery();
+            this.queryForm.controls['active'].setValue(true);
+          }
+          this.queryForm.reset();
+          if (this.queryForm.invalid) {
+            return;
   }
   }
   getAllData()
@@ -95,26 +102,38 @@ export class QueryComponent implements OnInit {
      this.queryService.getAll().subscribe( res =>{
        this.queryListData = res.data.results;
       this.queryCode = this.queryListData[4].code + 1;
+      this.queryListData.forEach(element => {
+      this.queAnsMasterId = element.queAnsMasterId;
+      console.log("this.queAnsMasterId",this.queAnsMasterId)
+      });
      })
      this.queryForm.controls['code'].setValue(this.queryCode);
+    //  this.getKeywordsByTwoId(this.queAnsMasterId, this.employeeMasterId);
+
   }
   updateQuery()
   {
     this.queryService.updateQuery(this.queryForm.value).subscribe(res =>
       {
-    this.toster.success("",'Q&A Template Updated Successfully');
+    this.alertService.sweetalertMasterSuccess('Q&A Template Updated Successfully', '' );
+
     this.getAllData();
       }
       )
   }
   editQuery(query)
   {
+    console.log("query",query)
     this.editflag = true;
     this.queryForm.enable();
     this.queryForm.patchValue(query);
     this.isVisible =true;
     this.isShown = false;
     this.queryForm.controls['code'].disable();
+    this.getKeywordsById(query.queAnsMasterId);
+    this.queAnsMasterId = query.queAnsMasterId;
+
+
   }
   viewQuery(query)
   {
@@ -129,7 +148,6 @@ export class QueryComponent implements OnInit {
     this.queryForm.enable();
     this.queryForm.reset();
     this.queryForm.controls['active'].setValue(true);
-
   }
 cancel()
 {
@@ -148,6 +166,22 @@ getStandardKeywords(){
     this.keyword = res.data.results;
   })
 }
+
+getKeywordsById(queAnsMasterId){
+this.queryService.getKeywordsById(queAnsMasterId).subscribe(res =>{
+  this.getKeywordsByIdData = res.data.results;
+})
+}
+// getKeywordsByTwoId(queAnsMasterId,employeeMasterId)
+// {
+
+//   this.queryService.getKeywordsByTwoId(this.queAnsMasterId,this.employeeMasterId).subscribe(res =>
+//   {
+//     this.getKeywordsByTwoIdData = res.data.results;
+//   })
+// }
+
+
 changeEvent($event) {
 
   if ($event.target.checked) {
@@ -172,6 +206,8 @@ drag(ev): void {
 }
 drop(ev): void {
   ev.preventDefault();
+  alert('text')
+
   const data = ev.dataTransfer.getData('text');
   const dataValue = this.fieldMap.get(data);
 
@@ -224,8 +260,5 @@ editorConfig = {
 
 };
 
-// paginate(event) {
-//   console.log(JSON.stringify(event));
-//   let pageIndex = event.first/event.rows + 1
-//   }
 }
+

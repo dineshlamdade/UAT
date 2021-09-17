@@ -39,6 +39,10 @@ export class GeneralComponent implements OnInit {
   public approvalWorkFlowSDMList = [];
   public approvalDerivedNameList = [];
 
+  deductionHeadData: any;
+  earningHeadData: any;
+
+
   constructor(public formBuilder : FormBuilder ,public loanMasterService :LoanMasterService ,public toster : ToastrService,
     private router: Router,public sanitizer: DomSanitizer,private datePipe: DatePipe,private modalService: BsModalService) {
 
@@ -83,7 +87,7 @@ export class GeneralComponent implements OnInit {
       loanCompletionDerivedName: new FormControl(""),
       disbursementRequired: new FormControl(""),
       partDisbursementPermissible: new FormControl(""),
-      
+
       // claimApprWorkflowId: new FormControl({ value: '', disabled: false }),
     })
 
@@ -368,7 +372,7 @@ export class GeneralComponent implements OnInit {
       this.generalLoanForm.controls['deviationAmount'].setValue(parseInt(this.generalLoanForm.controls['deviationAmount'].value))
       this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(parseInt(this.generalLoanForm.controls['deviationNoOfInstallment'].value))
       this.generalLoanForm.controls['deviationInterest'].setValue(parseInt(this.generalLoanForm.controls['deviationInterest'].value))
-      
+
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
       this.generalLoanForm.controls['loanApplicationTemplate'].setValue([null])
       localStorage.setItem('generalForm', JSON.stringify(this.generalLoanForm.value))
@@ -431,4 +435,20 @@ export class GeneralComponent implements OnInit {
       this.generalLoanForm.controls['noOfInstallmenttWithoutNode'].setValue(true)
     }
   }
+
+  getDeductionHead() {
+    this.loanMasterService.getDeductionHead().subscribe(
+      res => {
+        this.deductionHeadData = res
+      }
+    )
+  }
+  getEarningHead() {
+    this.loanMasterService.getEarningHead().subscribe(
+      res => {
+        this.earningHeadData = res
+      }
+    )
+  }
+
 }

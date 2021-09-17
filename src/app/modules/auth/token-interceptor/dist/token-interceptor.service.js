@@ -39,8 +39,10 @@ var TokenInterceptorService = /** @class */ (function () {
                 //     break;
                 //  }
                 case 404: {
-                    _this.alertService.sweetalertError('Data not found !!');
-                    break;
+                  // Commented by komal
+                  // this.alertService.sweetalertError('Data not found !!',);
+                  console.log('404 Data not found !!');
+                  break;
                 }
                 case 500: {
                     _this.alertService.sweetalertError('Failed To load Resource,  Please Try Again !!');

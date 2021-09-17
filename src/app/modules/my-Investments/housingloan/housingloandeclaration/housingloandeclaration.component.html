@@ -179,9 +179,9 @@
                     *ngIf="previousEmployeeList?.length">
                     <thead class="thead-dark">
                       <tr>
-                        <th rowspan="2" class="wd-4">
-                          <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                            <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
+                        <th rowspan="2" class="wd-6">
+                          <label class="custom-control custom-checkbox checkbox-center" placement="bottom"  tooltip="Select All">
+                            <input type="checkbox" class="custom-control-input"   [ngModel]="isCheckAll"
                               [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
                               (change)="checkUncheckAll(item, j)" />
                             <span class="custom-control-label"></span>
@@ -527,7 +527,7 @@
                     <tr>
                       <th scope="row"><span tooltip="1">1</span></th>
                       <td>
-                        <span tooltip="Bank Certificate"></span>Bank Certificate
+                        <span tooltip="Bank Provisional Certificate"></span>Bank Provisional Certificate
                       </td>
                       <td>
                         <span *ngFor="let item of bankCertificate; let j = index" class="text-orange"
@@ -549,8 +549,7 @@
                     <tr *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
                       <th scope="row"><span tooltip="2">2</span></th>
                       <td>
-                        <span tooltip="Rental Income Receipt"></span>Rental
-                        Income Receipt
+                        <span tooltip="Rent Receipt / Bank Statement"></span>Rent Receipt / Bank Statement
                       </td>
                       <td>
                         <span *ngFor="let item of rentalIncomeReceipt; let j = index" class="text-orange"
@@ -573,7 +572,7 @@
                     <tr *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
                       <th scope="row"><span tooltip="3">3</span></th>
                       <td>
-                        <span tooltip="Bank Certificate"></span>Municipal Tax
+                        <span tooltip="Municipal Tax Receipt"></span>Municipal Tax Receipt
                         Receipt
                       </td>
                       <td>
@@ -959,7 +958,7 @@
                       <thead class="thead-dark">
                         <tr>
                           <th rowspan="2" class="wd-4">
-                            <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                            <label class="custom-control custom-checkbox checkbox-center" placement="bottom"  tooltip="Select All">
                               <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
                                 [disabled]="isDisabled" name="select" value="isCheckAll{{ j }}"
                                 (change)="checkUncheckAll(item, j)" />

@@ -5,10 +5,6 @@ import { Router } from '@angular/router';
 import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
-export interface summaryTempList{
-  claimTemplateName;
-  description;
-}
 @Component( {
   selector: 'app-claim-form',
   templateUrl: './claim-form.component.html',
@@ -17,6 +13,7 @@ export interface summaryTempList{
 export class ClaimFormComponent implements OnInit {
   public claimForm: FormGroup;
   public claimGridDataList: Array<any> = [];
+  public selectedListElement: Array<any> = [];
   public dropdownListData: Array<any> = [];
   public submitted: boolean = false;
   public loading: boolean = false;
@@ -27,7 +24,6 @@ export class ClaimFormComponent implements OnInit {
   public isView: boolean = false;
   public isEdit: boolean = false;
   public claimTempId: number = 0;
-  claimTempList: summaryTempList[];
   constructor(
     public claimService: ClaimService,
     public fb: FormBuilder,
@@ -36,26 +32,26 @@ export class ClaimFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.claimForm = this.fb.group({
-      claimTempId: new FormControl(''),
-      claimTemplateName: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-      groupCompanyId: new FormControl(1),
-      active: new FormControl(true),
-      remark: new FormControl({ value: '', disabled: true }),
-      claimTemplateDetailsRequestDTO: new FormGroup({
-        claimTempDetailsId: new FormControl(''),
-        claimTempStandardFieldMasterId: new FormControl(''),
-        fieldName: new FormControl(''),
-        displayName: new FormControl(''),
-        enable: new FormControl(''),
-        mandatory: new FormControl(''),
-        dropDownValues: new FormControl({}),
-        sequence: new FormControl(''),
+    this.claimForm = this.fb.group( {
+      claimTempId: new FormControl( '' ),
+      claimTemplateName: new FormControl( '', Validators.required ),
+      description: new FormControl( '', Validators.required ),
+      groupCompanyId: new FormControl( '' ),
+      active: new FormControl( true ),
+      remark: new FormControl( { value: '', disabled: true } ),
+      claimTemplateDetailsRequestDTO: new FormGroup( {
+        claimTempStandardFieldMasterId: new FormControl( '' ),
+        fieldName: new FormControl( '' ),
+        displayName: new FormControl( '' ),
+        enable: new FormControl( '' ),
+        mandatory: new FormControl( '' ),
+        dropDownValues: new FormControl( {} ),
+        sequence: new FormControl( '' ),
         active: new FormControl(),
-        nature: new FormControl(''),
-      })
-    });
+        nature: new FormControl( '' ),
+
+      } )
+    } );
     this.getAllFields();
     this.getClaimTemplatesList();
     // this.isView=false;
@@ -70,51 +66,43 @@ export class ClaimFormComponent implements OnInit {
       if ( this.claimForm.invalid ) {
         return;
       }
-      let isAllSelectField = this.claimGridDataList.every(obj => obj.enable == false);
-      if (isAllSelectField) {
-        this.alertService.sweetalertWarning('Please select any field list')
+      if ( this.selectedListElement.length === 0 ) {
+        this.alertService.sweetalertWarning( 'Please select any field list' )
         return
-      }else{
-      console.log(this.claimForm.value);
-      let postData = this.claimForm.getRawValue();
-      this.claimGridDataList.forEach(element=>{
-        if(element.dropDownValues === null){
-          element.dropDownValues = [];
-        }
-      })
-      postData.claimTemplateDetailsRequestDTO = this.claimGridDataList;
-      console.log("postData", postData);
-      this.claimService.editClaimData(postData).subscribe((res) => {
-        console.log("Claim value", res);
-        // this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Claim form updated successfully", "");
-        console.log("templateUserId", this.templateUserIdList);
-      })
-      this.dropdownListData = [];
-    }
- this.resetForm();
-      
+      } else {
+        console.log( this.claimForm.value );
+        let postData = this.claimForm.getRawValue();
+        this.selectedListElement.forEach( element => {
+          if ( element.dropDownValues === null ) {
+            element.dropDownValues = [];
+          }
+        } )
+        postData.claimTemplateDetailsRequestDTO = this.selectedListElement;
+        console.log( "postData", postData );
+        this.claimService.editClaimData( postData ).subscribe( ( res ) => {
+          console.log( "Claim value", res );
+          // this.templateUserIdList.push(res.data.results[0]);
+          this.alertService.sweetalertMasterSuccess( "Register form updated successfully", "" );
+          console.log( "templateUserId", this.templateUserIdList );
+        } )
+      }
+      this.resetForm();
+
     } else {
       this.submitted = true;
       if ( this.claimForm.invalid ) {
         return;
       }
-      let isAllSelectField = this.claimGridDataList.every(obj => obj.enable == false);
-      if (isAllSelectField) {
-        this.alertService.sweetalertWarning('Please select any field list')
-        return
-      }else{
-      console.log(this.claimForm.value);
+      console.log( this.claimForm.value );
       let postData = this.claimForm.getRawValue();
-      postData.claimTemplateDetailsRequestDTO = this.claimGridDataList  ;
-      console.log("postData", postData);
-      this.claimService.postClaimData(postData).subscribe((res) => {
-        console.log("Claim value", res);
-        this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Claim form submitted successfully", "");
-        console.log("templateUserId", this.templateUserIdList);
-      })
-    }
+      postData.claimTemplateDetailsRequestDTO = this.selectedListElement;
+      console.log( "postData", postData );
+      this.claimService.postClaimData( postData ).subscribe( ( res ) => {
+        console.log( "Claim value", res );
+        this.templateUserIdList.push( res.data.results[0] );
+        this.alertService.sweetalertMasterSuccess( "Register form submitted successfully", "" );
+        console.log( "templateUserId", this.templateUserIdList );
+      } )
       this.resetForm();
     }
   }
@@ -148,8 +136,9 @@ export class ClaimFormComponent implements OnInit {
       this.claimForm.disable();
       //  this.claimGridDataList = [];
       this.claimGridDataList = res.data.results[0].claimTemplateDetailsResponseDTO;
+      // this.selectedListElement = res.data.results[0].claimTemplateDetailsResponseDTO;
       this.isView = true;
-      console.log("this.claimGridDataList", this.claimGridDataList)
+      console.log( "this.selectedListElement", this.selectedListElement )
 
     } )
 
@@ -160,16 +149,15 @@ export class ClaimFormComponent implements OnInit {
     this.claimService.getClaimTemplateViewById( claimTempId ).subscribe( ( response ) => {
       console.log( response );
       let claimTemplateList = response.data.results[0];
-      console.log(claimTemplateList);
-      this.claimForm.patchValue(claimTemplateList);
-     // this.claimGridDataList = res.data.results[0].claimTemplateDetailsResponseDTO;
-    //  this.claimGridDataList = response.data.results[0].claimTemplateDetailsResponseDTO;
-        this.isEdit = true;
-      // console.log("this.claimGridDataList", this.claimGridDataList)
-      for (let i = 0; i < response.data.results[0].claimTemplateDetailsResponseDTO.length; i++) {
+      console.log( claimTemplateList );
+      this.claimForm.patchValue( claimTemplateList );
+      // this.claimGridDataList = res.data.results[0].claimTemplateDetailsResponseDTO;
+      this.selectedListElement = response.data.results[0].claimTemplateDetailsResponseDTO;
+      this.isEdit = true;
+      console.log( "this.selectedListElement", this.selectedListElement )
+      for ( let i = 0; i < response.data.results[0].claimTemplateDetailsResponseDTO.length; i++ ) {
         const myobj = {
-          claimTempStandardFieldMasterId: response.data.results[0].claimTemplateDetailsResponseDTO[i].claimTempStandardFieldMasterId,
-          claimTempDetailsId: response.data.results[0].claimTemplateDetailsResponseDTO[i].claimTempDetailsId,
+          regTempStandardFieldId: response.data.results[0].claimTemplateDetailsResponseDTO[i].claimTempStandardFieldMasterId,
           fieldName: response.data.results[0].claimTemplateDetailsResponseDTO[i].fieldName,
           displayName: response.data.results[0].claimTemplateDetailsResponseDTO[i].displayName,
           enable: response.data.results[0].claimTemplateDetailsResponseDTO[i].enable,
@@ -179,8 +167,8 @@ export class ClaimFormComponent implements OnInit {
           mandatory: response.data.results[0].claimTemplateDetailsResponseDTO[i].mandatory,
           nature: response.data.results[0].claimTemplateDetailsResponseDTO[i].nature,
           remark: response.data.results[0].claimTemplateDetailsResponseDTO[i].remark,
-          active: response.data.results[0].claimTemplateDetailsResponseDTO[i].active,
-          // active: 1,
+          // isActive: response.data.results[0].claimTemplateDetailsResponseDTO[i].isActive,
+          isActive: 1,
         };
         let s = this.claimGridDataList.findIndex( o => o.fieldName == response.data.results[0].claimTemplateDetailsResponseDTO[i].fieldName );
         this.claimGridDataList[s] = myobj;
@@ -200,49 +188,27 @@ export class ClaimFormComponent implements OnInit {
     this.claimService.getClaimTemplateList().subscribe( ( res ) => {
       console.log( res );
       this.templateUserIdList = res.data.results;
-      this.claimTempList = this.templateUserIdList;
       console.log( "191", this.templateUserIdList );
     } )
   }
 
   // ...........................Select table list data ......................
 
-  checkedListData(index, isChecked, fieldName) {
-    console.log("hellow", index, isChecked, fieldName);
-    console.log(this.claimGridDataList[index]);
-    // this.registerGridDataList[index].enable = isChecked;
-
-    const indexValue = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
-    console.log("indexvalue", indexValue);
-    this.claimGridDataList[indexValue].enable = isChecked;
-    this.claimGridDataList[indexValue].mandatory = false;
-    // this.claimGridDataList[indexValue].claimForm = false;
-    this.claimGridDataList[indexValue].dropDownValues = [];
-    if (!isChecked) {
-      //console.log("registerGridDataTempList::",this.registerGridDataTempList);
-    //  const tempIndexValue = this.registerGridDataTempList.findIndex(getIndex => getIndex.fieldName == fieldName);
-  
-      this.claimGridDataList[indexValue].displayName = '';
-    //  console.log("this.registerGridDataTempList[tempIndexValue].displayName", this.registerGridDataTempList[tempIndexValue].displayName)
-
-    }
-    
+  checkedListData( index, isChecked, fieldName ) {
     // console.log(index, isChecked, claimId);
-    // console.log(this.claimGridDataList[index]);
-    // this.claimGridDataList[index].enable = isChecked;
-    // if (isChecked == true) {
-    //   let listData = this.claimGridDataList[index];
-    //   listData.mandatory = false;
-    //   listData.dropDownValues = [];
-    //   this.dropdownListData = [];
-    //   this.claimGridDataList.push(listData);
-    //   console.log("myvalue", this.claimGridDataList);
-    // } else {
-    //   const indexValue = this.claimGridDataList.indexOf(fieldName);
-    //   this.claimGridDataList.splice(indexValue, 1);
-    // }
-    // console.log("selected value", this.claimGridDataList);
-    // console.log("claimGridDataList value", this.claimGridDataList);
+    console.log( this.claimGridDataList[index] );
+    this.claimGridDataList[index].enable = isChecked;
+    if ( isChecked == true ) {
+      let listData = this.claimGridDataList[index];
+      listData.mandatory = false;
+      listData.dropDownValues = [];
+      this.selectedListElement.push( listData );
+      console.log( "myvalue", this.selectedListElement );
+    } else {
+      const indexValue = this.selectedListElement.indexOf( fieldName );
+      this.selectedListElement.splice( indexValue, 1 );
+    }
+    console.log( "selected value", this.selectedListElement );
   }
 
   // .................... Change Event Pass Value............
@@ -250,22 +216,22 @@ export class ClaimFormComponent implements OnInit {
     console.log( index, changeValue, fieldName );
     if ( changeValue == "" ) {
       let falseValue = "false";
-      let indexData = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
-      this.claimGridDataList[indexData].mandatory = JSON.parse(falseValue.toLowerCase());
-      console.log("mindatory index2", this.claimGridDataList);
+      let indexData = this.selectedListElement.findIndex( getIndex => getIndex.fieldName == fieldName );
+      this.selectedListElement[indexData].mandatory = JSON.parse( falseValue.toLowerCase() );
+      console.log( "mindatory index2", this.selectedListElement );
     } else {
-      let indexData = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
-      this.claimGridDataList[indexData].mandatory = JSON.parse(changeValue.toLowerCase());
-      console.log("mindatory index", this.claimGridDataList);
+      let indexData = this.selectedListElement.findIndex( getIndex => getIndex.fieldName == fieldName );
+      this.selectedListElement[indexData].mandatory = JSON.parse( changeValue.toLowerCase() );
+      console.log( "mindatory index", this.selectedListElement );
     }
   }
 
 
-  displayChangeEvt(index, changeValue, fieldName) {
-    console.log(index, changeValue, fieldName);
-    let indexData = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
-    this.claimGridDataList[indexData].displayName = changeValue;
-    console.log("Display change", this.claimGridDataList);
+  displayChangeEvt( index, changeValue, fieldName ) {
+    console.log( index, changeValue, fieldName );
+    let indexData = this.selectedListElement.findIndex( getIndex => getIndex.fieldName == fieldName );
+    this.selectedListElement[indexData].displayName = changeValue;
+    console.log( "Display change", this.selectedListElement );
   }
 
 
@@ -274,22 +240,22 @@ export class ClaimFormComponent implements OnInit {
     this.dropdownListData.push( dropList );
     console.log( "dropdownListData", this.dropdownListData );
     this.dropListModel = '';
-    let indexField = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == dropdownListid)
-    this.claimGridDataList[indexField].dropDownValues = this.dropdownListData;
+    let indexField = this.selectedListElement.findIndex( getIndex => getIndex.fieldName == dropdownListid )
+    this.selectedListElement[indexField].dropDownValues = this.dropdownListData;
   }
 
-  getDropdownListRemove(index, dropdownListid) {
-    this.dropdownListData.splice(index, 1);
-    console.log(this.dropdownListData);
-    let indexField = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == dropdownListid)
-    this.claimGridDataList[indexField].dropDownValues = this.dropdownListData;
+  getDropdownListRemove( index, dropdownListid ) {
+    this.dropdownListData.splice( index, 1 );
+    console.log( this.dropdownListData );
+    let indexField = this.selectedListElement.findIndex( getIndex => getIndex == dropdownListid )
+    this.selectedListElement[indexField].dropDownValues = this.dropdownListData;
   }
-  resetForm(){
-    window.scrollTo(0, 0);
-    this.claimGridDataList = [];
-    this.claimForm.reset({
-      active: new FormControl(true),
-    });
+  resetForm() {
+    window.scrollTo( 0, 0 );
+    this.selectedListElement = [];
+    this.claimForm.reset( {
+      active: new FormControl( true ),
+    } );
     this.getAllFields();
     this.isView = false;
     this.isEdit = false;

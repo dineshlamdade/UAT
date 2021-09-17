@@ -1,0 +1,870 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- <div class="row">
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0" style="margin-bottom: 1.25rem;box-shadow: 0 1px 1px rgb(0 0 0 / 5%);align-items: stretch!important;flex-direction: row!important;border: 0!important;position: relative;
+                              display: flex;
+                              min-width: 0;
+                              word-wrap: break-word;
+                              background-color: #fff;
+                              background-clip: border-box;
+                              border-radius: .25rem;">
+                                        <div class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left" style="background-color: #309c3e;
+                                color: #fff!important;align-items: center!important;justify-content: center!important;display: flex!important;border-top-left-radius: .25rem!important;border-bottom-left-radius: .25rem!important;"><em class="fa fa-address-book-o font-30"></em></div>
+                                        <div class="col-8 py-3 bg-primary rounded-right" style="background-color: #38b449!important;padding-bottom: 1rem!important;    padding-top: 1rem!important;border-bottom-right-radius: .25rem!important;border-top-right-radius: .25rem!important;text-align: center;
+                                color: #fff!important;">
+                                            <div class="h2 mt-0">{{totalUsersCount}}</div>
+                                            <div class="text-uppercase" style="text-transform: uppercase!important;font-size: 12px;
+                                            font-weight: 900;
+                                  ">Total Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0" style="margin-bottom: 1.25rem;box-shadow: 0 1px 1px rgb(0 0 0 / 5%);align-items: stretch!important;flex-direction: row!important;border: 0!important;position: relative;
+                            display: flex;
+                            min-width: 0;
+                            word-wrap: break-word;
+                            background-color: #fff;
+                            background-clip: border-box;
+                            border-radius: .25rem;">
+                                        <div class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left" style="background-color: #309c3e;
+                              color: #fff!important;align-items: center!important;justify-content: center!important;display: flex!important;border-top-left-radius: .25rem!important;border-bottom-left-radius: .25rem!important;"><em class="fa fa-user-times font-30"></em></div>
+                                        <div class="col-8 py-3 bg-primary rounded-right" style="background-color: #38b449!important;padding-bottom: 1rem!important;    padding-top: 1rem!important;border-bottom-right-radius: .25rem!important;border-top-right-radius: .25rem!important;text-align: center;
+                              color: #fff!important;">
+                                            <div class="h2 mt-0">{{inactiveUserCount}}</div>
+                                            <div class="text-uppercase" style="text-transform: uppercase!important;font-size: 12px;
+                                            font-weight: 900;
+                                ">In-Active Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0" style="margin-bottom: 1.25rem;box-shadow: 0 1px 1px rgb(0 0 0 / 5%);align-items: stretch!important;flex-direction: row!important;border: 0!important;position: relative;
+                          display: flex;
+                          min-width: 0;
+                          word-wrap: break-word;
+                          background-color: #fff;
+                          background-clip: border-box;
+                          border-radius: .25rem;">
+                                        <div class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left" style="background-color: #309c3e;
+                            color: #fff!important;align-items: center!important;justify-content: center!important;display: flex!important;border-top-left-radius: .25rem!important;border-bottom-left-radius: .25rem!important;"><em class="fa fa-user-plus font-30"></em></div>
+                                        <div class="col-8 py-3 bg-primary rounded-right" style="background-color: #38b449!important;padding-bottom: 1rem!important;    padding-top: 1rem!important;border-bottom-right-radius: .25rem!important;border-top-right-radius: .25rem!important;text-align: center;
+                            color: #fff!important;">
+                                            <div class="h2 mt-0">{{activeUserCount}}</div>
+                                            <div class="text-uppercase" style="text-transform: uppercase!important;font-size: 12px;
+                                            font-weight: 900;
+                              ">Active Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0" style="margin-bottom: 1.25rem;box-shadow: 0 1px 1px rgb(0 0 0 / 5%);align-items: stretch!important;flex-direction: row!important;border: 0!important;position: relative;
+                        display: flex;
+                        min-width: 0;
+                        word-wrap: break-word;
+                        background-color: #fff;
+                        background-clip: border-box;
+                        border-radius: .25rem;">
+                                        <div class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left" style="background-color: #309c3e;
+                          color: #fff!important;align-items: center!important;justify-content: center!important;display: flex!important;border-top-left-radius: .25rem!important;border-bottom-left-radius: .25rem!important;"><em class="fa fa-lock font-30"></em></div>
+                                        <div class="col-8 py-3 bg-primary rounded-right" style="background-color: #38b449!important;padding-bottom: 1rem!important;    padding-top: 1rem!important;border-bottom-right-radius: .25rem!important;border-top-right-radius: .25rem!important;text-align: center;
+                          color: #fff!important;">
+                                            <div class="h2 mt-0">{{lockUserCount}}</div>
+                                            <div class="text-uppercase" style="text-transform: uppercase!important;font-size: 12px;
+                                            font-weight: 900;
+                            ">Lock Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0" style="margin-bottom: 1.25rem;box-shadow: 0 1px 1px rgb(0 0 0 / 5%);align-items: stretch!important;flex-direction: row!important;border: 0!important;position: relative;
+                      display: flex;
+                      min-width: 0;
+                      word-wrap: break-word;
+                      background-color: #fff;
+                      background-clip: border-box;
+                      border-radius: .25rem;">
+                                        <div class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left" style="background-color: #309c3e;
+                        color: #fff!important;align-items: center!important;justify-content: center!important;display: flex!important;border-top-left-radius: .25rem!important;border-bottom-left-radius: .25rem!important;"><em class="fa fa-users font-30"></em></div>
+                                        <div class="col-8 py-3 bg-primary rounded-right" style="background-color: #38b449!important;padding-bottom: 1rem!important;    padding-top: 1rem!important;border-bottom-right-radius: .25rem!important;border-top-right-radius: .25rem!important;text-align: center;
+                        color: #fff!important;">
+                                            <div class="h2 mt-0">{{userGroupNameL}}</div>
+                                            <div class="text-uppercase" style="text-transform: uppercase!important;font-size: 12px;
+                                            font-weight: 900;
+                          ">User Group</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0" style="margin-bottom: 1.25rem;box-shadow: 0 1px 1px rgb(0 0 0 / 5%);align-items: stretch!important;flex-direction: row!important;border: 0!important;position: relative;
+                    display: flex;
+                    min-width: 0;
+                    word-wrap: break-word;
+                    background-color: #fff;
+                    background-clip: border-box;
+                    border-radius: .25rem;">
+                                        <div class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left" style="background-color: #309c3e;
+                      color: #fff!important;align-items: center!important;justify-content: center!important;display: flex!important;border-top-left-radius: .25rem!important;border-bottom-left-radius: .25rem!important;"><em class="fa fa-black-tie font-30"></em></div>
+                                        <div class="col-8 py-3 bg-primary rounded-right" style="background-color: #38b449!important;padding-bottom: 1rem!important;    padding-top: 1rem!important;border-bottom-right-radius: .25rem!important;border-top-right-radius: .25rem!important;text-align: center;
+                      color: #fff!important;">
+                                            <div class="h2 mt-0">{{userRoleName}}</div>
+                                            <div class="text-uppercase" style="text-transform: uppercase!important;font-size: 12px;
+                                            font-weight: 900;
+                        ">User Role</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0 text-number-card card-height"
+                                    >
+                                        <div
+                                            class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left text-number-card-icon">
+                                            <em class="fa fa-address-book-o font-30"></em>
+                                        </div>
+                                        <div class="col-8 py-3 bg-primary rounded-right text-number-card-text">
+                                            <div class="h2 mt-26">{{totalUsersCount}}</div>
+                                            <div class="text-uppercase font-12 font900 
+      ">Total Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0 text-number-card card-height">
+                                        <div
+                                            class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left text-number-card-icon">
+                                            <em class="fa fa-times font-30"></em>
+                                        </div>
+                                        <div class="col-8 py-3 bg-primary rounded-right text-number-card-text">
+                                            <div class="h2 mt-16">{{inactiveUserCount}}</div>
+                                            <div class="text-uppercase font-12 font900 
+  ">In-Active Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0 text-number-card card-height">
+                                        <div
+                                            class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left text-number-card-icon">
+                                            <em class="fa fa-user-plus font-30"></em>
+                                        </div>
+                                        <div class="col-8 py-3 bg-primary rounded-right text-number-card-text">
+                                            <div class="h2 mt-16">{{activeUserCount}}</div>
+                                            <div class="text-uppercase font-12 font900 
+  ">Active Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0 text-number-card card-height">
+                                        <div
+                                            class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left text-number-card-icon">
+                                            <em class="fa fa-lock font-30"></em>
+                                        </div>
+                                        <div class="col-8 py-13 bg-primary rounded-right text-number-card-text">
+                                            <div class="h2 mt-16">{{lockUserCount}}</div>
+                                            <div class="text-uppercase font-12 font900 
+  ">Lock Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0 text-number-card card-height">
+                                        <div
+                                            class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left text-number-card-icon">
+                                            <em class="fa fa-users font-30"></em>
+                                        </div>
+                                        <div class="col-8 py-3 bg-primary rounded-right text-number-card-text">
+                                            <div class="h2 mt-16">{{userGroupNameL}}</div>
+                                            <div class="text-uppercase font-12 font900 ">User Group</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card flex-row align-items-center align-items-stretch border-0 text-number-card card-height">
+                                        <div
+                                            class="col-4 d-flex align-items-center bg-primary-dark justify-content-center rounded-left text-number-card-icon">
+                                            <em class="fa fa-black-tie font-30"></em>
+                                        </div>
+                                        <div class="col-8 py-3 bg-primary rounded-right text-number-card-text">
+                                            <div class="h2 mt-16">{{userRoleName}}</div>
+                                            <div class="text-uppercase font-12 font900 
+  ">User Role</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form [formGroup]="userDashBoardForm" (ngSubmit)="onSubmit()">
+                                <div class="box-line-border radius-10 p-3 mt-3">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label class="form-label mt-1 mb-0">Group Name</label>
+                                            <select  class="form-control custom-select" formControlName="companyGroupName" (change)="onSelectCompanyName($event.target.value)">
+                                                <option value="">select</option>
+                                              <option *ngFor="let companyGroupName of groupNamesData" [value]="companyGroupName.companyGroupMasterId"  >
+                                                  {{companyGroupName.companyGroupName}}
+                                                </option>
+                                             </select>
+                                          </div>
+                                          
+                                            <div class="col-md-2">
+                                              <label class="form-label mt-1 mb-0">Company Name</label>
+                                              <ng-multiselect-dropdown
+                                                [placeholder]="'None Selected'"
+                                                [settings]="dropdownSettings"
+                                                [data]="companyNameList"
+                                                (onSelect)="onItemSelect($event)"
+                                                formControlName="companyName"
+                                              >
+                                              </ng-multiselect-dropdown>
+                                            </div>
+                                          
+                                          <div class="col-md-2">
+                                            <label class="form-label mt-1 mb-0">User Group</label>
+                                            <select name="userName" class="form-control custom-select" formControlName="userName" (change)="onSelectGroupNameSelect($event.target.value)">
+                                              <option value="">select</option>
+                                              <option *ngFor="let userGroupName of userGroupNameList" [value]="userGroupName.userGroupId" >
+                                                  {{userGroupName.groupName}}
+                                                </option>
+                                             </select>
+                                          </div>
+                                          <!-- <div class="col-md-2">
+                                            <label class="form-label mt-1 mb-0">User Group</label>
+                                            <select name="userName" class="form-control custom-select" formControlName="userName" (change)="onSelectGroupName($event.target.value)">
+                                              <option value="">select</option>
+                                              <option *ngFor="let userGroupName of userGroupList" [value]="userGroupName.userGroupId">
+                                                  {{userGroupName.groupName}}
+                                                </option>
+                                             </select>
+                                          </div>
+                                          <div class="col-md-2">
+                                            <label class="form-label mt-1 mb-0">User Role</label>
+                                            <select name="roleName" class="form-control custom-select" formControlName="roleName">
+                                              <option value="">select</option>
+                                              <option *ngFor="let userRoleName of userRoleData" [value]="userRoleName.userRoleId">
+                                                  {{userRoleName.roleName}}
+                                                </option>
+                                              </select>
+                                          </div> -->
+                                          <div class="col-md-1">
+                                            <button type="button" tooltip="Go" class="mt-15 custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                            (click)="allGroupSelect()"><b><i class="fa fa-arrow-right"></i> </b> Go </button>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" tooltip="Reset" class="mt-15 custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"
+                                            (click)="resetForm()"><b><i class="fa fa-refresh"></i></b>Reset </button>
+                                        </div>
+                                    
+                                    </div>
+                                  </div>
+                                </form>
+                            
+                            <div class="row mt-20 mb-10">
+                                <div class="col-md-12">
+             <label class="form-label mb-0  mt-2 float-left">All Users &nbsp;<span class="text-dark-green font-14 font-bold">{{totalUsersCount}}</span></label>
+                                    <div class="float-right d-flex justify-content-end">
+                                        <button type="button" tooltip="Assign User Group & Role"
+                                         class="custom_button custom_btn btn-bg-green
+                                         btn-labeled btn-labeled-left mr-10" 
+                                         (click)="AssignedGroup(template1)"><b><i class="fa fa-user"></i></b> Assign User Group & Role </button>
+
+                                        <button type="button" tooltip="Welcome Mail" class="custom_button custom_btn btn-bg-green
+                                        btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-envelope"></i></b> Welcome Mail  </button>
+                                        <button type="button" tooltip="Forgot Password" class="custom_button custom_btn btn-bg-green
+                                        btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-key"></i></b> Forgot Password </button>
+                                        <button type="button" tooltip="Reset Password" class="custom_button custom_btn btn-bg-green
+                                        btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-refresh"></i></b>Reset Password </button>
+                                        <!-- <button type="button" tooltip="Filter" class="bg-teal-400 btn btn-sm mr-10" (click)="display=true">
+                                            <b><i class="fa fa-filter"></i></b> </button> -->
+                                            <b><i class="fa fa-filter font-30  text-purple" (click)="display=true"></i></b>
+                                       
+
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <div class="row">
+                                <div class="col-md-12 m-10 p-0">
+<!-- <pre>{{employeeDataByGroupId | json}}</pre> -->
+                                    <!-- <p-table [value]="summarydata"> -->
+                                        <!-- <p-table #dt [value]="summarydata" [rows]="10" [showCurrentPageReport]="true"
+                                    [lazy]="true" [totalRecords]="totalPages" [paginator]="true"
+                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                        [rowsPerPageOptions]="[10,25,50,100,200]" (onPage)="paginate($event)"> -->
+
+                                        <p-table #dt1 [value]="summarydata"  
+                                       [rows]="10" [showCurrentPageReport]="true" 
+                                    [totalRecords]= "totalPages"  [lazy]="true"   [loading]="loading"
+                              [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                              [rowsPerPageOptions]="[10,25,50,100,200]"
+                               (onPage)="paginate($event)"
+                               [globalFilterFields]="[
+                               'employeeCode',
+                               'userName',
+                               'emailId',
+                               'mobileNumber',
+                              'userIsActive']" >
+                              <ng-template pTemplate="caption">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="float-right">
+                                            <div class="d-flex">
+                                                <span
+                                                class="p-input-icon-left p-ml-auto">
+                                                <i class="pi pi-search"
+                                                    style="top: 9px !important; right: 59px;"></i>
+                                                    <input
+                                                    pInputText
+                                                    type="text"
+                                                    (input)="
+                                                      dt1.filterGlobal(
+                                                        $event.target.value,
+                                                        'contains'
+                                                      )
+                                                    "
+                                                    placeholder="Search"
+                                                  />
+                
+                                            </span>
+                                            <i
+                                                class="fa fa-file-excel-o text-dark-green   fa-2x ml-2  mr-2"
+                                                (click)="exportApprovalAllSummaryAsExcel()"></i>
+                                            </div>
+                
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </ng-template>
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th class="text-center">
+                                                    <!-- <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                                                <input type="checkbox"  class="custom-control-input" name="select"/> <span class="custom-control-label"></span>
+                                           </label> -->
+
+                                                </th>
+                                                <th class="wd-15 text-center">
+                                                    <div class="p-d-flex p-jc-center p-ai-center">
+                                                        Employee Code
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="employeeCode" pSortableColumn="employeeCode"></p-sortIcon>
+                                                            <p-columnFilter field="employeeCode" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="wd-20 text-center">
+                                                    <div class="p-d-flex p-jc-center p-ai-center">
+                                                        Employee Name
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="userName" pSortableColumn="userName"></p-sortIcon>
+                                                            <p-columnFilter field="userName" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                             
+                                                <th class="wd-20 text-center">
+                                                    <div class="p-d-flex p-jc-center p-ai-center">
+                                                        Email Id
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="emailId" pSortableColumn="emailId"></p-sortIcon>
+                                                            <p-columnFilter field="emailId" display="menu" class="p-ml-auto">
+
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="wd-15 text-center">
+                                                    <div class="p-d-flex p-jc-center p-ai-center">
+                                                        Mobile No.
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="mobileNumber" pSortableColumn="mobileNumber"></p-sortIcon>
+                                                            <p-columnFilter field="mobileNumber" display="menu" class="p-ml-auto">
+
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            
+                                                <th class="wd-15 text-center">
+                                                    <div class="p-d-flex p-jc-center p-ai-center">
+                                                        Status
+                                                        <div class="Sort_Filter_Position">
+                                                            <p-sortIcon field="userIsActive" pSortableColumn="userIsActive"></p-sortIcon>
+                                                            <p-columnFilter field="userIsActive" display="menu" class="p-ml-auto">
+
+                                                            </p-columnFilter>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th class="wd-10">
+
+                                                    Action
+
+                                                </th>
+
+
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-summarydata let-rowIndex="rowIndex">
+                                            <tr class="p-selectable-row">
+
+                                                <td class="text-center"> <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                                              <input type="checkbox"  class="custom-control-input" name="select" [checked]="empcheck" (change)="onSelectAssginData($event.target,summarydata)"/> 
+                                              <span class="custom-control-label"></span>
+                                         </label></td>
+                                                <td class="bg-color-light_gray"><label class="mb-0">{{summarydata.employeeCode}}</label></td>
+                                                <td class="bg-color-light_gray"><label class="mb-0 text-link" (click)="AssignRoleAndUserGroup(template,summarydata.globalUserMasterId)">{{summarydata.userName}} </label></td>
+                                                <!-- <td class="bg-color-light_gray"><label class="mb-0">{{summarydata.companyName}} </label></td> -->
+                                                <td class="bg-color-light_gray"><label class="mb-0">{{summarydata.emailId}} </label></td>
+                                                <td class="bg-color-light_gray"><label class="mb-0">{{summarydata.mobileNumber}} </label></td>
+
+
+                                                <!-- <td class="bg-color-light_gray"><label class="mb-0">{{summarydata.groupName}} </label></td> -->
+                                                <!-- <td class="bg-color-light_gray"><label class="mb-0">{{summarydata.roleName}} </label></td> -->
+                                                <td class="bg-color-light_gray"><label  *ngIf = "summarydata.userIsActive == true" class="mb-0">Active </label>
+                                                    <label  *ngIf = "summarydata.userIsActive == false" class="mb-0">InActive </label></td>
+
+                                                <td class="wd-5 text-center">
+                                                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit" (click)="editRoleUsers(template1,summarydata,summarydata.globalUserMasterId)"></i> &nbsp;&nbsp;
+                                                    <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View" (click)="viewSummary(template1,summarydata,summarydata.globalUserMasterId)"></i> &nbsp;&nbsp;
+                                                    <!-- <i class="fa fa-user-circle-o font-16 text-blue cursor-pointer" tooltip="Role Asign" (click)="AssignRolePrivilege(template,summarydata.globalUserMasterId)"></i> &nbsp;&nbsp; -->
+
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="9" class="font-14 font500 text-center text-red"><span>No Data
+                                                  Available</span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <!-- <p-paginator [rows]="10" [totalRecords]="120" [rowsPerPageOptions]="[10,20,30]" (onPage)="paginate($event)"></p-paginator> -->
+                                    </p-table>
+                           
+     
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+                    <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top" (click)="scrollToTop()">
+               <i class="fa fa-angle-double-up text-white font-18"></i>
+               </button>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>
+
+
+
+
+<ng-template #template>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Assgin  User Group & User Role</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+    aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-12 pl-0 pr-0">
+                      <div class="border-dark-card radius-10">
+                    
+                     <div class="row ml-3 mb-3">
+                          <div class="col-md-3">
+                            <label class="form-label  mb-0">Employee Name</label>
+                            <label class="font-12 text-ellipsis  mb-0"><input type="text" class="form-control" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}"
+                                disabled></label>
+                          </div>
+        
+                          <div class="col-md-4">
+                            <label class="form-label mb-0">Email</label>
+                            <label class="font-12 text-ellipsis  mb-0"><input type="text" class="form-control" [(ngModel)]="emailId" [ngModelOptions]="{standalone: true}"
+                                disabled></label>
+                          </div>
+                         
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="row">
+                   
+                    <div class="col-md-12">
+
+                        <p-table #dt1 [value]="asignRoleSummary" [paginator]="true" [rows]="10" 
+                        [showCurrentPageReport]="true"
+                    
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+                         totalRecords={{asignRoleSummary.length}}
+                         [rowsPerPageOptions]="[10,25,50,100,200]"
+                        [globalFilterFields]="[
+                        'companyGroupCode',
+                        'companyGroupName',
+                        'companyCode',
+                        'companyName',
+                       'groupName',
+                       'roleName'
+                      ]"
+                       >
+                       <ng-template pTemplate="caption">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="float-right">
+                                    <div class="d-flex">
+                                        <span
+                                        class="p-input-icon-left p-ml-auto">
+                                        <i class="pi pi-search"
+                                            style="top: 9px !important; right: 59px;"></i>
+                                        <input pInputText type="text"
+                                            (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                            placeholder="Search " />
+    
+                                    </span>
+                                    <i
+                                        class="fa fa-file-excel-o text-dark-green   fa-2x ml-2  mr-2"
+                                        (click)="exportApprovalSummaryAssignGroupAsExcel()"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  
+                                    <th class="wd-15">
+                                        <div class="p-d-flex p-jc-center p-ai-center">
+                                            Group Company Code &nbsp;
+                                            <div class="Sort_Filter_Position d-flex ">
+                                                <p-sortIcon field="companyGroupCode" pSortableColumn="companyGroupCode"></p-sortIcon> 
+                                                <p-columnFilter field="companyGroupCode" display="menu" class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="wd-15">
+                                        <div class="p-d-flex p-jc-center p-ai-center">
+                                            Group Name &nbsp;&nbsp;
+                                            <div class="Sort_Filter_Position d-flex ">
+                                                <p-sortIcon field="companyGroupName" pSortableColumn="companyGroupName"></p-sortIcon>
+                                                <p-columnFilter field="companyGroupName" display="menu" class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="wd-15">
+                                        <div class="p-d-flex p-jc-center p-ai-center">
+                                            Company code &nbsp;&nbsp;
+                                            <div class="Sort_Filter_Position d-flex ">
+                                                <p-sortIcon field="companyCode" pSortableColumn="companyCode"></p-sortIcon>
+                                                <p-columnFilter field="companyCode" display="menu" class="p-ml-auto">
+
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="wd-15">
+                                        <div class="p-d-flex p-jc-center p-ai-center">
+                                            Company Name &nbsp;&nbsp;
+                                            <div class="Sort_Filter_Position d-flex ">
+                                                <p-sortIcon field="companyName" pSortableColumn="companyName"></p-sortIcon>
+                                                <p-columnFilter field="companyName" display="menu" class="p-ml-auto">
+
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="wd-15">
+                                        <div class="p-d-flex p-jc-center p-ai-center">
+                                          User Group &nbsp;&nbsp;
+                                            <div class="Sort_Filter_Position d-flex ">
+                                                <p-sortIcon field="groupName" pSortableColumn="groupName"></p-sortIcon>
+                                                <p-columnFilter field="groupName" display="menu" class="p-ml-auto">
+
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="wd-15">
+                                        <div class="p-d-flex p-jc-center p-ai-center">
+                                            User Role &nbsp;&nbsp;
+                                            <div class="Sort_Filter_Position d-flex ">
+                                                <p-sortIcon field="roleName" pSortableColumn="roleName"></p-sortIcon>
+                                                <p-columnFilter field="roleName" display="menu" class="p-ml-auto">
+
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-asignRoleSummary>
+                                <tr class="p-selectable-row">
+                                    <td class="bg-color-light_gray"><label class="mb-0 text-ellipsis">{{asignRoleSummary.companyGroupCode}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="mb-0 text-ellipsis">{{asignRoleSummary.companyGroupName}} </label></td>
+                                    <td class="bg-color-light_gray"><label class="mb-0 text-ellipsis">{{asignRoleSummary.companyCode}} </label></td>
+                                    <td class="bg-color-light_gray"><label class="mb-0 text-ellipsis">{{asignRoleSummary.companyName}} </label></td>
+                                    <td class="bg-color-light_gray"><label class="mb-0 text-ellipsis">{{asignRoleSummary.groupName}} </label></td>
+                                    <td class="bg-color-light_gray"><label class="mb-0 text-ellipsis">{{asignRoleSummary.roleName}} </label></td>
+                             </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <!-- <tr>
+                                    <td colspan="4" class="font-14 font500 text-center text-red"><span>No Data
+ Available</span>
+                                    </td>
+                                </tr> -->
+                            </ng-template>
+
+                        </p-table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+    </div>
+</ng-template>
+
+
+
+<ng-template #template1>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Assign Role</h5>
+        <button type="button" (click)="modalRef.hide();unCheckUserAsgin()" class="close" data-dismiss="modal" aria-label="Close"><span style="font-size: 20px;"
+  aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row pb-5">
+                    <div class="col-md-3">
+                        <label class="form-label mt-1 mb-0">Group Name</label>
+                        <select name="Gender" class="form-control custom-select" [(ngModel)]="companyGroupName" [ngModelOptions]="{standalone: true}"
+                        (change)="onSelectAssginCompanyGroupName($event.target.value)" [disabled]="butDisabled === 'disabled'">
+                        <option value="">select</option>
+                          <option *ngFor="let companyGroupName of groupNamesData" [value]="companyGroupName.companyGroupMasterId"  >
+                              {{companyGroupName.companyGroupName}}
+                            </option>
+                         </select>
+                      </div>
+                        <div class="col-md-3">
+                          <label class="form-label mt-1 mb-0" >Company Name</label>
+                          <ng-multiselect-dropdown
+                            [placeholder]="'None Selected'"
+                            [settings]="dropdownSettings"
+                            [data]="companyNameList"
+                            (onSelect)="onItemSelectCompanyName($event)"
+                            [(ngModel)]="companyName"
+                            [disabled]="butDisabled === 'disabled'"
+                          >
+                          </ng-multiselect-dropdown>
+                        </div>
+                      
+                      <div class="col-md-3">
+                        <label class="form-label mt-1 mb-0">User Group</label>
+                        <select name="userName" class="form-control custom-select"  [(ngModel)]="groupName" [ngModelOptions]="{standalone: true}" 
+                        (change)="onSelectAssginUserGroup($event.target.value)" [disabled]="butDisabled === 'disabled'">
+                          <option value="">select</option>
+                          <option *ngFor="let userGroupName of userGroupNameList" [value]="userGroupName.userGroupId" >
+                              {{userGroupName.groupName}}
+                            </option>
+                         </select>
+                      </div>
+                   
+                      <div class="col-md-1">
+                        <button type="button" tooltip="Go" class="mt-15 custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                        (click)="filterUserName()" [disabled]="butDisabled === 'disabled'"><b><i class="fa fa-arrow-right"></i></b> Go </button>
+                    </div>
+                
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <label class="form-label">Copy From</label>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="Gender" class="form-control custom-select" (change)="onSelectCopyFrom($event.target.value)" [disabled]="butDisabled === 'disabled'">
+                            <option value="">select</option>
+                          <option *ngFor="let copyFromUserName of userNameList" [value]="copyFromUserName.globalUserMasterId" >
+                             {{copyFromUserName.userName}}
+                            </option>
+                         </select>
+
+                    </div>
+                    <div class="col-md-8">
+
+                    </div>
+                    <div class="col-md-12 mt-10">
+                        <div class="table-responsive Custom_Table my-registertable">
+                            <table class="table table-bordered m-b-0 bg-color-white my-registertable"
+                             style="display: block;height: auto;">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="wd-20 font700">Employee Code</th>
+                                        <th class="wd-20 font700">Employee Name</th>
+                                        <th class="wd-20 font700">Company</th>
+                                        <th class="wd-20 font700">User Group</th>
+                                        <th class="wd-20 font700">User Role</th>
+                                        <th class="wd-30 font700">action</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+                                     <!-- <pre>{{globalCompanyMasterId | json}}</pre> -->
+                                    <tr *ngFor="let asgindata of saveAssignDatabyEmployee; let i = index;" >
+                                        <!-- <pre>{{userRoleData | json}}</pre> -->
+                                        <td>
+                                            <input type="text" class="form-control"  value="{{asgindata.employeeCode}}" 
+                                            disabled></td>
+                                        <td><input type="text" class="form-control"  value ="{{asgindata.userName}}" 
+                                            disabled></td>
+                                        <td> 
+                                            <!-- {{assigndata.globalUserMasterId}} -->
+                                            <select  class="form-control custom-select"
+                                            (change)="onSelectedCompanyName($event.target.value,i,asgindata)" [disabled]="butDisabled === 'disabled'">
+                                          <option value="" >Select</option>
+                                                
+                                              <option *ngFor="let companyName of assignCompanyName" value="{{companyName.companyGroupMasterId}},{{companyName.globalCompanyMasterId}}" 
+                                              [selected]="companyName == companyName.companyGroupMasterId && companySelectedIndex == i" >
+                                                  {{companyName.companyName}}  
+                                                </option>
+                                             </select> </td>
+                                        <td> 
+                                            <select name="userName" class="form-control custom-select"
+                                            (change)="onSelectGroupName($event.target.value,i)" [disabled]="butDisabled === 'disabled'">
+                                                <option value="">select</option>
+                                                <option *ngFor="let userGroupName of userGroupData" [value]="userGroupName.userGroupId" 
+                                                [selected]="groupName == userGroupName.userGroupId && selectedGroupIndex == i">
+                                                    {{userGroupName.groupName}}
+                                                  </option>
+                                               </select>
+                                         
+                                        </td>
+                                        <td>
+                                          
+                                             <select name="roleName" class="form-control custom-select"  
+                                             (change)="getSelectedRoleName($event.target.value,i)" [disabled]="butDisabled === 'disabled'">
+                                                <option value="">select</option>
+                                                <option *ngFor="let userRoleName of userRoleData" [value]="userRoleName.userRoleId"
+                                               [selected]="selectedroleindex == i && roleName == userRoleName.userRoleId">
+                                              {{userRoleName.roleName}}
+                                           </option>
+                                                </select>
+                                        </td>
+                                        <td> 
+                                            <i
+                                            class="fa fa-plus-circle align-right font700 font-16 text-light-green cursor-pointer"
+                                      
+                                        tooltip="Add"
+                                        (click)="addTable()"
+                                      ></i>&nbsp;&nbsp;
+                                            
+                                    
+                                          <!-- <i
+                                          class="fa fa-times font-16 text-red cursor-pointer"
+                                          tooltip="Cancel"
+                                          (click)="deleteSingleRow(i)"
+                                        ></i> -->
+                                    </td>
+                                    </tr>
+                                    <!-- <pre>{{row | json}}</pre> -->
+                                    <tr *ngFor="let rowAdd of row; let i = index;" >
+                                        
+                                        <td>{{rowAdd.employeeCode}}
+                                           </td>
+                                        <td>{{rowAdd.userName}}</td>
+                                        <td>
+                                            <select name="Gender" class="form-control custom-select" disabled>
+                                                <option *ngFor="let companyName of assignCompanyName" [value]="companyName.companyGroupMasterId" 
+                                                [selected]="rowAdd.companyName == companyName.companyGroupMasterId" >
+                                                    {{companyName.companyName}}
+                                                  </option>
+                                                  
+                                              <!-- <option *ngFor="let companyName of assignCompanyName"  
+                                              [value]="companyName.companyGroupMasterId"  [selected]="rowAdd.companyName == companyName.companyGroupMasterId">
+                                                  {{companyName.companyGroupName}}
+                                                </option> -->
+                                             </select>> </td>
+                                        <td>
+                                            <!-- <select name="userName" class="form-control custom-select" disabled
+                                           >
+                                                <option *ngFor="let userGroupName of userGroupData" 
+                                                [selected]="rowAdd.groupName == userGroupName.userGroupId">
+                                                    {{userGroupName.groupName}}
+                                                  </option>
+                                               </select> -->
+                                             
+                                               <input class="form-control custom-select" disabled value="{{rowAdd.groupName}}">
+                                            </td>
+                                        <td>
+                                          
+                                             <!-- <select name="roleName" class="form-control custom-select" disabled>
+                                                <option value="">select</option>
+                                                <option *ngFor="let userRoleName of userRoleData" 
+                                                [selected]="rowAdd.roleName == userRoleName.userRoleId">
+                                              {{userRoleName.roleName}}
+                                           </option>
+                                                </select> -->
+                                               
+                                                     <input class="form-control custom-select" disabled value="{{rowAdd.roleName}}">
+                                        </td>
+                                        <td  *ngIf="editFlag">
+                                            <!-- <i
+                                            class="fa fa-plus-circle align-right font700 font-16 text-light-green cursor-pointer"
+                                      
+                                        tooltip="Add"
+                                        (click)="addTable()"
+                                      ></i>&nbsp;&nbsp; -->
+                                            <i *ngIf="!editFlag"
+                                            class="fa fa-edit font-16 text-blue cursor-pointer"
+                                            tooltip="Cancel"
+                                            (click)="editRow(i)"
+                                          ></i>&nbsp;&nbsp;
+                                          <i *ngIf="editFlag"
+                                          class="fa fa-times font-16 text-red cursor-pointer"
+                                          tooltip="Cancel"
+                                          (click)="deleteRows(rowAdd.employeeRoleAssignmentId,i)"
+                                        ></i></td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" tooltip="Save" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10" (click)="saveAssignGroupData();modalRef.hide()"><b><i class="fa fa-save"></i></b> Save </button>
+
+        <button type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" (click)="resetAssignData()"><b><i class="fa fa-refresh"></i></b> Reset</button>
+        <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button> -->
+    </div>
+</ng-template>
+

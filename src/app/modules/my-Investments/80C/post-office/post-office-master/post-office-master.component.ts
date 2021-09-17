@@ -35,6 +35,7 @@ import { PostOfficeService } from '../post-office.service';
 export class PostOfficeMasterComponent implements OnInit {
   @Input() public accountNo: any;
   public modalRef: BsModalRef;
+  public showdocument = true;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -53,6 +54,9 @@ export class PostOfficeMasterComponent implements OnInit {
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
   public transactionInstitutionNames: Array<any> = [];
   public editTransactionUpload: Array<any> = [];
   public transactionPolicyList: Array<any> = [];
@@ -60,6 +64,7 @@ export class PostOfficeMasterComponent implements OnInit {
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
   public urlIndex: number;
+  public isEdit: boolean = false;
   public glbalECS: number;
   public form: FormGroup;
   public Index: number;
@@ -109,12 +114,15 @@ export class PostOfficeMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  documentArray: any[] =[];
+  filesUrlArray = [];
  
   public proofSubmissionId ;
   policyToDate: any;
   paymentDetailsToDate: any;
   policyMaxDate: any;
   selectedPolicyFromDate: any;
+  isVisibleTable = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -130,6 +138,48 @@ export class PostOfficeMasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+    // this.form = this.formBuilder.group({
+    //   institution: new FormControl(null, Validators.required),
+    //   accountNumber: new FormControl(null, Validators.required),
+    //   accountHolderName: new FormControl({value: null, disabled: true},Validators.required),
+    //   relationship: new FormControl({ value: null, disabled: true }, Validators.required),
+    //   policyStartDate: new FormControl(null, Validators.required),
+    //   policyEndDate: new FormControl(null, Validators.required),
+    //   familyMemberInfoId: new FormControl(null, Validators.required),
+    //   active: new FormControl(true, Validators.required),
+    //   remark: new FormControl(null),
+    //   frequencyOfPayment: new FormControl(null, Validators.required),
+    //   premiumAmount: new FormControl(null, Validators.required),
+    //   annualAmount: new FormControl( { value: null, disabled: true }, Validators.required),
+    //   fromDate: new FormControl(null, Validators.required),
+    //   toDate: new FormControl(null, Validators.required),
+    //   ecs: new FormControl('0'),
+    //   investmentGroup1MasterPaymentDetailId: new FormControl(0),
+    //   investmentGroup1MasterId: new FormControl(0),
+    //   // investmentGroup1MasterPaymentDetailId: new FormControl(0),
+    //   depositType: new FormControl('recurring'),
+    //   proofSubmissionId : new FormControl('')
+    // });
+
+    // this.frequencyOfPaymentList = [
+    //   { label: 'Monthly', value: 'Monthly' },
+    //   { label: 'Quarterly', value: 'Quarterly' },
+    //   { label: 'Half-Yearly', value: 'Halfyearly' },
+    //   { label: 'Yearly', value: 'Yearly' },];
+    // this.masterPage();
+    // this.addNewRowId = 0;
+    // this.hideRemarkDiv = false;
+    // this.hideRemoveRow = false;
+    // this.isClear = false;
+    // this.isCancel = false;
+    // this.receiptAmount = this.numberFormat.transform(0);
+    // this.globalAddRowIndex = 0;
+    // this.globalSelectedAmount = this.numberFormat.transform(0);
+    this.getInitialData();
+  }
+
+  getInitialData() {
+
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
@@ -170,6 +220,81 @@ export class PostOfficeMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+
+    // // Business Financial Year API Call
+    // this.Service.getBusinessFinancialYear().subscribe((res) => {
+    //   this.financialYearStart = res.data.results[0].fromDate;
+    // });
+
+    // // Family Member List API call
+    // this.Service.getFamilyInfo().subscribe((res) => {
+    //   console.log('getFamilyInfo', res);
+    //   this.familyMemberGroup = res.data.results;
+    //   res.data.results.forEach((element) => {
+    //     const obj = {
+    //       label: element.familyMemberName,
+    //       value: element.familyMemberName,
+    //     };
+    //     if (element.relation === 'Self') {
+    //       this.familyMemberName.push(obj);
+    //     }
+    //     this.form.patchValue({
+    //       familyMemberInfoId: this.familyMemberGroup[0].familyMemberInfoId,
+    //       accountHolderName: this.familyMemberGroup[0].familyMemberName,
+    //       relationship: this.familyMemberGroup[0].relation,
+    //     })
+    //   });
+    // });
+
+    // this.deactivateRemark();
+
+    // // Get All Institutes From Global Table
+    // this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
+    //   // console.log(res);
+    //   res.data.results.forEach((element: { insurerName: any }) => {
+    //     const obj = {
+    //       label: element.insurerName,
+    //       value: element.insurerName,
+    //     };
+    //     this.institutionNameList.push(obj);
+    //   });
+    // });
+
+    // // Get All Previous Employer
+    // this.Service.getAllPreviousEmployer().subscribe((res) => {
+    //   console.log(res.data.results);
+    //   if (res.data.results.length > 0) {
+    //     this.employeeJoiningDate = res.data.results[0].joiningDate;
+    //     // console.log('employeeJoiningDate::',this.employeeJoiningDate);
+    //   }
+    // });
+
+    // if (this.today.getMonth() + 1 <= 3) {
+    //   this.financialYear =this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+    // } else {
+    //   this.financialYear =
+    //     this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);}
+
+    // const splitYear = this.financialYear.split('-', 2);
+
+    // this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
+    // this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    // if (this.accountNo !== undefined || this.accountNo !== null) {
+    //   const input = this.accountNo;
+    //   // console.log("edit", input)
+    //   // this.editMaster(input);
+    //   // console.log('editMaster policyNo', input);
+    //   this.editMaster(input.accountNumber);
+    //   console.log('editMaster accountNumber', input.accountNumber);
+    // }
+    this.getDetails();
+
+  }
+
+  getDetails(){
+
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
     // Business Financial Year API Call
@@ -238,8 +363,7 @@ export class PostOfficeMasterComponent implements OnInit {
       // console.log('editMaster policyNo', input);
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
-    }
-
+    } 
   }
 
   // convenience getter for easy access to form fields
@@ -337,6 +461,31 @@ export class PostOfficeMasterComponent implements OnInit {
         element.policyEndDate = new Date(element.policyEndDate);
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
+        element.documentInformationList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
       });
     });
   }
@@ -352,14 +501,19 @@ export class PostOfficeMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
     console.log("urlArray.length",this.urlArray.length)
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
-      console.log('urlArray.length', this.urlArray.length);
+      // console.log('urlArray.length', this.urlArray.length);
       return;
-    } else {
+    }
+    } 
+    // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -368,6 +522,20 @@ export class PostOfficeMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      for (let i = 0; i <= this.documentPassword.length; i++) {
+        if(this.documentPassword[i] != undefined){
+          let remarksPasswordsDto = {};
+          remarksPasswordsDto = {
+            "documentType": "Back Statement/ Premium Reciept",
+            "documentSubType": "",
+            "remark": this.remarkList[i],
+            "password": this.documentPassword[i]
+          };
+          this.documentDataArray.push(remarksPasswordsDto);
+        }
+      }
+      console.log('this.documentDataArray', this.documentDataArray);
+
       console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
        data.proofSubmissionId = this.proofSubmissionId;
@@ -375,6 +543,7 @@ export class PostOfficeMasterComponent implements OnInit {
       data.fromDate = from;
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
+      data.remarkPasswordList = this.documentDataArray;
 
       console.log('Post Office Data::', data);
 
@@ -388,6 +557,8 @@ export class PostOfficeMasterComponent implements OnInit {
           if (res)
           {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
                 element.policyStartDate = new Date(element.policyStartDate);
@@ -395,9 +566,46 @@ export class PostOfficeMasterComponent implements OnInit {
                 element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate);
               });
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
@@ -421,8 +629,14 @@ export class PostOfficeMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
-    }
+      this.getInitialData();
+      this.getDetails();
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -518,6 +732,7 @@ export class PostOfficeMasterComponent implements OnInit {
 
    //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
    editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -540,8 +755,27 @@ export class PostOfficeMasterComponent implements OnInit {
       this.Index = obj.accountNumber;
       this.showUpdateButton = true;
       this.isClear = true;
-      this.urlArray = obj.documentInformationList;
+      // this.urlArray = obj.documentInformationList;
+      this.filesUrlArray = obj.documentInformationList;
+      this.showdocument = false;
       this.proofSubmissionId = obj.proofSubmissionId;
+      this.documentArray = [];
+      obj.documentInformationList.forEach(element => {
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+        
+      });
+      console.log("documentArray::",this.documentArray);
+      this.isVisibleTable = true;
     }
     });
     }
@@ -574,6 +808,8 @@ export class PostOfficeMasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.urlArray = [];
     this.isCancel = false;
+    this.form.get('accountHolderName').setValue('Aishwarya Malviya');
+    this.form.get('relationship').setValue('Self');
   }
 
   // On Master Edit functionality
@@ -628,9 +864,11 @@ export class PostOfficeMasterComponent implements OnInit {
     console.log("---in doc viewer--");
     this.urlIndex = index;
 
+    console.log('urlIndex::' , this.urlIndex);
     console.log("urlArray::", this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      // this.urlArray[this.urlIndex].blobURI,
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     console.log("urlSafe::",  this.urlSafe);
     this.modalRef = this.modalService.show(

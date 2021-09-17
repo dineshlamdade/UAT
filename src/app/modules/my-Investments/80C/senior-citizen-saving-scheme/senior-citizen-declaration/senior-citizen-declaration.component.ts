@@ -67,11 +67,21 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   public seniorCitizenForm: FormGroup;
 
   public editTransactionUpload: Array<any> = [];
+  documentDataArray = [];
+  editdDocumentDataArray = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
   public editfilesArray: File[] = [];
@@ -117,6 +127,11 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   public initialArray = true;
   public initialArrayIndex: number[] = [];
   public declarationService: DeclarationService;
+  public requiredField: boolean = false;
+  public requiredInstitution: boolean = false;
+  public requiredaccountNumber: boolean = false;
+  public requireddateOfPayment: boolean = false;
+  public requireddeclaredAmount: boolean = false;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
   public viewDocumentDetail = true;
@@ -167,6 +182,15 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   dateOfJoining: Date;
+  public selectrow : any;
+  globalSelectedAmounts: any = '0.00';
+  public addNewRow: boolean = true;
+  public showDeleteButton: boolean = false;
+  public enableButton : boolean = false;
+  disableRemarkList = false
+  disableRemark: any;
+
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -213,6 +237,18 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getTransactionFilterData();
+
+    if (this.data) {
+      if(this.data.canEdit == true) {
+        this.isDisabled = false;
+      } else if (this.data.canView == true) {
+        this.isDisabled = true;
+        this.enableButton = true;
+      }
+      this.selectrow = this.data.accountNumber;
+      } else {
+        this.selectrow = "any";
+      }
     // console.log('data::', this.data);
     
 
@@ -388,6 +424,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -400,9 +437,11 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       .subscribe((res) => {
 
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
 
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
+          this.disableRemark = res.data.results[0].investmentGroup3TransactionDetailList[0].transactionStatus;
         // this.urlArray.forEach((element) => {
         //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
         //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
@@ -430,13 +469,90 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
 
+        this.masterGridData = res.data.results;
+
+        this.masterGridData.forEach((element) => {
+          // element.policyStartDate = new Date(element.policyStartDate);
+          // element.policyEndDate = new Date(element.policyEndDate);
+          // element.fromDate = new Date(element.fromDate);
+          // element.toDate = new Date(element.toDate);
+          element.documentInformation.forEach(element => {
+            // this.dateofsubmission = element.dateOfSubmission;
+            // this.documentArray.push({
+            //   'dateofsubmission': ,
+            // })
+            element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              // 'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            })
+            })
+          });
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
+          //
+          // })
+        });
+
+
 
 
       });
+      this.documentArray = [];
   }
+
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
 
   //-------------- Upload Document in Edit Document Detail ---------------------
   public uploadUpdateTransaction() {
+
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+    // console.log(JSON.stringify(this.ppfDeclarationData))
+
     console.log(
       'uploadUpdateTransaction editTransactionUpload::',
       this.editTransactionUpload
@@ -471,6 +587,8 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
       groupTransactionIDs:this.uploadGridData,
+      // documentPassword: this.documentPassword,
+      remarkPasswordList: this.editdDocumentDataArray
 
     };  
     console.log('uploadUpdateTransaction data::', data);
@@ -478,7 +596,46 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       .uploadSeniorCitizenTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
-        if (res.data.results.length > 0) {         
+        if (res.data.results.length > 0) {      
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
+           
           this.transactionDetail =
             res.data.results[0].investmentGroup3TransactionDetailList;
           console.log('transactionDetail', this.transactionDetail);
@@ -684,12 +841,115 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     );
   } */
 
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
+  }
+
+  // Remove LicMaster Document
+  public removeSelectedLicMasterDocument(index: number) {
+    this.masterfilesArray.splice(index, 1);
+  }
+
+
+
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
    
     event: { target: { checked: any } },
-    i: number
+    i: number, summary: {
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;      
+      declaredAmount: number;
+      actualAmount: number;
+      dateOfPayment: Date;
+      transactionStatus: any;
+    },
   ) {
+    if (summary.transactionStatus == 'Approved' || summary.transactionStatus == 'WIP') {
+      this.disableRemarkList = true;
+    } else {
+      this.disableRemarkList = false;
+    }
+
+    // if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+    //   this.requiredField = true;
+    //   event.target.checked = false;
+    //   if(this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
+    //    this.alertService.sweetalertError(
+    //     'Please Enter Decleared Amount'
+    //    );
+    //    return;
+    //  } else {
+    //    this.alertService.sweetalertError(
+    //      'Please Fill Required Field.'
+    //    );
+    //    return;
+    //  }
+     
+    // } else {
+    //   this.requiredField = false;
+    // }
+
+    if (this.investmentGroup3TransactionDetailList[i].institution == null || this.investmentGroup3TransactionDetailList[i].accountNumber == null || this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+      if (this.investmentGroup3TransactionDetailList[i].institution == null) {
+        this.requiredInstitution = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredInstitution = false;
+      }
+
+
+      if (this.investmentGroup3TransactionDetailList[i].accountNumber == null) {
+        this.requiredaccountNumber = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredaccountNumber = false;
+      }
+
+      if (this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+        this.requireddateOfPayment = true;
+        event.target.checked = false;
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+
+      } else {
+        this.requireddateOfPayment = false;
+      }
+      if (this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
+        this.requireddeclaredAmount = true;
+        event.target.checked = false;
+           this.alertService.sweetalertError(
+             'Please Enter Decleared Amount'
+           );
+        return;
+
+      } else {
+        this.requireddeclaredAmount = false;
+      }
+      return;
+    } else {
+
+      this.requireddeclaredAmount = false;
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
@@ -719,20 +979,31 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
           data.declaredAmount;
       }
  */
+      this.investmentGroup3TransactionDetailList[i].actualAmount = this.investmentGroup3TransactionDetailList[i].declaredAmount;
+      this.globalSelectedAmounts = this.investmentGroup3TransactionDetailList[i].declaredAmount;
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
           .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue + formatedActualAmount
+        formatedGlobalSelectedValue
       );
+      if(formatedActualAmount == null || formatedActualAmount <= 0){
+        this.alertService.sweetalertError(
+          'Please Enter Actual Amount'
+        );
+        this.enableSelectAll = false;
+        event.target.checked = false;
+      }
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(this.investmentGroup3TransactionDetailList[i].investmentGroup3TransactionId);
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
+
+      this.investmentGroup3TransactionDetailList[i].actualAmount = this.investmentGroup3TransactionDetailList[i].declaredAmount;
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
@@ -767,21 +1038,23 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     }*/
 
     console.log(this.uploadGridData);
-    this.actualTotal = 0;
-    this.transactionDetail.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualTotal.toString().replace(/,/g, '')
-      );
-      // console.log("Actual Total")(this.actualTotal);
-     console.log("Actual Total::" , this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+    this.onActualAmountChange(summary, i);
+    // this.actualTotal = 0;
+    // this.transactionDetail.forEach((element) => {
+    //   // console.log(element.actualAmount.toString().replace(',', ""));
+    //   this.actualTotal += Number(
+    //     element.actualTotal.toString().replace(/,/g, '')
+    //   );
+    //   // console.log("Actual Total")(this.actualTotal);
+    //  console.log("Actual Total::" , this.actualTotal);
+    //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    // });
 
     this.grandActualTotal = this.actualTotal;
     console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length); 
   }
+}
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
   checkUncheckAll(item: any) {
@@ -822,6 +1095,11 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
     this.investmentGroup3TransactionDetailList[i].institution = this.declarationService.institution;
+    if (this.investmentGroup3TransactionDetailList[i].institution == null) {
+      this.requiredInstitution = true;
+    } else {
+      this.requiredInstitution = false;
+    }
     
   }
 
@@ -841,6 +1119,12 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
     this.investmentGroup3TransactionDetailList[i].accountNumber = this.declarationService.accountNumber;
+    if (this.investmentGroup3TransactionDetailList[i].accountNumber == null) {
+      this.requiredaccountNumber = true;
+
+    } else {
+      this.requiredaccountNumber = false;
+    }
     
   }
 // --------------- ON change of DateOfPayment in line-------------
@@ -859,6 +1143,11 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     console.log("summary::",summary)
    // this.declarationService = new DeclarationService(summary);
     this.investmentGroup3TransactionDetailList[i].dateOfPayment = summary.dateOfPayment;
+    if (this.investmentGroup3TransactionDetailList[i].dateOfPayment == null ) {
+      this.requireddateOfPayment = true;
+    } else {
+      this.requireddateOfPayment = false;
+    }
     
    
      }
@@ -920,6 +1209,78 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     // console.log(this.actualTotal);
   }
 
+// ------------Decleared Amount change-----------
+onDeclearedAmountChange(
+  summary: {
+    previousEmployerId:number;
+    institution: 0;
+    accountNumber: number;      
+    declaredAmount: number;
+    actualAmount: number;
+    dateOfPayment: Date;
+  },
+  i: number
+) {
+
+  console.log("summary::",summary)
+  this.declarationService = new DeclarationService(summary);
+  console.log("declarationService::",this.declarationService)
+  this.investmentGroup3TransactionDetailList[i].declaredAmount = this.declarationService.declaredAmount;
+  console.log("investmentGroup3TransactionDetailList[i].actualAmount::",this.investmentGroup3TransactionDetailList[i])
+  const formatedActualAmount = this.numberFormat.transform(
+    this.investmentGroup3TransactionDetailList[i].declaredAmount
+  );
+  this.investmentGroup3TransactionDetailList[i].declaredAmount = formatedActualAmount;
+
+  if (this.investmentGroup3TransactionDetailList[i].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[i].declaredAmount == "0.00") {
+    this.requireddeclaredAmount = true;
+    
+
+  } else {
+    this.requireddeclaredAmount = false;
+  }
+
+  this.declarationTotal = 0;
+  this.declaredAmount = 0;
+  this.investmentGroup3TransactionDetailList.forEach((element) => {
+    this.declarationTotal += Number(
+      element.declaredAmount.toString().replace(/,/g, '')
+    );
+    this.declaredAmount += Number(element.declaredAmount.toString().replace(',', ""));
+  });
+
+  this.transactionDetail.forEach((element) => {
+    this.declarationTotal += Number(
+      element.declaredAmount.toString().replace(/,/g, '')
+    );
+    this.declaredAmount += Number(element.declaredAmount.toString().replace(',', ""));
+  });
+
+  this.grandDeclarationTotal = this.declarationTotal;
+  this.declarationTotal = 0;
+  this.transactionDetail.forEach((element) => {
+    // console.log(element.actualAmount.toString().replace(',', ""));
+    this.declarationTotal += Number(
+      element.declarationTotal.toString().replace(/,/g, '')
+    );
+    // console.log("Actual Total")(this.actualTotal);
+   console.log("Declaration Total::" , this.actualTotal);
+    // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+  });
+
+  this.grandDeclarationTotal = this.declarationTotal;
+  console.log(this.grandDeclarationTotal);
+  // this.transactionDetail[j].actualAmount = this.actualAmount;
+  // console.log(this.transactionDetail[j]);
+  // console.log(this.actualTotal);
+  if (this.investmentGroup3TransactionDetailList[i].declaredAmount == "0") {
+    this.requireddeclaredAmount = true;
+
+  } else {
+    this.requireddeclaredAmount = false;
+  }
+}
+
   // --------Add New ROw Function---------
    addRowInList(
   ) {
@@ -929,6 +1290,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     // } else {
     //   this.hideRemoveRow  = true;
     // }
+    if (this.addNewRow) {
     this.declarationService = new DeclarationService();
     console.log('declarationService::', this.declarationService);
     this.globalAddRowIndex -= 1;
@@ -949,6 +1311,9 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
     this.investmentGroup3TransactionDetailList.push(this.declarationService);
     console.log('addRow::', this.investmentGroup3TransactionDetailList);
+    this.addNewRow = false;
+    this.showDeleteButton = true;
+    }
   }
 
   sweetalertWarning(msg: string) {
@@ -961,15 +1326,18 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].length - 1;
-    // console.log('rowcount::', rowCount);
-    // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].length == 1) {
-      return false;
-    } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].splice(rowCount, 1);
-      return true;
-    }
+    // const rowCount = this.transactionDetail[j].length - 1;
+    // // console.log('rowcount::', rowCount);
+    // // console.log('initialArrayIndex::', this.initialArrayIndex);
+    // if (this.transactionDetail[j].length == 1) {
+    //   return false;
+    // } else if (this.initialArrayIndex[j] <= rowCount) {
+    //   this.transactionDetail[j].splice(rowCount, 1);
+    //   return true;
+    // }
+    this.investmentGroup3TransactionDetailList.splice(0, 1);
+    this.addNewRow = true;
+    this.showDeleteButton = false;
   }
 
   editDeclrationRow(
@@ -1091,6 +1459,75 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
   upload() 
   {
+
+
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+    if (this.investmentGroup3TransactionDetailList[0].institution == null || this.investmentGroup3TransactionDetailList[0].accountNumber == null || this.investmentGroup3TransactionDetailList[0].dateOfPayment == null || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0.00") {
+      if (this.investmentGroup3TransactionDetailList[0].institution == null) {
+        this.requiredInstitution = true;
+     
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredInstitution = false;
+      }
+
+
+      if (this.investmentGroup3TransactionDetailList[0].accountNumber == null) {
+        this.requiredaccountNumber = true;
+  
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+      } else {
+        this.requiredaccountNumber = false;
+      }
+
+      if (this.investmentGroup3TransactionDetailList[0].dateOfPayment == null ) {
+        this.requireddateOfPayment = true;
+   
+        this.alertService.sweetalertError(
+          'Please Enter Required Field'
+        );
+
+
+      } else {
+        this.requireddateOfPayment = false;
+      }
+      if (this.investmentGroup3TransactionDetailList[0].declaredAmount == "0" || this.investmentGroup3TransactionDetailList[0].declaredAmount == "0.00") {
+        this.requireddeclaredAmount = true;
+           this.alertService.sweetalertError(
+             'Please Enter Decleared Amount'
+           );
+        return;
+
+      } else {
+        this.requireddeclaredAmount = false;
+      }
+      return;
+    }
+    if (this.investmentGroup3TransactionDetailList[0].accountNumber == null && this.investmentGroup3TransactionDetailList[0].actualAmount == '0' && this.investmentGroup3TransactionDetailList[0].institution == null && this.investmentGroup3TransactionDetailList[0].dateOfPayment == null){
+      this.alertService.sweetalertError(
+        'Please Fill Required Field'
+      );
+      return;
+    }
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -1130,6 +1567,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
       groupTransactionIDs:this.uploadGridData,
+      remarkPasswordList: this.documentDataArray
 
     };
     console.log('data::', data);
@@ -1137,7 +1575,41 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       .uploadSeniorCitizenTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
-        if (res.data.results.length > 0) {         
+        if (res.data.results.length > 0) {     
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+            
             this.transactionDetail =
               res.data.results[0].investmentGroup3TransactionDetailList;
             console.log('transactionDetail', this.transactionDetail);
@@ -1149,6 +1621,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
             this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
     
             this.initialArrayIndex = [];
+            this.showDeleteButton = false;
     
             this.transactionDetail.forEach((element) => {
               element.declaredAmount = this.numberFormat.transform(
@@ -1162,6 +1635,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
             'Transaction Saved Successfully.',
             ''
           );
+          this.addNewRow = true;
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -1169,6 +1643,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.globalSelectedAmounts = '0.00';
     this.investmentGroup3TransactionDetailList = [];
   }
 
@@ -1181,11 +1656,13 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
-    if (receiptAmount_ < globalSelectedAmount_) {
+    if (receiptAmount_ < this.globalSelectedAmounts) {
     this.alertService.sweetalertError(
       'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
-  } else if (receiptAmount_ > globalSelectedAmount_) {
+    this.receiptAmount = '0.00';
+      return false;
+  } else if (receiptAmount_ > this.globalSelectedAmounts) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
@@ -1449,6 +1926,33 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
+        // this.documentArray.push({
+        //   'dateofsubmission':element.creatonTime,
+        //   'documentType':element.documentType,
+        //   'documentName': element.fileName,
+        //   'documentPassword':element.documentPassword,
+        //   'documentRemark':element.documentRemark,
+        //   'status' : element.status,
+        //   'lastModifiedBy' : element.lastModifiedBy,
+        //   'lastModifiedTime' : element.lastModifiedTime,
+  
+        // })
+  
 
         this.initialArrayIndex = [];
 

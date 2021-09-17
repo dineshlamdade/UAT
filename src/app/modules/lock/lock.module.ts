@@ -24,23 +24,30 @@ import { EmployeeComponent } from './employee/employee.component';
 import {TableModule} from 'primeng/table';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-
-
 import { AdhocComponent } from './adhoc/adhoc.component';
-import {MultiSelectModule} from 'primeng/multiselect';
+import { SupplementryCycleComponent } from './supplementry-cycle/supplementry-cycle.component';
+import { SummaryComponent } from './summary/summary.component';
+import { AreaComponent } from './area/area.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import {CheckboxModule} from 'primeng/checkbox';
+// import { NewlockComponent } from './newlock/newlock.component';
 @NgModule({
   declarations: [
     LockComponent,
     BusinessYearComponent,
     CycleComponent,
     EmployeeComponent,
-    AdhocComponent
+    AdhocComponent,
+    AreaComponent,
+    SupplementryCycleComponent,
+    SummaryComponent,
+    // NewlockComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MultiSelectModule,
     FormsModule,
+    MultiSelectModule,
     MatSliderModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
@@ -56,6 +63,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
     BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    MultiSelectModule,
+    CheckboxModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),

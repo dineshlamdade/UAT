@@ -85,12 +85,16 @@ export class HouserentsummaryComponent implements OnInit {
     const data = {
       propertyHouseName: propertyName,
       tabIndex: this.tabIndex,
-      canEdit: mode == 'edit' ? true : false,
+      //canEdit: mode == 'edit' ? true : false,
+      canEdit: (mode == 'edit' ? true : false),
+      canView: (mode == 'view' ? true : false),
     };
     this.propertyName = propertyName;
     console.log('propertyName::', propertyName);
   console.log('propertyName::', propertyName);
     this.myEvent.emit(data);
+    this.grandTabStatus = true;
+   
   }
 
   // ---------------------Summary ----------------------
@@ -121,7 +125,8 @@ export class HouserentsummaryComponent implements OnInit {
     };
     this.policyNumber.emit(data);
   } */
-  jumpToMasterPage(houseRentalMasterId: number) {
+
+jumpToMasterPage(houseRentalMasterId: number) {
   this.tabIndex = 1;
   const houseRentalMasterIds = {
     houseRentalMasterId: houseRentalMasterId,
@@ -129,6 +134,7 @@ export class HouserentsummaryComponent implements OnInit {
   };
   this.houseRentalMasterIds.emit(houseRentalMasterIds);
 }
+
 
   opencomputationModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(

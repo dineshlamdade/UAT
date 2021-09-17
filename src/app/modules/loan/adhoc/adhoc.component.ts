@@ -23,7 +23,7 @@ export class AdhocComponent implements OnInit {
   perticularEmpDetails: any;
   employeeMasterIdData: any;
   loanDetails:any;
-  
+
 
   constructor(public formBuilder: FormBuilder,
     private loanService: LoanService,
@@ -32,7 +32,7 @@ export class AdhocComponent implements OnInit {
     private excelservice: ExcelService,
     public sanitizer: DomSanitizer,
     private toaster: ToastrService,
-    private router: Router) { 
+    private router: Router) {
 
       this.addAdhocForm = new FormGroup({
         loanApplicationNumber: new FormControl(''),
@@ -65,12 +65,12 @@ export class AdhocComponent implements OnInit {
         // modeofPayment: new FormControl('self'),
         // employeeBankInfoId: new FormControl(2),
         // approvedAmount: new FormControl(100000),
-        
-        
-        // 
-        
+
+
+        //
+
         // employeeBankInfoId: 2,
-       
+
       });
     }
 
@@ -102,11 +102,16 @@ export class AdhocComponent implements OnInit {
 // Get Loan details
 
 getLoanDetails() { // temp id is used
-  
+
   this.loanService.getLoanDetails('Car Loan').subscribe((res) => {
     this.loanDetails = res.data.results[0];
     // console.log(this.loanDetails);
   });
 }
 // Get Loan details End
+
+cancel()
+{
+
+}
 }

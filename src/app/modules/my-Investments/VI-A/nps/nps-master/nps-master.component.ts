@@ -117,6 +117,26 @@ export class NpsMasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+    // this.frequencyOfPaymentList = [
+    //   { label: 'Monthly', value: 'Monthly' },
+    //   { label: 'Quarterly', value: 'Quarterly' },
+    //   { label: 'Half-Yearly', value: 'Halfyearly' },
+    //   { label: 'Yearly', value: 'Yearly' },
+    //    { label: 'As & When', value: 'As & When' },
+    // ];
+    // this.masterPage();
+    // this.addNewRowId = 0;
+    // this.hideRemarkDiv = false;
+    // this.hideRemoveRow = false;
+    // this.isClear = false;
+    // this.isCancel = false;
+    // this.receiptAmount = this.numberFormat.transform(0);
+    // this.globalAddRowIndex = 0;
+    // this.globalSelectedAmount = this.numberFormat.transform(0);
+    this.setMasterForm();
+  }
+  setMasterForm(){
+
     this.frequencyOfPaymentList = [
       { label: 'Monthly', value: 'Monthly' },
       { label: 'Quarterly', value: 'Quarterly' },
@@ -136,6 +156,35 @@ export class NpsMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    // this.initiateMasterForm();
+    // this.getFinacialYear();
+    // this.getMasterFamilyInfo();
+    // this.getNpsIdentityInformation();
+    // this.getInstitutesFromGlobal();
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+    // this.deactivateRemark();
+    // this.getPreviousEmployer();
+    // if (this.today.getMonth() + 1 <= 3) {
+    //   this.financialYear =
+    //     this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+    // } else {
+    //   this.financialYear =
+    //     this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+    // }
+    // const splitYear = this.financialYear.split('-', 2);
+    // this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
+    // this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    // if (this.accountNo != undefined || this.accountNo != null) {
+    //   const input = this.accountNo;
+    //   this.editMaster(input.accountNumber);
+    //   console.log('editMaster accountNumber', input.accountNumber);
+    // }
+    // this.startDateModel =  '31-dec-9999';
+    this.getData();
+  }
+
+  getData() {
     this.initiateMasterForm();
     this.getFinacialYear();
     this.getMasterFamilyInfo();
@@ -371,7 +420,7 @@ export class NpsMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
+    // console.log('urlArray.length', this.urlArray.length);
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'National Pension Scheme Document needed to Create Master.'
@@ -386,11 +435,47 @@ export class NpsMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      // const data = this.form.getRawValue();
+      // data.proofSubmissionId = this.proofSubmissionId;
+      // if (this.form.value.frequencyOfPayment === 'As & When') {
+      //   const start = this.datePipe.transform(
+      //     this.form.get('policyStartDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   const end = this.datePipe.transform(
+      //     this.form.get('policyEndDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   data.policyStartDate = start;
+      //   data.policyEndDate = end;
+        // const from = this.datePipe.transform(
+        //   this.form.get('fromDate').value,
+        //   'yyyy-MM-dd'
+        // );
+        // const to = this.datePipe.transform(
+        //   this.form.get('toDate').value,
+        //   'yyyy-MM-dd'
+        // );
+
+      //   data.fromDate = from;
+      //   data.toDate = to;
+      // }
+      // if (this.form.value.frequencyOfPayment !== 'As & When') {
+      //   const from = this.datePipe.transform(
+      //     this.form.get('fromDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+      //   const to = this.datePipe.transform(
+      //     this.form.get('toDate').value,
+      //     'yyyy-MM-dd'
+      //   );
+
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
+        // }
 
       console.log('National Pension Scheme ::', data);
 
@@ -409,7 +494,7 @@ export class NpsMasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
@@ -428,13 +513,16 @@ export class NpsMasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
+      this.form.get('ecs').setValue('0');
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
       this.documentRemark = '';
+      this.getData();
+      this.setMasterForm();
+     
     }
     this.form.patchValue({
       accountType: 'Tier_1',
@@ -461,6 +549,28 @@ export class NpsMasterComponent implements OnInit {
 
   // Calculate annual amount on basis of premium and frquency
   public calculateAnnualAmount() {
+
+    console.log(this.form.value.frequencyOfPayment);
+    if (this.form.value.frequencyOfPayment === 'As & When') {
+      console.log('in as and when');
+      //this.form.get(this.form.value.premiumAmoun).setValue(null);
+      const financialYearStartDate = this.datePipe.transform(
+        this.financialYearStartDate,
+        'dd-MMM-YYYY'
+      );
+      const financialYearEndDate = this.datePipe.transform(
+        this.financialYearEndDate,
+        'dd-MMM-YYYY'
+      );
+      // this.form.get('policyStartDate').setValue(financialYearStartDate);
+      // this.form.get('policyEndDate').setValue(financialYearEndDate);
+
+      this.form.get('premiumAmount').setValue(0);
+      this.form.get('annualAmount').setValue(0);
+      // this.form.get('fromDate').setValue(financialYearStartDate);
+      // this.form.get('toDate').setValue(financialYearEndDate);
+      this.form.get('ecs').setValue('0');
+    }else{
     let installment = this.form.value.premiumAmount;
     if (!this.form.value.frequencyOfPayment) {
       installment = 0;
@@ -475,6 +585,7 @@ export class NpsMasterComponent implements OnInit {
       installment = installment * 1;
     }
     this.form.get('annualAmount').setValue(installment);
+  }
   }
 
   // Family relationship shown on Policyholder selection
@@ -548,12 +659,15 @@ export class NpsMasterComponent implements OnInit {
   resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
     this.urlArray = [];
     this.isCancel = false;
+    this.form.get('accountHolderName').setValue('Aishwarya Malviya');
+    this.form.get('relationship').setValue('Self');
+    this.form.get('accountType').setValue('Tier_1');
   }
 
   // On View Cancel

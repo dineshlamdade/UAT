@@ -1,10 +1,7 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, Input, OnInit, Output, ElementRef } from '@angular/core';
 import { ReimbursementMasterService } from '../reimbursement-master.service';
-export interface summaryTempList {
-  displayName;
-  headName;
-}
+
 
 @Component({
   selector: 'app-remb-summary',
@@ -15,7 +12,6 @@ export class RembSummaryComponent implements OnInit {
   private templateList: Array<any> = [];
   private headtypelist: Array<any> = [];
   private tabIndex = 0;
-  public generalTempList: summaryTempList[];
   @Input() policyNo: string;
   @Output() policyNumber = new EventEmitter<any>();
 
@@ -31,7 +27,6 @@ export class RembSummaryComponent implements OnInit {
     this.service.getAllTemplateList().subscribe((res) => {
       console.log("res master", res);
       this.templateList = res.data.results;
-      this.generalTempList =  this.templateList;
     })
   }
 
@@ -41,7 +36,6 @@ export class RembSummaryComponent implements OnInit {
     this.service.getReimbursementHeadType().subscribe((res) => {
       console.log("res master", res);
       this.headtypelist = res.data.results;
-      
       console.log("this.headtypelist", this.headtypelist);
     })
   }

@@ -24,9 +24,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
-import { TabsModule } from 'ngx-bootstrap/tabs';
- 
-import {MultiSelectModule} from 'primeng/multiselect';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { translocoLoader } from './core/strategies/transloco.loader';
@@ -50,12 +47,6 @@ import { EmployeeMasterModule } from './modules/employee-master/employee-master.
 //accordion and accordion tab
 //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
-
-
-
-
-
-
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
@@ -68,12 +59,7 @@ import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.mod
 import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 import { LockModule } from './modules/lock/lock.module';
-<<<<<<< HEAD
-import {FlexiModule} from './modules/flexi/flexi.module'
-=======
-import { DemoModule} from './modules/demo/demo.module'
 
->>>>>>> origin/Sandhya-Ahire
 
 
 
@@ -92,10 +78,17 @@ import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
 import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 import { LoanMasterModule } from './modules/loan-master/loan-master.module';
-import { ReimbursementModule } from './modules/reimbursement/reimbursement.module';
 import { from } from 'rxjs';
 import { SignaturePadModule } from 'angular2-signaturepad';
-import { TestComponent } from './test/test.component';
+import { InvestmentApprovalModule } from './modules/investment-approval/investment-approval.module';
+import { ApprovedInvestmentModule } from './modules/approved-investment/approved-investment.module';
+import { OnetimeInvestmentsApprovalModule } from './modules/onetime-investments-approval/onetime-investments-approval/onetime-investments-approval.module';
+import { FormulamasterModule } from './modules/formulamaster/formulamaster.module';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ExcelserviceService } from './core/services/excelservice.service';
+
+
+
 
 
 @NgModule( {
@@ -104,7 +97,7 @@ import { TestComponent } from './test/test.component';
     ProfileComponent,
     ShortenStringPipe,
     SettingsComponent,
-    TestComponent,
+    
   ],
 
   exports: [],
@@ -119,18 +112,11 @@ import { TestComponent } from './test/test.component';
     LoanModule,
     CompanySettingModule,
     MyInvestmentsModule,
+    InvestmentApprovalModule,
     PayrollInputsModule,
-    MultiSelectModule,
     /////////////////
     //  payrollModule,
     LockModule,
-<<<<<<< HEAD
-    FlexiModule,
-   
-    ReimbursementModule,
-=======
-    DemoModule,
->>>>>>> origin/Sandhya-Ahire
     ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,
@@ -140,10 +126,11 @@ import { TestComponent } from './test/test.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    
+    OnetimeInvestmentsApprovalModule,
     DragDropModule,
     MatSliderModule,
     NgApexchartsModule,
+    MultiSelectModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
     ToastrModule.forRoot( {
@@ -171,11 +158,15 @@ import { TestComponent } from './test/test.component';
     EmailSmsModule,
     LoanMasterModule,
     SignaturePadModule,
-   
+    InvestmentApprovalModule,
+    ApprovedInvestmentModule,
+    FormulamasterModule
+
   ],
 
   providers: [BsDatepickerModule,
     BnNgIdleService,
+    ExcelserviceService,
     AuthGuard,
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,

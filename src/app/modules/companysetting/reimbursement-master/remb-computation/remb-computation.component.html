@@ -280,17 +280,30 @@
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
                                                     <label class="form-label">Unpaid Bills Carry Forward</label>
-                                                    <div class="custom-controls-stacked  ">
-                                                        <label class="custom-control custom-radio custom-control-inline">
-                                                          <input formControlName="unPaidBillCarryForward" type="radio" class="custom-control-input"  value="true" [checked]="unPaidBill == 'true'" >
-                                                          <span class="custom-control-label">Yes</span>
-                                                        </label>
-                                                        <label class="custom-control custom-radio custom-control-inline">
-                                                          <input formControlName="unPaidBillCarryForward" type="radio" class="custom-control-input" value="false"  [checked]="unPaidBill == 'false'" >
-                                                          <span class="custom-control-label">No</span>
-                                                        </label>
-                                                      </div>
-                                               
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                            <div class="custom-controls-stacked">
+                                                                <label class="custom-control  custom-radio">
+                                                                    <input type="radio" class="custom-control-input"
+                                                                        formControlName="unPaidBillCarryForward"
+                                                                        name="unPaidBillCarryForward" value="true"
+                                                                        checked>
+                                                                    <div class="custom-control-label">Yes</div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                            <div class="custom-controls-stacked">
+                                                                <label class="custom-control  custom-radio">
+                                                                    <input type="radio" class="custom-control-input"
+                                                                        formControlName="unPaidBillCarryForward"
+                                                                        name="unPaidBillCarryForward" value="false"
+                                                                        checked>
+                                                                    <div class="custom-control-label">No</div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                 </div>
                                             </div>
@@ -342,7 +355,7 @@
                                                 'Save'}}
                                             </button>
 
-                                            <button type="button" tooltip="Reset"  (click)="resetForm()"
+                                            <button type="button" tooltip="Reset"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa  fa-refresh"></i></b> Reset</button>
 

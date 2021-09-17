@@ -34,7 +34,7 @@ import { NscService } from '../nsc.service';
 })
 export class NationalSevingCertificateMasterComponent implements OnInit {
   @Input() public accountNo: any;
-
+  public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -73,6 +73,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public documentRemark: any;
   public isECS = true;
 
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
   public receiptAmount: string;
@@ -82,6 +86,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public sumDeclared: any;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
+  public isEdit: boolean = false;
   public policyMinDate: Date;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
@@ -108,9 +113,11 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
+  documentArray: any[] =[];
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  isVisibleTable = false;
 
   public proofSubmissionId;
 
@@ -128,6 +135,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+    this.getIntialData();
+ 
+  }
+  getIntialData() {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       issueType: new FormControl(null, Validators.required),
@@ -180,6 +191,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.getDetails();
+  
+  }
+  getDetails() {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     this.deactivateRemark();
     // Business Financial Year API Call
@@ -346,6 +361,31 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
         element.policyEndDate = new Date(element.policyEndDate);
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
+        element.documentInformationList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
       });
     });
   }
@@ -357,13 +397,18 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+    // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -372,11 +417,25 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      for (let i = 0; i <= this.documentPassword.length; i++) {
+        if(this.documentPassword[i] != undefined){
+          let remarksPasswordsDto = {};
+          remarksPasswordsDto = {
+            "documentType": "Back Statement/ Premium Reciept",
+            "documentSubType": "",
+            "remark": this.remarkList[i],
+            "password": this.documentPassword[i]
+          };
+          this.documentDataArray.push(remarksPasswordsDto);
+        }
+      }
+      console.log('this.documentDataArray', this.documentDataArray);
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
+      data.remarkPasswordList = this.documentDataArray;
 
       console.log('Post Office Data::', data);
 
@@ -386,6 +445,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
                 element.policyStartDate = new Date(element.policyStartDate);
@@ -393,9 +454,46 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
                 element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate);
               });
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
@@ -419,8 +517,14 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
-    }
+      this.getIntialData();
+      this.getDetails();
+    // }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -444,7 +548,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   changeStartMaxDate(event: any) {
     console.log('event::', event.target.value);
 
-    if (event.target.value === 'IX th Issue') {
+    if (event.target.value === 'IX') {
       this.today = new Date('2015-12-20');
     } else {
       this.today = new Date();
@@ -503,6 +607,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   // On Master Edit functionality
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.nscService.getNSCMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -524,8 +629,27 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
         this.Index = obj.accountNumber;
         this.showUpdateButton = true;
         this.isClear = true;
-        this.urlArray = obj.documentInformationList;
+        // this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
+        this.showdocument = false;
         this.proofSubmissionId = obj.proofSubmissionId;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+          
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
       }
     });
   }
@@ -557,6 +681,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.masterfilesArray = [];
     this.urlArray = [];
     this.isCancel = false;
+    this.form.get('frequencyOfPayment').setValue('OneTime');
   }
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
@@ -588,10 +713,11 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   docViewer(template3: TemplateRef<any>, index: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
-
+    console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
     //this.urlSafe

@@ -1,261 +1,228 @@
-
 <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
-      <div class="card">
-       <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <fieldset>
-                    <legend>User Role</legend>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label class="form-label">Name</label>
-                            <input type="text" class="form-control" placeholder="Enter Name" formControlName="roleName" >
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control" name="roleDescription" rows="1" placeholder="Content.." 
-                            formControlName="roleDescription"> </textarea>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend>User Role</legend>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">Company Group Name</label>
+                                <select name="companyGroupName" class="form-control custom-select"
+                                    formControlName="companyGroupMasterId"
+                                    (change)="onSelectCompanyName($event.target.value)" *ngIf="!editFlag">
+                                    <option value="">select</option>
+                                    <option *ngFor="let companyGroupName of comapnyGroupNamesData"
+                                        [value]="companyGroupName.companyGroupMasterId">
+                                        {{companyGroupName.companyGroupName}}
+                                    </option>
+                                </select>
+                                <select name="companyGroupName" class="form-control custom-select"
+                                    formControlName="companyGroupMasterId"
+                                    (change)="onSelectCompanyName($event.target.value)" *ngIf="editFlag" disabled>
+                                    <option value="">select</option>
+                                    <option *ngFor="let companyGroupName of comapnyGroupNamesData"
+                                        [value]="companyGroupName.companyGroupMasterId">
+                                        {{companyGroupName.companyGroupName}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">User Group</label>
+                                <select name="groupName" class="form-control custom-select"
+                                    formControlName="userGroupId" [disabled]="butDisabled === 'disabled'"
+                                    *ngIf="!editFlag">
+                                    <option *ngFor="let groupName of groupNameList" [value]="groupName.value">
+                                        {{groupName.label}}
+                                    </option>
+                                </select>
 
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">User Group</label>
-                            <select name="groupName" class="form-control custom-select" formControlName="userGroupId"
-                            >
-                            <option *ngFor="let groupName of groupNameList"
-                            [value]="groupName.value">
-                            {{groupName.label}}
-                          </option>
-                                        </select>
+                                <select name="groupName" class="form-control custom-select"
+                                    formControlName="userGroupId"
+                                    *ngIf="editFlag" disabled>
+                                    <option *ngFor="let groupName of groupNameList" [value]="groupName.value">
+                                        {{groupName.label}}
+                                    </option>
+                                </select>
 
-                        </div>
-                        <div class="col-md-3 text-center mt-15">
-                            <!-- <button type="button" tooltip="Assign / Un-Assign Group" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="AssignedGroup(template)"><b><i class="fa fa-file"></i></b> Assign / Un-Assign Group</button> -->
-                        </div>
-                    </div>
-                    <div class="row mt-10">
-                        <div class="col-md-3">
-                            <label class="custom-control custom-checkbox checkbox-center mt-30">
-          <input type="checkbox"  class="custom-control-input" name="default"  /> <span class="custom-control-label">Default</span>
-                                         </label>
-                        </div>
-
-                        <div class="col-md-3 mt-30">
-                            <label class="custom-control custom-checkbox custom-control-inline pl-45">
-                                <input formControlName="isActive" type="checkbox" class="custom-control-input"
-                                name="example-inline-checkbox1" [value]="true?1:0" 
-                                (change)="deactivateRemark()">
-                                <span class="custom-control-label">Active </span>
-                              </label>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Remark</label>
-                    <textarea formControlName="remark" class="form-control" rows="1"></textarea>
-                        </div>
-
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-        <div class="row mt-15 mb-3">
-            <div class="col-md-12">
-                <div class="float-right">
-                    <ng-container *ngIf="showButtonSaveAndReset">
-                        <ng-container *ngIf="isSaveAndReset; else newDeb">
-                          <button type="submit"  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                           tooltip="Save" (click)="save()"
-                         >
-                         <b><i class="fa fa-floppy-o"></i></b> Save</button>
-       
-                         <button type="button" tooltip="Reset" (click)="cancelView()"
-                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
-                         <b><i class="fa  fa-refresh"></i></b> Reset</button>
-                       </ng-container>
-                      <ng-template #newDeb>
-                         <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" 
-                          tooltip="Update" (click)="save()">
-                         <b><i class="fa fa-floppy-o"></i></b>Update</button>
-                         <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                         tooltip="Cancel" (click)="cancelView()">
-                         <b><i class="fa fa-times-circle"></i></b> Cancel</button>
-                    </ng-template>
-                   </ng-container>
-                   <ng-container *ngIf="!showButtonSaveAndReset">
-                    <button type="button"
-                      class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                      tooltip="Cancel" (click)="cancelView()">
-                      <b><i class="fa fa-times-circle"></i></b>Cancel</button>
-                  </ng-container>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="font-14 text-purple font-bold">Summary</h3>
-            </div>
-        </div>
-        <div class="row mb-10">
-            <div class="col-md-8">
-                <p-table [value]="masterGridData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th class="wd-10 text-center">
-                                Sr. No.
-                            </th>
-                            <th class="wd-20">
-                                <div class="p-d-flex p-jc-center p-ai-center">
-                                    User Group &nbsp;&nbsp;
-                                    <div class="Sort_Filter_Position d-flex ">
-                                        <p-sortIcon field="usergrup" pSortableColumn="usergrup"></p-sortIcon>
-                                        <p-columnFilter field="usergrup" display="menu" class="p-ml-auto"></p-columnFilter>
-                                    </div>
-                                </div>
-                            </th>
-                            <th class="wd-20">
-                                <div class="p-d-flex p-jc-center p-ai-center">
-                                    User Role &nbsp;&nbsp;
-                                    <div class="Sort_Filter_Position d-flex ">
-                                        <p-sortIcon field="userrole" pSortableColumn="userrole"></p-sortIcon>
-                                        <p-columnFilter field="userrole" display="menu" class="p-ml-auto"></p-columnFilter>
-                                    </div>
-                                </div>
-                            </th>
-                            <th class="wd-40">
-                                <div class="p-d-flex p-jc-center p-ai-center">
-                                    Description &nbsp;&nbsp;
-                                    <div class="Sort_Filter_Position d-flex ">
-                                        <p-sortIcon field="desc" pSortableColumn="desc"></p-sortIcon>
-                                        <p-columnFilter field="desc" display="menu" class="p-ml-auto">
-
-                                        </p-columnFilter>
-                                    </div>
-                                </div>
-                            </th>
-                            <th class="wd-10 text-center">
-                                Action
-                            </th>
-
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-summary let-rowIndex="rowIndex">
-                        <tr class="p-selectable-row">
-                            <td class="text-center" rowspan="2">{{summary.srno}}</td>
-                            <td class="text-center" rowspan="2">{{summary.groupName}}</td>
-                            <td><label class="mb-0 text-link" (click)="viewHistory(template, summary.id, summary.roleName)">{{summary.roleName}}</label></td>
-                            <td>{{summary.roleDescription}}</td>
-                            <td class="wd-5 text-center">
-                                <i class="fa fa-edit font-16 text-blue cursor-pointer" (click)="edit(rowIndex,summary.userRoleId)" tooltip="Edit"></i> &nbsp;&nbsp;
-                                <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="view(rowIndex)" tooltip="View"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <!-- <td><label class="mb-0 text-link" (click)="Grouplist(template2)"></label></td> -->
-                            <td></td>
-                            <!-- <td class="wd-5 text-center">
-                                <i class="fa fa-edit font-16 text-blue cursor-pointer" (click)="edit(rowIndex,summary.userRoleId)" tooltip="Edit"></i> &nbsp;&nbsp;
-                                <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="view(rowIndex)" tooltip="View"></i>
-                            </td> -->
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage">
-                        <tr>
-                            <td colspan="4" class="font-14 font500 text-center text-red"><span>No Data
-                   Available</span>
-                            </td>
-                        </tr>
-                    </ng-template>
-
-                </p-table>
-            </div>
-        </div>
+                                <!-- <input type="text" class="form-control custom-select"   list="codes" [(ngModel)]="userGroupId" [ngModelOptions]="{standalone: true}" (change)="getUserGroupID($event.target.value)">
+                                        <datalist id="codes">
+                                          <option *ngFor="let groupName of groupNameList"  >{{groupName.label}}</option>
+                                        </datalist>     
+                                         -->
 
 
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" placeholder="Enter Name" *ngIf="!editFlag"
+                                    [ngClass]="{'is-invalid' : form.get('roleName').status == 'INVALID'}"
+                                    onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" formControlName="roleName">
+                                <input type="text" class="form-control" placeholder="Enter Name" *ngIf="editFlag"
+                                    [ngClass]="{'is-invalid' : form.get('roleName').status == 'INVALID'}" disabled
+                                    onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" formControlName="roleName">
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <label class="form-label">Description</label> -->
+                                <!-- <textarea class="form-control" name="roleDescription" rows="1" placeholder="Content.." 
+                            [ngClass]="{'is-invalid' : form.get('roleDescription').status == 'INVALID'}"
+                            formControlName="roleDescription"> </textarea> -->
 
-    </div>
-      </div>
-</form>
-<!-- </div>
-                <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
-                    <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top" (click)="scrollToTop()">
-            <i class="fa fa-angle-double-up text-white font-18"></i>
-          </button>
-                </div>
-            </div>
-        </div>
-        <app-footer></app-footer>
-    </div>
-</div> -->
+                                <label class="form-label">Description</label>
+                                <input type="text" class="form-control" placeholder="Enter Description"
+                                    name="roleDescription"
+                                    [ngClass]="{'is-invalid' : form.get('roleDescription').status == 'INVALID'}"
+                                    [maxlength]="50" formControlName="roleDescription">
 
-<!-- <ng-template #template2>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">Group List</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-    aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-        <div class="card mb-0">
-            <div class="card-body">
-                <div class="row clearfix">
-                    <div class="col-md-4">
-                        <label class="form-label">User Group</label>
-                        <input type="text" [(ngModel)]='roleName' class="form-control" disabled>
+                            </div>
 
-                    </div>
-                    <div class="col-md-2">
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mt-20">
-
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-append"><button class="btn btn-bg-green" type="button">Go!</button></span>
+                            <div class="col-md-3 text-center mt-15">
+                                <!-- <button type="button" tooltip="Assign / Un-Assign Group" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="AssignedGroup(template)"><b><i class="fa fa-file"></i></b> Assign / Un-Assign Group</button> -->
                             </div>
                         </div>
-                    </div>
+                        <div class="row mt-10">
+                            <div class="col-md-3">
+                                <label class="custom-control custom-checkbox checkbox-center mt-30">
+                                    <input type="checkbox" class="custom-control-input" name="default"
+                                        formControlName="default" />
+                                    <span class="custom-control-label">Default</span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-3 mt-30">
+                                <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                                    <input formControlName="active" type="checkbox" class="custom-control-input"
+                                        name="active" [value]="true?1:0" (change)="deactivateRemark()">
+                                    <span class="custom-control-label">Active </span>
+                                </label>
+                            </div>
+                            <div class="col-md-3" *ngIf="hideRemarkDiv">
+                                <label class="form-label">Remark</label>
+                                <textarea formControlName="remark" class="form-control" rows="1"></textarea>
+                            </div>
+
+                        </div>
+                    </fieldset>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <p-table [value]="masterGridData" [paginator]="true" appendTo="body" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [scrollable]="true" scrollHeight="200px">
-                            <ng-template pTemplate="header" >
-                                <tr>
-                                    <th class="wd-25">
-                                        <div class="p-d-flex  p-ai-center">
-                                            Group Name &nbsp;
-                                            <div class="Sort_Filter_Position d-flex">
-                                                <p-sortIcon field="grupcode" pSortableColumn="grupcode"></p-sortIcon>
-                                                <p-columnFilter field="grupcode" display="menu" class="p-ml-auto" appendTo="body"></p-columnFilter>
-                                            </div>
-                                        </div>
-                                    </th>
+            </div>
+            <div class="row mt-15 mb-3">
+                <div class="col-md-12">
+                    <div class="float-right">
+                        <ng-container *ngIf="showButtonSaveAndReset">
+                            <ng-container *ngIf="isSaveAndReset; else newDeb">
+                                <button type="submit"
+                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                                    tooltip="Save" (click)="save()"
+                                    [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
+                                    <b><i class="fa fa-floppy-o"></i></b> Save</button>
 
-                                </tr>
+                                <button type="button" tooltip="Reset" (click)="cancelView()"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                                    <b><i class="fa  fa-refresh"></i></b> Reset</button>
+                            </ng-container>
+                            <ng-template #newDeb>
+                                <button type="submit"
+                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                    tooltip="Update" (click)="save()">
+                                    <b><i class="fa fa-floppy-o"></i></b>Update</button>
+                                <button type="button"
+                                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Cancel" (click)="cancelView()">
+                                    <b><i class="fa fa-times-circle"></i></b> Cancel</button>
                             </ng-template>
-                            <ng-template pTemplate="body" let-summary>
-                                <tr class="p-selectable-row">
-
-                                    <td>{{summary.groupName}}</td>
-
-
-
-
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="emptymessage">
-                                <tr>
-                                    <td colspan="4" class="font-14 font500 text-center text-red"><span>No Data
-Available</span>
-                                    </td>
-                                </tr>
-                            </ng-template>
-
-                        </p-table>
+                        </ng-container>
+                        <ng-container *ngIf="!showButtonSaveAndReset">
+                            <button type="button"
+                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                tooltip="Cancel" (click)="cancelView()">
+                                <b><i class="fa fa-times-circle"></i></b>Cancel</button>
+                        </ng-container>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                </div>
+            </div>
+            <div class="row mb-10">
+                <div class="col-md-8">
+                    <p-table [value]="masterGridData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        totalRecords={{masterGridData.length}} [rowsPerPageOptions]="[10,25,50,100,200]">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="wd-10 text-center">
+                                    Sr. No.
+                                </th>
+                                <th class="wd-20">
+                                    <div class="p-d-flex p-jc-center p-ai-center">
+                                        User Group &nbsp;&nbsp;
+                                        <div class="Sort_Filter_Position d-flex ">
+                                            <p-sortIcon field="groupName" pSortableColumn="groupName"></p-sortIcon>
+                                            <p-columnFilter field="groupName" display="menu" class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="wd-20">
+                                    <div class="p-d-flex p-jc-center p-ai-center">
+                                        User Role &nbsp;&nbsp;
+                                        <div class="Sort_Filter_Position d-flex ">
+                                            <p-sortIcon field="roleName" pSortableColumn="roleName"></p-sortIcon>
+                                            <p-columnFilter field="roleName" display="menu" class="p-ml-auto">
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="wd-40">
+                                    <div class="p-d-flex p-jc-center p-ai-center">
+                                        Description &nbsp;&nbsp;
+                                        <div class="Sort_Filter_Position d-flex ">
+                                            <p-sortIcon field="roleDescription" pSortableColumn="roleDescription">
+                                            </p-sortIcon>
+                                            <p-columnFilter field="roleDescription" display="menu" class="p-ml-auto">
+
+                                            </p-columnFilter>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="wd-10 text-center">
+                                    Action
+                                </th>
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-summary let-rowIndex="rowIndex">
+                            <tr class="p-selectable-row">
+                                <td class="text-center"> {{rowIndex + 1}}</td>
+                                <td>{{summary.groupName}}</td>
+                                <td>{{summary.roleName}}</td>
+
+                                <td>{{summary.roleDescription}}</td>
+                                <td class="wd-5 text-center">
+                                    <i class="fa fa-edit font-16 text-blue cursor-pointer" tooltip="Edit"
+                                        (click)="edit(summary,summary.userRoleId)"></i> &nbsp;&nbsp;
+                                    <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
+                                        (click)="view(summary)"></i>
+                                </td>
+                            </tr>
+
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="4" class="font-14 font500 text-center text-red"><span>No Data
+                                        Available</span>
+                                </td>
+                            </tr>
+                        </ng-template>
+
+                    </p-table>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-3"><b><i class="fa fa-save"></i></b> Save</button>
-        <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" (click)="modalRef.hide()"><b><i class="fa fa-refresh"></i></b> Reset</button>
-    </div>
-</ng-template> -->
+</form>

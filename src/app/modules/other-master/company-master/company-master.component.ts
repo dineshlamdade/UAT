@@ -236,7 +236,7 @@ export class CompanyMasterComponent implements OnInit {
     this.companyMasterform.get( 'code' ).disable();
     this.companyMasterform.get( 'state' ).disable();
     this.companyMasterform.get( 'city' ).disable();
-    this.companyMasterform.get( 'companyActive' ).disable();
+    this.companyMasterform.get( 'companyActive' ).enable();
 
   }
 
@@ -461,19 +461,26 @@ export class CompanyMasterComponent implements OnInit {
     }
 
   }
-  deactivateRemark() { }
+  deactivateRemark() {
+
+  }
   deactivateRemark1() {
     if ( this.companyMasterform.value.companyActive === false ) {
-      this.companyMasterform.get( 'companyActive' ).disable();
+      // this.companyMasterform.get( 'companyActive' ).disable();
 
       // this.hideRemarkDiv = true;
+      this.companyMasterform.get( 'remark' ).enable();
       this.companyMasterform.get( 'remark' ).setValidators( [Validators.required] );
+
+      this.companyMasterform.get( 'remark' ).updateValueAndValidity();
       // this.companyMasterform.get('companyActive').disable();
     } else {
 
       this.companyMasterform.get( 'remark' ).clearValidators();
+      this.companyMasterform.get( 'remark' ).updateValueAndValidity();
+      this.companyMasterform.get( 'remark' ).disable();
       // this.hideRemarkDiv = false;
-      this.companyMasterform.get( 'companyActive' ).enable();
+      //  this.companyMasterform.get( 'companyActive' ).enable();
 
 
       // this.companyMasterform.get('remark').reset();
@@ -542,13 +549,13 @@ export class CompanyMasterComponent implements OnInit {
       console.log( JSON.stringify( this.requestDTOString ) );
       formData.append( 'requestDTOString', JSON.stringify( this.requestDTOString ) );
       if ( this.selectedImageFileLogo1 !== undefined ) {
-        formData.append( 'files', this.selectedImageFileLogo1, this.employeeMasterRequestDTO.code + ' 1.jpg' );
+        formData.append( 'files', this.selectedImageFileLogo1, this.employeeMasterRequestDTO.shortName + ' 1.jpg' );
       }
       if ( this.selectedImageFileLogo2 !== undefined ) {
-        formData.append( 'files', this.selectedImageFileLogo2, this.employeeMasterRequestDTO.code + ' 2.jpg' );
+        formData.append( 'files', this.selectedImageFileLogo2, this.employeeMasterRequestDTO.shortName + ' 2.jpg' );
       }
       if ( this.selectedImageFileLogo3 !== undefined ) {
-        formData.append( 'files', this.selectedImageFileLogo3, this.employeeMasterRequestDTO.code + ' 3.jpg' );
+        formData.append( 'files', this.selectedImageFileLogo3, this.employeeMasterRequestDTO.shortName + ' 3.jpg' );
       }
       this.companyMasterService.postCompanyMaster( formData ).subscribe( res => {
         console.log( res );
@@ -631,13 +638,13 @@ export class CompanyMasterComponent implements OnInit {
       formData.append( 'requestDTOString', JSON.stringify( this.requestDTOString ) );
 
       if ( this.selectedImageFileLogo1 !== undefined ) {
-        formData.append( 'files', this.selectedImageFileLogo1, this.employeeMasterRequestDTO.code + ' 1.jpg' );
+        formData.append( 'files', this.selectedImageFileLogo1, this.employeeMasterRequestDTO.shortName + ' 1.jpg' );
       }
       if ( this.selectedImageFileLogo2 !== undefined ) {
-        formData.append( 'files', this.selectedImageFileLogo2, this.employeeMasterRequestDTO.code + ' 2.jpg' );
+        formData.append( 'files', this.selectedImageFileLogo2, this.employeeMasterRequestDTO.shortName + ' 2.jpg' );
       }
       if ( this.selectedImageFileLogo3 !== undefined ) {
-        formData.append( 'files', this.selectedImageFileLogo3, this.employeeMasterRequestDTO.code + ' 3.jpg' );
+        formData.append( 'files', this.selectedImageFileLogo3, this.employeeMasterRequestDTO.shortName + ' 3.jpg' );
       }
 
       this.companyMasterService.postCompanyMaster( formData ).subscribe( res => {

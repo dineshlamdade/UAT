@@ -79,14 +79,6 @@ export class ReimbursementMasterService {
       }));
   }
 
-  putReimbursementUpdateData(data) {
-    return this.http.put(this.apiUrl + 'reimbursement-general-setting/edit-reimbursement-setting', data)
-      .pipe(map((res: any) => {
-        return res;
-      }));
-  }
-
-  
   
   editReimbursementSubmitData(data) {
     return this.http.put(this.apiUrl + 'reimbursement-general-setting/edit-reimbursement-setting', data)

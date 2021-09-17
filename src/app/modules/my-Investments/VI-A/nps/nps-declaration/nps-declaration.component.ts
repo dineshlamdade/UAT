@@ -165,6 +165,7 @@ export class NpsDeclarationComponent implements OnInit {
   public canEdit : boolean;
   public licDeclarationData: any;
   dateOfJoining: Date;
+  selectedFrequency: any;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -406,8 +407,17 @@ export class NpsDeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-    j: number
+    j: number,
+    frequency: any,
   ) {
+    this.selectedFrequency = frequency;
+    if(data.declaredAmount == null || data.declaredAmount <= 0){
+      this.alertService.sweetalertError(
+        'Please Enter Declared Amount'
+      );
+      this.enableSelectAll = false;
+      event.target.checked = false;
+    }
     const checked = event.target.checked;
 
     this.licDeclarationData = data
@@ -425,7 +435,7 @@ export class NpsDeclarationComponent implements OnInit {
       this.transactionDetail[j].groupTransactionList[i].isECS
     );
     if (checked) {
-      if (this.transactionDetail[j].frequency !== 'As & When') {
+      // if (this.transactionDetail[j].frequency !== 'As & When') {
       if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
@@ -443,7 +453,7 @@ export class NpsDeclarationComponent implements OnInit {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
       }
-    }
+    // }
 
       formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
@@ -896,7 +906,7 @@ export class NpsDeclarationComponent implements OnInit {
       );
       return false;
     }
-    if (this.licDeclarationData.dueDate == null) {
+    if (this.selectedFrequency !== 'As & When' && this.licDeclarationData.dueDate == null) {
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected due date for all selected lines',
         'Please Select Date Of DueDate',
@@ -1202,6 +1212,7 @@ export class NpsDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1213,6 +1224,7 @@ export class NpsDeclarationComponent implements OnInit {
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
+        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload =
@@ -1344,7 +1356,7 @@ export class NpsDeclarationComponent implements OnInit {
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
-      //documentRemark: this.documentRemark,
+      documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
     };

@@ -29,8 +29,8 @@
         </div>
         <div class="col-sm-6 col-md-3">
 
-          <label class="form-label">Benefeciary / ies</label>
-          <ng-multiselect-dropdown [placeholder]="'None Selected'" appendTo="body" #multiSelect
+          <label class="form-label">Beneficiary / ies</label>
+          <ng-multiselect-dropdown [placeholder]="'None Selected'" defaultLabel="Select a Name" appendTo="body" #multiSelect
           style="font-size: small;" [settings]="dropdownSettings" (change)='OnSelectionfamilyMemberGroup()'
           [data]="dropdownList"
           (onSelect)="onItemSelect($event)" (onDeSelectAll)="onDeselectAll($event)"
@@ -292,7 +292,7 @@
 
                                 <tr>
                                   <th scope="row"><span tooltip="1">1</span></th>
-                                  <td><span tooltip="Policy Document"></span>Policy Document</td>
+                                  <td><span tooltip="Insurance Policy document"></span>Insurance Policy document</td>
                                   <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
                                         class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
                                     <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
@@ -342,7 +342,7 @@
                             <th scope="col" class="wd-10">Institution</th>
                             <th scope="col" class="wd-10">Account No</th>
                             <th scope="col" class="wd-10">Expense Type</th>
-                            <th scope="col" class="wd-10">Benefeciary / ies</th>
+                            <th scope="col" class="wd-10">Beneficiary / ies</th>
                             <th scope="col" class="wd-10">Start Date</th>
                             <th scope="col" class="wd-10">End Date</th>
                             <th scope="col" class="wd-10">Frequency</th>

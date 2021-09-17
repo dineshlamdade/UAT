@@ -5,7 +5,10 @@ import { QueryComponent } from './standard-que-ans/query.component';
 import { QueryDashboardComponent} from './query-dashboard/query-dashboard.component'
 import { AdminQuryGenerationComponent} from './admin-qury-generation/admin-qury-generation.component'
 import { from } from 'rxjs';
-// import {QueryCOmmunicationComponent } from './query-communication/query-communication.component'
+import { QueryCOmmunicationComponent } from './query-communication/query-communication.component'
+import { DocumentViewerComponent } from './document-viewer/document-viewer.component';
+// import { EmployeelistComponent } from './employeelist/employeelist.component';
+
 
 const routes :Routes =[
   {
@@ -35,10 +38,22 @@ const routes :Routes =[
         data: { title: ':: DelziaHR ::Admin Query Generation' },
 
       },
+      {
+        path:'Query-Communication/:id',
+        component:QueryCOmmunicationComponent,
+        data: { title: ':: DelziaHR :: Query Communication' },
+
+      },
+      {
+        path:'document-viewer',
+        component:DocumentViewerComponent,
+        data: { title: ':: DelziaHR :: document-viewer' },
+
+      },
       // {
-      //   path:'Query-Communication',
-      //   component:QueryCOmmunicationComponent,
-      //   data: { title: ':: DelziaHR :: Query Communication' },
+      //   path:'employeelist',
+      //   component:EmployeelistComponent,
+      //   data: { title: ':: DelziaHR :: Employee list' },
 
       // }
     ]
