@@ -834,21 +834,22 @@
                                                         </div>
                                                         <div class="row mt-10">
                                                             <div class="col-sm-3">
-                                                                <label class="form-label">Table Name</label>
+                                                                <label class="form-label">Table Name </label>
+                                                                <!-- formControlName="derivedObjectName" -->
                                                                 <select name="custom-select" class="form-control"
-                                                                    formControlName="derivedObjectName"
                                                                     [(ngModel)]="derivedTableName"
                                                                     [ngModelOptions]="{standalone : true}"
                                                                     [ngClass]="{'is-invalid' : derivedTableName == ''}"
                                                                     (change)="derivedTableNameChange($event.target.value)">
                                                                     <option value="Select">Select</option>
                                                                     <option
-                                                                        *ngFor=" let tableData of derivedTableFieldsData">
+                                                                        *ngFor=" let tableData of derivedTableFieldsData"
+                                                                        >
                                                                         {{tableData.derivedObjectName}}</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-sm-3">
-                                                                <label class="form-label">Field Name</label>
+                                                                <label class="form-label">Field Name {{selectedDerivedName}}</label>
                                                                 <select name="custom-select" class="form-control"
                                                                     (change)="derivedFiedName($event.target.value)"
                                                                     [(ngModel)]="selectedDerivedName"
@@ -1446,7 +1447,7 @@
                                                                                         class="form-control"
                                                                                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                                                                                         value="{{srcCombData.derivedFromDate}}"
-                                                                                        (bsValueChange)="getFromDateForSave($event,data,rowIndex)"
+                                                                                        (bsValueChange)="getFromDateForSave($event,srcCombData,rowIndex)"
                                                                                         placeholder="Date" bsDatepicker>
                                                                                 </div>
                                                                             </div>
@@ -1467,7 +1468,7 @@
                                                                                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YY' }"
                                                                                     class="form-control"
                                                                                     value="{{srcCombData.derivedToDate}}"
-                                                                                    (bsValueChange)="getToDateForSave($event,data,rowIndex)"
+                                                                                    (bsValueChange)="getToDateForSave($event,srcCombData,rowIndex)"
                                                                                     placeholder="Date" bsDatepicker>
                                                                             </div>
                                                                         </div>
@@ -1810,12 +1811,13 @@
                             </ng-template>
 
 
-                            <ng-template pTemplate="body" let-emp>
+                            <ng-template pTemplate="body" let-emp let-rowIndex=rowIndex>
                                 <tr class="p-selectable-row">
 
                                     <td class="text-center bg-color-light_gray">
                                         <label class="custom-control custom-checkbox checkbox-center">
-                                            <input (click)="selectedEmpId(emp,$event.target)" type="checkbox" class="custom-control-input" name="select" />
+                                            <input (click)="selectedEmpId(emp,$event.target,rowIndex)" type="checkbox" 
+                                            class="custom-control-input" name="select" [disabled]="emp.checkboxFlag"/>
                                             <span class="custom-control-label"></span>
                                         </label>
 
@@ -1847,7 +1849,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
-            tooltip="Reset"><b>
+            tooltip="Reset" (click)="resetSelectedEmpData()"><b>
                 <i class="fa fa-refresh"></i></b> Reset</button>&nbsp;
 
         <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left " tooltip="Close"
