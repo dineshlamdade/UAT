@@ -12,6 +12,7 @@ import { saveAs } from "file-saver";
 import { PayrollInputsService } from '../payroll-inputs.service';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { setValue } from '@ngneat/transloco';
+import { element } from 'protractor';
 
 
 
@@ -164,6 +165,10 @@ export class SdmStepperComponent implements OnInit {
   sdmDerivedTypeId: any;
   showPercentageFlag: boolean = false;
   matrixHistory: any;
+  sourceMasterFieldValueDetailId: any = 0;
+  selectedEmployeeId: any = null;
+  editDerivedData: any;
+  selectedempindex: any = -1;
 
   constructor(private formBuilder: FormBuilder, private sdmService: SdnCreationService,
     private toaster: ToastrService, private datepipe: DatePipe, private excelservice: ExcelserviceService,
@@ -374,6 +379,7 @@ export class SdmStepperComponent implements OnInit {
     // this.sdmFormStep1.reset();
     this.sdmFormStep1.controls['moduleIdList'].reset()
     this.sdmFormStep1.controls['sdmName'].reset()
+    this.sdmFormStep1.controls['sdmName'].enable();
     this.sdmFormStep1.controls['sdmDescription'].reset()
     this.tempSourceTable = []
     this.tempDerivedTable = []
@@ -454,11 +460,10 @@ export class SdmStepperComponent implements OnInit {
     this.tempeditDerivedData = true;
     this.editTempDerivedIndex = index
     console.log("sdm derived data: " + JSON.stringify(data))
-    this.derivedTableNameChange(data.derivedObjectName)
-    this.sdmFormStep3.patchValue(data)
-    this.selectedDerivedName = data.selectedDerivedName
-    this.derivedTypeName = this.selectedDerivedName
+    this.editDerivedData= data
     this.derivedTablesFields()
+    
+    
   }
 
 
@@ -673,7 +678,9 @@ export class SdmStepperComponent implements OnInit {
 
   valueListDataValue(event) {
 
-    console.log("event data: " + event)
+    console.log("event data: " + JSON.stringify(event))
+    console.log("sourceValueId data: " + this.sourceValueId)
+
     // this.sourceValueId.push(event.itemValue)
 
     this.sourceValueId.push(event.sourceValueId)
@@ -742,7 +749,7 @@ export class SdmStepperComponent implements OnInit {
       })
 
       this.sdmSourceMasterFieldValueMappingDetailList.push({
-        "sourceMasterFieldValueDetailId": "0",
+        "sourceMasterFieldValueDetailId": this.sourceMasterFieldValueDetailId,
         "sourceTableId": this.sourceTableId,
         "sourceFieldId": this.sourceFieldId,
         "sourceValueIdList": this.sourceValueId
@@ -791,10 +798,13 @@ export class SdmStepperComponent implements OnInit {
     this.editTempFlag = true;
     this.editTempIndex = index;
     this.sourceTableId = data.sourceTableId;
+    
     this.sourceFieldId = data.sourceFieldId;
-    this.sourceValueId = data.sourceValueIdList
+    this.sourceValueId.push(data.sourceValueIdList)
     this.sourceValueName.push(data.valueId)
-    this.sourceMasterName = data.valueId.toString()
+    this.sourceMasterName = data.tableName
+    this.sourceFieldTypeName = data.fieldType
+    this.sourceMasterFieldValueDetailId = data.sourceMasterFieldValueDetailId
     console.log(JSON.stringify(data))
     this.tableListData.forEach(ele => {
       if (ele.sourceMasterId == data.sourceTableId) {
@@ -878,10 +888,10 @@ export class SdmStepperComponent implements OnInit {
 
       this.sdmSourceMasterFieldValueMappingDetailList.splice(this.editTempIndex, 1,
         {
-          "sourceMasterFieldValueDetailId": "0",
+          "sourceMasterFieldValueDetailId": this.sourceMasterFieldValueDetailId,
           "sourceTableId": this.sourceTableId,
           "sourceFieldId": this.sourceFieldId,
-          "sourceValueIdList": this.sourceValueId
+          "sourceValueIdList": this.sourceValueId,
         }
       )
 
@@ -893,14 +903,11 @@ export class SdmStepperComponent implements OnInit {
       this.sourceValueId = []
       this.sourceValueName = []
 
-      this.editTempFlag = false;
+      this.editTempFlag = true;
     }
   }
 
   updateSourceDriveMatrix() {
-
-
-
     this.sdmFormStep1.controls['sdmMasterId'].setValue(this.sdmMasterId)
     console.log(this.sdmFormStep1.value)
     this.sdmService.SdmSourceUpdate(this.sdmFormStep1.value).subscribe(res => {
@@ -924,7 +931,7 @@ export class SdmStepperComponent implements OnInit {
     this.valuelist = []
     this.sourceValueId = []
     this.sourceValueName = []
-    this.editTempFlag = false;
+    // this.editTempFlag = false;
     localStorage.setItem('sdmFormStep1', JSON.stringify(this.sdmFormStep1.value))
     localStorage.setItem('tempsdmFormStep1', JSON.stringify(this.tempSourceTable))
 
@@ -977,13 +984,20 @@ export class SdmStepperComponent implements OnInit {
      this.sdmData = res.data.results;
       if (this.editFlag == true) {
         this.applicationModule()
-        this.sdmSourceMasterFieldValueMappingDetailList = this.sdmData[0].sdmSourceMasterFieldValueMappingDetailList
+        // this.sdmSourceMasterFieldValueMappingDetailList = this.sdmData[0].sdmSourceMasterFieldValueMappingDetailList
         this.sdmData[0].sdmSourceMasterFieldValueMappingDetailList.forEach(element => {
           element.sourceValueIdList = [element.sourceValueId]
           // this.step1FormDisableFlag = true
+          this.sdmSourceMasterFieldValueMappingDetailList.push({
+            "sourceMasterFieldValueDetailId": element.sourceMasterFieldValueDetailId,
+            "sourceTableId":element.sourceTableId,
+            "sourceFieldId":element.sourceFieldId,
+            "sourceValueIdList":element.sourceValueIdList
+          })
           let array =[]
           array.push(element.sourceValueName)
           this.tempSourceTable.push({
+            "sourceMasterFieldValueDetailId": element.sourceMasterFieldValueDetailId,
             'tableName': element.sourceTableName,
             'fieldType': element.sourceFieldName,
             'valueId': array,
@@ -1092,6 +1106,15 @@ export class SdmStepperComponent implements OnInit {
         }else{
           this.derivedTableFieldsData = res.data.results
         }
+
+        if(this.tempeditDerivedData){
+          this.derivedTableName = this.editDerivedData.derivedObjectName
+          this.derivedTableNameChange(this.editDerivedData.derivedObjectName)
+          // this.sdmFormStep3.patchValue(data)
+          this.selectedDerivedName = this.editDerivedData.selectedDerivedName
+          this.derivedTypeName = this.selectedDerivedName
+        }
+        
       });
     })
   }
@@ -1099,13 +1122,20 @@ export class SdmStepperComponent implements OnInit {
   derivedTableNameChange(value) {
     this.fieldTypes = []
     this.derivedTableName = value
+    this.sdmFormStep3.controls['derivedObjectName'].setValue(this.derivedTableName)
     this.derivedTableFieldsData.forEach(element => {
       if (element.derivedObjectName == value) {
         this.selectedtableId = element.sdmDerivedTableId
         // this.fieldTypes =element.sourceObjectFieldNameList
         this.sdmService.derivedTablesFieldsValue(this.selectedtableId).subscribe(res => {
           this.fieldTypes = res.data.results;
-
+          if(this.tempeditDerivedData){
+            this.sdmFormStep3.patchValue(this.editDerivedData)
+            console.log("derivedFieldName: "+ JSON.stringify(this.editDerivedData))
+            this.sourceObjectName = this.editDerivedData.sourceObjectName
+            this.sdmFormStep3.controls['derivedFieldName'].setValue(this.sourceObjectName)
+            // alert(this.selectedDerivedName)
+          }
         })
       }
     });
@@ -1292,7 +1322,7 @@ export class SdmStepperComponent implements OnInit {
       console.log("derived Master data: "+ JSON.stringify(this.derivedMastersData))
       if(this.editFlag){
         this.derivedMastersData.forEach(element => {
-           if(element.percentageOf != '' || element.percentageOf != null){
+           if(element.percentageOf != null){
              this.showPercentageFlag = true
            }
           this.tempDerivedTable.push({
@@ -1592,7 +1622,7 @@ export class SdmStepperComponent implements OnInit {
       if(this.saveMatrixData.length > 0)
       {
         this.saveMatrixData.forEach((element,index) => {
-          if(element.sdmCombinationId == srcCombData.sdmCombinationId){
+          if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId){
             let ind = index;
             this.saveMatrixData.splice(ind,1,{
               "sdmCombinationId": element.sdmCombinationId,
@@ -1621,14 +1651,14 @@ export class SdmStepperComponent implements OnInit {
   
             let length = this.saveMatrixData.length - 1;
             
-            if (this.saveMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.saveMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+            if (this.saveMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.saveMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
             
             for (let i = 0; i < index; i++) {
-               if (this.saveMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-               if (this.tempEditMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+               if (this.saveMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+               if (this.tempEditMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
 
             }
            
@@ -1697,11 +1727,11 @@ export class SdmStepperComponent implements OnInit {
     this.sourceRangeTo=value
 
 
-    if(this.isRangeApplicableFlag == true){
+    // if(this.isRangeApplicableFlag == true){
       if(this.saveMatrixData.length > 0)
       {
         this.saveMatrixData.forEach((element,index) => {
-          if(element.sdmCombinationId == srcCombData.sdmSourceCombinationId){
+          if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId){
             let ind = index;
             this.saveMatrixData.splice(ind,1,{
               "sdmCombinationId": element.sdmCombinationId,
@@ -1730,14 +1760,14 @@ export class SdmStepperComponent implements OnInit {
   
             let length = this.saveMatrixData.length - 1;
             
-            if (this.saveMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.saveMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+            if (this.saveMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.saveMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
             
             for (let i = 0; i < index; i++) {
-               if (this.saveMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-               if (this.tempEditMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+               if (this.saveMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+               if (this.tempEditMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
 
             }
            
@@ -1794,7 +1824,7 @@ export class SdmStepperComponent implements OnInit {
           'selectedCombData': this.selectedCombData
         })
       }
-    }
+    // }
 
 
     console.log("this edited data: "+ JSON.stringify(this.saveMatrixData))
@@ -1803,14 +1833,14 @@ export class SdmStepperComponent implements OnInit {
 
   getEditFromDateForSave(value,srcCombData){
     this.selectedFromDateForSave = value
-    this.selectedToDateForSave = srcCombData.derivedToDate
+    // this.selectedToDateForSave = srcCombData.derivedToDate
 
 
-    if(this.isRangeApplicableFlag == true){
+    // if(this.isRangeApplicableFlag == true){
       if(this.saveMatrixData.length > 0)
       {
         this.saveMatrixData.forEach((element,index) => {
-          if(element.sdmCombinationId == srcCombData.sdmSourceCombinationId){
+          if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId){
             let ind = index;
             this.saveMatrixData.splice(ind,1,{
               "sdmCombinationId": element.sdmCombinationId,
@@ -1819,34 +1849,34 @@ export class SdmStepperComponent implements OnInit {
               "sdmSourceCombinationId": element.sdmSourceCombinationId,
               "sourceRangeFrom": element.sourceRangeFrom,
               "sourceRangeTo": element.sourceRangeTo,
-              "derivedFromDate": element.derivedFromDate,
+              "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave),'yyyy-MM-dd'),
               "derivedToDate": element.derivedToDate,
               "applicableValue": element.applicableValue
             })
-            this.tempEditMatrixData.splice(ind,1,{
-              "sdmCombinationId": element.sdmCombinationId,
-              "sdmMasterId": element.sdmMasterId,
-              "sdmDerivedMasterId": element.matrixDerivedMasterId,
-              "sdmSourceCombinationId": element.sdmSourceCombinationId,
-              "sourceRangeFrom": element.sourceRangeFrom,
-              "sourceRangeTo": element.sourceRangeTo,
-              "derivedFromDate": element.derivedFromDate,
-              "derivedToDate": element.derivedToDate,
-              "applicableValue": element.applicableValue,
-              'selectedCombData': this.selectedCombData
-            })
+            // this.tempEditMatrixData.splice(ind,1,{
+            //   "sdmCombinationId": element.sdmCombinationId,
+            //   "sdmMasterId": element.sdmMasterId,
+            //   "sdmDerivedMasterId": element.matrixDerivedMasterId,
+            //   "sdmSourceCombinationId": element.sdmSourceCombinationId,
+            //   "sourceRangeFrom": element.sourceRangeFrom,
+            //   "sourceRangeTo": element.sourceRangeTo,
+            //   "derivedFromDate": element.derivedFromDate,
+            //   "derivedToDate": element.derivedToDate,
+            //   "applicableValue": element.applicableValue,
+            //   'selectedCombData': this.selectedCombData
+            // })
           }else{
   
             let length = this.saveMatrixData.length - 1;
             
-            if (this.saveMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.saveMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+            if (this.saveMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.saveMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
             
             for (let i = 0; i < index; i++) {
-               if (this.saveMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-               if (this.tempEditMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+               if (this.saveMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+               if (this.tempEditMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
 
             }
            
@@ -1902,7 +1932,7 @@ export class SdmStepperComponent implements OnInit {
           "applicableValue": this.applicableValue,
           'selectedCombData': this.selectedCombData
         })
-      }
+      // }
     }
 
 
@@ -1910,15 +1940,15 @@ export class SdmStepperComponent implements OnInit {
   }
 
   getEditToDateForSave(value,srcCombData){
-    this.selectedFromDateForSave = srcCombData.derivedFromDate
+    // this.selectedFromDateForSave = srcCombData.derivedFromDate
     this.selectedToDateForSave = value
 
 
-    if(this.isRangeApplicableFlag == true){
+    // if(this.isRangeApplicableFlag == true){
       if(this.saveMatrixData.length > 0)
       {
         this.saveMatrixData.forEach((element,index) => {
-          if(element.sdmCombinationId == srcCombData.sdmSourceCombinationId){
+          if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId){
             let ind = index;
             this.saveMatrixData.splice(ind,1,{
               "sdmCombinationId": element.sdmCombinationId,
@@ -1928,33 +1958,33 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeFrom": element.sourceRangeFrom,
               "sourceRangeTo": element.sourceRangeTo,
               "derivedFromDate": element.derivedFromDate,
-              "derivedToDate": element.derivedToDate,
+              "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave),'yyyy-MM-dd'),
               "applicableValue": element.applicableValue
             })
-            this.tempEditMatrixData.splice(ind,1,{
-              "sdmCombinationId": element.sdmCombinationId,
-              "sdmMasterId": element.sdmMasterId,
-              "sdmDerivedMasterId": element.matrixDerivedMasterId,
-              "sdmSourceCombinationId": element.sdmSourceCombinationId,
-              "sourceRangeFrom": element.sourceRangeFrom,
-              "sourceRangeTo": element.sourceRangeTo,
-              "derivedFromDate": element.derivedFromDate,
-              "derivedToDate": element.derivedToDate,
-              "applicableValue": element.applicableValue,
-              'selectedCombData': this.selectedCombData
-            })
+            // this.tempEditMatrixData.splice(ind,1,{
+            //   "sdmCombinationId": element.sdmCombinationId,
+            //   "sdmMasterId": element.sdmMasterId,
+            //   "sdmDerivedMasterId": element.matrixDerivedMasterId,
+            //   "sdmSourceCombinationId": element.sdmSourceCombinationId,
+            //   "sourceRangeFrom": element.sourceRangeFrom,
+            //   "sourceRangeTo": element.sourceRangeTo,
+            //   "derivedFromDate": element.derivedFromDate,
+            //   "derivedToDate": element.derivedToDate,
+            //   "applicableValue": element.applicableValue,
+            //   'selectedCombData': this.selectedCombData
+            // })
           }else{
   
             let length = this.saveMatrixData.length - 1;
             
-            if (this.saveMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.saveMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+            if (this.saveMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.saveMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
             
             for (let i = 0; i < index; i++) {
-               if (this.saveMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-               if (this.tempEditMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+               if (this.saveMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+               if (this.tempEditMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
 
             }
            
@@ -1998,7 +2028,7 @@ export class SdmStepperComponent implements OnInit {
           "applicableValue": this.applicableValue
         })
     
-        this.tempMatrixData.push({
+        this.tempEditMatrixData.push({
           "sdmCombinationId": srcCombData.sdmCombinationId,
           "sdmMasterId": this.sdmMasterId,
           "sdmDerivedMasterId": this.matrixDerivedMasterId,
@@ -2011,7 +2041,7 @@ export class SdmStepperComponent implements OnInit {
           'selectedCombData': this.selectedCombData
         })
       }
-    }
+    // }
     console.log("this edited data: "+ JSON.stringify(this.saveMatrixData))
     
   }
@@ -2019,13 +2049,12 @@ export class SdmStepperComponent implements OnInit {
   getEditedApplicableValue(value,srcCombData){
     this.selectedFromDateForSave = srcCombData.derivedFromDate
     this.selectedToDateForSave = srcCombData.derivedToDate
-
-
-    if(this.isRangeApplicableFlag == true){
+// alert(this.isRangeApplicableFlag)
+    // if(this.isRangeApplicableFlag == true){
       if(this.saveMatrixData.length > 0)
       {
         this.saveMatrixData.forEach((element,index) => {
-          if(element.sdmCombinationId == srcCombData.sdmSourceCombinationId){
+          if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId){
             let ind = index;
             this.saveMatrixData.splice(ind,1,{
               "sdmCombinationId": element.sdmCombinationId,
@@ -2036,32 +2065,32 @@ export class SdmStepperComponent implements OnInit {
               "sourceRangeTo": element.sourceRangeTo,
               "derivedFromDate": element.derivedFromDate,
               "derivedToDate": element.derivedToDate,
-              "applicableValue": setValue
+              "applicableValue": value
             })
-            this.tempEditMatrixData.splice(ind,1,{
-              "sdmCombinationId": element.sdmCombinationId,
-              "sdmMasterId": element.sdmMasterId,
-              "sdmDerivedMasterId": element.matrixDerivedMasterId,
-              "sdmSourceCombinationId": element.sdmSourceCombinationId,
-              "sourceRangeFrom": element.sourceRangeFrom,
-              "sourceRangeTo": element.sourceRangeTo,
-              "derivedFromDate": element.derivedFromDate,
-              "derivedToDate": element.derivedToDate,
-              "applicableValue": value,
-              'selectedCombData': this.selectedCombData
-            })
+            // this.tempEditMatrixData.splice(ind,1,{
+            //   "sdmCombinationId": element.sdmCombinationId,
+            //   "sdmMasterId": element.sdmMasterId,
+            //   "sdmDerivedMasterId": element.matrixDerivedMasterId,
+            //   "sdmSourceCombinationId": element.sdmSourceCombinationId,
+            //   "sourceRangeFrom": element.sourceRangeFrom,
+            //   "sourceRangeTo": element.sourceRangeTo,
+            //   "derivedFromDate": element.derivedFromDate,
+            //   "derivedToDate": element.derivedToDate,
+            //   "applicableValue": value,
+            //   'selectedCombData': this.selectedCombData
+            // })
           }else{
   
             let length = this.saveMatrixData.length - 1;
             
-            if (this.saveMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.saveMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[length].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-            if (this.tempEditMatrixData[index].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+            if (this.saveMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.saveMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            if (this.tempEditMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
             
             for (let i = 0; i < index; i++) {
-               if (this.saveMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
-               if (this.tempEditMatrixData[i].sdmCombinationId == srcCombData.sdmCombinationId) { return; }
+               if (this.saveMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+               if (this.tempEditMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
 
             }
            
@@ -2105,7 +2134,7 @@ export class SdmStepperComponent implements OnInit {
           "applicableValue": value
         })
     
-        this.tempMatrixData.push({
+        this.tempEditMatrixData.push({
           "sdmCombinationId": srcCombData.sdmCombinationId,
           "sdmMasterId": this.sdmMasterId,
           "sdmDerivedMasterId": this.matrixDerivedMasterId,
@@ -2114,12 +2143,111 @@ export class SdmStepperComponent implements OnInit {
           "sourceRangeTo": srcCombData.sourceRangeTo,
           "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
           "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
-          "applicableValue": this.applicableValue,
-          'selectedCombData': value
+          "applicableValue": value,
+          'selectedCombData': this.selectedCombData
         })
       }
-    }
+    // }else{
+    //   if(this.saveMatrixData.length > 0)
+    //   {
+    //     this.saveMatrixData.forEach((element,index) => {
+    //       if(element.sdmSourceCombinationId == srcCombData.sdmSourceCombinationId){
+    //         let ind = index;
+    //         this.saveMatrixData.splice(ind,1,{
+    //           "sdmCombinationId": element.sdmCombinationId,
+    //           "sdmMasterId": element.sdmMasterId,
+    //           "sdmDerivedMasterId": element.sdmDerivedMasterId,
+    //           "sdmSourceCombinationId": element.sdmSourceCombinationId,
+    //           "sourceRangeFrom": element.sourceRangeFrom,
+    //           "sourceRangeTo": element.sourceRangeTo,
+    //           "derivedFromDate": element.derivedFromDate,
+    //           "derivedToDate": element.derivedToDate,
+    //           "applicableValue": value
+    //         })
+    //         // this.tempEditMatrixData.splice(ind,1,{
+    //         //   "sdmCombinationId": element.sdmCombinationId,
+    //         //   "sdmMasterId": element.sdmMasterId,
+    //         //   "sdmDerivedMasterId": element.matrixDerivedMasterId,
+    //         //   "sdmSourceCombinationId": element.sdmSourceCombinationId,
+    //         //   "sourceRangeFrom": element.sourceRangeFrom,
+    //         //   "sourceRangeTo": element.sourceRangeTo,
+    //         //   "derivedFromDate": element.derivedFromDate,
+    //         //   "derivedToDate": element.derivedToDate,
+    //         //   "applicableValue": value,
+    //         //   'selectedCombData': element.selectedCombData
+    //         // })
+    //       }else{
+  
+    //         let length = this.saveMatrixData.length - 1;
+            
+    //         if (this.saveMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+    //         if (this.saveMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+    //         if (this.tempEditMatrixData[length].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+    //         if (this.tempEditMatrixData[index].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+            
+    //         for (let i = 0; i < index; i++) {
+    //            if (this.saveMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+    //            if (this.tempEditMatrixData[i].sdmSourceCombinationId == srcCombData.sdmSourceCombinationId) { return; }
+
+    //         }
+           
+
+    //         this.saveMatrixData.push({
+    //           "sdmCombinationId": srcCombData.sdmCombinationId,
+    //           "sdmMasterId": this.sdmMasterId,
+    //           "sdmDerivedMasterId": this.matrixDerivedMasterId,
+    //           "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
+    //           "sourceRangeFrom": srcCombData.sourceRangeFrom,
+    //           "sourceRangeTo": srcCombData.sourceRangeTo,
+    //           "derivedFromDate": this.selectedFromDateForSave,
+    //           "derivedToDate": this.selectedToDateForSave,
+    //           "applicableValue": value
+    //         })
+        
+    //         this.tempEditMatrixData.push({
+    //           "sdmCombinationId": srcCombData.sdmCombinationId,
+    //           "sdmMasterId": this.sdmMasterId,
+    //           "sdmDerivedMasterId": this.matrixDerivedMasterId,
+    //           "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
+    //           "sourceRangeFrom": srcCombData.sourceRangeFrom,
+    //           "sourceRangeTo": srcCombData.sourceRangeTo,
+    //           "derivedFromDate": this.selectedFromDateForSave,
+    //           "derivedToDate": this.selectedToDateForSave,
+    //           "applicableValue": value,
+    //           'selectedCombData': this.selectedCombData
+    //         })
+    //       }
+    //     });
+    //   }else{
+    //     this.saveMatrixData.push({
+    //       "sdmCombinationId": srcCombData.sdmCombinationId,
+    //       "sdmMasterId": this.sdmMasterId,
+    //       "sdmDerivedMasterId": this.matrixDerivedMasterId,
+    //       "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
+    //       "sourceRangeFrom": srcCombData.sourceRangeFrom,
+    //       "sourceRangeTo": srcCombData.sourceRangeTo,
+    //       "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
+    //       "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
+    //       "applicableValue": value
+    //     })
+    
+    //     this.tempEditMatrixData.push({
+    //       "sdmCombinationId": srcCombData.sdmCombinationId,
+    //       "sdmMasterId": this.sdmMasterId,
+    //       "sdmDerivedMasterId": this.matrixDerivedMasterId,
+    //       "sdmSourceCombinationId": srcCombData.sdmSourceCombinationId,
+    //       "sourceRangeFrom": srcCombData.sourceRangeFrom,
+    //       "sourceRangeTo": srcCombData.sourceRangeTo,
+    //       "derivedFromDate": this.datepipe.transform(new Date(this.selectedFromDateForSave), 'yyyy-MM-dd'),
+    //       "derivedToDate": this.datepipe.transform(new Date(this.selectedToDateForSave), 'yyyy-MM-dd'),
+    //       "applicableValue": value,
+    //       'selectedCombData': this.selectedCombData
+    //     })
+    //   }
+    // }
     console.log("this edited data: "+ JSON.stringify(this.saveMatrixData))
+    console.log("this edited data: "+ JSON.stringify(this.tempMatrixData))
+
     
   }
 
@@ -2405,6 +2533,8 @@ export class SdmStepperComponent implements OnInit {
 
 
   getFromDateForSave(event, data, index) {
+    console.log("data is: "+ JSON.stringify(data))
+    this.derivedFromDate = event
     this.selectedFromDateForSave = event
     if (this.isRangeApplicableFlag == false) {
       if (this.saveMatrixData.length > 0) {
@@ -2444,7 +2574,7 @@ export class SdmStepperComponent implements OnInit {
           "sourceRangeFrom": this.sourceRangeFrom,
           "sourceRangeTo": this.sourceRangeTo,
           "derivedFromDate": this.datepipe.transform(new Date(this.derivedFromDate), 'yyyy-MM-dd'),
-          "derivedToDate": this.datepipe.transform(new Date(this.derivedToDate), 'yyyy-MM-dd'),
+          "derivedToDate": "",
           "applicableValue": this.applicableValue
         })
       }
@@ -2453,6 +2583,7 @@ export class SdmStepperComponent implements OnInit {
   }
 
   getToDateForSave(event, data, index) {
+    this.derivedToDate = event
     this.selectedToDateForSave = event
     if (this.isRangeApplicableFlag == false) {
       if (this.saveMatrixData.length > 0) {
@@ -2509,7 +2640,7 @@ export class SdmStepperComponent implements OnInit {
       this.matrixsdmSourceCombinationList.forEach(element => {
         if (parseInt(element.sdmSourceCombinationId) == parseInt(data.sdmSourceCombinationId)) {
           // alert('here')    
-          this.selectedIndex = index;
+          // this.selectedIndex = index;
           element.derivedFromDate = this.datepipe.transform(new Date(this.selectedFromDateForSave), 'dd-MMM-yyyy')
           element.derivedToDate = this.datepipe.transform(new Date(this.selectedToDateForSave), 'dd-MMM-yyyy')
           this.copyFromFlag = true
@@ -2522,11 +2653,12 @@ export class SdmStepperComponent implements OnInit {
   }
 
 
-  largepopup(template: TemplateRef<any>) {
+  largepopup(template: TemplateRef<any>,index) {
     this.modalRef = this.modalService.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' })
     );
+    this.selectedIndex = index
     this.getAllEmployeeDetails();
   }
 
@@ -2599,8 +2731,41 @@ export class SdmStepperComponent implements OnInit {
   public getAllEmployeeDetails(): void {
     this.Empservice.getAllEmployeeDetails().subscribe((res) => {
       this.EmployeeData = res.data.results[0];
+      this.EmployeeData.forEach(element => {
+        element.checkboxFlag = false
+      });
       
     });
+  }
+
+  selectedEmpId(employeedata, event, index){
+    if(event.checked){
+      this.selectedempindex = index
+      this.selectedEmployeeId = employeedata.employeeMasterId
+      this.applicableValue = this.selectedEmployeeId 
+      this.EmployeeData.forEach((element,index) => {
+        if(this.selectedempindex != index){
+          element.checkboxFlag = true
+        }
+        
+      });
+    }else{
+      this.selectedEmployeeId = null
+      this.applicableValue = ''
+      this.selectedempindex = -1
+      this.EmployeeData.forEach((element,index) => {
+          element.checkboxFlag = false
+      });
+    }
+  }
+
+  resetSelectedEmpData(){
+    this.selectedEmployeeId = null
+      this.applicableValue = ''
+      this.selectedempindex = -1
+      this.EmployeeData.forEach((element,index) => {
+          element.checkboxFlag = false
+      });
   }
 
 
