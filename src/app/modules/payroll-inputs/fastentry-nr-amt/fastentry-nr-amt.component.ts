@@ -74,8 +74,8 @@ export class FastentryNRAmtComponent implements OnInit {
     private modalService: BsModalService,
     private toaster: ToastrService) {
     this.headData = [
-      { displayName: 'Incentive', headMasterId: 33 },
-      { displayName: 'Performance_Incentive', headMasterId: 49 },
+      { displayName: 'Incentive', headMasterId: 27 },
+      { displayName: 'Performance_Incentive', headMasterId: 29 },
     ]
 
     this.parollArea = [
