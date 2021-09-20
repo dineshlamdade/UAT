@@ -20,7 +20,7 @@
                             <label class="form-label">Cycle Definition</label>
                             <select class="form-control" formControlName="name" id="name"
                                 [ngClass]="{'is-invalid' : holdform.get('name').status == 'INVALID'}"
-                                class="form-control" (change)="onChangeDefinationEmp($event.target.value)" id="name">
+                                class="form-control" (change)="onChangeDefination($event.target.value)" id="name">
                                 <option selected value=''>Select </option>
                                 <option *ngFor="let cycleNameDefination of NameofCycleDefinationEmp"
                                     [value]="cycleNameDefination.value">
@@ -35,10 +35,10 @@
                             <label class="form-label">Cycle Name</label>
                             <select class="form-control"
                                 [ngClass]="{'is-invalid' : holdform.get('periodName').status == 'INVALID'}"
-                                class="form-control" (change)="onSelectCycleNameEmp($event.target.value)"
+                                class="form-control" (change)="onSelectCycleName($event.target.value)"
                                 id="periodName" class="form-control" formControlName="periodName">
                                 <option selected value=''>Select </option>
-                                <option *ngFor="let cycleList of periodNameListEmp" [value]="cycleList.label">
+                                <option *ngFor="let cycleList of periodNameList" [value]="cycleList.label">
                                     {{cycleList.label}}
                                 </option>
 
@@ -158,11 +158,11 @@
 
                             <label class="form-label mb-3">Employee Code</label>
                             <p-multiSelect [options]="employeeCodes" formControlName="employeeCode"
+                            (onChange) = "onSelectArea($event)" defaultLabel="Select"
                             [ngClass]="{'is-invalid' : holdform.get('employeeCode').status == 'INVALID'}"
                          optionLabel="name" resetFilterOnHide = "true"
-                        
-                              
-                                placeholder="Selected All"></p-multiSelect>
+                         class="multiselect-custom"
+                         [required]="true"></p-multiSelect>
 
 
                         </div>
@@ -174,17 +174,18 @@
 
                             <p-multiSelect [options]="empSetList" formControlName="employeeSet"
                             optionLabel="name" resetFilterOnHide = "true"
-                            
+                            (onChange) = "onSelectArea1($event)"
                             [ngClass]="{'is-invalid' : holdform.get('employeeSet').status == 'INVALID'}"
-                                placeholder="Selected All"></p-multiSelect>
+                                placeholder="Select"></p-multiSelect>
                         </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                    <!-- <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                         <div class="form-group">
                             <div class="custom-controls-stacked mb-2">
-                                <label class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="example- radios"
-                                        value="option1" (click)="Emplist(emplist)">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="example- radios"
+                                     formControlName = "areaList"   value="option1" (click)="Emplist(emplist)"
+                                     (onChange)= "onSelectArea2($event)">
                                     <div class="custom-control-label"> Employee List </div>
                                 </label>
                             </div>
@@ -192,9 +193,15 @@
 
                         </div>
 
-                    </div>
-
-
+                    </div> -->
+                    <div class="col-md-4 ">
+                        <label class="custom-control custom-radio radio-center" tooltip="Select All">
+                          <input type="radio" (change)="onSelectArea2($event.target.value)" (click)="Emplist(emplist)" formControlName="areaList" name="example-inline-radios"
+                            value="option3" class="custom-control-input" name="select" />
+                          <span class="custom-control-label">Employee List</span>
+                        </label>
+                      </div>
+    
                 </div>
 
 
@@ -238,7 +245,7 @@
 
 <div class="cycle-table mt-4">
     <div class="cycle-value pt-20 pb-20 bg-color-light_gray">
-        <h6 class="font-14">&nbsp; &nbsp;Total records ({{getEmpTableList.length}}) &nbsp;&nbsp; Selected records
+        <h6 class="font-14">&nbsp; &nbsp;Total Records ({{getEmpTableList.length}}) &nbsp;&nbsp; Selected Records
             ({{selectedUserEmp.length}})
             <span class="float-right">
                 <button type="submit" class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
@@ -304,7 +311,7 @@
                         </div>
                     </div>
                 </th>
-                <!-- <th rowspan="2" class="wd-8">
+                <th rowspan="2" class="wd-8">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Service
                         <div class="Sort_Filter_Position">
@@ -313,7 +320,7 @@
                             </p-columnFilter>
                         </div>
                     </div>
-                </th> -->
+                </th>
                 <th rowspan="2">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Area
@@ -345,7 +352,7 @@
                     </div>
                 </th>
 
-                <th rowspan="2" class="wd-8">
+                <!-- <th rowspan="2" class="wd-8">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Establishment
                         <div class="Sort_Filter_Position">
@@ -353,8 +360,8 @@
                             <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
                         </div>
                     </div>
-                </th>
-                <th rowspan="2" class="wd-8">
+                </th> -->
+                <!-- <th rowspan="2" class="wd-8">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Department
                         <div class="Sort_Filter_Position">
@@ -362,8 +369,8 @@
                             <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
                         </div>
                     </div>
-                </th>
-                <th rowspan="2" class="wd-8">
+                </th> -->
+                <!-- <th rowspan="2" class="wd-8">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Grade
                         <div class="Sort_Filter_Position">
@@ -371,8 +378,8 @@
                             <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
                         </div>
                     </div>
-                </th>
-                <th rowspan="2" class="wd-8">
+                </th> -->
+                <!-- <th rowspan="2" class="wd-8">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Designation
                         <div class="Sort_Filter_Position">
@@ -380,7 +387,7 @@
                             <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
                         </div>
                     </div>
-                </th>
+                </th> -->
             </tr>
 
         </ng-template>
@@ -407,12 +414,12 @@
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullName}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.companyName}}</label></td>
-                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td> -->
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1?.payrollAreaCode}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.establishment}}</label></td>
+                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.establishment}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.department}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.grade}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td> -->
             </tr>
 
         </ng-template>
@@ -563,7 +570,7 @@
                                             </div>
                                         </div>
                                     </th>
-                                    <!-- <th>
+                                    <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Service
                                             <div class="Sort_Filter_Position">
@@ -574,7 +581,7 @@
                                                 </p-columnFilter>
                                             </div>
                                         </div>
-                                    </th> -->
+                                    </th>
                                     <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">Area
                                             <div class="Sort_Filter_Position">
@@ -586,7 +593,7 @@
                                             </div>
                                         </div>
                                     </th>
-                                    <th>
+                                    <!-- <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Establishment
                                             <div class="Sort_Filter_Position">
@@ -596,8 +603,8 @@
                                                 </p-columnFilter>
                                             </div>
                                         </div>
-                                    </th>
-                                    <th>
+                                    </th> -->
+                                    <!-- <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Department
                                             <div class="Sort_Filter_Position">
@@ -607,8 +614,8 @@
                                                 </p-columnFilter>
                                             </div>
                                         </div>
-                                    </th>
-                                    <th>
+                                    </th> -->
+                                    <!-- <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">Grade
                                             <div class="Sort_Filter_Position">
                                                 <p-sortIcon field="ItSection" pSortableColumn="ItSection">
@@ -618,8 +625,8 @@
                                                 </p-columnFilter>
                                             </div>
                                         </div>
-                                    </th>
-                                    <th>
+                                    </th> -->
+                                    <!-- <th>
                                         <div class="p-d-flex p-jc-between p-ai-center">
                                             Designation
                                             <div class="Sort_Filter_Position">
@@ -629,7 +636,7 @@
                                                 </p-columnFilter>
                                             </div>
                                         </div>
-                                    </th>
+                                    </th> -->
 
 
 
@@ -655,12 +662,12 @@
                                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullName}}</label></td>
                                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td>
                                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.companyName}}</label></td>
-                                    <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td> -->
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td>
                                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.payrollAreaCode}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.establishment}}</label></td>
+                                    <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.establishment}}</label></td>
                                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.department}}</label></td>
                                     <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.grade}}</label></td>
-                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td>
+                                    <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.chngamount}}</label></td> -->
 
                                 </tr>
                             </ng-template>
