@@ -152,8 +152,8 @@
                                                                     tooltip="Edit"></i>&nbsp;
                                                                 <i class="fa fa-eye font-16 text-blue cursor-pointer"
                                                                     tooltip="View"></i>&nbsp;
-                                                                <i class="fa fa-trash font-16 text-red cursor-pointer"
-                                                                    tooltip="Delete"></i>
+                                                                <!-- <i class="fa fa-trash font-16 text-red cursor-pointer"
+                                                                    tooltip="Delete"></i> -->
                                                             </td>
                                                         </tr>
                                                     </ng-template>
@@ -460,7 +460,7 @@
                                                                         <select name="Select" class="form-control"
                                                                             [(ngModel)]="tablevalue"
                                                                             [ngModelOptions]="{standalone: true}"
-                                                                            [disabled]="editTableColDisabled"
+                                                                            [disabled]="editTableColDisabled || editTempFlag || editTempFlag1"
                                                                             (change)="fieldTypeList($event.target.value,1)">
                                                                             <option>Select Table Value</option>
                                                                             <option *ngFor="let table of tableListData"
@@ -473,7 +473,7 @@
                                                                         <select name="Select" class="form-control"
                                                                             [(ngModel)]="fieldtypevalue"
                                                                             [ngModelOptions]="{standalone: true}"
-                                                                            [disabled]="editTableColDisabled"
+                                                                            [disabled]="editTableColDisabled || editTempFlag || editTempFlag1"
                                                                             (change)="valuesList($event.target.value)">
                                                                             <option>Select Field Type</option>
                                                                             <option *ngFor="let field of fieldTypeData"
@@ -538,7 +538,7 @@
                                                                             tooltip="Edit"></i>&nbsp;&nbsp;
                                                                         <i class="fa fa-times font-16 text-red cursor-pointer"
                                                                             (click)="removeSource(index)"
-                                                                            tooltip="Remove"></i>&nbsp;
+                                                                            tooltip="Remove" *ngIf="!editTempFlag && !editTempFlag1"></i>&nbsp;
                                                                     </td>
                                                                 </tr>
                                                             </ng-template>
@@ -815,7 +815,9 @@
                                                                     <option value="Select">Select</option>
                                                                     <option value="{{derive.sdmDerivedTypeId}}"
                                                                         *ngFor="let derive of derivedTypeData">
-                                                                        {{derive.derivedType}}</option>
+                                                                        <span *ngIf="derive.derivedType != 'JobField'">{{derive.derivedType}}</span>
+                                                                        <span *ngIf="derive.derivedType == 'JobField'">Master</span>
+                                                                    </option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-sm-3"
@@ -828,7 +830,7 @@
                                                                     formControlName="percentageOf">
                                                                     <option value="Select">Select</option>
                                                                     <option *ngFor="let key of keywordData">
-                                                                        {{key.keywordName}}</option>
+                                                                        {{key.originalFormula}}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -849,7 +851,7 @@
                                                                 </select>
                                                             </div>
                                                             <div class="col-sm-3">
-                                                                <label class="form-label">Field Name {{selectedDerivedName}}</label>
+                                                                <label class="form-label">Field Name</label>
                                                                 <select name="custom-select" class="form-control"
                                                                     (change)="derivedFiedName($event.target.value)"
                                                                     [(ngModel)]="selectedDerivedName"
@@ -886,6 +888,18 @@
                                                                         [required]="!derivedactive"></textarea>
                                                                 </div>
                                                                 <div class="float-right ">
+                                                                    <!-- {{sdmFormStep3.controls.sdmDerivedMasterId.valid}}
+                                                                    {{sdmFormStep3.controls.derivedName.valid}}
+                                                                    {{sdmFormStep3.controls.sdmDerivedTypeId.valid}}
+                                                                    {{sdmFormStep3.controls.sdmMasterId.valid}}
+                                                                    {{sdmFormStep3.controls.sdmDerivedTableId.valid}}
+                                                                    {{sdmFormStep3.controls.derivedObjectName.valid}}
+                                                                    {{sdmFormStep3.controls.derivedFieldName.valid}}
+                                                                    {{sdmFormStep3.controls.percentageOf.valid}}
+                                                                    {{sdmFormStep3.controls.moduleIdList.valid}}
+                                                                    {{sdmFormStep3.controls.active.valid}}
+                                                                    {{sdmFormStep3.controls.sdmDerivedMasterRemark.valid}} -->
+
                                                                     <button [disabled]="sdmFormStep3.invalid"
                                                                         *ngIf="!tempeditDerivedData"
                                                                         (click)="addsaveDerived()" type="submit"
@@ -1071,7 +1085,7 @@
                                                                                         {{data.sdmDerivedTypeName}}
                                                                                     </td>
                                                                                     <td
-                                                                                        *ngIf="derivedTypeName == 'Percentage' || showPercentageFlag">
+                                                                                        *ngIf="data.sdmDerivedTypeName == 'Percentage' || derivedTypeName == 'Percentage' || showPercentageFlag">
                                                                                         {{data.percentageOf}}
                                                                                     </td>
                                                                                     <td class="text-center">
