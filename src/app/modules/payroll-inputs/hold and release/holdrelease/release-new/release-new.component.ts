@@ -73,6 +73,7 @@ export class ReleaseNewComponent implements OnInit {
   public empdataSource:  Array<any> = [];
   periodNameList: Array<any> = [];
   empList: any;
+  data: any;
 // public finalpendingLockList: Array<any> = [];
 
   constructor(private modalService: BsModalService,
@@ -227,17 +228,47 @@ export class ReleaseNewComponent implements OnInit {
     }
 
     getAllCycleDefinationEmp() {
-      this.holdService.getAllCycleData().subscribe((res) => {
+      this.holdService.getAllCycleData1().subscribe((res) => {
         this.cycleDefinationListEmp = res;
         console.log('cycleDefinationListEmp', this.cycleDefinationListEmp);
-        res.data.results[0].forEach((element) => {
+        this.data=res.data.results[0];
+      //   res.data.results[0].forEach((element) => {
+      //     const obj = {
+      //        label: element.cycleName,
+      //       value: element.businessCycleDefinitionId,
+      //       // label: element.name,
+      //       // value: element.id,
+      //     };
+      //     this.NameofCycleDefinationEmp.push(obj);
+      //   });
+     
+
+      this.NameofCycleDefinationEmp = [];
+
+        for (var len = this.data.length, i = 0; i < len; ++i) {
+          var bId =this.data[i].businessCycleDefinitionId;
+          let valueIndex;
+  let  ind = this.NameofCycleDefinationEmp.find(x=>x.value==bId);
+ if(ind!=null||ind!=undefined){
+ valueIndex=ind.value;
+ }
+  // if(ind!=null||ind!=undefined){
+     if(this.NameofCycleDefinationEmp.length!= 0){
+          if (valueIndex==bId) continue;
+     }
           const obj = {
-            label: element.name,
-            value: element.id,
-          };
-          this.NameofCycleDefinationEmp.push(obj);
-        });
-      });
+            label: this.data[i].cycleName,
+           value:this.data[i].businessCycleDefinitionId,
+           // label: element.name,
+           // value: element.id,
+         }
+       
+         this.NameofCycleDefinationEmp.push(obj);
+     //   }
+
+        }
+        console.log('finalcycle',this.NameofCycleDefinationEmp)
+  });
     }
 
     onChangeDefination(evt: any) {
@@ -526,7 +557,7 @@ export class ReleaseNewComponent implements OnInit {
         }
         getBusinessIDEmp() {
           if (this.cycleNameList.length > 0) {
-            return this.cycleNameList[0].id;
+            return this.cycleNameList[0].businessCycleDefinitionId;
           } else {
             return 0;
           }

@@ -1040,6 +1040,18 @@ getAllSetLists(){
 
 }
 
+
+// getSelectedEmployeeSet(event){
+//   this.employeeSetData.forEach(element => {
+//     if(element.employeeSetMasterId == event){
+//      element.employeeSetMasterDetailsList.forEach(ele => {
+//        this.empSetList.push(ele)
+//      });
+//     }
+//   });
+
+//   console.log("employeedata is: "+ JSON.stringify(this.employeeListData))
+// }
     
   
 }

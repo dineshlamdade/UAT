@@ -16,6 +16,19 @@ export class ServiceHoldService {
     .set('X-TenantId', 'PaysquareDefault');
     return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/GETAllCycle')
    // return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/hold/')
+  // return this._HTTP.get( environment.baseUrl8084 + 'HoldEmployee/')
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+
+  getAllCycleData1() {
+    const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+   // return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/GETAllCycle')
+    return this._HTTP.get( environment.baseUrl8084 + 'HoldEmployee/')
+   // return this._HTTP.get( environment.baseUrl8084 + 'businessCycleDefinition/hold/')
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
