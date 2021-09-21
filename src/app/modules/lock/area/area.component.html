@@ -11,7 +11,13 @@
           <div class="col-md-12">
             <div class="float-right">
               <buttton class="btn btn-bg-green mt-20" tooltip="Pending For Lock"
-                (click)="Areapendingforlockpopup(Areapendingforlock)"> Pending for Lock</buttton>
+                (click)="Areapendingforlockpopup(Areapendingforlock)"><b><i class="fa fa-registered"></i></b> Pending for Lock</buttton>
+
+                <!-- <button  class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Pending For Lock" (click)="Areapendingforlockpopup(Areapendingforlock)">
+                                    <b><i class="fa fa-registered"></i></b>
+                   Pending for Lock</button> -->
+
             </div>
           </div>
         </div>
@@ -105,22 +111,23 @@
                 <div class="row">
                   <div class="col-md-4">
                     <lable class="form-label"> Area</lable>
-                    <!-- <p-multiSelect [options]="groups" [(ngModel)]="ServiceAreaList" optionLabel="name">
-                                  </p-multiSelect> -->
-                    <p-multiSelect formControlName="areaMasterCode" defaultLabel="Select a Area"
+                    <p-multiSelect formControlName="areaMasterCode" resetFilterOnHide = "true"
+                     defaultLabel="Select a Area" [required]="true" (onChange)="onSelectArea($event)"
                       [ngClass]="{'is-invalid' : areaForm.get('areaMasterCode').status == 'INVALID'}"
                       [options]="ServiceAreaList" optionLabel="name"
                       [ngClass]="{'is-invalid' : areaForm.get('areaMasterCode').status == 'INVALID'}">
                     </p-multiSelect>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4"  >
                     <lable class="form-label"> Area Set</lable>
-                    <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name">
+                    <p-multiSelect [required]="true" resetFilterOnHide = "true"
+                    (onChange)="onSelectAreaSet($event)" [ngClass]="{'is-invalid' : areaForm.get('areaSet').status == 'INVALID'}"
+                     [options]="areaSetList" formControlName="areaSet"  optionLabel="name">
                     </p-multiSelect>
                   </div>
                   <div class="col-md-4 ">
                     <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                      <input type="checkbox" (click)="Arealistpop(arealistpop)" name="example-inline-radios"
+                      <input type="checkbox" (change)="onSelectAreaList($event.target.value)" (click)="Arealistpop(arealistpop)" formControlName="areaList" name="example-inline-radios"
                         value="option3" class="custom-control-input" name="select" />
                       <span class="custom-control-label">Area List</span>
                     </label>
@@ -185,9 +192,9 @@
             <ng-template pTemplate="header">
               <tr>
                 <th style="width: 3rem">
-                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                  <!-- <p-tableHeaderCheckbox (click)="allCheckInCycleLockTable(e.checked)" #e></p-tableHeaderCheckbox> -->
-                </th>
+                  <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
+                  <p-tableHeaderCheckbox (click)="allCheckInCycleLockTable(e.checked)" #e></p-tableHeaderCheckbox>
+                  </th>
                 <th>
                   <div class="p-d-flex p-jc-between p-ai-center"> Area
                     <div class="Sort_Filter_Position">
@@ -346,8 +353,11 @@
                   </div>
                   <div class="col-md-4">
                     <lable class="form-label"> Employee Set</lable>
-                    <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name">
-                    </p-multiSelect>
+                    <p-multiSelect formControlName="employeeSet"
+                    [ngClass]="{'is-invalid' : empForm.get('employeeSet').status == 'INVALID'}"
+                    [options]="empSetList" optionLabel="name"
+                    [ngClass]="{'is-invalid' : empForm.get('employeeSet').status == 'INVALID'}">
+                  </p-multiSelect>
                   </div>
                   <div class="col-md-4 ">
                     <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
@@ -421,7 +431,8 @@
                   <ng-template pTemplate="header">
                     <tr>
                       <th style="width: 3rem">
-                        <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
+                        <!-- <p-tableHeaderCheckbox> </p-tableHeaderCheckbox> -->
+                        <p-tableHeaderCheckbox  [value]="user1" (click)="allCheckInCycleLockTableEmp(e.checked,user1)" #e></p-tableHeaderCheckbox>
                       </th>
                       <th>
                         <div class="p-d-flex p-jc-between p-ai-center"> Emp.Code
