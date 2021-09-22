@@ -207,11 +207,35 @@ export class ServiceHoldService {
       } ) );
   }
   
+
+  // all employee set name
   getSummaryData():Observable<any>{
     //return this.http.get<any>(this.apiUrl+ `EmployeeMaster/SummaryData`);
-    return this._HTTP.get(environment.baseUrl8084 +`EmployeeMaster/getAllEmployeeSet`);
-    //return this._HTTP.get(environment.baseUrl8084 +`HoldEmployee/employeeSetName/`);
+  return this._HTTP.get(environment.baseUrl8084 +`EmployeeMaster/getAllEmployeeSet`);
+ // return this._HTTP.post(environment.baseUrl8084 +`HoldEmployee/employeeSetName/`, data);
    }
+
+   //hold employee set
+   postHoldEmpSet(data : any):Observable<any>{
+    //return this.http.get<any>(this.apiUrl+ `EmployeeMaster/SummaryData`);
+  // return this._HTTP.get(environment.baseUrl8084 +`EmployeeMaster/getAllEmployeeSet`);
+  return this._HTTP.post(environment.baseUrl8084 +`HoldEmployee/employeeSetName/`, data);
+   }
+
+   //hold employee list
+   postHoldEmpList(data : any):Observable<any>{
+    return this._HTTP.get(environment.baseUrl8084 +`HoldEmployee/holdEmployeeListAddHold`, data);
+   }
+
+   //release employee set
+   postReleaseEmpSet(data : any):Observable<any>{
+
+   // return this._HTTP.get( environment.baseUrl8084 + 'HoldEmployee/getByEmployeeSetMasterId/', data);
+    return this._HTTP.post( environment.baseUrl8084 + `HoldEmployee/holdEmployeeSet`, data);
+
+   }
+
+   
 
 //    //Area Penidng for lock API
 //  pendingForLockArea() {

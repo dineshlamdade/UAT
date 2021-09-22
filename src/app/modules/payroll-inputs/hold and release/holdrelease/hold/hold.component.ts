@@ -32,6 +32,9 @@ export interface emplist {
   styleUrls: ['./hold.component.scss']
 })
 export class HoldComponent implements OnInit {
+  public isHideEmpSet : boolean;
+  public isHideEmpCode : boolean;
+  public isHideEmpList : boolean;
   cities: City[];
   users1: User1[];
   selectedCities: City[];
@@ -68,6 +71,8 @@ export class HoldComponent implements OnInit {
  public areTableList: Array<any> = [];
   HighlightRow: number;
   public allAreaCodesEmp:  Array<any> = [];
+  public allAreaCodesEmpSet : Array<any> = [];
+  public allAreaCodesEmpList : Array<any> = [];
   public allEmpSetList : Array<any> = [];
   public getEmpTableList : Array<any> = [];
   selectedUserEmp: Array<any> = [];
@@ -120,7 +125,7 @@ export class HoldComponent implements OnInit {
     this.getAllCompanyNameEmp();
     this.getAllServiceNameEmp();
     
-  this.getSummaryData();
+   this.getSummaryData();
   this.getAllSetLists();
     // this.getAllServiceName()
     this.cities = [
@@ -143,6 +148,7 @@ export class HoldComponent implements OnInit {
     );
   }
   Emplist(emplist: TemplateRef<any>) {
+   
     this.holdform.get('employeeCode').disable();
     this.holdform.get('employeeSet').disable();
 
@@ -218,6 +224,10 @@ export class HoldComponent implements OnInit {
   }
   
   onSelectArea(evt){
+    this.isHideEmpCode = true;
+    this.isHideEmpSet = false;
+    this.isHideEmpList = false;
+   
     console.log(evt);
     if(evt.value.length >= 1){
       this.holdform.get('employeeSet').disable();
@@ -230,6 +240,9 @@ export class HoldComponent implements OnInit {
    // console.log("employeeCodes", this.employeeCodes.length);
   }
   onSelectArea1(evt){
+    this.isHideEmpSet = true;
+    this.isHideEmpCode = false;
+    this.isHideEmpList = false;
     console.log(evt);
     if(evt.value.length >= 1){
       this.holdform.get('employeeCode').disable();
@@ -242,6 +255,9 @@ export class HoldComponent implements OnInit {
    // console.log("employeeCodes", this.employeeCodes.length);
   }
   onSelectArea2(evt){
+    this.isHideEmpSet = false;
+    this.isHideEmpCode = false;
+    this.isHideEmpList = true;
     console.log(evt);
     if(evt.value.length >= 1){
       this.holdform.patchValue({
@@ -584,21 +600,25 @@ export class HoldComponent implements OnInit {
         console.log('toSelect', toSelect);
       }
       
+
+      //employee code
       saveEmp() {
         this.allAreaCodesEmp = [];
         const selectedPayrollAreaCodes = this.holdform.get('employeeCode').value;
-        this.allEmpSetList = []
-        const selectedPayrollEmpSet = this.holdform.get('employeeSet').value;
+        // this.allEmpSetList = []
+        // const selectedPayrollEmpSet = this.holdform.get('employeeSet').value;
         
         if (selectedPayrollAreaCodes.length > 0) {
           selectedPayrollAreaCodes.forEach((element) => {
             this.allAreaCodesEmp.push(element.code);
           });
-        } else if(selectedPayrollEmpSet.length > 0) {
-          selectedPayrollEmpSet.forEach((element) => {
-            this.allEmpSetList.push(element.code);
-          });
-        } else{
+        } 
+        // else if(selectedPayrollEmpSet.length > 0) {
+        //   selectedPayrollEmpSet.forEach((element) => {
+        //     this.allEmpSetList.push(element.code);
+        //   });
+        //} 
+        else{
          // this.alertService.sweetalertWarning('Please select Employee Code');
          
           return false;
@@ -614,8 +634,8 @@ export class HoldComponent implements OnInit {
           companyName: this.getCompanyNameEmp(this.holdform.get('companyName').value),
           serviceName: this.getServiceNameEmp(this.holdform.get('serviceName').value),
           payrollAreaCode:  this.getAreaCodesInEmp(this.holdform.get('areaMasterCode').value),
-        employeeMasterIdList:  this.allAreaCodesEmp,
-        employeeMasterSetlist : this.allEmpSetList
+        employeeMasterIdList:  this.allAreaCodesEmp
+        //employeeMasterSetlist : this.allEmpSetList
 
       
         };
@@ -651,6 +671,116 @@ export class HoldComponent implements OnInit {
       //   areaMasterCode : '',
       // })
       }
+
+      //employee set
+      saveEmp2() {
+        this.allAreaCodesEmpSet = [];
+        const selectedPayrollAreaCodes = this.holdform.get('employeeSet').value;
+        if (selectedPayrollAreaCodes.length > 0) {
+          selectedPayrollAreaCodes.forEach((element) => {
+            this.allAreaCodesEmpSet.push(element.code);
+          });
+        }
+         else {
+         // this.alertService.sweetalertWarning('Please select Employee Code');
+          return false;
+        }
+      
+      
+        const data = {
+          areaMasterId: this.getAreaMasterIDEmp(),
+          businessCycleId: this.getBusinessIDEmp(),
+          cycle: this.holdform.get('periodName').value,
+          release : this.holdform.get('release').value,
+          companyName: this.getCompanyNameEmp(this.holdform.get('companyName').value),
+          serviceName: this.getServiceNameEmp(this.holdform.get('serviceName').value),
+          payrollAreaCode:  this.getAreaCodesInEmp(this.holdform.get('areaMasterCode').value),
+          employeeMasterSetlist:  this.allAreaCodesEmpSet
+      
+        };
+      
+      
+        this.holdService.postHoldEmpSet(data).subscribe((res: any) => {
+          if(res){
+           if(res.data.results.length > 0) {
+            this.getEmpTableList = res.data.results;
+            console.log("getEmpTableList", this.getEmpTableList);
+             this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+           } else {
+             this.alertService.sweetalertWarning(res.status.messsage);
+           }
+         }else {
+           this.alertService.sweetalertError(
+             'Something went wrong. Please try again.'
+           );
+         }
+       });
+      // this.holdform.reset();
+      //  this.holdform.patchValue({
+      //   companyName : '',
+      //   serviceName : '',
+      //   periodName : '',
+      //   name : '',
+      //   employeeCode : '',
+      //   areaMasterCode : '',
+      // })
+      }
+      
+      
+      //employee list
+      saveEmp3() {
+        this.allAreaCodesEmpList = [];
+        const selectedPayrollAreaCodes = this.holdform.get('areaList').value;
+        if (selectedPayrollAreaCodes.length > 0) {
+          selectedPayrollAreaCodes.forEach((element) => {
+            this.allAreaCodesEmpList.push(element.code);
+          });
+        }
+         else {
+         // this.alertService.sweetalertWarning('Please select Employee Code');
+          return false;
+        }
+      
+      
+        const data = {
+          areaMasterId: this.getAreaMasterIDEmp(),
+          businessCycleId: this.getBusinessIDEmp(),
+          cycle: this.holdform.get('periodName').value,
+          release : this.holdform.get('release').value,
+          companyName: this.getCompanyNameEmp(this.holdform.get('companyName').value),
+          serviceName: this.getServiceNameEmp(this.holdform.get('serviceName').value),
+          payrollAreaCode:  this.getAreaCodesInEmp(this.holdform.get('areaMasterCode').value),
+          employeeMasterSetlist:  this.allAreaCodesEmpSet
+      
+        };
+      
+      
+        this.holdService.postHoldEmpList(data).subscribe((res: any) => {
+          if(res){
+           if(res.data.results.length > 0) {
+            this.getEmpTableList = res.data.results;
+            console.log("getEmpTableList", this.getEmpTableList);
+             this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+           } else {
+             this.alertService.sweetalertWarning(res.status.messsage);
+           }
+         }else {
+           this.alertService.sweetalertError(
+             'Something went wrong. Please try again.'
+           );
+         }
+       });
+      // this.holdform.reset();
+      //  this.holdform.patchValue({
+      //   companyName : '',
+      //   serviceName : '',
+      //   periodName : '',
+      //   name : '',
+      //   employeeCode : '',
+      //   areaMasterCode : '',
+      // })
+      }
+      
       
     
       saveCheckedEmp(){

@@ -27,6 +27,9 @@ interface users1 {
   styleUrls: ['./release-new.component.scss']
 })
 export class ReleaseNewComponent implements OnInit {
+  public isHideEmpSet : boolean;
+  public isHideEmpCode : boolean;
+  public isHideEmpList : boolean;
   users1: users1[];
   public modalRef: BsModalRef;
   public releaseForm: any = FormGroup;
@@ -49,6 +52,8 @@ export class ReleaseNewComponent implements OnInit {
   public summaryData : Array<any> = [];
   public empSetList : Array<any> = [];
   public allAreaCodesEmp : Array<any> = [];
+  public allAreaCodesEmpSet : Array<any> = [];
+  public allAreaCodesEmpList : Array<any> = [];
   public getEmpTableList : Array<any> = [];
   public selectedAreaIdsEmp : Array<any> = [];
   public checkedSummaryListEmp : Array<any> = [];
@@ -91,7 +96,7 @@ export class ReleaseNewComponent implements OnInit {
     this.getAllCycleDefinationEmp();
     this.getAllCompanyNameEmp();
     this.getAllServiceNameEmp();
-    this.getSummaryData();
+  this.getSummaryData();
     this.pendingForLockAsWhen();
     this.getAllSetLists();
     this.users1 = [
@@ -166,6 +171,9 @@ export class ReleaseNewComponent implements OnInit {
   }
 
   onSelectArea(evt){
+    this.isHideEmpSet = false;
+    this.isHideEmpCode = true;
+    this.isHideEmpList = false;
     console.log(evt);
     if(evt.value.length >= 1){
       this.releaseForm.get('employeeSet').disable();
@@ -178,6 +186,9 @@ export class ReleaseNewComponent implements OnInit {
    // console.log("employeeCodes", this.employeeCodes.length);
   }
   onSelectArea1(evt){
+    this.isHideEmpSet = true;
+    this.isHideEmpCode = false;
+    this.isHideEmpList = false;
     console.log(evt);
     if(evt.value.length >= 1){
       this.releaseForm.get('employeeCode').disable();
@@ -190,6 +201,9 @@ export class ReleaseNewComponent implements OnInit {
    // console.log("employeeCodes", this.employeeCodes.length);
   }
   onSelectArea2(evt){
+    this.isHideEmpSet = false;
+    this.isHideEmpCode = false;
+    this.isHideEmpList = true;
     console.log(evt);
     if(evt.value.length >= 1){
       this.releaseForm.get('employeeCode').disable();
@@ -495,6 +509,7 @@ export class ReleaseNewComponent implements OnInit {
         } 
 
         //go button and save data
+        //employee code
         saveEmp() {
           this.allAreaCodesEmp = [];
           const selectedPayrollAreaCodes = this.releaseForm.get('employeeCode').value;
@@ -547,6 +562,119 @@ export class ReleaseNewComponent implements OnInit {
         //   areaMasterCode : '',
         // })
         }
+
+
+        //employee set
+        saveEmp2() {
+          this.allAreaCodesEmpSet = [];
+          const selectedPayrollAreaCodes = this.releaseForm.get('employeeSet').value;
+          if (selectedPayrollAreaCodes.length > 0) {
+            selectedPayrollAreaCodes.forEach((element) => {
+              this.allAreaCodesEmpSet.push(element.code);
+            });
+          }
+           else {
+           // this.alertService.sweetalertWarning('Please select Employee Code');
+            return false;
+          }
+        
+        
+          const data = {
+            areaMasterId: this.getAreaMasterIDEmp(),
+            businessCycleId: this.getBusinessIDEmp(),
+            cycle: this.releaseForm.get('periodName').value,
+            release : this.releaseForm.get('release').value,
+            companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
+            serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
+            payrollAreaCode:  this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
+            employeeMasterSetlist:  this.allAreaCodesEmpSet
+        
+          };
+        
+        
+          this.holdService.postReleaseEmpSet(data).subscribe((res: any) => {
+            if(res){
+             if(res.data.results.length > 0) {
+              this.getEmpTableList = res.data.results;
+              console.log("getEmpTableList", this.getEmpTableList);
+               this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+             } else {
+               this.alertService.sweetalertWarning(res.status.messsage);
+             }
+           }else {
+             this.alertService.sweetalertError(
+               'Something went wrong. Please try again.'
+             );
+           }
+         });
+        // this.holdform.reset();
+        //  this.holdform.patchValue({
+        //   companyName : '',
+        //   serviceName : '',
+        //   periodName : '',
+        //   name : '',
+        //   employeeCode : '',
+        //   areaMasterCode : '',
+        // })
+        }
+
+
+        //employee list
+        saveEmp3() {
+          this.allAreaCodesEmpList = [];
+          const selectedPayrollAreaCodes = this.releaseForm.get('areaList').value;
+          if (selectedPayrollAreaCodes.length > 0) {
+            selectedPayrollAreaCodes.forEach((element) => {
+              this.allAreaCodesEmpList.push(element.code);
+            });
+          }
+           else {
+           // this.alertService.sweetalertWarning('Please select Employee Code');
+            return false;
+          }
+        
+        
+          const data = {
+            areaMasterId: this.getAreaMasterIDEmp(),
+            businessCycleId: this.getBusinessIDEmp(),
+            cycle: this.releaseForm.get('periodName').value,
+            release : this.releaseForm.get('release').value,
+            companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
+            serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
+            payrollAreaCode:  this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
+            employeeMasterSetlist:  this.allAreaCodesEmpSet
+        
+          };
+        
+        
+          this.holdService.postEmpForm(data).subscribe((res: any) => {
+            if(res){
+             if(res.data.results.length > 0) {
+              this.getEmpTableList = res.data.results;
+              console.log("getEmpTableList", this.getEmpTableList);
+               this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+             } else {
+               this.alertService.sweetalertWarning(res.status.messsage);
+             }
+           }else {
+             this.alertService.sweetalertError(
+               'Something went wrong. Please try again.'
+             );
+           }
+         });
+        // this.holdform.reset();
+        //  this.holdform.patchValue({
+        //   companyName : '',
+        //   serviceName : '',
+        //   periodName : '',
+        //   name : '',
+        //   employeeCode : '',
+        //   areaMasterCode : '',
+        // })
+        }
+        
+        
+      
         
         getAreaMasterIDEmp() {
           if (this.areaSeriveListEmp.length > 0) {
@@ -557,7 +685,7 @@ export class ReleaseNewComponent implements OnInit {
         }
         getBusinessIDEmp() {
           if (this.cycleNameList.length > 0) {
-            return this.cycleNameList[0].businessCycleDefinitionId;
+            return this.cycleNameList[0].id;
           } else {
             return 0;
           }
