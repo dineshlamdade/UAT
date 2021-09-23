@@ -40,6 +40,7 @@ export class NpsDeclarationComponent implements OnInit {
   @Input() institution: string;
   @Input() accountNumber: string;
   @Input() data: any;
+  documentRemarkList: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -61,6 +62,9 @@ export class NpsDeclarationComponent implements OnInit {
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
+
+  documentDataArray = [];
+  editdDocumentDataArray = [];
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
@@ -164,6 +168,15 @@ export class NpsDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   public canEdit : boolean;
   public licDeclarationData: any;
+  npsDeclarationData: any;
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
   dateOfJoining: Date;
   selectedFrequency: any;
   constructor(
@@ -400,6 +413,19 @@ export class NpsDeclarationComponent implements OnInit {
       this.globalPolicy,
       transactionStatus
     );
+  }
+
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
   // -------- ON select to check input boxex--------
@@ -852,6 +878,24 @@ export class NpsDeclarationComponent implements OnInit {
 
   upload() {
 
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+
+    console.log(JSON.stringify(this.npsDeclarationData))
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -934,6 +978,7 @@ export class NpsDeclarationComponent implements OnInit {
       groupTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
+      remarkPasswordList: this.documentDataArray
     };
     console.log('data::', data);
 
@@ -942,6 +987,39 @@ export class NpsDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
           this.selectedTransactionInstName(this.globalInstitution);
          
           // this.transactionDetail =
@@ -1238,6 +1316,46 @@ export class NpsDeclarationComponent implements OnInit {
           res.data.results[0].grandApprovedTotal;
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
+
+        this.masterGridData = res.data.results;
+
+        this.masterGridData.forEach((element) => {
+          // element.policyStartDate = new Date(element.policyStartDate);
+          // element.policyEndDate = new Date(element.policyEndDate);
+          // element.fromDate = new Date(element.fromDate);
+          // element.toDate = new Date(element.toDate);
+          element.documentInformation.forEach(element => {
+            // this.dateofsubmission = element.dateOfSubmission;
+            // this.documentArray.push({
+            //   'dateofsubmission': ,
+            // })
+            
+            element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            })
+            })
+          });
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
+          //
+          // })
+        });
         //console.log(this.urlArray);
         // this.urlArray.forEach((element) => {
         //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
@@ -1246,8 +1364,26 @@ export class NpsDeclarationComponent implements OnInit {
         // });
         // //console.log('converted:: ', this.urlArray);
       });
+      this.documentArray = [];
   }
 
+
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
 
   // Common Function for filter to call API
@@ -1268,6 +1404,22 @@ export class NpsDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
         // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].groupTransactionList.length;
 
         this.initialArrayIndex = [];
@@ -1302,7 +1454,39 @@ export class NpsDeclarationComponent implements OnInit {
       });
   }
 
+  // public docRemarkModal(
+  //   documentViewerTemplate: TemplateRef<any>,
+  //   index: any,
+  //   documentRemarkList
+  // ) {
+  //   console.log('documentDetail::', documentRemarkList);
+  //   this.documentRemarkList = documentRemarkList;
+  //   this.modalRef = this.modalService.show(
+  //     documentViewerTemplate,
+  //     Object.assign({}, { class: 'gray modal-s' })
+  //   );
+  // }
+
   public uploadUpdateTransaction() {
+
+
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+    console.log(JSON.stringify(this.npsDeclarationData))
+
 
     console.log('uploadUpdateTransaction editTransactionUpload::', this.editTransactionUpload);
     // this.editTransactionUpload.forEach((element) => {
@@ -1359,6 +1543,8 @@ export class NpsDeclarationComponent implements OnInit {
       documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+        // documentPassword: this.documentPassword,
+      remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -1367,6 +1553,44 @@ export class NpsDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
+
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',

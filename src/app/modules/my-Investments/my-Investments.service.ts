@@ -406,6 +406,13 @@ public apiUrl = environment.baseUrl8085;
     }));
   }
 
+  public getRemarkList(psId: String, policyNo: String,): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/GetRemark/' + psId + '/' + policyNo)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   public getPPFTransactionByProofSubmissionId(proofSubmissionId: String): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'ppf-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
