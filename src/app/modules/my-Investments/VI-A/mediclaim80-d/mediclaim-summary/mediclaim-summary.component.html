@@ -20,7 +20,7 @@
                       -->
 
             <tr *ngIf="mediclaimPremiumMasterTransactionList?.length">
-              <td rowspan="1" class="text-link">Mediclaim Insurance Premium</td>
+              <td rowspan="1" >Mediclaim Insurance Premium</td>
 
               <td class="padding-0" *ngIf="mediclaimPremiumMasterTransactionList?.length">
                 <div class="pd-5" *ngFor="let mediclaim of mediclaimPremiumMasterTransactionList"
@@ -71,7 +71,7 @@
               </td>
             </tr>
             <tr *ngFor="let summary of preventiveHealthCheckupMasterTransactionList; let i = index">
-              <td rowspan="1" class="text-link">Health Check-Up Charges</td>
+              <td rowspan="1" >Health Check-Up Charges</td>
               <td class="wd-20">
                 <span tooltip="{{ summary.institution }}">{{summary.institution}} : {{summary.policyNumber}}</span>
               </td>
@@ -97,7 +97,7 @@
               </td>
             </tr>
             <tr *ngFor="let summary of medicalExpenseMasterTransactionList; let i = index">
-              <td rowspan="1" class="text-link">Health Check-Up Charges</td>
+              <td rowspan="1" >Health Check-Up Charges</td>
               <td class="wd-20">
                 <span tooltip="{{ summary.institution }}">{{summary.institution}} : {{summary.policyNumber}}</span>
               </td>

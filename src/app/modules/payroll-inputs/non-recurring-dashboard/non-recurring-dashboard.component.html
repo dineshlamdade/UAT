@@ -1,0 +1,274 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="row mt-10">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-spacearound mt-15">
+                                        <div class="wd-200">
+                                            <div class="card text-center btn-bg-green ">
+                                                <div class="card-body text-light detailedcard height-70 cursor-pointer">
+
+                                                    <span>Financial Master</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="wd-200">
+                                            <div class="card text-center btn-bg-green">
+                                                <div class="card-body text-light detailedcard height-70 cursor-pointer" [routerLink]="['/payroll/NonRecurringAmt']">
+
+                                                    <span>Non-Recurring Amount</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="wd-200">
+                                            <div class="card text-center btn-bg-green">
+                                                <div class="card-body text-light detailedcard height-70 cursor-pointer">
+
+                                                    <span> Non-Recurring Quantity</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="wd-200">
+                                            <div class="card text-center btn-bg-green">
+                                                <div class="card-body text-light detailedcard height-70 cursor-pointer">
+
+                                                    <span>Garnishment/ 3rd Party Pmt.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="wd-200">
+                                            <div class="card text-center btn-bg-green">
+                                                <div class="card-body text-light detailedcard height-70 cursor-pointer">
+
+                                                    <span>Loan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-10">
+                                <div class="col-md-6">
+                                    <label class="form-label mb-0  mt-2 float-left">Total Record &nbsp;<span class="text-dark-green font-14 font-bold">(10)</span></label>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="float-right d-flex border-dark-card p-2">
+                                        <label class="form-label mt-2 text-link mr-10">Upload</label>
+                                        <div class="input-icon mr-10">
+                                            <input type="text" class="form-control" placeholder="Search for...">
+                                            <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                                        </div>
+                                        <button type="button" tooltip="Filter" class="bg-teal-400 btn btn-sm mr-10" (click)="display=true"><b><i class="fa fa-filter"></i></b> </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="border-dark-card radius-10 p-10">
+
+                                        <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-plus"></i></b> Add Financial Master </button>
+                                        <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-plus"></i></b> Add Non-Recurring Amount </button>
+                                        <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-plus"></i></b> Add Non-Recurring Quantity </button>
+                                        <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-plus"></i></b> Add Garnishment / 3rd Party Pmt. </button>
+                                        <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-plus"></i></b> Add Loan </button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <p-table [value]="Summarydata" class="mt-10" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                                <!-- <ng-template pTemplate="colgroup" let-Summarydata>
+                                  <colgroup>
+                                      <col *ngFor="let col of Summarydata" style="width:200px">
+                                  </colgroup>
+                              </ng-template> -->
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th class="wd-5">
+                                            <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                                    <input type="checkbox"  class="custom-control-input" name="select"/> <span class="custom-control-label"></span>
+                                    </label>
+
+                                        </th>
+                                        <th class="wd-8">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Emp. Code
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="empcode"></p-sortIcon>
+                                                    <p-columnFilter field="empcode" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Emp. Name
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="empname"></p-sortIcon>
+                                                    <p-columnFilter field="empname" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Company Name
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="companyname"></p-sortIcon>
+                                                    <p-columnFilter field="companyname" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+
+                                        <th class="wd-5">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Joining Date
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="joiningdate"></p-sortIcon>
+                                                    <p-columnFilter field="joiningdate" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Employee Type
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="emptype"></p-sortIcon>
+                                                    <p-columnFilter field="emptype" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="wd-8">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Establishment
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="establishment"></p-sortIcon>
+                                                    <p-columnFilter field="establishment" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Grade
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="grade"></p-sortIcon>
+                                                    <p-columnFilter field="grade" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Department
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="department"></p-sortIcon>
+                                                    <p-columnFilter field="department" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Designation
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="designation"></p-sortIcon>
+                                                    <p-columnFilter field="designation" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th class="wd-8">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Status
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="status"></p-sortIcon>
+                                                    <p-columnFilter field="status" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-Summarydata>
+                                    <tr class="p-selectable-row">
+                                        <td class="text-center"> <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                                  <input type="checkbox"  class="custom-control-input" name="select"/> <span class="custom-control-label"></span>
+                                  </label></td>
+                                        <td class="bg-color-light_gray">
+                                            <label class="form-lable mb-0 ">{{Summarydata.empcode}}</label>
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.empname}}</label></td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.companyname}} </label>
+
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.joiningdate}} </label>
+
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.emptype}} </label>
+
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.establishment}} </label>
+
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.grade}} </label>
+
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.department}} </label>
+
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.designation}} </label>
+
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.status}} </label>
+
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+                <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top" (click)="scrollToTop()">
+               <i class="fa fa-angle-double-up text-white font-18"></i>
+               </button>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

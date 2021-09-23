@@ -35,16 +35,37 @@ import { PayrollInputsRoutingModule } from './payroll-inputs-routing.module';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
-
-
-
+import { AttendanceComponent } from './attendance/attendance.component';
+import { GarnishmentComponent } from './garnishment/garnishment.component';
+import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-recurring-dashboard.component';
+import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
+import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ChartsModule } from 'ng2-charts';
+import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
+import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
+import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
+import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
+import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
+import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 
 @NgModule({
   declarations: [
     PayrollListComponent,
      FinancialMasterComponent,
      NonRecurringAmtComponent,
-     NonRecurringQtyComponent
+     NonRecurringQtyComponent,
+     AttendanceComponent,
+     GarnishmentComponent,
+     NonRecurringDashboardComponent,
+     TwoDigitDecimaNumberDirective,
+     SdmStepperComponent,
+     EllipsisPipe,
+     GarnishmentMasterComponent,
+     GarnishmentTransactionComponent,
+     FastentryNrQtyComponent,
+     FastentryNRAmtComponent,
+     NonRecurringQtyMasterComponent
     ],
   imports: [
     CommonModule,
@@ -67,27 +88,28 @@ import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),
-  
+    NgMultiSelectDropDownModule.forRoot(),
+
     SharedlayoutModule,
-    
+
     TableModule,
     CalendarModule,
 		SliderModule,
 		DialogModule,
 		MultiSelectModule,
 		ContextMenuModule,
-		
+
 		ButtonModule,
 		ToastModule,
     InputTextModule,
     ProgressBarModule,
     PayrollInputsRoutingModule,
-   
+    ChartsModule
   ],
   providers: [ DatePipe],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  
+
 })
 export class PayrollInputsModule { }

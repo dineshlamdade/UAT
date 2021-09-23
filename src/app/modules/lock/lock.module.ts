@@ -29,6 +29,7 @@ import { SupplementryCycleComponent } from './supplementry-cycle/supplementry-cy
 import { SummaryComponent } from './summary/summary.component';
 import { AreaComponent } from './area/area.component';
 import { MultiSelectModule } from 'primeng/multiselect';
+import {CheckboxModule} from 'primeng/checkbox';
 // import { NewlockComponent } from './newlock/newlock.component';
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    MultiSelectModule,
     MatSliderModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
@@ -62,6 +64,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     CarouselModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     MultiSelectModule,
+    CheckboxModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),

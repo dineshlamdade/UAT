@@ -1,0 +1,630 @@
+
+<div class="tabview-contents">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="row mt-20">
+                        
+                        <div class="col-md-12">
+                            <fieldset>
+                                <form [formGroup]="formulaform">
+                                <div class="row mt-20">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">Code </label>
+                                            <input formControlName="formulaName" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">Description</label>
+                                            <input formControlName="formulaDescription" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+
+                                        <div class="form-group">
+                                            <label class="form-label">Display Name</label>
+                                            <input formControlName="displayName" type="text" class="form-control" value="">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-20">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">From Date</label>
+                                            <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input formControlName="effectiveFromDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                     data-provide="datepicker" data-date-autoclose="true"
+                                                        class="form-control" placeholder="Date" bsDatepicker>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label">To Date</label>
+                                            <div class="form-group mb-0  mt-1 SMDatepickerWidth">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input formControlName="effectiveToDate" 
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                    data-provide="datepicker"
+                                                    data-date-autoclose="true"
+                                                    placeholder="Date"
+                                                    bsDatepicker
+                                                    class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    
+
+                                    <div class="col-md-3">
+
+                                        <div class="form-group">
+                                            <label class="form-label">Remark</label>
+                                            <textarea formControlName="remark" class="form-control"></textarea>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row mt-20">
+                                    <div class="col-md-5 mt-4">
+                                    </div>
+                                    <div class="col-md-7 mt-4">
+
+                                        <button type="submit"
+                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left  ml-10"
+                                            tooltip="Keyword" [disabled]="loading" (click)="mediumpopup (template1)">
+                                            <b><i class="fa fa-key" aria-hidden="true"></i></b>
+                                            Keywords</button>&nbsp;
+
+                                        <button type="submit"
+                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left  ml-10"
+                                            tooltip="Mathematical EXpressions" [disabled]="loading"
+                                            (click)="mediumpopup (template2)">
+                                            <b><i class="fa fa-calculator" aria-hidden="true"></i></b>
+                                            Mathematical Expressions</button>&nbsp;
+
+                                        <button type="submit"
+                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left  ml-10"
+                                            tooltip=" Logical Operation" [disabled]="loading"
+                                            (click)="mediumpopup (template3)">
+                                            <b><i class="fa fa-puzzle-piece" aria-hidden="true"></i></b>
+                                            Logical Operations</button>
+
+
+                                    </div>
+                                </div>
+                                <div class="row mt-20">
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="form-label">Formula</label>
+                                            <!-- <textarea formControlName="originalFormula" name="query" cols="60" rows="8" class="form-control"
+                                                class="u-full-width" maxlength="1500" required="" value=" CTC * 0.04">
+                                               </textarea> -->
+
+                                               <div class="ng-autocomplete">
+                                                <!-- <ng-autocomplete 
+                                                  
+                                                  placeholder="Enter Formula Here"
+                                                  [data]="formulaData"
+                                                  [searchKeyword]="keyword"
+                                                  (selected)='selectEvent($event)'
+                                                  (inputChanged)='onChangeSearch($event)'
+                                                  (inputFocused)='onFocused($event)'
+                                                  
+                                                  [ngModelOptions]="{standalone : true}"
+                                                  (keyup)="getFormulaData($event.target.value)"
+                                                  [itemTemplate]="itemTemplate"
+                                                  [notFoundTemplate]="notFoundTemplate">                                 
+                                                </ng-autocomplete> -->
+                                                <!-- [(ngModel)]="selectedFormula" -->
+                                                <!-- <ng-template #itemTemplate let-item>
+                                                <a [innerHTML]="item.name"></a>
+                                                </ng-template>
+                                                
+                                                <ng-template #notFoundTemplate let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                                </ng-template> -->
+
+                                                <ng-select [items]="formulaData" class="form-control"
+                                                style="font-size: 15px !important;
+                                                font-weight: 600 !important; padding: 6px !important;"
+                                                        bindLabel="keywordName" 
+                                                        appendTo="body"
+                                                        multiple="true"
+                                                        bindValue="keywordId" 
+                                                        (change)="getFormulaData($event)"
+                                                        >
+                                                </ng-select>
+
+
+                                                </div>  
+                                                <br>
+                                                <br>
+                                                
+                                                
+                                                <input *ngIf="originalFormula" formControlName="originalFormula" style="width: 350px;height: 58px;border-style: inset;border: 1px solid #ccc" 
+                                                value={{originalFormulaElement}}>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label class="form-label"> Formula Assistant
+                                            </label>
+
+                                            <div class="table-responsive Custom_Table my-registertable"
+                                                style="border:1px solid #ccc;">
+                                                <table class="my-registertable">
+                                                    <ol>
+                                                        <!-- <li *ngIf="originalFormula">{{originalFormula.toString()}}</li> -->
+                                                        <li>BASICM</li>
+                                                        <li>HRAM</li>
+                                                        <li>CTCM</li>
+                                                    </ol>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+                                        <!-- <button type="submit"
+                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left "
+                                            tooltip="Run Formula" [disabled]="loading">
+                                            <b><i class="fa fa-play" aria-hidden="true"></i></b>
+                                             Formula</button> -->
+                                        <div class="float-right">
+                                            <button type="button" tooltip="Clear"
+                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                        class="fa  fa-times"></i></b> Clear</button>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                </form>
+                            </fieldset>
+                            <i class="fal fa-abacus"></i>
+                        </div>
+                        
+                        <br>
+
+
+                        <div class="col-12">
+
+                            <div class="row">
+
+                                <div class="col-12 mt-10">
+                                  
+                                    <div class="float-right ">
+
+
+
+                                        <button type="submit" *ngIf="!editflag && !viewflag" (click)="saveFormulaMasters()"
+                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                            tooltip="Save" [disabled]="loading">
+                                            <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
+                                            Save</button>
+                                            <button type="submit" *ngIf="editflag && !viewflag"
+                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
+                                            tooltip="Save" [disabled]="loading" (click)="updateFormula()">
+                                            <b><i class="fa fa-floppy-o" aria-hidden="true"></i></b>
+                                            Update</button>
+                                        <button type="button" tooltip="Reset" *ngIf="!editflag && !viewflag"
+                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+                                            <b><i class="fa  fa-refresh"></i></b> Reset</button>
+
+
+                                        
+
+
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="cycle-table">
+                        <div class="mb-2">
+                            <h3 class="font-14 text-purple font-bold">Summary</h3>
+                          </div>
+                        <p-table [value]="formulaSummeryData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [rowsPerPageOptions]="[10,25,50]">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th rowspan="1" class="wd-10 text-center">
+                                        Sr. No.
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center ml-60">
+                                            Code
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="formulaName" pSortableColumn="formulaName"></p-sortIcon>
+                                                <p-columnFilter type="text" field="formulaName" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center ml-85">
+                                            Description
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="formulaDescription" pSortableColumn="formulaDescription"></p-sortIcon>
+                                                <p-columnFilter type="text" field="formulaDescription" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+
+                                    <th rowspan="2" class="text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center ml-20">From Date
+                                            <div class="Sort_Filter_Position">
+
+                                                <p-sortIcon field="effectiveFromDate" pSortableColumn="effectiveFromDate"></p-sortIcon>
+                                                <p-columnFilter type="date" field="effectiveFromDate" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+
+                                    <th rowspan="2" class="text-center">
+                                        <div class="p-d-flex p-jc-between p-ai-center ml-20">To Date
+                                            <div class="Sort_Filter_Position">
+
+                                                <p-sortIcon field="effectiveToDate" pSortableColumn="effectiveToDate"></p-sortIcon>
+                                                <p-columnFilter type="date" field="date" display="menu"
+                                                    class="p-ml-auto">
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center ml-60">
+                                            Formula
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="originalFormula" pSortableColumn="originalFormula"></p-sortIcon>
+                                                <p-columnFilter type="text" field="originalFormula" display="menu"
+                                                    class="p-ml-auto"></p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+
+
+                                    <th rowspan="2" class="wd-10 text-center">
+
+                                        Action
+
+                                    </th>
+                                </tr>
+
+                            </ng-template>
+
+
+
+                            <ng-template pTemplate="body" let-formula let-rowIndex="rowIndex">
+                                <tr class="p-selectable-row">
+                                    <td class="bg-color-light_gray text-center">{{rowIndex+1}}</td>
+                                    <td class="bg-color-light_gray text-center"><label class="form-lable mb-0 text-link"
+                                        (click)=" GetByFormulaName(formula);extralargepopup(template4)" >{{formula.formulaName}}</label>
+
+                                    </td>
+
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{formula.formulaDescription}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{formula.effectiveFromDate}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{formula.effectiveToDate}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{formula.originalFormula}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0"></label>
+                                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editFormulaSummaryData(formula)"
+                                            tooltip="Edit"></i>&nbsp;
+                                        <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewSummaryData(formula)"
+                                            tooltip="View"></i>&nbsp;
+                                        <i class="fa fa-trash font-16 text-red cursor-pointer" (click)="deleteSummaryData(formula)"
+                                            tooltip="Delete"></i>
+                                    </td>
+
+
+                                </tr>
+
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                            Available</span></td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<ng-template #template1>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Keyword</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <ol>
+                            <li>BASICM</li>
+                            <li>HRAM</li>
+                            <li>CTCM</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
+</ng-template>
+
+
+
+
+
+<ng-template #template2>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Mathematical EXpressions</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <ol>
+                            <li>+</li>
+                            <li>-</li>
+                            <li>*</li>
+                            <li>/</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
+</ng-template>
+
+
+
+
+<ng-template #template3>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Logical Operation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <ol>
+                            <li>></li>
+                            <li></li>
+                            <li></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
+</ng-template>
+
+<!-- <ng-template #template4>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">History </h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
+</ng-template> -->
+
+<ng-template #template4>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">History</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="cycle-table mt-4">
+
+                            <p-table [value]="formulaNameData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [rowsPerPageOptions]="[10,25,50]">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th rowspan="1" class="wd-10 text-center">
+                                            Sr. No.
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center ml-60">
+                                                Code
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="displayName" pSortableColumn="displayName"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="displayName" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center ml-85">
+                                                Description
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="formulaDescription" pSortableColumn="formulaDescription"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="formulaDescription" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+    
+                                        <th rowspan="2" class="text-center">
+                                            <div class="p-d-flex p-jc-between p-ai-center ml-20">From Date
+                                                <div class="Sort_Filter_Position">
+    
+                                                    <p-sortIcon field="effectiveFromDate" pSortableColumn="effectiveFromDate"></p-sortIcon>
+                                                    <p-columnFilter type="date" field="effectiveFromDate" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+    
+                                        <th rowspan="2" class="text-center">
+                                            <div class="p-d-flex p-jc-between p-ai-center ml-20">To Date
+                                                <div class="Sort_Filter_Position">
+    
+                                                    <p-sortIcon field="effectiveToDate" pSortableColumn="effectiveToDate"></p-sortIcon>
+                                                    <p-columnFilter type="date" field="effectiveToDate" display="menu"
+                                                        class="p-ml-auto">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+    
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center ml-60">
+                                                Formula
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="orignalFormula" pSortableColumn="orignalFormula"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="orignalFormula" display="menu"
+                                                        class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+    
+    
+                                    </tr>
+    
+                                </ng-template>
+    
+    
+    
+                                <ng-template pTemplate="body" let-formula let-rowIndex="rowIndex">
+                                    <tr class="p-selectable-row">
+                                        <td class="bg-color-light_gray text-center">{{rowIndex+1}}</td>
+                                        <td class="bg-color-light_gray text-center">{{formula.displayName}}<label class="form-lable mb-0 text-link"
+                                                ></label>
+    
+                                        </td>
+    
+                                        <td class="bg-color-light_gray"><label
+                                                class="form-lable mb-0">{{formula.formulaDescription}}</label></td>
+                                        <td class="bg-color-light_gray"><label
+                                                class="form-lable mb-0">{{formula.effectiveFromDate}}</label></td>
+                                        <td class="bg-color-light_gray"><label
+                                                class="form-lable mb-0">{{formula.effectiveToDate}}</label></td>
+                                        <td class="bg-color-light_gray"><label
+                                                class="form-lable mb-0">{{formula.orignalFormula}}</label></td>
+                                    
+    
+    
+                                    </tr>
+    
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                                Available</span></td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+    
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
+</ng-template>

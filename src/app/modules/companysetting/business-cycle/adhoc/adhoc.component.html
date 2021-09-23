@@ -1,0 +1,751 @@
+
+
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+
+              <form class="card" role="form" [formGroup]="adhocForm">
+           <fieldset>
+               <legend>Primary Cycle</legend>
+                <div class="row">
+                  <div class="col-sm-6 col-md-3 form-group">
+                    <label class="form-label">Cycle Definition</label>
+                    <div class="input-group">
+                        <select class="form-control" formControlName = "businessCycleDefinitionId"
+                        (change) ="getCycleNameById($event.target.value)" 
+                        [ngClass]="{'is-invalid' : adhocForm.get('businessCycleDefinitionId').status == 'INVALID'}">
+                       
+                        <option selected value=''>Select </option>
+                        <option *ngFor="let Cycle of cycleDefifitionList" [value]="Cycle.id">
+                       {{Cycle.cycleName}}
+                       </option>
+                        
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3  form-group">
+                    <label class="form-label">Cycle </label>
+                    <div class="input-group" *ngIf="adhocForm.controls.businessCycleDefinitionId.value == ''">
+                        <select class="form-control" formControlName = "periodName" 
+                         (change)="onChangeCycle($event.target.value)"
+                         disabled
+                         [ngClass]="{'is-invalid' : adhocForm.get('periodName').status == 'INVALID'}"
+                        >
+                            <!-- <option>Select</option> -->
+                            <!-- <option value=""> APR 2020 </option> 
+                            <option value="">MAY 2020</option>
+                            <option value="">JUNE 2020</option>
+                            <option value="">JUL 202</option> -->
+                            <option selected value=''>Select </option>
+                        <option *ngFor="let Cycle of cycleNameList" [value]="Cycle.periodId">
+                       {{Cycle.periodName}}
+                       </option>
+                        
+                        
+                        </select>
+                    </div>
+                    <div class="input-group" *ngIf="adhocForm.controls.businessCycleDefinitionId.value != ''">
+                      <select class="form-control" formControlName = "periodName" 
+                       (change)="onChangeCycle($event.target.value)"
+                       [ngClass]="{'is-invalid' : adhocForm.get('periodName').status == 'INVALID'}"
+                      >
+                          <!-- <option>Select</option> -->
+                          <!-- <option value=""> APR 2020 </option> 
+                          <option value="">MAY 2020</option>
+                          <option value="">JUNE 2020</option>
+                          <option value="">JUL 202</option> -->
+                          <option selected value=''>Select </option>
+                      <option *ngFor="let Cycle of cycleNameList" [value]="Cycle.periodId">
+                     {{Cycle.periodName}}
+                     </option>
+                      
+                      
+                      </select>
+                  </div>
+                  </div>
+                 <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Start Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                            data-provide="datepicker" data-date-autoclose="true"
+                                            class="form-control" (bsValueChange)="setPolicyEndDate()"
+                                            placeholder="" bsDatepicker formControlName = "startDate"
+                                            [maxDate]="today" disabled 
+                                            [ngClass]="{'is-invalid' : adhocForm.get('startDate').status == 'INVALID'}"
+                                           >
+                                    </div>
+                                </div>
+
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                    <label class="form-label">End Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i
+                                    class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                            data-provide="datepicker" data-date-autoclose="true"
+                            class="form-control" (bsValueChange)="setPolicyEndDate()"
+                            placeholder="" bsDatepicker formControlName = "endDate"
+                           [maxDate]="today"disabled
+                           [ngClass]="{'is-invalid' : adhocForm.get('endDate').status == 'INVALID'}"
+                           
+                           >
+                    </div>
+                  </div>
+                 
+                  <br><br><br>
+                  <div class="col-sm-6 col-md-3" *ngIf="hidevalue">
+                    <label class="form-label"></label>
+                    <div class="input-group">
+                      <input type="text"
+                        ngClass="{'is-invalid' : AttributeCreationForm.get('optionList').status == 'INVALID'}"
+                        [readonly]="!disabled" (change)="onChangeEvent($event.target.value)"
+                        formControlName="optionList" class="form-control" placeholder="Description"
+                        
+                        >
+                    </div>
+                  </div>
+
+
+                  <div style="margin-top: 23px" *ngIf="hidevalue">
+                    
+                    <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addOptionList()"></i>
+                   
+                  </div>
+             
+                </div>
+            </fieldset>
+            <br>
+            <fieldset>
+              <legend>Adhoc Cycle</legend>          
+            <div class="row">
+                <div class="col-sm-6 col-md-3 form-group">
+                  <label class="form-label">Cycle Name</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" formControlName = "cycleName" disabled
+                    [ngClass]="{'is-invalid' : adhocForm.get('cycleName').status == 'INVALID'}">
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3 form-group">
+                  <label class="form-label">From Date</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i
+                                class="fa fa-calendar"></i></span>
+                    </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                        data-provide="datepicker" data-date-autoclose="true"
+                        class="form-control" (bsValueChange)="setPolicyEndDate()"
+                        placeholder="" bsDatepicker
+                        (ngModelChange)="onFromDateChange()"
+                        
+                       [minDate]="minStartDate"
+                       [maxDate]="maxStartDate"
+                        formControlName = "fromDate"
+                        [ngClass]="{'is-invalid' : adhocForm.get('fromDate').status == 'INVALID'}">
+                </div>
+                </div>
+               <div class="col-sm-6 col-md-3">
+                                  <label class="form-label">To Date</label>
+                                  <div class="input-group">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text"><i
+                                                  class="fa fa-calendar"></i></span>
+                                      </div>
+                                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                          data-provide="datepicker" data-date-autoclose="true"
+                                          class="form-control" (bsValueChange)="setPolicyEndDate()"
+                                          placeholder="" bsDatepicker formControlName = "toDate"
+                                         
+                                          [minDate]="adhocForm.get('fromDate').value"
+                                           [maxDate]="maxStartDate"
+                                          [ngClass]="{'is-invalid' : adhocForm.get('toDate').status == 'INVALID'}"
+                                          >
+                                  </div>
+                              </div>
+              <div class="col-sm-6 col-md-3 form-group">
+                                <label class="form-label">Copy From</label>
+                                <select class="form-control" formControlName = "copyFrom"
+                                 (change)="onChangeCopyFrom()"
+                                [ngClass]="{'is-invalid' : adhocForm.get('copyFrom').status == 'INVALID'}">
+                                    <!-- <option>Select</option> -->
+                                    <!-- <option value=""> Cycle 1 </option>
+                                    <option value="">Cycle 2</option>
+                                    <option value="">Cycle 3</option>
+                                    <option value="">Cycle 4</option> -->
+                                   
+                                    <option selected value=''>Select </option>
+                        <option *ngFor="let Cycle of adhocCycleList" [value]="Cycle.periodName">
+                       {{Cycle.periodName}}
+                       </option>
+                                </select>
+             </div>
+               </div>
+               <br>
+              </fieldset>
+              
+               <br>
+               <fieldset>
+                   <legend>Heads</legend>
+                   <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                    <input autocomplete="off" type="checkbox" class="custom-control-input"
+                      name="example-inline-checkbox1" 
+                      formControlName = "arrear" />
+                    <span class="custom-control-label">Arrear </span>
+                  </label>
+                  <!-- (click)="isArrear($event.target)" -->
+                   <div class="row">
+                    <div class="col-5">
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<label
+                        class="text-purple font-bold font-14 text-center"
+                        style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Source
+                      </label>
+                    <!-- <label for="" class="text-purple">Source</label>
+                    <span for="" class="text-purple" style="margin-left: 250px;">Count({{activeHeadList?.length}})</span> -->
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col-1"> </div>
+                <div class="col-5">
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                  <label
+                    class="text-purple font-bold font-14 text-center"
+                    style="box-sizing: border-box;border: 2px solid green; background-color: #fff;padding:3px;">Destination
+                  </label>
+                    <!-- <label for="" class="text-purple">Destination</label>
+                    <span for="" class="mr-33  text-purple" style="margin-left: 230px;">Count({{targetProducts?.length}})</span> -->
+                </div>
+                </div> 
+
+                <!-- <div class="row">
+                
+                  <div class="col-5">
+                    <label class="form-label font-bold font-14 text-purple">Total List :{{activeHeadList?.length}} &nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="margin-right:-20px;">Selected
+                        List :{{selectedUser?.length}} </span></label>
+                  </div>
+
+                  <div class="col-1"></div>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="col-5">
+                    <label class="form-label font-bold font-14 text-purple"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      Total List :{{targetProducts?.length}} &nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selected
+                      List :{{selectedUser2?.length}} </label>
+                  </div>
+                  
+                  </div>
+
+                  
+                -->
+
+                <div class="row">
+                  <div class="col-5">
+                    <label for="" class="text-purple font-bold font-14">Total List: {{activeHeadList?.length}}</label>
+                    <span for="" class="text-purple  font-bold font-14" style="margin-left: 250px;">Selected
+                      List: {{selectedUser?.length}}</span>
+                  </div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="col-1"> </div>
+                  <div class="col-5">
+                    <label for="" class="text-purple font-bold font-14">Total List: {{targetProducts?.length}}</label>
+                    <span for="" class="mr-33  text-purple font-bold font-14" style="margin-left: 250px;">Selected
+                      List: {{selectedUser2?.length}} </span>
+                  </div>
+                </div>
+
+               <div class="row">
+               
+                <div class="col-5">
+                   
+                    <div class="card">            
+                   
+                            <div class="table-responsive Custom_Table">
+                              <p-table [value]="activeHeadList" [paginator]="true" [rows]="10"
+                              [rowsPerPageOptions]="[10,25,50,100,200]">
+                                <ng-template pTemplate="header">
+                                  <tr>
+                                    
+                                  
+                                  <th rowspan="2" class="wd-12 text-center">
+                                   <div class="p-d-flex p-jc-between p-ai-center text-center">Head
+    
+              
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="description"
+                                     pSortableColumn="description"></p-sortIcon>
+                              <p-columnFilter type="text" field="description" display="menu" class="p-ml-auto">   
+                                  </p-columnFilter>
+                                  </div>
+                                  </div>
+                                 </th> 
+              
+                                <th rowspan="2" class="wd-12 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                <div class="Sort_Filter_Position">
+                                 <p-sortIcon field="headNature"
+                                 pSortableColumn="headNature"></p-sortIcon>
+                             <p-columnFilter type="text" field="headNature" display="menu" class="p-ml-auto">  
+                                  </p-columnFilter>
+                                 </div>
+                                 </div>
+                                </th>
+                              </tr>
+                            
+                             </ng-template>
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                               <tr class="p-selectable-row"
+                               (click)="RowSelected(user1, rowIndex);" [class.active]="user1.isHighlight"
+                            (dblclick)="doubleClickOnLeftTable(user1)"
+                            [ngClass]="{'outofstock':user1.isHighlight == true}"
+                               >
+                                  <td> {{user1.description}}
+                                 </td>
+                                 
+                                  <td> {{user1.headNature}}
+                                  </td>
+                                </tr>
+                               
+                                <!-- <tr class="p-selectable-row">
+                                  <td>   NR2 
+                                 </td>
+                                
+                                  <td>  Earning
+                                  </td>
+                                </tr>
+                               
+                                <tr class="p-selectable-row">
+                                  <td>  NR3
+                                 </td>
+                              
+                                  <td>  Earning 
+                                  </td>
+                                </tr>
+     -->
+                           
+                           </ng-template>
+                           <ng-template pTemplate="emptymessage">
+                                <tr>
+                                 <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                               Available</span>
+                                 </td>
+                                </tr>
+                           </ng-template>
+                           </p-table>
+                            </div>
+                   
+
+                           
+                    </div>
+                  
+                </div>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col-1" *ngIf="!viewupdateButton">                                
+                        <div class="row mt-150">
+                        <div class="col-md-12 mt-10">
+                        <button type="button" class="btn btn-sm bg-teal-400" *ngIf = "!viewFormFlag" (click)="lefttablePusg()"><i class="fa fa-chevron-right
+                            "></i></button>
+                        </div>
+                        <div class="col-md-12 mt-10">
+                        <button type="button" class="btn btn-sm bg-teal-400" *ngIf = "!viewFormFlag" (click)="righttablePusg()"><i class="fa fa-chevron-left
+                            "></i></button>
+                        </div>
+                        </div>
+                        
+                  
+                 </div>
+
+                 
+
+                <div class="col-5">
+                    <div class="card">            
+                      
+                            <div class="table-responsive Custom_Table">
+                              <p-table [value]="targetProducts" [paginator]="true" [rows]="10"
+                              [rowsPerPageOptions]="[10,25,50,100,200]">
+                                <ng-template pTemplate="header">
+                                  <tr>
+                                    
+                                  
+                                  <th rowspan="2" class="wd-4 text-center">
+                                   <div class="p-d-flex p-jc-between p-ai-center text-center">Head
+    
+              
+                                   <div class="Sort_Filter_Position">
+                                     <p-sortIcon field="description"
+                                     pSortableColumn="description"></p-sortIcon>
+                              <p-columnFilter type="text" field="description" display="menu" class="p-ml-auto">   
+                                  </p-columnFilter>
+                                  </div>
+                                  </div>
+                                 </th> 
+              
+                               
+                                <th rowspan="2" class="wd-4 text-center">
+                                  <div class="p-d-flex p-jc-between p-ai-center">Nature
+                                <div class="Sort_Filter_Position">
+                                 <p-sortIcon field="headNature"
+                                 pSortableColumn="headNature"></p-sortIcon>
+                             <p-columnFilter type="text" field="headNature" display="menu" class="p-ml-auto">  
+                                  </p-columnFilter>
+                                 </div>
+                                 </div>
+                                </th>
+                              </tr>
+                            
+                             </ng-template>
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                              <tr (click)="RowSelectedtargetProducts(user1, rowIndex);"
+                              (dblclick)="doubleClickOnRightTable(user1)"
+                              [ngClass]="{'outofstock':user1.isHighlightright == true}"
+                              [ngClass]="{'disable1':user1.disabled == true}">
+                                <td> {{user1.description}}
+                               </td>
+                               
+                                <td>  {{user1.headNature}}
+                                </td>
+                              </tr>
+                             
+                              <!-- <tr class="p-selectable-row">
+                                <td>  NR3
+                               </td>
+                              
+                                <td>  Earning
+                                </td>
+                              </tr>
+                             
+                              <tr class="p-selectable-row">
+                                <td> NR5
+                               </td>
+                              
+                               
+                                <td> Deduction 
+                                </td>
+                              </tr>
+                               
+                                -->
+                                                       
+                           
+                           </ng-template>
+                           <ng-template pTemplate="emptymessage">
+                                <tr>
+                                 <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                               Available</span>
+                                 </td>
+                                </tr>
+                           </ng-template>
+                           </p-table>
+                            </div>
+                      
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+        <br>
+        <div class="float-left d-flex justify-content ml-20">
+          <!-- <label class="custom-control custom-checkbox custom-control-inline pl-45">
+            <input autocomplete="off" type="checkbox" class="custom-control-input"
+              name="example-inline-checkbox1" checked
+              formControlName = "arrear" />
+            <span class="custom-control-label">Arrear </span>
+          </label> -->
+        <!-- <input type="checkbox" checked class="mt-2" formControlName = "arrear">&nbsp; -->
+        <!-- <label class="form-label formGroup mt-2 margin-right:30px;">Arrear</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+        <label class="form-label formGroup">Remark</label>&nbsp;
+        <textarea type="text" formControlName = "remark"></textarea>
+        </div>
+        
+                <div class="row mt-15">
+                  <div class="col-12">
+                    <div class="float-right mb-15">
+                      <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
+                      (click)="onSubmit()" [disabled] = "adhocForm.invalid"
+                      [ngClass]="{'disabled-btn-bg-green' : adhocForm.invalid, 'btn-bg-green': !adhocForm.invalid}"><b>
+                       <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+
+                      <!-- <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save" *ngIf="!editFormFlag && !viewFormFlag"
+                      (click)="onSubmit()" [disabled] = "adhocForm.invalid && (isArrearFlag || selectedUser?.length > 0)"
+                      [ngClass]="{'disabled-btn-bg-green' : adhocForm.invalid, 'btn-bg-green': !adhocForm.invalid && (isArrearFlag || selectedUser?.length > 0)}"><b>
+                       <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp; -->
+                       <!--&& isArrearFlag || selectedUser?.length > 0) -->
+                       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Update" *ngIf="editFormFlag && !viewFormFlag"
+                      (click)="onUpdate()"><b>
+                       <i class="fa fa-floppy-o"></i></b> Update</button>&nbsp;
+                      <!-- <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForminvalid"
+                        ngClass="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
+                            class="fa fa-floppy-o"></i></b>
+                        Save</button> -->
+                      <!--     [disabled]="CycleDefinationForm.invalid" [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}" -->
+
+                      <!-- <button type="button" (click)="CancelAttributeCreation()" *ngIf="viewCancelButton"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                        tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                        Cancel</button> -->
+                        <button type="button" *ngIf="viewFormFlag || editFormFlag" (click)="formReset()"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                        tooltip="Cancel"><b><i class="fa fa-times" aria-hidden="true"></i></b>
+                        Cancel</button>
+
+                        <button type="button" 
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"  *ngIf="!viewFormFlag && !editFormFlag" tooltip="Reset" (click)="formReset()"><b>
+                    <i class="fa fa-refresh"></i></b> Reset</button>
+
+                      <!-- <button type="button" (click)="ResetAttributeCreation()" *ngIf="!viewCancelButton"
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
+                        tooltip="Reset"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
+                        Reset</button> -->
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <div class="row mt-30">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="mb-10 text-purple font-bold">
+                      <!-- <h3 class="card-title  font-bold"></h3> -->
+                      Summary
+                    </div>
+                    <div class="">
+                        <p-table [value]="summarydata" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100,200]"
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th rowspan="2" >
+                                        Sr. No.
+                                    </th>
+                                    <th rowspan="2" >
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        Adhoc Cycle
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="periodName"></p-sortIcon>
+                                              <p-columnFilter type="text" field="periodName" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                       From Date
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="fromDate"></p-sortIcon>
+                                              <p-columnFilter type="date" field="fromDate" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                      To Date
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="toDate"></p-sortIcon>
+                                              <p-columnFilter type="date" field="toDate" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                               
+                                 
+                                    <th colspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center ml-50">
+                                        Primary Cycle
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                    <th rowspan="2">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            Arrears
+                                            <div class="Sort_Filter_Position">
+                                                <p-sortIcon field="arrear"></p-sortIcon>
+                                                <p-columnFilter field="arrear" type = "text" matchMode="in" display="menu"
+                                                    [showMatchModes]="false" [showOperator]="false"
+                                                    [showAddButton]="false" class="p-ml-auto">
+                                                    <ng-template pTemplate="header">
+                                                        <div class="p-px-3 p-pt-3 p-pb-0">
+                                                            <!-- <span class="p-text-bold">Agent Picker</span> -->
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="filter" let-value
+                                                        let-filter="filterCallback">
+                                                        <p-multiSelect [ngModel]="value" [options]="representatives"
+                                                            placeholder="Any" (onChange)="filter($event.value)"
+                                                            optionLabel="name">
+                                                            <ng-template let-option pTemplate="item">
+                                                                <div class="p-multiselect-representative-option">
+                                                                    <img [alt]="option.label"
+                                                                        src="assets/showcase/images/demo/avatar/{{option.image}}"
+                                                                        width="32" style="vertical-align: middle" />
+                                                                    <span class="p-ml-1">{{option.name}}</span>
+                                                                </div>
+                                                            </ng-template>
+                                                        </p-multiSelect>
+                                                    </ng-template>
+                                                </p-columnFilter>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    
+                                    <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Count of Heads
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="headCount"></p-sortIcon>
+                                              <p-columnFilter type="text" field="headCount" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Remark
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="remark"></p-sortIcon>
+                                              <p-columnFilter type="text" field="remark" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Lock Status
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="locked"></p-sortIcon>
+                                              <p-columnFilter type="text" field="locked" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                  <th rowspan="2" class="wd-8">
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                          Action
+                                          <div class="Sort_Filter_Position">
+                                              <p-sortIcon field="date"></p-sortIcon>
+                                              <p-columnFilter type="date" field="date" display="menu"
+                                                  class="p-ml-auto"></p-columnFilter>
+                                          </div>
+                                      </div>
+                                  </th>
+                                </tr>
+                              <tr>
+      <th rowspan="2" class="wd-10">
+         Definition
+      </th>
+      <th rowspan="2" class="wd-10">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Name
+            <div class="Sort_Filter_Position">
+                <p-sortIcon field="oldPeriodName"></p-sortIcon>
+                <p-columnFilter type="text" field="oldPeriodName" display="menu"
+                    class="p-ml-auto"></p-columnFilter>
+            </div>
+        </div>
+    </th>
+                               </tr>
+                            </ng-template>
+  
+  
+  
+                            <ng-template pTemplate="body" let-user1 let-rowIndex="rowIndex">
+                                <tr class="p-selectable-row">
+                                    <td class="bg-color-light_gray">{{rowIndex+1}}</td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.periodName}}</label>
+  
+                                    </td>
+  
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.fromDate | date: 'dd-MMM-yyyy'}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.toDate | date: 'dd-MMM-yyyy'}}</label></td>
+                                    <td class="bg-color-light_gray"><label
+                                            class="form-lable mb-0">{{user1.businessCycleDefinition.cycleName}}</label></td>
+                                            <td class="bg-color-light_gray"><label
+                                              class="form-lable mb-0">{{user1.oldPeriodName}}</label></td>
+                                      <td class="bg-color-light_gray"><label
+                                              class="form-lable mb-0">{{user1.arrear?'Yes':'No'}}</label></td>
+                                      <td class="bg-color-light_gray"><label
+                                              class="form-lable mb-0">{{user1.headCount}}</label></td>
+                                              <td class="bg-color-light_gray"><label
+                                                  class="form-lable mb-0">{{user1.remark}}</label></td>
+                                                  
+                                          <td class="bg-color-light_gray text-center">
+                                            <i class="fa fa-lock font-18" 
+                                            *ngIf="user1.locked"
+                                            aria-hidden="true"></i><i class="fa fa-unlock font-18" 
+                                            *ngIf="!user1.locked"
+                                            aria-hidden="true"></i></td>
+                                            <!-- <i [ngClass]="['fa', user.IsActive ? 'fa-lock' : 'fa-unlock']" aria-hidden="true"></i> -->
+                                              <!-- <i class="fa fa-lock font-18 " aria-hidden="true"></i></td> -->
+                                          <td class="bg-color-light_gray text-center">
+                                              <i *ngIf="!user1.locked" class="fa fa-edit  font-18 text-dark-green cursor-pointer" aria-hidden="true"
+                                              tooltip="Edit" aria-hidden="true" (click)="editAreaSet(user1)"></i>&nbsp;
+                                              <i class="fa fa-eye font-18 text-blue cursor-pointer" aria-hidden="true"
+                                              tooltip="View" (click)="viewAreaSet(user1)"></i>&nbsp;
+                                              <i *ngIf="!user1.locked" (click)="deleteData(user1.id)" class="fa fa-trash font-18 text-red cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                          </td>
+                                </tr>
+  
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                                            Available</span></td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+      </div>
+    </div>
+ 
+<!-- 
+    data-provide="datepicker"
+                                                                                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                                                data-date-autoclose="true"
+                                                                                                placeholder="Date"
+                                                                                                bsDatepicker
+                                                                                                value="{{data.todate}}"
+                                                                                                class="form-control wd-120"
+                                                                                                [minDate]="startdate"
+                                                                                                [maxDate]="endDate" -->

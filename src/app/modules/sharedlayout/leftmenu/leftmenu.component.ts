@@ -54,11 +54,14 @@ public isCollapsedQuery = true;
   updateEmpIdSubscription: Subscription;
   employeeMasterId: number;
   ischaptersettingCollapsed = true;
+  isCollapsedpayrollinput : boolean = true
   userData: any;
   subId: any;
   companyGroupMasterId: any;
   userRoleId: any;
   menuData: any;
+  public isQuery = true;
+  isCollapsedKeywordinput:boolean;
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
     private EventEmitterService: EventEmitterService,
@@ -67,8 +70,11 @@ public isCollapsedQuery = true;
     if ( ( this.router.url ).includes( 'payroll' ) ) {
       this.isCollapsed = false;
     }
+    if ( ( this.router.url ).includes( 'formula' ) ) {
+      this.isCollapsedKeywordinput = false;
+    }
     if ( ( this.router.url ).includes( 'PayrollInputs' ) ) {
-      this.isPayrollInputsCollapsed = false;
+      this.isCollapsedpayrollinput = false;
     }
     if ( ( this.router.url ).includes( 'investment' ) ) {
       this.isInvestmentCollapsed = false;
@@ -185,29 +191,17 @@ public isCollapsedQuery = true;
         //this.menuData = res.data.results
         this.menuData = []
         let actualMenuData = res.data.results
-        let privillegemenu 
+        let privillegemenu
         this.RoleRrivilegeService.getUserPrivilegeByRoleId(6).subscribe(res =>{
           privillegemenu = res.data.results
           actualMenuData.forEach(actualmenu => {
             privillegemenu.forEach(privillege => {
-             // alert(privillege.accessibleMenuDetail.applicationMenuId )
-             
               if(privillege.accessibleMenuDetail.applicationMenuId == actualmenu.applicationMenuId){
-                // console.log("main menu")
-                // console.log(actualmenu)
+                console.log("main menu")
+                console.log(actualmenu)
                 if(privillege.modifyAccess == 1 || privillege.readAccess == 1 || privillege.writeAccess == 1 || privillege.deleteAccess == 1){
                   this.menuData.push(actualmenu)
                 }
-              }
-              if(actualmenu.childItems != null){
-                actualmenu.childItems.forEach(childitem => {
-                if(privillege.accessibleMenuDetail.applicationMenuId == childitem.applicationMenuId){
-                  console.log("child")
-                  if(privillege.modifyAccess == 1 || privillege.readAccess == 1 || privillege.writeAccess == 1 || privillege.deleteAccess == 1){
-                    this.menuData.push(actualmenu)
-                  }
-                }
-              })
               }
               if(privillege.childItems != null){
                 privillege.childItems.forEach(childprivillege => {
@@ -227,7 +221,7 @@ public isCollapsedQuery = true;
                       }
                     })
                   }
-                }) 
+                })
               }
             });
           });
@@ -235,8 +229,8 @@ public isCollapsedQuery = true;
       })
     })
 
-    
- 
+
+
 
   }
 

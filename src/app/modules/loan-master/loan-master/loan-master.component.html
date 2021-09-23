@@ -1,5 +1,6 @@
 <app-leftmenu></app-leftmenu>
 <!-- Main body part  -->
+
 <div class="page">
     <app-header></app-header>
     <div class="section-body mt-3">
@@ -9,60 +10,45 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="tabview">
+
                                 <input name="nav" type="radio" class="about-radio" id="summary"
                                     (change)="changeTabIndex(0)" [checked]="tabIndex == 0" />
                                 <div class="tabs about-page">
-                                    <app-summary *ngIf="tabIndex == 0"></app-summary>
                                 </div>
                                 <label class="nav" for="summary">
                                     <span>Summary </span>
                                 </label>
+                                <!-- <input name="nav" type="radio" class="about-radio" id="master"
+                                    (change)="changeTabIndex(4)" [checked]="tabIndex == 4"/>
+                                    <div class="tabs about-page">
+
+                                    </div>
+
+                                    <label class="nav" for="master">
+                                        <span>Master </span>
+                                    </label>  -->
 
                                 <input name="nav" type="radio" class="nav home-radio" id="general"
                                     (change)="changeTabIndex(1)" [checked]="tabIndex == 1" />
                                 <div class="tabs about-page">
-                                    <app-general *ngIf="tabIndex == 1" > </app-general>
                                 </div>
                                 <label class="nav" for="general">
-                                    <span>General </span>
+                                    <span> General</span>
                                 </label>
 
-                                <input name="nav" type="radio" class="about-radio" id="recovery"
-                                    (change)="changeTabIndex(2)" [checked]="tabIndex == 2" />
-                                <div class="tabs about-page">
-                                    <app-recovery *ngIf="tabIndex == 2"></app-recovery>
-                                </div>
-
-                                <label class="nav" for="recovery">
-                                    <span>Recovery </span>
-                                </label> 
-                                
                                 <input name="nav" type="radio" class="about-radio" id="payment"
                                     (change)="changeTabIndex(3)" [checked]="tabIndex == 3" />
                                 <div class="tabs about-page">
-                                    <app-payment *ngIf="tabIndex == 3"></app-payment>
                                 </div>
-
                                 <label class="nav" for="payment">
-                                    <span>Payment </span>
+                                    <span>Loan Name and Eligibility</span>
                                 </label>
 
+                                <input name="nav" type="radio" class="about-radio" id="recovery"
+                                (change)="changeTabIndex(2)" [checked]="tabIndex == 2" />
+                                <div class="tabs about-page">
+                                </div>
+                                <label class="nav" for="recovery">
+                                  <span>Interest and Principal Recovery</span>
+                              </label>
 
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
-                    <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
-                        (click)="scrollToTop()">
-                        <i class="fa fa-angle-double-up text-white font-18"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <app-footer></app-footer>
-    </div>
-</div>
-
-<router-outlet></router-outlet>
