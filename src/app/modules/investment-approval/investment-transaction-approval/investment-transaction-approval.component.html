@@ -670,7 +670,7 @@
                             (click)="changePSIDStatusOfTransaction('Approved')"
                             tooltip="Approve"
                           >
-                            <b> <i class="fa fa-floppy-o"></i></b>{{transactionList.length}} Approve {{approvedDisabled}}
+                            <b> <i class="fa fa-floppy-o"></i></b> Approve 
                           </button>
 
                           <button
@@ -1146,6 +1146,7 @@
                                         <input
                                           type="text"
                                           class="form-control"
+                          
                                           (change)="
                                             onChangeDocumentRemark(
                                               documentDetail,
