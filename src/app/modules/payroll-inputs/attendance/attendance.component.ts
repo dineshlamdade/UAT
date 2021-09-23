@@ -854,7 +854,8 @@ export class AttendanceComponent implements OnInit {
           if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             presentDay = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
           } else {
-            presentDay = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
+            // presentDay = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
+            presentDay = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
           }
         }
         else if (cycle == 'future') {
