@@ -15,11 +15,11 @@ const headers = new Headers({
 export class GarnishmentService {
   constructor(private _HTTP: HttpClient) { }
   apiUrl = environment.baseUrl8084;
-
   apiUrl1 = environment.baseUrl8087;
   apiUrl2 = environment.baseUrl8086;
   apiUrl3 = environment.baseUrl8083;
   apiUrl4 = environment.baseUrl8082;
+
 
   // get all master data
   getAllGarnishmentMaster(): Observable<any> {
@@ -81,7 +81,63 @@ export class GarnishmentService {
 
   /** Employee Data get By Id */
   employeeFinDetails(employeeMasterId):Observable<any>{
-    return this._HTTP.get<any>(this.apiUrl1 + `employee-fin-details/`+ employeeMasterId); 
+    return this._HTTP.get<any>(this.apiUrl4 + `employee-fin-details/`+ employeeMasterId); 
   }
+
+
+  /************************************** Garnishment Transations/ Application **************************/
+
+    /** Get application data */
+    getApplicationSummary():Observable<any>{
+      return this._HTTP.get<any>(this.apiUrl + `GarnishmentApplicationMaster`); 
+    }
+
+  /** Save application data */
+  saveApplication(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMaster`, data); 
+  }
+
+  /** Update application data */
+  updateApplication(data):Observable<any>{
+    return this._HTTP.put<any>(this.apiUrl + `GarnishmentApplicationMaster/updateById`, data); 
+  }
+
+  /** Get application data by Id */
+  getapplicationDataById(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMaster/GarnishmentApplicationMaster_GetbyId`, data); 
+  }
+
+  /** Get application history by Id */
+  getApplicationHistoryById(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMaster/GarnishmentApplicationMasterHistoryAPI_ID`, data); 
+  }
+
+
+  /************************************** Garnishment Schedule **************************/
+
+  /** Get Temp Schedule data */
+  getTempSchedule(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMaster/TempSchedule`, data); 
+  }
+
+  /** Get All Application Schedule data */
+  getApplicationScheduleData():Observable<any>{
+    return this._HTTP.get<any>(this.apiUrl + `GarnishmentApplicationMasterSchedule`); 
+  }
+
+  /** Get scheduleHistory by Id */
+  getScheduleHistoryById(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMasterSchedule/GarnishmentApplicationMasterSchedule_AppIdwise`, data); 
+  }
+
+  /** Update Schedule */
+  updateSchedule(data):Observable<any>{
+    return this._HTTP.put<any>(this.apiUrl + `GarnishmentApplicationMasterSchedule/updateById`, data); 
+  }
+
+  GarnishmentApplicationMasterScheduleRemarkHistory(data):Observable<any>{
+    return this._HTTP.post<any>(this.apiUrl + `GarnishmentApplicationMasterScheduleRemarkHistory/GarnishmentApplicationMasterScheduleRemarkHistory`, data);  
+  }
+
 
 }

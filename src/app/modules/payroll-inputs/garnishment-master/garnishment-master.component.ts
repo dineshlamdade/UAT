@@ -22,9 +22,22 @@ export class GarnishmentMasterComponent implements OnInit {
   viewFlag: boolean = false;
   editdata: { [key: string]: any; };
   garnishmentMasterFrequencyList: any = [];
+  isshowtable: boolean = false;
+  documentList: any;
+  isEditMode: boolean = false;
+  headData: { displayName: string; headMasterId: number; }[];
+  garnishmentMasterTransactionTypeList: any = [];
+  defaultTransactionType: any = 1;
+  garnishmentMasterInputTypeList: any = [];
+  defaultInputType: any = 1;
+  docMandetory: any = 1;
+  documentName: any;
+  garnishmentMasterDocumentList: any = [];
+  inputTypeData: any = [];
+  transactionTypeData: any = []
 
-
-  constructor(private formbuilder: FormBuilder, private garnishmentService: GarnishmentService, private alertService: ToastrService) {
+  constructor(private formbuilder: FormBuilder, private garnishmentService: GarnishmentService,
+    private alertService: ToastrService) {
     this.garnishmentForm = new FormGroup({
       "garnishmentMasterId": new FormControl(''),
       "accountNoInPayeeBook": new FormControl(''),
@@ -60,17 +73,80 @@ export class GarnishmentMasterComponent implements OnInit {
       "villege": new FormControl(''),
     });
 
+
+    this.documentList = [{
+      'srNo': 1,
+      'documentName': 'abc'
+    }]
+
+    this.headData = [
+      { displayName: 'Incentive', headMasterId: 27 },
+      { displayName: 'Performance_Incentive', headMasterId: 29 },
+    ]
   }
 
 
   ngOnInit(): void {
     this.getAllMasterData()
+    this.setTypeData()
     this.getComplianceHeadNane()
     this.getInstitutionMaster()
     this.getLocationInformationOrCountryList()
     this.getloanMasterAllDeductionHead()
     this.getALLFrequecyDetails()
     this.getindianincometax()
+  }
+
+  /**set Array of input type and transaction type */
+  setTypeData() {
+    this.transactionTypeData = [
+      {
+        'transactionTypeName': 'Defined Date',
+        'defaultTransactionType': true,
+        "transactionTypeId": 1,
+        "checked": false,
+        "default": false
+      },
+      {
+        'transactionTypeName': 'NoOfTransaction',
+        'defaultTransactionType': true,
+        "transactionTypeId": 2,
+        "checked": false,
+        "default": false
+      },
+      {
+        'transactionTypeName': 'Perpetual',
+        'defaultTransactionType': true,
+        "transactionTypeId": 3,
+        "checked": false,
+        "default": false
+      }
+    ]
+
+
+    this.inputTypeData = [
+      {
+        "inputTypeId": 1,
+        "inputTypeName": "Formula",
+        "defaultInput": true,
+        "checked": false,
+        "default": false
+      },
+      {
+        "inputTypeId": 1,
+        "inputTypeName": "SDM",
+        "defaultInput": true,
+        "checked": false,
+        "default": false
+      },
+      {
+        "inputTypeId": 1,
+        "inputTypeName": "Amount",
+        "defaultInput": true,
+        "checked": false,
+        "default": false
+      }
+    ]
   }
 
 
@@ -145,24 +221,173 @@ export class GarnishmentMasterComponent implements OnInit {
   }
 
   /**Get frequency data */
-  getFrequencyData(value){
+  getFrequencyData(value) {
+    let val = value.split(',')
     this.garnishmentMasterFrequencyList.push({
-      "frequencyid":1,
-      "frequencyName": value
+      "frequencyid": parseInt(val[0]),
+      "frequencyName": val[1]
     })
 
     this.garnishmentForm.controls['garnishmentMasterFrequencyList'].setValue(this.garnishmentMasterFrequencyList)
   }
 
+  /** Get Transaction Type */
+  getTransactionTypeCheck(event, type, id) {
+    if (event.checked) {
+      this.garnishmentMasterTransactionTypeList.push({
+        "defaultTransactionType": this.defaultTransactionType,
+        "transactionTypeId": id,
+        "transactionTypeName": type
+      })
+    } else {
+      if (this.garnishmentMasterTransactionTypeList.length > 0) {
+        this.garnishmentMasterTransactionTypeList.forEach((element, index) => {
+          if (element.transactionTypeName == type) {
+            let ind = index;
+            this.garnishmentMasterTransactionTypeList.splice(ind, 1)
+          }
+        })
+      } else {
+        this.garnishmentMasterTransactionTypeList = []
+      }
+    }
+
+  }
+
+  /** Default value of Transaction type */
+  getDefaultValueTransactionType(event, type, id) {
+    if (event.checked) {
+      this.defaultTransactionType = 1
+      if (this.garnishmentMasterTransactionTypeList.length > 0) {
+        this.garnishmentMasterTransactionTypeList.forEach((element, index) => {
+          if (element.transactionTypeName == type) {
+            let ind = index;
+            this.garnishmentMasterTransactionTypeList.splice(ind, 1, {
+              "defaultTransactionType": this.defaultTransactionType,
+              "transactionTypeId": id,
+              "transactionTypeName": type
+            })
+          }
+        })
+      }
+    } else {
+      this.defaultTransactionType = 0
+      if (this.garnishmentMasterTransactionTypeList.length > 0) {
+        this.garnishmentMasterTransactionTypeList.forEach((element, index) => {
+          if (element.transactionTypeName == type) {
+            let ind = index;
+            this.garnishmentMasterTransactionTypeList.splice(ind, 1, {
+              "defaultTransactionType": this.defaultTransactionType,
+              "transactionTypeId": id,
+              "transactionTypeName": type
+            })
+          }
+        })
+      }
+    }
+
+
+  }
+
+  /** Get Input Type */
+  getInputTypeCheck(event, type, id) {
+    if (event.checked) {
+      this.garnishmentMasterInputTypeList.push({
+        "defaultInput": this.defaultInputType,
+        "inputTypeId": id,
+        "inputTypeName": type
+      })
+    } else {
+      if (this.garnishmentMasterInputTypeList.length > 0) {
+        this.garnishmentMasterInputTypeList.forEach((element, index) => {
+          if (element.transactionTypeName == type) {
+            let ind = index;
+            this.garnishmentMasterInputTypeList.splice(ind, 1)
+          }
+        })
+      } else {
+        this.garnishmentMasterInputTypeList = []
+      }
+    }
+  }
+
+  /** Default value of Input Type */
+  getDefaultValueInputType(event, type, id) {
+    if (event.checked) {
+      this.defaultInputType = 0
+      if (this.garnishmentMasterInputTypeList.length > 0) {
+        this.garnishmentMasterInputTypeList.forEach((element, index) => {
+          if (element.transactionTypeName == type) {
+            let ind = index;
+            this.garnishmentMasterInputTypeList.splice(ind, 1, {
+              "defaultTransactionType": this.defaultInputType,
+              "transactionTypeId": id,
+              "transactionTypeName": type
+            })
+          }
+        })
+      }
+    } else {
+      this.defaultInputType = 1
+      if (this.garnishmentMasterInputTypeList.length > 0) {
+        this.garnishmentMasterInputTypeList.forEach((element, index) => {
+          if (element.transactionTypeName == type) {
+            let ind = index;
+            this.garnishmentMasterInputTypeList.splice(ind, 1, {
+              "defaultTransactionType": this.defaultInputType,
+              "transactionTypeId": id,
+              "transactionTypeName": type
+            })
+          }
+        })
+      }
+    }
+
+  }
+
+  getDocMandatory(event) {
+    if (event.checked) {
+      this.docMandetory = 1
+    } else {
+      this.docMandetory = 0
+    }
+  }
+
+  addDocumentList() {
+    this.garnishmentMasterDocumentList.push({
+      "documentName": this.documentName,
+      "mandetory": this.docMandetory
+    })
+    this.documentName = ''
+  }
+
+  removeDocumentList(index) {
+    this.garnishmentMasterDocumentList.splice(index, 1)
+  }
+
   /** Save Master Data */
   saveMasterData() {
     this.garnishmentForm.removeControl('garnishmentMasterId')
+    this.garnishmentForm.controls['empAccNoApplicable'].setValue(parseInt(this.garnishmentForm.controls['empAccNoApplicable'].value))
+    this.garnishmentForm.controls['garnishmentMasterTransactionTypeList'].setValue(this.garnishmentMasterTransactionTypeList)
+    this.garnishmentForm.controls['garnishmentMasterInputTypeList'].setValue(this.garnishmentMasterInputTypeList)
+    this.garnishmentForm.controls['garnishmentMasterDocumentList'].setValue(this.garnishmentMasterDocumentList)
+
+
+    // console.log("Save data is: "+ JSON.stringify(this.garnishmentForm.value))
     this.garnishmentService.savemasterdata(this.garnishmentForm.value).subscribe(res => {
       this.alertService.success("", "Garnishment master data saved successfully")
       this.editFlag = false;
       this.viewFlag = false;
       this.garnishmentForm.reset()
       this.getAllMasterData()
+      this.garnishmentMasterDocumentList = []
+      this.garnishmentMasterFrequencyList = []
+      this.garnishmentMasterInputTypeList = []
+      this.garnishmentMasterTransactionTypeList = []
+      this.inputTypeData = []
+      this.transactionTypeData = []
+      this.setTypeData()
     })
   }
 
@@ -171,20 +396,56 @@ export class GarnishmentMasterComponent implements OnInit {
     this.garnishmentService.masterDataGetById(data.garnishmentMasterId).subscribe(res => {
       this.editdata = res.data.results[0];
       this.garnishmentForm.patchValue(this.editdata)
+      this.garnishmentMasterDocumentList = this.editdata.garnishmentMasterDocumentList
+      this.garnishmentMasterFrequencyList = this.editdata.garnishmentMasterFrequencyList
+      this.garnishmentMasterInputTypeList = this.editdata.garnishmentMasterInputTypeList
+      this.garnishmentMasterTransactionTypeList = this.editdata.garnishmentMasterTransactionTypeList
       this.editFlag = true;
       this.viewFlag = false;
       this.garnishmentForm.enable()
+
+
+      this.inputTypeData.forEach(input => {
+        this.garnishmentMasterInputTypeList.forEach(editdata => {
+          if (input.inputTypeName == editdata.inputTypeName) {
+            input.checked = true
+            input.default = editdata.defaultInput
+          }
+        });
+      });
+
+      this.transactionTypeData.forEach(input => {
+        this.garnishmentMasterTransactionTypeList.forEach(editdata => {
+          if (input.transactionTypeName == editdata.transactionTypeName) {
+            input.checked = true
+            input.default = editdata.defaultTransactionType
+          }
+        });
+      });
+
     })
   }
 
-  /** Save Master Data */
+  /** Update Master Data */
   updateMasterData() {
+    this.garnishmentForm.controls['empAccNoApplicable'].setValue(parseInt(this.garnishmentForm.controls['empAccNoApplicable'].value))
+    this.garnishmentForm.controls['garnishmentMasterTransactionTypeList'].setValue(this.garnishmentMasterTransactionTypeList)
+    this.garnishmentForm.controls['garnishmentMasterInputTypeList'].setValue(this.garnishmentMasterInputTypeList)
+    this.garnishmentForm.controls['garnishmentMasterDocumentList'].setValue(this.garnishmentMasterDocumentList)
+
     this.garnishmentService.updatemasterdata(this.garnishmentForm.value).subscribe(res => {
       this.alertService.success("", "Garnishment master data updated successfully")
       this.editFlag = false;
       this.viewFlag = false;
+      this.garnishmentMasterDocumentList = []
+      this.garnishmentMasterFrequencyList = []
+      this.garnishmentMasterInputTypeList = []
+      this.garnishmentMasterTransactionTypeList = []
       this.garnishmentForm.reset()
       this.getAllMasterData()
+      this.inputTypeData = []
+      this.transactionTypeData = []
+      this.setTypeData()
     })
   }
 
@@ -193,19 +454,49 @@ export class GarnishmentMasterComponent implements OnInit {
     this.garnishmentService.masterDataGetById(data.garnishmentMasterId).subscribe(res => {
       this.editdata = res.data.results[0];
       this.garnishmentForm.patchValue(this.editdata)
+      this.garnishmentMasterDocumentList = this.editdata.garnishmentMasterDocumentList
+      this.garnishmentMasterFrequencyList = this.editdata.garnishmentMasterFrequencyList
+      this.garnishmentMasterInputTypeList = this.editdata.garnishmentMasterInputTypeList
+      this.garnishmentMasterTransactionTypeList = this.editdata.garnishmentMasterTransactionTypeList
       this.editFlag = false;
       this.viewFlag = true;
       this.garnishmentForm.disable()
+
+
+      this.inputTypeData.forEach(input => {
+        this.garnishmentMasterInputTypeList.forEach(editdata => {
+          if (input.inputTypeName == editdata.inputTypeName) {
+            input.checked = true
+            input.default = editdata.defaultInput
+          }
+        });
+      });
+
+      this.transactionTypeData.forEach(input => {
+        this.garnishmentMasterTransactionTypeList.forEach(editdata => {
+          if (input.transactionTypeName == editdata.transactionTypeName) {
+            input.checked = true
+            input.default = editdata.defaultTransactionType
+          }
+        });
+      });
+
     })
   }
 
   /** Reset Data */
   resetData() {
     this.editFlag = false;
-    this.viewFlag = true;
+    this.viewFlag = false;
     this.garnishmentForm.reset()
     this.garnishmentForm.enable()
-
+    this.garnishmentMasterDocumentList = []
+    this.garnishmentMasterFrequencyList = []
+    this.garnishmentMasterInputTypeList = []
+    this.garnishmentMasterTransactionTypeList = []
+    this.inputTypeData = []
+    this.transactionTypeData = []
+    this.setTypeData()
   }
 
 }
