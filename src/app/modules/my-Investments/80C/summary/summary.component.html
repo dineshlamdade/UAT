@@ -35,27 +35,32 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <!-- <tr *ngFor="let summary of summaryGridData; let i = index">
-                                                    <td scope="row">
-                                                        <span tooltip="1">{{summary.srNo}}</span>
-                                                    </td>
-                                                    <td class="align-left">
-                                                        <span tooltip="{{summary.section}}">{{summary.section}}</span>
-                                                    </td>
-                                                    <td class="wd-15 align-right">
-                                                        <span class="padding-right-12" tooltip="{{summary.declarationTotal | number:'1.2-2'}}">
-                                                    {{summary.declarationTotal | number:'1.2-2'}}
-                                                  </span>
-                                                                          </td>
-                                                                          <td class="wd-15 align-right">
-                                                                              <span class="padding-right-12" tooltip="{{summary.actualTotal | number:'1.2-2'}}">
-                                                    {{summary.actualTotal | number:'1.2-2'}}
-                                                  </span>
-                                                                          </td>
-                                                                      </tr> -->
+                        <tr *ngFor="let summary of summaryGridData; let i = index">
+                          <td scope="row">
+                            <span tooltip="1">{{summary.srNo}}</span>
+                          </td>
+                          <td class="text-link wd-20 align-left">
+                            <a tooltip="{{summary.section}}" routerLink="{{summary.routerlink}}">{{summary.section}}</a>
+                          </td>
+
+                          <!-- <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.accountNumber)">
+                            <span tooltip="{{summary.institution}}">{{summary.institution}}</span>
+                          </td> -->
+
+                          <td class="wd-15 align-right">
+                            <span class="padding-right-12" tooltip="{{summary.declarationTotal | number:'1.2-2'}}">
+                              {{summary.declarationTotal | number:'1.2-2'}}
+                            </span>
+                          </td>
+                          <td class="wd-15 align-right">
+                            <span class="padding-right-12" tooltip="{{summary.actualTotal | number:'1.2-2'}}">
+                              {{summary.actualTotal | number:'1.2-2'}}
+                            </span>
+                          </td>
+                        </tr>
 
 
-                       <tr let i=index>
+                        <!-- <tr let i=index>
                           <td scope="row">
                             <span tooltip="1">1</span>
                           </td>
@@ -214,8 +219,8 @@
                           <td scope="row">
                             <span tooltip="9">9</span>
                           </td>
-                          <td class="align-left">
-                            <span tooltip="National Saving Certificate (NSC)">National Saving Certificate (NSC)</span>
+                          <td class="align-left"><a class="submenu text-ellipsis" [routerLink]="['/investment/80C-NationalSavingCertificate']">
+                            <span tooltip="National Saving Certificate (NSC)">National Saving Certificate (NSC)</span></a>
                           </td>
                           <td class="wd-15 align-right">
                             <span class="padding-right-12">
@@ -284,7 +289,7 @@
                               00
                             </span>
                           </td>
-                        </tr>
+                        </tr> -->
 
 
 
