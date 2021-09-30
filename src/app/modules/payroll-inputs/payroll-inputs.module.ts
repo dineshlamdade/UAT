@@ -39,12 +39,11 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { GarnishmentComponent } from './garnishment/garnishment.component';
 import { NonRecurringDashboardComponent } from './non-recurring-dashboard/non-recurring-dashboard.component';
 import { TwoDigitDecimaNumberDirective } from './attendance/two-digit-decima-number.directive';
-import { SdmComponent } from './sdm/sdm.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ChartsModule } from 'ng2-charts';
 import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
-import { Component2Component } from './component2/component2.component';
+
 import { HoldreleaseComponent } from './hold and release/holdrelease/holdrelease.component';
 import { ReleaseComponent } from './release/release/release.component';
 import { HoldComponent } from './hold and release/holdrelease/hold/hold.component';
@@ -52,6 +51,11 @@ import { ReleaseNewComponent } from './hold and release/holdrelease/release-new/
 import { CheckboxModule } from 'primeng/checkbox';
 // import { HoldComponent } from './hold and release/hold/hold.component';
 // import { ReleaseNewComponent } from './hold and release/release-new/release-new.component';
+import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
+import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
+import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
+import { FastentryNRAmtComponent } from './fastentry-nr-amt/fastentry-nr-amt.component';
+import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 
 @NgModule({
   declarations: [
@@ -63,14 +67,18 @@ import { CheckboxModule } from 'primeng/checkbox';
      GarnishmentComponent,
      NonRecurringDashboardComponent,
      TwoDigitDecimaNumberDirective,
-     SdmComponent,
      SdmStepperComponent,
      EllipsisPipe,
-     Component2Component,
+    
      HoldreleaseComponent,
      ReleaseComponent,
      HoldComponent,
-     ReleaseNewComponent
+     ReleaseNewComponent,
+     GarnishmentMasterComponent,
+     GarnishmentTransactionComponent,
+     FastentryNrQtyComponent,
+     FastentryNRAmtComponent,
+     NonRecurringQtyMasterComponent
     ],
   imports: [
     CommonModule,

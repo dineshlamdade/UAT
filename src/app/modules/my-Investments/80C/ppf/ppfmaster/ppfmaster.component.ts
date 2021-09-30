@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Data } from 'ngx-bootstrap/positioning/models';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
@@ -123,7 +124,11 @@ export class PPFMasterComponent implements OnInit {
   policyMaxDate: any;
   selectedPolicyFromDate: any;
   isVisibleTable = false;
-
+  ConvertedFinancialYearStartDate: Date;
+  financialYearEnd: any;
+  ConvertedFinancialYearEndDate: Date;
+  viewDocumentName: any;
+  viewDocumentType: any;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -305,9 +310,33 @@ export class PPFMasterComponent implements OnInit {
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
-    });
-    
+      this.financialYearEnd = res.data.results[0].toDate; 
+   
 
+      
+      this.ConvertedFinancialYearStartDate = new Date(this.financialYearStart);
+      let ConvertedFinancialYearStartDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearStartDate,
+        'yyyy-MM-dd'
+      );
+      this.ConvertedFinancialYearEndDate = new Date(this.financialYearEnd);
+      let ConvertedFinancialYearEndDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearEndDate,
+        'yyyy-MM-dd'
+      );
+      this.form.patchValue({
+        policyStartDate: this.ConvertedFinancialYearStartDate,
+        fromDate: this.ConvertedFinancialYearStartDate,
+        policyEndDate: this.ConvertedFinancialYearEndDate,
+        toDate: this.ConvertedFinancialYearEndDate,
+  
+      });
+      console.log('this.financialYearStart', this.financialYearStart);
+      // console.log('financialYearStart', financialYearStart);
+    });
+    console.log('this.financialYearStart', this.ConvertedFinancialYearStartDate);
+   
+    
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
       console.log('getFamilyInfo', res),
@@ -361,7 +390,7 @@ export class PPFMasterComponent implements OnInit {
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
-
+  
   }
 
   // convenience getter for easy access to form fields
@@ -668,10 +697,15 @@ export class PPFMasterComponent implements OnInit {
       this.documentPassword = [];
       this.isVisibleTable = false;
       this.isEdit = false;
+      // window.location.reload();
      
       this.submitted = false;
-       this.getInitialData();
-      this.getDetails();
+      //  this.getInitialData();
+      // this.getDetails();
+      setTimeout(()=>{                           // <<<---using ()=> syntax
+        this.getInitialData();
+        this.getDetails();
+    }, 3000);
       // }
   }
 
@@ -909,6 +943,23 @@ export class PPFMasterComponent implements OnInit {
     );
   }
 
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
   //---------- For Doc Viewer -----------------------
   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
@@ -916,9 +967,11 @@ export class PPFMasterComponent implements OnInit {
       this.urlArray[this.urlIndex].blobURI
     );
   }
-  docViewer(template3: TemplateRef<any>, index: any) {
+  docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);

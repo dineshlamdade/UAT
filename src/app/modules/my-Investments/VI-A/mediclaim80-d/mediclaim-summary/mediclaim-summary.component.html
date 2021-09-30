@@ -20,7 +20,7 @@
                       -->
 
             <tr *ngIf="mediclaimPremiumMasterTransactionList?.length">
-              <td rowspan="1" class="text-link">Mediclaim Insurance Premium</td>
+              <td rowspan="1" >Mediclaim Insurance Premium</td>
 
               <td class="padding-0" *ngIf="mediclaimPremiumMasterTransactionList?.length">
                 <div class="pd-5" *ngFor="let mediclaim of mediclaimPremiumMasterTransactionList"
@@ -71,7 +71,7 @@
               </td>
             </tr>
             <tr *ngFor="let summary of preventiveHealthCheckupMasterTransactionList; let i = index">
-              <td rowspan="1" class="text-link">Health Check-Up Charges</td>
+              <td rowspan="1" >Health Check-Up Charges</td>
               <td class="wd-20">
                 <span tooltip="{{ summary.institution }}">{{summary.institution}} : {{summary.policyNumber}}</span>
               </td>
@@ -97,7 +97,7 @@
               </td>
             </tr>
             <tr *ngFor="let summary of medicalExpenseMasterTransactionList; let i = index">
-              <td rowspan="1" class="text-link">Health Check-Up Charges</td>
+              <td rowspan="1" >Health Check-Up Charges</td>
               <td class="wd-20">
                 <span tooltip="{{ summary.institution }}">{{summary.institution}} : {{summary.policyNumber}}</span>
               </td>
@@ -442,7 +442,7 @@
               <td class="align-left table-light-color table-light-color font700"> Parents</td>
               <td class="align-left table-light-color table-light-color font700">Senior Citizen/ Non Senior Citizen</td>
               <td class="align-left font700 table-light-color"><span class="Letterbadge">K</span>= Minimum of <span
-                  class="Letterbadge">H</span> & <span class="Letterbadge">C</span> &nbsp;</td>
+                  class="Letterbadge">G</span> & <span class="Letterbadge">C</span> &nbsp;</td>
               <td class="align-right table-light-color font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.totalBenefitOfOnlyParents | number: '1.2-2' }}">

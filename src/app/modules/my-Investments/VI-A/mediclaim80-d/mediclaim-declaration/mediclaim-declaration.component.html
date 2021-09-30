@@ -35,9 +35,8 @@
   </div>
   <br>
   <div *ngIf="expenseType == 'Mediclaim Premium' || expenseType == 'All'">
-    <div *ngFor="let item of mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList.length >= 1 ; let j = index">
     <h3 class="font-14 text-purple font-bold">Mediclaim</h3>
- <!--    <div *ngFor="let item of mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList; let j = index"> -->
+    <div *ngFor="let item of mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList; let j = index">
       <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
         <div class="ml-2 pl-1 pr-0">
           <label class="form-label mt-1">Institution & Policy No :</label>
@@ -312,9 +311,8 @@
 
 <br>
 <div *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'">
-  <div *ngIf="preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.length >= 1">
   <h3 class="font-14 text-purple font-bold">Preventive Health Checkup</h3>
- <!--  <div *ngIf="preventiveHealthCheckupTransactionDetail"> -->
+  <div *ngIf="preventiveHealthCheckupTransactionDetail">
       <div class="row mt-15">
         <div class="col-12">
           <div class="table-responsive Custom_Table">
@@ -528,7 +526,7 @@
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                 </tr>
                 <tr>
-                  <td colspan="2" class="bg-lightgray font-18 font700">Benefits  Available</td>
+                  <td colspan="2" class="bg-lightgray font-18 font700">Benefits Available</td>
                   <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
@@ -574,8 +572,9 @@
   </div>
 <br>
 <div *ngIf="expenseType == 'Medical Expenses for Parents' || expenseType == 'All'">
-  <div *ngIf="medicalExpenseTransactionDetail.length >= 1">
-  <h3 class="font-14 text-purple font-bold">Medical Expenses For Senior Citizen Parent/s</h3> 
+  <h3 class="font-14 text-purple font-bold">Medical Expenses For Senior Citizen Parent/s</h3>
+  <div *ngIf="medicalExpenseTransactionDetail">
+
       <div class="row mt-15">
         <div class="col-12">
           <div class="table-responsive Custom_Table">
@@ -672,7 +671,7 @@
                     <div class="custom_icon_badge">
                       <input type="text" id="declaredAmount{{ summary.mediclaimTransactionId }}"
                         name="declaredAmount{{ summary.mediclaimTransactionId }}" [(ngModel)]="summary.declaredAmount"
-                        class="form-control align-right" (change)="onExpenseDeclaredAmountChange(summary, i)"
+                        class="form-control align-right" (change)="onExpenseDeclaredAmountChange(summary, i, j)"
                         [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' "/>
                         <!-- [disabled]="initialArrayIndex[j] > i" /> -->
                     </div>
@@ -683,7 +682,7 @@
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                       data-date-autoclose="true" (ngModelChange)="
                         summary.dateOfPayment = $event.toLocaleDateString();
-                        setDateOfPaymentExpense(summary, i)" [disabled]="
+                        setDateOfPaymentExpense(summary, i, j)" [disabled]="
                         isDisabled || summary.transactionStatus === 'Submitted'" class="form-control" bsDatepicker />
                   </td>
                   <td>
@@ -1202,7 +1201,7 @@
                       <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
                         <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
                           [disabled]="canEdit && isDisabled" name="select" value="isCheckAll{{ j }}"
-                          (change)="checkUncheckAll(item)" />
+                          (change)="checkUncheckAll(item, j)" />
                         <span class="custom-control-label"></span>
                       </label>
                     </th>
@@ -1518,13 +1517,13 @@
                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                         data-date-autoclose="true" (ngModelChange)="
                           summary.dateOfPayment = $event.toLocaleDateString();
-                          setDateOfPaymentInEditCasePreventive(summary, i, j)" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"  class="form-control" bsDatepicker [disabled]="summary.transactionStatus=='Approved' || !viewTransactionDetail"
+                          setDateOfPaymentInEditCasePreventive(summary, i)" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"  class="form-control" bsDatepicker [disabled]="summary.transactionStatus=='Approved' || !viewTransactionDetail"
                           />
                     </td>
                     <td>
                       <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}" [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail"
                         name="actualAmount{{ summary.mediclaimTransactionId }}" [(ngModel)]="summary.actualAmount"
-                        (change)="onActualAmountChangepreventive(summary, i, j)" class="form-control align-right"
+                        (change)="onActualAmountChangepreventive(summary, i)" class="form-control align-right"
                         />
                     </td>
                     <td>
@@ -1662,6 +1661,7 @@
     </div>
   <br>
   <div *ngIf="medicalExpenseTransactionDetailEdit">
+      <!-- <h3 class="font-14 text-purple font-bold">Medical Expenses For Senior Citizen Parent/s</h3> -->
       <h3 class="font-14 text-purple font-bold">Medical Expenses For Senior Citizen Parent/s</h3>
         <div class="row mt-15">
           <div class="col-12">
@@ -1746,7 +1746,7 @@
                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                         data-date-autoclose="true" (ngModelChange)="
                           summary.dateOfPayment = $event.toLocaleDateString();
-                          setDateOfPaymentInEditCaseExpence(summary)"  class="form-control" bsDatepicker [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail" />
+                          setDateOfPaymentInEditCaseExpence(summary, j)"  class="form-control" bsDatepicker [disabled]="summary.additionalPayment=='Approved' || !viewTransactionDetail" />
                     </td>
                     <td>
                       <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}"
