@@ -233,7 +233,7 @@
                             tooltip="Go" (click) = "saveEmp()"
                             [ngClass]="{'disabled-btn-bg-green' : holdform.invalid,'btn-bg-green': !holdform.invalid}">
                             <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
-                            Go1</button>
+                            Go</button>
                             <button type="button" tooltip="Reset" (click)="resetEmpForm()"
                             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                     class="fa  fa-refresh"></i></b> Reset</button>
@@ -246,7 +246,7 @@
                             tooltip="show list" (click) = "saveEmp2()"
                             [ngClass]="{'disabled-btn-bg-green' : holdform.invalid,'btn-bg-green': !holdform.invalid}">
                             <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
-                            Go2</button>
+                            Go</button>
                              <button type="button" tooltip="Reset" (click)="resetEmpForm()"
                             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                     class="fa  fa-refresh"></i></b> Reset</button>
@@ -259,7 +259,7 @@
                             tooltip="show list" (click) = "saveEmp3()"
                             [ngClass]="{'disabled-btn-bg-green' : holdform.invalid,'btn-bg-green': !holdform.invalid}">
                             <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
-                            Go3</button>
+                            Go</button>
                              <button type="button" tooltip="Reset" (click)="resetEmpForm()"
                             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                     class="fa  fa-refresh"></i></b> Reset</button>
@@ -320,16 +320,16 @@
                         </div>
                     </div>
                 </th>
-                <th rowspan="2">
+                <!-- <th rowspan="2">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Cycle
                         <div class="Sort_Filter_Position">
-                            <p-sortIcon field="periodName"></p-sortIcon>
-                            <p-columnFilter type="text" field="periodName" display="menu" class="p-ml-auto">
+                            <p-sortIcon field="cycle"></p-sortIcon>
+                            <p-columnFilter type="text" field="cycle" display="menu" class="p-ml-auto">
                             </p-columnFilter>
                         </div>
                     </div>
-                </th>
+                </th> -->
 
                 <th rowspan="2">
                     <div class="p-d-flex p-jc-between p-ai-center">
@@ -442,10 +442,10 @@
                 </td>
 
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullName}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td>
+                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td> -->
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.companyName}}</label></td>
                 <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.serviceName}}</label></td> -->
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1?.payrollAreaCode}}</label></td>
+                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.payrollAreaCode}}</label></td>
                 <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.establishment}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.department}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.grade}}</label></td>

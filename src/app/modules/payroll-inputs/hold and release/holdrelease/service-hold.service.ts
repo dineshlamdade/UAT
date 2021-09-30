@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class ServiceHoldService {
 
   constructor(private _HTTP: HttpClient) { }
+  //hold
   getAllCycleData() {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
@@ -22,6 +23,8 @@ export class ServiceHoldService {
       } ) );
   }
 
+
+  //release
   getAllCycleData1() {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
@@ -34,6 +37,7 @@ export class ServiceHoldService {
       } ) );
   }
 
+  //hold
   getAllCycleNames(cycleName) {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
@@ -46,6 +50,8 @@ export class ServiceHoldService {
       } ) );
   }
 
+
+  //release
   getAllCycleNames1(cycleName) {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
@@ -134,6 +140,16 @@ export class ServiceHoldService {
         return res;
       } ) );
   }
+
+  getEmpCodeForRelease(empCode) {
+    const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get( environment.baseUrl8084 + `HoldEmployee/employeeCodeForRelease/` + empCode)
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
   // getEmpSetName() {
   //   const headers = new HttpHeaders()
   //   .set('content-type', 'application/json')
@@ -181,7 +197,19 @@ export class ServiceHoldService {
     const headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this._HTTP.post( environment.baseUrl8084 + 'HoldEmployee/AddHold', data)
+  return this._HTTP.post( environment.baseUrl8084 + 'HoldEmployee/AddHold', data)
+ // return this._HTTP.put( environment.baseUrl8084 + 'HoldEmployee/ReleaseEmp', data)
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+
+  postLockCheckedEmp1(data){
+    const headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('X-TenantId', 'PaysquareDefault');
+ // return this._HTTP.post( environment.baseUrl8084 + 'HoldEmployee/AddHold', data)
+      return this._HTTP.put( environment.baseUrl8084 + 'HoldEmployee/ReleaseEmp', data)
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -235,6 +263,10 @@ export class ServiceHoldService {
 
    }
 
+   //release employee list
+   postReleaseEmpList(data : any):Observable<any>{
+    return this._HTTP.get( environment.baseUrl8084 + `HoldEmployee/holdEmployeeList`, data);
+   }
    
 
 //    //Area Penidng for lock API

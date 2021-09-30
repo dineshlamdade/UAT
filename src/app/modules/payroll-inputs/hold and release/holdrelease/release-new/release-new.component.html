@@ -166,7 +166,7 @@
 
                                     <label class="form-label mb-3">Employee Code</label>
                                     <p-multiSelect [options]="employeeCodes" optionLabel="name"
-                                        placeholder="Select"   [required]="true"
+                                         [required]="true"
                                         (onChange) = "onSelectArea($event)" defaultLabel="Select"
                                         [ngClass]="{'is-invalid' : releaseForm.get('employeeCode').status == 'INVALID'}"
                                         optionLabel="name" resetFilterOnHide="true" formControlName="employeeCode">
@@ -219,7 +219,7 @@
                                     tooltip="show list" (click) = "saveEmp()"
                                     [ngClass]="{'disabled-btn-bg-green' : releaseForm.invalid,'btn-bg-green': !releaseForm.invalid}">
                                     <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
-                                    Go1</button>
+                                    Go</button>
                                      <button type="button" tooltip="Reset" (click)="resetEmpForm()"
                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                             class="fa  fa-refresh"></i></b> Reset</button>
@@ -232,7 +232,7 @@
                                     tooltip="show list" (click) = "saveEmp2()"
                                     [ngClass]="{'disabled-btn-bg-green' : releaseForm.invalid,'btn-bg-green': !releaseForm.invalid}">
                                     <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
-                                    Go2</button>
+                                    Go</button>
                                      <button type="button" tooltip="Reset" (click)="resetEmpForm()"
                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                             class="fa  fa-refresh"></i></b> Reset</button>
@@ -245,7 +245,7 @@
                                     tooltip="show list" (click) = "saveEmp3()"
                                     [ngClass]="{'disabled-btn-bg-green' : releaseForm.invalid,'btn-bg-green': !releaseForm.invalid}">
                                     <b><i class="fa fa-arrow-right" aria-hidden="true"></i></b>
-                                    Go3</button>
+                                    Go</button>
                                      <button type="button" tooltip="Reset" (click)="resetEmpForm()"
                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                             class="fa  fa-refresh"></i></b> Reset</button>
@@ -303,7 +303,7 @@
                         </div>
                     </div>
                 </th>
-                <th rowspan="2">
+                <!-- <th rowspan="2">
                     <div class="p-d-flex p-jc-between p-ai-center">
                         Cycle
                         <div class="Sort_Filter_Position">
@@ -312,7 +312,7 @@
                             </p-columnFilter>
                         </div>
                     </div>
-                </th>
+                </th> -->
 
                 <th rowspan="2">
                     <div class="p-d-flex p-jc-between p-ai-center">
@@ -420,7 +420,7 @@
                 </td>
 
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.fullName}}</label></td>
-                <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td>
+                <!-- <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.cycle}}</label></td> -->
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.companyName}}</label></td>
                 <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.payrollAreaCode}}</label>
 
@@ -630,10 +630,11 @@
                                 <tr class="p-selectable-row" [pSelectableRow]="user1">
                                     <td>
                                         <p-checkbox [value]="user1.employeeMasterId"
-                                            (click)="onCheckEmpInLock(e.checked,user1,rowIndex)" #e
+                                            (click)="inPendingForRelease(e.checked,user1,rowIndex)" #e
                                             [(ngModel)]="selectedAreaIdsEmp">
 
                                         </p-checkbox>
+                                        <!-- (click)="onCheckEmpInLock(e.checked,user1,rowIndex)" #e -->
                                     </td>
                                     <td class="bg-color-light_gray"><label
                                             class="form-lable mb-0">{{user1.employeeCode}}</label>

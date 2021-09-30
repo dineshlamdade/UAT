@@ -6,6 +6,7 @@ import { ExcelserviceService } from 'src/app/modules/excel_service/excelservice.
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SortEvent } from 'primeng/api';
 import { ServiceHoldService } from '../service-hold.service';
+import { element } from 'protractor';
 
 interface users1 {
   srno;
@@ -79,6 +80,10 @@ export class ReleaseNewComponent implements OnInit {
   periodNameList: Array<any> = [];
   empList: any;
   data: any;
+  emp: any[];
+  public payrollAreaCodes: Array<any> = [];
+  public payrollAreaC : string;
+  payCodeList: Array<any> = [];
 // public finalpendingLockList: Array<any> = [];
 
   constructor(private modalService: BsModalService,
@@ -436,7 +441,7 @@ export class ReleaseNewComponent implements OnInit {
         this.employeeCodes = [];
       } else {
         this.employeeCodes = [];
-        this.holdService.getEmpCode(evt).subscribe((res) => {
+        this.holdService.getEmpCodeForRelease(evt).subscribe((res) => {
             this.employeeCodeList = res.data.results[0];
             console.log('employeeCodeList', this.employeeCodeList);
             res.data.results[0].forEach((element) => {
@@ -469,6 +474,7 @@ export class ReleaseNewComponent implements OnInit {
       })
       this.releaseForm.get('employeeCode').enable();
       this.releaseForm.get('employeeSet').enable();
+      this.releaseForm.get('areaList').enable();
       }
 
       getSummaryData(){
@@ -529,6 +535,7 @@ export class ReleaseNewComponent implements OnInit {
             businessCycleId: this.getBusinessIDEmp(),
             cycle: this.releaseForm.get('periodName').value,
             release : this.releaseForm.get('release').value,
+            // employeeMasterId : this.releaseForm.get('employeeMasterId').value,
             companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
             serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
             payrollAreaCode:  this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
@@ -542,7 +549,8 @@ export class ReleaseNewComponent implements OnInit {
              if(res.data.results.length > 0) {
               this.getEmpTableList = res.data.results;
               console.log("getEmpTableList", this.getEmpTableList);
-               this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+              // this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+               this.alertService.sweetalertMasterSuccess('Success','Release List Retrived Successfully');
              } else {
                this.alertService.sweetalertWarning(res.status.messsage);
              }
@@ -584,6 +592,7 @@ export class ReleaseNewComponent implements OnInit {
             businessCycleId: this.getBusinessIDEmp(),
             cycle: this.releaseForm.get('periodName').value,
             release : this.releaseForm.get('release').value,
+            //employeeMasterId : this.releaseForm.get('employeeMasterId').value,
             companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
             serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
             payrollAreaCode:  this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
@@ -595,9 +604,16 @@ export class ReleaseNewComponent implements OnInit {
           this.holdService.postReleaseEmpSet(data).subscribe((res: any) => {
             if(res){
              if(res.data.results.length > 0) {
-              this.getEmpTableList = res.data.results;
+           this.getEmpTableList = res.data.results;
+            
               console.log("getEmpTableList", this.getEmpTableList);
-               this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+             // const result = res.data.results;
+
+           //this.getEmpTableList = result.filter(ar => this.empSetList.find(rm => (rm.employeeCode === ar.employeeCode)))
+          let paCode=this.areaSeriveListEmp.find(x=>x.payrollAreaId==this.releaseForm.get('areaMasterCode').value)
+          this.getEmpTableList=this.getEmpTableList.filter(x=>x.payrollAreaCode == paCode.payrollAreaCode)
+              // this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+              this.alertService.sweetalertMasterSuccess('Success','Release List Retrived Successfully');
              } else {
                this.alertService.sweetalertWarning(res.status.messsage);
              }
@@ -624,9 +640,9 @@ export class ReleaseNewComponent implements OnInit {
           this.allAreaCodesEmpList = [];
           const selectedPayrollAreaCodes = this.releaseForm.get('areaList').value;
           if (selectedPayrollAreaCodes.length > 0) {
-            selectedPayrollAreaCodes.forEach((element) => {
-              this.allAreaCodesEmpList.push(element.code);
-            });
+            // selectedPayrollAreaCodes.forEach((element) => {
+            //   this.allAreaCodesEmpList.push(element.code);
+            // });
           }
            else {
            // this.alertService.sweetalertWarning('Please select Employee Code');
@@ -639,6 +655,7 @@ export class ReleaseNewComponent implements OnInit {
             businessCycleId: this.getBusinessIDEmp(),
             cycle: this.releaseForm.get('periodName').value,
             release : this.releaseForm.get('release').value,
+            //employeeMasterId : this.releaseForm.get('employeeMasterId').value,
             companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
             serviceName: this.getServiceNameEmp(this.releaseForm.get('serviceName').value),
             payrollAreaCode:  this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
@@ -647,12 +664,19 @@ export class ReleaseNewComponent implements OnInit {
           };
         
         
-          this.holdService.postEmpForm(data).subscribe((res: any) => {
+          this.holdService.postReleaseEmpList(data).subscribe((res: any) => {
             if(res){
-             if(res.data.results.length > 0) {
-              this.getEmpTableList = res.data.results;
-              console.log("getEmpTableList", this.getEmpTableList);
-               this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+             if(res.data.results[0].length > 0) {
+              const result = res.data.results[0];
+            //  console.log("getEmpTableList", this.getEmpTableList);
+              this.getEmpTableList = result.filter(ar => this.employeedata.find(rm => ((rm.employeeCode).trim() === ar.employeeCode) ))
+              let paCode=this.areaSeriveListEmp.find(x=>x.payrollAreaId==this.releaseForm.get('areaMasterCode').value)
+              this.getEmpTableList=this.getEmpTableList.filter(x=>x.payrollAreaCode.toLowerCase()==paCode.payrollAreaCode.toLowerCase())
+             // this.getEmpTableList= this.getEmpTableList.find(x=x.)
+             console.log('result is',result);
+             console.log("getEmpTableList", this.getEmpTableList);
+              // this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+              this.alertService.sweetalertMasterSuccess('Success','Release List Retrived Successfully');
              } else {
                this.alertService.sweetalertWarning(res.status.messsage);
              }
@@ -689,6 +713,14 @@ export class ReleaseNewComponent implements OnInit {
           } else {
             return 0;
           }
+        }
+
+        getPayrollAreaId(pId: any) {
+          const toSelect = this.ServiceAreaListEmp.find(
+            (element) => element.payrollAreaId == pId
+          );
+          return toSelect.areaMasterCode;
+          console.log('toSelect', toSelect);
         }
         getCompanyNameEmp(serviceCode: any) {
           const toSelect = this.companyNameListEmp.find(
@@ -756,41 +788,57 @@ export class ReleaseNewComponent implements OnInit {
           if(checkValue){
             this.selectedAreaIdsEmp.push(element.employeeMasterId);
             // this.checkedFinalLockListEmp.push(element.businessCycleId);
+           // this.checkedFinalLockListEmp.push(element.employeeMasterId);
             const data = {
               serviceName : element.serviceName,
               cycleLockEmployeeId : element.cycleLockEmployeeId,
               employeeMasterId : element.employeeMasterId,
               payrollAreaCode : element.payrollAreaCode,
-              businessCycleId : element.businessCycleId,
-              cycle : element.cycle,
-              areaMasterId : element.areaMasterId,
+              businessCycleId: this.getBusinessIDEmp(),
+              cycle: this.releaseForm.get('periodName').value,
+              companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
+              payrollAreaId : this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
+             // businessCycleId : element.businessCycleId,
+             // cycle : element.cycle,
+              areaMasterId: this.getAreaMasterIDEmp(),
+              //areaMasterId : element.areaMasterId,
               // createDateTime : new Date(),
               // lastModifiedDateTime : null,
               isActive: 1,
               release : 1,
+             // payrollAreaId : element.payrollAreaId,
               employeeCode : element.employeeCode,
               fullName : element.fullName,
-              companyName : element.companyName,
+              //companyName : element.companyName,
               canPost : true,
             };
             this.checkedSummaryListEmp.push(data);
             console.log("checkedSummaryListEmp",this.checkedSummaryListEmp)
             this.selectedUserInLockEmp.push(data);
-        
-            const data1 = {
-                serviceName : element.serviceName,
-                cycleLockEmployeeId : element.cycleLockEmployeeId,
-                employeeMasterId : element.employeeMasterId,
-                payrollAreaCode : element.payrollAreaCode,
-                businessCycleId : element.businessCycleId,
-                cycle : element.cycle,
-                areaMasterId : element.areaMasterId,
-                // createDateTime : new Date(),
-                // lastModifiedDateTime : null,
-                isActive: 1,
-                release : 1
-            }
-            this.checkedFinalLockListEmp.push(data1);
+          //this.payrollAreaCodes.push(element.payrollAreaCode)
+          this.payrollAreaC = element.payrollAreaCode
+            // const data1 = {
+            //     serviceName : element.serviceName,
+            //     cycleLockEmployeeId : element.cycleLockEmployeeId,
+            //     employeeMasterId : element.employeeMasterId,
+            //     payrollAreaCode : element.payrollAreaCode,
+            //     businessCycleId: this.getBusinessIDEmp(),
+            //     cycle: this.releaseForm.get('periodName').value,
+            //     areaMasterId: this.getAreaMasterIDEmp(),
+            //     payrollAreaId : this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
+            //    // businessCycleId : element.businessCycleId,
+            //    // cycle : element.cycle,
+            //    // areaMasterId : element.areaMasterId,
+            //   //  payrollAreaId : element.payrollAreaId,
+            //   //employeeCode : element.employeeCode,
+            //  fullName : element.fullName,
+            //  // companyName : element.companyName,
+            //     // createDateTime : new Date(),
+            //     // lastModifiedDateTime : null,
+            //     isActive: 1,
+            //     release : 1
+            // }
+            this.checkedFinalLockListEmp.push(element.employeeMasterId);
           }
           else {
             const index = this.checkedSummaryListEmp.indexOf((item) => (item.employeeMasterId == element.employeeMasterId));
@@ -830,7 +878,7 @@ export class ReleaseNewComponent implements OnInit {
 exportExcelEmpTable(): void {
   this.excelDataEmp = [];
   this.header = []
-  this.header =["employeeCode", "fullName", "companyName","payrollAreaCode"];
+  this.header =["employeeCode", "fullName", "companyName","payrollAreaCode","periodName"];
   this.excelDataEmp = [];
   if(this.getEmpTableList.length>0){
    this.getEmpTableList.forEach((element) => {
@@ -838,6 +886,7 @@ exportExcelEmpTable(): void {
       employeeCode: element.employeeCode,
       fullName: element.fullName,
       companyName: element.companyName,
+      periodName : element.cycle,
      // serviceName: element.serviceName,
       payrollAreaCode: element.payrollAreaCode,
     };
@@ -854,7 +903,11 @@ saveCheckedEmp(){
   if(this.checkedFinalLockListEmp.length == 0){
     return;
   }
-  const data =  this.checkedFinalLockListEmp
+const data =  {empList : this.checkedFinalLockListEmp,
+  payrollAreaCode : this.payrollAreaC
+}
+
+//const data = {empList : this.checkedFinalLockListEmp}
 
   // const data = {
   //   areaMasterId: element.areaMasterId,
@@ -868,11 +921,13 @@ saveCheckedEmp(){
   // this.checkedFinalLockListEmp.push(data);
 
 
-  this.holdService.postLockCheckedEmp(data).subscribe((res) =>{
+
+  this.holdService.postLockCheckedEmp1(data).subscribe((res) =>{
     if(res){
       if(res.data.results) {
         //  this.getAreaTableSummaryList();
-        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+       // this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+       this.alertService.sweetalertMasterSuccess('Success','Release List Added Successfully');
       } else {
         this.alertService.sweetalertWarning(res.status.messsage);
       }
@@ -881,6 +936,8 @@ saveCheckedEmp(){
         'Something went wrong. Please try again.'
       );
     }
+   this.pendingForLockAsWhen();
+    this.pendingLockList = [];
     this.modalRef.hide();
     this.getEmpTableList = [];
     this.selectedUserEmp = [];
@@ -900,7 +957,7 @@ saveCheckedEmp(){
 exportExcelEmpLock(): void {
   this.excelDataEmpLock = [];
   this.header = []
-  this.header =["employeeCode", "fullName", "companyName","payrollAreaCode"];
+  this.header =["employeeCode", "fullName", "companyName","payrollAreaCode","periodName"];
   this.excelDataEmpLock = [];
   if(this.checkedSummaryListEmp.length>0){
    this.checkedSummaryListEmp.forEach((element) => {
@@ -908,6 +965,7 @@ exportExcelEmpLock(): void {
       employeeCode: element.employeeCode,
       fullName: element.fullName,
       companyName: element.companyName,
+      periodName : element.cycle,
      // serviceName: element.serviceName,
       payrollAreaCode: element.payrollAreaCode,
     };
@@ -926,34 +984,7 @@ resetEmpLock(){
 
 }
 
-onCheckEmpInLock(checkValue, element, rowIndex) {
-  // this.RowSelectedInLockEmp(element,rowIndex);
-  console.log("rowIndex",rowIndex);
-  console.log("checkValue Number", checkValue);
-  if(checkValue) {
 
-    // element.canPost = true;
-    this.selectedUserInLockEmp.push(element);
-    const data = {
-      cycleLockEmployeeId : element.cycleLockEmployeeId,
-      employeeMasterId: element.employeeMasterId,
-      areaMasterId: element.areaMasterId,
-      businessCycleId: element.businessCycleId,
-      cycle: element.cycle,
-      serviceName: element.serviceName,
-      payrollAreaCode :  element.payrollAreaCode,
-      isActive : 1,
-      release : 1
-    }
-    this.checkedFinalLockListEmp.push(data);
-    console.log("checkedFinalLockListEmp", this.checkedFinalLockListEmp)
-  } else {
-    // element.canPost = false;
-     const index = this.checkedFinalLockListEmp.indexOf((p) => (p.employeeMasterId = element.jobMasterValueId));
-    this.checkedFinalLockListEmp.splice(index, 1);
-    this.selectedUserInLockEmp.splice(index, 1);
-  }
-}
 
 
 // onSelectCycleName(evt: any) {
@@ -1070,11 +1101,27 @@ onCheckedPendigLock(checkValue, element) {
     this.finalpendingLockList.splice(index, 1);
   }
 }
+
+onCheckedRelease(checkValue, element) {
+  if(checkValue){
+    this.finalpendingLockList.push(element.businessCycleId);
+  } else {
+     const index = this.finalpendingLockList.indexOf((p) => (p.businessCycleId = element.businessCycleId));
+    this.finalpendingLockList.splice(index, 1);
+  }
+}
 //Pending for lock On Row Selection
 inPendingForLock(checkValue, element, rowIndex) {
   // this.RowSelectedPendingforLock(element, rowIndex);
   if (checkValue) {
     this.selectedUserPending.push(element.businessCycleId);
+    this.payrollAreaC = element.payrollAreaCode = element.payrollAreaCode
+    console.log('payrollAreacode is',this.payrollAreaC);
+    const data = {
+      employeeMasterId: element.employeeMasterId,
+   // payrollAreaCode :  element.payrollAreaCode,
+ 
+}
     // const obj ={
     //   areaMasterId:element.areaMasterId,
     //   cycle : element.cycle,
@@ -1101,6 +1148,84 @@ inPendingForLock(checkValue, element, rowIndex) {
   }
 }
 
+
+
+inPendingForRelease(checkValue, element, rowIndex) {
+  console.log("rowIndex",rowIndex);
+  console.log("checkValue Number", checkValue);
+  
+  if (checkValue) {
+    this.selectedUserInLockEmp.push(element);
+   // this.selectedUserPending.push(element.businessCycleId);
+    //this.finalpendingLockList.push(element.employeeMasterId);
+   // this.payrollAreaCodes.push(element.payrollAreaCode)
+   this.payrollAreaC = element.payrollAreaCode = element.payrollAreaCode
+     console.log('payrollAreacode is',this.payrollAreaC);
+    const data = {
+          employeeMasterId: element.employeeMasterId,
+       // payrollAreaCode :  element.payrollAreaCode,
+     
+    }
+    this.checkedFinalLockListEmp.push(element.employeeMasterId);
+    console.log("checkedFinalLockListEmp", this.checkedFinalLockListEmp)
+  
+  } else {
+    const index = this.checkedFinalLockListEmp.indexOf((p) => (p.employeeMasterId = element.employeeMasterId));
+    this.checkedFinalLockListEmp.splice(index, 1);
+    this.selectedUserInLockEmp.splice(index, 1);
+    // const index = this.finalpendingLockList.indexOf(
+    //   (p) => (p.businessCycleId == element.businessCycleId)
+    // );
+    // this.finalpendingLockList.splice(index, 1);
+
+    // const index1 = this.pendingLockList.indexOf(
+    //   (p) => (p.businessCycleId == element)
+    // );
+    // this.selectedUserPending.splice(index1, 1);
+    
+  }
+}
+
+onCheckEmpInLock(checkValue, element, rowIndex) {
+  // this.RowSelectedInLockEmp(element,rowIndex);
+  console.log("rowIndex",rowIndex);
+  console.log("checkValue Number", checkValue);
+  if(checkValue) {
+  
+    // element.canPost = true;
+    this.selectedUserInLockEmp.push(element);
+    const data = {
+      cycleLockEmployeeId : element.cycleLockEmployeeId,
+      employeeMasterId: element.employeeMasterId,
+      areaMasterId: this.getAreaMasterIDEmp(),
+      businessCycleId: this.getBusinessIDEmp(),
+      cycle: this.releaseForm.get('periodName').value,
+      payrollAreaId : this.getAreaCodesInEmp(this.releaseForm.get('areaMasterCode').value),
+      companyName: this.getCompanyNameEmp(this.releaseForm.get('companyName').value),
+     // areaMasterId: element.areaMasterId,
+      // businessCycleId: element.businessCycleId,
+      // cycle: element.cycle,
+      serviceName: element.serviceName,
+      payrollAreaCode :  element.payrollAreaCode,
+      employeeCode : element.employeeCode,
+           // payrollAreaId : element.payrollAreaId,
+           // companyName :element.companyName,
+           // fullName : element.fullName,
+          //  groupCompanyId :element.groupCompanyId,
+      isActive : 1,
+      release : 1
+    }
+    this.checkedFinalLockListEmp.push(data);
+    console.log("checkedFinalLockListEmp", this.checkedFinalLockListEmp)
+  } else {
+    // element.canPost = false;
+     const index = this.checkedFinalLockListEmp.indexOf((p) => (p.employeeMasterId = element.employeeMasterId));
+    this.checkedFinalLockListEmp.splice(index, 1);
+    this.selectedUserInLockEmp.splice(index, 1);
+  }
+}
+
+
 //Reset Lock
 resetLock(){
   this.checkedSummaryList = [];
@@ -1118,7 +1243,8 @@ resetPendingLock(){
 
 pendingLockProceed(){
  // const data = [{empList : this.finalpendingLockList}]
-  const data = {empList : this.finalpendingLockList}
+  const data = {empList : this.finalpendingLockList,
+    payrollAreaCode : this.payrollAreaC}
  
 
   // this.finalpendingLockList
@@ -1221,17 +1347,17 @@ pendingForLockAsWhen() {
 allCheckUncheck(checkValue){
   if(checkValue){
   this.pendingLockList.forEach((element) => {
-    this.selectedUserPending.push(element.holdEmployeeId);
-    this.finalpendingLockList.push(element.holdEmployeeId);
+    this.selectedUserPending.push(element.employeeMasterId);
+    this.finalpendingLockList.push(element.employeeMasterId);
   });
   }else {
     this.pendingLockList.forEach((element) => {
     const index = this.finalpendingLockList.indexOf(
-      (p) => (p.holdEmployeeId == element.holdEmployeeId));
+      (p) => (p.employeeMasterId == element.employeeMasterId));
     this.finalpendingLockList.splice(index, 1);
 
     const index1 = this.pendingLockList.indexOf(
-      (p) => (p.holdEmployeeId == element)
+      (p) => (p.employeeMasterId == element)
     );
     this.selectedUserPending.splice(index1, 1);
   });
@@ -1264,18 +1390,18 @@ employeeListPasteData(event: ClipboardEvent) {
   // this.displayedColumns = row_data[0].split('\t');
   // this.displayedColumns = ["employeeCode", "employeeName"]
   this.displayedColumns = ["employeeCode"]
-let emp=[];
+this.emp=[];
 for(let i= 0;i<row_data.length;i++){
   let data=row_data[i].replace('\r','');
   if(data!=''){
 const employee=this.employeeCodeList.find(a=>a.label ==data)
 let obj=employee?.value;
 
-emp.push(obj)
+this.emp.push(obj)
 }
 }
 
-  this.releaseForm.get('employeeCode').setValue(emp);
+  this.releaseForm.get('employeeCode').setValue(this.emp);
   //this.excelData=row_data;
   //this.excelData1=row_data;
 
