@@ -7,10 +7,13 @@ import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.com
 import { FinancialMasterComponent } from './financial-master/financial-master.component';
 import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
 import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
+import { HoldreleaseComponent } from './hold and release/holdrelease/holdrelease.component';
+
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-recurring-qty-master.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 import { PayrollListComponent } from './payroll-list/payroll-list.component';
+import { ReleaseComponent } from './release/release/release.component';
 import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 
 
@@ -55,6 +58,19 @@ const routes: Routes = [
 
       },
       {
+        path:   'hold-release',
+        component:  HoldreleaseComponent,
+        data: { title: ':: DelziaHR :: Hold Release' },
+
+      },
+      // {
+      //   path:   'release',
+      //   component:  ReleaseComponent,
+      //   data: { title: ':: DelziaHR :: Release' },
+
+      // },
+      {
+       
         path:   'Non-Recurring-qty-master',
         component:  NonRecurringQtyMasterComponent,
         data: { title: ':: DelziaHR :: Non-Recurring-qty' },
