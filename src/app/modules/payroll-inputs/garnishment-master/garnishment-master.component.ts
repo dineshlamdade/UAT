@@ -35,6 +35,11 @@ export class GarnishmentMasterComponent implements OnInit {
   garnishmentMasterDocumentList: any = [];
   inputTypeData: any = [];
   transactionTypeData: any = []
+  countryCode: any;
+  isdCode: any = '';
+  frequenciesData: any = []
+  dropdownSettings: any;
+  editFrequencyData: any[];
 
   constructor(private formbuilder: FormBuilder, private garnishmentService: GarnishmentService,
     private alertService: ToastrService) {
@@ -83,6 +88,54 @@ export class GarnishmentMasterComponent implements OnInit {
       { displayName: 'Incentive', headMasterId: 27 },
       { displayName: 'Performance_Incentive', headMasterId: 29 },
     ]
+
+    this.frequenciesData = [
+      {
+        "item_id": 1,
+        "displayName": "Monthly",
+        "item_text": "Month"
+      },
+      {
+        "item_id": 2,
+        "displayName": "Quarterly",
+        "item_text": "Quarter"
+      },
+      {
+        "item_id": 3,
+        "displayName": "HalfYearly",
+        "item_text": "HalfYear"
+      },
+      {
+        "item_id": 4,
+        "displayName": "Yearly",
+        "item_text": "Year"
+      },
+      {
+        "item_id": 5,
+        "displayName": "SemiMonthly",
+        "item_text": "SemiMonth"
+      },
+      {
+        "item_id": 6,
+        "displayName": "Weekly",
+        "item_text": "Week"
+      },
+      {
+        "item_id": 7,
+        "displayName": "BiWeekly",
+        "item_text": "BiWeek"
+      }
+    ];
+
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
   }
 
 
@@ -92,8 +145,8 @@ export class GarnishmentMasterComponent implements OnInit {
     this.getComplianceHeadNane()
     this.getInstitutionMaster()
     this.getLocationInformationOrCountryList()
-    this.getloanMasterAllDeductionHead()
-    this.getALLFrequecyDetails()
+    // this.getloanMasterAllDeductionHead()
+    // this.getALLFrequecyDetails()
     this.getindianincometax()
   }
 
@@ -105,7 +158,7 @@ export class GarnishmentMasterComponent implements OnInit {
         'defaultTransactionType': true,
         "transactionTypeId": 1,
         "checked": false,
-        "default": false
+        "default": true
       },
       {
         'transactionTypeName': 'NoOfTransaction',
@@ -127,7 +180,7 @@ export class GarnishmentMasterComponent implements OnInit {
     this.inputTypeData = [
       {
         "inputTypeId": 1,
-        "inputTypeName": "Formula",
+        "inputTypeName": "Percentage",
         "defaultInput": true,
         "checked": false,
         "default": false
@@ -171,11 +224,32 @@ export class GarnishmentMasterComponent implements OnInit {
     })
   }
 
+  /** Get selected institution */
+  getInstitutionName(institutionName) {
+    let alldata: any;
+    this.institutionMasterData.forEach(element => {
+      if (element.institutionName == institutionName) {
+        alldata = element
+      }
+    });
+    // console.log("alldata : " + JSON.stringify(alldata))
+    this.garnishmentForm.patchValue(alldata)
+    this.garnishmentForm.controls['description'].setValue(alldata.institutionName)
+    let value = alldata.telephoneNumber.split(' ')
+    this.isdCode = value[0]
+    this.garnishmentForm.controls['phoneNumber'].setValue(value[1])
+    this.garnishmentForm.controls['villege'].setValue(alldata.village)
+  }
+
   /** Get Location Information Or CountryList */
   getLocationInformationOrCountryList() {
     this.garnishmentService.getLocationInformationOrCountryList().subscribe(res => {
       this.countryList = res.data.results;
     })
+
+    this.garnishmentService.getCountryCodes().subscribe(res => {
+      this.countryCode = res.data.results;
+    });
   }
 
   /** Check pincode and set city state etc */
@@ -215,9 +289,9 @@ export class GarnishmentMasterComponent implements OnInit {
 
   /**get indian income tax */
   getindianincometax() {
-    // this.garnishmentService.getindianincometax().subscribe(res => {
-    //   this.incomeTaxData = res.data.result;
-    // })
+    this.garnishmentService.getindianincometax().subscribe(res => {
+      this.incomeTaxData = res.data.result;
+    })
   }
 
   /**Get frequency data */
@@ -229,6 +303,39 @@ export class GarnishmentMasterComponent implements OnInit {
     })
 
     this.garnishmentForm.controls['garnishmentMasterFrequencyList'].setValue(this.garnishmentMasterFrequencyList)
+  }
+
+  /** get selected frequency  */
+  onSelectDataValue(event) {
+    this.garnishmentMasterFrequencyList.push({
+      "frequencyid": parseInt(event.item_id),
+      "frequencyName": event.item_text + 'ly'
+    })
+
+    this.garnishmentForm.controls['garnishmentMasterFrequencyList'].setValue(this.garnishmentMasterFrequencyList)
+  }
+
+  /** de select frequency */
+  deSelectValueListDataValue(event) {
+    this.garnishmentMasterFrequencyList.forEach((element, index) => {
+      if (element.frequencyid == event.item_id) {
+        let ind = index;
+        this.garnishmentMasterFrequencyList.splice(ind, 1)
+      }
+    });
+    this.garnishmentForm.controls['garnishmentMasterFrequencyList'].setValue(this.garnishmentMasterFrequencyList)
+  }
+
+  /** get all selected frequency */
+  onSelectAllValueListDataValue(event) {
+    event.forEach((element, index) => {
+      this.garnishmentMasterFrequencyList.push({
+        "frequencyid": parseInt(element.item_id),
+        "frequencyName": element.item_text + 'ly'
+      })
+    })
+    this.garnishmentForm.controls['garnishmentMasterFrequencyList'].setValue(this.garnishmentMasterFrequencyList)
+
   }
 
   /** Get Transaction Type */
@@ -377,6 +484,7 @@ export class GarnishmentMasterComponent implements OnInit {
     // console.log("Save data is: "+ JSON.stringify(this.garnishmentForm.value))
     this.garnishmentService.savemasterdata(this.garnishmentForm.value).subscribe(res => {
       this.alertService.success("", "Garnishment master data saved successfully")
+      this.garnishmentForm.addControl('garnishmentMasterId', new FormControl(''))
       this.editFlag = false;
       this.viewFlag = false;
       this.garnishmentForm.reset()
@@ -388,6 +496,17 @@ export class GarnishmentMasterComponent implements OnInit {
       this.inputTypeData = []
       this.transactionTypeData = []
       this.setTypeData()
+      this.garnishmentForm.controls['description'].disable()
+      this.garnishmentForm.controls['phoneNumber'].disable()
+      this.garnishmentForm.controls['emailId'].disable()
+      this.garnishmentForm.controls['address1'].disable()
+      this.garnishmentForm.controls['address2'].disable()
+      this.garnishmentForm.controls['address3'].disable()
+      this.garnishmentForm.controls['country'].disable()
+      this.garnishmentForm.controls['pinCode'].disable()
+      this.garnishmentForm.controls['state'].disable()
+      this.garnishmentForm.controls['city'].disable()
+      this.garnishmentForm.controls['villege'].disable()
     })
   }
 
@@ -423,7 +542,33 @@ export class GarnishmentMasterComponent implements OnInit {
         });
       });
 
+      this.editFrequencyData = []
+      this.garnishmentMasterFrequencyList.forEach(element => {
+        let name = element.frequencyName.toString()
+        let frequency = name.slice(0, -2);
+        this.editFrequencyData.push(
+          {
+            item_id: element.frequencyid,
+            item_text: frequency
+          }
+        )
+      });
+
     })
+
+
+    this.garnishmentForm.controls['nameOfInstitution'].disable()
+    this.garnishmentForm.controls['description'].disable()
+    this.garnishmentForm.controls['phoneNumber'].disable()
+    this.garnishmentForm.controls['emailId'].disable()
+    this.garnishmentForm.controls['address1'].disable()
+    this.garnishmentForm.controls['address2'].disable()
+    this.garnishmentForm.controls['address3'].disable()
+    this.garnishmentForm.controls['country'].disable()
+    this.garnishmentForm.controls['pinCode'].disable()
+    this.garnishmentForm.controls['state'].disable()
+    this.garnishmentForm.controls['city'].disable()
+    this.garnishmentForm.controls['villege'].disable()
   }
 
   /** Update Master Data */
@@ -446,6 +591,18 @@ export class GarnishmentMasterComponent implements OnInit {
       this.inputTypeData = []
       this.transactionTypeData = []
       this.setTypeData()
+
+      this.garnishmentForm.controls['description'].disable()
+      this.garnishmentForm.controls['phoneNumber'].disable()
+      this.garnishmentForm.controls['emailId'].disable()
+      this.garnishmentForm.controls['address1'].disable()
+      this.garnishmentForm.controls['address2'].disable()
+      this.garnishmentForm.controls['address3'].disable()
+      this.garnishmentForm.controls['country'].disable()
+      this.garnishmentForm.controls['pinCode'].disable()
+      this.garnishmentForm.controls['state'].disable()
+      this.garnishmentForm.controls['city'].disable()
+      this.garnishmentForm.controls['villege'].disable()
     })
   }
 
@@ -497,6 +654,17 @@ export class GarnishmentMasterComponent implements OnInit {
     this.inputTypeData = []
     this.transactionTypeData = []
     this.setTypeData()
+    this.garnishmentForm.controls['description'].disable()
+    this.garnishmentForm.controls['phoneNumber'].disable()
+    this.garnishmentForm.controls['emailId'].disable()
+    this.garnishmentForm.controls['address1'].disable()
+    this.garnishmentForm.controls['address2'].disable()
+    this.garnishmentForm.controls['address3'].disable()
+    this.garnishmentForm.controls['country'].disable()
+    this.garnishmentForm.controls['pinCode'].disable()
+    this.garnishmentForm.controls['state'].disable()
+    this.garnishmentForm.controls['city'].disable()
+    this.garnishmentForm.controls['villege'].disable()
   }
 
 }

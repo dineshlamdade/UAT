@@ -20,7 +20,7 @@
                             <label class="form-label">Institution Code</label>
                             <select name="nameOfInstitution" id="nameOfInstitution" class="form-control"
                               [ngClass]="{'is-invalid' : garnishmentForm.get('nameOfInstitution').status == 'INVALID'}"
-                              formControlName="nameOfInstitution">
+                              formControlName="nameOfInstitution" (change)="getInstitutionName($event.target.value)">
                               <option value="">Select</option>
                               <option *ngFor="let data of institutionMasterData">{{data.institutionName}}</option>
                             </select>
@@ -29,7 +29,7 @@
                             <label class="form-label">Description</label>
                             <input type="text" formControlName="description" class="form-control "
                               name="description"
-                              [ngClass]="{'is-invalid' : garnishmentForm.get('description').status == 'INVALID'}">
+                              [ngClass]="{'is-invalid' : garnishmentForm.get('description').status == 'INVALID'}" disabled>
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Nature</label>
@@ -52,13 +52,12 @@
                             </div>
                           </div>
                           <div class="col-md-1 country-code">
-                            <select class="form-control selectpicker mt-24" placeholder="ISD">
-                              <option value="" selected>ISD
+                            <select class="form-control selectpicker mt-24" placeholder="ISD"  [(ngModel)]="isdCode" 
+                            [ngModelOptions]="{standalone: true}" disabled>
+                              <option value="">ISD</option>
+                              <option *ngFor="let code of countryCode" >
+                                {{code}}
                               </option>
-                              <option> 91 </option>
-                              <option> 1-684 </option>
-                              <option> 92 </option>
-                              <option> 93</option>
                             </select>
                           </div>
                           <div class="col-md-2">
@@ -69,19 +68,19 @@
                                   <!-- <span class="input-group-text"><i class=""></i></span> -->
                                 </div>
                                 <input type="text" formControlName="phoneNumber" class="form-control "
-                                  minlength="10" maxlength="12" name="phoneNumber"
+                                  minlength="10" maxlength="12" name="phoneNumber" disabled
                                   [ngClass]="{ 'is-invalid': submitted && garnishmentForm.phoneNumber.errors } ">
                               </div>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Email Id</label>
-                            <input type="text" formControlName="emailId" class="form-control"
+                            <input type="text" formControlName="emailId" class="form-control"  disabled
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.emailId.errors }">
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Address1</label>
-                            <input type="text" formControlName="address1" class="form-control"
+                            <input type="text" formControlName="address1" class="form-control" disabled
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.address1.errors }">
                           </div>
 
@@ -89,17 +88,17 @@
                         <div class="row mt-25">
                           <div class="col-md-3">
                             <label class="form-label">Address2</label>
-                            <input type="text" formControlName="address2" class="form-control"
+                            <input type="text" formControlName="address2" class="form-control" disabled
                               [ngClass]="{ 'is-invalid': submitted && form.address2.errors }">
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Address3</label>
-                            <input type="text" formControlName="address3" class="form-control"
+                            <input type="text" formControlName="address3" class="form-control" disabled
                               [ngClass]="{ 'is-invalid': submitted && form.address3.errors }">
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Country</label>
-                            <select name="country" id="country" formControlName="country"
+                            <select name="country" id="country" formControlName="country" disabled
                               class="form-control custom-select">
                               <option value="">Select</option>
                               <option *ngFor="let data of countryList">{{data}}</option>
@@ -108,6 +107,7 @@
                           <div class="col-md-3">
                             <label class="form-label">PIN</label>
                             <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6"
+                            disabled
                               [ngClass]="{'is-invalid' : garnishmentForm.get('pinCode').status == 'INVALID'}"
                               formControlName="pinCode" pattern="[0-9]{6}" (focusout)="getPermanentAddressFromPIN()">
                           </div>
@@ -115,17 +115,17 @@
                         <div class="row mt-25">
                           <div class="col-md-3">
                             <label class="form-label">State</label>
-                            <input type="text" formControlName="state" class="form-control"
+                            <input type="text" formControlName="state" class="form-control" disabled
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.state.errors }">
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">City</label>
-                            <input type="text" formControlName="city" class="form-control"
+                            <input type="text" formControlName="city" class="form-control" disabled
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.city.errors }">
                           </div>
                           <div class="col-md-3">
                             <label class="form-label">Village</label>
-                            <input type="text" formControlName="villege" class="form-control"
+                            <input type="text" formControlName="villege" class="form-control" disabled
                               [ngClass]="{ 'is-invalid': submitted && garnishmentForm.villege.errors }">
                           </div>
                           <div class="col-md-3">
@@ -138,7 +138,7 @@
                           <div class="col-md-6">
                             <fieldset>
                               <legend>Emp. Acc. No. in Payee Books</legend>
-                              <div class="row mt-10">
+                              <div class="row mt-10" style="margin-top: -14px !important;">
                                 <div class="col-md-6">
                                   <label class="form-label">Applicable</label>
                                   <select name="accountnumber" class="form-control custom-select"
@@ -211,12 +211,9 @@
                           <div class="col-md-3">
                             <label class="form-label">Permissible Frequency /ies</label>
                             <!-- formControlName="garnishmentMasterFrequencyList" -->
-                            <select id="frequency" class="form-control custom-select"
+                            <!-- <select id="frequency" class="form-control custom-select"
                               (change)="getFrequencyData($event.target.value)"
                               [ngClass]="{'is-invalid' : garnishmentForm.get('garnishmentMasterFrequencyList').status == 'INVALID'}">
-                              <!-- <option *ngFor="let frequency of frequencyList" [value]="frequency.value">
-                                {{frequency.value}}
-                              </option> -->
                               <option value="">Select</option>
                               <option value="1,Monthly">Month</option>
                               <option value="2,Quarterly">Quarter </option>
@@ -225,7 +222,18 @@
                               <option value="5,SemiMonthly">SemiMonth</option>
                               <option value="6,Weekly">Week </option>
                               <option value="7,BiWeekly">BiWeek </option>
-                            </select>
+                            </select> -->
+
+
+                            <ng-multiselect-dropdown class="form-control"
+                                [placeholder]="'Select Frequency'"
+                                [settings]="dropdownSettings" [data]="frequenciesData"
+                                (onSelect)="onSelectDataValue($event)"
+                                (onDeSelect)="deSelectValueListDataValue($event)"
+                                [(ngModel)]="editFrequencyData"
+                                [ngModelOptions]="{standalone : true}"
+                                (onSelectAll)="onSelectAllValueListDataValue($event)">
+                            </ng-multiselect-dropdown>
                           </div>
 
                         </div>
@@ -365,13 +373,13 @@
                                           <span *ngIf="data.transactionTypeName == 'NoOfTransaction'">No Of Transaction</span>
                                         </td>
                                         <td class="td1"><label class="custom-switch mt_5">
-                                          <span class="form-label">Yes</span>&nbsp;
+                                          <span class="form-label">No</span>&nbsp;
                                             <input type="checkbox" name="custom-switch-checkbox"
                                               class="custom-switch-input" [disabled]="viewFlag"
                                               [checked]="data.default == true"
                                               (click)="getDefaultValueTransactionType($event.target,data.transactionTypeName,data.transactionTypeId)">
                                             <span class="custom-switch-indicator"></span>&nbsp;
-                                            <span class="form-label">No</span>
+                                            <span class="form-label">Yes</span>
                                           </label>
                                         </td>
                                       </tr>
@@ -401,12 +409,12 @@
                                         </td>
                                         <td class="td1">{{data.inputTypeName}}</td>
                                         <td class="td1"><label class="custom-switch mt_5">
-                                          <span class="form-label">Yes</span>&nbsp;
+                                          <span class="form-label">No</span>&nbsp;
                                             <input type="checkbox" name="custom-switch-checkbox" [disabled]="viewFlag"
                                               class="custom-switch-input"  [checked]="data.default == true"
                                               (click)="getDefaultValueInputType($event.target,data.inputTypeName,data.inputTypeId)">
                                             <span class="custom-switch-indicator"></span>&nbsp;
-                                            <span class="form-label">No</span>
+                                            <span class="form-label">Yes</span>
                                           </label>
                                         </td>
                                       </tr>

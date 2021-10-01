@@ -19,6 +19,7 @@ export class GarnishmentService {
   apiUrl2 = environment.baseUrl8086;
   apiUrl3 = environment.baseUrl8083;
   apiUrl4 = environment.baseUrl8082;
+  apiUrl5 = environment.baseUrl8085
 
 
   // get all master data
@@ -42,6 +43,17 @@ export class GarnishmentService {
     return this._HTTP.get<any>(this.apiUrl4 + '/location-information/country')
   }
 
+  getCountryCodes():Observable<any>{
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.get(this.apiUrl4 + '/location-information/phone-code', { 'headers': headers })
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+
   // get api for PinCode
   getAddressFromPIN(postalCode): Observable<any> {
     return this._HTTP.get<any>(this.apiUrl4 + '/pincode-details-check/' + postalCode)
@@ -61,7 +73,7 @@ export class GarnishmentService {
 
   // get api for IndianIncomeTex
   getindianincometax() : Observable<any> {
-    return this._HTTP.get<any>(this.apiUrl + 'indian-income-tax' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+    return this._HTTP.get<any>(this.apiUrl5 + 'indian-income-tax' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
   }
 
   /** Save master data */

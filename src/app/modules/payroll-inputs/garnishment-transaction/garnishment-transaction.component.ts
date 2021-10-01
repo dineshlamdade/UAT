@@ -45,6 +45,8 @@ export class GarnishmentTransactionComponent implements OnInit {
   viewFlag: boolean = false;
   editFlag: boolean = false;
   editApplicationData: any;
+  employeeList: any = '';
+  selectedInputType: any;
 
   constructor(private modalService: BsModalService, private payrollservice: PayrollInputsService,
     private garnishmentservice: GarnishmentService, private nonRecService: NonRecurringAmtService,
@@ -60,6 +62,7 @@ export class GarnishmentTransactionComponent implements OnInit {
 
 
     this.applicationForm = new FormGroup({
+    "garnishmentApplicationMasterId": new FormControl(''),
       "employeeMasterId": new FormControl(""),
       "garnishmentMasterId": new FormControl(""),
       "payrollAreaId": new FormControl(""),
@@ -109,10 +112,18 @@ export class GarnishmentTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllEmployeeData()
     this.today = this.datepipe.transform(new Date(), 'dd-MMM-yyyy')
     this.getAllGarnishmentMaster()
     this.getEmployeePayrollArea()
     this.getApplicationSummary()
+  }
+
+  /** Get Employee List */
+  getAllEmployeeData(){
+    this.payrollservice.getAllEmployeeDetails().subscribe((res) => {
+      this.employeeList = res.data.results[0];
+    });
   }
 
   /** Get Payroll Area Data by Employee */
@@ -147,20 +158,38 @@ export class GarnishmentTransactionComponent implements OnInit {
 
     console.log("this.selectedGarnishmentData : " + JSON.stringify(this.selectedGarnishmentData))
 
-    this.address = this.selectedGarnishmentData.address1
+    this.address = this.selectedGarnishmentData.address1 + ',' + this.selectedGarnishmentData.address2 + ',' + this.selectedGarnishmentData.address3
     this.nature = this.selectedGarnishmentData.nature
     this.edHead = this.selectedGarnishmentData.headMasterId
     if (this.selectedGarnishmentData.familyMember == false) {
       this.familyMembers = 'false'
     } else {
       this.familyMembers = 'true'
-    }
+    } 
 
 
     this.garnishmentMasterTransactionTypeList = this.selectedGarnishmentData.garnishmentMasterTransactionTypeList
     this.garnishmentMasterInputTypeList = this.selectedGarnishmentData.garnishmentMasterInputTypeList
     this.garnishmentMasterDocumentList = this.selectedGarnishmentData.garnishmentMasterDocumentList
     this.garnishmentMasterFrequencyList = this.selectedGarnishmentData.garnishmentMasterFrequencyList
+
+    this.selectedGarnishmentData.garnishmentMasterInputTypeList.forEach(element => {
+      if(element.defaultInput == true){
+        this.selectedInputType = element.inputTypeName
+      }
+    });
+
+    if(this.editFlag){
+        this.applicationForm.controls['garnishmentMasterFrequencyId'].setValue(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterFrequencyId)
+        this.applicationForm.controls['garnishmentMasterTransactionTypeId'].setValue(this.editApplicationData.garnishmentMasterTransactionTypeResponseDTO.garnishmentMasterTransactionTypeId)
+        this.applicationForm.controls['garnishmentMasterInputTypeId'].setValue(this.editApplicationData.garnishmentMasterInputTypeResponseDTO.garnishmentMasterInputTypeId)
+
+      
+    }
+
+  }
+
+  getSelectedGarnishmentData(garnishment){
 
   }
 
@@ -223,6 +252,8 @@ export class GarnishmentTransactionComponent implements OnInit {
     this.applicationForm.controls['garnishmentMasterInputTypeId'].setValue(parseInt(this.applicationForm.controls['garnishmentMasterInputTypeId'].value))
     this.applicationForm.controls['garnishmentMasterTransactionTypeId'].setValue(parseInt(this.applicationForm.controls['garnishmentMasterTransactionTypeId'].value))
     this.applicationForm.removeControl('isActive')
+    this.applicationForm.removeControl('garnishmentApplicationMasterId')
+    
     console.log("save application : " + JSON.stringify(this.applicationForm.value))
 
     this.garnishmentservice.saveApplication(this.applicationForm.value).subscribe(res => {
@@ -230,6 +261,8 @@ export class GarnishmentTransactionComponent implements OnInit {
       this.editFlag = false;
       this.viewFlag = false;
       this.getApplicationSummary()
+      // this.applicationForm.addControl('garnishmentApplicationMasterId','validator')
+      this.applicationForm.reset()
     })
   }
 
@@ -251,11 +284,13 @@ export class GarnishmentTransactionComponent implements OnInit {
     this.applicationForm.controls['garnishmentMasterInputTypeId'].setValue(parseInt(this.applicationForm.controls['garnishmentMasterInputTypeId'].value))
     this.applicationForm.controls['garnishmentMasterTransactionTypeId'].setValue(parseInt(this.applicationForm.controls['garnishmentMasterTransactionTypeId'].value))
     this.applicationForm.removeControl('isActive')
+    this.applicationForm.controls['garnishmentApplicationMasterId'].setValue(this.garnishmentApplicationMasterId)
     console.log("save application : " + JSON.stringify(this.applicationForm.value))
 
     this.garnishmentservice.updateApplication(this.applicationForm.value).subscribe(res => {
       this.alertService.success("Application data Updated successfully")
       this.getApplicationSummary()
+      this.applicationForm.reset()
     })
   }
 
@@ -266,12 +301,17 @@ export class GarnishmentTransactionComponent implements OnInit {
     this.viewFlag = false;
 
     const formData = new FormData();
-    formData.append('garnishmentApplicationMasterId', data)
+    formData.append('garnishmentApplicationMasterId', data.garnishmentApplicationMasterId)
 
-    this.garnishmentservice.getApplicationHistoryById(formData).subscribe(res => {
-      this.editApplicationData = res.data.results;
-      this.applicationForm.patchValue(this.editApplicationData)
+    this.garnishmentApplicationMasterId = data.garnishmentApplicationMasterId
+
+    this.garnishmentservice.getapplicationDataById(formData).subscribe(res => {
+      this.editApplicationData = res.data.results[0];
+      this.applicationForm.controls['payrollAreaId'].setValue(this.editApplicationData.payrollArea.payrollAreaId)
+      this.applicationForm.controls['garnishmentMasterId'].setValue(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterId)
+      this.getSelectedGarnishment(this.editApplicationData.garnishmentMasterFrequencyResponseDTO.garnishmentMasterId)
       this.applicationForm.enable()
+      this.applicationForm.patchValue(this.editApplicationData)
     })
   }
 
@@ -281,10 +321,10 @@ export class GarnishmentTransactionComponent implements OnInit {
     this.viewFlag = true;
 
     const formData = new FormData();
-    formData.append('garnishmentApplicationMasterId', data)
+    formData.append('garnishmentApplicationMasterId', data.garnishmentApplicationMasterId)
 
-    this.garnishmentservice.getApplicationHistoryById(formData).subscribe(res => {
-      this.editApplicationData = res.data.results;
+    this.garnishmentservice.getapplicationDataById(formData).subscribe(res => {
+      this.editApplicationData = res.data.results[0];
       this.applicationForm.patchValue(this.editApplicationData)
       this.applicationForm.disable()
     })
