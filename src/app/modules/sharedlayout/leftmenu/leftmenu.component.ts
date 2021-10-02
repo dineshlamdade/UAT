@@ -54,13 +54,13 @@ public isCollapsedQuery = true;
   updateEmpIdSubscription: Subscription;
   employeeMasterId: number;
   ischaptersettingCollapsed = true;
+  isCollapsedpayrollinput : boolean = true
   userData: any;
   subId: any;
   companyGroupMasterId: any;
   userRoleId: any;
   menuData: any;
   public isQuery = true;
- public isCollapsedpayrollinput = true;
   isCollapsedKeywordinput:boolean;
 
   constructor( private router: Router, @Inject( AppComponent ) private app: AppComponent,
