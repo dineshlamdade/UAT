@@ -2,6 +2,7 @@
 	
 
 export class OrganizationDetailsModel {
+   
  
     constructor(  
     // public employeeOrganizationDetailId:any,
@@ -37,7 +38,11 @@ export class OrganizationDetailsModel {
 		public position3List:JobDetailsDTO,
 		public position4List:JobDetailsDTO,
 		public position5List:JobDetailsDTO,
-  
+		public typeList:JobDetailsDTO,
+        public statusList:JobDetailsDTO,
+        public taxCategoryList:JobDetailsDTO,
+		public skillList:JobDetailsDTO,
+		public workList:JobDetailsDTO
 
 		
 		
@@ -108,7 +113,7 @@ export class OrganizationDetailsModel {
  export class JobDetailsDTO {
 	
 	constructor(	
-		    public employeeJobMappingId:any,
+		//    public employeeJobMappingId:any,
 			public jobMasterType:any,
 			public jobMasterMappingId:any,	
 			public fromDate:any,

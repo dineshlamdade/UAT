@@ -1,4 +1,4 @@
-<form [formGroup]="minimumWagesForm" (ngSubmit)="minumumWagesDetailsSubmit(minumumWagesDetailsModel)">
+<form [formGroup]="minimumWagesForm" (ngSubmit)="minumumWagesDetailsSubmit(organizationDetailsModel)">
     <div class="row">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
@@ -20,12 +20,16 @@
         (change)="selectPayrollArea(payrollAreaCode)"
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
             <option value="" selected disabled>Select</option>
-            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaId">
                 {{option.payrollAreaCode}}
             </option>
         </select>
     </div>
-
+    <div class="col-sm-6 col-md-3">
+        <label class="form-label">Type</label>
+        <input type="text" class="form-control" [(ngModel)]="payrollType" [ngModelOptions]="{standalone: true}"
+       disabled>
+    </div>
     <div class="col-sm-6 col-md-3" >
         <label class="form-label">Company Name</label>
         <input type="text" class="form-control" [(ngModel)]="companyName"
@@ -41,12 +45,12 @@
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
             <select class="form-control" placeholder="Select"
-            (completeMethod)="searchSkill(minumumWagesDetailsModel.skill)"
+            (completeMethod)="searchSkill(organizationDetailsModel.skillList.masterCode)"
             (change)="enableSkillDate();validateSkillDates();"
-            formControlName="skillControl" [(ngModel)]="minumumWagesDetailsModel.skill">
+            formControlName="skillControl" [(ngModel)]="organizationDetailsModel.skillList.masterCode">
               <option value="" selected disabled>Select</option>
-              <option *ngFor="let skill of skillList" [value]="skill">
-                {{skill}}
+              <option *ngFor="let skill of filteredSkillList" [value]="skill.masterCode">
+                {{skill.masterCode}}
             </option>
           </select>
 
@@ -59,7 +63,7 @@
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="skillStartDateControl" 
-                    [minDate]="joiningDate" [(ngModel)]="minumumWagesDetailsModel.skillStartDate"
+                    [minDate]="joiningDate" [(ngModel)]="organizationDetailsModel.skillList.fromDate"
                     (bsValueChange)="validateSkillDate()"
                     [ngClass]="{'is-invalid' : minimumWagesForm.get('skillStartDateControl').status == 'INVALID'}">
                    
@@ -75,8 +79,8 @@
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="skillEndDateControl" 
-                    [minDate]="minumumWagesDetailsModel.skillStartDate"
-                            [(ngModel)]="minumumWagesDetailsModel.skillEndDate"
+                    [minDate]="organizationDetailsModel.skillList.fromDate"
+                            [(ngModel)]="organizationDetailsModel.skillList.toDate"
                             [ngClass]="{'is-invalid' : minimumWagesForm.get('skillEndDateControl').status == 'INVALID'}">
                    
                      </div>
@@ -91,12 +95,12 @@
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
             <select class="form-control" placeholder="Select"
-            (completeMethod)="searchSkill(minumumWagesDetailsModel.workType)"
+            (completeMethod)="searchSkill(organizationDetailsModel.workList.masterCode)"
             (change)="enableWorkDate();"
-            formControlName="workTypeControl" [(ngModel)]="minumumWagesDetailsModel.workType">
+            formControlName="workTypeControl" [(ngModel)]="organizationDetailsModel.workList.masterCode">
               <option value="" selected disabled>Select</option>
-              <option *ngFor="let work of filteredWorkList" [value]="work">
-                {{work}}
+              <option *ngFor="let work of filteredWorkList" [value]="work.masterCode">
+                {{work.masterCode}}
             </option>
           </select>
             <label class="form-label mt-10">From Date</label>
@@ -108,7 +112,7 @@
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="workStartDateControl" 
-                    [minDate]="joiningDate" [(ngModel)]="minumumWagesDetailsModel.workStartDate"
+                    [minDate]="joiningDate" [(ngModel)]="organizationDetailsModel.workList.fromDate"
                     (bsValueChange)="validateWorkDate()"
                     [ngClass]="{'is-invalid' : minimumWagesForm.get('workStartDateControl').status == 'INVALID'}">
                 </div>
@@ -123,8 +127,8 @@
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="workEndDateControl" 
-                    [minDate]="minumumWagesDetailsModel.workStartDate"
-                            [(ngModel)]="minumumWagesDetailsModel.workEndDate"
+                    [minDate]="organizationDetailsModel.workList.fromDate"
+                            [(ngModel)]="organizationDetailsModel.workList.toDate"
                             [ngClass]="{'is-invalid' : minimumWagesForm.get('workEndDateControl').status == 'INVALID'}">
                     </div>
             </div>

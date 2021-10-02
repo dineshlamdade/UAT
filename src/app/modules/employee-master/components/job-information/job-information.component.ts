@@ -33,6 +33,7 @@ export class JobInformationComponent implements OnInit {
   payrollAreaFromDate: any;
   payrollAreaToDate:any
   period:any;
+  payrollAreaId: any;
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private router: Router, private PayrollAreaService: PayrollAreaInformationService,
@@ -74,11 +75,42 @@ export class JobInformationComponent implements OnInit {
     this.employeeMasterId = Number(empId);
 
     //get payroll area code from local storage
-    const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-    this.payrollAreaCode = new String(payrollAreaCode);
+    //commented on 27 sep 2021
+    // const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+    // this.payrollAreaCode = new String(payrollAreaCode);
 
     //get payroll area aasigned to that employee
-    this.getPayrollAreaInformation()
+   // this.getPayrollAreaInformation()
+
+   this.PayrollAreaService.getPayrollData(this.employeeMasterId).subscribe(res => {
+    this.companyId=res.data.results[0][0].companyId;
+    this.payrollAreaCode=res.data.results[0][0].payrollAreaCode
+    localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
+    localStorage.setItem('companyId',this.companyId);
+    this.payrollAreaId = res.data.results[0][0].payrollAreaId;
+
+    // this.payrollAreaFromDate=this.datepipe.transform(res.data.results[0][0].payrollAreaFromDate, "dd-MMM-yyyy");
+    // this.payrollAreaToDate=this.datepipe.transform(res.data.results[0][0].payrollAreaToDate, "dd-MMM-yyyy");
+    // this.period=this.payrollAreaFromDate + " To " +  this.payrollAreaToDate;  
+
+    //commented fot the checking
+    // this.JobInformationService.getSummaryDetails(this.payrollAreaId,this.employeeMasterId).subscribe(res => {
+     
+    //   if (res.data.results[0]) {
+
+    //     this.summaryGridData = res.data.results[0];
+    //   }
+    // })
+    console.log('informationComponent -96');
+    res.data.results[0].forEach(item => {
+
+      this.payrollAreaList.push(item.payrollAreaCode);
+      this.filteredPayrollAreaList.push(item.payrollAreaCode);
+      
+
+    });
+   
+  })
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
@@ -109,17 +141,22 @@ export class JobInformationComponent implements OnInit {
 
     if (this.payrollAreaList.length == 1) {
       this.payrollAreaCode = this.payrollAreaList[0];
+      this.payrollAreaId = this.payrollAreaList[0].payrollAreaId;
     }
     else {
       this.payrollAreaCode = this.payrollAreaCode;
+      this.payrollAreaId = this.payrollAreaId;
     }
-    this.JobInformationService.getSummaryDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
 
-      if (res.data.results[0]) {
+   //comment data 
+    // this.JobInformationService.getSummaryDetails(this.payrollAreaId,this.employeeMasterId).subscribe(res => {
+     
+    //   if (res.data.results[0]) {
 
-        this.summaryGridData = res.data.results[0];
-      }
-    })
+    //     this.summaryGridData = res.data.results[0];
+    //   }
+    // })
+    // console.log('obInformationComponent -151');
   }
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
@@ -177,6 +214,8 @@ export class JobInformationComponent implements OnInit {
 
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
+    let payrollArea = this.payrollAreaList.find(x=>x.payrollAreaCode==event);
+    this.payrollAreaId = payrollArea.payrollAreaId;
     this.getGridSummary()
   }
 

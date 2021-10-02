@@ -12,6 +12,7 @@ import { EventEmitterService } from './../../../employee-master-services/event-e
 import { MinumumWagesDetailsModel } from './../job-information-models/minimum-wages.model';
 import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
 import { Router } from '@angular/router';
+import { JobDetailsDTO, OrganizationDetailsModel } from '../job-information-models/organization-details.model';
 
 @Component({
   selector: 'app-minimum-wages-detail',
@@ -22,6 +23,10 @@ export class MinimumWagesDetailComponent implements OnInit {
 
   minimumWagesForm: FormGroup;
   tomorrow = new Date();
+
+  jobDetailsDTO = new JobDetailsDTO('','','','','','') ;
+  organizationDetailsModel = new OrganizationDetailsModel('','',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null) ;
+
   minumumWagesDetailsModel = new MinumumWagesDetailsModel('', '', null, null, '', '', null, '', '', null, '', '', null, '', '', null, '', '');
   projectList = 'HSBC Android,HSBC Onboarding,Paysquare HRMS,Paysqaure LMS'.split(',');
   stateList: Array<any> = [];
@@ -45,6 +50,9 @@ export class MinimumWagesDetailComponent implements OnInit {
   filteredPayrollAreaList: Array<any> = [];
   payrollAreaCode: any;
   companyName: any;
+  payrollType: any;
+  payrollAreaId: any;
+  minimumWagesData: any;
 
   constructor(private EducationSkillsInformationService: EducationSkillsInformationService, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
@@ -99,43 +107,71 @@ export class MinimumWagesDetailComponent implements OnInit {
     this.getPayrollAreaInformation();
 
     this.JobInformationService.getMinimumDropdown().subscribe(res => {
-
-      this.zoneList = [];
+      console.log('get minimum wages',res.data.results)
+      this.minimumWagesData = res.data.results;
+ //     this.zoneList = [];
       this.skillList = [];
       this.filteredSkillList = [];
-      this.categoryList = [];
+ //     this.categoryList = [];
       this.workList = [];
 
-      const location = res.data.results.filter((item) => {
-        if (item.category == 'Class Of Employement') {
-          this.workList.push(item.value);
-          this.filteredWorkList.push(item.value);
-        }
-        if (item.category == 'Zone') {
-          this.zoneList.push(item.value);
-        }
-        if (item.category == 'Class Of Industry') {
-          this.categoryList.push(item.value);
+      this.organizationDetailsModel.workList= new JobDetailsDTO('','','','','','')
+      this.organizationDetailsModel.skillList= new JobDetailsDTO('','','','','','')
 
-        }
-        if (item.category == 'Skill') {
-          this.skillList.push(item.value);
-          this.filteredSkillList.push(item.value);
-        }
-      });
-    })
+      for(let i=0;i<this.minimumWagesData.length;i++){
+       
+ 
+      
+        if (this.minimumWagesData[i].category == 'Class Of Employement') {
+          // this.workList.push(item.value);
+          // this.filteredWorkList.push(item.value);
+          this.filteredWorkList.push({jobMasterType:this.minimumWagesData[i].category,
+            description:this.minimumWagesData[i].description,
+            masterCode:this.minimumWagesData[i].value,
+          jobMasterMappingId : this.minimumWagesData[i].minimumWagesDropDownId
+           })
+        } 
 
-    this.BankInformationService.getStates().subscribe(res => {
-      this.stateList = [];
-      this.stateList = res.data.results;
-    })
+       else if (this.minimumWagesData[i].category == 'Skill') {
+          // this.workList.push(item.value);
+          // this.filteredWorkList.push(item.value);
+          this.filteredSkillList.push({jobMasterType:this.minimumWagesData[i].category,
+            description:this.minimumWagesData[i].description,
+            masterCode:this.minimumWagesData[i].value,
+          jobMasterMappingId : this.minimumWagesData[i].minimumWagesDropDownId
+           })
+        }
+        
+        
+    //     if (item.category == 'Zone') {
+    //       this.zoneList.push(item.value);
+    //     }
+    //     if (item.category == 'Class Of Industry') {
+    //       this.categoryList.push(item.value);
 
-    this.getMinimumWagesForm()
-  }
+    //     }
+    //     if (item.category == 'Skill') {
+    //       this.skillList.push(item.value);
+    //       this.filteredSkillList.push(item.value);
+    //     }
+        
+    //   });
+     }
+     console.log('filteredSkillList',this.filteredSkillList);
+        console.log('filtredWorkList',this.filteredWorkList)
+    });
+    // this.BankInformationService.getStates().subscribe(res => {
+    //   this.stateList = [];
+
+    //   this.stateList = res.data.results;
+    // })
+
+    this.getMinimumWagesForm();
+    }
 
   //get Minimum wages details service calling
   getMinimumWagesForm() {
-    this.JobInformationService.getMinimumWagesDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
+    this.JobInformationService.getOrganizationDetails(this.employeeMasterId, this.payrollAreaId).subscribe(res => {
 
       this.employeeMinimumWagesInfoId = res.data.results[0].employeeMinimumWagesInfoId;
       if (res.data.results[0]) {
@@ -145,45 +181,45 @@ export class MinimumWagesDetailComponent implements OnInit {
 
         //dates conversion
         if (res.data.results[0].skillStartDate != null) {
-          this.minumumWagesDetailsModel.skillStartDate = new Date(res.data.results[0].skillStartDate);
+          this.organizationDetailsModel.workList.fromDate = new Date(res.data.results[0].skillStartDate);
         }
         if (res.data.results[0].billableToDate != null) {
-          this.minumumWagesDetailsModel.skillEndDate = new Date(res.data.results[0].skillEndDate);
+          this.organizationDetailsModel.workList.toDate = new Date(res.data.results[0].skillEndDate);
         }
         if (res.data.results[0].skillEndDate != null) {
-          this.minumumWagesDetailsModel.workStartDate = new Date(res.data.results[0].workStartDate);
+          this.organizationDetailsModel.skillList.fromDate = new Date(res.data.results[0].workStartDate);
         }
         if (res.data.results[0].workEndDate != null) {
-          this.minumumWagesDetailsModel.workEndDate = new Date(res.data.results[0].workEndDate);
+          this.organizationDetailsModel.skillList.toDate = new Date(res.data.results[0].workEndDate);
         }
 
         //this.payrollAreaCode = res.data.results[0].payrollAreaCode;
 
         //state
-        if (this.minumumWagesDetailsModel.state != null) {
-          const stateStartDate = this.minimumWagesForm.get('stateStartDateControl');
-          stateStartDate.enable();
-          const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
-          stateEndDate.enable();
+        // if (this.minumumWagesDetailsModel.state != null) {
+        //   const stateStartDate = this.minimumWagesForm.get('stateStartDateControl');
+        //   stateStartDate.enable();
+        //   const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
+        //   stateEndDate.enable();
 
-          this.validateStateDates();
-        }
-        else {
-          this.disableStateDates();
-        }
+        //   this.validateStateDates();
+        // }
+        // else {
+        //   this.disableStateDates();
+        // }
 
         //zone
-        if (this.minumumWagesDetailsModel.zone != null) {
-          const zoneStartDate = this.minimumWagesForm.get('zoneStartDateControl');
-          zoneStartDate.enable();
-          const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
-          zoneEndDate.enable();
+        // if (this.minumumWagesDetailsModel.zone != null) {
+        //   const zoneStartDate = this.minimumWagesForm.get('zoneStartDateControl');
+        //   zoneStartDate.enable();
+        //   const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
+        //   zoneEndDate.enable();
 
-          this.validateZoneDates();
-        }
-        else {
-          this.disableZoneDates();
-        }
+        //   this.validateZoneDates();
+        // }
+        // else {
+        //   this.disableZoneDates();
+        // }
 
         //skill
         if (this.minumumWagesDetailsModel.skill != null) {
@@ -199,17 +235,17 @@ export class MinimumWagesDetailComponent implements OnInit {
         }
 
         //category Of Establishment
-        if (this.minumumWagesDetailsModel.categoryOfEstablishment != null) {
-          const establishmentStartDate = this.minimumWagesForm.get('establishmentStartDateControl');
-          establishmentStartDate.enable();
-          const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
-          establishmentEndDate.enable();
+        // if (this.minumumWagesDetailsModel.categoryOfEstablishment != null) {
+        //   const establishmentStartDate = this.minimumWagesForm.get('establishmentStartDateControl');
+        //   establishmentStartDate.enable();
+        //   const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
+        //   establishmentEndDate.enable();
 
-          this.validateEstablishmentDates();
-        }
-        else {
-          this.disableEstablishmentDates();
-        }
+        //   this.validateEstablishmentDates();
+        // }
+        // else {
+        //   this.disableEstablishmentDates();
+        // }
 
         //work Type
         if (this.minumumWagesDetailsModel.workType != null) {
@@ -248,10 +284,10 @@ export class MinimumWagesDetailComponent implements OnInit {
     this.minimumWagesForm.markAsUntouched();
   }
 
-  minumumWagesDetailsSubmit(minumumWagesDetailsModel) {
+  minumumWagesDetailsSubmit(organizationDetailsModel) {
 
-    minumumWagesDetailsModel.employeeMasterId = this.employeeMasterId;
-    minumumWagesDetailsModel.employeeMinimumWagesInfoId = this.employeeMinimumWagesInfoId;
+    organizationDetailsModel.employeeMasterId = this.employeeMasterId;
+   
 
     if (this.payrollAreaList.length == 1) {
       //minumumWagesDetailsModel.payrollAreaCode = this.payrollAreaList[0];
@@ -263,7 +299,7 @@ export class MinimumWagesDetailComponent implements OnInit {
       //get payroll area code from local storage
       const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
       this.payrollAreaCode = new String(payrollAreaCode);
-      minumumWagesDetailsModel.payrollAreaCode = new String(payrollAreaCode);
+      organizationDetailsModel.payrollAreaCode = new String(payrollAreaCode);
 
       //get company from local storage
       const companyName = localStorage.getItem('jobInformationCompanyName')
@@ -272,25 +308,25 @@ export class MinimumWagesDetailComponent implements OnInit {
       }
     }
 
-    minumumWagesDetailsModel.payrollAreaCode = new String(this.payrollAreaCode);
+    organizationDetailsModel.payrollAreaCode = new String(this.payrollAreaCode);
 
-    minumumWagesDetailsModel.stateStartDate = this.datepipe.transform(minumumWagesDetailsModel.stateStartDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.stateEndDate = this.datepipe.transform(minumumWagesDetailsModel.stateEndDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.zoneStartDate = this.datepipe.transform(minumumWagesDetailsModel.zoneStartDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.zoneEndDate = this.datepipe.transform(minumumWagesDetailsModel.zoneEndDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.skillStartDate = this.datepipe.transform(minumumWagesDetailsModel.skillStartDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.skillEndDate = this.datepipe.transform(minumumWagesDetailsModel.skillEndDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.establishmentStartDate = this.datepipe.transform(minumumWagesDetailsModel.establishmentStartDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.establishmentEndDate = this.datepipe.transform(minumumWagesDetailsModel.establishmentEndDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.workStartDate = this.datepipe.transform(minumumWagesDetailsModel.workStartDate, "dd-MMM-yyyy");
-    minumumWagesDetailsModel.workEndDate = this.datepipe.transform(minumumWagesDetailsModel.workEndDate, "dd-MMM-yyyy");
+  //  organizationDetailsModel.stateStartDate = this.datepipe.transform(minumumWagesDetailsModel.stateStartDate, "dd-MMM-yyyy");
+  //  minumumWagesDetailsModel.stateEndDate = this.datepipe.transform(minumumWagesDetailsModel.stateEndDate, "dd-MMM-yyyy");
+   // minumumWagesDetailsModel.zoneStartDate = this.datepipe.transform(minumumWagesDetailsModel.zoneStartDate, "dd-MMM-yyyy");
+   // minumumWagesDetailsModel.zoneEndDate = this.datepipe.transform(minumumWagesDetailsModel.zoneEndDate, "dd-MMM-yyyy");
+   organizationDetailsModel.skillList.fromDate = this.datepipe.transform(organizationDetailsModel.skillList.fromDate, "dd-MMM-yyyy");
+   organizationDetailsModel.skillList.toDate = this.datepipe.transform(organizationDetailsModel.skillList.fromDate, "dd-MMM-yyyy");
+  //  minumumWagesDetailsModel.establishmentStartDate = this.datepipe.transform(minumumWagesDetailsModel.establishmentStartDate, "dd-MMM-yyyy");
+  //  minumumWagesDetailsModel.establishmentEndDate = this.datepipe.transform(minumumWagesDetailsModel.establishmentEndDate, "dd-MMM-yyyy");
+  organizationDetailsModel.workList.fromDate = this.datepipe.transform(organizationDetailsModel.workList.toDate, "dd-MMM-yyyy");
+  organizationDetailsModel.workList.toDate = this.datepipe.transform(organizationDetailsModel.workList.toDate, "dd-MMM-yyyy");
 
 
-    this.JobInformationService.postMinimumWagesDetails(minumumWagesDetailsModel).subscribe(res => {
+    this.JobInformationService.postOrganizationDetails(organizationDetailsModel).subscribe(res => {
 
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-      this.minumumWagesDetailsModel = res.data.results[0];
-      this.employeeMinimumWagesInfoId = this.minumumWagesDetailsModel.employeeMinimumWagesInfoId;
+      this.organizationDetailsModel = res.data.results[0];
+   //   this.employeeMinimumWagesInfoId = this.minumumWagesDetailsModel.employeeMinimumWagesInfoId;
       this.EventEmitterService.getJobSummaryInitiate('minimumWages');
 
       //this.getMinimumWagesForm();
@@ -302,104 +338,104 @@ export class MinimumWagesDetailComponent implements OnInit {
     this.minimumWagesForm.markAsUntouched();
   }
 
-  validateStateDate() {
+  // validateStateDate() {
 
-    if (this.minumumWagesDetailsModel.stateEndDate == '' || this.minumumWagesDetailsModel.stateEndDate == null) {
-      this.minumumWagesDetailsModel.stateEndDate = '31-Dec-9999';
-      const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
-      stateEndDate.enable();
-    }
-  }
+  //   if (this.minumumWagesDetailsModel.stateEndDate == '' || this.minumumWagesDetailsModel.stateEndDate == null) {
+  //     this.minumumWagesDetailsModel.stateEndDate = '31-Dec-9999';
+  //     const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
+  //     stateEndDate.enable();
+  //   }
+  // }
 
-  validateZoneDate() {
+  // validateZoneDate() {
 
-    if (this.minumumWagesDetailsModel.zoneEndDate == '' || this.minumumWagesDetailsModel.zoneEndDate == null) {
-      this.minumumWagesDetailsModel.zoneEndDate = '31-Dec-9999';
-      const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
-      zoneEndDate.enable();
-    }
+  //   if (this.minumumWagesDetailsModel.zoneEndDate == '' || this.minumumWagesDetailsModel.zoneEndDate == null) {
+  //     this.minumumWagesDetailsModel.zoneEndDate = '31-Dec-9999';
+  //     const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
+  //     zoneEndDate.enable();
+  //   }
 
-  }
+  // }
   validateSkillDate() {
 
-    if (this.minumumWagesDetailsModel.skillEndDate == '' || this.minumumWagesDetailsModel.skillEndDate == null) {
-      this.minumumWagesDetailsModel.skillEndDate = '31-Dec-9999';
+    if (this.organizationDetailsModel.skillList.toDate == '' || this.organizationDetailsModel.skillList.toDate == null) {
+      this.organizationDetailsModel.skillList.toDate = '31-Dec-9999';
       const skillEndDate = this.minimumWagesForm.get('skillEndDateControl');
       skillEndDate.enable();
     }
 
   }
-  validateEstablishmentDate() {
+  // validateEstablishmentDate() {
 
-    if (this.minumumWagesDetailsModel.establishmentEndDate == '' || this.minumumWagesDetailsModel.establishmentEndDate == null) {
-      this.minumumWagesDetailsModel.establishmentEndDate = '31-Dec-9999';
-      const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
-      establishmentEndDate.enable();
-    }
+  //   if (this.minumumWagesDetailsModel.establishmentEndDate == '' || this.minumumWagesDetailsModel.establishmentEndDate == null) {
+  //     this.minumumWagesDetailsModel.establishmentEndDate = '31-Dec-9999';
+  //     const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
+  //     establishmentEndDate.enable();
+  //   }
 
-  }
+  // }
   validateWorkDate() {
 
-    if (this.minumumWagesDetailsModel.workEndDate == '' || this.minumumWagesDetailsModel.workEndDate == null) {
-      this.minumumWagesDetailsModel.workEndDate = '31-Dec-9999';
+    if (this.organizationDetailsModel.workList.toDate == '' || this.organizationDetailsModel.workList.toDate == null) {
+      this.organizationDetailsModel.workList.toDate = '31-Dec-9999';
       const workEndDate = this.minimumWagesForm.get('workEndDateControl');
       workEndDate.enable();
     }
 
   }
-  validateStateDates() {
-    this.minimumWagesForm.controls['stateStartDateControl'].setValidators([Validators.required]);
-    this.minimumWagesForm.controls.stateStartDateControl.updateValueAndValidity();
-    this.minimumWagesForm.controls['stateEndDateControl'].setValidators([Validators.required]);
-    this.minimumWagesForm.controls.stateEndDateControl.updateValueAndValidity();
-  }
-  enableStateDate() {
+  // validateStateDates() {
+  //   this.minimumWagesForm.controls['stateStartDateControl'].setValidators([Validators.required]);
+  //   this.minimumWagesForm.controls.stateStartDateControl.updateValueAndValidity();
+  //   this.minimumWagesForm.controls['stateEndDateControl'].setValidators([Validators.required]);
+  //   this.minimumWagesForm.controls.stateEndDateControl.updateValueAndValidity();
+  // }
+  // enableStateDate() {
 
-    const stateStartDate = this.minimumWagesForm.get('stateStartDateControl');
-    stateStartDate.enable();
-    const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
-    stateEndDate.enable();
-    if (this.minumumWagesDetailsModel.state == '' || this.minumumWagesDetailsModel.state == null) {
-      this.minumumWagesDetailsModel.stateStartDate = null;
-      this.minumumWagesDetailsModel.stateEndDate = null;
-      this.disableStateDates();
-    }
-  }
+  //   const stateStartDate = this.minimumWagesForm.get('stateStartDateControl');
+  //   stateStartDate.enable();
+  //   const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
+  //   stateEndDate.enable();
+  //   if (this.minumumWagesDetailsModel.state == '' || this.minumumWagesDetailsModel.state == null) {
+  //     this.minumumWagesDetailsModel.stateStartDate = null;
+  //     this.minumumWagesDetailsModel.stateEndDate = null;
+  //     this.disableStateDates();
+  //   }
+  // }
 
-  disableStateDates() {
-    this.minimumWagesForm.get('stateStartDateControl').setValue(null);
-    const stateStartDate = this.minimumWagesForm.get('stateStartDateControl');
-    stateStartDate.disable();
-    this.minimumWagesForm.get('stateEndDateControl').setValue(null);
-    const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
-    stateEndDate.disable();
-  }
-  validateZoneDates() {
-    this.minimumWagesForm.controls['zoneStartDateControl'].setValidators([Validators.required]);
-    this.minimumWagesForm.controls.zoneStartDateControl.updateValueAndValidity();
-    this.minimumWagesForm.controls['zoneEndDateControl'].setValidators([Validators.required]);
-    this.minimumWagesForm.controls.zoneEndDateControl.updateValueAndValidity();
-  }
-  enableZoneDate() {
-    const zoneStartDate = this.minimumWagesForm.get('zoneStartDateControl');
-    zoneStartDate.enable();
-    const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
-    zoneEndDate.enable();
-    if (this.minumumWagesDetailsModel.zone == '' || this.minumumWagesDetailsModel.zone == null) {
-      this.minumumWagesDetailsModel.zoneStartDate = null;
-      this.minumumWagesDetailsModel.zoneEndDate = null;
-      this.disableZoneDates();
-    }
-  }
+  // disableStateDates() {
+  //   this.minimumWagesForm.get('stateStartDateControl').setValue(null);
+  //   const stateStartDate = this.minimumWagesForm.get('stateStartDateControl');
+  //   stateStartDate.disable();
+  //   this.minimumWagesForm.get('stateEndDateControl').setValue(null);
+  //   const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
+  //   stateEndDate.disable();
+  // }
+  // validateZoneDates() {
+  //   this.minimumWagesForm.controls['zoneStartDateControl'].setValidators([Validators.required]);
+  //   this.minimumWagesForm.controls.zoneStartDateControl.updateValueAndValidity();
+  //   this.minimumWagesForm.controls['zoneEndDateControl'].setValidators([Validators.required]);
+  //   this.minimumWagesForm.controls.zoneEndDateControl.updateValueAndValidity();
+  // }
+  // enableZoneDate() {
+  //   const zoneStartDate = this.minimumWagesForm.get('zoneStartDateControl');
+  //   zoneStartDate.enable();
+  //   const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
+  //   zoneEndDate.enable();
+  //   if (this.minumumWagesDetailsModel.zone == '' || this.minumumWagesDetailsModel.zone == null) {
+  //     this.minumumWagesDetailsModel.zoneStartDate = null;
+  //     this.minumumWagesDetailsModel.zoneEndDate = null;
+  //     this.disableZoneDates();
+  //   }
+  // }
 
-  disableZoneDates() {
-    this.minimumWagesForm.get('zoneStartDateControl').setValue(null);
-    const zoneStartDate = this.minimumWagesForm.get('zoneStartDateControl');
-    zoneStartDate.disable();
-    this.minimumWagesForm.get('zoneEndDateControl').setValue(null);
-    const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
-    zoneEndDate.disable();
-  }
+  // disableZoneDates() {
+  //   this.minimumWagesForm.get('zoneStartDateControl').setValue(null);
+  //   const zoneStartDate = this.minimumWagesForm.get('zoneStartDateControl');
+  //   zoneStartDate.disable();
+  //   this.minimumWagesForm.get('zoneEndDateControl').setValue(null);
+  //   const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
+  //   zoneEndDate.disable();
+  // }
 
   validateSkillDates() {
     this.minimumWagesForm.controls['skillStartDateControl'].setValidators([Validators.required]);
@@ -413,9 +449,9 @@ export class MinimumWagesDetailComponent implements OnInit {
     skillStartDate.enable();
     const skillEndDate = this.minimumWagesForm.get('skillEndDateControl');
     skillEndDate.enable();
-    if (this.minumumWagesDetailsModel.skill == '' || this.minumumWagesDetailsModel.skill == null) {
-      this.minumumWagesDetailsModel.skillStartDate = null;
-      this.minumumWagesDetailsModel.skillEndDate = null;
+    if (this.organizationDetailsModel.skillList.masterCode == '' || this.organizationDetailsModel.skillList.masterCode == null) {
+      this.organizationDetailsModel.skillList.fromDate = null;
+      this.organizationDetailsModel.skillList.toDate = null;
       this.disableSkillDates();
     }
   }
@@ -429,32 +465,32 @@ export class MinimumWagesDetailComponent implements OnInit {
     skillEndDate.disable();
   }
 
-  validateEstablishmentDates() {
-    this.minimumWagesForm.controls['establishmentStartDateControl'].setValidators([Validators.required]);
-    this.minimumWagesForm.controls.establishmentStartDateControl.updateValueAndValidity();
-    this.minimumWagesForm.controls['establishmentEndDateControl'].setValidators([Validators.required]);
-    this.minimumWagesForm.controls.establishmentEndDateControl.updateValueAndValidity();
-  }
-  enableEstablishmentDate() {
-    const establishmentStartDate = this.minimumWagesForm.get('establishmentStartDateControl');
-    establishmentStartDate.enable();
-    const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
-    establishmentEndDate.enable();
-    if (this.minumumWagesDetailsModel.categoryOfEstablishment == '' || this.minumumWagesDetailsModel.categoryOfEstablishment == null) {
-      this.minumumWagesDetailsModel.establishmentStartDate = null;
-      this.minumumWagesDetailsModel.establishmentEndDate = null;
-      this.disableEstablishmentDates();
-    }
-  }
+  // validateEstablishmentDates() {
+  //   this.minimumWagesForm.controls['establishmentStartDateControl'].setValidators([Validators.required]);
+  //   this.minimumWagesForm.controls.establishmentStartDateControl.updateValueAndValidity();
+  //   this.minimumWagesForm.controls['establishmentEndDateControl'].setValidators([Validators.required]);
+  //   this.minimumWagesForm.controls.establishmentEndDateControl.updateValueAndValidity();
+  // }
+  // enableEstablishmentDate() {
+  //   const establishmentStartDate = this.minimumWagesForm.get('establishmentStartDateControl');
+  //   establishmentStartDate.enable();
+  //   const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
+  //   establishmentEndDate.enable();
+  //   if (this.minumumWagesDetailsModel.categoryOfEstablishment == '' || this.minumumWagesDetailsModel.categoryOfEstablishment == null) {
+  //     this.minumumWagesDetailsModel.establishmentStartDate = null;
+  //     this.minumumWagesDetailsModel.establishmentEndDate = null;
+  //     this.disableEstablishmentDates();
+  //   }
+  // }
 
-  disableEstablishmentDates() {
-    this.minimumWagesForm.get('establishmentStartDateControl').setValue(null);
-    const establishmentStartDate = this.minimumWagesForm.get('establishmentStartDateControl');
-    establishmentStartDate.disable();
-    this.minimumWagesForm.get('establishmentEndDateControl').setValue(null);
-    const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
-    establishmentEndDate.disable();
-  }
+  // disableEstablishmentDates() {
+  //   this.minimumWagesForm.get('establishmentStartDateControl').setValue(null);
+  //   const establishmentStartDate = this.minimumWagesForm.get('establishmentStartDateControl');
+  //   establishmentStartDate.disable();
+  //   this.minimumWagesForm.get('establishmentEndDateControl').setValue(null);
+  //   const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
+  //   establishmentEndDate.disable();
+  // }
 
   validateWorkDates() {
     this.minimumWagesForm.controls['workStartDateControl'].setValidators([Validators.required]);
@@ -463,9 +499,9 @@ export class MinimumWagesDetailComponent implements OnInit {
     this.minimumWagesForm.controls.workEndDateControl.updateValueAndValidity();
   }
   enableWorkDate() {
-    if (this.minumumWagesDetailsModel.workType == '' || this.minumumWagesDetailsModel.workType == null) {
-      this.minumumWagesDetailsModel.workStartDate = null;
-      this.minumumWagesDetailsModel.workEndDate = null;
+    if (this.organizationDetailsModel.workList.masterCode == '' || this.organizationDetailsModel.workList.masterCode == null) {
+      this.organizationDetailsModel.workList.fromDate = null;
+      this.organizationDetailsModel.workList.toDate = null;
       this.disableWorkDates();
     }
     else {
@@ -508,6 +544,7 @@ export class MinimumWagesDetailComponent implements OnInit {
         //set default company
         let result = res.data.results[0];
         this.companyName = result[0].payrollAreaAndCompany;
+        this.payrollType = result[0].type;
         // this.companyName = result[0].payrollAreaId.companyId.companyName;
         localStorage.setItem('jobInformationCompanyName', this.companyName);
       }
@@ -549,6 +586,7 @@ export class MinimumWagesDetailComponent implements OnInit {
     );
     // this.companyName = toSelect.payrollAreaId.companyId.companyName;
     this.companyName = toSelect.companyname;
+    this.payrollType = toSelect.type;
     localStorage.setItem('jobInformationCompanyName', this.companyName);
 
     this.resetMinimumWagesForm();
@@ -556,8 +594,9 @@ export class MinimumWagesDetailComponent implements OnInit {
   }
 
   searchSkill(skill) {
-    this.minumumWagesDetailsModel.skillStartDate = null;
-    this.minumumWagesDetailsModel.skillEndDate = null;
+    this.organizationDetailsModel.skillList.fromDate = null;
+    this.organizationDetailsModel.skillList.toDate = null;
+    this.organizationDetailsModel.skillList.description = null;
     this.disableSkillDates();
 
     let filtered: any[] = [];
@@ -572,8 +611,9 @@ export class MinimumWagesDetailComponent implements OnInit {
   }
 
   workSkill(work) {
-    this.minumumWagesDetailsModel.workStartDate = null;
-    this.minumumWagesDetailsModel.workEndDate = null;
+    this.organizationDetailsModel.workList.fromDate = null;
+    this.organizationDetailsModel.workList.toDate = null;
+    this.organizationDetailsModel.workList.description = null;
     this.disableWorkDates();
 
     let filtered: any[] = [];
@@ -590,13 +630,13 @@ export class MinimumWagesDetailComponent implements OnInit {
 
   resetMinimumWagesForm() {
     this.minimumWagesForm.reset();
-    this.employeeMinimumWagesInfoId = 0;
+  //  this.employeeMinimumWagesInfoId = 0;
 
     //disable dates
-    this.disableEstablishmentDates();
+  //  this.disableEstablishmentDates();
     this.disableSkillDates();
-    this.disableStateDates();
+   // this.disableStateDates();
     this.disableWorkDates();
-    this.disableZoneDates();
+   // this.disableZoneDates();
   }
 }
