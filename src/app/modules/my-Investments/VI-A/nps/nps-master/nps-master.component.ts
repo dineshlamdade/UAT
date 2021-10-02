@@ -24,6 +24,7 @@ import { NpsService } from '../nps.service';
 })
 export class NpsMasterComponent implements OnInit {
   @Input() public accountNo: any;
+  public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -62,6 +63,7 @@ export class NpsMasterComponent implements OnInit {
   public documentRemark: any;
   public isECS = true;
   public startDateModel: any = { date: null };
+  documentArray: any[] =[];
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -93,6 +95,12 @@ export class NpsMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
+  isVisibleTable = false;
+  public isEdit: boolean = false;
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
@@ -102,6 +110,11 @@ export class NpsMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public proofSubmissionId;
+  ConvertedFinancialYearStartDate: Date;
+  financialYearEnd: any;
+  ConvertedFinancialYearEndDate: Date;
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -255,7 +268,31 @@ export class NpsMasterComponent implements OnInit {
   getFinacialYear() {
     this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
+      this.financialYearEnd = res.data.results[0].toDate; 
+   
+
+      
+      this.ConvertedFinancialYearStartDate = new Date(this.financialYearStart);
+      let ConvertedFinancialYearStartDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearStartDate,
+        'yyyy-MM-dd'
+      );
+      this.ConvertedFinancialYearEndDate = new Date(this.financialYearEnd);
+      let ConvertedFinancialYearEndDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearEndDate,
+        'yyyy-MM-dd'
+      );
+      this.form.patchValue({
+        policyStartDate: this.ConvertedFinancialYearStartDate,
+        fromDate: this.ConvertedFinancialYearStartDate,
+        policyEndDate: this.ConvertedFinancialYearEndDate,
+        toDate: this.ConvertedFinancialYearEndDate,
+  
+      });
+      console.log('this.financialYearStart', this.financialYearStart);
+      // console.log('financialYearStart', financialYearStart);
     });
+    console.log('this.financialYearStart', this.ConvertedFinancialYearStartDate);
   }
 
   // Family Member List API call
@@ -409,8 +446,37 @@ export class NpsMasterComponent implements OnInit {
         element.policyEndDate = new Date(element.policyEndDate);
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
+        element.documentInformationList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
       });
-    });
+      // if (this.policyNumber !== undefined || this.policyNumber !== null) {
+      //   this.getInstituteDetails(this.policyNumber)
+      // }
+      });
+    // });
   }
 
   // Post Master Page Data API call
@@ -420,13 +486,17 @@ export class NpsMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('this.isEdit', this.isEdit);
     // console.log('urlArray.length', this.urlArray.length);
+    if(!this.isEdit){
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'National Pension Scheme Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+  // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -435,6 +505,20 @@ export class NpsMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+
+      for (let i = 0; i <= this.documentPassword.length; i++) {
+        if(this.documentPassword[i] != undefined){
+          let remarksPasswordsDto = {};
+          remarksPasswordsDto = {
+            "documentType": "Back Statement/ Premium Reciept",
+            "documentSubType": "",
+            "remark": this.remarkList[i],
+            "password": this.documentPassword[i]
+          };
+          this.documentDataArray.push(remarksPasswordsDto);
+        }
+      }
+      console.log('this.documentDataArray', this.documentDataArray);
       // const data = this.form.getRawValue();
       // data.proofSubmissionId = this.proofSubmissionId;
       // if (this.form.value.frequencyOfPayment === 'As & When') {
@@ -475,6 +559,7 @@ export class NpsMasterComponent implements OnInit {
       data.fromDate = from;
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
+      data.remarkPasswordList = this.documentDataArray;
         // }
 
       console.log('National Pension Scheme ::', data);
@@ -485,6 +570,8 @@ export class NpsMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
                 element.policyStartDate = new Date(element.policyStartDate);
@@ -492,6 +579,44 @@ export class NpsMasterComponent implements OnInit {
                 element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate);
               });
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+                
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
                 'In case you wish to alter the “Future New Policies” amount (as Declaration has already increased due to creation of New Schedule).'
@@ -518,12 +643,16 @@ export class NpsMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.urlArray = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
       this.submitted = false;
       this.documentRemark = '';
       this.getData();
       this.setMasterForm();
      
-    }
+    // }
     this.form.patchValue({
       accountType: 'Tier_1',
     });
@@ -613,6 +742,7 @@ export class NpsMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
+    this.isEdit = true;
     this.scrollToTop();
     this.npsService.getNpsMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -634,8 +764,27 @@ export class NpsMasterComponent implements OnInit {
         this.Index = obj.accountNumber;
         this.showUpdateButton = true;
         this.isClear = true;
-        this.urlArray = obj.documentInformationList;
+        this.filesUrlArray = obj.documentInformationList;
+        this.showdocument = false;
+        // this.urlArray = obj.documentInformationList;
         this.proofSubmissionId = obj.proofSubmissionId;
+        this.documentArray = [];
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
+          
       }
     });
   }
@@ -701,13 +850,35 @@ export class NpsMasterComponent implements OnInit {
     );
   }
 
-  public docViewer(template3: TemplateRef<any>, index: any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  public docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
+
+    console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      // this.urlArray[this.urlIndex].blobURI
+      this.filesUrlArray[this.urlIndex].blobURI
     );
     console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(

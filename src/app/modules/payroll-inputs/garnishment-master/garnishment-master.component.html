@@ -1,311 +1,623 @@
 <app-leftmenu></app-leftmenu>
-<form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
-  <div class="page">
-    <app-header></app-header>
-    <div class="tabview-contents">
-
-      <!-- Form -->
-      <form [formGroup]="garnishmentForm">
-        <div class="row mt-25">
-          <div class="col-12">
-            <fieldset>
-              <legend>Ganishment Details</legend>
-              <div class="row">
-                <div class="col-sm-3">
-                  <label class="form-label">ComplianceHeadName</label>
-                  <select name="complianceHeadName" id="complianceHeadName" class="form-control"
-                    formControlName="complianceHeadName">
-                    <option value="">Select</option>
-                    <option *ngFor="let data of complianceHeadNanedata" value="{{data.complianceHeadId}}">
-                      {{data.complianceHeadName}}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-sm-3">
-                  <label class="form-label">Institution name</label>
-                  <select name="nameOfInstitution" id="nameOfInstitution" class="form-control"
-                    formControlName="nameOfInstitution">
-                    <option value="">Select</option>
-                    <option *ngFor="let data of institutionMasterData">{{data.institutionName}}</option>
-                  </select>
-                </div>
-                <div class="col-sm-3">
-                  <label class="form-label"> Code</label>
-                  <input type="text" formControlName="nameOfInstitution" class="form-control" name="nameOfInstitution">
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Description</label>
-                  <input type="text" formControlName="description" class="form-control" name="description">
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Contact Person Name</label>
-                  <input type="text" formControlName="contactPerson" class="form-control">
-                </div>
-              </div>
-              <div class="row mt-4 mb-10">
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Phone Number</label>
-                  <div class="form-group">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class=""></i></span>
-                      </div>
-                      <input type="text" formControlName="contactNumber" class="form-control" minlength="10"
-                        maxlength="12" name="contactNumber">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Email Id</label>
-                  <input type="text" formControlName="emailId" class="form-control">
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Address1</label>
-                  <input type="text" formControlName="address1" class="form-control">
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Address2</label>
-                  <input type="text" formControlName="address2" class="form-control">
-                </div>
-              </div>
-              <div class="row mt-4 mb-10">
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Address3</label>
-                  <input type="text" formControlName="address3" class="form-control">
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Country</label>
-                  <select name="country" id="country" formControlName="country" class="form-control custom-select">
-                    <option value="">Select</option>
-                    <option *ngFor="let data of countryList">{{data}}</option>
-                  </select>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">PIN</label>
-                  <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6"
-                    formControlName="pinCode" pattern="[0-9]{6}" (focusout)="getPermanentAddressFromPIN()">
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">State</label>
-                  <input type="text" formControlName="state" class="form-control">
-                </div>
-              </div>
-              <div class="row mt-4 mb-10">
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">City</label>
-                  <input type="text" formControlName="city" class="form-control">
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Village</label>
-                  <input type="text" formControlName="villege" class="form-control">
-
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">PAN</label>
-                  <input type="text" formControlName="pan" class="form-control">
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Account No. in Payee Book</label>
-                  <input type="text" formControlName="accountNoInPayeeBook" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && form.accountNoInPayeeBook.errors }">
-                </div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-
-        <div class="row mt-25">
-          <div class="col-12">
-            <fieldset>
-              <legend>Computation Details</legend>
-              <div class="row">
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Deduction Head</label>
-                  <select name="standardName" id="standardName" formControlName="standardName"
-                    class="form-control custom-select">
-                    <option value="">Select</option>
-                    <option *ngFor="let data of loanDeductionData">{{data.displayName}}</option>
-                  </select>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Formula</label>
-                  <select name="formula" id="formula" formControlName="formula" class="form-control custom-select">
-                    <option value="">Select</option>
-                    <option>Formula</option>
-                  </select>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">SDM</label>
-                  <select name="sdm" id="sdm" formControlName="sdm" class="form-control custom-select">
-                    <option value="">Select</option>
-                    <option>SDM1</option>
-                  </select>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Frequency/ies</label>
-                  <select name="frequency" id="frequency" formControlName="frequency"
-                    class="form-control custom-select">
-                    <option value="">Select</option>
-                    <option *ngFor="let data of frequencyData">{{data.name}}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row mt-4 mb-10">
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label">Income Tax Section</label>
-                  <select name="investmentSection" id="investmentSection" formControlName="investmentSection"
-                    class="form-control custom-select">
-                    <option value="">Select</option>
-                    <!-- <option *ngFor="let data of incomeTaxData"></option> -->
-                    <option>Abc</option>
-                  </select>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label ml-15" tooltip="family member" placement="left">Family member</label>
-                  <div class="custom-controls-stacked ml-15 mt-10">
-                    <label class="custom-control custom-radio custom-control-inline">
-                      <input formControlName="familyMember" type="radio" class="custom-control-input"
-                        name="familyMember" [value]="true?0:1">
-                      <span class="custom-control-label">Yes</span>
-                    </label>
-                    <label class="custom-control custom-radio custom-control-inline">
-                      <input formControlName="familyMember" type="radio" class="custom-control-input"
-                        name="familyMember" [value]="false?0:1">
-                      <span class="custom-control-label">No</span>
-                    </label>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                  <label class="form-label pl-10">Remark </label>
-                  <textarea formControlName="remark" class="form-control" rows="1"></textarea>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-
-        <div class="row mt-25">
-          <div class="col-md-3">
-            <label class="custom-control custom-checkbox custom-control-inline pl-45">
-              <input formControlName="active" type="checkbox" class="custom-control-input"
-                name="example-inline-checkbox1" value="option1" checked>
-              <span class="custom-control-label">Active </span>
-            </label>
-          </div>
-          <div class="col-md-3" *ngIf="hideRemarkDiv">
-            <label class="form-label pl-10">General Remark</label>
-            <textarea formControlName="generalRemark" class="form-control ml-10" rows="1"></textarea>
-          </div>
-        </div>
-      </form>
-
-      <!-- Buttons-->
-      <div class="row mt-15">
-        <div class="col-12 mt-20">
-          <div class="float-right mb-15">
-            <ng-container>
-              <ng-container>
-                <!-- [ngClass]="{'disabled-btn-bg-green' : garnishmentForm.invalid, 'btn-bg-green': !garnishmentForm.invalid}" -->
-                <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"
-                  *ngIf="!editFlag" (click)="saveMasterData()">
-                  <b><i class="fa fa-floppy-o"></i></b> Save
-                </button>
-                <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
-                  *ngIf="editFlag" (click)="updateMasterData()">
-                  <b><i class="fa fa-floppy-o"></i></b> Save
-                </button>
-                <button type="button" tooltip="Reset" *ngIf="!viewFlag" (click)="resetData()"
-                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
-                  <b><i class="fa  fa-refresh"></i></b> Reset
-                </button>
-                <button type="button" tooltip="Reset" *ngIf="viewFlag" (click)="resetData()"
-                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
-                  <b><i class="fa  fa-refresh"></i></b> Cancel
-                </button>
-              </ng-container>
-            </ng-container>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- Summary Table -->
+<!-- Main body part  -->
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-12">
           <div class="card">
-            <div class="mb-0">
-              <h3 class="font-14 text-purple font-bold">Summary</h3>
-            </div>
-            <!-- <div class=""> -->
-            <div class="table-responsive Custom_Table">
-              <table class="table table-striped table-hover table-bordered m-b-0">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col" class="wd-15">Sr. No.</th>
-                    <th scope="col" class="wd-15"> Institution</th>
-                    <th scope="col" class="wd-20">deduction Head</th>
-                    <th scope="col" class="wd-20">Formula</th>
-                    <th scope="col" class="wd-10">SDM</th>
-                    <th scope="col" class="wd-20">income Tex Section</th>
-                    <th scope="col" class="wd-20">Family member</th>
-                    <th scope="col" class="wd-10">Active</th>
-                    <th scope="col" class="wd-15">Action</th>
+            <div class="card-body">
+              <form class="card" role="form">
 
-                  </tr>
-                </thead>
-                <tbody>
+                <form [formGroup]="garnishmentForm">
+                  <div class="row ">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Payee Details</legend>
+                        <div class="row ">
+                          <div class="col-md-3" *ngIf="!isEditMode">
+                            <label class="form-label">Institution Code</label>
+                            <select name="nameOfInstitution" id="nameOfInstitution" class="form-control"
+                              [ngClass]="{'is-invalid' : garnishmentForm.get('nameOfInstitution').status == 'INVALID'}"
+                              formControlName="nameOfInstitution" (change)='onSelectThirdPartyMasterId($event)'>
+                              <option *ngFor="let data of institutionMasterData">{{data.institutionName}}</option>
+                            </select>
+                          </div>
+                          <div class=" col-md-3">
+                            <label class="form-label">Description</label>
+                            <input type="text" formControlName="description" class="form-control align-right"
+                              name="description" [ngClass]="{'is-invalid' : garnishmentForm.get('description').status == 'INVALID'}">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Nature</label>
+                            <select name="nature" class="form-control custom-select" formControlName="nature">
+                              <option>Select</option>
+                              <option>Garnishment</option>
+                              <option>Third Party</option>
+                            </select>
+                          </div>
 
-                  <tr *ngFor="let summary of garnishmentData; let i = index">
-                    <td class="wd-10"><span tooltip="{{i+1}}">{{i+1}}</span>
-                    </td>
+                        </div>
+                        <div class="row mt-25">
+                          <div class="col-md-3">
+                            <label class="form-label">Contact Person Name</label>
+                            <input type="text" formControlName="contactPerson" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.contactPerson.errors }">
+                            <div *ngIf="submitted && form.contactPerson.errors" class="invalid-feedback">
+                              <div *ngIf="garnishmentForm.contactPerson.errors.required">Contact Person is mandatory</div>
+                            </div>
+                          </div>
+                          <div class="col-md-1 country-code">
+                            <select class="form-control selectpicker mt-24" placeholder="ISD">
+                              <option value="" selected>ISD
+                              </option>
+                              <option> 91 </option>
+                              <option> 1-684 </option>
+                              <option> 92 </option>
+                              <option> 93</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label">Phone Number</label>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class=""></i></span>
+                                </div>
+                                <input type="text" formControlName="phoneNumber" class="form-control align-right"
+                                  minlength="10" maxlength="12" name="phoneNumber"
+                                  [ngClass]="{ 'is-invalid': submitted && garnishmentForm.phoneNumber.errors } ">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Email Id</label>
+                            <input type="text" formControlName="emailId" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.emailId.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Address1</label>
+                            <input type="text" formControlName="address1" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.address1.errors }">
+                          </div>
+
+                        </div>
+                        <div class="row mt-25">
+                          <div class="col-md-3">
+                            <label class="form-label">Address2</label>
+                            <input type="text" formControlName="address2" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && form.address2.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Address3</label>
+                            <input type="text" formControlName="address3" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && form.address3.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Country</label>
+                            <select name="country" id="country" formControlName="country" class="form-control custom-select">
+                              <option *ngFor="let data of countryList">{{data}}</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">PIN</label>
+                            <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6"
+                            [ngClass]="{'is-invalid' : garnishmentForm.get('pinCode').status == 'INVALID'}"
+                                formControlName="pinCode" pattern="[0-9]{6}" (focusout)="getPermanentAddressFromPIN()">
+                            </div>
+                        </div>
+                        <div class="row mt-25">
+                          <div class="col-md-3">
+                            <label class="form-label">State</label>
+                            <input type="text" formControlName="state" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.state.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">City</label>
+                            <input type="text" formControlName="city" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.city.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Village</label>
+                            <input type="text" formControlName="villege" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.villege.errors }">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">PAN</label>
+                            <input type="text" formControlName="pan" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.pan.errors }">
+                          </div>
+                        </div>
+                        <div class="row mt-25">
+                          <div class="col-md-6">
+                            <fieldset>
+                              <legend>Emp. Acc. No. in Payee Books</legend>
+                              <div class="row mt-10">
+                                <div class="col-md-6">
+                                  <label class="form-label">Applicable</label>
+                                  <select name="accountnumber" class="form-control custom-select" formControlName="accountNoInPayeeBook">
+                                    <option>Select</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-6">
+                                  <label class="form-label">Display Name</label>
+                                  <input type="text" class="form-control">
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Company Acc. No. in Payee Books</label>
+                            <input type="text" formControlName="accountNoInPayeeBook" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && garnishmentForm.accountNoInPayeeBook.errors }">
+                          </div>
+                        </div>
 
 
-                    <td class="wd-10"><span tooltip="{{summary.code}}">{{summary.nameOfInstitution}}</span>
-                    </td>
+                        <div class="row">
+              
+                          <div class="col-md-3" *ngIf="isEditMode">
+                            <label class="form-label"> Code</label>
+                            <input type="text" formControlName="nameOfInstitution" class="form-control"
+                              name="nameOfInstitution">
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                  <div class="row mt-25">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <legend>Other Details</legend>
+                        <div class="row ">
+                          <div class="col-md-3">
+                            <label class="form-label">E/D Head</label>
+                            <select name="standardName" id="standardName" formControlName="standardName"
+                              class="form-control custom-select" (change)='onSelectMasterHead($event)'
+                              [ngClass]="{'is-invalid' : garnishmentForm.get('standardName').status == 'INVALID'}">
+                              <option *ngFor="let standardName of deductionHeadList" [value]="standardName.value">
+                                {{standardName.value}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" disabled>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label" tooltip="emp" placement="left">Emp. Application Process</label>
+                            <div class="custom-controls-stacked  mt-10">
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input formControlName="emp" type="radio" class="custom-control-input" name="emp"
+                                  [value]="true?0:1">
+                                <span class="custom-control-label">Yes</span>
+                              </label>
+                              <label class="custom-control custom-radio custom-control-inline">
+                                <input formControlName="emp" type="radio" class="custom-control-input" name="emp"
+                                  [value]="false?0:1">
+                                <span class="custom-control-label">No</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Permissible Frequency /ies</label>
+                            <select name="frequency" id="frequency" formControlName="frequency"
+                              class="form-control custom-select"
+                              [ngClass]="{'is-invalid' : garnishmentForm.get('frequency').status == 'INVALID'}">
+                              <option *ngFor="let frequency of frequencyList" [value]="frequency.value">
+                                {{frequency.value}}
+                              </option>
+                            </select>
+                          </div>
 
-                    <td class="wd-10"><span tooltip="{{summary.deductionHead}}">{{summary.standardName}}</span>
-                    </td>
+                        </div>
+                        <div class="row mt-25">
 
-                    <td class="wd-10"><span tooltip="{{summary.formula}}">{{summary.formula}}</span>
-                    </td>
-                    <td class="wd-10"><span tooltip="{{summary.sdm}}">{{summary.sdm}}</span>
-                    </td>
-                    <td class="wd-10"><span tooltip="{{summary.investmentSection}}">{{summary.incomeTaxSection}}</span>
-                    </td>
-                    <td class="wd-10"><span tooltip="{{summary.familyMember}}">{{summary.familyMember ? 'yes' : 'no'}}
-                      </span>
-                    </td>
-                    <td class="wd-10"><span tooltip="{{summary.generalRemark}}">{{summary.active}}</span>
-                    </td>
+                          <div class="col-md-3">
+                            <label class="form-label">Income Tax Group</label>
+                            <select name="investmentgroup" id="investmentgroup" formControlName="investmentgroup"
+                              class="form-control custom-select">
+                              <option>
+                                select
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label">Income Tax Section</label>
+                            <select name="investmentSection" id="investmentSection" formControlName="investmentSection"
+                              class="form-control custom-select"
+                              [ngClass]="{'is-invalid' : garnishmentForm.get('investmentSection').status == 'INVALID'}">
+                              <option *ngFor="let investmentSection of incomeTexList">
+                                {{investmentSection.description}}
+                              </option>
+                            </select>
+                          </div>
+
+                        </div>
+                        <div class="row mt-25">
+
+                          <div class="col-md-6">
+                            <fieldset>
+                              <legend>
+                                Enable in Application
+                              </legend>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label class="form-label ml-15" tooltip="family member" placement="left">Family
+                                    Members</label>
+                                  <div class="custom-controls-stacked ml-15 mt-10">
+                                    <label class="custom-control custom-radio custom-control-inline">
+                                      <input formControlName="familyMember" type="radio" class="custom-control-input"
+                                        name="familyMember" [value]="true?0:1">
+                                      <span class="custom-control-label">Yes</span>
+                                    </label>
+                                    <label class="custom-control custom-radio custom-control-inline">
+                                      <input formControlName="familyMember" type="radio" class="custom-control-input"
+                                        name="familyMember" [value]="false?0:1">
+                                      <span class="custom-control-label">No</span>
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <label class="form-label ml-15" tooltip="goal" placement="left">Goal</label>
+                                  <div class="custom-controls-stacked ml-15 mt-10">
+                                    <label class="custom-control custom-radio custom-control-inline">
+                                      <input formControlName="goal" type="radio" (click)="showtable()"
+                                        class="custom-control-input" name="goal" [value]="true?0:1">
+                                      <span class="custom-control-label">Yes</span>
+                                    </label>
+                                    <label class="custom-control custom-radio custom-control-inline">
+                                      <input formControlName="goal" type="radio" class="custom-control-input" name="goal"
+                                        [value]="false?0:1">
+                                      <span class="custom-control-label">No</span>
+                                    </label>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div class="col-md-6 " *ngIf="isshowtable">
+                            <fieldset>
+                              <legend>Goal Setting</legend>
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <label class="form-label">Goal Periodicity</label>
+                                  <select name="Gender" class="form-control custom-select">
+                                    <option value="Male">Select </option>
+                                    <option value="Female"> PA 2</option>
+                                    <option value="Female"> PA 3</option>
+                                  </select>
+
+                                </div>
+                                <div class="col-md-3">
+                                  <label class="form-label">Business Year</label>
+                                  <select name="Gender" class="form-control custom-select">
+                                    <option value="Male">Select </option>
+                                    <option value="Female"> PA 2</option>
+                                    <option value="Female"> PA 3</option>
+                                  </select>
+
+                                </div>
+                                <div class="col-md-3">
+                                  <label class="form-label">Calendar Year</label>
+                                  <select name="Gender" class="form-control custom-select">
+                                    <option value="Male">Select </option>
+                                    <option value="Female"> PA 2</option>
+                                    <option value="Female"> PA 3</option>
+                                  </select>
+
+                                </div>
+                                <div class="col-md-3">
+                                  <label class="form-label">Overall</label>
+                                  <select name="Gender" class="form-control custom-select">
+                                    <option value="Male">Select </option>
+                                    <option value="Female"> PA 2</option>
+                                    <option value="Female"> PA 3</option>
+                                  </select>
+
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                        </div>
+                        <div class="row mt-25">
+                          <div class="col-md-6">
+                            <fieldset>
+                              <legend>Transaction Types</legend>
+                              <div class="row ">
+                                <div class="col-md-12">
+                                  <table class=" table1 ">
+                                    <thead class="thead1">
+                                      <th class="  th1 r">Select</th>
+                                      <th class="th1 ">Transaction Types</th>
+                                      <th class="th1 ">Default</th>
+                                    </thead>
+                                    <tbody class="tbody1">
+                                      <tr class=" tr1 gray1">
+                                        <td class="td1">
+                                          <input type="checkbox" name="vehicle1" value="Bike" checked>
+                                        </td>
+                                        <td class="td1">Defined Date</td>
+                                        <td class="td1"><label class="custom-switch mt_5">
+                                            <input type="checkbox" name="custom-switch-checkbox"
+                                              class="custom-switch-input">
+                                            <span class="custom-switch-indicator"></span>&nbsp;
+                                            <span class="form-label">No</span>
+                                          </label>
+                                        </td>
+                                      </tr>
+                                      <tr class=" tr1 gray1">
+                                        <td class="td1">
+                                          <input type="checkbox" name="vehicle1" value="Bike">
+                                        </td>
+                                        <td class="td1">No. Of Transaction</td>
+                                        <td class="td1"><label class="custom-switch mt_5">
+                                            <input type="checkbox" name="custom-switch-checkbox"
+                                              class="custom-switch-input">
+                                            <span class="custom-switch-indicator"></span>&nbsp;
+                                            <span class="form-label">No</span>
+                                          </label>
+                                        </td>
+                                      </tr>
+                                      <tr class=" tr1 gray1">
+                                        <td class="td1">
+                                          <input type="checkbox" name="vehicle1" value="Bike">
+                                        </td>
+                                        <td class="td1">Prepetual</td>
+                                        <td class="td1"><label class="custom-switch mt_5">
+                                            <input type="checkbox" name="custom-switch-checkbox"
+                                              class="custom-switch-input">
+                                            <span class="custom-switch-indicator"></span>&nbsp;
+                                            <span class="form-label">No</span>
+                                          </label>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div class="col-md-6">
+                            <fieldset>
+                              <legend>Input Types</legend>
+                              <div class="row ">
+                                <div class="col-md-12">
+                                  <table class=" table1 ">
+                                    <thead class="thead1">
+                                      <th class="  th1 r">Select</th>
+                                      <th class="th1 ">Input Types</th>
+                                      <th class="th1 ">Default</th>
+                                    </thead>
+                                    <tbody class="tbody1">
+                                      <tr class=" tr1 gray1">
+                                        <td class="td1">
+                                          <input type="checkbox" name="vehicle1" value="Bike" checked>
+                                        </td>
+                                        <td class="td1">Formula</td>
+                                        <td class="td1"><label class="custom-switch mt_5">
+                                            <input type="checkbox" name="custom-switch-checkbox"
+                                              class="custom-switch-input">
+                                            <span class="custom-switch-indicator"></span>&nbsp;
+                                            <span class="form-label">No</span>
+                                          </label>
+                                        </td>
+                                      </tr>
+                                      <tr class=" tr1 gray1">
+                                        <td class="td1">
+                                          <input type="checkbox" name="vehicle1" value="Bike">
+                                        </td>
+                                        <td class="td1">SDM</td>
+                                        <td class="td1"><label class="custom-switch mt_5">
+                                            <input type="checkbox" name="custom-switch-checkbox"
+                                              class="custom-switch-input">
+                                            <span class="custom-switch-indicator"></span>&nbsp;
+                                            <span class="form-label">No</span>
+                                          </label>
+                                        </td>
+                                      </tr>
+                                      <tr class=" tr1 gray1">
+                                        <td class="td1">
+                                          <input type="checkbox" name="vehicle1" value="Bike">
+                                        </td>
+                                        <td class="td1">Amount</td>
+                                        <td class="td1"><label class="custom-switch mt_5">
+                                            <input type="checkbox" name="custom-switch-checkbox"
+                                              class="custom-switch-input">
+                                            <span class="custom-switch-indicator"></span>&nbsp;
+                                            <span class="form-label">No</span>
+                                          </label>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                        </div>
+                        <div class="row mt-25">
+                          <div class="col-md-6">
+                            <h4 class="font-14 text-purple font-bold"><b>List of Documents</b></h4>
+                          </div>
+                        </div>
+                        <div class="row mt-10">
+                          <div class="col-md-6">
+                            <div class="table-responsive Custom_Table">
+                              <p-table #dt1 [value]="users1" (sortFunction)="customSort($event)" [customSort]="true">
+
+                                <ng-template pTemplate="header">
+                                  <tr>
+                                    <th>
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        Sr. No.
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="employeeCode" pSortableColumn="employeeCode"></p-sortIcon>
+                                          <p-columnFilter field="employeeCode" display="menu" class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
+                                    <th>
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        Document Name
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="employeeName" pSortableColumn="employeeName"></p-sortIcon>
+                                          <p-columnFilter type="text" field="employeeName" display="menu"
+                                            class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
+                                    <th>
+                                      <div class="p-d-flex p-jc-between p-ai-center">
+                                        Mandatory
+                                        <div class="Sort_Filter_Position">
+                                          <p-sortIcon field="itGroup" pSortableColumn="itGroup"></p-sortIcon>
+                                          <p-columnFilter type="text" field="itGroup" display="menu" class="p-ml-auto">
+                                          </p-columnFilter>
+                                        </div>
+                                      </div>
+                                    </th>
 
 
-                    <td class="wd-10">
-                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMasterData(summary)"
-                        tooltip="Edit"></i>
+                                    <th>
+                                      <div class="p-d-flex p-jc-between p-ai-center">Action</div>
+                                    </th>
 
-                      <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMasterData(summary)"
-                        tooltip="View"></i>
-                      <!-- <i class="fa fa-trash-o font-16 text-red cursor-pointer ml-3"
-                        (click)="deleteMaster(summary.thirdPartyMasterId)" tooltip="delete"></i> -->
+                                  </tr>
+                                </ng-template>
 
-                      <!-- <i class="fa fa-times text-red font-18" (click)="removeSelectedRow(i)"></i> -->
+                                <ng-template pTemplate="body" let-User1>
+                                  <tr class="p-selectable-row">
 
-                    </td>
-                  </tr>
-                  <tr *ngIf="!garnishmentData?.length">
-                    <td colspan="10">
-                      <span class="font-14 font500 align-center text-red">No Data Available</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                                    <td class=" align-center bg-color-light_gray">1</td>
+                                    <td class=" align-center bg-color-light_gray"><input type="text" class="form-control"
+                                        value="{{User1.DocumentName}}"></td>
+                                    <td class=" align-center bg-color-light_gray"><input type="checkbox"
+                                        value="{{User1.Mandatory}}">
+                                    </td>
+
+                                    <td class=" align-center bg-color-light_gray"><i
+                                        class="fa fa-plus-circle font-16 cursor-pointer text-dark-green "></i></td>
+
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row mt-25">
+                          <div class="col-md-3">
+                            <label class="form-label">Remark</label>
+                            <textarea class="form-control"></textarea>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                  <div class="row mt-25">
+                    <div class="col-md-12">
+                      <div class="float-right">
+                        <button type="button" tooltip="Button"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-2"><b><i
+                              class="fa fa-floppy-o"></i></b> Save </button>
+                        <button type="button" tooltip="Reset"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-2"><b><i
+                              class="fa fa-refresh"></i></b> Reset</button>
+                        <button type="button" tooltip="Reset"
+                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left "
+                          (click)="modalRef.hide()"><b><i class="fa fa-times"></i></b> Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="mb-0">
+                        <h3 class="font-14 text-purple font-bold">Summary</h3>
+                      </div>
+                      <div class="table-responsive Custom_Table">
+                        <table class="table table-striped table-hover table-bordered m-b-0">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col" class="wd-15">Sr. No.</th>
+                              <th scope="col" class="wd-15"> Institution</th>
+                              <th scope="col" class="wd-20">City / Village</th>
+                              <th scope="col" class="wd-20">Nature</th>
+                              <th scope="col" class="wd-10">E/D Head</th>
+                              <th scope="col" class="wd-20">Emp. Application process</th>
+                              <th scope="col" class="wd-20">Goal</th>
+                              <th scope="col" class="wd-10">Remark</th>
+                              <th scope="col" class="wd-15">Action</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
+                              <td><span tooltip="{{i+1}}">{{i+1}}</span>
+                              </td>
+
+
+                              <td><span tooltip="{{summary.code}}">{{summary.nameOfInstitution}}</span>
+                              </td>
+
+                              <td><span tooltip="{{summary.deductionHead}}">{{summary.standardName}}</span>
+                              </td>
+
+                              <td><span tooltip="{{summary.formula}}">{{summary.formula}}</span>
+                              </td>
+                              <td><span tooltip="{{summary.sdm}}">{{summary.sdm}}</span>
+                              </td>
+                              <td><span tooltip="{{summary.investmentSection}}">{{summary.investmentSection}}</span>
+                              </td>
+                              <td><span tooltip="{{summary.familyMember}}">{{summary.familyMember ? 'yes' : 'no'}}
+                                </span>
+                              </td>
+                              <td><span tooltip="{{summary.generalRemark}}">{{summary.isActive}}</span>
+                              </td>
+
+
+                              <td class="wd-10">
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)"
+                                  tooltip="Edit"></i>
+
+                                <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
+                                  tooltip="View"></i>
+                                <i class="fa fa-trash-o font-16 text-red cursor-pointer ml-3"
+                                  (click)="deleteMaster(summary.thirdPartyMasterId)" tooltip="delete"></i>
+
+                                <!-- <i class="fa fa-times text-red font-18" (click)="removeSelectedRow(i)"></i> -->
+
+                              </td>
+                            </tr>
+                            <tr *ngIf="!summaryHtmlDataList?.length">
+                              <td colspan="10">
+                                <span class="font-14 font500 align-center text-red">No Data Available</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <app-footer></app-footer>
+
+
+              </form>
             </div>
           </div>
         </div>
       </div>
-
-
-      <app-footer></app-footer>
     </div>
   </div>
-</form>
+</div>

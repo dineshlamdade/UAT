@@ -39,6 +39,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
 
   @Input() public lenderName: string;
   @Input() public data: any;
+  documentRemarkList: any;
 
 
   public modalRef: BsModalRef;
@@ -67,6 +68,17 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
+
+  documentDataArray = [];
+  editdDocumentDataArray = [];
+  documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
 
   public transactionPolicyList: Array<any> = [];
   public transactionWithLenderName: Array<any> = [];
@@ -379,6 +391,19 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     this.getTransactionFilterData(
       this.globalInstitution
     );
+  }
+
+  onMasterUpload(event: { target: { files: string | any[] } }) {
+    // console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.masterfilesArray.push(file);
+        // this.masterFileName = file.name
+        // this.masterFileType = file.type
+        // this.masterFileStatus = file.status
+      }
+    }
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
   // // -------- ON select to check input boxex--------
@@ -1040,6 +1065,22 @@ export class EducationalLoanDeclarationComponent implements OnInit {
 
   upload() {
 
+    for (let i = 0; i <= this.documentPassword.length; i++) {
+      if(this.documentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.remarkList[i],
+          "password": this.documentPassword[i]
+        };
+        this.documentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
+
+
     // if (this.filesArray.length === 0) {
     //   this.alertService.sweetalertError(
     //     'Please attach Premium Receipt / Premium Statement'
@@ -1124,6 +1165,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       receiptAmount: this.receiptAmount,
       proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
       educationalLoanMasterId: this.transactionDetail[0].educationalLoanMasterId,
+      remarkPasswordList: this.documentDataArray
     };
     console.log('data::', data);
     this.educationalLoanServiceService
@@ -1140,6 +1182,39 @@ export class EducationalLoanDeclarationComponent implements OnInit {
           this.grandActualTotal = res.data.results[0].grandActualTotal;
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
 
           this.initialArrayIndex = [];
 
@@ -1442,6 +1517,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
+
+    this.documentRemark = '';
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -1491,9 +1568,40 @@ export class EducationalLoanDeclarationComponent implements OnInit {
                 innerElement.actualAmount);
 
             });
+            element.documentDetailList.forEach(element => {
+              // if(element!=null)
+              this.documentArray.push({
+                'dateofsubmission': element.dateOfSubmission,
+                'documentType':element.documentType,
+                'documentName': element.fileName,
+                'documentPassword':element.documentPassword,
+                'documentRemark':element.documentRemark,
+                'status' : element.status,
+                'lastModifiedBy' : element.lastModifiedBy,
+                'lastModifiedTime' : element.lastModifiedTime,
+              })
+              })
 
           });
       });
+      this.documentArray = [];
+  }
+
+  public docViewer1(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+    // this.urlIndex = 0;
+
+    console.log('urlIndex::' , this.urlIndex);
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
   }
 
 
@@ -1513,6 +1621,21 @@ export class EducationalLoanDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        res.documentDetailList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        console.log('documentArrayTest',this.documentArray);
 
         this.initialArrayIndex = [];
 
@@ -1546,6 +1669,20 @@ export class EducationalLoanDeclarationComponent implements OnInit {
 
   public uploadUpdateTransaction() {
 
+    for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+      if(this.editdocumentPassword[i] != undefined){
+        let remarksPasswordsDto = {};
+        remarksPasswordsDto = {
+          "documentType": "Back Statement/ Premium Reciept",
+          "documentSubType": "",
+          "remark": this.editremarkList[i],
+          "password": this.editdocumentPassword[i]
+        };
+        this.editdDocumentDataArray.push(remarksPasswordsDto);
+      }
+    }
+
+    console.log('testtttttt', this.documentDataArray);
     console.log('uploadUpdateTransaction editTransactionUpload::',
      this.editTransactionUpload);
 
@@ -1595,6 +1732,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       proofSubmissionId: this.editProofSubmissionId,
       // proofSubmissionId: this.editTransactionUpload[0].editProofSubmissionId,
       educationalLoanMasterId: this.editTransactionUpload[0].educationalLoanMasterId,
+      remarkPasswordList: this.editdDocumentDataArray
     };
     console.log('data::', data);
 
@@ -1603,6 +1741,43 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+          this.editremarkList = [];
+          this.editdocumentPassword = [];
+          this.editfilesArray = [];
+
+          this.masterGridData.forEach((element, index) => {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[0].documentType,
+              'documentName': element.documentInformationList[0].fileName,
+              'documentPassword':element.documentInformationList[0].documentPassword,
+              'documentRemark':element.documentInformationList[0].documentRemark,
+              'status' : element.documentInformationList[0].status,
+              'approverName' : element.documentInformationList[0].lastModifiedBy,
+              'Time' : element.documentInformationList[0].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+
+            if(element.documentInformationList[1]) {
+              this.documentArray.push({
+
+                'dateofsubmission':new Date(),
+                'documentType':element.documentInformationList[1].documentType,
+                'documentName': element.documentInformationList[1].fileName,
+                'documentPassword':element.documentInformationList[1].documentPassword,
+                'documentRemark':element.documentInformationList[1].documentRemark,
+                'status' : element.documentInformationList[1].status,
+                'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                // 'documentStatus' : this.premiumFileStatus,
+
+              });
+            }
+          });
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',

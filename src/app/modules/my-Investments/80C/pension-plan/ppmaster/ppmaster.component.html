@@ -135,7 +135,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                     </div>
-                                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()" [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate" data-provide="datepicker" data-date-autoclose="true"
+                                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()" [minDate]="paymentDetailMinDate" formControlName="toDate" data-provide="datepicker" data-date-autoclose="true"
                                         class="form-control" placeholder="To Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }">
                                     <div *ngIf="submitted && masterForm.toDate.errors" class="invalid-feedback">
                                         <div *ngIf="masterForm.toDate.errors.required">To Date is mandatory</div>
@@ -144,6 +144,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- [maxDate]="maxFromDate"  -->
                     <div class="row mt-30" *ngIf="paymentDetailGridData?.length">
                         <div class="col-12 col-md-12 col-sm-12">
                             <div class="table-responsive Custom_Table ">
@@ -673,8 +674,9 @@
                                         </td>
                                         <td class="wd-10"><span tooltip="Remark">{{summary.remark}}</span>
                                         </td>
-                                        <td class="wd-10"><span class="text-light-green font700" tooltip="Submitted">Submitted</span>
-                                        </td>
+                                        <!-- <td class="wd-10"><span class="text-light-green font700" tooltip="Submitted">Submitted</span>
+                                        </td> -->
+                                        <td class="wd-10 text-light-green font700"><span tooltip="masterStatus">{{summary.masterStatus}}</span></td>
                                         <td class="wd-5">
                                             <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                                         </td>

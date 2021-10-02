@@ -71,21 +71,20 @@ export class MediclaimSummaryComponent implements OnInit {
     this.summaryPage();
   }
   onEditSummary(lenderName: string, loanAccountNumber: string) {
-    // this.tabIndex = 2;
-    // const data = {
-    //   lenderName: lenderName,
-    //   loanAccountNumber: loanAccountNumber,
-    //   tabIndex: this.tabIndex,
-    // };
-    // this.lenderName = lenderName;
-    // this.loanAccountNumber = loanAccountNumber;
-    // this.myEvent.emit(data);
+    this.tabIndex = 2;
+     const data = {
+       lenderName: lenderName,
+      loanAccountNumber: loanAccountNumber,
+      tabIndex: this.tabIndex,
+    };
+    this.lenderName = lenderName;
+  //   this.loanAccountNumber = loanAccountNumber;
+     this.myEvent.emit(data);
   }
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
     this.mediclaim80DService.getMediclaimSummary().subscribe((res) => {
-
       console.log(res);
       if(res.data.results.length > 0){
       this.summaryGridData = res.data.results[0];

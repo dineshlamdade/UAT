@@ -235,7 +235,7 @@ public headDescriptionName: string;
                 fromDate: this.masterGridData[i].fromdate,
                 headMasterId: this.masterGridData[i].id,
                 payrollAreaId: 1,
-               todate: tempDate2,
+                toDate: tempDate2,
                 // toDate: this.masterGridData[i].todate,
                 value: closingAmount,
                   });
@@ -251,7 +251,7 @@ public headDescriptionName: string;
                 fromDate: this.masterGridData[i].fromdate,
                 headMasterId: this.masterGridData[i].id,
                 payrollAreaId: 1,
-               todate: tempDate2,
+               toDate: tempDate2,
                 // toDate: this.masterGridData[i].todate,
                 value: closingAmount,
                   });
@@ -267,7 +267,7 @@ public headDescriptionName: string;
                   fromDate: this.masterGridData[i].fromdate,
                   headMasterId: this.masterGridData[i].id,
                   payrollAreaId: 1,
-                 todate: tempDate2,
+                  toDate: tempDate2,
                   // toDate: this.masterGridData[i].todate,
                   value: closingAmount,
                     });

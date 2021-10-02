@@ -74,7 +74,7 @@ export class AttendanceComponent implements OnInit {
   startDate: any;
   attendanceInputGetTotalAPIRecordsUIData: any;
   attendanceInputAPIRecordsUIData: any = [];
-  index: number;
+  index: number = 0;
   empData: any;
   attendanceInputGetAPIFuturecyclesData: any = [];
   attendanceInputGetAPIPreviouscycleData: any = [];
@@ -118,6 +118,7 @@ export class AttendanceComponent implements OnInit {
   payrollListData: any;
   attendanceInputGetHistoryfuturecyclesData: any;
   header: any[];
+  
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
     private payrollservice: PayrollInputsService,
@@ -493,11 +494,12 @@ export class AttendanceComponent implements OnInit {
         //  if(parseFloat(this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff) < parseFloat(weeklyOffvalue)){
 
         weeklyOff = parseFloat(weeklyOffvalue) - parseFloat(tempAttendancePresentData[rowIndex].weeklyOff)
-
+        
         // }else{
         //   weeklyOff = parseFloat(this.attendanceInputAPIRecordsUIData[rowIndex].weeklyOff) - parseFloat(weeklyOffvalue)
         // }
       } else {
+        
         weeklyOff = weeklyOffvalue
       }
       // debugger
@@ -848,20 +850,22 @@ export class AttendanceComponent implements OnInit {
       // if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
       if (this.defaultAttendace == '1') {
         if (cycle == 'present') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          // presentCycle.pertainingCycle == presentCycle.processingCycle
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             presentDay = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
           } else {
-            presentDay = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
+            // presentDay = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
+            presentDay = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
           }
         }
         else if (cycle == 'future') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             presentDay = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
           } else {
             presentDay = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
           }
         } else if (cycle == 'previous') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             presentDay = 1 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
           } else {
             presentDay = 0 - (parseFloat(presentCycle.weeklyOff) + parseFloat(presentCycle.holiday) + parseFloat(presentCycle.paidLeaves) + parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment))
@@ -908,20 +912,21 @@ export class AttendanceComponent implements OnInit {
     if (this.selectedEmpData[this.index]) {
       if (this.defaultAttendace == '1') {
         if (cycle == 'present') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          //presentCycle.pertainingCycle == presentCycle.processingCycle
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           } else {
             payableDay = 0 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           }
         }
         else if (cycle == 'future') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           } else {
             payableDay = 0 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           }
         } else if (cycle == 'previous') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           } else {
             payableDay = 0 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
@@ -929,21 +934,21 @@ export class AttendanceComponent implements OnInit {
         }
       } else {
         if (cycle == 'present') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           } else {
             payableDay = 0 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           }
         }
         else if (cycle == 'future') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           } else {
             payableDay = presentCycle.paidDays
             //payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           }
         } else if (cycle == 'previous') {
-          if (presentCycle.pertainingCycle == presentCycle.processingCycle) {
+          if (this.selectedEmpData[this.index].cycleName == this.selectedEmpData[this.index].currentcycleName) {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
           } else {
             payableDay = 1 - (parseFloat(presentCycle.leaveWithoutPay) + parseFloat(presentCycle.leaveWithoutPay_0) + parseFloat(presentCycle.adjustment));
@@ -2747,7 +2752,9 @@ export class AttendanceComponent implements OnInit {
 
 
   payrollAreaDetails() {
-    this.payRollAreaId = 18;
+   // alert(this.payRollAreaId)
+    // this.PayrollAreaByPayrollAreaCode();
+    // console.log("payrollareadetails",this.payRollAreaId);
     this.attendanceService.payrollAreaDetails(this.payRollAreaId).subscribe(
       res => {
         this.payrollAreaDetailsData = res.data.results;
@@ -2765,7 +2772,8 @@ export class AttendanceComponent implements OnInit {
     this.tabIndex = 1
     this.showEmpSelectionFlag = false;
     if (this.selectedEmpData.length > 0) {
-      this.payrollAreaDetails();
+      
+      // this.payrollAreaDetails();
       this.index = 0;
       this.currentCycle = parseInt(this.selectedEmpData[this.index].pertainingCycle);
       this.attendanceInputGetTotalAPIRecordsUI(this.index);
@@ -2927,6 +2935,8 @@ export class AttendanceComponent implements OnInit {
   }
 
   PayrollAreaByPayrollAreaCode() {
+    // alert(this.index)
+    // console.log(JSON.stringify(this.selectedEmpData))
     const formData = new FormData();
 
 
@@ -2936,10 +2946,14 @@ export class AttendanceComponent implements OnInit {
     this.attendanceService.PayrollAreaByPayrollAreaCode(formData).subscribe(
       res => {
         this.PayrollAreaByPayrollAreaCodeData = res.data.results;
+        this.payRollAreaId = this.PayrollAreaByPayrollAreaCodeData[0].payrollAreaId;
+       console.log("payroolid from api",this.payRollAreaId);
+       this.payrollAreaDetails()
         this.defaultAttendace = this.PayrollAreaByPayrollAreaCodeData[0].defaultAttendace;
         this.is30daysPayroll = this.PayrollAreaByPayrollAreaCodeData[0].is30daysPayroll;
         this.payrollAreaId_Payroll = this.PayrollAreaByPayrollAreaCodeData[0].payrollAreaId;
         this.getSelectedPayrollArea();
+        
       }
     )
   }
@@ -2956,7 +2970,7 @@ export class AttendanceComponent implements OnInit {
     })
     this.selectedEmpData[this.index].cycleName = this.selectedProcessingCyclename;
     this.selectedEmpData[this.index].currentcycleName = this.selectedProcessingCyclename;
-    this.payrollAreaDetails();
+    //this.payrollAreaDetails();
     this.currentCycle = parseInt(this.selectedEmpData[this.index].pertainingCycle);
     this.attendanceInputGetTotalAPIRecordsUI(this.index);
     this.attendanceInputAPIRecordsUI();
