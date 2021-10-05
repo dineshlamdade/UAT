@@ -86,6 +86,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
   public approvedDisabled: boolean = true;
   public approvedDiscardDisabled = false;
   public documentRemarkValidation: boolean = false;
+  selectedRemark = '';
 
   constructor(
     private investmentMasterApprovalService: InvestmentMasterApprovalService,
@@ -538,6 +539,7 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
     console.log("status::", status);
     console.log("status::", status == 'Discarded');
+    debugger
     if (status == 'Discarded') {
       this.documentList.forEach((doc) => {
         console.log("doc.statusRemark::", doc.statusRemark);
@@ -546,13 +548,13 @@ export class InvestmentMasterApprovalComponent implements OnInit {
         }
       });
     }
-    // if(this.documentRemarkValidation){
-    //   this.alertService.sweetalertWarning(
-    //     'Please give Remark for Discarded Document'
-    //   );
-    //   this.documentRemarkValidation = false;
-    //   return;
-    // }
+    if(this.documentRemarkValidation){
+      this.alertService.sweetalertWarning(
+        'Please give Remark for Discarded Document'
+      );
+      this.documentRemarkValidation = false;
+      return;
+    }
 
     this.documentList.forEach((doc) => {
       doc.documentStatus = status;
@@ -637,14 +639,18 @@ export class InvestmentMasterApprovalComponent implements OnInit {
 
   //----------- On change Document Remark --------------------------
   public onChangeDocumentRemark(docDetail, event) {
+    debugger
     console.log('event.target.value::', event.target.value);
     if(this.documentList.length>0){
       const index =
-      this.documentList.indexOf((doc)=>doc.documentInformationId=docDetail.documentInformationId);
+      this.documentList.findIndex((doc)=>doc.documentInformationId=docDetail.documentInformationId);
     console.log('index::', index);
+    // let test = this.documentList.findIndex(x => x.documentInformationId == docDetail.documentInformationId);
+    // console.log('index::', test);
 
     this.documentList[index].statusRemark =
       event.target.value;
+      // this.documentList[index].remark = event.target.value;
     } else {
       const index =
       this.masterInfo.masterDetail.documentDetailList.indexOf(docDetail);
