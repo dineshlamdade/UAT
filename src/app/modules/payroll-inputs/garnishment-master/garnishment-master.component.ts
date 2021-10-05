@@ -27,9 +27,9 @@ export class GarnishmentMasterComponent implements OnInit {
   isEditMode: boolean = false;
   headData: { displayName: string; headMasterId: number; }[];
   garnishmentMasterTransactionTypeList: any = [];
-  defaultTransactionType: any = 1;
+  defaultTransactionType: any = 0;
   garnishmentMasterInputTypeList: any = [];
-  defaultInputType: any = 1;
+  defaultInputType: any = 0;
   docMandetory: any = 1;
   documentName: any;
   garnishmentMasterDocumentList: any = [];
@@ -43,6 +43,9 @@ export class GarnishmentMasterComponent implements OnInit {
 
   constructor(private formbuilder: FormBuilder, private garnishmentService: GarnishmentService,
     private alertService: ToastrService) {
+
+      // true = 1 and false = 0
+
     this.garnishmentForm = new FormGroup({
       "garnishmentMasterId": new FormControl(''),
       "accountNoInPayeeBook": new FormControl(''),
@@ -84,10 +87,10 @@ export class GarnishmentMasterComponent implements OnInit {
       'documentName': 'abc'
     }]
 
-    this.headData = [
-      { displayName: 'Incentive', headMasterId: 27 },
-      { displayName: 'Performance_Incentive', headMasterId: 29 },
-    ]
+    // this.headData = [
+    //   { displayName: 'Incentive', headMasterId: 27 },
+    //   { displayName: 'Performance_Incentive', headMasterId: 29 },
+    // ]
 
     this.frequenciesData = [
       {
@@ -140,6 +143,7 @@ export class GarnishmentMasterComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.payrollheadmaster()
     this.getAllMasterData()
     this.setTypeData()
     this.getComplianceHeadNane()
@@ -150,6 +154,13 @@ export class GarnishmentMasterComponent implements OnInit {
     this.getindianincometax()
   }
 
+  /** e&d head */
+  payrollheadmaster(){
+    this.garnishmentService.payrollheadmaster().subscribe(res =>{
+      this.headData = res.data.results
+    })
+  }
+
   /**set Array of input type and transaction type */
   setTypeData() {
     this.transactionTypeData = [
@@ -157,38 +168,44 @@ export class GarnishmentMasterComponent implements OnInit {
         'transactionTypeName': 'Defined Date',
         'defaultTransactionType': true,
         "transactionTypeId": 1,
-        "checked": false,
+        "checked": true,
         "default": true
       },
       {
         'transactionTypeName': 'NoOfTransaction',
-        'defaultTransactionType': true,
+        'defaultTransactionType': false,
         "transactionTypeId": 2,
         "checked": false,
         "default": false
       },
       {
         'transactionTypeName': 'Perpetual',
-        'defaultTransactionType': true,
+        'defaultTransactionType': false,
         "transactionTypeId": 3,
         "checked": false,
         "default": false
       }
     ]
 
+    this.garnishmentMasterTransactionTypeList.push({
+      "defaultTransactionType": 1,
+      "transactionTypeId": 1,
+      "transactionTypeName": 'Defined Date'
+    })
+
 
     this.inputTypeData = [
       {
         "inputTypeId": 1,
         "inputTypeName": "Percentage",
-        "defaultInput": true,
+        "defaultInput": false,
         "checked": false,
         "default": false
       },
       {
         "inputTypeId": 1,
         "inputTypeName": "SDM",
-        "defaultInput": true,
+        "defaultInput": false,
         "checked": false,
         "default": false
       },
@@ -196,10 +213,17 @@ export class GarnishmentMasterComponent implements OnInit {
         "inputTypeId": 1,
         "inputTypeName": "Amount",
         "defaultInput": true,
-        "checked": false,
-        "default": false
+        "checked": true,
+        "default": true
       }
     ]
+
+
+    this.garnishmentMasterInputTypeList.push({
+      "defaultInput": 1,
+      "inputTypeId": 1,
+      "inputTypeName": "Amount"
+    })
   }
 
 
@@ -341,11 +365,13 @@ export class GarnishmentMasterComponent implements OnInit {
   /** Get Transaction Type */
   getTransactionTypeCheck(event, type, id) {
     if (event.checked) {
+
       this.garnishmentMasterTransactionTypeList.push({
         "defaultTransactionType": this.defaultTransactionType,
         "transactionTypeId": id,
         "transactionTypeName": type
       })
+    
     } else {
       if (this.garnishmentMasterTransactionTypeList.length > 0) {
         this.garnishmentMasterTransactionTypeList.forEach((element, index) => {
@@ -358,7 +384,7 @@ export class GarnishmentMasterComponent implements OnInit {
         this.garnishmentMasterTransactionTypeList = []
       }
     }
-
+    console.log("JSON.transaction type: "+ JSON.stringify(this.garnishmentMasterTransactionTypeList))
   }
 
   /** Default value of Transaction type */
@@ -367,6 +393,9 @@ export class GarnishmentMasterComponent implements OnInit {
       this.defaultTransactionType = 1
       if (this.garnishmentMasterTransactionTypeList.length > 0) {
         this.garnishmentMasterTransactionTypeList.forEach((element, index) => {
+          if (element.defaultTransactionType == 1) {
+            element.defaultTransactionType = 0
+           }
           if (element.transactionTypeName == type) {
             let ind = index;
             this.garnishmentMasterTransactionTypeList.splice(ind, 1, {
@@ -394,6 +423,15 @@ export class GarnishmentMasterComponent implements OnInit {
     }
 
 
+    console.log("JSON.transaction type: "+ JSON.stringify(this.garnishmentMasterTransactionTypeList))
+
+    this.transactionTypeData.forEach(element => {
+      this.garnishmentMasterTransactionTypeList.forEach(ele => {
+        if (element.transactionTypeName == ele.transactionTypeName) {
+          element.default = ele.defaultTransactionType
+        } 
+      });
+    });
   }
 
   /** Get Input Type */
@@ -416,40 +454,56 @@ export class GarnishmentMasterComponent implements OnInit {
         this.garnishmentMasterInputTypeList = []
       }
     }
+
+    console.log("JSON.input type: "+ JSON.stringify(this.garnishmentMasterInputTypeList))
+
   }
 
   /** Default value of Input Type */
   getDefaultValueInputType(event, type, id) {
     if (event.checked) {
-      this.defaultInputType = 0
+      this.defaultInputType = 1
       if (this.garnishmentMasterInputTypeList.length > 0) {
         this.garnishmentMasterInputTypeList.forEach((element, index) => {
-          if (element.transactionTypeName == type) {
+          if (element.defaultInput == 1) {
+            element.defaultInput = 0
+           }
+          if (element.inputTypeName == type) {
             let ind = index;
             this.garnishmentMasterInputTypeList.splice(ind, 1, {
-              "defaultTransactionType": this.defaultInputType,
-              "transactionTypeId": id,
-              "transactionTypeName": type
+              "defaultInput": this.defaultInputType,
+              "inputTypeId": id,
+              "inputTypeName": type
             })
           }
         })
       }
     } else {
-      this.defaultInputType = 1
+      this.defaultInputType = 0
       if (this.garnishmentMasterInputTypeList.length > 0) {
         this.garnishmentMasterInputTypeList.forEach((element, index) => {
-          if (element.transactionTypeName == type) {
+          if (element.inputTypeName == type) {
             let ind = index;
             this.garnishmentMasterInputTypeList.splice(ind, 1, {
-              "defaultTransactionType": this.defaultInputType,
-              "transactionTypeId": id,
-              "transactionTypeName": type
+              "defaultInput": this.defaultInputType,
+              "inputTypeId": id,
+              "inputTypeName": type
             })
           }
         })
       }
     }
 
+    console.log("JSON.input type: "+ JSON.stringify(this.garnishmentMasterInputTypeList))
+
+
+    this.inputTypeData.forEach(element => {
+      this.garnishmentMasterInputTypeList.forEach(ele => {
+        if (element.inputTypeName == ele.inputTypeName) {
+          element.default = ele.defaultInput
+        } 
+      });
+    });
   }
 
   getDocMandatory(event) {

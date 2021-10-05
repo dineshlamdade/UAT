@@ -152,4 +152,10 @@ export class GarnishmentService {
   }
 
 
+  /** E D Head  */
+  payrollheadmaster():Observable<any>{
+    return this._HTTP.get<any>(this.apiUrl + `payrollhead-master/global-getAll`)
+  }
+
+
 }

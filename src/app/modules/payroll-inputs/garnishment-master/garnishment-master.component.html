@@ -376,7 +376,7 @@
                                           <span class="form-label">No</span>&nbsp;
                                             <input type="checkbox" name="custom-switch-checkbox"
                                               class="custom-switch-input" [disabled]="viewFlag"
-                                              [checked]="data.default == true"
+                                              [checked]="data.default == true || data.default == 1"
                                               (click)="getDefaultValueTransactionType($event.target,data.transactionTypeName,data.transactionTypeId)">
                                             <span class="custom-switch-indicator"></span>&nbsp;
                                             <span class="form-label">Yes</span>
@@ -411,7 +411,7 @@
                                         <td class="td1"><label class="custom-switch mt_5">
                                           <span class="form-label">No</span>&nbsp;
                                             <input type="checkbox" name="custom-switch-checkbox" [disabled]="viewFlag"
-                                              class="custom-switch-input"  [checked]="data.default == true"
+                                              class="custom-switch-input"  [checked]="data.default == true || data.default == 1"
                                               (click)="getDefaultValueInputType($event.target,data.inputTypeName,data.inputTypeId)">
                                             <span class="custom-switch-indicator"></span>&nbsp;
                                             <span class="form-label">Yes</span>
