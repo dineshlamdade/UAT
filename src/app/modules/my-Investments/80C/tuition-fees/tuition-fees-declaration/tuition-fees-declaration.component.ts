@@ -63,6 +63,8 @@ public uploadGridData: Array<any> = [];
 public transactionInstitutionNames: Array<any> = [];
 
 public editTransactionUpload: Array<any> = [];
+documentDataArray = [];
+editdDocumentDataArray = [];
 public editProofSubmissionId: any;
 public editReceiptAmount: string;
 
@@ -165,6 +167,17 @@ public globalSelectedAmount: string;
 public canEdit : boolean;
 unitDeclarationData: any;
 dateOfJoining: Date;
+disableRemarkList = false
+disableRemark: any;
+
+documentArray: any[] =[];
+
+  documentPassword =[];
+  remarkList =[];
+  editdocumentPassword =[];
+  editremarkList =[];
+  document3Password: any;
+  remark3List: any;
 constructor(
   private formBuilder: FormBuilder,
   private Service: MyInvestmentsService,
@@ -398,6 +411,19 @@ selectedTransactionStatus(transactionStatus: any) {
   );
 }
 
+onMasterUpload(event: { target: { files: string | any[] } }) {
+  // console.log('event::', event);
+  if (event.target.files.length > 0) {
+    for (const file of event.target.files) {
+      this.masterfilesArray.push(file);
+      // this.masterFileName = file.name
+      // this.masterFileType = file.type
+      // this.masterFileStatus = file.status
+    }
+  }
+  // console.log('this.masterfilesArray::', this.masterfilesArray);
+}
+
 // -------- ON select to check input boxex--------
 public onSelectCheckBox(
   data: any,
@@ -405,6 +431,15 @@ public onSelectCheckBox(
   i: number,
   j: number
 ) {
+
+  if (data.transactionStatus == 'Approved' || data.transactionStatus == 'WIP') {
+    this.disableRemarkList = true;
+  } else {
+    this.disableRemarkList = false;
+  }
+  // this.selectedFrequency = frequency;
+
+
   if(data.declaredAmount == null || data.declaredAmount <= 0){
     this.alertService.sweetalertError(
       'Please Enter Declared Amount'
@@ -853,6 +888,21 @@ removeSelectedULIPTransactionDocument(index: number) {
 
 upload() {
 
+  for (let i = 0; i <= this.documentPassword.length; i++) {
+    if(this.documentPassword[i] != undefined){
+      let remarksPasswordsDto = {};
+      remarksPasswordsDto = {
+        "documentType": "Back Statement/ Premium Reciept",
+        "documentSubType": "",
+        "remark": this.remarkList[i],
+        "password": this.documentPassword[i]
+      };
+      this.documentDataArray.push(remarksPasswordsDto);
+    }
+  }
+
+  console.log('testtttttt', this.documentDataArray);
+
   console.log(JSON.stringify(this.unitDeclarationData))
 
   if (this.filesArray.length === 0) {
@@ -932,6 +982,7 @@ upload() {
     groupTransactionIDs: this.uploadGridData,
     receiptAmount: this.receiptAmount,
     documentRemark: this.documentRemark,
+    remarkPasswordList: this.documentDataArray
   };
   console.log('data::', data);
 
@@ -946,6 +997,39 @@ upload() {
     .subscribe((res) => {
       console.log(res);
       if (res.data.results.length > 0) {
+        this.masterGridData.forEach((element, index) => {
+          this.documentArray.push({
+
+            'dateofsubmission':new Date(),
+            'documentType':element.documentInformationList[0].documentType,
+            'documentName': element.documentInformationList[0].fileName,
+            'documentPassword':element.documentInformationList[0].documentPassword,
+            'documentRemark':element.documentInformationList[0].documentRemark,
+            'status' : element.documentInformationList[0].status,
+            'approverName' : element.documentInformationList[0].lastModifiedBy,
+            'Time' : element.documentInformationList[0].lastModifiedTime,
+
+            // 'documentStatus' : this.premiumFileStatus,
+
+          });
+
+          if(element.documentInformationList[1]) {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[1].documentType,
+              'documentName': element.documentInformationList[1].fileName,
+              'documentPassword':element.documentInformationList[1].documentPassword,
+              'documentRemark':element.documentInformationList[1].documentRemark,
+              'status' : element.documentInformationList[1].status,
+              'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+              'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+          }
+        });
 
         this.selectedTransactionInstName(this.globalInstitution);
 
@@ -1212,6 +1296,7 @@ declarationEditUpload(
        this.documentRemark =res.data.results[0].documentInformation[0].documentRemark;
       this.urlArray =
         res.data.results[0].documentInformation[0].documentDetailList;
+        this.disableRemark = res.data.results[0].investmentGroupTransactionDetail[0].groupTransactionList[0].transactionStatus;
       this.editTransactionUpload =
         res.data.results[0].investmentGroupTransactionDetail;
       this.grandDeclarationTotalEditModal =
@@ -1224,8 +1309,50 @@ declarationEditUpload(
         this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
         this.editReceiptAmount = res.data.results[0].documentInformation[0].receiptAmount;
 
+        this.masterGridData = res.data.results;
+
+        this.masterGridData.forEach((element) => {
+          // element.policyStartDate = new Date(element.policyStartDate);
+          // element.policyEndDate = new Date(element.policyEndDate);
+          // element.fromDate = new Date(element.fromDate);
+          // element.toDate = new Date(element.toDate);
+          element.documentInformation.forEach(element => {
+            // this.dateofsubmission = element.dateOfSubmission;
+            // this.documentArray.push({
+            //   'dateofsubmission': ,
+            // })
+            
+            element.documentDetailList.forEach(element => {
+            // if(element!=null)
+            this.documentArray.push({
+              'dateofsubmission': element.dateOfSubmission,
+              'documentType':element.documentType,
+              'documentName': element.fileName,
+              'documentPassword':element.documentPassword,
+              'documentRemark':element.documentRemark,
+              'status' : element.status,
+              'lastModifiedBy' : element.lastModifiedBy,
+              'lastModifiedTime' : element.lastModifiedTime,
+            })
+            })
+          });
+          // this.documentArray.push({
+          //   'dateofsubmission':element.creatonTime,
+          //   'documentType':element.documentType,
+          //   'documentName': element.fileName,
+          //   'documentPassword':element.documentPassword,
+          //   'documentRemark':element.documentRemark,
+          //   'status' : element.status,
+          //   'lastModifiedBy' : element.lastModifiedBy,
+          //   'lastModifiedTime' : element.lastModifiedTime,
+          //
+          // })
+        });
+      
+
       //console.log('converted:: ', this.urlArray);
     });
+    this.documentArray = [];
 }
 
 nextDocViewer() {
@@ -1275,7 +1402,21 @@ getTransactionFilterData(
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
       // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
+      res.documentDetailList.forEach(element => {
+        // if(element!=null)
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
 
+        })
+      });
+      console.log('documentArrayTest',this.documentArray);
       this.initialArrayIndex = [];
 
       this.transactionDetail.forEach((element) => {
@@ -1308,6 +1449,22 @@ getTransactionFilterData(
 }
 
 public uploadUpdateTransaction() {
+
+
+  for (let i = 0; i <= this.editdocumentPassword.length; i++) {
+    if(this.editdocumentPassword[i] != undefined){
+      let remarksPasswordsDto = {};
+      remarksPasswordsDto = {
+        "documentType": "Back Statement/ Premium Reciept",
+        "documentSubType": "",
+        "remark": this.editremarkList[i],
+        "password": this.editdocumentPassword[i]
+      };
+      this.editdDocumentDataArray.push(remarksPasswordsDto);
+    }
+  }
+
+  console.log('testtttttt', this.documentDataArray);
 
   console.log('uploadUpdateTransaction editTransactionUpload::', this.editTransactionUpload);
 
@@ -1358,6 +1515,8 @@ public uploadUpdateTransaction() {
     documentRemark: this.documentRemark,
     proofSubmissionId: this.editProofSubmissionId,
     receiptAmount: this.editReceiptAmount,
+     // documentPassword: this.documentPassword,
+     remarkPasswordList: this.editdDocumentDataArray
   };
   console.log('uploadUpdateTransaction data::', data);
 
@@ -1366,6 +1525,44 @@ public uploadUpdateTransaction() {
     .subscribe((res) => {
       console.log('uploadUpdateTransaction::', res);
       if (res.data.results.length > 0) {
+        this.editremarkList = [];
+        this.editdocumentPassword = [];
+        this.editfilesArray = [];
+
+        this.masterGridData.forEach((element, index) => {
+          this.documentArray.push({
+
+            'dateofsubmission':new Date(),
+            'documentType':element.documentInformationList[0].documentType,
+            'documentName': element.documentInformationList[0].fileName,
+            'documentPassword':element.documentInformationList[0].documentPassword,
+            'documentRemark':element.documentInformationList[0].documentRemark,
+            'status' : element.documentInformationList[0].status,
+            'approverName' : element.documentInformationList[0].lastModifiedBy,
+            'Time' : element.documentInformationList[0].lastModifiedTime,
+
+            // 'documentStatus' : this.premiumFileStatus,
+
+          });
+
+          if(element.documentInformationList[1]) {
+            this.documentArray.push({
+
+              'dateofsubmission':new Date(),
+              'documentType':element.documentInformationList[1].documentType,
+              'documentName': element.documentInformationList[1].fileName,
+              'documentPassword':element.documentInformationList[1].documentPassword,
+              'documentRemark':element.documentInformationList[1].documentRemark,
+              'status' : element.documentInformationList[1].status,
+              'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+              'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+              // 'documentStatus' : this.premiumFileStatus,
+
+            });
+          }
+        });
+
 
         this.alertService.sweetalertMasterSuccess(
           'Transaction Saved Successfully.',

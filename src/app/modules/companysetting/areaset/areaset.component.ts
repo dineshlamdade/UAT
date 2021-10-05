@@ -463,8 +463,9 @@ let datatest = []
 
     console.log('getArea',data);
     console.log('elm',elm);
+    let areanew=this.areaListData.find(a=>a.label == data);
     this.areaMaster.push({
-      "areaCode":'PA-Staff',
+      "areaCode":areanew,
       "areaId":elm.itemValue
     })
     this.areasetForm.controls['areaSetMasterDetailsList'].setValue(this.areaMaster);

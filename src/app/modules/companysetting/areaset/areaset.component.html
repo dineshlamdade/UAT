@@ -75,7 +75,7 @@
                                 <p-multiSelect [options]="areaListData" class="multiselect-custom"
                                 formControlName="areaList" defaultLabel="Select Area"
                                   resetFilterOnHide=true [(ngModel)]="areaList" [ngModelOptions]="{standalone: true}"
-                                  (onChange)="getArea(areaList,$event)" [filter]="true"
+                                  (onChange)="getArea(areaListData,$event)" [filter]="true"
                                   [ngClass]="{'is-invalid' : areasetForm.get('areaList').status == 'INVALID'}" >
 
                                 </p-multiSelect>

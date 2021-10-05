@@ -85,7 +85,7 @@ export class SdnCreationService {
 
   // 3rd tab api (Derived)
   KeywordMasterDetails():Observable<any>{
-    return this.HttpClient.get<any>(this.url1 + `KeywordMasterDetails`);
+    return this.HttpClient.get<any>(this.url1 + `formula-master`);
   }
 
   // 4th tab api (Matrix)
