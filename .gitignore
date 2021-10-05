@@ -44,3 +44,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Dev OPS Files
+/Dockerfile
+/jenkinsfile
+/mysite.conf
