@@ -75,6 +75,9 @@ export class MasterComponent implements OnInit {
   filesUrlArray = [];
   documentArray: any[] =[];
 
+  viewDocumentName: any;
+  viewDocumentType: any;
+
   public documentRemark: any;
   isVisibleTable = false;
 

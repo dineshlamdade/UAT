@@ -39,6 +39,7 @@ export class MediclaimMasterComponent implements OnInit {
   // declare MultiSelect: any;
 
   public modalRef: BsModalRef;
+  public showdocument = true;
   public submitted = false;
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -46,6 +47,20 @@ export class MediclaimMasterComponent implements OnInit {
   public name = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
   public summarynew: any = {};
+
+  public isEdit: boolean = false;
+
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
+
+
+  documentArray: any[] =[];
+  isVisibleTable = false;
+
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   public summaryGridData: Array<any> = [];
   public summaryComputationGridDate: any;
@@ -419,12 +434,41 @@ export class MediclaimMasterComponent implements OnInit {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
+        element.documentInformationList.forEach(element => {
+          // if(element!=null)
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+  
+          })
+        });
+        this.documentArray.push({
+          'dateofsubmission':element.creatonTime,
+          'documentType':element.documentType,
+          'documentName': element.fileName,
+          'documentPassword':element.documentPassword,
+          'documentRemark':element.documentRemark,
+          'status' : element.status,
+          'lastModifiedBy' : element.lastModifiedBy,
+          'lastModifiedTime' : element.lastModifiedTime,
+
+        })
+      });
+  });
+    // });
+      this.masterGridData.forEach((element) => {
         element.policyStartDate = new Date(element.policyStartDate);
         element.policyEndDate = new Date(element.policyEndDate);
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
       });
-    });
+    // });
   }
 
   // Post Master Page Data API call
@@ -435,12 +479,32 @@ export class MediclaimMasterComponent implements OnInit {
       return;
     }
 
+    console.log('this.isEdit', this.isEdit);
+   
+    if(!this.isEdit){
+
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0 &&  this.form.value.expenseType == 'Mediclaim Premium') {
       this.alertService.sweetalertWarning(
         'Mediclaim  Document Needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+
+  for (let i = 0; i <= this.documentPassword.length; i++) {
+    if(this.documentPassword[i] != undefined){
+      let remarksPasswordsDto = {};
+      remarksPasswordsDto = {
+        "documentType": "Back Statement/ Premium Reciept",
+        "documentSubType": "",
+        "remark": this.remarkList[i],
+        "password": this.documentPassword[i]
+      };
+      this.documentDataArray.push(remarksPasswordsDto);
+    }
+  }
+  console.log('this.documentDataArray', this.documentDataArray);
+  // else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
         'yyyy-MM-dd'
@@ -476,6 +540,7 @@ export class MediclaimMasterComponent implements OnInit {
 
         };
         data.proofSubmissionId = this.proofSubmissionId;
+        data.remarkPasswordList = this.documentDataArray;
 
       } else {
         data = {
@@ -498,7 +563,47 @@ export class MediclaimMasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+                
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               this.masterGridData.forEach((element) => {
                 element.policyStartDate = new Date(element.policyStartDate);
                 element.policyEndDate = new Date(element.policyEndDate);
@@ -531,7 +636,11 @@ export class MediclaimMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
-    }
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
+    // }
   }
 
 
@@ -616,7 +725,10 @@ export class MediclaimMasterComponent implements OnInit {
 
   // On Master Edit functionality
   editMaster(i: number) {
+    
+     this.isEdit = true;
     this.scrollToTop();
+    const obj =  this.findByNumber(i,this.masterGridData);
     this.paymentDetailGridData = this.masterGridData[i].mediclaimPaymentDetailList;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
@@ -629,11 +741,36 @@ export class MediclaimMasterComponent implements OnInit {
     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
     this.isClear = true;
     const familyMember = this.masterGridData[i];
-    this.urlArray = familyMember.documentInformationList;
-    this.proofSubmissionId = this.proofSubmissionId;
-    // this.proofSubmissionId = obj.proofSubmissionId;
+    // this.urlArray = familyMember.documentInformationList;
+    this.filesUrlArray = obj.documentInformationList;
+    this.filesUrlArray = obj.documentInformationList;
+    this.proofSubmissionId = obj.proofSubmissionId;
+    this.showdocument = false;
+    this.documentArray = [];
+    obj.documentInformationList.forEach(element => {
+      this.documentArray.push({
+        'dateofsubmission':element.creatonTime,
+        'documentType':element.documentType,
+        'documentName': element.fileName,
+        'documentPassword':element.documentPassword,
+        'documentRemark':element.documentRemark,
+        'status' : element.status,
+        'lastModifiedBy' : element.lastModifiedBy,
+        'lastModifiedTime' : element.lastModifiedTime,
 
-  }
+      })
+      
+    });
+    console.log("documentArray::",this.documentArray);
+    this.isVisibleTable = true;
+
+    }
+    findByNumber(i,masterGridData){
+      return masterGridData.find(x => x.accountNumber === i)
+    }
+
+  
+
 
   // editMaster(i: number) {
   // if (obj.frequency === 'frequencyOfPayment') {
@@ -842,9 +979,28 @@ export class MediclaimMasterComponent implements OnInit {
     );
   }
 
-  public docViewer(template3: TemplateRef<any>, index: any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  public docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
