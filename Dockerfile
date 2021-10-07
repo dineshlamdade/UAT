@@ -1,4 +1,5 @@
 #Create image based on the official Node 10 image from dockerhub
+
 FROM centos as web
 
 
@@ -36,7 +37,7 @@ RUN npm i @babel/compat-data@7.8.0
 #RUN npm update
 #RUN npm audit fix
 #RUN npm update @angular/cli @angular/core
-ENV NODE_OPTIONS="--max-old-space-size=5120"
+ENV NODE_OPTIONS="--max-old-space-size=8192"
 
 #RUN npm i @angular-devkit/build-angular@0.901.9
 
