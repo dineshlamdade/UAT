@@ -40,6 +40,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   @Input() public data: any;
 
 
+  documentRemarkList: any;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -67,6 +68,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
 
+  viewDocumentName: any;
+  viewDocumentType: any;
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
   public familyMemberName: Array<any> = [];
@@ -176,6 +179,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   dateOfJoining: Date;
   disableRemarkList = false
   disableRemark: any;
+  Remark: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -890,6 +894,19 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
+  //----------- On change Transactional Line Item Remark --------------------------
+  public onChangeDocumentRemark(transactionDetail, transIndex, event) {
+    console.log('event.target.value::', event.target.value);
+    debugger
+   console.log('this.transactionDetail', this.transactionDetail);
+    // const index = this.editTransactionUpload[0].groupTransactionList.indexOf(transactionDetail);
+    // console.log('index::', index);
+
+    this.transactionDetail[0].groupTransactionList[transIndex].remark =  event.target.value;
+   
+
+  }
+
   upload() {
 
     for (let i = 0; i <= this.documentPassword.length; i++) {
@@ -1361,10 +1378,12 @@ export class UnitLinkedDeclarationComponent implements OnInit {
       this.documentArray = [];
   }
 
-  public docViewer1(template3: TemplateRef<any>, index: any) {
+  public docViewer1(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
     // this.urlIndex = 0;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
 
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
@@ -1391,6 +1410,22 @@ export class UnitLinkedDeclarationComponent implements OnInit {
       this.urlArray[this.urlIndex].blobURI
     );
   }
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
 
   docViewer(template3: TemplateRef<any>, documentDetailList: any) {
     console.log("documentDetailList::", documentDetailList)
@@ -1481,6 +1516,29 @@ export class UnitLinkedDeclarationComponent implements OnInit {
           });
         });
       });
+  }
+
+
+  public docRemarkModal(
+    documentViewerTemplate: TemplateRef<any>,
+    index: any,
+    psId, policyNo
+  ) {
+    debugger
+    this.Service.getRemarkList(
+      policyNo,
+      psId
+    ).subscribe((res) => {
+      console.log('docremark', res);
+    this.documentRemarkList  = res.data.results[0].remarkList
+    });
+    // console.log('documentDetail::', documentRemarkList);
+    // this.documentRemarkList = this.selectedRemarkList;
+    console.log('this.documentRemarkList', this.documentRemarkList);
+    this.modalRef = this.modalService.show(
+      documentViewerTemplate,
+      Object.assign({}, { class: 'gray modal-s' })
+    );
   }
 
   public uploadUpdateTransaction() {

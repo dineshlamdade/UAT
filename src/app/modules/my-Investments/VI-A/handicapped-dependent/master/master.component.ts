@@ -31,6 +31,7 @@ import { HandicappedDependentService } from '../handicapped-dependent.service';
 export class MasterComponent implements OnInit {
   @Input() public disabilityTypeName : any;
 
+  public showdocument = true;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -64,11 +65,21 @@ export class MasterComponent implements OnInit {
   public form: FormGroup;
   public Index: number;
   public showUpdateButton: boolean;
+  public isEdit: boolean = false;
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+  documentPassword =[];
+  remarkList =[];
+  documentDataArray = [];
+  filesUrlArray = [];
+  documentArray: any[] =[];
+
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   public documentRemark: any;
+  isVisibleTable = false;
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -256,7 +267,33 @@ export class MasterComponent implements OnInit {
                 if (index > -1) {
                   this.familyMemberName.splice(index, 1);
                 }
+                element.documentInformationList.forEach(element => {
+                  // if(element!=null)
+                  this.documentArray.push({
+                    'dateofsubmission':element.creatonTime,
+                    'documentType':element.documentType,
+                    'documentName': element.fileName,
+                    'documentPassword':element.documentPassword,
+                    'documentRemark':element.documentRemark,
+                    'status' : element.status,
+                    'lastModifiedBy' : element.lastModifiedBy,
+                    'lastModifiedTime' : element.lastModifiedTime,
+          
+                  })
+                });
+                this.documentArray.push({
+                  'dateofsubmission':element.creatonTime,
+                  'documentType':element.documentType,
+                  'documentName': element.fileName,
+                  'documentPassword':element.documentPassword,
+                  'documentRemark':element.documentRemark,
+                  'status' : element.status,
+                  'lastModifiedBy' : element.lastModifiedBy,
+                  'lastModifiedTime' : element.lastModifiedTime,
+        
+                })
               });
+              
     });
   }
 
@@ -268,16 +305,36 @@ export class MasterComponent implements OnInit {
       return;
 
     }
+    console.log('this.isEdit', this.isEdit);
+   
+  if(!this.isEdit){
 
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Handicapped Dependent Document needed to Create Master.'
       );
       return;
-    } else {
+    } 
+  }
+
+  for (let i = 0; i <= this.documentPassword.length; i++) {
+    if(this.documentPassword[i] != undefined){
+      let remarksPasswordsDto = {};
+      remarksPasswordsDto = {
+        "documentType": "Back Statement/ Premium Reciept",
+        "documentSubType": "",
+        "remark": this.remarkList[i],
+        "password": this.documentPassword[i]
+      };
+      this.documentDataArray.push(remarksPasswordsDto);
+    }
+  }
+  console.log('this.documentDataArray', this.documentDataArray);
+    // else {
 
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
+      data.remarkPasswordList = this.documentDataArray;
 
       console.log('Handicapped Dependent ::', data);
 
@@ -287,11 +344,51 @@ export class MasterComponent implements OnInit {
           console.log(res);
           if (res) {
             if (res.data.results.length > 0) {
+              this.isEdit = false;
+              this.showdocument = false;
               this.masterGridData = res.data.results;
               console.log('Handicapped Master ::', res.data.results);
               // this.masterGridData = res.data.results[0].documentInformationList;
               this.masterGridData.forEach((element) => {
               });
+              if (res.data.results.length > 0) {
+                this.masterGridData = res.data.results;
+                
+            
+                this.masterGridData.forEach((element, index) => {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[0].documentType,
+                      'documentName': element.documentInformationList[0].fileName,
+                      'documentPassword':element.documentInformationList[0].documentPassword,
+                      'documentRemark':element.documentInformationList[0].documentRemark,
+                      'status' : element.documentInformationList[0].status,
+                      'approverName' : element.documentInformationList[0].lastModifiedBy,
+                      'Time' : element.documentInformationList[0].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+
+                  if(element.documentInformationList[1]) {
+                  this.documentArray.push({
+                  
+                    'dateofsubmission':new Date(),
+                      'documentType':element.documentInformationList[1].documentType,
+                      'documentName': element.documentInformationList[1].fileName,
+                      'documentPassword':element.documentInformationList[1].documentPassword,
+                      'documentRemark':element.documentInformationList[1].documentRemark,
+                      'status' : element.documentInformationList[1].status,
+                      'lastModifiedBy' : element.documentInformationList[1].lastModifiedBy,
+                      'lastModifiedTime' : element.documentInformationList[1].lastModifiedTime,
+
+                      // 'documentStatus' : this.premiumFileStatus,
+              
+                  });
+                }
+                });
+              }
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
                 'Go to "Declaration & Actual" Page to see Schedule.'
@@ -318,9 +415,13 @@ export class MasterComponent implements OnInit {
       this.submitted = false;
       this.urlArray = [];
       this.documentRemark = [];
+      this.remarkList = [];
+      this.documentPassword = [];
+      this.isVisibleTable = false;
+      this.isEdit = false;
 
       this.showUpdateButton = false;
-    }
+    // }
     // this.form.patchValue({
     //   accountType: 'Tier_1',
     // });
@@ -360,6 +461,7 @@ export class MasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(disabilityType) {
+    this.isEdit = true;
     this.scrollToTop();
     this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
 
@@ -383,8 +485,28 @@ export class MasterComponent implements OnInit {
       this.Index = obj.disabilityType;
       this.showUpdateButton = true;
       this.isClear = true;
-      this.urlArray = obj.documentInformationList;
+      // this.urlArray = obj.documentInformationList;
+      this.filesUrlArray = obj.documentInformationList;
+      this.showdocument = false;
       this.proofSubmissionId = obj.proofSubmissionId;
+      this.documentArray = [];
+        
+        obj.documentInformationList.forEach(element => {
+          this.documentArray.push({
+            'dateofsubmission':element.creatonTime,
+            'documentType':element.documentType,
+            'documentName': element.fileName,
+            'documentPassword':element.documentPassword,
+            'documentRemark':element.documentRemark,
+            'status' : element.status,
+            'lastModifiedBy' : element.lastModifiedBy,
+            'lastModifiedTime' : element.lastModifiedTime,
+
+          })
+          
+        });
+        console.log("documentArray::",this.documentArray);
+        this.isVisibleTable = true;
 
       }
     });
@@ -482,14 +604,32 @@ export class MasterComponent implements OnInit {
         this.urlArray[this.urlIndex].blobURI,
       );
     }
-
-    docViewer(template3: TemplateRef<any>,index:any) {
+    zoomin(){
+      var myImg = document.getElementById("map");
+      var currWidth = myImg.clientWidth;
+      if(currWidth == 2500) return false;
+       else{
+          myImg.style.width = (currWidth + 100) + "px";
+      } 
+  }
+   zoomout(){
+      var myImg = document.getElementById("map");
+      var currWidth = myImg.clientWidth;
+      if(currWidth == 100) return false;
+   else{
+          myImg.style.width = (currWidth - 100) + "px";
+      }
+  }
+    docViewer(template3: TemplateRef<any>,index:any, data: any) {
       console.log("---in doc viewer--");
       this.urlIndex = index;
 
+
+      console.log('urlIndex::' , this.urlIndex);
       console.log("urlArray::", this.urlArray);
       this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
+        // this.urlArray[this.urlIndex].blobURI,
+        this.filesUrlArray[this.urlIndex].blobURI
       );
       console.log("urlSafe::",  this.urlSafe);
       this.modalRef = this.modalService.show(

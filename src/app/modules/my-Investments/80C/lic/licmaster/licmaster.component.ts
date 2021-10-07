@@ -76,6 +76,9 @@ export class LicmasterComponent implements OnInit {
   public document2Password: any;
   public documentPassword = [];
   public remarkList = [];
+
+  viewDocumentName: any;
+  viewDocumentType: any;
   
 ;  public document2Remark: any;
   public isECS = true;
@@ -133,6 +136,10 @@ export class LicmasterComponent implements OnInit {
   premiumFileType: any;
   masterFileStatus: any;
   premiumFileStatus: any;
+  ConvertedFinancialYearStartDate: Date;
+  financialYearEnd: any;
+  ConvertedFinancialYearEndDate: Date;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -321,7 +328,31 @@ export class LicmasterComponent implements OnInit {
     // -------------- Business Financial Year API Call -------------------------------
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
+      this.financialYearEnd = res.data.results[0].toDate; 
+   
+
+      
+      this.ConvertedFinancialYearStartDate = new Date(this.financialYearStart);
+      let ConvertedFinancialYearStartDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearStartDate,
+        'yyyy-MM-dd'
+      );
+      this.ConvertedFinancialYearEndDate = new Date(this.financialYearEnd);
+      let ConvertedFinancialYearEndDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearEndDate,
+        'yyyy-MM-dd'
+      );
+      this.form.patchValue({
+        policyStartDate: this.ConvertedFinancialYearStartDate,
+        fromDate: this.ConvertedFinancialYearStartDate,
+        policyEndDate: this.ConvertedFinancialYearEndDate,
+        toDate: this.ConvertedFinancialYearEndDate,
+  
+      });
+      console.log('this.financialYearStart', this.financialYearStart);
+      // console.log('financialYearStart', financialYearStart);
     });
+    console.log('this.financialYearStart', this.ConvertedFinancialYearStartDate);
 
     // -------------- Family Member List API call ---------------------------
     this.Service.getFamilyInfo().subscribe((res) => {
@@ -890,6 +921,23 @@ export class LicmasterComponent implements OnInit {
     );
   }
 
+
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
   // ---------- For Doc Viewer -----------------------
   public nextDoc1Viewer() {
     this.premiumurlIndex = this.premiumurlIndex + 1;
@@ -904,10 +952,12 @@ export class LicmasterComponent implements OnInit {
       this.PremiumurlArray[this.premiumurlIndex].blobURI
     );
   }
-  public docViewer(template3: TemplateRef<any>, index: any) {
+  public docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
     // this.urlIndex = 0;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
     
 console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);

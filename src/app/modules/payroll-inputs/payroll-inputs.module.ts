@@ -43,6 +43,14 @@ import { SdmStepperComponent } from './sdm-stepper/sdm-stepper.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ChartsModule } from 'ng2-charts';
 import { EllipsisPipe } from './sdm-stepper/EllipsisPipe';
+
+import { HoldreleaseComponent } from './hold and release/holdrelease/holdrelease.component';
+import { ReleaseComponent } from './release/release/release.component';
+import { HoldComponent } from './hold and release/holdrelease/hold/hold.component';
+import { ReleaseNewComponent } from './hold and release/holdrelease/release-new/release-new.component';
+import { CheckboxModule } from 'primeng/checkbox';
+// import { HoldComponent } from './hold and release/hold/hold.component';
+// import { ReleaseNewComponent } from './hold and release/release-new/release-new.component';
 import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
 import { GarnishmentTransactionComponent } from './garnishment-transaction/garnishment-transaction.component';
 import { FastentryNrQtyComponent } from './fastentry-nr-qty/fastentry-nr-qty.component';
@@ -61,6 +69,11 @@ import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-r
      TwoDigitDecimaNumberDirective,
      SdmStepperComponent,
      EllipsisPipe,
+    
+     HoldreleaseComponent,
+     ReleaseComponent,
+     HoldComponent,
+     ReleaseNewComponent,
      GarnishmentMasterComponent,
      GarnishmentTransactionComponent,
      FastentryNrQtyComponent,
@@ -104,7 +117,9 @@ import { NonRecurringQtyMasterComponent } from './non-recurring-qty-master/non-r
     InputTextModule,
     ProgressBarModule,
     PayrollInputsRoutingModule,
-    ChartsModule
+    ChartsModule,
+    CheckboxModule,
+
   ],
   providers: [ DatePipe],
   schemas: [

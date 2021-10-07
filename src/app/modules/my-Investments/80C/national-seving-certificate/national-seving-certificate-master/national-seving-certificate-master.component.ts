@@ -69,6 +69,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+  viewDocumentName: any;
+  viewDocumentType: any;
 
   public documentRemark: any;
   public isECS = true;
@@ -118,6 +120,9 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   isVisibleTable = false;
+  ConvertedFinancialYearStartDate: Date;
+  financialYearEnd: any;
+  ConvertedFinancialYearEndDate: Date;
 
   public proofSubmissionId;
 
@@ -200,7 +205,31 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
+      this.financialYearEnd = res.data.results[0].toDate; 
+   
+
+      
+      this.ConvertedFinancialYearStartDate = new Date(this.financialYearStart);
+      let ConvertedFinancialYearStartDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearStartDate,
+        'yyyy-MM-dd'
+      );
+      this.ConvertedFinancialYearEndDate = new Date(this.financialYearEnd);
+      let ConvertedFinancialYearEndDate1 = this.datePipe.transform(
+        this.ConvertedFinancialYearEndDate,
+        'yyyy-MM-dd'
+      );
+      this.form.patchValue({
+        policyStartDate: this.ConvertedFinancialYearStartDate,
+        // fromDate: this.ConvertedFinancialYearStartDate,
+        policyEndDate: this.ConvertedFinancialYearEndDate,
+        // toDate: this.ConvertedFinancialYearEndDate,
+  
+      });
+      console.log('this.financialYearStart', this.financialYearStart);
+      // console.log('financialYearStart', financialYearStart);
     });
+    console.log('this.financialYearStart', this.ConvertedFinancialYearStartDate);
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
@@ -710,9 +739,29 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     // );
   }
 
-  docViewer(template3: TemplateRef<any>, index: any) {
+  zoomin(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 2500) return false;
+     else{
+        myImg.style.width = (currWidth + 100) + "px";
+    } 
+}
+ zoomout(){
+    var myImg = document.getElementById("map");
+    var currWidth = myImg.clientWidth;
+    if(currWidth == 100) return false;
+ else{
+        myImg.style.width = (currWidth - 100) + "px";
+    }
+}
+
+  docViewer(template3: TemplateRef<any>, index: any, data: any) {
     console.log('---in doc viewer--');
     this.urlIndex = index;
+    this.viewDocumentName = data.documentName;
+    this.viewDocumentType = data.documentType
+    
     console.log('urlIndex::' , this.urlIndex);
     console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
