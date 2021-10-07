@@ -17,8 +17,8 @@ import { InvestmentInterestOnLoanForPurchaseOfElectricVehicletransactionApproval
 import { InvestmentInterestOnEducationalLoantransactionApprovalComponent } from './investment-interest-on-educational-loantransaction-approval/investment-interest-on-educational-loantransaction-approval.component';
 import { InvestmentMediclaim80DtransactionApprovalComponent } from './investment-mediclaim80-dtransaction-approval/investment-mediclaim80-dtransaction-approval.component';
 import { InvestmentTreatmentOfSpecifiedDiseasestransactionApprovalComponent } from './investment-treatment-of-specified-diseasestransaction-approval/investment-treatment-of-specified-diseasestransaction-approval.component';
-import { InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalComponent } from './investment-donations-for-registered-political-party-electoral-trust-sec80-ggctransaction-approval/investment-donations-for-registered-political-party-electoral-trust-sec80-ggctransaction-approval.component';
-import { InvestmentDonationsForScientificResearchGGAtransactionApprovalComponent } from './investment-donations-for-scientific-research-ggatransaction-approval/investment-donations-for-scientific-research-ggatransaction-approval.component';
+import { InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalComponent } from './investment-donations-for-ggctransaction-approval/investment-donations-for-ggctransaction-approval.component';
+import { InvestmentDonationsForScientificResearchGGAtransactionApprovalComponent } from './investment-donations-for-ggatransaction-approval/investment-donations-for-scientific-research-ggatransaction-approval.component';
 import { InvestmentPhysicallyHandicappedtransactionApprovalComponent } from './investment-physically-handicappedtransaction-approval/investment-physically-handicappedtransaction-approval.component';
 import { InvestmentHousingLoanMasterApprovalComponent } from './investment-housing-loan-master-approval/investment-housing-loan-master-approval.component';
 const routes: Routes = [

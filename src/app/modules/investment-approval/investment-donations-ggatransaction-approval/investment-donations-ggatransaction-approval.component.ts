@@ -12,15 +12,15 @@ import { InvestmentTransactionApprovalService } from '../investment-transaction-
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { InvestmentApprovalMasterInfo } from '../interfaces/investment-approval-master-info';
 import { debug } from 'node:console';
-import { InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalService } from './investment-donations-for-registered-ggctransaction-approval.service';
+import { InvestmentDonationsForScientificResearchGGAtransactionApprovalService } from './investment-donations-ggatransaction-approval.service';
 
 
 @Component({
-  selector: 'app-investment-donations-for-registered-political-party-electoral-trust-sec80-ggctransaction-approval',
-  templateUrl: './investment-donations-for-ggctransaction-approval.component.html',
-  styleUrls: ['./investment-donations-for-ggctransaction-approval.component.scss']
+  selector: 'app-investment-donations-for-scientific-research-ggatransaction-approval',
+  templateUrl: './investment-donations-ggatransaction-approval.component.html',
+  styleUrls: ['./investment-donations-ggatransaction-approval.component.scss']
 })
-export class InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalComponent implements OnInit {
+export class InvestmentDonationsForScientificResearchGGAtransactionApprovalComponent implements OnInit {
 
   public documentList: Array<any> = [];
 
@@ -126,7 +126,7 @@ export class InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GG
     private modalService: BsModalService,
     private investmentMasterApprovalService: InvestmentMasterApprovalService,
     private investmentTransactionApprovalService: InvestmentTransactionApprovalService,
-    private investmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalService : InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalService,
+    private investmentDonationsForScientificResearchGGAtransactionApprovalService : InvestmentDonationsForScientificResearchGGAtransactionApprovalService,
     private router: Router,
     private alertService: AlertServiceService,
     private numberFormatPipe: NumberFormatPipe
@@ -196,7 +196,7 @@ export class InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GG
 
   // ---------- Get Transaction Info By PSID ------------------------------------------
   getTransactionInfoByPSID(psid: any): void {
-    this.investmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalService
+    this.investmentDonationsForScientificResearchGGAtransactionApprovalService
       .getTransactionInfoByPSID(psid)
       .subscribe((res: InvestmentApprovalTransactionInfo) => {
         console.log('res transactionInfo::', res);
@@ -681,4 +681,3 @@ public postMethodCall(data):void{
   }
 
 }
-

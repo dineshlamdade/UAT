@@ -12,7 +12,7 @@ import { InvestmentTransactionApprovalService } from '../investment-transaction-
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { InvestmentApprovalMasterInfo } from '../interfaces/investment-approval-master-info';
 import { debug } from 'node:console';
-import { InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalService } from './investment-donations-for-registered-ggctransaction-approval.service';
+import { InvestmentDonationsForRegisteredPoliticalPartyElectoralTrustSec80GGCtransactionApprovalService } from './investment-donations-for-ggctransaction-approval.service';
 
 
 @Component({
