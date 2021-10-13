@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TemplateRef } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SortEvent } from 'primeng/api';
 export interface ltaavailed {
@@ -7,7 +8,7 @@ export interface ltaavailed {
   flexisection;
   maxlimit;
   ownfixedlimit;
-  balancingapplicable;
+  balancingapplicable;f
   balancingapplicableearning;
 
 }
@@ -33,8 +34,10 @@ export class HeadComponent implements OnInit {
   Summs:Summ[];
   cities: City[];
   public modalRef: BsModalRef;
+  public headTypeList: Array<any> = [];
   selectedCities: City[];
-  constructor(private modalService: BsModalService) {
+  headForm: any;
+  constructor(private modalService: BsModalService, private formBuilder : FormBuilder) {
     this.cities = [
       {name: 'New York', code: 'NY'},
       {name: 'Rome', code: 'RM'},
@@ -50,11 +53,19 @@ export class HeadComponent implements OnInit {
     );
     }
   ngOnInit(): void {
-    this.ltaavailed1 = [
-      { flexisectionname: '1', flexisection: '22-Jan-2021', maxlimit: 'Paid', ownfixedlimit: '24-Jan-2021', balancingapplicable: '24-Jan-2021', balancingapplicableearning: '1', },
-      { flexisectionname: '2', flexisection: '22-Feb-2021', maxlimit: 'Marriage', ownfixedlimit: '1-Feb-2021', balancingapplicable: '23-Feb-2021', balancingapplicableearning: '22',},
+    this.sectionReactiveForm();
 
+    this.headTypeList = [
+      { label: 'E / D Head', value: 'E/D Head' },
+      { label: 'Non E / D Head', value: 'Non E/D Head' },
     ];
+
+
+    // this.ltaavailed1 = [
+    //   { flexisectionname: '1', flexisection: '22-Jan-2021', maxlimit: 'Paid', ownfixedlimit: '24-Jan-2021', balancingapplicable: '24-Jan-2021', balancingapplicableearning: '1', },
+    //   { flexisectionname: '2', flexisection: '22-Feb-2021', maxlimit: 'Marriage', ownfixedlimit: '1-Feb-2021', balancingapplicable: '23-Feb-2021', balancingapplicableearning: '22',},
+
+    // ];
     this.Summs = [
       { type: '1', EDhead: '', attribute: 'Paid', nonedhead: '', orderno: '', },
       { type: '2', EDhead: '', attribute: 'Marriage', nonedhead: '', orderno: ' ', },
@@ -63,5 +74,17 @@ export class HeadComponent implements OnInit {
   }
 
 
+  sectionReactiveForm() {
+    this.headForm = this.formBuilder.group({
+      headType: new FormControl('', Validators.required),
+      flexiSectionNo: new FormControl('', Validators.required),
+      ownFixLimit: new FormControl('', Validators.required),
+      sdmvalue: new FormControl('', Validators.required),
+      derivedValue: new FormControl('', Validators.required),
+      balancingFigureApplicable: new FormControl('', Validators.required),
+      isActive: new FormControl(1),
+      remark: new FormControl(''),
+    });
+  }
 
 }

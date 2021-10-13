@@ -66,7 +66,7 @@ const routes: Routes = [
     component: JobMasterComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
-  {path: 'flaxiMaster',
+  {path: 'flexiMaster',
   component: FlexiInputComponent,
   data:{title: ':: Delizia-HR :: Home'}},
   {
